@@ -12,4 +12,26 @@
  */
 
 return array(
+    'doctrine' => array(
+        'connection' => array(
+            'orm_default' => array(
+                'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+                'params' => array(
+                    'host' => 'host', // to change
+                    'port' => 'port', // to change
+                    'user' => 'user', // to change
+                    'password' => 'password', // to change
+                    'dbname' => 'dbname' // to change
+                )
+            )
+        ),
+        'configuration' => array(
+            'orm_default' => array(
+                'generate_proxies'  => false,
+                'metadata_cache'    => 'apc',
+                'query_cache'       => 'apc',
+                'result_cache'      => 'apc',
+            )
+        ),
+    ),
 );

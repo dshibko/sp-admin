@@ -5,6 +5,7 @@ return array(
         'DoctrineModule',
         'DoctrineORMModule',
         'Application',
+        'Neoco'
 //        'ZfcRbac'
     ),
 
