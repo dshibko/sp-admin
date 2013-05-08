@@ -30,9 +30,9 @@ class Season extends BasicObject {
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="end_time", type="date", nullable=false)
+     * @ORM\Column(name="end_date", type="date", nullable=false)
      */
-    private $endTime;
+    private $endDate;
 
     /**
      * @var integer
@@ -110,9 +110,9 @@ class Season extends BasicObject {
      * @param \DateTime $endTime
      * @return Season
      */
-    public function setEndTime($endTime)
+    public function setEndDate($endTime)
     {
-        $this->endTime = $endTime;
+        $this->endDate = $endTime;
     
         return $this;
     }
@@ -122,9 +122,9 @@ class Season extends BasicObject {
      *
      * @return \DateTime 
      */
-    public function getEndTime()
+    public function getEndDate()
     {
-        return $this->endTime;
+        return $this->endDate;
     }
 
     /**

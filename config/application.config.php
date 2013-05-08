@@ -4,9 +4,10 @@ return array(
     'modules' => array(
         'DoctrineModule',
         'DoctrineORMModule',
+        'Neoco',
         'Application',
-        'Neoco'
-//        'ZfcRbac'
+        'Admin',
+        'ZfcRbac'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

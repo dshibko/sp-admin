@@ -72,6 +72,20 @@ return array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
         ),
     ),
+    'doctrine' => array(
+        'driver' => array(
+            'application_entities' => array(
+                'class' =>'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(__DIR__ . '/../src/Application/Model/Entities')
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'Application\Model' => 'application_entities'
+                )
+            )
+        )
+    ),
     'view_manager' => array(
         'display_not_found_reason' => true,
         'display_exceptions'       => true,

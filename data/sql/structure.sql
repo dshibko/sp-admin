@@ -88,7 +88,7 @@ CREATE TABLE `season` (
 	id INT AUTO_INCREMENT NOT NULL,
 	display_name VARCHAR(100) NOT NULL,
 	start_date DATE NOT NULL,
-	end_time DATE NOT NULL,
+	end_date DATE NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 CREATE TABLE `league` (

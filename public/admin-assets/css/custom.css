@@ -1,0 +1,28 @@
+.page-sidebar > ul > li.start {
+    margin-top: 15px;
+}
+
+.dashboard-stat .visual.short {
+    width: 70px;
+    padding-left: 10px;
+}
+
+.dashboard-stat.black {
+    background: #737480;
+}
+
+.dashboard-stat.black .more {
+    background-color: #656670;
+}
+
+.table div.glyphicons {
+    display: block;
+    position: relative;
+    top: -2px;
+}
+
+@media (min-width: 980px) {
+    .page-content {
+        min-height: 700px;
+    }
+}

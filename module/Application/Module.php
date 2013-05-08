@@ -40,4 +40,54 @@ class Module
         );
     }
 
+    /**
+     * @return array|\Zend\ServiceManager\Config
+     */
+    public function getViewHelperConfig()
+    {
+        return array(
+            'factories' => array(
+                'getConstant' => function($sm) {
+                    $config = $sm->getServiceLocator()->get('config');
+                    return new \Neoco\View\Helper\GetConstant($config);
+                },
+                'getCurrentUser' => function($sm) {
+                    return new \Neoco\View\Helper\GetCurrentUser($sm->getServiceLocator());
+                },
+                'renderMessages' => function($sm) {
+                    $translator = $sm->getServiceLocator()->get('translator');
+                    return new \Neoco\View\Helper\RenderMessages($translator);
+                },
+            )
+        );
+    }
+
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'AuthStorage' => function($sm) {
+                    return new \Application\Model\Helpers\AuthStorage();
+                },
+                'AuthService' => function($sm) {
+                    $entityManager = $sm->get('doctrine.entitymanager.orm_default');
+                    $doctrineAuthAdapter = new ObjectRepository(array(
+                        'objectManager' => $entityManager,
+                        'identityClass' => 'Application\Model\Entities\User',
+                        'identityProperty' => 'email',
+                        'credentialProperty' => 'password',
+                        'credentialCallable' => function($identity, $credential) {
+                            return md5($credential); // TODO to define password strategy
+                        }
+                    ));
+
+                    $authService = new AuthenticationService();
+                    $authService->setAdapter($doctrineAuthAdapter);
+                    $authService->setStorage($sm->get('AuthStorage'));
+
+                    return $authService;
+                },
+            ),
+        );
+    }
 }
