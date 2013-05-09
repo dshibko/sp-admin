@@ -1,0 +1,14 @@
+<ul class="breadcrumb">
+    <?php foreach ($this->pages as $i => $page) : ?>
+        <li>
+            <?php if ($page->getLabel() != null && $page->getLabel() != '') : ?>
+                <i class="<?=$page->getLabel()?>"></i>
+            <?php endif; ?>
+            <?php $isLast = count($this->pages) - 1 == $i;
+            if (!$isLast) : ?>
+            <a href="<?=$page->getHref()?>"><?php endif; ?><?=$this->translate($page->getTitle())?><?php if (!$isLast) : ?></a>
+                <i class="icon-angle-right"></i>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
+</ul>

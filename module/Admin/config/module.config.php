@@ -13,6 +13,16 @@ return array(
                     ),
                 ),
             ),
+            'admin-account' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/account',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Index',
+                        'action'     => 'myAccount',
+                    ),
+                ),
+            ),
             'admin-login' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -81,13 +91,31 @@ return array(
         'display_exceptions'       => true,
         'doctype'                  => 'HTML5',
         'template_map' => array(
-//            'layout/admin-layout'           => __DIR__ . '/../view/layout/layout.phtml',
+            'layout/admin-layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'layout/admin-login-layout'           => __DIR__ . '/../view/layout/layout2.phtml',
             'admin/index/index' => __DIR__ . '/../view/admin/index/index.phtml',
             'error/admin-redirect' => __DIR__ . '/../view/error/redirect.phtml',
+            'admin/partials/breadcrumbs' => __DIR__ . '/../view/partials/breadcrumbs.phtml',
+            'admin/partials/menu' => __DIR__ . '/../view/partials/menu.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+    ),
+    'navigation' => array(
+        'default' => array(
+            'admin' => array(
+                'title' => 'Home',
+                'label' => 'icon-home',
+                'route' => 'admin-home',
+                'pages' => array(
+                    'home' => array(
+                        'title' => 'Dashboard',
+                        'label' => 'icon-dashboard',
+                        'route' => 'admin-home',
+                    ),
+                ),
+            ),
         ),
     ),
 );

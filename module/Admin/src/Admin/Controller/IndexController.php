@@ -14,4 +14,9 @@ class IndexController extends AbstractActionController {
 
     }
 
+    public function myAccountAction() {
+        return new ViewModel(array(
+        ));
+    }
+
 }

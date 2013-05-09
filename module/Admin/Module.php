@@ -25,7 +25,18 @@ class Module
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        $sharedEvents = $eventManager->getSharedManager();
+        $sharedEvents->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, array($this, 'onAdminDispatch'), 100);
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'initOnDispatchError'), 0);
+    }
+
+    public function onAdminDispatch($e) {
+        $matches = $e->getRouteMatch();
+        if ($matches != null) {
+            $viewModel = $e->getViewModel();
+            if ($viewModel->getTemplate() == 'layout/layout')
+                $viewModel->setTemplate('layout/admin-layout');
+        }
     }
 
     public function initOnDispatchError(MvcEvent $e)

@@ -1,0 +1,38 @@
+<?php
+$pages = $this->container->getPages();
+foreach ($pages as $page)
+    if ($page->getRoute() == 'admin-home') {
+        $pages = $page;
+        break;
+    }
+$first = true;
+?>
+<ul>
+    <li>
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+        <div class="sidebar-toggler hidden-phone"></div>
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+    </li>
+<?php foreach ($pages as $page) : ?>
+    <?php
+        $classes = array();
+        if ($first) {
+            $classes [] = 'start';
+            $first = false;
+        }
+        if ($page->isActive(true))
+            $classes [] = 'active';
+    ?>
+    <li<?=empty($classes) ? '' : (' class="' . implode(" ", $classes) . '"')?>>
+        <a href="<?=$page->getHref()?>">
+            <i class="<?=$page->getLabel()?>"></i>
+            <span class="title">
+                <?= $this->translate($page->getTitle()) ?>
+            </span>
+            <?php if ($page->isActive(true)) : ?>
+                <span class="selected"></span>
+            <?php endif;?>
+        </a>
+    </li>
+<?php endforeach; ?>
+</ul>
