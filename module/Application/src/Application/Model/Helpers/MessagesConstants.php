@@ -13,10 +13,14 @@ class MessagesConstants
     const ERROR_EMAIL_NOT_REGISTERED = "The email you input is not registered.";
     const ERROR_RECOVERY_LINK_INVALID = "Recovery link is not valid.";
     const ERROR_WRONG_EMAIL_OR_PASSWORD = "Wrong email or password.";
+    const ERROR_UPLOAD_FAILED = "Upload filed due to unknown problems.";
+    const ERROR_WRONG_DATES_SELECTED = "Wrong start and end dates selected.";
 
     const SUCCESS_RECOVERY_LINK_SENT = "Recovery link was sent to your email. The link is active for 3 hours.";
     const SUCCESS_PASSWORD_CHANGED = "Your password was successfully changed. Now you can login using it.";
     const SUCCESS_CAN_CHANGE_PASSWORD = "Now you can change the password.";
+    const SUCCESS_SEASON_CREATED = "A season was created successfully.";
+    const SUCCESS_SEASON_UPDATED = "A season was updated successfully.";
 
     const INFO_LOGGED_OUT = "You've been logged out.";
 
