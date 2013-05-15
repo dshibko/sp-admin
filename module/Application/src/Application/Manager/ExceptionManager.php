@@ -33,7 +33,16 @@ class ExceptionManager extends BasicManager {
     public function handleControllerException(\Exception $e, \Zend\Mvc\Controller\AbstractActionController $controller, $customMessage = '') {
         $userMessage = !empty($customMessage) ? $customMessage : $e->getMessage();
         $controller->flashmessenger()->addErrorMessage($userMessage);
-        LogManager::getInstance($this->getServiceLocator())->logException($e);
+        LogManager::getInstance($this->getServiceLocator())->logAppException($e);
+    }
+
+    /**
+     * @param \Exception $e
+     * @param \Zend\Mvc\Controller\AbstractActionController $controller
+     */
+    public function handleOptaException(\Exception $e, \Zend\Mvc\Controller\AbstractActionController $controller) {
+        LogManager::getInstance($this->getServiceLocator())->logOptaException($e);
+        var_dump($e->getMessage());
     }
 
 }

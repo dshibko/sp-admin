@@ -72,13 +72,6 @@ class League extends BasicObject {
     private $id;
 
     /**
-     * @var Prize
-     *
-     * @ORM\OneToOne(targetEntity="Prize", mappedBy="league")
-     */
-    private $prize;
-
-    /**
      * @var User
      *
      * @ORM\ManyToOne(targetEntity="User")
@@ -111,7 +104,7 @@ class League extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="leagues")
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="leagues", cascade={"persist"})
      * @ORM\JoinTable(name="league_user",
      *   joinColumns={
      *     @ORM\JoinColumn(name="league_id", referencedColumnName="id")
@@ -303,29 +296,6 @@ class League extends BasicObject {
     }
 
     /**
-     * Set prize
-     *
-     * @param Prize $prize
-     * @return League
-     */
-    public function setPrize(Prize $prize = null)
-    {
-        $this->prize = $prize;
-    
-        return $this;
-    }
-
-    /**
-     * Get prize
-     *
-     * @return Prize
-     */
-    public function getPrize()
-    {
-        return $this->prize;
-    }
-
-    /**
      * Set creator
      *
      * @param User $creator
@@ -426,4 +396,58 @@ class League extends BasicObject {
     {
         return $this->users;
     }
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Prize", mappedBy="league", cascade={"persist", "remove"})
+     */
+    private $prizes;
+
+    /**
+     * Add prizes
+     *
+     * @param Prize $prizes
+     * @return League
+     */
+    public function addPrize(Prize $prizes)
+    {
+        $this->prizes[] = $prizes;
+
+        return $this;
+    }
+
+    /**
+     * Remove prizes
+     *
+     * @param Prize $prizes
+     */
+    public function removePrize(Prize $prizes)
+    {
+        $this->prizes->removeElement($prizes);
+    }
+
+    /**
+     * Get prizes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPrizes()
+    {
+        return $this->prizes;
+    }
+
+    private $prizesByRegion = array();
+
+    public function getPrizeByRegionId($id)
+    {
+        if (!array_key_exists($id, $this->prizesByRegion))
+            foreach ($this->getPrizes() as $prize)
+                if ($prize->getRegion()->getId() == $id) {
+                    $this->prizesByRegion[$id] = $prize;
+                    break;
+                }
+        return $this->prizesByRegion[$id];
+    }
+
 }

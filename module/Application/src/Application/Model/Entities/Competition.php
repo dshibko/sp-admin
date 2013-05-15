@@ -14,6 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Competition extends BasicObject {
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="feeder_id", type="integer", nullable=false)
+     */
+    private $feederId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=100, nullable=false)
@@ -232,4 +239,21 @@ class Competition extends BasicObject {
     {
         return $this->season;
     }
+
+    /**
+     * @param integer $feederId
+     */
+    public function setFeederId($feederId)
+    {
+        $this->feederId = $feederId;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getFeederId()
+    {
+        return $this->feederId;
+    }
+
 }

@@ -7,6 +7,32 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 abstract class AbstractDAO implements ServiceLocatorAwareInterface {
 
+    public function flush() {
+        $this->getEntityManager()->flush();
+    }
+
+    public function clearCache() {
+        $this->clearEntityCache();
+    }
+
+    /**
+     * @throws \Exception
+     * @param object $entity
+     * @param bool $flush
+     * @param bool $clearCache
+     */
+    public function remove($entity, $flush = true, $clearCache = true) {
+        try {
+            $this->getEntityManager()->remove($entity);
+            if ($flush)
+                $this->getEntityManager()->flush();
+            if ($clearCache)
+                $this->clearEntityCache();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
     /**
      * @throws \Exception
      * @param object $entity
@@ -55,7 +81,7 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
         $qb->select('e')
             ->from($this->getRepositoryName(), 'e')
             ->where($qb->expr()->eq('e.id', $id));
-        return $this->getQuery($qb, __FUNCTION__, func_get_args(), $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
     /**
@@ -68,7 +94,7 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('e')
             ->from($this->getRepositoryName(), 'e');
-        return $this->getQuery($qb, __FUNCTION__, func_get_args(), $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
     /**
@@ -81,7 +107,7 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
             $qb = $this->getEntityManager()->createQueryBuilder();
             $qb->select('count(e.id)')
                 ->from($this->getRepositoryName(), 'e');
-            return $this->getQuery($qb, __FUNCTION__, func_get_args(), $skipCache)->getSingleScalarResult();
+            return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
         } catch (\Exception $e) {
             throw $e;
         }
@@ -252,7 +278,7 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
     /**
      * @return \Doctrine\ORM\EntityRepository
      */
-    protected function getRepository() {
+    public function getRepository() {
         return $this->getEntityManager()->getRepository($this->getRepositoryName());
     }
 

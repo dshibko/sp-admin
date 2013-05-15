@@ -7,6 +7,7 @@ return array(
         'Neoco',
         'Application',
         'Admin',
+        'Opta',
         'ZfcRbac'
     ),
 

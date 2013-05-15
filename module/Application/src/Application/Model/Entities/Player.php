@@ -13,6 +13,82 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Player extends BasicObject {
 
+    function __construct()
+    {
+        $this->competitions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Competition", cascade={"persist"})
+     * @ORM\JoinTable(name="player_competition",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="player_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="competition_id", referencedColumnName="id")
+     *   }
+     * )
+     */
+    private $competitions;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="join_date", type="date")
+     */
+    private $joinDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="birth_date", type="date")
+     */
+    private $birthDate;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="height", type="integer")
+     */
+    private $height;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="weight", type="integer")
+     */
+    private $weight;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="string", length=100)
+     */
+    private $country;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="real_position", type="string", length=50)
+     */
+    private $realPosition;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="real_position_side", type="string", length=20)
+     */
+    private $realPositionSide;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="feeder_id", type="integer", nullable=false)
+     */
+    private $feederId;
+
     /**
      * @var string
      *
@@ -67,7 +143,7 @@ class Player extends BasicObject {
     /**
      * @var Team
      *
-     * @ORM\ManyToOne(targetEntity="Team")
+     * @ORM\ManyToOne(targetEntity="Team", inversedBy="players")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="team_id", referencedColumnName="id")
      * })
@@ -175,7 +251,8 @@ class Player extends BasicObject {
      */
     public function setShirtNumber($shirtNumber)
     {
-        $this->shirtNumber = $shirtNumber;
+        if ($shirtNumber != null)
+            $this->shirtNumber = $shirtNumber;
     
         return $this;
     }
@@ -245,4 +322,198 @@ class Player extends BasicObject {
     {
         return $this->team;
     }
+
+    /**
+     * @param int $feederId
+     */
+    public function setFeederId($feederId)
+    {
+        $this->feederId = $feederId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFeederId()
+    {
+        return $this->feederId;
+    }
+
+    /**
+     * @param \DateTime $birthDate
+     */
+    public function setBirthDate($birthDate)
+    {
+        if ($birthDate != null)
+            $this->birthDate = $birthDate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getBirthDate()
+    {
+        return $this->birthDate;
+    }
+
+    /**
+     * @param string $country
+     */
+    public function setCountry($country)
+    {
+        if ($country != null)
+            $this->country = $country;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param int $height
+     */
+    public function setHeight($height)
+    {
+        if ($height != null)
+            $this->height = $height;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * @param \DateTime $joinDate
+     */
+    public function setJoinDate($joinDate)
+    {
+        if ($joinDate != null)
+            $this->joinDate = $joinDate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getJoinDate()
+    {
+        return $this->joinDate;
+    }
+
+    /**
+     * @param string $realPosition
+     */
+    public function setRealPosition($realPosition)
+    {
+        if ($realPosition != null)
+            $this->realPosition = $realPosition;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRealPosition()
+    {
+        return $this->realPosition;
+    }
+
+    /**
+     * @param string $realPositionSide
+     */
+    public function setRealPositionSide($realPositionSide)
+    {
+        if ($realPositionSide != null)
+            $this->realPositionSide = $realPositionSide;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRealPositionSide()
+    {
+        return $this->realPositionSide;
+    }
+
+    /**
+     * @param int $weight
+     */
+    public function setWeight($weight)
+    {
+        if ($weight != null)
+            $this->weight = $weight;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWeight()
+    {
+        return $this->weight;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $competitions
+     */
+    public function setCompetitions($competitions)
+    {
+        $this->competitions = $competitions;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCompetitions()
+    {
+        return $this->competitions;
+    }
+
+    /**
+     * Add competitions
+     *
+     * @param Competition $competition
+     * @return \Application\Model\Entities\Player
+     */
+    public function addCompetition(Competition $competition)
+    {
+        $this->competitions[] = $competition;
+
+        return $this;
+    }
+
+    /**
+     * Has competition
+     *
+     * @param \Application\Model\Entities\Competition $competition
+     * @return \Application\Model\Entities\Player
+     */
+    public function hasCompetition(Competition $competition)
+    {
+        return $this->competitions->contains($competition);
+    }
+
+    /**
+     * Remove competitions
+     *
+     * @param Competition $competitions
+     */
+    public function removeCompetition(Competition $competitions)
+    {
+        $this->competitions->removeElement($competitions);
+    }
+
+    /**
+     * Clear competitions
+     */
+    public function clearCompetitions()
+    {
+        $this->competitions->clear();
+    }
+
 }

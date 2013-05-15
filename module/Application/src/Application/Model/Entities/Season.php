@@ -14,6 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Season extends BasicObject {
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="feeder_id", type="integer", nullable=false)
+     */
+    private $feederId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=100, nullable=false)
@@ -46,7 +53,7 @@ class Season extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="League", mappedBy="season")
+     * @ORM\OneToMany(targetEntity="League", mappedBy="season", cascade={"remove"})
      */
     private $leagues;
 
@@ -173,7 +180,7 @@ class Season extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Competition", mappedBy="season")
+     * @ORM\OneToMany(targetEntity="Competition", mappedBy="season", cascade={"remove"})
      */
     private $competitions;
 
@@ -209,4 +216,103 @@ class Season extends BasicObject {
     {
         return $this->competitions;
     }
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="SeasonRegion", mappedBy="season", cascade={"remove"})
+     */
+    private $seasonRegions;
+
+
+    /**
+     * Get seasonRegions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSeasonRegions()
+    {
+        return $this->seasonRegions;
+    }
+
+    /**
+     * Add seasonRegions
+     *
+     * @param SeasonRegion $seasonRegions
+     * @return Season
+     */
+    public function addSeasonRegion(SeasonRegion $seasonRegions)
+    {
+        $this->seasonRegions[] = $seasonRegions;
+
+        return $this;
+    }
+
+    /**
+     * Remove seasonRegions
+     *
+     * @param SeasonRegion $seasonRegions
+     */
+    public function removeSeasonRegion(SeasonRegion $seasonRegions)
+    {
+        $this->seasonRegions->removeElement($seasonRegions);
+    }
+
+    private $seasonRegionsByRegion = array();
+
+    public function getSeasonRegionByRegionId($id)
+    {
+        if (!array_key_exists($id, $this->seasonRegionsByRegion))
+            foreach ($this->getSeasonRegions() as $seasonRegion)
+                if ($seasonRegion->getRegion()->getId() == $id) {
+                    $this->seasonRegionsByRegion[$id] = $seasonRegion;
+                    break;
+                }
+        return $this->seasonRegionsByRegion[$id];
+    }
+
+    private $regionalLeagueByRegion = array();
+
+    public function getRegionalLeagueByRegionId($id)
+    {
+        if (!array_key_exists($id, $this->regionalLeagueByRegion))
+            foreach ($this->getLeagues() as $league)
+                if (!$league->getIsGlobal() && !$league->getIsPrivate() && $league->getRegion() != null &&
+                    $league->getRegion() instanceof Region && $league->getRegion()->getId() == $id) {
+                    $this->regionalLeagueByRegion[$id] = $league;
+                    break;
+                }
+        return $this->regionalLeagueByRegion[$id];
+    }
+
+    private $globalLeague;
+
+    public function getGlobalLeague() {
+        if ($this->globalLeague == null) {
+            $leagues = $this->getLeagues();
+            foreach ($leagues as $league)
+                if ($league->getIsGlobal()) {
+                    $this->globalLeague = $league;
+                    break;
+                }
+        }
+        return $this->globalLeague;
+    }
+
+    /**
+     * @param integer $feederId
+     */
+    public function setFeederId($feederId)
+    {
+        $this->feederId = $feederId;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getFeederId()
+    {
+        return $this->feederId;
+    }
+
 }

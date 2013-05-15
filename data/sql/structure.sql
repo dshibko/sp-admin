@@ -89,6 +89,7 @@ CREATE TABLE `season` (
 	display_name VARCHAR(100) NOT NULL,
 	start_date DATE NOT NULL,
 	end_date DATE NOT NULL,
+	feeder_id INT NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 CREATE TABLE `league` (
@@ -120,13 +121,21 @@ ALTER TABLE `league_user` ADD FOREIGN KEY (user_id) REFERENCES `user`(id);
 CREATE TABLE `prize` (
 	id INT AUTO_INCREMENT NOT NULL,
 	league_id INT NOT NULL,
-	display_name VARCHAR(50) NOT NULL,
+	region_id INT NOT NULL,
+	prize_title VARCHAR(50) NOT NULL,
+	prize_description text NOT NULL,
+	prize_image VARCHAR(255) NOT NULL,
+	post_win_title VARCHAR(50) NOT NULL,
+	post_win_description text NOT NULL,
+	post_win_image VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 ALTER TABLE `prize` ADD FOREIGN KEY (league_id) REFERENCES `league`(id);
+ALTER TABLE `prize` ADD FOREIGN KEY (region_id) REFERENCES `region`(id);
 CREATE TABLE `competition` (
 	id INT AUTO_INCREMENT NOT NULL,
 	season_id INT NOT NULL,
+	feeder_id INT NOT NULL,
 	display_name VARCHAR(100) NOT NULL,
 	logo_path VARCHAR(255),
 	start_date DATE,
@@ -148,7 +157,13 @@ CREATE TABLE `match` (
 CREATE TABLE `team` (
 	id INT AUTO_INCREMENT NOT NULL,
 	display_name VARCHAR(50) NOT NULL,
+	short_name VARCHAR(10),
+	feeder_id INT NOT NULL,
+	founded INT,
 	logo_path VARCHAR(255),
+	stadium_capacity INT,
+	stadium_name VARCHAR(50),
+	manager VARCHAR(100),
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 ALTER TABLE `match` ADD FOREIGN KEY (competition_id) REFERENCES `competition`(id);
@@ -157,11 +172,19 @@ ALTER TABLE `match` ADD FOREIGN KEY (away_team_id) REFERENCES `team`(id);
 CREATE TABLE `player` (
 	id INT AUTO_INCREMENT NOT NULL,
 	team_id INT NOT NULL,
+	feeder_id INT NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	surname VARCHAR(100) NOT NULL,
 	display_name VARCHAR(50) NOT NULL,
-	position VARCHAR(5) NOT NULL,
+	position VARCHAR(20) NOT NULL,
+	real_position VARCHAR(50),
+	real_position_side VARCHAR(20),
 	shirt_number TINYINT,
+	weight INT,
+	height INT,
+	birth_date DATE,
+	join_date DATE,
+	country VARCHAR(100),
 	image_path VARCHAR(255),
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
@@ -191,3 +214,29 @@ ALTER TABLE `prediction_player` ADD FOREIGN KEY (team_id) REFERENCES `team`(id);
 ALTER TABLE `prediction_player` ADD FOREIGN KEY (player_id) REFERENCES `player`(id);
 ALTER TABLE `match` ADD FOREIGN KEY (featured_prediction_id) REFERENCES `prediction`(id);
 ALTER TABLE `match` ADD FOREIGN KEY (featured_player_id) REFERENCES `player`(id);
+CREATE TABLE `season_region` (
+	id INT AUTO_INCREMENT NOT NULL,
+	season_id INT NOT NULL,
+	region_id INT NOT NULL,
+	display_name VARCHAR(100) NOT NULL,
+	terms text NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `season_region` ADD FOREIGN KEY (season_id) REFERENCES `season`(id);
+ALTER TABLE `season_region` ADD FOREIGN KEY (region_id) REFERENCES `region`(id);
+CREATE TABLE `player_competition` (
+	id INT AUTO_INCREMENT NOT NULL,
+	player_id INT NOT NULL,
+	competition_id INT NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `player_competition` ADD FOREIGN KEY (player_id) REFERENCES `player`(id);
+ALTER TABLE `player_competition` ADD FOREIGN KEY (competition_id) REFERENCES `competition`(id);
+CREATE TABLE `team_competition` (
+	id INT AUTO_INCREMENT NOT NULL,
+	team_id INT NOT NULL,
+	competition_id INT NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `team_competition` ADD FOREIGN KEY (team_id) REFERENCES `team`(id);
+ALTER TABLE `team_competition` ADD FOREIGN KEY (competition_id) REFERENCES `competition`(id);
