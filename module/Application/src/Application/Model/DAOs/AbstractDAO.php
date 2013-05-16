@@ -252,7 +252,7 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
     /**
      * @return \Doctrine\ORM\EntityRepository
      */
-    protected function getRepository() {
+    public function getRepository() {
         return $this->getEntityManager()->getRepository($this->getRepositoryName());
     }
 

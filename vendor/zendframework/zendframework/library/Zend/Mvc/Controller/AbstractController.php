@@ -226,7 +226,7 @@ abstract class AbstractController implements
     /**
      * Set serviceManager instance
      *
-     * @param  \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
+     * @param  ServiceLocatorInterface $serviceLocator
      * @return void
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
@@ -237,7 +237,7 @@ abstract class AbstractController implements
     /**
      * Retrieve serviceManager instance
      *
-     * @return \Zend\ServiceManager\ServiceLocatorInterface
+     * @return ServiceLocatorInterface
      */
     public function getServiceLocator()
     {

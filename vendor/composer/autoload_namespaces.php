@@ -11,6 +11,7 @@ return array(
     'ZendTest\\' => $vendorDir . '/zendframework/zendframework/tests',
     'ZendDeveloperTools' => $vendorDir . '/zendframework/zend-developer-tools/src',
     'Symfony\\Component\\Console\\' => $vendorDir . '/symfony/console',
+    'Imagine' => $vendorDir . '/imagine/imagine/lib',
     'Doctrine\\ORM' => $vendorDir . '/doctrine/orm/lib',
     'Doctrine\\DBAL' => $vendorDir . '/doctrine/dbal/lib',
     'Doctrine\\Common' => $vendorDir . '/doctrine/common/lib',

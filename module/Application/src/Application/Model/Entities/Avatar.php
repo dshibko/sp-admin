@@ -211,4 +211,13 @@ class Avatar extends BasicObject {
     {
         return $this->id;
     }
+
+    public function populate(array $data = array()){
+
+        $this->setOriginalImagePath(isset($data['original_image_path']) ? $data['original_image_path'] : null)
+            ->setBigImagePath(isset($data['big_image_path']) ? $data['big_image_path'] : null)
+            ->setMediumImagePath(isset($data['medium_image_path']) ? $data['medium_image_path'] : null)
+            ->setSmallImagePath(isset($data['small_image_path']) ? $data['small_image_path']: null)
+            ->setTinyImagePath(isset($data['tiny_image_path']) ? $data['tiny_image_path'] : null);
+    }
 }

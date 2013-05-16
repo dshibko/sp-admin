@@ -20,6 +20,37 @@ return array(
                     ),
                 ),
             ),
+            'registration' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/registration',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Registration',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'setup' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/setup',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Registration',
+                        'action'     => 'setup',
+                    ),
+                ),
+            ),
+           /* 'login' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/login',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action'     => 'login',
+                    ),
+                ),
+            ),*/
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -71,6 +102,8 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Registration' => 'Application\Controller\RegistrationController',
+            'Application\Controller\Auth' => 'Application\Controller\AuthController',
         ),
     ),
     'doctrine' => array(

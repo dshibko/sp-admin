@@ -87,6 +87,12 @@ class Module
 
                     return $authService;
                 },
+                'Application\Form\RegistrationForm' => function($sm){
+                    return new \Application\Form\RegistrationForm($sm);
+                },
+                'Application\Form\Filter\RegistrationFilter' => function($sm){
+                    return new \Application\Form\Filter\RegistrationFilter($sm);
+                },
             ),
         );
     }
