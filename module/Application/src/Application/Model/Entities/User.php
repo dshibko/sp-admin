@@ -3,8 +3,8 @@
 namespace Application\Model\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
-
 use \Neoco\Model\BasicObject;
+
 
 /**
  * User
@@ -73,7 +73,7 @@ class User extends BasicObject {
     /**
      * @var \Avatar
      *
-     * @ORM\ManyToOne(targetEntity="Avatar")
+     * @ORM\ManyToOne(targetEntity="Avatar", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
      * })
@@ -426,6 +426,7 @@ class User extends BasicObject {
     public function setDate($date)
     {
         $this->date = $date;
+        return $this;
     }
 
     /**
@@ -442,6 +443,7 @@ class User extends BasicObject {
     public function setCountry($country)
     {
         $this->country = $country;
+        return $this;
     }
 
     /**
@@ -458,6 +460,7 @@ class User extends BasicObject {
     public function setLanguage($language)
     {
         $this->language = $language;
+        return $this;
     }
 
     /**
@@ -474,6 +477,7 @@ class User extends BasicObject {
     public function setRegion($region)
     {
         $this->region = $region;
+        return $this;
     }
 
     /**
@@ -490,6 +494,7 @@ class User extends BasicObject {
     public function setLeagues($leagues)
     {
         $this->leagues = $leagues;
+        return $this;
     }
 
     /**
@@ -506,6 +511,7 @@ class User extends BasicObject {
     public function setOwnLeagues($ownLeagues)
     {
         $this->ownLeagues = $ownLeagues;
+        return $this;
     }
 
     /**
@@ -555,6 +561,54 @@ class User extends BasicObject {
     public function getPredictions()
     {
         return $this->predictions;
+    }
+
+
+    public function populate(array $data = array()){
+
+        if (isset($data['title'])){
+            $this->setTitle($data['title']);
+        }
+        if (isset($data['country']) && $data['country'] instanceof \Application\Model\Entities\Country){
+            $this->setCountry($data['country']);
+        }
+        if (isset($data['avatar']) && $data['avatar'] instanceof \Application\Model\Entities\Avatar){
+            $this->setAvatar($data['avatar']);
+        }
+        if (isset($data['date_of_birth']) && $data['date_of_birth'] instanceof \DateTime){
+            $this->setBirthday($data['date_of_birth']);
+        }
+        if (isset($data['display_name'])){
+            $this->setDisplayName($data['display_name']);
+        }
+        if (isset($data['first_name'])){
+            $this->setFirstName($data['first_name']);
+        }
+        if (isset($data['last_name'])){
+            $this->setLastName($data['last_name']);
+        }
+        if (isset($data['password'])){
+            $this->setPassword($data['password']);
+        }
+        if (isset($data['gender'])){
+            $this->setGender($data['gender']);
+        }
+        if (isset($data['email'])){
+            $this->setEmail($data['email']);
+        }
+        if (isset($data['date']) && $data['date'] instanceof \DateTime){
+            $this->setDate($data['date']);
+        }
+
+        if (isset($data['language']) && $data['language'] instanceof \Application\Model\Entities\Language){
+            $this->setLanguage($data['language']);
+        }
+        if (isset($data['region']) && $data['region'] instanceof \Application\Model\Entities\Region){
+            $this->setRegion($data['region']);
+        }
+        if (isset($data['role']) && $data['role'] instanceof \Application\Model\Entities\Role){
+            $this->setRole($data['role']);
+        }
     }
 
 }

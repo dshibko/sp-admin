@@ -33,6 +33,7 @@ class RegionDAO extends AbstractDAO {
         return '\Application\Model\Entities\Region';
     }
 
+
     /**
      * @param bool $hydrate
      * @param bool $skipCache
@@ -46,5 +47,4 @@ class RegionDAO extends AbstractDAO {
             ->orderBy('e.id', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
-
 }

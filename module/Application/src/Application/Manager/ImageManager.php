@@ -56,7 +56,7 @@ class ImageManager extends BasicManager {
 
     }
 
-    private function getAppPublicPath() {
+    public function getAppPublicPath() {
         return getcwd() . DIRECTORY_SEPARATOR . "public";
     }
 
