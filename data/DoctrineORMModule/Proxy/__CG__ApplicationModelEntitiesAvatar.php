@@ -123,6 +123,13 @@ class Avatar extends \Application\Model\Entities\Avatar implements \Doctrine\ORM
         return parent::getId();
     }
 
+    public function populate(array $data = array (
+))
+    {
+        $this->__load();
+        return parent::populate($data);
+    }
+
     public function getArrayCopy()
     {
         $this->__load();

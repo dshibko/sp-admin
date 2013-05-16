@@ -42,8 +42,31 @@ class CountryDAO extends AbstractDAO {
      */
     public function getAllCountries($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select(array('c.id', 'c.name'))
+        $qb->select('c')
             ->from($this->getRepositoryName(), 'c');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
+    }
+
+    public function getCountryByISOCode($isoCode, $hydrate = false, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('c, r, l')
+            ->from($this->getRepositoryName(), 'c')
+            ->join('c.region', 'r')
+            ->join('c.language', 'l')
+            ->where('c.isoCode = :iso_code')
+            ->setParameter('iso_code', $isoCode);
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
+    }
+
+    public function getCountryRegion($country_id, $hydrate = false, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('c,r')
+            ->from($this->getRepositoryName(), 'c')
+            ->join('c.region', 'r')
+            ->where('c.id = :country_id')
+            ->setParameter('country_id', $country_id);
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
 

@@ -14,6 +14,7 @@ CREATE TABLE `user` (
 	language_id INT NOT NULL,
 	role_id INT NOT NULL,
 	favourite_player_id INT,
+	active TINYINT NOT NULL DEFAULT '0',
 	date DATETIME NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;

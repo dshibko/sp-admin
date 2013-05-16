@@ -15,6 +15,13 @@ use \Neoco\Model\BasicObject;
 class User extends BasicObject {
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="active", type="boolean")
+     */
+    private $active = 0;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=5, nullable=false)
@@ -563,6 +570,22 @@ class User extends BasicObject {
         return $this->predictions;
     }
 
+    /**
+     * @param boolean $active
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
 
     public function populate(array $data = array()){
 
@@ -609,6 +632,8 @@ class User extends BasicObject {
         if (isset($data['role']) && $data['role'] instanceof \Application\Model\Entities\Role){
             $this->setRole($data['role']);
         }
+        if (isset($data['active'])){
+            $this->setActive($data['active']);
+        }
     }
-
 }

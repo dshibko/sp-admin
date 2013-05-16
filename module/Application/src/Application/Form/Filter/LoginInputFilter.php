@@ -13,6 +13,16 @@ class LoginInputFilter extends InputFilter
         $this->add($factory->createInput(array(
             'name'     => 'email',
             'required' => true,
+            'filters' => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name'    => 'EmailAddress',
+                    'options' => array(),
+                ),
+            )
         )));
 
         $this->add($factory->createInput(array(

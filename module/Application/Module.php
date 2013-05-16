@@ -13,6 +13,7 @@ use \DoctrineModule\Authentication\Adapter\ObjectRepository;
 use \Zend\Authentication\AuthenticationService;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Crypt\Password\Bcrypt;
 
 class Module
 {
@@ -32,6 +33,11 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
+            'Zend\Loader\ClassMapAutoloader' => array(
+                array(
+                    'Facebook' => 'vendor/facebook/facebook.php',
+                ),
+            ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
@@ -77,7 +83,7 @@ class Module
                         'identityProperty' => 'email',
                         'credentialProperty' => 'password',
                         'credentialCallable' => function($identity, $credential) {
-                            return md5($credential); // TODO to define password strategy
+                            return md5($credential);
                         }
                     ));
 
@@ -90,9 +96,20 @@ class Module
                 'Application\Form\RegistrationForm' => function($sm){
                     return new \Application\Form\RegistrationForm($sm);
                 },
+                'Application\Form\SetUpForm' => function($sm){
+                    return new \Application\Form\SetUpForm($sm);
+                },
                 'Application\Form\Filter\RegistrationFilter' => function($sm){
                     return new \Application\Form\Filter\RegistrationFilter($sm);
                 },
+                'facebook' => function($sm){
+                    $config = $sm->get('config');
+                    $facebook = new \Facebook(array(
+                        'appId' => $config['facebook_api_key'],
+                        'secret' => $config['facebook_secret_key']
+                    ));
+                    return $facebook;
+                }
             ),
         );
     }

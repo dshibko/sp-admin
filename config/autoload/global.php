@@ -40,5 +40,7 @@ return array(
     ),
     'app_name' => 'Score Predictor',
     'admin_assets_path_prefix' => '/admin-',
-    'skip-cache-uri-patterns' => array('/admin/*')
+    'skip-cache-uri-patterns' => array('/admin/*'),
+    'facebook_api_key' => '639647056062341',
+    'facebook_secret_key' => '73bc16bfe1d05f4c213a34a6c2d2ebfa'
 );

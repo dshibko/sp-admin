@@ -2,28 +2,17 @@
 namespace Application\Form;
 
 use Zend\Form\Form;
-use Zend\Form\Element\Captcha;
-use Zend\Captcha\ReCaptcha;
+//use Zend\Form\Element\Captcha;
+//use Zend\Captcha\ReCaptcha;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Application\Manager\RegistrationManager;
+use Application\Manager\ApplicationManager;
 
 class RegistrationForm extends Form implements ServiceLocatorAwareInterface
 {
     const DATE_OF_BIRTH_START_YEAR = 1920;
     protected $captcha;
     protected $serviceLocator;
-
-    private function getCountries(){
-        $countries = array();
-        $data = RegistrationManager::getInstance($this->getServiceLocator())->getAllCountries();
-        if (!empty($data) && is_array($data)){
-            foreach($data as $country){
-                $countries[$country['id']] = $country['name'];
-            }
-        }
-        return $countries;
-    }
 
     private function getDays()
     {
@@ -72,17 +61,16 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
     public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
+        return $this;
     }
 
     public function __construct(ServiceLocatorInterface $serviceLocator = null)
     {
         parent::__construct('register');
-
-
-        //Captcha
         $this->setAttribute('method', 'post')
             ->setAttribute('enctype', 'multipart/form-data')
-            ->setServiceLocator($serviceLocator);
+            ->setServiceLocator($serviceLocator)
+            ->setInputFilter($this->getServiceLocator()->get('Application\Form\Filter\RegistrationFilter')->getInputFilter());
         //Title
         $this->add(array(
             'name' => 'title',
@@ -108,6 +96,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'options' => array(
                 'label' => 'First Name',
             ),
+            'attributes' => array(
+                'class' => 'required'
+            )
         ));
 
         //Last Name
@@ -171,7 +162,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'options' => array(
                 'label' => 'Country',
                 'empty_option' => 'Please select',
-                'value_options' => $this->getCountries()
+                'value_options' => ApplicationManager::getInstance($this->getServiceLocator())->getCountriesSelectOptions()
             )
         ));
 
@@ -264,7 +255,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'name' => 'term1',
             'options' => array(
                 'label' => 'Term 1',
-                'use_hidden_element' => true,
+                'use_hidden_element' => false,
                 'checked_value' => 1,
                 'unchecked_value' => 0
             )
@@ -277,7 +268,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'name' => 'term2',
             'options' => array(
                 'label' => 'Term 2',
-                'use_hidden_element' => true,
+                'use_hidden_element' => false,
                 'checked_value' => 1,
                 'unchecked_value' => 0
             )
