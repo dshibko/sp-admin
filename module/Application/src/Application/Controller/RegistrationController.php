@@ -34,6 +34,7 @@ class RegistrationController extends AbstractActionController {
                         $data = $form->getData();
                         $data['avatar'] =  $avatar->save()->resize()->getPath();
                         RegistrationManager::getInstance($this->getServiceLocator())->register($data);
+
                         //TODO send welcome email
                         //TODO redirect to set-up page
                         //TODO sign in user
