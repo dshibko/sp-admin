@@ -104,6 +104,19 @@ class User extends BasicObject {
     private $id;
 
     /**
+     * @var bigint
+     *
+     * @ORM\Column(name="facebook_id", type="bigint", nullable=true, options={"unsigned"=true})
+     */
+    private $facebookId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="facebook_access_token", type="string", length=300, nullable=true)
+     */
+    private $facebookAccessToken;
+    /**
      * @var \Role
      *
      * @ORM\ManyToOne(targetEntity="Role")
@@ -587,6 +600,39 @@ class User extends BasicObject {
         return $this->active;
     }
 
+    /**
+     * @param string $facebookAccessToken
+     */
+    public function setFacebookAccessToken($facebookAccessToken)
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebookAccessToken;
+    }
+
+    /**
+     * @param \Application\Model\Entities\bigint $facebookId
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+        return $this;
+    }
+
+    /**
+     * @return \Application\Model\Entities\bigint
+     */
+    public function getFacebookId()
+    {
+        return $this->facebookId;
+    }
+
     public function populate(array $data = array()){
 
         if (isset($data['title'])){
@@ -635,5 +681,13 @@ class User extends BasicObject {
         if (isset($data['active'])){
             $this->setActive($data['active']);
         }
+        if (isset($data['facebook_id'])){
+            $this->setFacebookId($data['facebook_id']);
+        }
+        if (isset($data['facebook_access_token'])){
+            $this->setFacebookAccessToken($data['facebook_access_token']);
+        }
     }
+
+
 }

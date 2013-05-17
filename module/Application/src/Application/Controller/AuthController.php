@@ -14,35 +14,43 @@ use Zend\View\Model\ViewModel;
 use Zend\Session\Container;
 use \Application\Model\Helpers\MessagesConstants;
 
-class AuthController extends AbstractActionController {
-    
+class AuthController extends AbstractActionController
+{
 
+    public function loginAction()
+    {
 
-    public function loginAction() {
-         //TODO only for guests
-        $request = $this->getRequest();
-        $form = $this->getLoginForm();
+        try {
+            $request = $this->getRequest();
+            $form = $this->getLoginForm();
 
-        if ($request->isPost()){
-            $form->setData($request->getPost());
-            if ($form->isValid()) {
-                $data = $form->getData();
-                $identity = $data['email'];
-                $password = $data['password'];
-                $remember = $data['rememberme'] == 1;
-                $result = AuthenticationManager::getInstance($this->getServiceLocator())->authenticate($identity, $password, $remember);
-                if (in_array($result->getCode(), array(Result::FAILURE_IDENTITY_NOT_FOUND, Result::FAILURE_CREDENTIAL_INVALID))) {
-                    $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_WRONG_EMAIL_OR_PASSWORD);
-                }
-                if ($result->isValid()){
-                    $this->redirect()->toRoute('persist');
+            if ($request->isPost()) {
+                $form->setData($request->getPost());
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $identity = $data['email'];
+                    $password = $data['password'];
+                    $remember = $data['rememberme'] == 1;
+                    $result = AuthenticationManager::getInstance($this->getServiceLocator())->authenticate($identity, $password, $remember);
+                    if (in_array($result->getCode(), array(Result::FAILURE_IDENTITY_NOT_FOUND, Result::FAILURE_CREDENTIAL_INVALID))) {
+                        $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_WRONG_EMAIL_OR_PASSWORD);
+                    }
+                    if ($result->isValid()) {
+                        $this->redirect()->toRoute('home');
+                    }
                 }
             }
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('login');
         }
+
         return array(
             'form' => $form,
             'messages' => $this->flashMessenger()->getErrorMessages()
         );
+
+
     }
 
 //    public function resetPasswordAction() {
@@ -71,20 +79,22 @@ class AuthController extends AbstractActionController {
 //
 //    }
 //
-//    public function logoutAction() {
-//
-//        try {
-//
-//            AuthenticationManager::getInstance($this->getServiceLocator())->logout();
-//            $this->flashmessenger()->addMessage(MessagesConstants::INFO_LOGGED_OUT);
-//
-//        } catch (\Exception $e) {
-//            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-//        }
-//
-//        return $this->redirect()->toRoute(self::ADMIN_LOGIN_ROUTE);
-//
-//    }
+    public function logoutAction()
+    {
+
+        try {
+
+            AuthenticationManager::getInstance($this->getServiceLocator())->logout();
+            $this->flashmessenger()->addMessage(MessagesConstants::INFO_LOGGED_OUT);
+
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+        }
+
+        return $this->redirect()->toRoute('home');
+
+    }
+
 //
 //    public function forgotAction() {
 //
@@ -137,7 +147,8 @@ class AuthController extends AbstractActionController {
     /**
      * @return \Zend\Form\Form
      */
-    public function getLoginForm() {
+    public function getLoginForm()
+    {
 
         if ($this->form == null)
             $this->form = new LoginForm();

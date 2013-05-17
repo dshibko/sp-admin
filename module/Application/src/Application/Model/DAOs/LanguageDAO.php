@@ -15,12 +15,11 @@ class LanguageDAO extends AbstractDAO {
     /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return RecoveryDAO
+     * @return LanguageDAO
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
         if (self::$instance == null) {
-            $class = __CLASS__;
-            self::$instance = new $class();
+            self::$instance = new LanguageDAO();
             self::$instance->setServiceLocator($serviceLocatorInterface);
         }
         return self::$instance;

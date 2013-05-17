@@ -42,5 +42,6 @@ return array(
     'admin_assets_path_prefix' => '/admin-',
     'skip-cache-uri-patterns' => array('/admin/*'),
     'facebook_api_key' => '639647056062341',
-    'facebook_secret_key' => '73bc16bfe1d05f4c213a34a6c2d2ebfa'
+    'facebook_secret_key' => '73bc16bfe1d05f4c213a34a6c2d2ebfa',
+    'facebook_permissions' => 'email,user_location,user_birthday,friends_birthday,user_education_history,user_likes,friends_likes,user_location,friends_location,user_relationships,user_relationship_details,user_status,user_work_history,friends_work_history,publish_actions'
 );

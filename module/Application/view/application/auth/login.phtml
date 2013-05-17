@@ -4,13 +4,7 @@ $this->headTitle($title);
 ?>
 
 <h1><?php echo $this->escapeHtml($title);?></h1>
-<?php if (!empty($messages)):?>
-    <ul>
-    <?php foreach($messages as $message):?>
-        <li><?php echo $message;?></li>
-    <?php endforeach;?>
-    </ul>
-<?php endif;?>
+<?php $this->renderMessages();?>
 <?php
 
 $form = $this->form;

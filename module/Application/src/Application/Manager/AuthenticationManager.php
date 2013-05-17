@@ -54,13 +54,18 @@ class AuthenticationManager extends BasicManager {
             ->setCredentialValue($pwd);
         $result = $this->getAuthService()->authenticate();
         if ($result->isValid()) {
-            if ($remember)
-                $this->getAuthService()->getStorage()->setRememberMe(1);
-            $this->getAuthService()->getStorage()->write($identity);
+            $this->signIn($identity,$remember);
         }
         return $result;
     }
 
+    public function signIn($identity, $remember = false)
+    {
+        if ($remember){
+            $this->getAuthService()->getStorage()->setRememberMe(1);
+        }
+        $this->getAuthService()->getStorage()->write($identity);
+    }
     /**
      * @return void
      */

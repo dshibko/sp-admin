@@ -50,6 +50,26 @@ return array(
                     ),
                 ),
             ),
+            'logout' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/logout',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action'     => 'logout',
+                    ),
+                ),
+            ),
+            'facebook' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/facebook',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Registration',
+                        'action'     => 'facebookLogin',
+                    ),
+                ),
+            ),
 
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new

@@ -15,9 +15,12 @@ CREATE TABLE `user` (
 	role_id INT NOT NULL,
 	favourite_player_id INT,
 	active TINYINT NOT NULL DEFAULT '0',
+	facebook_id BIGINT UNSIGNED NULL DEFAULT NULL,
+	facebook_access_token VARCHAR(300) NULL DEFAULT NULL,
 	date DATETIME NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
+ALTER TABLE `user`  ADD INDEX `facebook_id` (`facebook_id`);
 CREATE TABLE `role` (
 	id INT AUTO_INCREMENT NOT NULL,
 	name VARCHAR(20) NOT NULL,

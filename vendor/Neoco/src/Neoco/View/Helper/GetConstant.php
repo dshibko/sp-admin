@@ -15,7 +15,7 @@ class GetConstant extends AbstractHelper
     /**
      * @param array $config
      */
-    public function __construct(array $config)
+    public function setConfig($config)
     {
         $this->config = $config;
     }
@@ -28,4 +28,5 @@ class GetConstant extends AbstractHelper
     {
         return array_key_exists($key, $this->config) ? $this->config[$key] : '';
     }
+
 }

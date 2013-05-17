@@ -23,5 +23,8 @@ class MessagesConstants
     const SUCCESS_SEASON_UPDATED = "A season was updated successfully.";
 
     const INFO_LOGGED_OUT = "You've been logged out.";
+    const FAILED_CONNECTION_TO_FACEBOOK = 'Error happened while connecting to your facebook account. Please try again later';
+    const FAILED_RETRIEVING_FACEBOOK_DATA = 'Error happened while retrieving your facebook data. Please try again later.';
+    const FAILED_UPDATING_DATA_FROM_FACEBOOK = 'Error happened while updating data. Please try again later';
 
 }

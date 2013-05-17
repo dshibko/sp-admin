@@ -7,10 +7,16 @@ use Zend\Form\Form;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Manager\ApplicationManager;
+use Application\Form\Filter\RegistrationFilter;
 
 class RegistrationForm extends Form implements ServiceLocatorAwareInterface
 {
     const DATE_OF_BIRTH_START_YEAR = 1920;
+    const MR = 'Mr';
+    const MS = 'Ms';
+    const MISS = 'Miss';
+    const MRS = 'Mrs';
+
     protected $captcha;
     protected $serviceLocator;
 
@@ -67,10 +73,13 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
     public function __construct(ServiceLocatorInterface $serviceLocator = null)
     {
         parent::__construct('register');
+
         $this->setAttribute('method', 'post')
             ->setAttribute('enctype', 'multipart/form-data')
             ->setServiceLocator($serviceLocator)
             ->setInputFilter($this->getServiceLocator()->get('Application\Form\Filter\RegistrationFilter')->getInputFilter());
+
+
         //Title
         $this->add(array(
             'name' => 'title',
@@ -79,80 +88,94 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'Title',
                 'empty_option' => 'Please select',
                 'value_options' => array(
-                    'Mr' => 'Mr',
-                    'Mrs' => 'Mrs',
-                    'Miss' => 'Miss',
-                    'Ms' => 'Ms',
+                    self::MR => self::MR,
+                    self::MRS => self::MRS,
+                    self::MISS => self::MISS,
+                    self::MS => self::MS,
                 ),
-            )
-        ));
-
-        //First Name
-        $this->add(array(
-            'name' => 'first_name',
-            'attributes' => array(
-                'type' => 'text',
-            ),
-            'options' => array(
-                'label' => 'First Name',
             ),
             'attributes' => array(
                 'class' => 'required'
             )
         ));
 
+        //First Name
+        $this->add(array(
+            'name' => 'first_name',
+            'options' => array(
+                'label' => 'First Name',
+            ),
+            'attributes' => array(
+                'class' => 'required',
+                'type' => 'text',
+                'maxlength' => RegistrationFilter::NAME_MAX_LENGTH
+            )
+        ));
+
         //Last Name
         $this->add(array(
             'name' => 'last_name',
-            'attributes' => array(
-                'type' => 'text',
-            ),
             'options' => array(
                 'label' => 'Last Name',
             ),
+            'attributes' => array(
+                'class' => 'required',
+                'maxlength' => RegistrationFilter::NAME_MAX_LENGTH,
+                'type' => 'text',
+            )
         ));
 
         //Email
         $this->add(array(
             'name' => 'email',
-            'attributes' => array(
-                'type' => 'text',
-            ),
             'options' => array(
                 'label' => 'Email',
             ),
+            'attributes' => array(
+                'class' => 'required email',
+                'id' => 'registration-email',
+                'maxlength' => RegistrationFilter::EMAIL_MAX_LENGTH,
+                'type' => 'text',
+            )
         ));
 
         //Confirm Email
         $this->add(array(
             'name' => 'confirm_email',
-            'attributes' => array(
-                'type' => 'text',
-            ),
             'options' => array(
                 'label' => 'Confirm Email',
             ),
+            'attributes' => array(
+                'class' => 'required email',
+                'maxlength' => RegistrationFilter::EMAIL_MAX_LENGTH,
+                'equalTo' => '#registration-email',
+                'type' => 'text'
+            )
         ));
 
         //Password
         $this->add(array(
             'name' => 'password',
-            'attributes' => array(
-                'type' => 'password',
-            ),
             'options' => array(
                 'label' => 'Password',
             ),
+            'attributes' => array(
+                'class' => 'required password',
+                'minlength' => RegistrationFilter::PASSWORD_MIN_LENGTH,
+                'maxlength' => RegistrationFilter::PASSWORD_MAX_LENGTH,
+                'type' => 'password',
+            )
         ));
         //Confirm Password
         $this->add(array(
             'name' => 'confirm_password',
-            'attributes' => array(
-                'type' => 'password',
-            ),
             'options' => array(
                 'label' => 'Confirm Password',
             ),
+            'attributes' => array(
+                'class' => 'required',
+                'type' => 'password',
+            )
         ));
 
         //Country
@@ -163,6 +186,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'Country',
                 'empty_option' => 'Please select',
                 'value_options' => ApplicationManager::getInstance($this->getServiceLocator())->getCountriesSelectOptions()
+            ),
+            'attributes' => array(
+                'class' => 'required'
             )
         ));
 
@@ -207,8 +233,8 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'Gender',
                 'empty_option' => 'Please select',
                 'value_options' => array(
-                    'Male' => 'Male',
-                    'Female' => 'Female'
+                    'male' => 'Male',
+                    'female' => 'Female'
 
                 ),
             )
@@ -217,12 +243,14 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
         //Display Name
         $this->add(array(
             'name' => 'display_name',
-            'attributes' => array(
-                'type' => 'text',
-            ),
             'options' => array(
                 'label' => 'Display Name',
             ),
+            'attributes' => array(
+                'class' => 'required',
+                'type' => 'text',
+                'maxlength' => RegistrationFilter::DISPLAY_NAME_MAX_LENGTH
+            )
         ));
 
         //Avatar
@@ -258,6 +286,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'use_hidden_element' => false,
                 'checked_value' => 1,
                 'unchecked_value' => 0
+            ),
+            'attributes' => array(
+                'class' => 'required'
             )
         ));
 
@@ -271,6 +302,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'use_hidden_element' => false,
                 'checked_value' => 1,
                 'unchecked_value' => 0
+            ),
+            'attributes' => array(
+                'class' => 'required'
             )
         ));
 

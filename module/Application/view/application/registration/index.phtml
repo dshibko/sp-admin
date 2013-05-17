@@ -24,8 +24,14 @@ echo $this->formRow($form->get('first_name'));
 echo $this->formRow($form->get('last_name'));
 echo $this->formRow($form->get('email'));
 echo $this->formRow($form->get('confirm_email'));
-echo $this->formRow($form->get('password'));
-echo $this->formRow($form->get('confirm_password'));
+echo $this->formRow($form->get('password'));?>
+<div class="password-meter">
+    <div class="password-meter-message"> </div>
+    <div class="password-meter-bg">
+        <div class="password-meter-bar"></div>
+    </div>
+</div>
+<?php echo $this->formRow($form->get('confirm_password'));
 echo $this->formRow($form->get('country'));
 echo $this->formRow($form->get('day'));
 echo $this->formRow($form->get('month'));
@@ -37,19 +43,19 @@ echo $this->formRow($form->get('avatar'));
 ?>
 <?php //TODO set const for default images; ?>
 <label>
-    <input type="radio" value="/img/avatar/small/user_default_1.jpg" <?php echo (is_null($this->default_avatar) || $this->default_avatar == '/img/avatar/small/user_default_1.jpg') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="1" <?php echo (is_null($this->default_avatar) || $this->default_avatar == '1') ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_1.jpg" alt="Default avatar #1">
 </label>
 <label>
-    <input type="radio" value="/img/avatar/small/user_default_2.jpg" <?php echo ($this->default_avatar == '/img/avatar/small/user_default_2.jpg') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="2" <?php echo ($this->default_avatar == '2') ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_2.jpg" alt="Default avatar #2">
 </label>
 <label>
-    <input type="radio" value="/img/avatar/small/user_default_3.jpg" <?php echo ($this->default_avatar == '/img/avatar/small/user_default_3.jpg') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="3" <?php echo ($this->default_avatar == '3') ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_3.jpg" alt="Default avatar #3">
 </label>
 <label>
-    <input type="radio" value="/img/avatar/small/user_default_4.jpg" <?php echo ($this->default_avatar == '/img/avatar/small/user_default_4.jpg') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="4" <?php echo ($this->default_avatar == '4') ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_4.jpg" alt="Default avatar #4">
 </label>
 
@@ -63,7 +69,4 @@ echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();
 
 ?>
-<!--a href="<?php /*echo $this->facebook->getLoginUrl(array(
-    'scope' => 'email,user_location,user_birthday,friends_birthday,user_education_history,user_likes,friends_likes,user_location,friends_location,user_relationships,user_relationship_details,user_status,user_work_history,friends_work_history,publish_actions',
-    'display' => 'popup'
-))*/;?>">Facebook Registration</a-->
+<?php echo $this->renderFacebookButton();?>
