@@ -17,7 +17,7 @@ class RenderMessages extends AbstractHelper
     /**
      * @param \Zend\I18n\Translator\Translator $translator
      */
-    function __construct(\Zend\I18n\Translator\Translator $translator)
+    public function setTranslator($translator)
     {
         $this->translator = $translator;
     }

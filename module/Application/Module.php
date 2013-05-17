@@ -48,15 +48,21 @@ class Module
         return array(
             'factories' => array(
                 'getConstant' => function($sm) {
+                    $h = new \Neoco\View\Helper\GetConstant();
                     $config = $sm->getServiceLocator()->get('config');
-                    return new \Neoco\View\Helper\GetConstant($config);
+                    $h->setConfig($config);
+                    return $h;
                 },
                 'getCurrentUser' => function($sm) {
-                    return new \Neoco\View\Helper\GetCurrentUser($sm->getServiceLocator());
+                    $h = new \Neoco\View\Helper\GetCurrentUser();
+                    $h->setServiceLocator($sm->getServiceLocator());
+                    return $h;
                 },
                 'renderMessages' => function($sm) {
+                    $h = new \Neoco\View\Helper\RenderMessages();
                     $translator = $sm->getServiceLocator()->get('translator');
-                    return new \Neoco\View\Helper\RenderMessages($translator);
+                    $h->setTranslator($translator);
+                    return $h;
                 },
             )
         );
