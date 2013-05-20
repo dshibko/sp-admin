@@ -18,10 +18,11 @@
         <?php echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
                                       ->prependFile($this->basePath() . '/js/bootstrap.min.js')
                                       ->prependFile($this->basePath() . '/js/main.js')
+                                      ->prependFile($this->basePath() . '/js/jquery.cookie.js')
                                       ->prependFile($this->basePath() . '/js/jquery.validate.password.js')
                                       ->prependFile($this->basePath() . '/js/jquery.validate.js')
                                       ->prependFile($this->basePath() . '/js/jquery.min.js');
-                                        ?>
+        ?>
 
     </head>
     <body>
@@ -50,6 +51,10 @@
             </div>
         </div>
         <div class="container">
+            <div class="cookie-bar" style="display:none;background:red;">
+                This is cookie bar with information about cookies
+                <a href="javascript:void(0);" class="close-cookie-bar"><?php echo $this->translate('Dismiss');?></a>
+            </div>
             <?php echo $this->content; ?>
             <hr>
             <footer>

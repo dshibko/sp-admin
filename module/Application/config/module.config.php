@@ -70,7 +70,31 @@ return array(
                     ),
                 ),
             ),
-
+            'reset' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/reset[/:hash]',
+                    'constraints' => array(
+                        'hash' => '[a-z0-9]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Auth',
+                        'action'        => 'reset',
+                    ),
+                ),
+            ),
+            'forgot' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/forgot',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Auth',
+                        'action'        => 'forgot',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them

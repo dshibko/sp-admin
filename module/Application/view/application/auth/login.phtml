@@ -23,5 +23,6 @@ echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();
 ?>
 
-<a href="/forgot"><?php echo $this->translate('Forgotten password'); ?></a>
+<a href="<?php echo $this->url('forgot');?>"><?php echo $this->translate('Forgotten password'); ?></a>
 <a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Not a member?');?></a>
+<?php echo $this->renderFacebookButton();?>

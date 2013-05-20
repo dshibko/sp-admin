@@ -30,7 +30,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
         return $days;
     }
 
-
+    //TODO find zend array of months
     private function getMonths()
     {
         return array(
@@ -175,6 +175,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'attributes' => array(
                 'class' => 'required',
                 'type' => 'password',
+                'equalTo' => '#password',
+                'minlength' => RegistrationFilter::PASSWORD_MIN_LENGTH,
+                'maxlength' => RegistrationFilter::PASSWORD_MAX_LENGTH,
             )
         ));
 
@@ -261,20 +264,6 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'Avatar',
             ),
         ));
-        //Default Avatars
-        /*$this->add(array(
-            'type' => 'Zend\Form\Element\Radio',
-            'name' => 'default_avatar',
-            'options' => array(
-                'label' => 'Or select a new avatar',
-                'value_options' => array(
-                    '1' => 1,
-                    '2' => 2,
-                    '3' => 3,
-                    '4' => 4
-                )
-            ),
-        ));*/
 
         //TODO set checked by admin
         //Term 1

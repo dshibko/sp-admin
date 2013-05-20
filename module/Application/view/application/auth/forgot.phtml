@@ -1,0 +1,20 @@
+<?php
+$title = $this->translate('Forgot Password?');
+$this->headTitle($title);
+?>
+
+<h1><?php echo $this->escapeHtml($title);?></h1>
+<?php $this->renderMessages();?>
+
+<?php
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', $this->url('forgot'));
+echo $this->formElementerrors($form->get('email'));
+echo $this->form()->openTag($form);
+echo $this->formLabel($form->get('email'));
+echo $this->formElement($form->get('email'));
+echo $this->formHidden($form->get('csrf'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+?>

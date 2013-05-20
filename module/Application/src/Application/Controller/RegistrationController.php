@@ -60,16 +60,10 @@ class RegistrationController extends AbstractActionController
                 }
             }
 
-            $uri = $this->getRequest()->getUri();
-            $base = sprintf('%s://%s', $uri->getScheme(), $uri->getHost());
-
             return new ViewModel(array(
                 'form' => $form,
-                'facebook' => null,
                 'default_avatar' => $this->getRequest()->getPost('default_avatar', null),
                 'flashMessages' => $this->flashMessenger()->getMessages(),
-                'facebook' => $this->getServiceLocator()->get('facebook'),
-                'base_url' => $base . '/facebook'
             ));
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -148,7 +142,7 @@ class RegistrationController extends AbstractActionController
             return $this->redirect()->toRoute('login');
         }*/ catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute('login');
+            return $this->redirect()->toRoute('registration');
         }
 
     }

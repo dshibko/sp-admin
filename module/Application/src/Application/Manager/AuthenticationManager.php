@@ -104,6 +104,21 @@ class AuthenticationManager extends BasicManager {
     }
 
     /**
+     * @param string $hash
+     * @return \Application\Model\Entities\Recovery
+     */
+    public function checkUserHash($hash) {
+        return RecoveryDAO::getInstance($this->getServiceLocator())->checkUserHash($hash);
+    }
+
+    /**
+     * @param string $hash
+     * @return \Application\Model\Entities\Recovery
+     */
+    public function checkHashDate($hash, $date = '1H') {
+        return RecoveryDAO::getInstance($this->getServiceLocator())->checkHashDate($hash, $date);
+    }
+    /**
      * @param \Application\Model\Entities\Recovery $recovery
      * @param $password
      */

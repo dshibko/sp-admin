@@ -13,13 +13,15 @@ use \Application\Manager\AuthenticationManager;
 use Zend\View\Model\ViewModel;
 use Zend\Session\Container;
 use \Application\Model\Helpers\MessagesConstants;
+use Application\Form\ForgotPasswordForm;
+use Application\Form\ResetPasswordForm;
 
 class AuthController extends AbstractActionController
 {
 
     public function loginAction()
     {
-
+        //TODO check only guests
         try {
             $request = $this->getRequest();
             $form = $this->getLoginForm();
@@ -46,39 +48,52 @@ class AuthController extends AbstractActionController
         }
 
         return array(
-            'form' => $form,
-            'messages' => $this->flashMessenger()->getErrorMessages()
+            'form' => $form
         );
 
 
     }
 
-//    public function resetPasswordAction() {
-//
-//        $this->setActionToSession(self::ACTION_RESET_VALUE);
-//        $request = $this->getRequest();
-//
-//        try {
-//
-//            if ($request->isPost()) {
-//                $email = $request->getPost('email');
-//                $user = AuthenticationManager::getInstance($this->getServiceLocator())->findUserByEmail($email);
-//
-//                if ($user != null) {
-//                    AuthenticationManager::getInstance($this->getServiceLocator())->sendPasswordResetEmail($user, true);
-//                    $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_RECOVERY_LINK_SENT);
-//                } else
-//                    $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_EMAIL_NOT_REGISTERED);
-//            }
-//
-//        } catch (\Exception $e) {
-//            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-//        }
-//
-//        return $this->redirect()->toRoute(self::ADMIN_LOGIN_ROUTE);
-//
-//    }
-//
+    public function forgotAction()
+    {
+        $request = $this->getRequest();
+        $form = new ForgotPasswordForm();
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        if (!empty($user)){
+            return $this->redirect()->toRoute('home');
+        }
+        try {
+            if ($request->isPost()) {
+                $form->setData($request->getPost());
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    $email = $data['email'];
+                    $user = AuthenticationManager::getInstance($this->getServiceLocator())->findUserByEmail($email);
+                    if (!is_null($user)) {
+                        //Check for facebook user
+                        if (!$user->getFacebookId()) {
+                            AuthenticationManager::getInstance($this->getServiceLocator())->sendPasswordResetEmail($user, true);
+                            $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_USER_RECOVERY_LINK_SENT);
+                        } else {
+                            $this->flashMessenger()->addErrorMessage(MessagesConstants::FACEBOOK_USER_PASSWORD_RECOVERY);
+                        }
+                        return $this->redirect()->toRoute('login');
+                    } else {
+                        $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_EMAIL_NOT_REGISTERED);
+                    }
+                }
+            }
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('forgot');
+        }
+
+        return array(
+            'form' => $form
+        );
+
+    }
+
     public function logoutAction()
     {
 
@@ -95,53 +110,64 @@ class AuthController extends AbstractActionController
 
     }
 
-//
-//    public function forgotAction() {
-//
-//        $valid = false;
-//
-//        try {
-//
-//            if ($this->isAdminGranted())
-//                return $this->redirect()->toRoute(self::ADMIN_HOME_ROUTE);
-//
-//            $hash = (string) $this->params()->fromRoute('hash', '');
-//            $recovery = AuthenticationManager::getInstance($this->getServiceLocator())->checkHash($hash);
-//            $request = $this->getRequest();
-//
-//            if ($recovery != null) {
-//                if ($request->isPost()) {
-//                    $pwd = $request->getPost('pwd');
-//                    $pwd2 = $request->getPost('pwd2');
-//
-//                    if (!empty($pwd) && $pwd == $pwd2) {
-//                        AuthenticationManager::getInstance($this->getServiceLocator())->saveNewPassword($recovery, $pwd);
-//                        $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_PASSWORD_CHANGED);
-//                        return $this->redirect()->toRoute(self::ADMIN_LOGIN_ROUTE);
-//                    } else
-//                        $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_FORM_FILLED_INCORRECTLY);
-//                } else
-//                    $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CAN_CHANGE_PASSWORD);
-//            } else
-//                $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_RECOVERY_LINK_INVALID);
-//
-//            $valid = $recovery != null;
-//
-//        } catch (\Exception $e) {
-//            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-//        }
-//
-//        $this->layout('layout/admin-login-layout');
-//
-//        return array(
-//            'isValid' => $valid
-//        );
-//
-//    }
-//
-//    /**
-//     * @var \Zend\Form\Form
-//     */
+
+    public function resetAction()
+    {
+        $isValid = false;
+        $displayLinkToResetPage = false;
+        $form = new ResetPasswordForm();
+
+        try {
+            //Redirect if user logged in
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            if (!empty($user)){
+                return $this->redirect()->toRoute('home');
+            }
+
+            $hash = (string)$this->params()->fromRoute('hash', '');
+            $recovery = AuthenticationManager::getInstance($this->getServiceLocator())->checkUserHash($hash);
+
+            if (!is_null($recovery)) {
+                //Check date
+                $recovery = AuthenticationManager::getInstance($this->getServiceLocator())->checkHashDate($recovery->getHash());
+                if (!is_null($recovery)){
+                    $request = $this->getRequest();
+                    $isValid = true;
+                    if ($request->isPost()) {
+                        $form->setData($request->getPost());
+                        if ($form->isValid()){
+                            $data = $form->getData();
+                            AuthenticationManager::getInstance($this->getServiceLocator())->saveNewPassword($recovery, $data['password']);
+                            $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_PASSWORD_CHANGED);
+                            return $this->redirect()->toRoute('login');
+                        }
+                    } else {
+                        $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CAN_CHANGE_PASSWORD);
+                    }
+                }else{//Recovery hash expired
+                    $displayLinkToResetPage = true;
+                    $this->flashmessenger()->addErrorMessage(MessagesConstants::EXPIRED_RECOVERY_PASSWORD_HASH);
+                }
+
+            } else {
+                $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_RECOVERY_LINK_INVALID);
+            }
+
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+        }
+
+        return array(
+            'form' => $form,
+            'isValid' => $isValid,
+            'displayLinkToResetPage' => $displayLinkToResetPage
+        );
+
+    }
+
+    /**
+     * @var \Zend\Form\Form
+     */
     protected $form;
 
     /**
@@ -150,60 +176,11 @@ class AuthController extends AbstractActionController
     public function getLoginForm()
     {
 
-        if ($this->form == null)
+        if (null === $this->form) {
             $this->form = new LoginForm();
+        }
 
         return $this->form;
 
     }
-//
-//    /**
-//     * @return bool
-//     */
-//    private function isAdminGranted() {
-//
-//        if (ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser() != null) {
-//            $rbacService = $this->getServiceLocator()->get('ZfcRbac\Service\Rbac');
-//            $firewalls = $rbacService->getOptions()->getFirewalls();
-//
-//            if (array_key_exists('ZfcRbac\Firewall\Route', $firewalls)) {
-//                $routes = $firewalls['ZfcRbac\Firewall\Route'];
-//                foreach ($routes as $route) {
-//                    if ($route['route'] == 'admin') {
-//                        $adminFirewall = new \ZfcRbac\Firewall\Route(array($route));
-//                        $adminFirewall->setRbac($rbacService);
-//                        return $adminFirewall->isGranted('admin');
-//                    }
-//                }
-//            }
-//        }
-//
-//        return false;
-//
-//    }
-//
-//    /**
-//     * @param $action
-//     */
-//    private function setActionToSession($action) {
-//
-//        $this->getSessionContainer()->offsetSet(self::ACTION_SESSION_KEY, $action);
-//
-//    }
-//
-//    /**
-//     * @return bool
-//     */
-//    private function fetchActionFromSession() {
-//
-//        if ($this->getSessionContainer()->offsetExists(self::ACTION_SESSION_KEY)) {
-//            $action = $this->getSessionContainer()->offsetGet(self::ACTION_SESSION_KEY);
-//            $this->getSessionContainer()->offsetUnset(self::ACTION_SESSION_KEY);
-//            return $action;
-//        }
-//
-//        return false;
-//
-//    }
-
 }
