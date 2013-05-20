@@ -1,0 +1,64 @@
+@media only screen and (min-width: 320px) {
+  .lt-ie9 body {
+    font-size: 40%;
+  }
+}
+@media only screen and (min-width: 769px) {
+  .lt-ie9 body {
+    font-size: 46.1%;
+  }
+}
+@media only screen and (min-width: 800px) {
+  .lt-ie9 body {
+    font-size: 48.2%;
+  }
+}
+@media only screen and (min-width: 960px) {
+  .lt-ie9 body {
+    font-size: 54.2%;
+  }
+}
+@media only screen and (min-width: 1025px) {
+	.lt-ie9 body {
+	  font-size: 57.2%;
+	}
+}
+@media only screen and (min-width: 1100px) {
+  .lt-ie9 body {
+    font-size: 62.5%;
+  }
+}
+
+
+.lt-ie9 .login-area details {
+    background: #9b9da0;
+}
+.lt-ie9  details .login-form {
+    width: 29.6em;
+}
+.lt-ie9.ie8  details .login-form {
+    width: 34.1em;
+}
+
+.lt-ie8 .article-image-left figure, .lt-ie8  .article-image-right figure {
+    float: left;
+    display: inline;
+}
+.lt-ie8 .article-image-right figure {
+    float: right;
+    right: 0;
+}
+
+.lt-ie8 .article-image-left > div, .lt-ie8 .article-image-right > div {
+    float: left;
+    margin: 11.6em 3em 3em 8em;
+    padding: 0;
+    padding-bottom: 3em;
+    width: 40em;
+}
+.lt-ie8 .article-image-left > div {
+  float: right;
+   margin: 11.6em 8em 3em 3em;
+   padding: 0;
+   padding-bottom: 3em;
+}
