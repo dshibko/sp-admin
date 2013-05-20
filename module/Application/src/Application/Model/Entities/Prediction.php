@@ -16,14 +16,49 @@ class Prediction extends BasicObject {
     /**
      * @var boolean
      *
-     * @ORM\Column(name="home_team_score", type="boolean", nullable=false)
+     * @ORM\Column(name="is_correct_result", type="boolean")
      */
-    private $homeTeamScore;
+    private $isCorrectResult;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="away_team_score", type="boolean", nullable=false)
+     * @ORM\Column(name="is_correct_score", type="boolean")
+     */
+    private $isCorrectScore;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="correct_scorers", type="integer")
+     */
+    private $correctScorers;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="correct_scorers_order", type="integer")
+     */
+    private $correctScorersOrder;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="points", type="integer")
+     */
+    private $points;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="home_team_score", type="integer", nullable=false)
+     */
+    private $homeTeamScore;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="away_team_score", type="integer", nullable=false)
      */
     private $awayTeamScore;
 
@@ -53,7 +88,7 @@ class Prediction extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="PredictionPlayer", mappedBy="prediction")
+     * @ORM\OneToMany(targetEntity="PredictionPlayer", mappedBy="prediction", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $predictionPlayers;
 
@@ -88,7 +123,7 @@ class Prediction extends BasicObject {
     /**
      * Set homeTeamScore
      *
-     * @param boolean $homeTeamScore
+     * @param integer $homeTeamScore
      * @return Prediction
      */
     public function setHomeTeamScore($homeTeamScore)
@@ -101,7 +136,7 @@ class Prediction extends BasicObject {
     /**
      * Get homeTeamScore
      *
-     * @return boolean 
+     * @return integer
      */
     public function getHomeTeamScore()
     {
@@ -111,7 +146,7 @@ class Prediction extends BasicObject {
     /**
      * Set awayTeamScore
      *
-     * @param boolean $awayTeamScore
+     * @param integer $awayTeamScore
      * @return Prediction
      */
     public function setAwayTeamScore($awayTeamScore)
@@ -124,7 +159,7 @@ class Prediction extends BasicObject {
     /**
      * Get awayTeamScore
      *
-     * @return boolean 
+     * @return integer
      */
     public function getAwayTeamScore()
     {
@@ -211,6 +246,14 @@ class Prediction extends BasicObject {
     }
 
     /**
+     * Clear predictionPlayers
+     */
+    public function clearPredictionPlayers()
+    {
+        $this->predictionPlayers->clear();
+    }
+
+    /**
      * Get predictionPlayers
      *
      * @return \Doctrine\Common\Collections\Collection 
@@ -265,4 +308,85 @@ class Prediction extends BasicObject {
     {
         return $this->match;
     }
+
+    /**
+     * @param boolean $isCorrectResult
+     */
+    public function setIsCorrectResult($isCorrectResult)
+    {
+        $this->isCorrectResult = $isCorrectResult;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsCorrectResult()
+    {
+        return $this->isCorrectResult;
+    }
+
+    /**
+     * @param boolean $isCorrectScore
+     */
+    public function setIsCorrectScore($isCorrectScore)
+    {
+        $this->isCorrectScore = $isCorrectScore;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsCorrectScore()
+    {
+        return $this->isCorrectScore;
+    }
+
+    /**
+     * @param int $points
+     */
+    public function setPoints($points)
+    {
+        $this->points = $points;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPoints()
+    {
+        return $this->points;
+    }
+
+    /**
+     * @param int $correctScorers
+     */
+    public function setCorrectScorers($correctScorers)
+    {
+        $this->correctScorers = $correctScorers;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCorrectScorers()
+    {
+        return $this->correctScorers;
+    }
+
+    /**
+     * @param int $correctScorersOrder
+     */
+    public function setCorrectScorersOrder($correctScorersOrder)
+    {
+        $this->correctScorersOrder = $correctScorersOrder;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCorrectScorersOrder()
+    {
+        return $this->correctScorersOrder;
+    }
+
 }

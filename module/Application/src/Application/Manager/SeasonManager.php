@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use \Application\Model\Entities\LeagueUser;
 use \Application\Model\Entities\Prize;
 use \Application\Model\DAOs\PrizeDAO;
 use \Application\Model\DAOs\SeasonRegionDAO;
@@ -64,8 +65,13 @@ class SeasonManager extends BasicManager {
         $globalLeague->setIsPrivate(false);
         $globalLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
         $globalLeague->setCreationDate(new \DateTime());
-        foreach ($users as $user)
-            $globalLeague->addUser($user);
+        foreach ($users as $user) {
+            $leagueUser = new LeagueUser();
+            $leagueUser->setUser($user);
+            $leagueUser->setLeague($globalLeague);
+            $leagueUser->setJoinDate(new \DateTime());
+            $globalLeague->addLeagueUser($leagueUser);
+        }
 
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         $leagueDAO->save($globalLeague, false, false);
@@ -107,8 +113,13 @@ class SeasonManager extends BasicManager {
             $regionLeague->setIsPrivate(false);
             $regionLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
             $regionLeague->setCreationDate(new \DateTime());
-            foreach ($users as $user)
-                $regionLeague->addUser($user);
+            foreach ($users as $user) {
+                $leagueUser = new LeagueUser();
+                $leagueUser->setUser($user);
+                $leagueUser->setJoinDate(new \DateTime());
+                $leagueUser->setLeague($regionLeague);
+                $regionLeague->addLeagueUser($leagueUser);
+            }
 
             $leagueDAO->save($regionLeague, false, false);
         }

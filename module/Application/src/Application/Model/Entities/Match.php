@@ -8,22 +8,60 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Match
  *
- * @ORM\Table(name="match")
+ * @ORM\Table(name="`match`")
  * @ORM\Entity
  */
 class Match extends BasicObject {
 
+    const PRE_MATCH_STATUS = 'PreMatch';
+    const LIVE_STATUS = 'Live';
+    const FULL_TIME_STATUS = 'FullTime';
+    const POSTPONED_STATUS = 'Postponed';
+    const ABANDONED_STATUS = 'Abandoned';
+
+    public static function getAvailableStatuses() {
+        return array(self::PRE_MATCH_STATUS, self::LIVE_STATUS, self::FULL_TIME_STATUS, self::POSTPONED_STATUS, self::ABANDONED_STATUS);
+    }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", columnDefinition="ENUM('PreMatch', 'Live', 'FullTime', 'Postponed', 'Abandoned')")
+     */
+    private $status;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="stadium_name", type="string", length=100)
+     */
+    private $stadiumName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="city_name", type="string", length=100)
+     */
+    private $cityName;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="feeder_id", type="integer", nullable=false)
+     */
+    private $feederId;
+
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="start_time", type="datetime", nullable=false)
+     * @ORM\Column(name="start_time", type="datetime")
      */
     private $startTime;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="week", type="integer", nullable=false)
+     * @ORM\Column(name="week", type="integer")
      */
     private $week;
 
@@ -94,11 +132,69 @@ class Match extends BasicObject {
     private $featuredPlayer;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_double_points", type="boolean")
+     */
+    private $isDoublePoints;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="home_team_full_time_score", type="integer")
+     */
+    private $homeTeamFullTimeScore;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="away_team_full_time_score", type="integer")
+     */
+    private $awayTeamFullTimeScore;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="home_team_extra_time_score", type="integer")
+     */
+    private $homeTeamExtraTimeScore;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="away_team_extra_time_score", type="integer")
+     */
+    private $awayTeamExtraTimeScore;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="home_team_shootout_score", type="integer")
+     */
+    private $homeTeamShootoutScore;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="away_team_shootout_score", type="integer")
+     */
+    private $awayTeamShootoutScore;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="MatchGoal", mappedBy="match", cascade={"persist", "remove"})
+     */
+    private $matchGoals;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->predictions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->matchGoals = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isDoublePoints = false;
     }
     
     /**
@@ -304,4 +400,220 @@ class Match extends BasicObject {
     {
         return $this->featuredPlayer;
     }
+
+    /**
+     * @param int $feederId
+     */
+    public function setFeederId($feederId)
+    {
+        $this->feederId = $feederId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getFeederId()
+    {
+        return $this->feederId;
+    }
+
+    /**
+     * @param string $cityName
+     */
+    public function setCityName($cityName)
+    {
+        $this->cityName = $cityName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCityName()
+    {
+        return $this->cityName;
+    }
+
+    /**
+     * @param string $stadiumName
+     */
+    public function setStadiumName($stadiumName)
+    {
+        $this->stadiumName = $stadiumName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStadiumName()
+    {
+        return $this->stadiumName;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param boolean $isDoublePoints
+     */
+    public function setIsDoublePoints($isDoublePoints)
+    {
+        $this->isDoublePoints = $isDoublePoints;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsDoublePoints()
+    {
+        return $this->isDoublePoints;
+    }
+
+    /**
+     * @param int $awayTeamExtraTimeScore
+     */
+    public function setAwayTeamExtraTimeScore($awayTeamExtraTimeScore)
+    {
+        $this->awayTeamExtraTimeScore = $awayTeamExtraTimeScore;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAwayTeamExtraTimeScore()
+    {
+        return $this->awayTeamExtraTimeScore;
+    }
+
+    /**
+     * @param int $awayTeamFullTimeScore
+     */
+    public function setAwayTeamFullTimeScore($awayTeamFullTimeScore)
+    {
+        $this->awayTeamFullTimeScore = $awayTeamFullTimeScore;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAwayTeamFullTimeScore()
+    {
+        return $this->awayTeamFullTimeScore;
+    }
+
+    /**
+     * @param int $awayTeamShootoutScore
+     */
+    public function setAwayTeamShootoutScore($awayTeamShootoutScore)
+    {
+        $this->awayTeamShootoutScore = $awayTeamShootoutScore;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAwayTeamShootoutScore()
+    {
+        return $this->awayTeamShootoutScore;
+    }
+
+    /**
+     * @param int $homeTeamExtraTimeScore
+     */
+    public function setHomeTeamExtraTimeScore($homeTeamExtraTimeScore)
+    {
+        $this->homeTeamExtraTimeScore = $homeTeamExtraTimeScore;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHomeTeamExtraTimeScore()
+    {
+        return $this->homeTeamExtraTimeScore;
+    }
+
+    /**
+     * @param int $homeTeamFullTimeScore
+     */
+    public function setHomeTeamFullTimeScore($homeTeamFullTimeScore)
+    {
+        $this->homeTeamFullTimeScore = $homeTeamFullTimeScore;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHomeTeamFullTimeScore()
+    {
+        return $this->homeTeamFullTimeScore;
+    }
+
+    /**
+     * @param int $homeTeamShootoutScore
+     */
+    public function setHomeTeamShootoutScore($homeTeamShootoutScore)
+    {
+        $this->homeTeamShootoutScore = $homeTeamShootoutScore;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHomeTeamShootoutScore()
+    {
+        return $this->homeTeamShootoutScore;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $matchGoals
+     */
+    public function setMatchGoals($matchGoals)
+    {
+        $this->matchGoals = $matchGoals;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMatchGoals()
+    {
+        return $this->matchGoals;
+    }
+
+    /**
+     * Add matchGoal
+     *
+     * @param MatchGoal $matchGoal
+     * @return Match
+     */
+    public function addMatchGoal(MatchGoal $matchGoal)
+    {
+        $this->matchGoals[] = $matchGoal;
+
+        return $this;
+    }
+
+    /**
+     * Remove matchGoal
+     *
+     * @param MatchGoal $matchGoal
+     */
+    public function removeHomeMatch(MatchGoal $matchGoal)
+    {
+        $this->matchGoals->removeElement($matchGoal);
+    }
+
 }

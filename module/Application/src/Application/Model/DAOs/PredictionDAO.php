@@ -2,25 +2,27 @@
 
 namespace Application\Model\DAOs;
 
-use \Application\Model\DAOs\AbstractDAO;
+use \Application\Model\Entities\Match;
+use \Application\Model\Entities\User;
+use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class SeasonDAO extends AbstractDAO {
+class PredictionDAO extends AbstractDAO {
 
     /**
-     * @var SeasonDAO
+     * @var PredictionDAO
      */
     private static $instance;
 
     /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return SeasonDAO
+     * @return PredictionDAO
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
         if (self::$instance == null) {
-            self::$instance = new SeasonDAO();
+            self::$instance = new PredictionDAO();
             self::$instance->setServiceLocator($serviceLocatorInterface);
         }
         return self::$instance;
@@ -30,26 +32,17 @@ class SeasonDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\Season';
+        return '\Application\Model\Entities\Prediction';
     }
 
-    /**
-     * @param bool $hydrate
-     * @param bool $skipCache
-     * @return array
-     * @throws \Exception
-     */
-    public function getAllSeasons($hydrate = false, $skipCache = false) {
-        return parent::findAll($hydrate, $skipCache);
-    }
-
-    public function getCurrentSeason($hydrate = false, $skipCache = false) {
+    function getUserPrediction(Match $match, User $user, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('s')
-            ->from($this->getRepositoryName(), 's')
-            ->where($qb->expr()->lte('s.startDate', ":now"))
-            ->andWhere($qb->expr()->gte('s.endDate', ":now"))
-            ->setParameter("now", new \DateTime());
+        $qb->select('p')
+            ->from($this->getRepositoryName(), 'p')
+            ->join('p.match', 'm')
+            ->join('p.user', 'u')
+            ->where($qb->expr()->eq('m.id', $match->getId()))
+            ->where($qb->expr()->eq('u.id', $user->getId()));
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 

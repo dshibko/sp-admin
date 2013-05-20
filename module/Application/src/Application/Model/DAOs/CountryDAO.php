@@ -9,14 +9,14 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class CountryDAO extends AbstractDAO {
 
     /**
-     * @var UserDAO
+     * @var CountryDAO
      */
     private static $instance;
 
     /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return UserDAO
+     * @return CountryDAO
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
         if (self::$instance == null) {

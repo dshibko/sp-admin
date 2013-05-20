@@ -54,14 +54,30 @@ class LogManager extends BasicManager {
         $optaErrorLogWriter = new Stream($optaErrorLogPath);
         $this->optaLogger = new Logger();
         $this->optaLogger->addWriter($optaErrorLogWriter, Logger::ERR);
+
+        $optaWarningLogPath = $logDir . 'opta' . DIRECTORY_SEPARATOR . 'warning.log';
+        $optaWarningLogWriter = new Stream($optaWarningLogPath);
+        $this->optaLogger->addWriter($optaWarningLogWriter, Logger::WARN);
+
+        $optaInfoLogPath = $logDir . 'opta' . DIRECTORY_SEPARATOR . 'info.log';
+        $optaInfoLogWriter = new Stream($optaInfoLogPath);
+        $this->optaLogger->addWriter($optaInfoLogWriter, Logger::INFO);
     }
 
     public function logAppException(\Exception $e, $priority = Logger::ERR) {
         $this->appLogger->log($priority, $e->getMessage(), array($e->getTraceAsString()));
     }
 
-    public function logOptaException(\Exception $e, $priority = Logger::ERR) {
-        $this->optaLogger->log($priority, $e->getMessage(), array($e->getTraceAsString()));
+    public function logOptaException(\Exception $e) {
+        $this->optaLogger->log(Logger::ERR, $e->getMessage(), array($e->getTraceAsString()));
+    }
+
+    public function logOptaWarning($warning) {
+        $this->optaLogger->log(Logger::WARN, $warning);
+    }
+
+    public function logOptaInfo($info) {
+        $this->optaLogger->log(Logger::INFO, $info);
     }
 
 }

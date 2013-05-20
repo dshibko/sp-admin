@@ -400,6 +400,46 @@ class League extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
+     * @ORM\OneToMany(targetEntity="LeagueUser", mappedBy="league", cascade={"persist", "remove"})
+     */
+    private $leagueUsers;
+
+    /**
+     * Add leagueUsers
+     *
+     * @param LeagueUser $leagueUsers
+     * @return League
+     */
+    public function addLeagueUser(LeagueUser $leagueUsers)
+    {
+        $this->leagueUsers[] = $leagueUsers;
+
+        return $this;
+    }
+
+    /**
+     * Remove leagueUsers
+     *
+     * @param LeagueUser $leagueUsers
+     */
+    public function removeLeagueUser(LeagueUser $leagueUsers)
+    {
+        $this->leagueUsers->removeElement($leagueUsers);
+    }
+
+    /**
+     * Get leagueUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLeagueUsers()
+    {
+        return $this->leagueUsers;
+    }
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
      * @ORM\OneToMany(targetEntity="Prize", mappedBy="league", cascade={"persist", "remove"})
      */
     private $prizes;

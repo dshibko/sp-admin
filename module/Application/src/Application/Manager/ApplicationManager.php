@@ -2,6 +2,8 @@
 
 namespace Application\Manager;
 
+use \Application\Model\DAOs\SeasonDAO;
+use \Application\Model\Entities\Season;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\Entities\User;
 use \Application\Model\DAOs\UserDAO;
@@ -48,6 +50,21 @@ class ApplicationManager extends BasicManager {
                     $this->currentUser = UserDAO::getInstance($this->getServiceLocator())->findOneByIdentity($identity);
         }
         return $this->currentUser;
+    }
+
+    /**
+     * @var \Application\Model\Entities\User
+     */
+    protected $currentSeason = -1;
+
+    /**
+     * @return \Application\Model\Entities\Season
+     */
+    public function getCurrentSeason()
+    {
+        if ($this->currentSeason == -1)
+            $this->currentSeason = SeasonDAO::getInstance($this->getServiceLocator())->getCurrentSeason();
+        return $this->currentSeason;
     }
 
 }

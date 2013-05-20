@@ -14,9 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
 class PredictionPlayer extends BasicObject {
 
     /**
-     * @var boolean
+     * @var integer
      *
-     * @ORM\Column(name="order", type="boolean", nullable=false)
+     * @ORM\Column(name="`order`", type="integer", nullable=false)
      */
     private $order;
 
@@ -42,7 +42,7 @@ class PredictionPlayer extends BasicObject {
     /**
      * @var Prediction
      *
-     * @ORM\ManyToOne(targetEntity="Prediction")
+     * @ORM\ManyToOne(targetEntity="Prediction", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="prediction_id", referencedColumnName="id")
      * })
@@ -63,7 +63,7 @@ class PredictionPlayer extends BasicObject {
     /**
      * Set order
      *
-     * @param boolean $order
+     * @param integer $order
      * @return PredictionPlayer
      */
     public function setOrder($order)
@@ -76,7 +76,7 @@ class PredictionPlayer extends BasicObject {
     /**
      * Get order
      *
-     * @return boolean 
+     * @return integer
      */
     public function getOrder()
     {

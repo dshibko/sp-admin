@@ -158,6 +158,13 @@ class User extends BasicObject {
     private $leagues;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="LeagueUser", mappedBy="user")
+     */
+    private $leagueUsers;
+
+    /**
      * Set title
      *
      * @param string $title
@@ -563,6 +570,21 @@ class User extends BasicObject {
         return $this->predictions;
     }
 
+    /**
+     * @param \Doctrine\Common\Collections\Collection $leagueUsers
+     */
+    public function setLeagueUsers($leagueUsers)
+    {
+        $this->leagueUsers = $leagueUsers;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLeagueUsers()
+    {
+        return $this->leagueUsers;
+    }
 
     public function populate(array $data = array()){
 

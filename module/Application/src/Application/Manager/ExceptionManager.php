@@ -40,7 +40,7 @@ class ExceptionManager extends BasicManager {
      * @param \Exception $e
      * @param \Zend\Mvc\Controller\AbstractActionController $controller
      */
-    public function handleOptaException(\Exception $e, \Zend\Mvc\Controller\AbstractActionController $controller) {
+    public function handleOptaException(\Exception $e, \Zend\Mvc\Controller\AbstractActionController $controller = null) {
         LogManager::getInstance($this->getServiceLocator())->logOptaException($e);
         var_dump($e->getMessage());
     }

@@ -315,4 +315,11 @@ class Season extends BasicObject {
         return $this->feederId;
     }
 
+    public function getCompetitionByFeederId($feederId) {
+        $competitions = $this->getCompetitions()->filter(function(Competition $competition) use ($feederId) {
+            return $competition->getFeederId() == $feederId;
+        });
+        return ($competitions->count() > 0) ? $competitions->first() : null;
+    }
+
 }

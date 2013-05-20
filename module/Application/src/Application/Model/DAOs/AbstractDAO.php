@@ -11,6 +11,10 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
         $this->getEntityManager()->flush();
     }
 
+    public function detach($entity) {
+        $this->getEntityManager()->detach($entity);
+    }
+
     public function clearCache() {
         $this->clearEntityCache();
     }
@@ -120,7 +124,8 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
     private function getSkipCache($skipCache) {
         $request = $this->getServiceLocator()->get('request');
         $config = $this->getServiceLocator()->get('config');
-        if (array_key_exists('skip-cache-uri-patterns', $config) && !empty($config['skip-cache-uri-patterns'])) {
+        if (!$request instanceof \Zend\Console\Request &&
+            array_key_exists('skip-cache-uri-patterns', $config) && !empty($config['skip-cache-uri-patterns'])) {
             $skipCacheUriPatterns = $config['skip-cache-uri-patterns'];
             if (!is_array($skipCacheUriPatterns))
                 $skipCacheUriPatterns = array($skipCacheUriPatterns);
