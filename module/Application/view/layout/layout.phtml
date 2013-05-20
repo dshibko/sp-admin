@@ -39,6 +39,7 @@
                         <ul class="nav">
                             <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
                             <?php if ($this->getCurrentUser()):?>
+                                <li class=""><a href="<?php echo $this->url('user-settings') ?>"><?php echo $this->translate('Settings') ?></a></li>
                                 <li class=""><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Logout') ?></a></li>
                             <?php else:?>
                                 <li class=""><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Login') ?></a></li>

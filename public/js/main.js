@@ -1,7 +1,10 @@
 (function ($) {
     $(function () {
-        $('#register').validate();
 
+        $('#register').validate();
+        $('#settings-change-password').validate();
+        $('#settings-change-email').validate();
+        $('#settings-change-display-name').validate();
         /******************************START COOKIE BAR*******************************/
         var cookie_bar_displayed = $.cookie('cookie_bar_displayed');
         if (!cookie_bar_displayed){

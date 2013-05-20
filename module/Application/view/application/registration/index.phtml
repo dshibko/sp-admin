@@ -41,21 +41,20 @@ echo $this->formRow($form->get('gender'));
 echo $this->formRow($form->get('display_name'));
 echo $this->formRow($form->get('avatar'));
 ?>
-<?php //TODO set const for default images; ?>
 <label>
-    <input type="radio" value="1" <?php echo (is_null($this->default_avatar) || $this->default_avatar == '1') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="<?php echo $this->getConstant('default_avatar_1_id');?>" <?php echo (is_null($this->default_avatar) || $this->default_avatar == $this->getConstant('default_avatar_1_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_1.jpg" alt="Default avatar #1">
 </label>
 <label>
-    <input type="radio" value="2" <?php echo ($this->default_avatar == '2') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="<?php echo $this->getConstant('default_avatar_2_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_2_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_2.jpg" alt="Default avatar #2">
 </label>
 <label>
-    <input type="radio" value="3" <?php echo ($this->default_avatar == '3') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="<?php echo $this->getConstant('default_avatar_3_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_3_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_3.jpg" alt="Default avatar #3">
 </label>
 <label>
-    <input type="radio" value="4" <?php echo ($this->default_avatar == '4') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="<?php echo $this->getConstant('default_avatar_4_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_4_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_4.jpg" alt="Default avatar #4">
 </label>
 

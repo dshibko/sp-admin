@@ -23,6 +23,10 @@ class AuthController extends AbstractActionController
     {
         //TODO check only guests
         try {
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            if ($user){
+                return $this->redirect()->toRoute('home');
+            }
             $request = $this->getRequest();
             $form = $this->getLoginForm();
 
