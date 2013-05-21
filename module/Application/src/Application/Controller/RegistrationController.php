@@ -13,10 +13,13 @@ use Application\Manager\FacebookManager;
 use \Application\Manager\AuthenticationManager;
 use \Zend\Authentication\Result;
 use Application\Model\Helpers\MessagesConstants;
+use Application\Manager\UserManager;
 
 class RegistrationController extends AbstractActionController
 {
     const SETUP_PAGE_ROUTE = 'setup';
+    const USER_SETTINGS_PAGE_ROUTE = 'user-settings';
+    const HOME_ROUTE = 'home';
 
     //TODO set permission only for guests
     public function indexAction()
@@ -38,28 +41,17 @@ class RegistrationController extends AbstractActionController
                 );
                 $form->setData($post)->prepareData();
                 if ($form->isValid()) {
-                    $avatar = new Avatar($form->get('avatar'), $this->getServiceLocator());
-                    $avatar->setDefaultAvatar(!empty($post['default_avatar']) ? $post['default_avatar'] : null);
-                    if ($avatar->validate()) {
-                        $data = $form->getData();
-                        $avatar->save()->resize();
-                        if ($avatar->getUseDefault()) {
-                            $data['default_avatar_id'] = $avatar->getDefaultAvatar();
-                            unset($data['avatar']);
-                        } else {
-                            $data['avatar'] = $avatar->getPath();
-                        }
+                    $defaultAvatarId = !empty($post['default_avatar'])  ? $post['default_avatar'] : null;
+                    $data = UserManager::getInstance($this->getServiceLocator())->processUserAvatar($form, $defaultAvatarId);
+                    if (!empty($data)){
                         RegistrationManager::getInstance($this->getServiceLocator())->register($data);
                         //Login registered user
                         AuthenticationManager::getInstance($this->getServiceLocator())->signIn($data['email'], false);
                         //TODO send welcome email
                         return $this->redirect()->toRoute(self::SETUP_PAGE_ROUTE);
-                    } else {
-                        $form->setMessages(array('avatar' => $avatar->getErrorMessages()));
                     }
                 }
             }
-
             return new ViewModel(array(
                 'form' => $form,
                 'default_avatar' => $this->getRequest()->getPost('default_avatar', null),
@@ -111,36 +103,46 @@ class RegistrationController extends AbstractActionController
     //TODO move to auth controller
     public function facebookLoginAction()
     {
-        try {
+       try {
+
             $code = $this->getRequest()->getQuery('code');
             if (empty($code)) {
                 throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
             }
-
+            ;
             $facebook = $this->getServiceLocator()->get('facebook');
             if (!$facebook->getUser()) {
                 throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
             }
+
             $user = $facebook->api('/me');
             if (empty($user['id'])) {
                 throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
             }
 
             $facebookUser = FacebookManager::getInstance($this->getServiceLocator())->setFacebookAPI($facebook)->process($user);
+
             if (empty($facebookUser)) {
                 throw new \Exception(MessagesConstants::FAILED_UPDATING_DATA_FROM_FACEBOOK);
             }
-            //Sign In facebook user
-            AuthenticationManager::getInstance($this->getServiceLocator())->signIn($facebookUser->getEmail(), false);
+
+            $currentUser = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
             $route = self::SETUP_PAGE_ROUTE;
             if ($facebookUser->getActive()) {
-                $route = 'home';
+                $route = self::HOME_ROUTE;
+            }
+            if (empty($currentUser)){
+                //Sign In facebook user
+                AuthenticationManager::getInstance($this->getServiceLocator())->signIn($facebookUser->getEmail(), false);
+            }else{ // User connect account to facebook
+                $route = self::USER_SETTINGS_PAGE_ROUTE;
+                $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT);
             }
             return $this->redirect()->toRoute($route);
-        } /*catch(\FacebookApiException $e){
+        } catch(\FacebookApiException $e){
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
             return $this->redirect()->toRoute('login');
-        }*/ catch (\Exception $e) {
+        } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
             return $this->redirect()->toRoute('registration');
         }

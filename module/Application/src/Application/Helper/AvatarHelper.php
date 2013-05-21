@@ -11,10 +11,13 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\ImageInterface;
+use Application\Model\Entities\Avatar as EntityAvatar;
+use Application\Model\DAOs\AvatarDAO;
 
-class Avatar
+class AvatarHelper
 {
     const IMAGE_MAX_SIZE = '2MB';
+    const DEFAULT_AVATAR_ID = 1;
 
     protected $data;
     protected $errorMessages = array();
@@ -22,12 +25,30 @@ class Avatar
     protected $path;
     protected $height = 72;
     protected $width = 72;
-    protected $default_avatar;
+    protected $defaultAvatarId;
     protected $use_default = false;
+    protected $avatar;
 
-    function __construct(File $data, ServiceLocatorInterface $serviceLocator)
+    function __construct(File $data = null, ServiceLocatorInterface $serviceLocator = null)
     {
-        $this->setData($data)->setAdapter(new Http())->setServiceLocator($serviceLocator);
+        if (!is_null($data)){
+            $this->setData($data);
+        }
+        if (!is_null($serviceLocator)){
+            $this->setServiceLocator($serviceLocator);
+        }
+        $this->setAdapter(new Http());
+    }
+
+    public function setAvatar(EntityAvatar $avatar)
+    {
+        $this->avatar = $avatar;
+        return $this;
+    }
+
+    public function getAvatar()
+    {
+        return $this->avatar;
     }
 
     public function getServiceLocator()
@@ -38,6 +59,7 @@ class Avatar
     public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
     {
         $this->serviceLocator = $serviceLocator;
+        return $this;
     }
 
     public function setUseDefault($use_default)
@@ -57,14 +79,14 @@ class Avatar
         return $this;
     }
 
-    public function getDefaultAvatar()
+    public function getDefaultAvatarId()
     {
-        return $this->default_avatar;
+        return $this->defaultAvatarId;
     }
 
-    public function setDefaultAvatar($avatar)
+    public function setDefaultAvatarId($avatar)
     {
-        $this->default_avatar = $avatar;
+        $this->defaultAvatarId = $avatar;
         return $this;
     }
 
@@ -128,7 +150,21 @@ class Avatar
         return $this->data;
     }
 
+    public function setNewAvatar()
+    {
+        $avatarData = array(
+            'original_image_path' => $this->getPath(),
+            'big_image_path' => $this->getPath(),
+            'medium_image_path' => $this->getPath(),
+            'small_image_path' => $this->getPath(),
+            'tiny_image_path' => $this->getPath()
+        );
 
+        $avatar = new EntityAvatar();
+        $avatar->populate($avatarData);
+        $this->setAvatar($avatar);
+        return $this;
+    }
     public function validate()
     {
         $data = $this->getData()->getValue();
@@ -151,11 +187,11 @@ class Avatar
             }
 
         } else { //Use default instead
-            if (!$this->getDefaultAvatar()) {
+            if (!$this->getDefaultAvatarId()) {
                 $this->addErrorMsg('Select default image or upload your own');
                 return false;
             }
-            $this->setPath($this->getDefaultAvatar())->setUseDefault(true);
+            $this->setUseDefault(true);
         }
 
         return true;
@@ -163,9 +199,17 @@ class Avatar
 
     public function save()
     {
-        if (!$this->getUseDefault()) {
+        if (!$this->getUseDefault()) { //Get upload avatar
             $path = ImageManager::getInstance($this->getServiceLocator())->saveUploadedImage($this->getData(), 'avatar/small');
             $this->setPath($path);
+            $this->setNewAvatar();
+        } else {   //Get default avatar
+            $avatar_id = self::DEFAULT_AVATAR_ID;
+            if ($this->getDefaultAvatarId()){
+                $avatar_id  = $this->getDefaultAvatarId();
+            }
+            $avatar = AvatarDAO::getInstance($this->getServiceLocator())->findOneById($avatar_id);
+            $this->setAvatar($avatar);
         }
 
         return $this;

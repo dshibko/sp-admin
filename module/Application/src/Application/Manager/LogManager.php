@@ -56,8 +56,13 @@ class LogManager extends BasicManager {
         $this->optaLogger->addWriter($optaErrorLogWriter, Logger::ERR);
     }
 
+    public function getAppLogger()
+    {
+        return $this->appLogger;
+    }
+
     public function logAppException(\Exception $e, $priority = Logger::ERR) {
-        $this->appLogger->log($priority, $e->getMessage(), array($e->getTraceAsString()));
+        $this->getAppLogger()->log($priority, $e->getMessage(), array($e->getTraceAsString()));
     }
 
     public function logOptaException(\Exception $e, $priority = Logger::ERR) {

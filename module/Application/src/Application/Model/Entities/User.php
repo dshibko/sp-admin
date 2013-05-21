@@ -22,6 +22,12 @@ class User extends BasicObject {
     private $active = 0;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_public", type="boolean")
+     */
+    private $isPublic = 1;
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=5, nullable=false)
@@ -80,7 +86,7 @@ class User extends BasicObject {
     /**
      * @var \Avatar
      *
-     * @ORM\ManyToOne(targetEntity="Avatar", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Avatar", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
      * })
@@ -633,6 +639,24 @@ class User extends BasicObject {
         return $this->facebookId;
     }
 
+    /**
+     *  @param boolean $isPublic
+     *  @return \Application\Model\Entities\User
+     */
+    public function setIsPublic($isPublic)
+    {
+        $this->isPublic = $isPublic;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPublic()
+    {
+        return $this->isPublic;
+    }
+
     public function populate(array $data = array()){
 
         if (isset($data['title'])){
@@ -687,7 +711,11 @@ class User extends BasicObject {
         if (isset($data['facebook_access_token'])){
             $this->setFacebookAccessToken($data['facebook_access_token']);
         }
+        if (isset($data['is_public'])){
+            $this->setIsPublic($data['is_public']);
+        }
     }
+
 
 
 }

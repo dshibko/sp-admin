@@ -5,10 +5,13 @@ namespace Application\Manager;
 use \Neoco\Manager\BasicManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Application\Model\DAOs\UserDAO;
+use \Application\Model\DAOs\AvatarDAO;
 use Application\Model\Entities\User;
 use Application\Form\RegistrationForm;
 use Application\Manager\RegistrationManager;
 use Application\Manager\ImageManager;
+use Application\Helper\AvatarHelper;
+use Application\Model\Helpers\MessagesConstants;
 
 class FacebookManager extends BasicManager
 {
@@ -17,15 +20,18 @@ class FacebookManager extends BasicManager
     const DEFAULT_COUNTRY = 95;
     const FACEBOOK_AVATAR_FOLDER = 'small';
     const DEFAULT_AVATAR_ID = 1;
+    const SIGNED_REQUEST_ALGORITHM = 'HMAC-SHA256';
 
     /**
-     * @var ApplicationManager
+     * @var FacebookManager
      */
     private static $instance;
     /**
      *  @var \Facebook
     */
     private $facebookAPI;
+
+    //TODO don't save facebook image
     /**
      *  Get Profile Image from Facebook
      *
@@ -88,7 +94,7 @@ class FacebookManager extends BasicManager
     /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return ApplicationManager
+     * @return FacebookManager
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface)
     {
@@ -106,26 +112,32 @@ class FacebookManager extends BasicManager
      */
     public function process(array $fUser)
     {
-
         $facebook_id = $fUser['id'];
-        $user = UserDAO::getInstance($this->getServiceLocator())->getUserByFacebookId($facebook_id);
+        //Check if user wants to connect to a Facebook account
+        $currentUser = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+
+        $user = !empty($currentUser) ? $currentUser : UserDAO::getInstance($this->getServiceLocator())->getUserByFacebookId($facebook_id);
         $data = $this->getFacebookUserData($fUser);
         //TODO handle change password, de-authorize app, logs out facebook when getting data with access token
         //set long live access token 60 days
         $this->getFacebookAPI()->setExtendedAccessToken();
         $data['facebook_access_token'] = $this->getFacebookAPI()->getAccessToken();
         if (!empty($user)){ //Update existing member
+            $old_email = $user->getEmail();
             $user->populate($data);
             UserDAO::getInstance($this->getServiceLocator())->save($user);
+            if (!empty($currentUser)){
+                AuthenticationManager::getInstance($this->getServiceLocator())->changeIdentity($old_email, $user->getEmail());
+            }
             return $user;
         }else{ // New member
             $avatar = $this->getFacebookProfileImage($facebook_id);
             $data['password'] = uniqid();
-
             if (!empty($avatar)){
-                $data['avatar'] = $avatar;
+                $avatarHelper = new AvatarHelper();
+                $data['avatar'] =  $avatarHelper->setPath($avatar)->setNewAvatar()->getAvatar();
             }else{
-                $data['default_avatar_id'] = self::DEFAULT_AVATAR_ID;
+                $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_AVATAR_ID);
             }
             $data['country'] = self::DEFAULT_COUNTRY;
 
@@ -134,5 +146,4 @@ class FacebookManager extends BasicManager
 
 
     }
-
 }

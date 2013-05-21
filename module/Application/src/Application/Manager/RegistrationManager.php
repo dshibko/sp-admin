@@ -27,34 +27,6 @@ class RegistrationManager extends BasicManager
      */
     private static $instance;
     /**
-     *
-     *  @param array
-     *  @return Avatar
-    */
-    private function getUserAvatar($data)
-    {
-        if (isset($data['avatar'])){
-            $avatarData = array(
-                'original_image_path' => $data['avatar'],
-                'big_image_path' => $data['avatar'],
-                'medium_image_path' => $data['avatar'],
-                'small_image_path' => $data['avatar'],
-                'tiny_image_path' => $data['avatar']
-            );
-
-            $avatar = new Avatar();
-            $avatar->populate($avatarData);
-        }else{
-            $avatar_id = self::DEFAULT_AVATAR_ID;
-            if (isset($data['default_avatar_id'])){
-                $avatar_id  = $data['default_avatar_id'];
-            }
-            $avatar = AvatarDAO::getInstance($this->getServiceLocator())->findOneById($avatar_id);
-        }
-
-        return $avatar;
-    }
-    /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
      * @return UserManager
@@ -78,8 +50,6 @@ class RegistrationManager extends BasicManager
 
     public function register(array $data)
     {
-
-        $data['avatar'] = $this->getUserAvatar($data);
         $data['role'] = RoleDAO::getInstance($this->getServiceLocator())->findOneById(self::MEMBER_ROLE_ID);
         $data['language'] = LanguageDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_LANGUAGE_ID);
         $data['region'] = RegionDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_REGION_ID);

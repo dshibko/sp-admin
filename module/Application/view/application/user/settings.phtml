@@ -7,7 +7,7 @@ $this->headTitle($title);
 <?php $this->renderMessages();?>
 <?php if (!$this->user->getFacebookId()):?>
 <div class="connect-to-facebook">
-     <?php echo $this->translate('Connect yout account to a one click login');?>
+     <?php echo $this->translate('Connect your account to a one click login');?>
      <?php echo $this->renderFacebookButton();?>
 </div>
 <div class="settings-change-password">
@@ -71,6 +71,7 @@ $this->headTitle($title);
 </div>
 <div class="settings-change-avatar">
 <h3><?php echo $this->translate('Change your avatar');?></h3>
+    <img src="<?php echo $this->user->getAvatar()->getSmallImagePath();?>" alt="<?php echo $this->translate('User avatar');?>"/>
     <?php
     $this->avatarForm->prepare();
     $this->avatarForm->setAttribute('action', $this->url('user-settings'));
@@ -79,25 +80,81 @@ $this->headTitle($title);
     echo $this->formLabel($this->avatarForm->get('avatar'));
     echo $this->formElement($this->avatarForm->get('avatar'));
     echo $this->formHidden($this->avatarForm->get('type'));
-    echo $this->formSubmit($this->avatarForm->get('submit'));
-    echo $this->form()->closeTag();
-    ?>
+    echo $this->formSubmit($this->avatarForm->get('submit'));?>
     <?php echo $this->translate('Or choose from selection');?>
     <label>
-        <input type="radio" value="<?php echo $this->getConstant('default_avatar_1_id');?>" <?php echo (is_null($this->default_avatar) || $this->default_avatar == $this->getConstant('default_avatar_1_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
+        <input type="radio" value="<?php echo $this->getConstant('default_avatar_1_id');?>" checked="checked" name="default_avatar"/>
         <img src="/img/avatar/small/user_default_1.jpg" alt="Default avatar #1">
     </label>
     <label>
-        <input type="radio" value="<?php echo $this->getConstant('default_avatar_2_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_2_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
+        <input type="radio" value="<?php echo $this->getConstant('default_avatar_2_id');?>" name="default_avatar"/>
         <img src="/img/avatar/small/user_default_2.jpg" alt="Default avatar #2">
     </label>
     <label>
-        <input type="radio" value="<?php echo $this->getConstant('default_avatar_3_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_3_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
+        <input type="radio" value="<?php echo $this->getConstant('default_avatar_3_id');?>"name="default_avatar"/>
         <img src="/img/avatar/small/user_default_3.jpg" alt="Default avatar #3">
     </label>
     <label>
-        <input type="radio" value="<?php echo $this->getConstant('default_avatar_4_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_4_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
+        <input type="radio" value="<?php echo $this->getConstant('default_avatar_4_id');?>" name="default_avatar"/>
         <img src="/img/avatar/small/user_default_4.jpg" alt="Default avatar #4">
     </label>
+   <?php echo $this->form()->closeTag();  ?>
 </div>
 <?php endif;?>
+<?php if ($this->user->getFacebookId()):?>
+    <img src="http://graph.facebook.com/<?php echo $this->user->getFacebookId();?>/picture?width=72&height=72" />
+<?php endif;?>
+<div class="settings-regional-settings">
+    <h3><?php echo $this->translate('Regional Settings');?></h3>
+    <div class="country">
+        <?php echo $this->translate('Your country');?>
+        <?php echo $this->user->getCountry()->getName();?>
+        <p>
+            <?php echo $this->translate('You cannot change your coutry in the middle of a league. We will prompt you to re-confirm your details at the start of the the league');?>
+        </p>
+    </div>
+    <div class="language">
+        <?php
+        $this->languageForm->prepare();
+        $this->languageForm->setAttribute('action', $this->url('user-settings'));
+        echo $this->formElementerrors($this->languageForm->get('language'));
+        echo $this->form()->openTag($this->languageForm);
+        echo $this->formLabel($this->languageForm->get('language'));
+        echo $this->formElement($this->languageForm->get('language'));
+        echo $this->formHidden($this->languageForm->get('type'));
+        echo $this->formSubmit($this->languageForm->get('submit'));
+        echo $this->form()->closeTag();
+        ?>
+    <div>
+</div>
+<div class="settings-email-settings">
+    <h3><?php echo $this->translate('Email Settings');?></h3>
+    <?php
+    $this->emailSettingsForm->prepare();
+    $this->emailSettingsForm->setAttribute('action', $this->url('user-settings'));
+    echo $this->form()->openTag($this->emailSettingsForm);
+    echo $this->formLabel($this->emailSettingsForm->get('term1'));
+    echo $this->formElement($this->emailSettingsForm->get('term1'));
+    echo $this->formLabel($this->emailSettingsForm->get('term2'));
+    echo $this->formElement($this->emailSettingsForm->get('term2'));
+    echo $this->formHidden($this->emailSettingsForm->get('type'));
+    echo $this->formSubmit($this->emailSettingsForm->get('submit'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<div class="settings-public-profile">
+    <h3><?php echo $this->translate('Profile Type');?></h3>
+    <?php
+    $this->publicProfileForm->prepare();
+    $this->publicProfileForm->setAttribute('action', $this->url('user-settings'));
+    echo $this->form()->openTag($this->publicProfileForm);
+    echo $this->formLabel($this->publicProfileForm->get('is_public'));
+    echo $this->formElement($this->publicProfileForm->get('is_public'));
+    echo $this->formHidden($this->publicProfileForm->get('type'));
+    echo $this->formSubmit($this->publicProfileForm->get('submit'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+<div class="delete-account">
+    <a href="<?php echo $this->url('delete-account');?>"><?php echo $this->translate('Delete Account');?></a>
+</div>
