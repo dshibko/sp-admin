@@ -64,7 +64,7 @@ $(document).ready(function () {
     });
 
     if ( navigator.userAgent.indexOf(" Safari/") != -1 && navigator.userAgent.indexOf(" Version/5") != -1) {
-        $('body').addClass("safari");
+        $('body').addClass("safari5");
     }
 
 
@@ -98,7 +98,7 @@ $(document).ready(function () {
                 desktop: {
                     width:      1280,
                     base:       16,
-                    min:        15,
+                    min:        13,
                     max:        16,
                     breakpoint: 1025
                 }

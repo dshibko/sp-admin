@@ -40,13 +40,18 @@
     width: 34.1em;
 }
 
-.lt-ie8 .article-image-left figure, .lt-ie8  .article-image-right figure {
-    float: left;
-    display: inline;
+.lt-ie8 .article-image-left figure {
+    float: none;
+    display: block;
+    margin-left: 0;
 }
 .lt-ie8 .article-image-right figure {
+    display: inline;
     float: right;
     right: 0;
+}
+.lt-ie8 .article-image-left figure img {
+    margin-left: 0;
 }
 
 .lt-ie8 .article-image-left > div, .lt-ie8 .article-image-right > div {
@@ -62,3 +67,5 @@
    padding: 0;
    padding-bottom: 3em;
 }
+
+
