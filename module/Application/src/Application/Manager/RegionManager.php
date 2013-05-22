@@ -26,9 +26,30 @@ class RegionManager extends BasicManager {
         return self::$instance;
     }
 
+    /**
+     * @var \Application\Model\Entities\Region
+     */
+    protected $defaultRegion = -1;
+
+    /**
+     * @return \Application\Model\Entities\Region
+     */
+    public function getDefaultRegion()
+    {
+        if ($this->defaultRegion == -1)
+            $this->defaultRegion = array_shift($this->getAllRegions());
+        return $this->defaultRegion;
+    }
+
+
+    public function getRegionById($id, $hydrate = false, $skipCache = false) {
+        return RegionDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
+    }
+
     public function getAllRegions($hydrate = false, $skipCache = false) {
         $regions = RegionDAO::getInstance($this->getServiceLocator())->getAllRegions($hydrate, $skipCache);
-        return array(array_shift($regions)); // TODO remove array_shift
+//        return array(array_shift($regions)); // TODO remove array_shift
+        return $regions;
     }
 
     private $nonHydratedRegions;

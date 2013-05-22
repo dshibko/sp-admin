@@ -1,0 +1,23 @@
+<?php
+$title = 'Delete Gameplay Block';
+$this->headTitle($title);
+?>
+
+<div class="row-fluid margin-bottom-20">
+    <div class="span12">
+        <p>
+            Are you sure that you want to delete
+            '<?php echo $this->escapeHtml($this->block->getHeading()); ?>' gameplay block?
+        </p>
+    </div>
+</div>
+<?php
+$url = $this->url('admin-content-landing', array('action' => 'deleteBlock', 'block' => $this->block->getOrder(), 'region' => $this->activeRegion->getId()));
+?>
+<form action="<?php echo $url; ?>" method="post">
+    <div class="form-actions">
+        <input type="hidden" name="del" value="Yes"/>
+        <button type="submit" class="btn blue" onclick="this.form.submit();"><i class="icon-ok"></i> Yes</button>
+        <button type="button" class="btn" onclick="this.form.del.value = 'No'; this.form.submit();">No</button>
+    </div>
+</form>

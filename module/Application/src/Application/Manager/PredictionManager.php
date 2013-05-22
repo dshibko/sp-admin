@@ -92,4 +92,10 @@ class PredictionManager extends BasicManager {
 
     }
 
+    public function getAvgNumberOfPrediction($season) {
+        $avgNumberOfPrediction = PredictionDAO::getInstance($this->getServiceLocator())->getAvgNumberOfPrediction($season);
+        $avgNumberOfPrediction = number_format(ceil($avgNumberOfPrediction * 100) / 100, 2);
+        return $avgNumberOfPrediction;
+    }
+
 }

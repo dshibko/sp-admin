@@ -96,8 +96,8 @@ CREATE TABLE `league` (
 	id INT AUTO_INCREMENT NOT NULL,
 	display_name VARCHAR(50) NOT NULL,
 	season_id INT NOT NULL,
-	is_global BOOL NOT NULL DEFAULT 0,
-	is_private BOOL NOT NULL DEFAULT 0,
+	is_global TINYINT(1) NOT NULL DEFAULT 0,
+	is_private TINYINT(1) NOT NULL DEFAULT 0,
 	region_id INT,
 	start_date DATE,
 	end_date DATE,
@@ -113,6 +113,9 @@ CREATE TABLE `league_user` (
 	id INT AUTO_INCREMENT NOT NULL,
 	league_id INT NOT NULL,
 	user_id INT NOT NULL,
+	points INT,
+	accuracy INT,
+	place INT,
 	join_date DATETIME NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
@@ -148,10 +151,21 @@ CREATE TABLE `match` (
 	competition_id INT NOT NULL,
 	home_team_id INT NOT NULL,
 	away_team_id INT NOT NULL,
-	week SMALLINT NOT NULL,
+	feeder_id INT NOT NULL,
+	week SMALLINT,
+	stadium_name VARCHAR(100),
+	city_name VARCHAR(100),
+	is_double_points TINYINT(1) DEFAULT 0,
 	featured_prediction_id INT,
 	featured_player_id INT,
-	start_time DATETIME NOT NULL,
+	home_team_full_time_score TINYINT,
+	away_team_full_time_score TINYINT,
+	home_team_extra_time_score TINYINT,
+	away_team_extra_time_score TINYINT,
+	home_team_shootout_score TINYINT,
+	away_team_shootout_score TINYINT,
+	status ENUM('PreMatch', 'Live', 'FullTime', 'Postponed', 'Abandoned'),
+	start_time DATETIME,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 CREATE TABLE `team` (
@@ -195,6 +209,12 @@ CREATE TABLE `prediction` (
 	match_id INT NOT NULL,
 	home_team_score TINYINT NOT NULL,
 	away_team_score TINYINT NOT NULL,
+	is_correct_result TINYINT(1),
+	is_correct_score TINYINT(1),
+	correct_scorers TINYINT,
+	correct_scorers_order TINYINT,
+	scorers_predicted TINYINT NOT NULL,
+	points INT,
 	last_update_date DATETIME NOT NULL,
 	creation_date DATETIME NOT NULL,
 	PRIMARY KEY (id)
@@ -240,3 +260,49 @@ CREATE TABLE `team_competition` (
 ) ENGINE = InnoDB;
 ALTER TABLE `team_competition` ADD FOREIGN KEY (team_id) REFERENCES `team`(id);
 ALTER TABLE `team_competition` ADD FOREIGN KEY (competition_id) REFERENCES `competition`(id);
+CREATE TABLE `match_goal` (
+	id INT AUTO_INCREMENT NOT NULL,
+	match_id INT NOT NULL,
+	team_id INT NOT NULL,
+	player_id INT NOT NULL,
+	type ENUM('Goal', 'Penalty', 'Own') NOT NULL,
+	period ENUM('FirstHalf', 'SecondHalf', 'ExtraFirstHalf', 'ExtraSecondHalf', 'ShootOut') NOT NULL,
+	minute SMALLINT,
+    time DATETIME NOT NULL,
+	`order` TINYINT,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `match_goal` ADD FOREIGN KEY (match_id) REFERENCES `match`(id);
+ALTER TABLE `match_goal` ADD FOREIGN KEY (team_id) REFERENCES `team`(id);
+ALTER TABLE `match_goal` ADD FOREIGN KEY (player_id) REFERENCES `player`(id);
+CREATE TABLE `region_content` (
+	id INT AUTO_INCREMENT NOT NULL,
+	region_id INT NOT NULL,
+	headline_copy VARCHAR(255),
+	register_button_copy VARCHAR(50),
+	hero_background_image_id INT,
+	hero_foreground_image_id INT,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+CREATE TABLE `content_image` (
+	id INT AUTO_INCREMENT NOT NULL,
+	width1280 VARCHAR(255) NOT NULL,
+	width1024 VARCHAR(255) NOT NULL,
+	width600 VARCHAR(255) NOT NULL,
+	width480 VARCHAR(255) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `region_content` ADD FOREIGN KEY (region_id) REFERENCES `region`(id);
+ALTER TABLE `region_content` ADD FOREIGN KEY (hero_background_image_id) REFERENCES `content_image`(id);
+ALTER TABLE `region_content` ADD FOREIGN KEY (hero_foreground_image_id) REFERENCES `content_image`(id);
+CREATE TABLE `region_gameplay_content` (
+	id INT AUTO_INCREMENT NOT NULL,
+	region_id INT NOT NULL,
+	heading VARCHAR(255) NOT NULL,
+	description text NOT NULL,
+	foreground_image_id INT,
+	`order` TINYINT NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `region_gameplay_content` ADD FOREIGN KEY (region_id) REFERENCES `region`(id);
+ALTER TABLE `region_gameplay_content` ADD FOREIGN KEY (foreground_image_id) REFERENCES `content_image`(id);

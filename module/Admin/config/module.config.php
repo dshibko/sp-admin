@@ -63,6 +63,86 @@ return array(
                     ),
                 ),
             ),
+            'admin-users' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/users/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-user-view' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/users/:id',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'view',
+                    ),
+                ),
+            ),
+            'admin-users-export' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/users/export',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'export',
+                    ),
+                ),
+            ),
+            'admin-seasons' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/admin/seasons[/][:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Admin\Controller',
+                        'controller' => 'Season',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-content' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/content/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Content',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-content-landing' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/landing/[region-:region][/:action][/block-:block]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'region' => '[0-9]+',
+                        'block' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Content',
+                        'action'     => 'landing',
+                    ),
+                ),
+            ),
+            'admin-content-reports' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/content/reports/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Content',
+                        'action'     => 'reports',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -84,6 +164,7 @@ return array(
         'invokables' => array(
             'Admin\Controller\Index' => 'Admin\Controller\IndexController',
             'Admin\Controller\Auth' => 'Admin\Controller\AuthController',
+            'Admin\Controller\Content' => 'Admin\Controller\ContentController'
         ),
     ),
     'view_manager' => array(
@@ -94,6 +175,7 @@ return array(
             'layout/admin-layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'layout/admin-login-layout'           => __DIR__ . '/../view/layout/layout2.phtml',
             'admin/index/index' => __DIR__ . '/../view/admin/index/index.phtml',
+            'admin/content/edit-block' => __DIR__ . '/../view/admin/content/add-block.phtml',
             'error/admin-redirect' => __DIR__ . '/../view/error/redirect.phtml',
             'admin/partials/breadcrumbs' => __DIR__ . '/../view/partials/breadcrumbs.phtml',
             'admin/partials/menu' => __DIR__ . '/../view/partials/menu.phtml',
@@ -113,6 +195,43 @@ return array(
                         'title' => 'Dashboard',
                         'label' => 'icon-dashboard',
                         'route' => 'admin-home',
+                    ),
+                    'content' => array(
+                        'title' => 'Content',
+                        'label' => 'icon-tasks',
+                        'route' => 'admin-content',
+                        'sub-menu' => true,
+                        'pages' => array(
+                            'landing' => array(
+                                'title' => 'Landing',
+                                'route' => 'admin-content-landing',
+                                'useRouteMatch' => true,
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Add Gameplay Block',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-landing',
+                                        'action' => 'addBlock',
+                                    ),
+                                    array(
+                                        'title' => 'Edit Gameplay Block',
+                                        'label' => 'icon-edit',
+                                        'route' => 'admin-content-landing',
+                                        'action' => 'editBlock',
+                                    ),
+                                    array(
+                                        'title' => 'Delete Gameplay Block',
+                                        'label' => 'icon-minus',
+                                        'route' => 'admin-content-landing',
+                                        'action' => 'deleteBlock',
+                                    ),
+                                ),
+                            ),
+                            'reports' => array(
+                                'title' => 'Match Reports',
+                                'route' => 'admin-content-reports',
+                            ),
+                        ),
                     ),
                 ),
             ),

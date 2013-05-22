@@ -57,4 +57,9 @@ class UserManager extends BasicManager {
         return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($users, $exportConfig);
     }
 
+    public function getActiveUsersNumber($season) {
+        return UserDAO::getInstance($this->getServiceLocator())->getActiveUsersNumber($season);
+    }
+
+
 }

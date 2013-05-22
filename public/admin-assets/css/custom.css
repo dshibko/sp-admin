@@ -21,8 +21,14 @@
     top: -2px;
 }
 
-@media (min-width: 980px) {
-    .page-content {
-        min-height: 700px;
-    }
+.landing .tabbable-custom.boxless > .tab-content {
+    padding-bottom: 0;
+}
+
+.landing .form-actions, .landing .tabbable-custom {
+    margin-bottom: 0;
+}
+
+iframe.wysihtml5-sandbox {
+    width: 100% !important;
 }

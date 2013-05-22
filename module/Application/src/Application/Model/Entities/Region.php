@@ -72,9 +72,23 @@ class Region extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
+     * @ORM\OneToMany(targetEntity="RegionGameplayContent", mappedBy="region")
+     */
+    private $regionGameplayBlocks;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
      * @ORM\OneToMany(targetEntity="Country", mappedBy="region")
      */
     private $countries;
+
+    /**
+     * @var RegionContent
+     *
+     * @ORM\OneToOne(targetEntity="RegionContent", mappedBy="region")
+     */
+    private $regionContent;
 
     /**
      * Constructor
@@ -150,4 +164,47 @@ class Region extends BasicObject {
     {
         return $this->countries;
     }
+
+    /**
+     * @param \Application\Model\Entities\RegionContent $regionContent
+     */
+    public function setRegionContent($regionContent)
+    {
+        $this->regionContent = $regionContent;
+    }
+
+    /**
+     * @return \Application\Model\Entities\RegionContent
+     */
+    public function getRegionContent()
+    {
+        return $this->regionContent;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $regionGameplayBlocks
+     */
+    public function setRegionGameplayBlocks($regionGameplayBlocks)
+    {
+        $this->regionGameplayBlocks = $regionGameplayBlocks;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRegionGameplayBlocks()
+    {
+        return $this->regionGameplayBlocks;
+    }
+
+    /**
+     * @param $order
+     * @return \Application\Model\Entities\RegionGameplayContent
+     */
+    public function getRegionGameplayBlockByOrder($order) {
+        return $this->getRegionGameplayBlocks()->filter(function (RegionGameplayContent $regionGameplayContent) use ($order) {
+            return $order == $regionGameplayContent->getOrder();
+        })->first();
+    }
+
 }

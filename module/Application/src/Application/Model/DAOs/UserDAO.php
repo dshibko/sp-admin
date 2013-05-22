@@ -101,4 +101,21 @@ class UserDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
 
+    /**
+     * @param \Application\Model\Entities\Season $season
+     * @return integer
+     */
+    public function getActiveUsersNumber($season) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT COUNT(u)
+             FROM ' . $this->getRepositoryName() . ' u
+             WHERE EXISTS(SELECT 1 FROM \Application\Model\Entities\Prediction p
+             JOIN p.match m
+             JOIN m.competition c
+             JOIN c.season s WITH s.id = ' . $season->getId() . '
+             WHERE p.user = u.id)
+             ');
+        return $query->getSingleScalarResult();
+    }
+
 }

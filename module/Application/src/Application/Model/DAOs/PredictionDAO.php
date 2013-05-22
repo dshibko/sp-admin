@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use \Doctrine\ORM\Query\ResultSetMapping;
 use \Application\Model\Entities\Match;
 use \Application\Model\Entities\User;
 use Application\Model\DAOs\AbstractDAO;
@@ -44,6 +45,24 @@ class PredictionDAO extends AbstractDAO {
             ->where($qb->expr()->eq('m.id', $match->getId()))
             ->where($qb->expr()->eq('u.id', $user->getId()));
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
+     * @param \Application\Model\Entities\Season $season
+     * @return integer
+     */
+    function getAvgNumberOfPrediction($season) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('avg', 'a');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('SELECT AVG(pr.predictions) as avg FROM (SELECT COUNT(p.id) as predictions
+             FROM `match` m
+             INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $season->getId() . '
+             LEFT JOIN prediction p ON p.match_id = m.id
+             WHERE m.start_time < NOW()
+             GROUP BY m.id) pr
+             ', $rsm);
+        return $query->getSingleScalarResult();
     }
 
 }
