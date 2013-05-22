@@ -82,22 +82,7 @@ $this->headTitle($title);
     echo $this->formHidden($this->avatarForm->get('type'));
     echo $this->formSubmit($this->avatarForm->get('submit'));?>
     <?php echo $this->translate('Or choose from selection');?>
-    <label>
-        <input type="radio" value="<?php echo $this->getConstant('default_avatar_1_id');?>" checked="checked" name="default_avatar"/>
-        <img src="/img/avatar/small/user_default_1.jpg" alt="Default avatar #1">
-    </label>
-    <label>
-        <input type="radio" value="<?php echo $this->getConstant('default_avatar_2_id');?>" name="default_avatar"/>
-        <img src="/img/avatar/small/user_default_2.jpg" alt="Default avatar #2">
-    </label>
-    <label>
-        <input type="radio" value="<?php echo $this->getConstant('default_avatar_3_id');?>"name="default_avatar"/>
-        <img src="/img/avatar/small/user_default_3.jpg" alt="Default avatar #3">
-    </label>
-    <label>
-        <input type="radio" value="<?php echo $this->getConstant('default_avatar_4_id');?>" name="default_avatar"/>
-        <img src="/img/avatar/small/user_default_4.jpg" alt="Default avatar #4">
-    </label>
+    <?php echo $this->renderDefaultAvatars();?>
    <?php echo $this->form()->closeTag();  ?>
 </div>
 <?php endif;?>

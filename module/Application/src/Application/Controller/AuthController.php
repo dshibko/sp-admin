@@ -18,17 +18,20 @@ use Application\Form\ResetPasswordForm;
 
 class AuthController extends AbstractActionController
 {
+    const HOME_PAGE_ROUTE = 'home';
+    const LOGIN_PAGE_ROUTE = 'login';
+    const FORGOT_PAGE_ROUTE = 'forgot';
 
     public function loginAction()
     {
         //TODO check only guests
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        if ($user){
+            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+        }
+        $request = $this->getRequest();
+        $form = $this->getLoginForm();
         try {
-            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-            if ($user){
-                return $this->redirect()->toRoute('home');
-            }
-            $request = $this->getRequest();
-            $form = $this->getLoginForm();
 
             if ($request->isPost()) {
                 $form->setData($request->getPost());
@@ -42,13 +45,12 @@ class AuthController extends AbstractActionController
                         $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_WRONG_EMAIL_OR_PASSWORD);
                     }
                     if ($result->isValid()) {
-                        $this->redirect()->toRoute('home');
+                        $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
                     }
                 }
             }
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute('login');
         }
 
         return array(
@@ -64,7 +66,7 @@ class AuthController extends AbstractActionController
         $form = new ForgotPasswordForm();
         $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
         if (!empty($user)){
-            return $this->redirect()->toRoute('home');
+            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
         }
         try {
             if ($request->isPost()) {
@@ -81,7 +83,7 @@ class AuthController extends AbstractActionController
                         } else {
                             $this->flashMessenger()->addErrorMessage(MessagesConstants::FACEBOOK_USER_PASSWORD_RECOVERY);
                         }
-                        return $this->redirect()->toRoute('login');
+                        return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
                     } else {
                         $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_EMAIL_NOT_REGISTERED);
                     }
@@ -89,7 +91,6 @@ class AuthController extends AbstractActionController
             }
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute('forgot');
         }
 
         return array(
@@ -110,7 +111,7 @@ class AuthController extends AbstractActionController
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
-        return $this->redirect()->toRoute('home');
+        return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
 
     }
 
@@ -120,13 +121,13 @@ class AuthController extends AbstractActionController
         $isValid = false;
         $displayLinkToResetPage = false;
         $form = new ResetPasswordForm();
+        //Redirect if user logged in
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        if (!empty($user)){
+            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+        }
 
         try {
-            //Redirect if user logged in
-            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-            if (!empty($user)){
-                return $this->redirect()->toRoute('home');
-            }
 
             $hash = (string)$this->params()->fromRoute('hash', '');
             $recovery = AuthenticationManager::getInstance($this->getServiceLocator())->checkUserHash($hash);
@@ -143,7 +144,7 @@ class AuthController extends AbstractActionController
                             $data = $form->getData();
                             AuthenticationManager::getInstance($this->getServiceLocator())->saveNewPassword($recovery, $data['password']);
                             $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_PASSWORD_CHANGED);
-                            return $this->redirect()->toRoute('login');
+                            return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
                         }
                     } else {
                         $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CAN_CHANGE_PASSWORD);

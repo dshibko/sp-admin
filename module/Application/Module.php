@@ -83,6 +83,11 @@ class Module
 
 
                     return $facebookLoginButton;
+                },
+                'renderDefaultAvatars' => function($sm){
+                    $defaultAvatars = new \Neoco\View\Helper\DefaultAvatars();
+                    $defaultAvatars->setServiceLocator($sm->getServiceLocator());
+                    return $defaultAvatars;
                 }
             )
         );

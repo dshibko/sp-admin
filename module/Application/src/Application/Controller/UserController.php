@@ -16,7 +16,7 @@ use Application\Form\SettingsLanguageForm;
 use Application\Form\SettingsEmailSettingsForm;
 use Application\Form\SettingsPublicProfileForm;
 use Application\Manager\AuthenticationManager;
-use Application\Manager\LogManager; //TODO remove this
+
 
 class UserController extends AbstractActionController
 {
@@ -27,30 +27,32 @@ class UserController extends AbstractActionController
     const FORM_TYPE_CHANGE_LANGUAGE = 'change_language';
     const FORM_TYPE_CHANGE_EMAIL_SETTINGS = 'change_email_settings';
     const FORM_TYPE_CHANGE_PUBLIC_PROFILE_OPTION = 'change_public_profile';
+    const USER_SETTINGS_PAGE_ROUTE = 'user-settings';
+    const LOGIN_PAGE_ROUTE = 'login';
 
     public function settingsAction()
     {
         $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        if (!$user) {
+            $this->flashMessenger()->addErrorMessage(MessagesConstants::ACCESS_DENIED_NEED_LOGIN);
+            return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
+        }
+        //Change password
+        $passwordForm = new SettingsPasswordForm(self::FORM_TYPE_CHANGE_PASSWORD);
+        //Change email
+        $emailForm = new SettingsEmailForm(self::FORM_TYPE_CHANGE_EMAIL);
+        $emailForm->setInputFilter(new SettingsEmailFilter($this->getServiceLocator()));
+        //Display Name form
+        $displayNameForm = new SettingsDisplayNameForm(self::FORM_TYPE_CHANGE_DISPLAY_NAME, $this->getServiceLocator());
+        //Avatar form
+        $avatarForm = new SettingsAvatarForm(self::FORM_TYPE_CHANGE_AVATAR);
+        //Language Form
+        $languageForm = new SettingsLanguageForm(self::FORM_TYPE_CHANGE_LANGUAGE,$this->getServiceLocator());
+        //Email Settings
+        $emailSettingsForm = new SettingsEmailSettingsForm(self::FORM_TYPE_CHANGE_EMAIL_SETTINGS, $this->getServiceLocator());
+        //Public Profile
+        $publicProfileForm = new SettingsPublicProfileForm(self::FORM_TYPE_CHANGE_PUBLIC_PROFILE_OPTION, $this->getServiceLocator());
         try {
-            if (!$user) {
-                $this->flashMessenger()->addErrorMessage(MessagesConstants::ACCESS_DENIED_NEED_LOGIN);
-                return $this->redirect()->toRoute('login');
-            }
-            //Change password
-            $passwordForm = new SettingsPasswordForm(self::FORM_TYPE_CHANGE_PASSWORD);
-            //Change email
-            $emailForm = new SettingsEmailForm(self::FORM_TYPE_CHANGE_EMAIL);
-            $emailForm->setInputFilter(new SettingsEmailFilter($this->getServiceLocator()));
-            //Display Name form
-            $displayNameForm = new SettingsDisplayNameForm(self::FORM_TYPE_CHANGE_DISPLAY_NAME, $this->getServiceLocator());
-            //Avatar form
-            $avatarForm = new SettingsAvatarForm(self::FORM_TYPE_CHANGE_AVATAR);
-            //Language Form
-            $languageForm = new SettingsLanguageForm(self::FORM_TYPE_CHANGE_LANGUAGE,$this->getServiceLocator());
-            //Email Settings
-            $emailSettingsForm = new SettingsEmailSettingsForm(self::FORM_TYPE_CHANGE_EMAIL_SETTINGS, $this->getServiceLocator());
-            //Public Profile
-            $publicProfileForm = new SettingsPublicProfileForm(self::FORM_TYPE_CHANGE_PUBLIC_PROFILE_OPTION, $this->getServiceLocator());
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $type = $request->getPost('type');
@@ -91,10 +93,9 @@ class UserController extends AbstractActionController
                             $request->getFiles()->toArray()
                         );
                         $avatarForm->setData($post);
-                        $oldAvatar = clone $user->getAvatar();
                         $defaultAvatarId = !empty($post['default_avatar']) ? $post['default_avatar'] : null;
                         $newAvatar = UserManager::getInstance($this->getServiceLocator())->getUserAvatar($avatarForm, $defaultAvatarId);
-                        if (UserManager::getInstance($this->getServiceLocator())->processChangeAvatarForm($newAvatar, $oldAvatar)) {
+                        if (UserManager::getInstance($this->getServiceLocator())->processChangeAvatarForm($newAvatar)) {
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_AVATAR_SAVED);
                             $success = true;
                         }
@@ -133,13 +134,12 @@ class UserController extends AbstractActionController
                     }
                 }
                 if ($success) {
-                    return $this->redirect()->toRoute('user-settings');
+                    return $this->redirect()->toRoute(self::USER_SETTINGS_PAGE_ROUTE);
                 }
             }
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute('user-settings');
         }
 
         return array(
@@ -153,17 +153,16 @@ class UserController extends AbstractActionController
             'publicProfileForm' => $publicProfileForm
         );
     }
-    //TODO delete facebook app if facebook user
+
     public function deleteAction()
     {
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        if (!$user) {
+            $this->flashMessenger()->addErrorMessage(MessagesConstants::ACCESS_DENIED_NEED_LOGIN);
+            return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
+        }
+        $request = $this->getRequest();
         try {
-            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-            if (!$user) {
-                $this->flashMessenger()->addErrorMessage(MessagesConstants::ACCESS_DENIED_NEED_LOGIN);
-                return $this->redirect()->toRoute('login');
-            }
-            $request = $this->getRequest();
-
             if ($request->isPost()) {
                 $user_id = (int)base64_decode($request->getPost('user_id'));
                 if ($user_id !== $user->getId()){
@@ -172,19 +171,17 @@ class UserController extends AbstractActionController
                 if (UserManager::getInstance($this->getServiceLocator())->deleteAccount($user)){
                     AuthenticationManager::getInstance($this->getServiceLocator())->logout();
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_DELETE_ACCOUNT);
-                    return $this->redirect()->toRoute('login');
+                    return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
                 }
             }
-            return array(
-                'user' => $user
-            );
-        } catch (\FacebookApiException $e) {
-            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute('user-settings');
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute('user-settings');
+            return $this->redirect()->toRoute(self::USER_SETTINGS_PAGE_ROUTE);
         }
+
+        return array(
+            'user' => $user
+        );
     }
     //TODO check callback on live server
     public function deAuthoriseFacebookAppAction()
