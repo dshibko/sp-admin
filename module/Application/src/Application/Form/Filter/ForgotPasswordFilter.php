@@ -5,7 +5,7 @@ namespace Application\Form\Filter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
 
-class LoginInputFilter extends InputFilter
+class ForgotPasswordFilter extends InputFilter
 {
     function __construct()
     {
@@ -23,16 +23,6 @@ class LoginInputFilter extends InputFilter
                     'options' => array(),
                 ),
             )
-        )));
-
-        $this->add($factory->createInput(array(
-            'name'     => 'password',
-            'required' => true,
-        )));
-
-        $this->add($factory->createInput(array(
-            'name'     => 'rememberme',
-            'required' => false,
         )));
     }
 }

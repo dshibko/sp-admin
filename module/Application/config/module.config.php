@@ -40,7 +40,7 @@ return array(
                     ),
                 ),
             ),
-           /* 'login' => array(
+            'login' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/login',
@@ -49,8 +49,63 @@ return array(
                         'action'     => 'login',
                     ),
                 ),
-            ),*/
-
+            ),
+            'logout' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/logout',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Auth',
+                        'action'     => 'logout',
+                    ),
+                ),
+            ),
+            'facebook' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/facebook',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Registration',
+                        'action'     => 'facebookLogin',
+                    ),
+                ),
+            ),
+            'reset' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/reset[/:hash]',
+                    'constraints' => array(
+                        'hash' => '[a-z0-9]*',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Auth',
+                        'action'        => 'reset',
+                    ),
+                ),
+            ),
+            'forgot' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/forgot',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Auth',
+                        'action'        => 'forgot',
+                    ),
+                ),
+            ),
+            'user-settings' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/settings',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'User',
+                        'action'        => 'settings',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -104,6 +159,7 @@ return array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Registration' => 'Application\Controller\RegistrationController',
             'Application\Controller\Auth' => 'Application\Controller\AuthController',
+            'Application\Controller\User' => 'Application\Controller\UserController',
         ),
     ),
     'doctrine' => array(

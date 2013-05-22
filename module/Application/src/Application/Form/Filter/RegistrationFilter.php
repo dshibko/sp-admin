@@ -29,7 +29,7 @@ class RegistrationFilter implements InputFilterAwareInterface
         return $this;
     }
 
-    public function getRepository(){
+    public function getUserRepository(){
         if (null === $this->repository){
             $this->repository = UserDAO::getInstance($this->getServiceLocator())->getRepository();
         }
@@ -122,7 +122,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                     array(
                         'name' => 'DoctrineModule\Validator\NoObjectExists',
                         'options' => array(
-                            'object_repository' =>  $this->getRepository(),
+                            'object_repository' =>  $this->getUserRepository(),
                             'table' => 'users',
                             'fields' => array('email'),
                             'messages' => array(

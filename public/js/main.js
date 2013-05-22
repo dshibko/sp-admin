@@ -5,16 +5,31 @@ var is_iphone = navigator.userAgent.match(/iPhone/i);
 // }
 // document.addEventListener('DOMContentLoaded', loaded);
 
-function is_touch_device() {  
-  try {  
-    document.createEvent("TouchEvent");  
-    return true;  
-  } catch ( e ) {  
-    return false;  
-  }  
+function is_touch_device() {
+    try {
+        document.createEvent("TouchEvent");
+        return true;
+    } catch ( e ) {
+        return false;
+    }
 }
 
 $(document).ready(function () {
+
+    $('#register').validate();
+    $('#settings-change-password').validate();
+    $('#settings-change-email').validate();
+    $('#settings-change-display-name').validate();
+    /******************************START COOKIE BAR*******************************/
+    var cookie_bar_displayed = $.cookie('cookie_bar_displayed');
+    if (!cookie_bar_displayed){
+        $('.cookie-bar').show(function(){
+            $.cookie('cookie_bar_displayed', 1, { expires: 365 * 10,path : "/"}); //Expires in 10 years
+        });
+    }
+    $('.close-cookie-bar').click(function(){
+        $('.cookie-bar').hide();
+    });
 
 // Only do anything if the browser does not support placeholders
     if (!Modernizr.input.placeholder) {
@@ -31,11 +46,11 @@ $(document).ready(function () {
                     $(this).removeClass('placeholder');
                 }
             }).blur(function() {
-                if($(this).val() == '') {
-                    $(this).val($(this).attr('placeholder'));
-                    $(this).addClass('placeholder');
-                }
-            });
+                    if($(this).val() == '') {
+                        $(this).val($(this).attr('placeholder'));
+                        $(this).addClass('placeholder');
+                    }
+                });
         });
 
         // Clean up any placeholders if the form gets submitted
@@ -68,7 +83,7 @@ $(document).ready(function () {
     }
 
 
-        ;(function(window, document, undefined) {
+    ;(function(window, document, undefined) {
         'use strict';
 
         var htmlElement     = document.getElementsByTagName('html')[0],

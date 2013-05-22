@@ -13,12 +13,16 @@ use \DoctrineModule\Authentication\Adapter\ObjectRepository;
 use \Zend\Authentication\AuthenticationService;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Crypt\Password\Bcrypt;
 
 class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-        $e->getApplication()->getServiceManager()->get('translator');
+        $translator = $e->getApplication()->getServiceManager()->get('translator');
+        //TODO set fallback to en_US
+        //TODO set translator for validation
+        //\Zend\Validator\AbstractValidator::setDefaultTranslator($translator);// Set translator for validation
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
@@ -32,6 +36,11 @@ class Module
     public function getAutoloaderConfig()
     {
         return array(
+            'Zend\Loader\ClassMapAutoloader' => array(
+                array(
+                    'Facebook' => 'vendor/facebook/facebook.php',
+                ),
+            ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
@@ -64,6 +73,17 @@ class Module
                     $h->setTranslator($translator);
                     return $h;
                 },
+                'renderFacebookButton' => function($sm) {
+                    $facebook = $sm->getServiceLocator()->get('facebook');
+                    $config = $sm->getServiceLocator()->get('config');
+                    $facebookLoginButton = new \Neoco\View\Helper\FacebookLoginButton();
+                    $facebookLoginButton->setFacebookAPI($facebook)
+                                        ->setScope($config['facebook_permissions'])
+                                        ->setRequest($sm->getServiceLocator()->get('Request'));
+
+
+                    return $facebookLoginButton;
+                }
             )
         );
     }
@@ -83,7 +103,7 @@ class Module
                         'identityProperty' => 'email',
                         'credentialProperty' => 'password',
                         'credentialCallable' => function($identity, $credential) {
-                            return md5($credential); // TODO to define password strategy
+                            return md5($credential);
                         }
                     ));
 
@@ -96,9 +116,20 @@ class Module
                 'Application\Form\RegistrationForm' => function($sm){
                     return new \Application\Form\RegistrationForm($sm);
                 },
+                'Application\Form\SetUpForm' => function($sm){
+                    return new \Application\Form\SetUpForm($sm);
+                },
                 'Application\Form\Filter\RegistrationFilter' => function($sm){
                     return new \Application\Form\Filter\RegistrationFilter($sm);
                 },
+                'facebook' => function($sm){
+                    $config = $sm->get('config');
+                    $facebook = new \Facebook(array(
+                        'appId' => $config['facebook_api_key'],
+                        'secret' => $config['facebook_secret_key']
+                    ));
+                    return $facebook;
+                }
             ),
         );
     }

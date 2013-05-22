@@ -17,7 +17,12 @@
         <!-- Scripts -->
         <?php echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
                                       ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-                                      ->prependFile($this->basePath() . '/js/jquery.min.js') ?>
+                                      ->prependFile($this->basePath() . '/js/main.js')
+                                      ->prependFile($this->basePath() . '/js/jquery.cookie.js')
+                                      ->prependFile($this->basePath() . '/js/jquery.validate.password.js')
+                                      ->prependFile($this->basePath() . '/js/jquery.validate.js')
+                                      ->prependFile($this->basePath() . '/js/jquery.min.js');
+        ?>
 
     </head>
     <body>
@@ -33,12 +38,24 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav">
                             <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
+                            <?php if ($this->getCurrentUser()):?>
+                                <li class=""><a href="<?php echo $this->url('user-settings') ?>"><?php echo $this->translate('Settings') ?></a></li>
+                                <li class=""><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Logout') ?></a></li>
+                            <?php else:?>
+                                <li class=""><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Login') ?></a></li>
+                                <li class=""><a href="<?php echo $this->url('registration') ?>"><?php echo $this->translate('Register') ?></a></li>
+                                <li class=""><?php echo $this->renderFacebookButton();?></a></li>
+                            <?php endif;?>
                         </ul>
                     </div><!--/.nav-collapse -->
                 </div>
             </div>
         </div>
         <div class="container">
+            <div class="cookie-bar" style="display:none;background:red;">
+                This is cookie bar with information about cookies
+                <a href="javascript:void(0);" class="close-cookie-bar"><?php echo $this->translate('Dismiss');?></a>
+            </div>
             <?php echo $this->content; ?>
             <hr>
             <footer>

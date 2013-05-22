@@ -15,12 +15,11 @@ class LanguageDAO extends AbstractDAO {
     /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return RecoveryDAO
+     * @return LanguageDAO
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
         if (self::$instance == null) {
-            $class = __CLASS__;
-            self::$instance = new $class();
+            self::$instance = new LanguageDAO();
             self::$instance->setServiceLocator($serviceLocatorInterface);
         }
         return self::$instance;
@@ -31,5 +30,18 @@ class LanguageDAO extends AbstractDAO {
      */
     function getRepositoryName() {
         return '\Application\Model\Entities\Language';
+    }
+
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     * @throws \Exception
+     */
+    public function getAllLanguages($hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 }

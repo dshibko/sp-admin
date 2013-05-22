@@ -53,4 +53,45 @@ class RecoveryDAO extends AbstractDAO {
         }
     }
 
+    /**
+     * @param string $hash
+     * @param string $date
+     * @return \Application\Model\Entities\Recovery
+     * @throws \Exception
+     */
+    public function checkHashDate($hash, $date = '1H')
+    {
+        try {
+            $now = new \DateTime();
+            $nowSub3 = $now->sub(new \DateInterval('PT' . $date));
+            $qb = $this->getEntityManager()->createQueryBuilder();
+            $qb->select('r')
+                ->from($this->getRepositoryName(), 'r')
+                ->where('r.hash = :hash and r.date >= :date')
+                ->setParameter('hash', $hash)
+                ->setParameter('date', $nowSub3);
+            return $qb->getQuery()->useResultCache(false)->getOneOrNullResult();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param string $hash
+     * @return \Application\Model\Entities\Recovery
+     * @throws \Exception
+     */
+    public function checkUserHash($hash) {
+        try {
+            $qb = $this->getEntityManager()->createQueryBuilder();
+            $qb->select('r')
+                ->from($this->getRepositoryName(), 'r')
+                ->where('r.isActive = 1 and r.hash = :hash')
+                ->setParameter('hash', $hash);
+            return $qb->getQuery()->useResultCache(false)->getOneOrNullResult();
+        } catch (\Exception $e) {
+            throw $e;
+        }
+    }
+
 }

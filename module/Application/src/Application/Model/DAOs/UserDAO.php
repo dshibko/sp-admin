@@ -102,6 +102,23 @@ class UserDAO extends AbstractDAO {
     }
 
     /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\User
+     * @throws \Exception
+     */
+    public function getUserByFacebookId($facebook_id,$hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('u, r, a')
+            ->from($this->getRepositoryName(), 'u')
+            ->join('u.role', 'r')
+            ->join('u.avatar', 'a')
+            ->where('u.facebookId = :id')
+            ->setParameter('id', $facebook_id);
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
+    }
+
+    /**
      * @param \Application\Model\Entities\Season $season
      * @return integer
      */

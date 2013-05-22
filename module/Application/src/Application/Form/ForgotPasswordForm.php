@@ -3,16 +3,16 @@
 namespace Application\Form;
 
 use Zend\Form\Form;
-use \Application\Form\Filter\LoginInputFilter;
+use \Application\Form\Filter\ForgotPasswordFilter;
 
-class LoginForm extends Form {
+class ForgotPasswordForm extends Form {
 
     public function __construct($name = null) {
         parent::__construct('auth');
 
-        $this->setInputFilter(new LoginInputFilter());
+        $this->setInputFilter(new ForgotPasswordFilter());
         $this->setAttribute('method', 'post');
-        $this->setAttribute('class', 'form-vertical login-form');
+
 
         $this->add(array(
             'name' => 'email',
@@ -25,22 +25,14 @@ class LoginForm extends Form {
             ),
         ));
 
+        //CSRF
         $this->add(array(
-            'name' => 'password',
-            'type'  => 'password',
-            'attributes' => array(
-                'placeholder' => 'Password',
-            ),
+            'type' => 'Zend\Form\Element\Csrf',
+            'name' => 'csrf',
             'options' => array(
-                'label' => 'Password',
-            ),
-        ));
-
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Checkbox',
-            'name' => 'rememberme',
-            'options' => array(
-                'label' => 'Remember Me',
+                'csrf_options' => array(
+                    'timeout' => 600
+                )
             )
         ));
 
@@ -48,7 +40,7 @@ class LoginForm extends Form {
             'name' => 'submit',
             'type'  => 'submit',
             'attributes' => array(
-                'value' => 'Sign in',
+                'value' => 'Submit',
                 'id' => 'submitbutton',
             ),
         ));

@@ -54,13 +54,18 @@ class AuthenticationManager extends BasicManager {
             ->setCredentialValue($pwd);
         $result = $this->getAuthService()->authenticate();
         if ($result->isValid()) {
-            if ($remember)
-                $this->getAuthService()->getStorage()->setRememberMe(1);
-            $this->getAuthService()->getStorage()->write($identity);
+            $this->signIn($identity,$remember);
         }
         return $result;
     }
 
+    public function signIn($identity, $remember = false)
+    {
+        if ($remember){
+            $this->getAuthService()->getStorage()->setRememberMe(1);
+        }
+        $this->getAuthService()->getStorage()->write($identity);
+    }
     /**
      * @return void
      */
@@ -98,6 +103,21 @@ class AuthenticationManager extends BasicManager {
         return RecoveryDAO::getInstance($this->getServiceLocator())->checkHash($hash);
     }
 
+    /**
+     * @param string $hash
+     * @return \Application\Model\Entities\Recovery
+     */
+    public function checkUserHash($hash) {
+        return RecoveryDAO::getInstance($this->getServiceLocator())->checkUserHash($hash);
+    }
+
+    /**
+     * @param string $hash
+     * @return \Application\Model\Entities\Recovery
+     */
+    public function checkHashDate($hash, $date = '1H') {
+        return RecoveryDAO::getInstance($this->getServiceLocator())->checkHashDate($hash, $date);
+    }
     /**
      * @param \Application\Model\Entities\Recovery $recovery
      * @param $password
