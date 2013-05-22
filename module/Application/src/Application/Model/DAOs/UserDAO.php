@@ -102,6 +102,7 @@ class UserDAO extends AbstractDAO {
     }
 
     /**
+     * @param bigint $facebook_id
      * @param bool $hydrate
      * @param bool $skipCache
      * @return \Application\Model\Entities\User

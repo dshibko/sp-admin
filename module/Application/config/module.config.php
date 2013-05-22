@@ -106,6 +106,28 @@ return array(
                     ),
                 ),
             ),
+            'delete-account' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/delete',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'User',
+                        'action'        => 'delete',
+                    ),
+                ),
+            ),
+            'deauthorise-facebook-app' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/deauthorise',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'User',
+                        'action'        => 'deAuthoriseFacebookApp',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them

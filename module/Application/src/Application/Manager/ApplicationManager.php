@@ -100,4 +100,16 @@ class ApplicationManager extends BasicManager {
         }
         return $countries;
     }
+
+    //Get languages for select options
+    public function getLanguagesSelectOptions(){
+        $data = $this->getAllLanguages(true);
+        $languages = array();
+        if (!empty($data) && is_array($data)){
+            foreach($data as $language){
+                $languages[$language['id']] = $language['displayName'];
+            }
+        }
+        return $languages;
+    }
 }

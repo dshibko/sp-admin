@@ -20,6 +20,7 @@ $(document).ready(function () {
     $('#settings-change-password').validate();
     $('#settings-change-email').validate();
     $('#settings-change-display-name').validate();
+    $('#settings-change-language').validate();
     /******************************START COOKIE BAR*******************************/
     var cookie_bar_displayed = $.cookie('cookie_bar_displayed');
     if (!cookie_bar_displayed){
@@ -30,8 +31,8 @@ $(document).ready(function () {
     $('.close-cookie-bar').click(function(){
         $('.cookie-bar').hide();
     });
-
-// Only do anything if the browser does not support placeholders
+    /******************************* END COOKIE BAR*****************************/
+    
     if (!Modernizr.input.placeholder) {
 
         // Format all elements with the placeholder attribute and insert it as a value

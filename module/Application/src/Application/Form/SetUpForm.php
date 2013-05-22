@@ -63,17 +63,6 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
         return $language_id;
     }
 
-    private function getLanguages(){
-        $data = ApplicationManager::getInstance($this->getServiceLocator())->getAllLanguages(true);
-        $languages = array();
-        if (!empty($data) && is_array($data)){
-            foreach($data as $language){
-                $languages[$language['id']] = $language['displayName'];
-            }
-        }
-        return $languages;
-    }
-
     private function getUserCountryId()
     {
         $country_id = self::DEFAULT_COUNTRY_ID;
@@ -110,7 +99,7 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
             'options' => array(
                 'label' => 'Language',
                 'empty_option' => 'Please Select',
-                'value_options' => $this->getLanguages(),
+                'value_options' => ApplicationManager::getInstance($this->getServiceLocator())->getLanguagesSelectOptions(),
             ),
             'attributes' => array(
                 'value' => $this->getUserLanguageId()

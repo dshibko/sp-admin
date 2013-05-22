@@ -159,4 +159,17 @@ class AuthenticationManager extends BasicManager {
         return $this->storage;
     }
 
+    /**
+     *
+     *   @param string $old_identity
+     *   @param string $new_identity
+     *   @return AuthenticationManager
+    */
+    public function changeIdentity($old_identity, $new_identity)
+    {
+        $this->getAuthService()->getStorage()->clear($old_identity);
+        $this->getAuthService()->getStorage()->write($new_identity);
+        return $this;
+    }
+
 }
