@@ -40,32 +40,113 @@
     width: 34.1em;
 }
 
-.lt-ie8 .article-image-left figure {
+.lt-ie8 .article-image.article-image-left figure {
     float: none;
     display: block;
     margin-left: 0;
 }
-.lt-ie8 .article-image-right figure {
+.lt-ie8 .article-image.article-image-right figure {
     display: inline;
     float: right;
     right: 0;
 }
-.lt-ie8 .article-image-left figure img {
+.lt-ie8 .article-image.article-image-left figure img {
     margin-left: 0;
 }
 
-.lt-ie8 .article-image-left > div, .lt-ie8 .article-image-right > div {
+.lt-ie8 .article-image.article-image-left > div, .lt-ie8 .article-image.article-image-right > div {
     float: left;
     margin: 11.6em 3em 3em 8em;
     padding: 0;
     padding-bottom: 3em;
     width: 40em;
 }
-.lt-ie8 .article-image-left > div {
+.lt-ie8 .article-image.article-image-left > div {
   float: right;
    margin: 11.6em 8em 3em 3em;
    padding: 0;
    padding-bottom: 3em;
 }
 
+.lt-ie9.ie8 .ideal-file-upload {
+  line-height: 2;
+}
 
+
+
+
+.lt-ie8  .registration-section form div {
+    display: block;
+    width: 600px;
+    margin: 0 auto 0.5em;
+}
+.lt-ie8  .registration-section form div:first-child, .lt-ie8  .registration-section form div.ideal-full-width {
+  width: 100%;
+}
+.lt-ie8  .registration-section label {
+    display: inline-block;
+    text-align: center;
+    vertical-align: top;
+}
+.lt-ie8  .registration-section label {
+    display: inline-block;
+    width: 11.9em;
+    color: #4e4e4e;
+    text-align: left;
+    font: normal 1.7em/2 "ProximaNova-Reg", Helvetica, Arial;
+}
+.lt-ie8 .registration-section input[type="text"], .lt-ie8  .registration-section input[type="password"], .lt-ie8 .registration-section input[type="file"] {
+    padding: 0 0.4em;
+    width: 16.7em;
+    height: 2.2em;
+    border: 1px solid #d8d8d8;
+    background: #fff;
+    color: #606060;
+    text-align: left;
+    font: normal 1.6em/2 "ProximaNova-Reg", Helvetica, Arial;
+}
+.lt-ie8  .registration-section select {
+    width: 17.6em;
+    height: 2.2em;
+    border: 1px solid #d8d8d8;
+    background: #fff;
+    color: #606060;
+    font: normal 1.6em/2 "ProximaNova-Reg", Helvetica, Arial;
+}
+.lt-ie8 .registration-section .date-birth select {
+    margin: 0 1.1em 0 0;
+}
+.lt-ie8 .registration-section .date-birth select.day {
+    width: 3.2em;
+}
+.lt-ie8 .registration-section .date-birth select.month {
+    width: 8.3em;
+}
+.lt-ie8 .registration-section .date-birth select.year {
+    margin: 0;
+    width: 4.3em;
+}
+.lt-ie8 .registration-section .desktopLabel {
+  padding: 0 2em 0 0 ;
+}
+.lt-ie8 .registration-section input[type="checkbox"] {
+    margin: 0.3em 0 0;
+    vertical-align: top;
+}
+.lt-ie8 .registration-section .email-settings label {
+  float: none;
+  display: block;
+  width: 100%;
+}
+.lt-ie8 .registration-section .email-settings span {
+    margin: 0 0 1em 1em;
+    min-width: 26em;
+    font: normal 1.1em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+}
+.lt-ie8 .registration-section label.error {
+    display: block;
+    margin: 0 0 0.2em 17.2em;
+    color: red;
+    text-align: left;
+    font: normal 1.2em/2 "ProximaNova-Reg", Helvetica, Arial;
+}

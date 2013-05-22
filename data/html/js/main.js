@@ -1,10 +1,5 @@
 var is_iphone = navigator.userAgent.match(/iPhone/i);
 
-// function loaded() {
-//   document.addEventListener('touchmove', function(e){ e.preventDefault(); });
-// }
-// document.addEventListener('DOMContentLoaded', loaded);
-
 function is_touch_device() {  
   try {  
     document.createEvent("TouchEvent");  
@@ -65,7 +60,7 @@ $(document).ready(function () {
 
     if ( navigator.userAgent.indexOf(" Safari/") != -1 && navigator.userAgent.indexOf(" Version/5") != -1) {
         $('body').addClass("safari5");
-    }
+    };
 
 
         ;(function(window, document, undefined) {
