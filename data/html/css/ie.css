@@ -40,28 +40,28 @@
     width: 34.1em;
 }
 
-.lt-ie8 .article-image-left figure {
+.lt-ie8 .article-image.article-image-left figure {
     float: none;
     display: block;
     margin-left: 0;
 }
-.lt-ie8 .article-image-right figure {
+.lt-ie8 .article-image.article-image-right figure {
     display: inline;
     float: right;
     right: 0;
 }
-.lt-ie8 .article-image-left figure img {
+.lt-ie8 .article-image.article-image-left figure img {
     margin-left: 0;
 }
 
-.lt-ie8 .article-image-left > div, .lt-ie8 .article-image-right > div {
+.lt-ie8 .article-image.article-image-left > div, .lt-ie8 .article-image.article-image-right > div {
     float: left;
     margin: 11.6em 3em 3em 8em;
     padding: 0;
     padding-bottom: 3em;
     width: 40em;
 }
-.lt-ie8 .article-image-left > div {
+.lt-ie8 .article-image.article-image-left > div {
   float: right;
    margin: 11.6em 8em 3em 3em;
    padding: 0;
