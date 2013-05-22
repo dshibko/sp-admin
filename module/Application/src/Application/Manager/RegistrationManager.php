@@ -52,7 +52,7 @@ class RegistrationManager extends BasicManager
     {
         $data['role'] = RoleDAO::getInstance($this->getServiceLocator())->findOneById(self::MEMBER_ROLE_ID);
         $data['language'] = LanguageDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_LANGUAGE_ID);
-        $data['region'] = RegionDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_REGION_ID);
+        $data['region'] = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
         $data['country'] = CountryDAO::getInstance($this->getServiceLocator())->findOneById($data['country']);
         $data['date'] = new \DateTime();
         $data['date_of_birth'] = new \DateTime($data['date_of_birth']);
@@ -75,13 +75,13 @@ class RegistrationManager extends BasicManager
     {
 
         $country = CountryDAO::getInstance($this->getServiceLocator())->findOneById($data['region']);
-        $region = $country->getRegion();
-        $region_id = self::DEFAULT_REGION_ID;
-        if (!empty($region) && $region instanceof Region){
-            $region_id = $region->getId();
-        }
 
-        $data['region'] = RegionDAO::getInstance($this->getServiceLocator())->findOneById($region_id);
+        $region = $country->getRegion();
+        if (!empty($region) && $region instanceof Region)
+            $data['region'] = $region;
+        else
+            $data['region'] = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
+
         $data['active'] = self::ACTIVE_USER_STATUS;
         $data['language'] = LanguageDAO::getInstance($this->getServiceLocator())->findOneById($data['language']);
         $data['country'] = $country;

@@ -5,7 +5,6 @@ namespace Application\Controller;
 use Neoco\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Manager\ExceptionManager;
-use Application\Helper\Avatar;
 use Application\Manager\RegistrationManager;
 use Application\Manager\ApplicationManager;
 use Application\Form\SetUpForm;
@@ -24,14 +23,13 @@ class RegistrationController extends AbstractActionController
     //TODO set permission only for guests
     public function indexAction()
     {
+        $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
         try {
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
             //if member - redirect to dashboard
             if (!empty($user)) {
                 return $this->redirect()->toRoute('home');
             }
-
-            $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
             $form->get('submit')->setValue('Register');
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -47,25 +45,35 @@ class RegistrationController extends AbstractActionController
                     if (!empty($data['avatar'])){
                         RegistrationManager::getInstance($this->getServiceLocator())->register($data);
                         //Login registered user
-                        AuthenticationManager::getInstance($this->getServiceLocator())->signIn($data['email'], false);
+                        AuthenticationManager::getInstance($this->getServiceLocator())->signIn($data['email']);
                         //TODO send welcome email
                         return $this->redirect()->toRoute(self::SETUP_PAGE_ROUTE);
                     }
                 }
             }
-            return new ViewModel(array(
-                'form' => $form,
-                'default_avatar' => $this->getRequest()->getPost('default_avatar', null),
-                'flashMessages' => $this->flashMessenger()->getMessages(),
-            ));
+
+//            return new ViewModel(array(
+////                'default_avatar' => $this->getRequest()->getPost('default_avatar', null),
+////                'flashMessages' => $this->flashMessenger()->getMessages(),
+//            ));
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute('registration');
+//            return $this->redirect()->toRoute('registration');
         }
+
+        $viewModel = new ViewModel(array(
+            'form' => $form,
+        ));
+
+        $viewModel->setTerminal(true);
+        return $viewModel;
+
     }
 
     public function setUpAction()
     {
+
+        $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
 
         try {
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
@@ -75,11 +83,10 @@ class RegistrationController extends AbstractActionController
                 return $this->redirect()->toRoute('login');
             }
             //if active user - redirect to dashboard
-            if ($user->getActive()) {
+            if ($user->getIsActive()) {
                 return $this->redirect()->toRoute('home');
             }
 
-            $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
             $request = $this->getRequest();
 
             if ($request->isPost()) {
@@ -91,14 +98,17 @@ class RegistrationController extends AbstractActionController
                 }
             }
 
-            return new ViewModel(array(
-                'form' => $form,
-                'flashMessages' => $this->flashMessenger()->getMessages()
-            ));
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute(self::SETUP_PAGE_ROUTE);
         }
+
+        $viewModel = new ViewModel(array(
+            'form' => $form,
+        ));
+
+        $viewModel->setTerminal(true);
+        return $viewModel;
+
     }
 
     //TODO move to auth controller
@@ -128,13 +138,10 @@ class RegistrationController extends AbstractActionController
             }
 
             $currentUser = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-            $route = self::SETUP_PAGE_ROUTE;
-            if ($facebookUser->getActive()) {
-                $route = self::HOME_ROUTE;
-            }
+            $route = ($facebookUser->getIsActive()) ? self::HOME_ROUTE : self::SETUP_PAGE_ROUTE;
             if (empty($currentUser)){
                 //Sign In facebook user
-                AuthenticationManager::getInstance($this->getServiceLocator())->signIn($facebookUser->getEmail(), false);
+                AuthenticationManager::getInstance($this->getServiceLocator())->signIn($facebookUser->getEmail());
             }else{ // User connect account to facebook
                 $route = self::USER_SETTINGS_PAGE_ROUTE;
                 $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT);

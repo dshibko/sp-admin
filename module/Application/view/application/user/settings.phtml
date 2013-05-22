@@ -158,3 +158,11 @@ $this->headTitle($title);
 <div class="delete-account">
     <a href="<?php echo $this->url('delete-account');?>"><?php echo $this->translate('Delete Account');?></a>
 </div>
+<script type="text/javascript">
+$(document).ready(function () {
+    $('#settings-change-password').validate();
+    $('#settings-change-email').validate();
+    $('#settings-change-display-name').validate();
+    $('#settings-change-language').validate();
+});
+</script>

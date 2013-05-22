@@ -111,7 +111,7 @@ class FacebookManager extends BasicManager
      *  Register new user
      *
      * @param array $fUser
-     * @return Application\Model\Entities\User
+     * @return \Application\Model\Entities\User
      */
     public function process(array $fUser)
     {

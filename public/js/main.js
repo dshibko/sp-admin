@@ -16,11 +16,6 @@ function is_touch_device() {
 
 $(document).ready(function () {
 
-    $('#register').validate();
-    $('#settings-change-password').validate();
-    $('#settings-change-email').validate();
-    $('#settings-change-display-name').validate();
-    $('#settings-change-language').validate();
     /******************************START COOKIE BAR*******************************/
     var cookie_bar_displayed = $.cookie('cookie_bar_displayed');
     if (!cookie_bar_displayed){

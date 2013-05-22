@@ -17,16 +17,16 @@ class User extends BasicObject {
     /**
      * @var bool
      *
-     * @ORM\Column(name="active", type="boolean")
+     * @ORM\Column(name="is_active", type="boolean")
      */
-    private $active = 0;
+    private $isActive = false;
 
     /**
      * @var bool
      *
      * @ORM\Column(name="is_public", type="boolean")
      */
-    private $isPublic = 1;
+    private $isPublic = true;
     /**
      * @var string
      *
@@ -615,18 +615,18 @@ class User extends BasicObject {
     /**
      * @param boolean $active
      */
-    public function setActive($active)
+    public function setIsActive($active)
     {
-        $this->active = $active;
+        $this->isActive = $active;
         return $this;
     }
 
     /**
      * @return boolean
      */
-    public function getActive()
+    public function getIsActive()
     {
-        return $this->active;
+        return $this->isActive;
     }
 
     /**
@@ -726,7 +726,7 @@ class User extends BasicObject {
             $this->setRole($data['role']);
         }
         if (isset($data['active'])){
-            $this->setActive($data['active']);
+            $this->setIsActive($data['active']);
         }
         if (isset($data['facebook_id'])){
             $this->setFacebookId($data['facebook_id']);

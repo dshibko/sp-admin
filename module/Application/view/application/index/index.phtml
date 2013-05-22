@@ -55,7 +55,7 @@
 
                 <figcaption>
                     <?=$this->content->getHeadlineCopy()?>
-                    <a href="" class="cta"><?=$this->content->getRegisterButtonCopy()?></a>
+                    <a href="<?=$this->url("registration")?>" class="cta"><?=$this->content->getRegisterButtonCopy()?></a>
                 </figcaption>
             </figure>
         </div>
@@ -121,7 +121,7 @@
             </article>
         <?php endforeach; ?>
         <aside class="ready-try">
-            <p>Ready to try? <a href="" class="cta"><?=$this->content->getRegisterButtonCopy()?></a></p>
+            <p>Ready to try? <a href="<?=$this->url("registration")?>" class="cta"><?=$this->content->getRegisterButtonCopy()?></a></p>
         </aside>
     </section>
 
@@ -171,6 +171,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
 
+<script src="/js/jquery.cookie.js"></script>
 <script src="js/login-popup.js"></script>
 <script src="js/vendor/picturefill.js"></script>
 <script src="js/main.js"></script>

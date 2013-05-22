@@ -1,3 +1,18 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?php echo $this->headScript()->prependFile($this->basePath() . '/js/main.js')
+    ->prependFile($this->basePath() . '/js/jquery.cookie.js')
+    ->prependFile($this->basePath() . '/js/jquery.validate.password.js')
+    ->prependFile($this->basePath() . '/js/jquery.validate.js')
+    ->prependFile($this->basePath() . '/js/vendor/jquery-1.9.1.min.js');
+    ?>
+</head>
+<body>
+
 <?php
 $title = $this->translate('Registration');
 $this->headTitle($title);
@@ -62,3 +77,10 @@ echo $this->form()->closeTag();
 
 ?>
 <?php echo $this->renderFacebookButton();?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#register').validate();
+    });
+</script>
+</body>
+</html>

@@ -15,13 +15,11 @@
                         ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
 
         <!-- Scripts -->
-        <?php echo $this->headScript()->prependFile($this->basePath() . '/js/html5.js', 'text/javascript', array('conditional' => 'lt IE 9',))
-                                      ->prependFile($this->basePath() . '/js/bootstrap.min.js')
-                                      ->prependFile($this->basePath() . '/js/main.js')
+        <?php echo $this->headScript()->prependFile($this->basePath() . '/js/main.js')
                                       ->prependFile($this->basePath() . '/js/jquery.cookie.js')
                                       ->prependFile($this->basePath() . '/js/jquery.validate.password.js')
                                       ->prependFile($this->basePath() . '/js/jquery.validate.js')
-                                      ->prependFile($this->basePath() . '/js/jquery.min.js');
+                                      ->prependFile($this->basePath() . '/js/vendor/jquery-1.9.1.min.js');
         ?>
 
     </head>

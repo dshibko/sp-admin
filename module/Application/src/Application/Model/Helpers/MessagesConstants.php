@@ -41,6 +41,7 @@ class MessagesConstants
     const SUCCESS_NEW_EMAIL_SAVED = 'New email successfully saved.';
     const SUCCESS_NEW_DISPLAY_NAME_SAVED = 'New display name successfully saved.';
     const SUCCESS_NEW_AVATAR_SAVED = 'New avatar successfully saved';
+    const SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT = '';// todo
 
     const INFO_LOGGED_OUT = "You've been logged out.";
     const INFO_OUT_OF_SEASON = "There is no season in play.";
