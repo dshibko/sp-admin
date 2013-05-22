@@ -41,9 +41,10 @@ class RegistrationController extends AbstractActionController
                 );
                 $form->setData($post)->prepareData();
                 if ($form->isValid()) {
+                    $data = $form->getData();
                     $defaultAvatarId = !empty($post['default_avatar'])  ? $post['default_avatar'] : null;
-                    $data = UserManager::getInstance($this->getServiceLocator())->processUserAvatar($form, $defaultAvatarId);
-                    if (!empty($data)){
+                    $data['avatar'] = UserManager::getInstance($this->getServiceLocator())->getUserAvatar($form, $defaultAvatarId);
+                    if (!empty($data['avatar'])){
                         RegistrationManager::getInstance($this->getServiceLocator())->register($data);
                         //Login registered user
                         AuthenticationManager::getInstance($this->getServiceLocator())->signIn($data['email'], false);

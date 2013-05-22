@@ -18,7 +18,9 @@ class AvatarHelper
 {
     const IMAGE_MAX_SIZE = '2MB';
     const DEFAULT_AVATAR_ID = 1;
-
+    /**
+     *   @var File
+    **/
     protected $data;
     protected $errorMessages = array();
     protected $adapter;
@@ -150,7 +152,7 @@ class AvatarHelper
         return $this->data;
     }
 
-    public function setNewAvatar()
+    public function populate()
     {
         $avatarData = array(
             'original_image_path' => $this->getPath(),
@@ -160,7 +162,7 @@ class AvatarHelper
             'tiny_image_path' => $this->getPath()
         );
 
-        $avatar = new EntityAvatar();
+        $avatar = ($this->getAvatar() && !$this->getAvatar()->getIsDefault()) ? $this->getAvatar() : new EntityAvatar();
         $avatar->populate($avatarData);
         $this->setAvatar($avatar);
         return $this;
@@ -201,8 +203,7 @@ class AvatarHelper
     {
         if (!$this->getUseDefault()) { //Get upload avatar
             $path = ImageManager::getInstance($this->getServiceLocator())->saveUploadedImage($this->getData(), 'avatar/small');
-            $this->setPath($path);
-            $this->setNewAvatar();
+            $this->setPath($path)->populate();
         } else {   //Get default avatar
             $avatar_id = self::DEFAULT_AVATAR_ID;
             if ($this->getDefaultAvatarId()){
@@ -224,8 +225,6 @@ class AvatarHelper
             $image = $imagine->open($file);
             $image->thumbnail($size, ImageInterface::THUMBNAIL_INSET)->save($file);
         }
-
-
         return $this;
     }
 }

@@ -91,7 +91,10 @@ class UserController extends AbstractActionController
                             $request->getFiles()->toArray()
                         );
                         $avatarForm->setData($post);
-                        if (UserManager::getInstance($this->getServiceLocator())->processChangeAvatarForm($avatarForm, $post)) {
+                        $oldAvatar = clone $user->getAvatar();
+                        $defaultAvatarId = !empty($post['default_avatar']) ? $post['default_avatar'] : null;
+                        $newAvatar = UserManager::getInstance($this->getServiceLocator())->getUserAvatar($avatarForm, $defaultAvatarId);
+                        if (UserManager::getInstance($this->getServiceLocator())->processChangeAvatarForm($newAvatar, $oldAvatar)) {
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_AVATAR_SAVED);
                             $success = true;
                         }
@@ -175,12 +178,15 @@ class UserController extends AbstractActionController
             return array(
                 'user' => $user
             );
+        } catch (\FacebookApiException $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('user-settings');
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
             return $this->redirect()->toRoute('user-settings');
         }
     }
-    //Callback for deauthorise facebook app
+    //TODO check callback on live server
     public function deAuthoriseFacebookAppAction()
     {
         $response = $this->getResponse();
@@ -195,9 +201,11 @@ class UserController extends AbstractActionController
             if (empty($user)){
                 throw new \Exception(MessagesConstants::ERROR_CANNOT_GET_USER_BY_FACEBOOK_ID . var_dump($signedRequest['user_id'], true));
             }
-            UserManager::getInstance($this->getServiceLocator())->deleteAccount($user);
+            UserManager::getInstance($this->getServiceLocator())->deleteAccount($user, false);
 
             $response->setContent('ok');
+        } catch (\FacebookApiException $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }

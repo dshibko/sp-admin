@@ -150,45 +150,50 @@ class UserManager extends BasicManager {
         return false;
     }
 
-    /**  //TODO ??????????????????????????????????????????????????????
+    /**
      *   Proccess change avatar on settings page
-     *   @param  \Application\Form\SettingsAvatarForm $form
-     *   @param array $post
+     *   @param  \Application\Model\Entities\Avatar $newAvatar
+     *   @param  \Application\Model\Entities\Avatar $oldAvatar
      *   @return bool
      */
-    public function processChangeAvatarForm(\Application\Form\SettingsAvatarForm $form, $post)
+    public function processChangeAvatarForm(\Application\Model\Entities\Avatar $newAvatar, \Application\Model\Entities\Avatar $oldAvatar)
     {
-        $defaultAvatarId = !empty($post['default_avatar']) ? $post['default_avatar'] : null;
-        $data = $this->processUserAvatar($form, $defaultAvatarId);
-        if (!empty($data['avatar']) && $data['avatar'] instanceof \Application\Model\Entities\Avatar){
+        if (!empty($newAvatar)){
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-            $this->deleteAvatarImages($user->getAvatar());
-            $user->setAvatar($data['avatar']);
+            if (!$oldAvatar->getIsDefault()){
+                $this->deleteAvatarImages($oldAvatar);
+            }
+            //TODO Delete record if use default avatar
+            /*if ($newAvatar->getIsDefault() && !$oldAvatar->getIsDefault()){
+                AvatarDAO::getInstance($this->getServiceLocator())->remove($oldAvatar);
+            } */
+            $user->setAvatar($newAvatar);
             UserDAO::getInstance($this->getServiceLocator())->save($user);
             return true;
         }
         return false;
     }
     /**
-     *    //TODO ??????????????????????????????????????????????????????
      *    @param \Zend\Form\Form $form
      *    @param int $defaultAvatarId
-     *    @return array
+     *    @return \Application\Model\Entities\Avatar
     */
-    public function processUserAvatar(\Zend\Form\Form $form, $defaultAvatarId)
+    public function getUserAvatar(\Zend\Form\Form $form, $defaultAvatarId)
     {
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
         $avatarHelper = new AvatarHelper($form->get('avatar'), $this->getServiceLocator());
+        if (!empty($user) && $user instanceof \Application\Model\Entities\User){
+            $avatarHelper->setAvatar($user->getAvatar());
+        }
         $avatarHelper->setDefaultAvatarId(!empty($defaultAvatarId) ? $defaultAvatarId : null);
         $form->isValid();
         if ($avatarHelper->validate()) {
-            $data = $form->getData();
             $avatarHelper->save()->resize();
-            $data['avatar'] = $avatarHelper->getAvatar();
         } else {
             $form->setMessages(array('avatar' => $avatarHelper->getErrorMessages()));
             return false;
         }
-        return $data;
+        return $avatarHelper->getAvatar();
     }
 
     /**
@@ -229,9 +234,11 @@ class UserManager extends BasicManager {
     }
     /**
      *   Delete User account
-     *
+     *   @param Application\Model\Entities\User $user
+     *   @param bool $removeFacebookApp
+     *   @return bool
      */
-    public function deleteAccount(\Application\Model\Entities\User $user)
+    public function deleteAccount(\Application\Model\Entities\User $user, $removeFacebookApp = true)
     {
         //TODO remove predictions, etc all user data
         $avatar = $user->getAvatar();
@@ -239,6 +246,11 @@ class UserManager extends BasicManager {
             $this->deleteAvatarImages($avatar);
         } else {
             $user->setAvatar(null);
+        }
+        if ($removeFacebookApp && $user->getFacebookId()){
+            //remove facebook application
+            $facebook = $this->getServiceLocator()->get('facebook');
+            $facebook->api('/'.$user->getFacebookId(). '/permissions', 'DELETE', array('access_token' => $user->getFacebookAccessToken()));
         }
         UserDAO::getInstance($this->getServiceLocator())->remove($user);
         return true;

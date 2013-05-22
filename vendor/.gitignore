@@ -1,5 +1,10 @@
 !.gitignore
 .composer
 composer
+doctrine
+symfony
 zendframework
+zf-commons
+imagine
 autoload.php
+bin

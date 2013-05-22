@@ -23,13 +23,13 @@ class RegistrationManager extends BasicManager
     const ACTIVE_USER_STATUS = 1;
     const DEFAULT_AVATAR_ID = 1;
     /**
-     * @var UserManager
+     * @var RegistrationManager
      */
     private static $instance;
     /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return UserManager
+     * @return RegistrationManager
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface)
     {
