@@ -22,6 +22,8 @@ $first = true;
         }
         if ($page->isActive(true))
             $classes [] = 'active';
+        $props = $page->getCustomProperties();
+        $showSubMenu = array_key_exists('sub-menu', $props) ? $props['sub-menu'] : false;
     ?>
     <li<?=empty($classes) ? '' : (' class="' . implode(" ", $classes) . '"')?>>
         <a href="<?=$page->getHref()?>">
@@ -32,7 +34,21 @@ $first = true;
             <?php if ($page->isActive(true)) : ?>
                 <span class="selected"></span>
             <?php endif;?>
+            <?php if ($showSubMenu) : ?>
+                <span class="arrow "></span>
+            <?php endif;?>
         </a>
+        <?php if ($showSubMenu) : ?>
+            <ul class="sub-menu">
+                <?php foreach($page as $subPage): ?>
+                    <li <?=$subPage->isActive(true) ? 'class="active"' : ''?>>
+                        <a href="<?=$subPage->getHref()?>">
+                            <?=$this->translate($subPage->getTitle())?>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
     </li>
 <?php endforeach; ?>
 </ul>

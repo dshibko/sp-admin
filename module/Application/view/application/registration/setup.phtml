@@ -1,1 +1,15 @@
-hello setup page
+<?php
+$title = $this->translate('Set Up');
+$this->headTitle($title);
+?>
+
+<h1><?php echo $this->escapeHtml($title);?></h1>
+<?php $this->renderMessages();?>
+<?php
+
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', $this->url('setup'));
+echo $this->form()->openTag($form);
+echo $this->formCollection($form);
+echo $this->form()->closeTag();

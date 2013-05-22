@@ -20,8 +20,7 @@ class CountryDAO extends AbstractDAO {
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
         if (self::$instance == null) {
-            $class = __CLASS__;
-            self::$instance = new $class();
+            self::$instance = new CountryDAO();
             self::$instance->setServiceLocator($serviceLocatorInterface);
         }
         return self::$instance;
@@ -42,9 +41,25 @@ class CountryDAO extends AbstractDAO {
      */
     public function getAllCountries($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select(array('c.id', 'c.name'))
+        $qb->select('c')
             ->from($this->getRepositoryName(), 'c');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
-
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\Country
+     * @throws \Exception
+     */
+    public function getCountryByISOCode($isoCode, $hydrate = false, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('c, r, l')
+            ->from($this->getRepositoryName(), 'c')
+            ->join('c.region', 'r')
+            ->join('c.language', 'l')
+            ->where('c.isoCode = :iso_code')
+            ->setParameter('iso_code', $isoCode);
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
+    }
 }

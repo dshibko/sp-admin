@@ -9,6 +9,9 @@ use \Application\Model\Entities\User;
 use \Application\Model\DAOs\UserDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
+use \Application\Model\DAOs\LanguageDAO;
+use \Application\Model\DAOs\RegionDAO;
+use \Application\Model\DAOs\CountryDAO;
 
 class ApplicationManager extends BasicManager {
 
@@ -67,4 +70,46 @@ class ApplicationManager extends BasicManager {
         return $this->currentSeason;
     }
 
+    public function getAllRegions($hydrate = false)
+    {
+        return RegionDAO::getInstance($this->getServiceLocator())->getAllRegions($hydrate);
+    }
+
+    public function getAllLanguages($hydrate = false)
+    {
+        return LanguageDAO::getInstance($this->getServiceLocator())->getAllLanguages($hydrate);
+    }
+    public function getAllCountries($hydrate = false)
+    {
+        return CountryDAO::getInstance($this->getServiceLocator())->getAllCountries($hydrate);
+    }
+
+    public function getCountryByISOCode($isoCode, $hydrate = false)
+    {
+        return CountryDAO::getInstance($this->getServiceLocator())->getCountryByISOCode($isoCode, $hydrate);
+    }
+    //Get countries for select options
+    public function getCountriesSelectOptions()
+    {
+        $countries = array();
+        $data = $this->getAllCountries(true);
+        if (!empty($data) && is_array($data)){
+            foreach($data as $country){
+                $countries[$country['id']] = $country['name'];
+            }
+        }
+        return $countries;
+    }
+
+    //Get languages for select options
+    public function getLanguagesSelectOptions(){
+        $data = $this->getAllLanguages(true);
+        $languages = array();
+        if (!empty($data) && is_array($data)){
+            foreach($data as $language){
+                $languages[$language['id']] = $language['displayName'];
+            }
+        }
+        return $languages;
+    }
 }

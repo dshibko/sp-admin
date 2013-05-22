@@ -15,6 +15,19 @@ use \Neoco\Model\BasicObject;
 class User extends BasicObject {
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive = false;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_public", type="boolean")
+     */
+    private $isPublic = true;
+    /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=5, nullable=false)
@@ -73,7 +86,7 @@ class User extends BasicObject {
     /**
      * @var \Avatar
      *
-     * @ORM\ManyToOne(targetEntity="Avatar", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Avatar", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
      * })
@@ -96,6 +109,19 @@ class User extends BasicObject {
      */
     private $id;
 
+    /**
+     * @var bigint
+     *
+     * @ORM\Column(name="facebook_id", type="bigint", nullable=true, options={"unsigned"=true})
+     */
+    private $facebookId;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="facebook_access_token", type="string", length=300, nullable=true)
+     */
+    private $facebookAccessToken;
     /**
      * @var \Role
      *
@@ -173,14 +199,14 @@ class User extends BasicObject {
     public function setTitle($title)
     {
         $this->title = $title;
-    
+
         return $this;
     }
 
     /**
      * Get title
      *
-     * @return string 
+     * @return string
      */
     public function getTitle()
     {
@@ -196,14 +222,14 @@ class User extends BasicObject {
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
-    
+
         return $this;
     }
 
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -219,14 +245,14 @@ class User extends BasicObject {
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
-    
+
         return $this;
     }
 
     /**
      * Get lastName
      *
-     * @return string 
+     * @return string
      */
     public function getLastName()
     {
@@ -242,14 +268,14 @@ class User extends BasicObject {
     public function setEmail($email)
     {
         $this->email = $email;
-    
+
         return $this;
     }
 
     /**
      * Get email
      *
-     * @return string 
+     * @return string
      */
     public function getEmail()
     {
@@ -265,14 +291,14 @@ class User extends BasicObject {
     public function setPassword($password)
     {
         $this->password = $password;
-    
+
         return $this;
     }
 
     /**
      * Get password
      *
-     * @return string 
+     * @return string
      */
     public function getPassword()
     {
@@ -288,14 +314,14 @@ class User extends BasicObject {
     public function setBirthday($birthday)
     {
         $this->birthday = $birthday;
-    
+
         return $this;
     }
 
     /**
      * Get birthday
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getBirthday()
     {
@@ -311,14 +337,14 @@ class User extends BasicObject {
     public function setGender($gender)
     {
         $this->gender = $gender;
-    
+
         return $this;
     }
 
     /**
      * Get gender
      *
-     * @return string 
+     * @return string
      */
     public function getGender()
     {
@@ -334,14 +360,14 @@ class User extends BasicObject {
     public function setDisplayName($displayName)
     {
         $this->displayName = $displayName;
-    
+
         return $this;
     }
 
     /**
      * Get displayName
      *
-     * @return string 
+     * @return string
      */
     public function getDisplayName()
     {
@@ -357,7 +383,7 @@ class User extends BasicObject {
     public function setAvatar(\Application\Model\Entities\Avatar $avatar)
     {
         $this->avatar = $avatar;
-    
+
         return $this;
     }
 
@@ -380,14 +406,14 @@ class User extends BasicObject {
     public function setFavouritePlayerId($favouritePlayerId)
     {
         $this->favouritePlayerId = $favouritePlayerId;
-    
+
         return $this;
     }
 
     /**
      * Get favouritePlayerId
      *
-     * @return integer 
+     * @return integer
      */
     public function getFavouritePlayerId()
     {
@@ -397,7 +423,7 @@ class User extends BasicObject {
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -413,7 +439,7 @@ class User extends BasicObject {
     public function setRole(\Application\Model\Entities\Role $role = null)
     {
         $this->role = $role;
-    
+
         return $this;
     }
 
@@ -586,6 +612,74 @@ class User extends BasicObject {
         return $this->leagueUsers;
     }
 
+    /**
+     * @param boolean $active
+     */
+    public function setIsActive($active)
+    {
+        $this->isActive = $active;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param string $facebookAccessToken
+     */
+    public function setFacebookAccessToken($facebookAccessToken)
+    {
+        $this->facebookAccessToken = $facebookAccessToken;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFacebookAccessToken()
+    {
+        return $this->facebookAccessToken;
+    }
+
+    /**
+     * @param \Application\Model\Entities\bigint $facebookId
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookId = $facebookId;
+        return $this;
+    }
+
+    /**
+     * @return \Application\Model\Entities\bigint
+     */
+    public function getFacebookId()
+    {
+        return $this->facebookId;
+    }
+
+    /**
+     *  @param boolean $isPublic
+     *  @return \Application\Model\Entities\User
+     */
+    public function setIsPublic($isPublic)
+    {
+        $this->isPublic = $isPublic;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsPublic()
+    {
+        return $this->isPublic;
+    }
+
     public function populate(array $data = array()){
 
         if (isset($data['title'])){
@@ -630,6 +724,18 @@ class User extends BasicObject {
         }
         if (isset($data['role']) && $data['role'] instanceof \Application\Model\Entities\Role){
             $this->setRole($data['role']);
+        }
+        if (isset($data['active'])){
+            $this->setIsActive($data['active']);
+        }
+        if (isset($data['facebook_id'])){
+            $this->setFacebookId($data['facebook_id']);
+        }
+        if (isset($data['facebook_access_token'])){
+            $this->setFacebookAccessToken($data['facebook_access_token']);
+        }
+        if (isset($data['is_public'])){
+            $this->setIsPublic($data['is_public']);
         }
     }
 

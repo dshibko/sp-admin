@@ -48,7 +48,7 @@ class LoginForm extends Form {
             'name' => 'submit',
             'type'  => 'submit',
             'attributes' => array(
-                'value' => 'Login',
+                'value' => 'Sign in',
                 'id' => 'submitbutton',
             ),
         ));

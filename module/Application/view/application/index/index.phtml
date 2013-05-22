@@ -1,1 +1,179 @@
-Hey! I gonna be a start page!
+<?php echo $this->doctype(); ?>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Score Predictor</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" href="css/ie.css">
+    <script src="js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
+    <![endif]-->
+</head>
+<body class="home-page" style="background: #560a24;">
+<!--[if lt IE 7]>
+<p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+<![endif]-->
+
+<div id="wrapper">
+    <header role="banner">
+        <a href="/" class="logo">
+            <img src="img/fcbarcelona-355.png" alt="FCBARCELONA Score Predictor">
+        </a>
+
+        <div  class="banner">
+            <div data-alt="FCBARCELONA Score Predictor Banner" data-picture="">
+                <div data-src="<?=$this->content->getHeroBackgroundImage()->getWidth480()?>"></div>
+                <div data-media="(min-width: 480px)" data-src="<?=$this->content->getHeroBackgroundImage()->getWidth480()?>"></div>
+                <div data-media="(min-width: 600px)" data-src="<?=$this->content->getHeroBackgroundImage()->getWidth600()?>"></div>
+                <div data-media="(min-width: 768px)" data-src="<?=$this->content->getHeroBackgroundImage()->getWidth1024()?>"></div>
+                <div data-media="(min-width: 1025px)" data-src="<?=$this->content->getHeroBackgroundImage()->getWidth1280()?>"></div>
+                <noscript><img src="<?=$this->content->getHeroBackgroundImage()->getWidth1024()?>" alt="FCBARCELONA Score Predictor Banner" /></noscript>
+                <!--[if (lt IE 9) & (!IEMobile)]>
+                <div data-src="<?=$this->content->getHeroBackgroundImage()->getWidth1280()?>"></div>
+                <![endif]-->
+            </div>
+            <figure>
+                <div class="banner-image-top">
+                    <div data-alt="FCBARCELONA Score Predictor Banner" data-picture="">
+                        <div data-src="<?=$this->content->getHeroForegroundImage()->getWidth480()?>"></div>
+                        <div data-media="(min-width: 480px)" data-src="<?=$this->content->getHeroForegroundImage()->getWidth480()?>"></div>
+                        <div data-media="(min-width: 600px)" data-src="<?=$this->content->getHeroForegroundImage()->getWidth600()?>"></div>
+                        <div data-media="(min-width: 768px)" data-src="<?=$this->content->getHeroForegroundImage()->getWidth1024()?>"></div>
+                        <div data-media="(min-width: 1025px)" data-src="<?=$this->content->getHeroForegroundImage()->getWidth1280()?>"></div>
+                        <noscript><img src="<?=$this->content->getHeroForegroundImage()->getWidth1024()?>" alt="FCBARCELONA Score Predictor Banner" /></noscript>
+                        <!--[if (lt IE 9) & (!IEMobile)]>
+                        <div data-src="<?=$this->content->getHeroForegroundImage()->getWidth1280()?>"></div>
+                        <![endif]-->
+                    </div>
+                </div>
+
+                <figcaption>
+                    <?=$this->content->getHeadlineCopy()?>
+                    <a href="<?=$this->url("registration")?>" class="cta"><?=$this->content->getRegisterButtonCopy()?></a>
+                </figcaption>
+            </figure>
+        </div>
+
+        <div class="login-area clearfix">
+            <p>
+                <span><?=$this->translate('Already a member?')?></span>
+                <a href="" class="login-with-facebook"><span>Login with Facebook</span></a>
+            </p>
+            <details open="open" class="popup">
+                <summary class="login-popup-button"><span>Regular Login</span></summary>
+                <div class="login-form popup-content">
+                    <form action="">
+                        <p class="field">
+                            <label for="email">Email</label>
+                            <input id="email" name="email" required="required" type="text" placeholder="Email">
+                        </p>
+                        <p class="field">
+                            <label for="password">Password</label>
+                            <input id="password" name="password" required="required" type="password" placeholder="*****">
+                        </p>
+                        <p class="keeplogin">
+                            <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping">
+                            <label for="loginkeeping">Remember me</label>
+                        </p>
+                        <p class="signin-button">
+                            <input type="submit" value="Sign in">
+                        </p>
+                        <p>
+                            <a href="">Forgotten password</a>
+                        </p>
+                        <p>
+                            Not a member?
+                            <a href="">Register</a>
+                        </p>
+                    </form>
+                    <button class="close popup-close">Close</button>
+                </div>
+            </details>
+        </div>
+
+    </header>
+    <section role="main">
+        <?php foreach ($this->blocks as $block) : ?>
+            <article class="article-image-<?=$block['order'] % 2 == 1 ? 'right' : 'left'?> clearfix user-content">
+                <div>
+                    <h2><?=$block['heading']?></h2>
+                    <p><?=$block['description']?></p>
+                </div>
+                <figure>
+                    <div data-alt="<?=$block['heading']?>" data-picture="">
+                        <div data-src="<?=$block['foregroundImage']['width480']?>"></div>
+                        <div data-media="(min-width: 480px)" data-src="<?=$block['foregroundImage']['width480']?>"></div>
+                        <div data-media="(min-width: 600px)" data-src="<?=$block['foregroundImage']['width600']?>"></div>
+                        <div data-media="(min-width: 768px)" data-src="<?=$block['foregroundImage']['width1024']?>"></div>
+                        <div data-media="(min-width: 1025px)" data-src="<?=$block['foregroundImage']['width1280']?>"></div>
+                        <noscript><img src="<?=$block['foregroundImage']['width1024']?>" alt="<?=$block['heading']?>" /></noscript>
+                        <!--[if (lt IE 9) & (!IEMobile)]>
+                        <div data-src="<?=$block['foregroundImage']['width1280']?>"></div>
+                        <![endif]-->
+                    </div>
+                </figure>
+            </article>
+        <?php endforeach; ?>
+        <aside class="ready-try">
+            <p>Ready to try? <a href="<?=$this->url("registration")?>" class="cta"><?=$this->content->getRegisterButtonCopy()?></a></p>
+        </aside>
+    </section>
+
+    <footer role="contentinfo" class="clearfix" style="background: #350616;">
+        <article>
+            <img src="img/footer-img.png" alt="">
+            <h2>Stay up to date with FC Barcelona</h2>
+            <p>See behind the scenes, match updates <br>and exclusive content</p>
+            <ul>
+                <li>
+                    <a href="" class="facebook-link">Like xxx on Facebook</a>
+                </li>
+                <li>
+                    <a href="" class="twitter-link">Follow xxx on Twitter</a>
+                </li>
+            </ul>
+        </article>
+        <div>
+            <nav class="clearfix">
+                <ul>
+                    <li>
+                        <a href="">Terms</a>
+                    </li>
+                    <li>
+                        <a href="">Contact us</a>
+                    </li>
+                    <li>
+                        <a href="">Privacy</a>
+                    </li>
+                    <li>
+                        <a href="">Visit our main site</a>
+                    </li>
+                    <li>
+                        <a href="">Cookies policy</a>
+                    </li>
+                    <li>
+                        <p>&copy; FC Barcelona 2012</p>
+                    </li>
+                </ul>
+            </nav>
+            <p>v.2.0 Produced by Neoco</p>
+        </div>
+    </footer>
+</div>
+
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+
+<script src="/js/jquery.cookie.js"></script>
+<script src="js/login-popup.js"></script>
+<script src="js/vendor/picturefill.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

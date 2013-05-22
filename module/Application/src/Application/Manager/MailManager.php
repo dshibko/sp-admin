@@ -36,7 +36,7 @@ class MailManager extends BasicManager {
 
     public function sendPasswordRecoveryEmail($email, $hash, $fromAdmin = false) {
         $router = $this->getServiceLocator()->get('router');
-        $route = $fromAdmin ? 'admin-forgot' : 'forgot';
+        $route = $fromAdmin ? 'admin-forgot' : 'reset';
         $url = $router->assemble(array('hash' => $hash), array('name' => $route, 'force_canonical' => true));
         return $this->sendEmail($email, sprintf(self::PASSWORD_RECOVERY_EMAIL_SUBJECT, $this->getAppName()), self::PASSWORD_RECOVERY_TEMPLATE, array('url' => $url));
     }

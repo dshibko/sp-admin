@@ -4,3 +4,25 @@ $this->headTitle($title);
 ?>
 
 <h1><?php echo $this->escapeHtml($title);?></h1>
+<?php $this->renderMessages();?>
+<?php
+
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', $this->url('login', array('action' => 'authenticate')));
+echo $this->formElementerrors($form->get('email'));
+echo $this->formElementerrors($form->get('password'));
+echo $this->form()->openTag($form);
+echo $this->formLabel($form->get('email'));
+echo $this->formElement($form->get('email'));
+echo $this->formLabel($form->get('password'));
+echo $this->formElement($form->get('password'));
+echo $this->formLabel($form->get('rememberme'));
+echo $this->formElement($form->get('rememberme'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+?>
+
+<a href="<?php echo $this->url('forgot');?>"><?php echo $this->translate('Forgotten password'); ?></a>
+<a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Not a member?');?></a>
+<?php echo $this->renderFacebookButton();?>

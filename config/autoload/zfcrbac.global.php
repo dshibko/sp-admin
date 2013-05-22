@@ -11,7 +11,7 @@ return array(
             'ZfcRbac\Firewall\Route' => array(
                 array('route' => 'admin-login', 'roles' => 'Guest'),
                 array('route' => 'admin-forgot', 'roles' => 'Guest'),
-                array('route' => 'admin', 'roles' => 'Regional Manager'),
+                array('route' => 'admin', 'roles' => 'Regional Manager')
             ),
         ),
         'providers' => array(

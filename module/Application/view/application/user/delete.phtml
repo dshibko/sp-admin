@@ -1,0 +1,13 @@
+<?php
+$title = $this->translate('Delete Account');
+$this->headTitle($title);
+?>
+
+<h1><?php echo $this->escapeHtml($title);?></h1>
+<?php $this->renderMessages();?>
+<p><?php echo $this->translate('Are you sure?');?></p>
+<form action="<?php echo $this->url('delete-account');?>" method="post">
+    <input type="hidden" value="<?php echo base64_encode($this->user->getId());?>" name="user_id"/>
+    <input type="submit" value="<?php echo $this->translate('Yes');?>" name="delete_account"/>
+    <a href="<?php echo $this->url('user-settings');?>"><?php echo $this->translate('No');?></a>
+</form>

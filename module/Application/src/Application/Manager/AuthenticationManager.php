@@ -54,13 +54,18 @@ class AuthenticationManager extends BasicManager {
             ->setCredentialValue($pwd);
         $result = $this->getAuthService()->authenticate();
         if ($result->isValid()) {
-            if ($remember)
-                $this->getAuthService()->getStorage()->setRememberMe(1);
-            $this->getAuthService()->getStorage()->write($identity);
+            $this->signIn($identity,$remember);
         }
         return $result;
     }
 
+    public function signIn($identity, $remember = false)
+    {
+        if ($remember){
+            $this->getAuthService()->getStorage()->setRememberMe(1);
+        }
+        $this->getAuthService()->getStorage()->write($identity);
+    }
     /**
      * @return void
      */
@@ -98,6 +103,21 @@ class AuthenticationManager extends BasicManager {
         return RecoveryDAO::getInstance($this->getServiceLocator())->checkHash($hash);
     }
 
+    /**
+     * @param string $hash
+     * @return \Application\Model\Entities\Recovery
+     */
+    public function checkUserHash($hash) {
+        return RecoveryDAO::getInstance($this->getServiceLocator())->checkUserHash($hash);
+    }
+
+    /**
+     * @param string $hash
+     * @return \Application\Model\Entities\Recovery
+     */
+    public function checkHashDate($hash, $date = '1H') {
+        return RecoveryDAO::getInstance($this->getServiceLocator())->checkHashDate($hash, $date);
+    }
     /**
      * @param \Application\Model\Entities\Recovery $recovery
      * @param $password
@@ -137,6 +157,19 @@ class AuthenticationManager extends BasicManager {
         if ($this->storage == null)
             $this->storage = $this->getServiceLocator()->get('AuthStorage');
         return $this->storage;
+    }
+
+    /**
+     *
+     *   @param string $old_identity
+     *   @param string $new_identity
+     *   @return AuthenticationManager
+    */
+    public function changeIdentity($old_identity, $new_identity)
+    {
+        $this->getAuthService()->getStorage()->clear($old_identity);
+        $this->getAuthService()->getStorage()->write($new_identity);
+        return $this;
     }
 
 }

@@ -5,58 +5,155 @@ namespace Application\Controller;
 use Neoco\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Manager\ExceptionManager;
-use Application\Helper\Avatar;
 use Application\Manager\RegistrationManager;
+use Application\Manager\ApplicationManager;
+use Application\Form\SetUpForm;
+use Application\Manager\FacebookManager;
+use \Application\Manager\AuthenticationManager;
+use \Zend\Authentication\Result;
+use Application\Model\Helpers\MessagesConstants;
+use Application\Manager\UserManager;
 
-class RegistrationController extends AbstractActionController {
-    //TODO set default avatar on load
-    public function indexAction() {
-       // $facebook = $this->getServiceLocator()->get('facebook');
-        try{
-            $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
+class RegistrationController extends AbstractActionController
+{
+    const SETUP_PAGE_ROUTE = 'setup';
+    const USER_SETTINGS_PAGE_ROUTE = 'user-settings';
+    const HOME_ROUTE = 'home';
+
+    //TODO set permission only for guests
+    public function indexAction()
+    {
+        $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
+        try {
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            //if member - redirect to dashboard
+            if (!empty($user)) {
+                return $this->redirect()->toRoute('home');
+            }
             $form->get('submit')->setValue('Register');
             $request = $this->getRequest();
-
-            /* if ($facebook->getUser()){
-                $user_id = $facebook->getUser();
-            }*/
             if ($request->isPost()) {
-                $form->setInputFilter($this->getServiceLocator()->get('Application\Form\Filter\RegistrationFilter')->getInputFilter());
                 $post = array_merge_recursive(
                     $request->getPost()->toArray(),
                     $request->getFiles()->toArray()
                 );
                 $form->setData($post)->prepareData();
                 if ($form->isValid()) {
-                    $avatar = new Avatar($form->get('avatar'), $this->getServiceLocator());
-                    $avatar->setDefaultAvatar(!empty($post['default_avatar']) ? $post['default_avatar'] : null);
-                    if ($avatar->validate()){
-                        $data = $form->getData();
-                        $data['avatar'] =  $avatar->save()->resize()->getPath();
+                    $data = $form->getData();
+                    $defaultAvatarId = !empty($post['default_avatar'])  ? $post['default_avatar'] : null;
+                    $data['avatar'] = UserManager::getInstance($this->getServiceLocator())->getUserAvatar($form, $defaultAvatarId);
+                    if (!empty($data['avatar'])){
                         RegistrationManager::getInstance($this->getServiceLocator())->register($data);
+                        //Login registered user
+                        AuthenticationManager::getInstance($this->getServiceLocator())->signIn($data['email']);
                         //TODO send welcome email
-                        //TODO redirect to set-up page
-                        //TODO sign in user
-                        //TODO set inactive user
-                        return $this->redirect()->toRoute('setup');
-                    } else {
-                        $form->setMessages(array('avatar' => $avatar->getErrorMessages()));
+                        return $this->redirect()->toRoute(self::SETUP_PAGE_ROUTE);
                     }
                 }
             }
-        }catch (\Exception $e){
-            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this); //TODO doesn't set flash messages
+
+//            return new ViewModel(array(
+////                'default_avatar' => $this->getRequest()->getPost('default_avatar', null),
+////                'flashMessages' => $this->flashMessenger()->getMessages(),
+//            ));
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+//            return $this->redirect()->toRoute('registration');
         }
 
-        return new ViewModel(array(
+        $viewModel = new ViewModel(array(
             'form' => $form,
-            'facebook' => null,
-            'default_avatar' => $this->getRequest()->getPost('default_avatar', null),
-            'flashMessages' => $this->flashMessenger()->getMessages()
         ));
+
+        $viewModel->setTerminal(true);
+        return $viewModel;
+
     }
 
-    public function setUpAction(){
+    public function setUpAction()
+    {
+
+        $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
+
+        try {
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+
+            //if guest - redirect to login page
+            if (empty($user)) {
+                return $this->redirect()->toRoute('login');
+            }
+            //if active user - redirect to dashboard
+            if ($user->getIsActive()) {
+                return $this->redirect()->toRoute('home');
+            }
+
+            $request = $this->getRequest();
+
+            if ($request->isPost()) {
+                $form->setData($request->getPost());
+                if ($form->isValid()) {
+                    $data = $form->getData();
+                    RegistrationManager::getInstance($this->getServiceLocator())->setUp($data);
+                    return $this->redirect()->toRoute('home');
+                }
+            }
+
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+        }
+
+        $viewModel = new ViewModel(array(
+            'form' => $form,
+        ));
+
+        $viewModel->setTerminal(true);
+        return $viewModel;
+
+    }
+
+    //TODO move to auth controller
+    public function facebookLoginAction()
+    {
+       try {
+
+            $code = $this->getRequest()->getQuery('code');
+            if (empty($code)) {
+                throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
+            }
+            ;
+            $facebook = $this->getServiceLocator()->get('facebook');
+            if (!$facebook->getUser()) {
+                throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
+            }
+
+            $user = $facebook->api('/me');
+            if (empty($user['id'])) {
+                throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
+            }
+
+            $facebookUser = FacebookManager::getInstance($this->getServiceLocator())->setFacebookAPI($facebook)->process($user);
+
+            if (empty($facebookUser)) {
+                throw new \Exception(MessagesConstants::FAILED_UPDATING_DATA_FROM_FACEBOOK);
+            }
+
+            $currentUser = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            $route = ($facebookUser->getIsActive()) ? self::HOME_ROUTE : self::SETUP_PAGE_ROUTE;
+            if (empty($currentUser)){
+                //Sign In facebook user
+                AuthenticationManager::getInstance($this->getServiceLocator())->signIn($facebookUser->getEmail());
+            }else{ // User connect account to facebook
+                $route = self::USER_SETTINGS_PAGE_ROUTE;
+                $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT);
+            }
+            return $this->redirect()->toRoute($route);
+        } catch(\FacebookApiException $e){
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('login');
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('registration');
+        }
 
     }
 

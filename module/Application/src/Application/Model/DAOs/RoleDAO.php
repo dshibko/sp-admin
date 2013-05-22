@@ -15,12 +15,11 @@ class RoleDAO extends AbstractDAO {
     /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return RecoveryDAO
+     * @return RoleDAO
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
         if (self::$instance == null) {
-            $class = __CLASS__;
-            self::$instance = new $class();
+            self::$instance = new RoleDAO();
             self::$instance->setServiceLocator($serviceLocatorInterface);
         }
         return self::$instance;

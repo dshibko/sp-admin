@@ -1,17 +1,25 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <?php echo $this->headScript()->prependFile($this->basePath() . '/js/main.js')
+    ->prependFile($this->basePath() . '/js/jquery.cookie.js')
+    ->prependFile($this->basePath() . '/js/jquery.validate.password.js')
+    ->prependFile($this->basePath() . '/js/jquery.validate.js')
+    ->prependFile($this->basePath() . '/js/vendor/jquery-1.9.1.min.js');
+    ?>
+</head>
+<body>
+
 <?php
 $title = $this->translate('Registration');
 $this->headTitle($title);
 ?>
 
 <h1><?php echo $this->escapeHtml($title);?></h1>
-<?php if(!empty($flashMessages)) : ?>
-<ul>
-    <?php foreach ($flashMessages as $msg) : ?>
-    <li><?php echo $msg; ?></li>
-    <?php endforeach; ?>
-</ul>
-<?php endif; ?>
-
+<?php $this->renderMessages();?>
 <?php
 
 $form = $this->form;
@@ -24,8 +32,14 @@ echo $this->formRow($form->get('first_name'));
 echo $this->formRow($form->get('last_name'));
 echo $this->formRow($form->get('email'));
 echo $this->formRow($form->get('confirm_email'));
-echo $this->formRow($form->get('password'));
-echo $this->formRow($form->get('confirm_password'));
+echo $this->formRow($form->get('password'));?>
+<div class="password-meter">
+    <div class="password-meter-message"> </div>
+    <div class="password-meter-bg">
+        <div class="password-meter-bar"></div>
+    </div>
+</div>
+<?php echo $this->formRow($form->get('confirm_password'));
 echo $this->formRow($form->get('country'));
 echo $this->formRow($form->get('day'));
 echo $this->formRow($form->get('month'));
@@ -35,21 +49,20 @@ echo $this->formRow($form->get('gender'));
 echo $this->formRow($form->get('display_name'));
 echo $this->formRow($form->get('avatar'));
 ?>
-<?php //TODO set const for default images; ?>
 <label>
-    <input type="radio" value="/img/avatar/small/user_default_1.jpg" <?php echo (is_null($this->default_avatar) || $this->default_avatar == '/img/avatar/small/user_default_1.jpg') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="<?php echo $this->getConstant('default_avatar_1_id');?>" <?php echo (is_null($this->default_avatar) || $this->default_avatar == $this->getConstant('default_avatar_1_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_1.jpg" alt="Default avatar #1">
 </label>
 <label>
-    <input type="radio" value="/img/avatar/small/user_default_2.jpg" <?php echo ($this->default_avatar == '/img/avatar/small/user_default_2.jpg') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="<?php echo $this->getConstant('default_avatar_2_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_2_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_2.jpg" alt="Default avatar #2">
 </label>
 <label>
-    <input type="radio" value="/img/avatar/small/user_default_3.jpg" <?php echo ($this->default_avatar == '/img/avatar/small/user_default_3.jpg') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="<?php echo $this->getConstant('default_avatar_3_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_3_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_3.jpg" alt="Default avatar #3">
 </label>
 <label>
-    <input type="radio" value="/img/avatar/small/user_default_4.jpg" <?php echo ($this->default_avatar == '/img/avatar/small/user_default_4.jpg') ? 'checked="checked"' : '';?> name="default_avatar"/>
+    <input type="radio" value="<?php echo $this->getConstant('default_avatar_4_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_4_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
     <img src="/img/avatar/small/user_default_4.jpg" alt="Default avatar #4">
 </label>
 
@@ -63,7 +76,11 @@ echo $this->formSubmit($form->get('submit'));
 echo $this->form()->closeTag();
 
 ?>
-<!--a href="<?php /*echo $this->facebook->getLoginUrl(array(
-    'scope' => 'email,user_location,user_birthday,friends_birthday,user_education_history,user_likes,friends_likes,user_location,friends_location,user_relationships,user_relationship_details,user_status,user_work_history,friends_work_history,publish_actions',
-    'display' => 'popup'
-))*/;?>">Facebook Registration</a-->
+<?php echo $this->renderFacebookButton();?>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#register').validate();
+    });
+</script>
+</body>
+</html>
