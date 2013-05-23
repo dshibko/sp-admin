@@ -70,6 +70,9 @@ $(document).ready(function () {
 
 
     if($(".popup").size()!=0) { $(".popup").Popup();}
+    $(".login-popup-button").click(function(event) {
+        return false;
+    });
 
     if ( navigator.userAgent.indexOf(" Safari/") != -1 && navigator.userAgent.indexOf(" Version/5") != -1) {
         $('body').addClass("safari5");
