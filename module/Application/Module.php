@@ -96,6 +96,7 @@ class Module
             'Zend\Loader\ClassMapAutoloader' => array(
                 array(
                     'Facebook' => 'vendor/facebook/facebook.php',
+                    'I18n_Pofile' => 'vendor/poparser/I18n_Pofile.php'
                 ),
             ),
             'Zend\Loader\StandardAutoloader' => array(
@@ -191,7 +192,11 @@ class Module
                         'secret' => $config['facebook_secret_key']
                     ));
                     return $facebook;
+                },
+                'poparser' => function($sm){
+                     return new \I18n_Pofile();
                 }
+
             ),
         );
     }
