@@ -44,6 +44,7 @@ class RegistrationController extends AbstractActionController
                     $data = $form->getData();
                     $defaultAvatarId = !empty($post['default_avatar'])  ? $post['default_avatar'] : null;
                     $data['avatar'] = UserManager::getInstance($this->getServiceLocator())->getUserAvatar($form, $defaultAvatarId);
+
                     if (!empty($data['avatar'])){
                         RegistrationManager::getInstance($this->getServiceLocator())->register($data);
                         //Login registered user

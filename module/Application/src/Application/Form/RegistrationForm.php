@@ -16,7 +16,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
     const MS = 'Ms';
     const MISS = 'Miss';
     const MRS = 'Mrs';
-
+    const DEFAULT_YEAR = 1985;
     protected $captcha;
     protected $serviceLocator;
 
@@ -85,8 +85,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'name' => 'title',
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
+                'disable_inarray_validator' => true,
                 'label' => 'Title',
-                'empty_option' => 'Please select',
+                'empty_option' => '&ndash; Please select &ndash;',
                 'value_options' => array(
                     self::MR => self::MR,
                     self::MRS => self::MRS,
@@ -106,9 +107,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'First Name',
             ),
             'attributes' => array(
-                'class' => 'required',
+                'class' => 'required error',
                 'type' => 'text',
-                'maxlength' => RegistrationFilter::NAME_MAX_LENGTH
+                'maxlength' => RegistrationFilter::NAME_MAX_LENGTH,
             )
         ));
 
@@ -119,7 +120,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'Last Name',
             ),
             'attributes' => array(
-                'class' => 'required',
+                'class' => 'required error',
                 'maxlength' => RegistrationFilter::NAME_MAX_LENGTH,
                 'type' => 'text',
             )
@@ -132,7 +133,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'Email',
             ),
             'attributes' => array(
-                'class' => 'required email',
+                'class' => 'required email error',
                 'id' => 'registration-email',
                 'maxlength' => RegistrationFilter::EMAIL_MAX_LENGTH,
                 'type' => 'text',
@@ -146,9 +147,8 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'Confirm Email',
             ),
             'attributes' => array(
-                'class' => 'required email',
+                'class' => 'required email error',
                 'maxlength' => RegistrationFilter::EMAIL_MAX_LENGTH,
-                'equalTo' => '#registration-email',
                 'type' => 'text'
             )
         ));
@@ -164,6 +164,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'minlength' => RegistrationFilter::PASSWORD_MIN_LENGTH,
                 'maxlength' => RegistrationFilter::PASSWORD_MAX_LENGTH,
                 'type' => 'password',
+                'id' => 'registration-password'
             )
         ));
         //Confirm Password
@@ -186,8 +187,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'name' => 'country',
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
+                'disable_inarray_validator' => true,
                 'label' => 'Country',
-                'empty_option' => 'Please select',
+                'empty_option' => '&ndash; Please select &ndash;',
                 'value_options' => ApplicationManager::getInstance($this->getServiceLocator())->getCountriesSelectOptions()
             ),
             'attributes' => array(
@@ -203,6 +205,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'name' => 'day',
             'options' => array(
                 'value_options' => $this->getDays()
+            ),
+            'attributes' => array(
+                'class' => 'valid day'
             )
         ));
         //Month
@@ -211,6 +216,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'name' => 'month',
             'options' => array(
                 'value_options' => $this->getMonths()
+            ),
+            'attributes' => array(
+                'class' => 'valid month'
             )
         ));
         //Year
@@ -218,7 +226,10 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'type' => 'Zend\Form\Element\Select',
             'name' => 'year',
             'options' => array(
-                'value_options' => $this->getYears()
+                'value_options' => $this->getYears(),
+            ),
+            'attributes' => array(
+                'class' => 'valid year'
             )
         ));
         $this->add(array(
@@ -226,6 +237,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'attributes' => array(
                 'type' => 'hidden',
             ),
+            'options' => array(
+                'label' => 'Date of Birth',
+            )
         ));
         /******************End Date of Birth***********/
         //Gender
@@ -234,7 +248,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
                 'label' => 'Gender',
-                'empty_option' => 'Please select',
+                'empty_option' => '&ndash; Please select &ndash;',
                 'value_options' => array(
                     'male' => 'Male',
                     'female' => 'Female'
@@ -319,10 +333,12 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
         // Submit
         $this->add(array(
             'name' => 'submit',
+            'type' => 'Zend\Form\Element\Button',
             'attributes' => array(
                 'type' => 'submit',
                 'value' => 'Register',
                 'id' => 'submitbutton',
+
             ),
         ));
 

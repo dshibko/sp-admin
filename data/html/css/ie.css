@@ -39,6 +39,10 @@
 .lt-ie9.ie8  details .login-form {
     width: 34.1em;
 }
+.lt-ie9 aside.find-out-more {
+  width: 253px;
+  height: 65px;
+}
 
 .lt-ie8 .article-image.article-image-left figure {
     float: none;
