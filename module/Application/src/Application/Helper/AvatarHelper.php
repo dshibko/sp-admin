@@ -162,7 +162,7 @@ class AvatarHelper
             'tiny_image_path' => $this->getPath()
         );
 
-        $avatar = ($this->getAvatar() && !$this->getAvatar()->getIsDefault()) ? $this->getAvatar() : new EntityAvatar();
+        $avatar = new EntityAvatar();
         $avatar->populate($avatarData);
         $this->setAvatar($avatar);
         return $this;
@@ -205,10 +205,7 @@ class AvatarHelper
             $path = ImageManager::getInstance($this->getServiceLocator())->saveUploadedImage($this->getData(), 'avatar/small');
             $this->setPath($path)->populate();
         } else {   //Get default avatar
-            $avatar_id = self::DEFAULT_AVATAR_ID;
-            if ($this->getDefaultAvatarId()){
-                $avatar_id  = $this->getDefaultAvatarId();
-            }
+            $avatar_id = ($this->getDefaultAvatarId()) ? $this->getDefaultAvatarId() : self::DEFAULT_AVATAR_ID;
             $avatar = AvatarDAO::getInstance($this->getServiceLocator())->findOneById($avatar_id);
             $this->setAvatar($avatar);
         }

@@ -49,13 +49,13 @@ class FacebookLoginButton extends AbstractHelper
      * @param  string $key
      * @return string
      */
-    public function __invoke()
+    public function __invoke($label = 'Connect with Facebook')
     {
         $uri = $this->getRequest()->getUri();
         $base = sprintf('%s://%s', $uri->getScheme(), $uri->getHost());
         return '<a href="' .$this->getFacebookAPI()->getLoginUrl(array(
             'scope' => $this->getScope(),
             'redirect_uri' => $base.'/facebook'
-        )).'">Connect with Facebook</a>';
+        )).'" class="login-with-facebook"><span>'.$label.'</span></a>';
     }
 }

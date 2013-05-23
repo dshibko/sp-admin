@@ -153,22 +153,20 @@ class UserManager extends BasicManager {
     /**
      *   Proccess change avatar on settings page
      *   @param  \Application\Model\Entities\Avatar $newAvatar
-     *   @param  \Application\Model\Entities\Avatar $oldAvatar
      *   @return bool
      */
-    public function processChangeAvatarForm(\Application\Model\Entities\Avatar $newAvatar, \Application\Model\Entities\Avatar $oldAvatar)
+    public function processChangeAvatarForm(\Application\Model\Entities\Avatar $newAvatar)
     {
         if (!empty($newAvatar)){
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            $oldAvatar = $user->getAvatar();
+            $user->setAvatar($newAvatar);
+            UserDAO::getInstance($this->getServiceLocator())->save($user, false);
             if (!$oldAvatar->getIsDefault()){
                 $this->deleteAvatarImages($oldAvatar);
+                AvatarDAO::getInstance($this->getServiceLocator())->remove($oldAvatar, false);
             }
-            //TODO Delete record if use default avatar
-            /*if ($newAvatar->getIsDefault() && !$oldAvatar->getIsDefault()){
-                AvatarDAO::getInstance($this->getServiceLocator())->remove($oldAvatar);
-            } */
-            $user->setAvatar($newAvatar);
-            UserDAO::getInstance($this->getServiceLocator())->save($user);
+            UserDAO::getInstance($this->getServiceLocator())->flush();
             return true;
         }
         return false;
@@ -180,11 +178,7 @@ class UserManager extends BasicManager {
     */
     public function getUserAvatar(\Zend\Form\Form $form, $defaultAvatarId)
     {
-        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
         $avatarHelper = new AvatarHelper($form->get('avatar'), $this->getServiceLocator());
-        if (!empty($user) && $user instanceof \Application\Model\Entities\User){
-            $avatarHelper->setAvatar($user->getAvatar());
-        }
         $avatarHelper->setDefaultAvatarId(!empty($defaultAvatarId) ? $defaultAvatarId : null);
         $form->isValid();
         if ($avatarHelper->validate()) {
@@ -234,11 +228,10 @@ class UserManager extends BasicManager {
     }
     /**
      *   Delete User account
-     *   @param Application\Model\Entities\User $user
-     *   @param bool $removeFacebookApp
+     *   @param \Application\Model\Entities\User $user
      *   @return bool
      */
-    public function deleteAccount(\Application\Model\Entities\User $user, $removeFacebookApp = true)
+    public function deleteAccount(\Application\Model\Entities\User $user)
     {
         //TODO remove predictions, etc all user data
         $avatar = $user->getAvatar();
@@ -247,7 +240,7 @@ class UserManager extends BasicManager {
         } else {
             $user->setAvatar(null);
         }
-        if ($removeFacebookApp && $user->getFacebookId()){
+        if ($user->getFacebookId()){
             //remove facebook application
             $facebook = $this->getServiceLocator()->get('facebook');
             $facebook->api('/'.$user->getFacebookId(). '/permissions', 'DELETE', array('access_token' => $user->getFacebookAccessToken()));

@@ -63,36 +63,35 @@
         <div class="login-area clearfix">
             <p>
                 <span><?=$this->translate('Already a member?')?></span>
-                <a href="" class="login-with-facebook"><span>Login with Facebook</span></a>
+                <?php  echo $this->renderFacebookButton($this->translate('Login with Facebook'));?>
             </p>
             <details open="open" class="popup">
-                <summary class="login-popup-button"><span>Regular Login</span></summary>
+                <summary class="login-popup-button"><span><?php echo $this->translate('Regular Login');?></span></summary>
                 <div class="login-form popup-content">
-                    <form action="">
+                    <form action="<?php echo $this->url('login');?>" method="post">
                         <p class="field">
-                            <label for="email">Email</label>
+                            <label for="email"><?php echo $this->translate('Email');?></label>
                             <input id="email" name="email" required="required" type="text" placeholder="Email">
                         </p>
                         <p class="field">
-                            <label for="password">Password</label>
+                            <label for="password"><?php echo $this->translate('Password');?></label>
                             <input id="password" name="password" required="required" type="password" placeholder="*****">
                         </p>
                         <p class="keeplogin">
                             <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping">
-                            <label for="loginkeeping">Remember me</label>
+                            <label for="loginkeeping"><?php echo $this->translate('Remember me');?></label>
                         </p>
                         <p class="signin-button">
-                            <input type="submit" value="Sign in">
+                            <input type="submit" value="<?php echo $this->translate('Sign in');?>">
                         </p>
                         <p>
-                            <a href="">Forgotten password</a>
+                            <a href="<?php echo $this->url('forgot');?>"><?php echo $this->translate('Forgotten password');?></a>
                         </p>
-                        <p>
-                            Not a member?
-                            <a href="">Register</a>
+                        <p> <?php echo $this->translate('Not a member?');?>
+                            <a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Register');?></a>
                         </p>
                     </form>
-                    <button class="close popup-close">Close</button>
+                    <button class="close popup-close"><?php echo $this->translate('Close');?></button>
                 </div>
             </details>
         </div>

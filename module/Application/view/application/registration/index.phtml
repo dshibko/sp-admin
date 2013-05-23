@@ -1,17 +1,4 @@
-<?php echo $this->doctype(); ?>
-
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
-    <?php echo $this->headScript()->prependFile($this->basePath() . '/js/main.js')
-    ->prependFile($this->basePath() . '/js/jquery.cookie.js')
-    ->prependFile($this->basePath() . '/js/jquery.validate.password.js')
-    ->prependFile($this->basePath() . '/js/jquery.validate.js')
-    ->prependFile($this->basePath() . '/js/vendor/jquery-1.9.1.min.js');
-    ?>
-</head>
-<body>
+<?php echo $this->partial('header')?>
 
 <?php
 $title = $this->translate('Registration');
@@ -49,23 +36,7 @@ echo $this->formRow($form->get('gender'));
 echo $this->formRow($form->get('display_name'));
 echo $this->formRow($form->get('avatar'));
 ?>
-<label>
-    <input type="radio" value="<?php echo $this->getConstant('default_avatar_1_id');?>" <?php echo (is_null($this->default_avatar) || $this->default_avatar == $this->getConstant('default_avatar_1_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
-    <img src="/img/avatar/small/user_default_1.jpg" alt="Default avatar #1">
-</label>
-<label>
-    <input type="radio" value="<?php echo $this->getConstant('default_avatar_2_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_2_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
-    <img src="/img/avatar/small/user_default_2.jpg" alt="Default avatar #2">
-</label>
-<label>
-    <input type="radio" value="<?php echo $this->getConstant('default_avatar_3_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_3_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
-    <img src="/img/avatar/small/user_default_3.jpg" alt="Default avatar #3">
-</label>
-<label>
-    <input type="radio" value="<?php echo $this->getConstant('default_avatar_4_id');?>" <?php echo ($this->default_avatar == $this->getConstant('default_avatar_4_id')) ? 'checked="checked"' : '';?> name="default_avatar"/>
-    <img src="/img/avatar/small/user_default_4.jpg" alt="Default avatar #4">
-</label>
-
+<?php echo $this->renderDefaultAvatars($this->default_avatar);?>
 <?php
 
 echo $this->formRow($form->get('term1'));
@@ -78,9 +49,10 @@ echo $this->form()->closeTag();
 ?>
 <?php echo $this->renderFacebookButton();?>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('#register').validate();
-    });
+    (function($){
+        $(document).ready(function () {
+            $('#register').validate();
+        });
+    }(jQuery));
 </script>
-</body>
-</html>
+<?php echo $this->partial('footer');?>

@@ -86,7 +86,7 @@ class User extends BasicObject {
     /**
      * @var \Avatar
      *
-     * @ORM\ManyToOne(targetEntity="Avatar", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Avatar", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
      * })
