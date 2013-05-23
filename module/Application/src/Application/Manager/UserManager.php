@@ -21,6 +21,7 @@ class UserManager extends BasicManager {
 
     private function deleteAvatarImages(\Application\Model\Entities\Avatar $avatar)
     {
+        //TODO change web separator to directory separator
         //Delete user avatars
         $publicPath = ImageManager::getInstance($this->getServiceLocator())->getAppPublicPath();
         if (file_exists($publicPath.$avatar->getBigImagePath())){
@@ -163,6 +164,7 @@ class UserManager extends BasicManager {
             $user->setAvatar($newAvatar);
             UserDAO::getInstance($this->getServiceLocator())->save($user, false);
             if (!$oldAvatar->getIsDefault()){
+                //TODO move these lines to method
                 $this->deleteAvatarImages($oldAvatar);
                 AvatarDAO::getInstance($this->getServiceLocator())->remove($oldAvatar, false);
             }
@@ -234,18 +236,19 @@ class UserManager extends BasicManager {
     public function deleteAccount(\Application\Model\Entities\User $user)
     {
         //TODO remove predictions, etc all user data
-        $avatar = $user->getAvatar();
-        if (!$avatar->getIsDefault()){
-            $this->deleteAvatarImages($avatar);
-        } else {
-            $user->setAvatar(null);
-        }
         if ($user->getFacebookId()){
             //remove facebook application
             $facebook = $this->getServiceLocator()->get('facebook');
             $facebook->api('/'.$user->getFacebookId(). '/permissions', 'DELETE', array('access_token' => $user->getFacebookAccessToken()));
         }
-        UserDAO::getInstance($this->getServiceLocator())->remove($user);
+        $avatar = $user->getAvatar();
+        UserDAO::getInstance($this->getServiceLocator())->remove($user, false);
+        if (!$avatar->getIsDefault()){
+            //TODO move these lines to method
+            $this->deleteAvatarImages($avatar);
+            AvatarDAO::getInstance($this->getServiceLocator())->remove($avatar, false);
+        }
+        UserDAO::getInstance($this->getServiceLocator())->flush();
         return true;
     }
 

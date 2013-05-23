@@ -2,7 +2,7 @@
 $title = $this->translate('Reset Password');
 $this->headTitle($title);
 ?>
-
+<?php echo $this->partial('partials/header');?>
 <h1><?php echo $this->escapeHtml($title);?></h1>
 <?php $this->renderMessages();?>
 <?php
@@ -24,5 +24,6 @@ if ($this->isValid){
 if ($this->displayLinkToResetPage):?>
    <a href="<?php echo $this->url('forgot')?>"><?php echo $this->translate('Reset Password Page');?></a>
 <?php endif;?>
+<?php echo $this->partial('partials/footer');?>
 
 

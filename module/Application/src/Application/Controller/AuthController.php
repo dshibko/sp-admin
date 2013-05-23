@@ -53,11 +53,12 @@ class AuthController extends AbstractActionController
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
-        return array(
-            'form' => $form
-        );
+        $viewModel = new ViewModel(array(
+            'form' => $form,
+        ));
 
-
+        $viewModel->setTerminal(true);
+        return $viewModel;
     }
 
     public function forgotAction()
@@ -93,9 +94,12 @@ class AuthController extends AbstractActionController
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
-        return array(
-            'form' => $form
-        );
+        $viewModel = new ViewModel(array(
+            'form' => $form,
+        ));
+
+        $viewModel->setTerminal(true);
+        return $viewModel;
 
     }
 
@@ -162,12 +166,14 @@ class AuthController extends AbstractActionController
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
-        return array(
+        $viewModel = new ViewModel(array(
             'form' => $form,
             'isValid' => $isValid,
             'displayLinkToResetPage' => $displayLinkToResetPage
-        );
+        ));
 
+        $viewModel->setTerminal(true);
+        return $viewModel;
     }
 
     /**
