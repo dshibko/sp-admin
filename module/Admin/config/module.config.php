@@ -192,6 +192,21 @@ return array(
                     ),
                 ),
             ),
+            'admin-settings-footer-socials' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/settings/footer-socials/[region-:region][/:action][/social-:social]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'region' => '[0-9]+',
+                        'social' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Settings',
+                        'action'     => 'footerSocials',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -227,6 +242,7 @@ return array(
             'layout/admin-login-layout'           => __DIR__ . '/../view/layout/layout2.phtml',
             'admin/index/index' => __DIR__ . '/../view/admin/index/index.phtml',
             'admin/content/edit-block' => __DIR__ . '/../view/admin/content/add-block.phtml',
+            'admin/settings/edit-footer-social' => __DIR__ . '/../view/admin/settings/add-footer-social.phtml',
             'error/admin-redirect' => __DIR__ . '/../view/error/redirect.phtml',
             'admin/partials/breadcrumbs' => __DIR__ . '/../view/partials/breadcrumbs.phtml',
             'admin/partials/menu' => __DIR__ . '/../view/partials/menu.phtml',
@@ -302,6 +318,25 @@ return array(
                             'footer-images' => array(
                                 'title' => 'Footer Images',
                                 'route' => 'admin-settings-footer-images',
+                            ),
+                            'footer-social' => array(
+                                'title' => 'Footer Socials',
+                                'route' => 'admin-settings-footer-socials',
+                                'useRouteMatch' => true,
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Add Footer Social',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-settings-footer-socials',
+                                        'action' => 'addFooterSocial',
+                                    ),
+                                    array(
+                                        'title' => 'Edit Footer Social',
+                                        'label' => 'icon-edit',
+                                        'route' => 'admin-settings-footer-socials',
+                                        'action' => 'editFooterSocial',
+                                    ),
+                                ),
                             ),
                         ),
                     ),

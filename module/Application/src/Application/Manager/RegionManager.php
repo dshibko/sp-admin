@@ -26,6 +26,10 @@ class RegionManager extends BasicManager {
         return self::$instance;
     }
 
+    public function getSelectedRegion() {
+        return $this->getDefaultRegion();
+    }
+
     /**
      * @return \Application\Model\Entities\Region
      */

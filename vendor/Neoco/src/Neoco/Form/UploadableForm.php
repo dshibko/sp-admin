@@ -19,11 +19,21 @@ abstract class UploadableForm extends Form implements \Zend\InputFilter\InputFil
                     $validators['validators'] = array(
                         array('name' => 'fileisimage')
                     );
+                    $sizes = array();
                     $minWidth = $element->getAttribute('minWidth');
                     if (!empty($minWidth))
-                        $validators['validators'][] = array('name' => 'fileimagesize', 'options' => array(
-                            'minWidth' => $minWidth
-                        ));
+                        $sizes['minWidth'] = $minWidth;
+                    $minHeight = $element->getAttribute('minHeight');
+                    if (!empty($minHeight))
+                        $sizes['minHeight'] = $minHeight;
+                    $width = $element->getAttribute('width');
+                    if (!empty($width))
+                        $sizes['width'] = $width;
+                    $height = $element->getAttribute('height');
+                    if (!empty($height))
+                        $sizes['height'] = $height;
+                    if (!empty($sizes))
+                        $validators['validators'][] = array('name' => 'fileimagesize', 'options' => $sizes);
                 }
                 $inputSpec[$element->getName()] = $validators;
             }

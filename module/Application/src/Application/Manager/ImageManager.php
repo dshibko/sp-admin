@@ -21,6 +21,9 @@ class ImageManager extends BasicManager {
 
     const WEB_SEPARATOR = '/';
 
+    const FOOTER_IMAGE_WIDTH = 182;
+    const FOOTER_IMAGE_HEIGHT = 206;
+
     /**
      * @var ImageManager
      */
@@ -94,14 +97,33 @@ class ImageManager extends BasicManager {
         return $contentImage;
     }
 
+    public function resizeImage($webImagePath, $width = null, $height = null) {
+        if ($width != null || $height != null) {
+            $imagePath = $this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $webImagePath);
+            $imageSize = getimagesize($imagePath);
+            $imagine = new Imagine();
+            $thumbSize = new Box($imageSize[0], $imageSize[1]);
+            if ($width != null)
+                $thumbSize = $thumbSize->widen($width);
+            if ($height != null)
+                $thumbSize = $thumbSize->heighten($height);
+            $image = $imagine->open($imagePath);
+            $image->thumbnail($thumbSize, ImageInterface::THUMBNAIL_INSET)->save($imagePath);
+        }
+    }
+
+    public function deleteImage($webImagePath) {
+        @unlink($this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $webImagePath));
+    }
+
     /**
      * @param \Application\Model\Entities\ContentImage $contentImage
      */
     public function deleteContentImage(ContentImage $contentImage) {
-        @unlink($this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $contentImage->getWidth1280()));
-        @unlink($this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $contentImage->getWidth1024()));
-        @unlink($this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $contentImage->getWidth600()));
-        @unlink($this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $contentImage->getWidth480()));
+        $this->deleteImage($contentImage->getWidth1280());
+        $this->deleteImage($contentImage->getWidth1024());
+        $this->deleteImage($contentImage->getWidth600());
+        $this->deleteImage($contentImage->getWidth480());
     }
 
     public function getAppPublicPath() {

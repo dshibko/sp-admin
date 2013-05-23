@@ -77,8 +77,11 @@ class ContentController extends AbstractActionController {
                     foreach ($form->getMessages() as $el => $messages)
                         $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " .
                             (is_array($messages) ? implode(", ", $messages): $messages));
-            } else if ($region->getRegionContent() != null)
-                $form->populateValues($region->getRegionContent()->getArrayCopy());
+            } else {
+                $regionContent = ContentManager::getInstance($this->getServiceLocator())->getRegionContent($region);
+                if ($regionContent != null)
+                    $form->populateValues($regionContent->getArrayCopy());
+            }
 
             $regions = $regionManager->getAllRegions(true);
 
@@ -220,8 +223,12 @@ class ContentController extends AbstractActionController {
                         } else
                             $foregroundImage = null;
 
-                        if ($blockOrder != $form->get('order')->getValue())
-                            ContentManager::getInstance($this->getServiceLocator())->swapRegionGameplayContentFromOrder($region, $form->get('order')->getValue(), $regionGameplayBlocksCount);
+                        $newOrder = $form->get('order')->getValue();
+                        if ($blockOrder != $newOrder)
+                            if ($newOrder > $blockOrder)
+                                ContentManager::getInstance($this->getServiceLocator())->swapRegionGameplayContentFromOrder($region, $blockOrder, $newOrder);
+                            else
+                                ContentManager::getInstance($this->getServiceLocator())->swapRegionGameplayContentFromOrder($region, $newOrder, $blockOrder);
 
                         ContentManager::getInstance($this->getServiceLocator())->
                             saveRegionGameplayContent($region, $foregroundImage, $form->get('heading')->getValue(), $form->get('description')->getValue(), $form->get('order')->getValue(), $block);

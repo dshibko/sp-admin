@@ -317,7 +317,17 @@ ALTER TABLE `region_gameplay_content` ADD FOREIGN KEY (foreground_image_id) REFE
 CREATE TABLE `footer_image` (
 	id INT AUTO_INCREMENT NOT NULL,
 	region_id INT NOT NULL,
-	footer_image VARCHAR(255),
+	footer_image VARCHAR(255) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 ALTER TABLE `footer_image` ADD FOREIGN KEY (region_id) REFERENCES `region`(id);
+CREATE TABLE `footer_social` (
+	id INT AUTO_INCREMENT NOT NULL,
+	region_id INT NOT NULL,
+	url VARCHAR(500) NOT NULL,
+	copy VARCHAR(100) NOT NULL,
+	icon VARCHAR(255) NOT NULL,
+	`order` TINYINT NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `footer_social` ADD FOREIGN KEY (region_id) REFERENCES `region`(id);

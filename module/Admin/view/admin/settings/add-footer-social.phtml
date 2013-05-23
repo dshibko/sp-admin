@@ -1,5 +1,5 @@
 <?php
-$title = 'Add Block';
+$title = 'Add Footer Social';
 $this->headTitle($title);
 ?>
 <div class="row-fluid form-vertical landing">
@@ -7,9 +7,9 @@ $this->headTitle($title);
     <?php
     $form = $this->form;
     $params = array('region' => $this->activeRegion->getId(), 'action' => $this->action);
-    if ($this->action == 'editBlock')
-        $params['block'] = $form->get('order')->getValue();
-    $form->setAttribute('action', $this->url('admin-content-landing', $params));
+    if ($this->action == 'editFooterSocial')
+        $params['social'] = $form->get('order')->getValue();
+    $form->setAttribute('action', $this->url('admin-settings-footer-socials', $params));
     $form->prepare();
     echo $this->form()->openTag($form);
     $elements = $form->getElements();
@@ -38,12 +38,12 @@ $this->headTitle($title);
                             <div class="input-prepend">
                                 <textarea class="span12 wysihtml5 m-wrap" rows="6" name="<?=$element->getAttribute('name')?>"><?=$element->getValue()?></textarea>
                             </div>
-                        <?php elseif($type == 'file'): $image = $element->getValue() instanceof \Application\Model\Entities\ContentImage ? $element->getValue()->getWidth1280() : false;?>
+                        <?php elseif($type == 'file'): $image = $element->getValue();?>
                             <div class="fileupload fileupload-<?=(!empty($image) ? 'exists' : 'new')?>" data-provides="fileupload">
                                 <div class="input-append">
                                     <div class="uneditable-input">
                                         <i class="icon-file fileupload-exists"></i>
-                                        <span class="fileupload-preview"><?=(!empty($image) ? '<input type="hidden" name="' . $element->getAttribute('name') . '[stored]" value="1"/><a href="' . $image . '" target="_blank">' . $this->translate('Open') . '</a>' : '')?></span>
+                                        <span class="fileupload-preview"><?=(!empty($image) ? '<input type="hidden" name="' . $element->getAttribute('name') . '[stored]" value="1"/><img src="' . $image . '" alt=""/>' : '')?></span>
                                     </div>
                                     <span class="btn btn-file">
                                         <span class="fileupload-new"><?=$this->translate('Select file')?></span>
@@ -72,13 +72,9 @@ $this->headTitle($title);
 
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" />
-<link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/glyphicons/css/glyphicons.css" />
-<link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" />
 <!-- END PAGE LEVEL STYLES -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
-<script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
-<script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/app.js" type="text/javascript"></script>
@@ -86,20 +82,6 @@ $this->headTitle($title);
 <script type="text/javascript">
     jQuery(document).ready(function() {
         App.init(); // initlayout and core plugins
-        if (jQuery().wysihtml5) {
-            if ($('.wysihtml5').size() > 0) {
-                $('.wysihtml5').each(function(i, el) {
-                    $(el).wysihtml5('shallowExtend', {
-                        "stylesheets": ["<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/wysiwyg-color.css"],
-                        "html": true
-                    });
-                });
-            }
-        }
-        $("form").submit(function() {
-            $('.wysihtml5').html($('.wysihtml5').val());
-            return true;
-        });
     });
 </script>
 <!-- END JAVASCRIPTS -->

@@ -18,14 +18,14 @@ class Region extends BasicObject {
      *
      * @ORM\Column(name="is_default", type="boolean")
      */
-    private $isDefault = false;
+    protected $isDefault = false;
 
     /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=50, nullable=false)
      */
-    private $displayName;
+    protected $displayName;
 
     /**
      * @var integer
@@ -34,7 +34,7 @@ class Region extends BasicObject {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
 
     /**
@@ -74,28 +74,28 @@ class Region extends BasicObject {
      *
      * @ORM\OneToMany(targetEntity="User", mappedBy="region")
      */
-    private $users;
+    protected $users;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="RegionGameplayContent", mappedBy="region")
      */
-    private $regionGameplayBlocks;
+    protected $regionGameplayBlocks;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="FooterSocial", mappedBy="region")
+     */
+    protected $footerSocials;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Country", mappedBy="region")
      */
-    private $countries;
-
-    /**
-     * @var RegionContent
-     *
-     * @ORM\OneToOne(targetEntity="RegionContent", mappedBy="region")
-     */
-    private $regionContent;
+    protected $countries;
 
     /**
      * Constructor
@@ -173,22 +173,6 @@ class Region extends BasicObject {
     }
 
     /**
-     * @param \Application\Model\Entities\RegionContent $regionContent
-     */
-    public function setRegionContent($regionContent)
-    {
-        $this->regionContent = $regionContent;
-    }
-
-    /**
-     * @return \Application\Model\Entities\RegionContent
-     */
-    public function getRegionContent()
-    {
-        return $this->regionContent;
-    }
-
-    /**
      * @param \Doctrine\Common\Collections\Collection $regionGameplayBlocks
      */
     public function setRegionGameplayBlocks($regionGameplayBlocks)
@@ -211,6 +195,32 @@ class Region extends BasicObject {
     public function getRegionGameplayBlockByOrder($order) {
         return $this->getRegionGameplayBlocks()->filter(function (RegionGameplayContent $regionGameplayContent) use ($order) {
             return $order == $regionGameplayContent->getOrder();
+        })->first();
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $footerSocials
+     */
+    public function setFooterSocials($footerSocials)
+    {
+        $this->footerSocials = $footerSocials;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFooterSocials()
+    {
+        return $this->footerSocials;
+    }
+
+    /**
+     * @param $order
+     * @return \Application\Model\Entities\FooterSocial
+     */
+    public function getFooterSocialByOrder($order) {
+        return $this->getFooterSocials()->filter(function (FooterSocial $footerSocial) use ($order) {
+            return $order == $footerSocial->getOrder();
         })->first();
     }
 

@@ -1,16 +1,18 @@
+<style type="text/css">
+    .social-link {
+        margin: 0 0 0.5em;
+        padding: 0 0 0 32px;
+        height: 18px;
+        color: #fff;
+        line-height: 28px;
+    }
+</style>
 <footer role="contentinfo" class="clearfix" style="background: #350616;">
     <article>
-        <img src="img/footer-img.png" alt="">
+        <?php echo $this->footerImage(); ?>
         <h2>Stay up to date with FC Barcelona</h2>
         <p>See behind the scenes, match updates <br>and exclusive content</p>
-        <ul>
-            <li>
-                <a href="" class="facebook-link">Like xxx on Facebook</a>
-            </li>
-            <li>
-                <a href="" class="twitter-link">Follow xxx on Twitter</a>
-            </li>
-        </ul>
+        <?php echo $this->footerSocials(); ?>
     </article>
     <div>
         <nav class="clearfix">

@@ -145,7 +145,17 @@ class Module
                     $defaultAvatars = new \Neoco\View\Helper\DefaultAvatars();
                     $defaultAvatars->setServiceLocator($sm->getServiceLocator());
                     return $defaultAvatars;
-                }
+                },
+                'footerImage' => function($sm){
+                    $footerImage = new \Neoco\View\Helper\FooterImage();
+                    $footerImage->setServiceLocator($sm->getServiceLocator());
+                    return $footerImage;
+                },
+                'footerSocials' => function($sm){
+                    $footerSocials = new \Neoco\View\Helper\FooterSocials();
+                    $footerSocials->setServiceLocator($sm->getServiceLocator());
+                    return $footerSocials;
+                },
             )
         );
     }
