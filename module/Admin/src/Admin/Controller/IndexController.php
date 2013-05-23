@@ -13,7 +13,17 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController {
 
+    const ADMIN_LOGIN_PAGE_ROUTE = 'admin-login';
+
     public function indexAction() {
+
+        $config = $this->getServiceLocator()->get('config');
+        $rules = $config['zfcrbac']['firewalls']['ZfcRbac\Firewall\Route'];
+        $rbac = $this->getServiceLocator()->get('ZfcRbac\Service\Rbac');
+        $router = new \ZfcRbac\Firewall\Route($rules);
+        $router->setRbac($rbac);
+        if (!$router->isGranted('admin'))
+            return $this->redirect()->toRoute(self::ADMIN_LOGIN_PAGE_ROUTE);
 
         try {
             $userManager = UserManager::getInstance($this->getServiceLocator());

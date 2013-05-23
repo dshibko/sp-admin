@@ -9,6 +9,7 @@
 
 namespace Application;
 
+use \Application\Manager\ApplicationManager;
 use \DoctrineModule\Authentication\Adapter\ObjectRepository;
 use \Zend\Authentication\AuthenticationService;
 use Zend\Mvc\ModuleRouteListener;
@@ -17,6 +18,11 @@ use Zend\Crypt\Password\Bcrypt;
 
 class Module
 {
+
+    const SETUP_PAGE_ROUTE = 'setup';
+    const PREDICT_PAGE_ROUTE = 'predict';
+    const LOGIN_PAGE_ROUTE = 'login';
+
     public function onBootstrap(MvcEvent $e)
     {
         $translator = $e->getApplication()->getServiceManager()->get('translator');
@@ -26,6 +32,57 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        $sharedEvents = $eventManager->getSharedManager();
+        $sharedEvents->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, array($this, 'onAppDispatch'), 100);
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onAppDispatchError'), -1);
+    }
+
+    public function onAppDispatch(\Zend\Mvc\MvcEvent $e) {
+        $matches = $e->getRouteMatch();
+        if ($matches != null) {
+            $user = ApplicationManager::getInstance($e->getApplication()->getServiceManager())->getCurrentUser();
+            if ($user != null) {
+                if ($matches->getMatchedRouteName() != self::SETUP_PAGE_ROUTE) {
+                    if (!$user->getIsActive())
+                        return $this->toRedirect(self::SETUP_PAGE_ROUTE, $e);
+                } else {
+                    if ($user->getIsActive())
+                        return $this->toRedirect(self::PREDICT_PAGE_ROUTE, $e);
+                }
+            }
+        }
+        return true;
+    }
+
+    public function onAppDispatchError(\Zend\Mvc\MvcEvent $e) {
+        $matches = $e->getRouteMatch();
+        if ($matches != null) {
+            $controller = $matches->getParam('controller');
+            if (strpos($controller, __NAMESPACE__) === 0) {
+                $response = $e->getResponse();
+                $response->setStatusCode(\Zend\Http\Response::STATUS_CODE_302);
+                $headers = new \Zend\Http\Headers();
+                $url = new \Zend\View\Helper\Url();
+                $url->setRouter($e->getApplication()->getServiceManager()->get('router'));
+                $headers->addHeaderLine("Location", $url->__invoke(self::LOGIN_PAGE_ROUTE));
+                $response->setHeaders($headers);
+                $response->send();
+                $e->stopPropagation();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param string $route
+     * @param \Zend\Mvc\MvcEvent $e
+     * @return bool
+     */
+    private function toRedirect($route, \Zend\Mvc\MvcEvent $e) {
+        $e->getTarget()->plugin('redirect')->toRoute($route);
+        $e->stopPropagation();
+        return false;
     }
 
     public function getConfig()

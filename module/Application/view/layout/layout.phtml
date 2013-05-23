@@ -8,58 +8,23 @@
         <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
 
         <!-- Le styles -->
-        <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
-                        ->prependStylesheet($this->basePath() . '/css/style.css')
-                        ->prependStylesheet($this->basePath() . '/css/common.css')
-                        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
+<?php //echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+//                        ->prependStylesheet($this->basePath() . '/css/bootstrap-responsive.min.css')
+//                        ->prependStylesheet($this->basePath() . '/css/style.css')
+//                        ->prependStylesheet($this->basePath() . '/css/common.css')
+//                        ->prependStylesheet($this->basePath() . '/css/bootstrap.min.css') ?>
 
         <!-- Scripts -->
-        <?php echo $this->headScript()->prependFile($this->basePath() . '/js/main.js')
-                                      ->prependFile($this->basePath() . '/js/jquery.cookie.js')
-                                      ->prependFile($this->basePath() . '/js/jquery.validate.password.js')
-                                      ->prependFile($this->basePath() . '/js/jquery.validate.js')
-                                      ->prependFile($this->basePath() . '/js/vendor/jquery-1.9.1.min.js');
+<?php //echo $this->headScript()->prependFile($this->basePath() . '/js/main.js')
+//                                      ->prependFile($this->basePath() . '/js/jquery.cookie.js')
+//                                      ->prependFile($this->basePath() . '/js/jquery.validate.password.js')
+//                                      ->prependFile($this->basePath() . '/js/jquery.validate.js')
+//                                      ->prependFile($this->basePath() . '/js/vendor/jquery-1.9.1.min.js');
         ?>
 
     </head>
     <body>
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Skeleton Application') ?></a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
-                            <?php if ($this->getCurrentUser()):?>
-                                <li class=""><a href="<?php echo $this->url('user-settings') ?>"><?php echo $this->translate('Settings') ?></a></li>
-                                <li class=""><a href="<?php echo $this->url('logout') ?>"><?php echo $this->translate('Logout') ?></a></li>
-                            <?php else:?>
-                                <li class=""><a href="<?php echo $this->url('login') ?>"><?php echo $this->translate('Login') ?></a></li>
-                                <li class=""><a href="<?php echo $this->url('registration') ?>"><?php echo $this->translate('Register') ?></a></li>
-                                <li class=""><?php echo $this->renderFacebookButton();?></a></li>
-                            <?php endif;?>
-                        </ul>
-                    </div><!--/.nav-collapse -->
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="cookie-bar" style="display:none;background:red;">
-                This is cookie bar with information about cookies
-                <a href="javascript:void(0);" class="close-cookie-bar"><?php echo $this->translate('Dismiss');?></a>
-            </div>
-            <?php echo $this->content; ?>
-            <hr>
-            <footer>
-                <p><?php echo date('Y') ?> Neoco. <?php echo $this->translate('All rights reserved.') ?></p>
-            </footer>
-        </div> <!-- /container -->
+        <?php echo $this->content; ?>
         <?php echo $this->inlineScript() ?>
     </body>
 </html>

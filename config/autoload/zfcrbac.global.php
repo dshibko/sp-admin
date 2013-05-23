@@ -7,11 +7,20 @@ return array(
         'enableLazyProviders' => true,
         'template' => 'error/admin-redirect',
         'firewallRoute' => true,
+        'firewallController' => false,
         'firewalls' => array(
             'ZfcRbac\Firewall\Route' => array(
+                array('route' => 'forgot', 'roles' => 'Guest'),
+                array('route' => 'reset', 'roles' => 'Guest'),
+                array('route' => 'facebook', 'roles' => 'Guest'),
+                array('route' => 'registration', 'roles' => 'Guest'),
+                array('route' => 'login', 'roles' => 'Guest'),
+                array('route' => 'home', 'roles' => 'Guest'),
                 array('route' => 'admin-login', 'roles' => 'Guest'),
                 array('route' => 'admin-forgot', 'roles' => 'Guest'),
-                array('route' => 'admin', 'roles' => 'Regional Manager')
+                array('route' => 'admin-home', 'roles' => 'Guest'),
+                array('route' => 'admin', 'roles' => 'Regional Manager'),
+                array('route' => '.*', 'roles' => array('Member', 'Regional Manager', 'Super Admin')),
             ),
         ),
         'providers' => array(
