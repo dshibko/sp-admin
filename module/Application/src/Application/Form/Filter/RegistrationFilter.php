@@ -8,10 +8,12 @@ use Zend\InputFilter\InputFilterInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Model\DAOs\UserDAO;
+use Zend\Validator\NotEmpty;
+use Application\Form\Validator\BadWordValidator;
 
 class RegistrationFilter implements InputFilterAwareInterface
 {
-    const INPUT_MIN_LENGTH = 1;
+    const INPUT_MIN_LENGTH = 3;
     const NAME_MAX_LENGTH = 30;
     const EMAIL_MAX_LENGTH = 50;
     const PASSWORD_MIN_LENGTH = 6;
@@ -65,6 +67,16 @@ class RegistrationFilter implements InputFilterAwareInterface
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please select Title'
+                            )
+                        )
+                    )
+                )
             )));
             //First Name
             $inputFilter->add($factory->createInput(array(
@@ -83,6 +95,14 @@ class RegistrationFilter implements InputFilterAwareInterface
                             'max' => self::NAME_MAX_LENGTH,
                         ),
                     ),
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please enter First Name'
+                            )
+                        )
+                    )
                 ),
             )));
 
@@ -103,6 +123,14 @@ class RegistrationFilter implements InputFilterAwareInterface
                             'max' => self::NAME_MAX_LENGTH,
                         ),
                     ),
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please enter Last Name'
+                            )
+                        )
+                    )
                 ),
             )));
 
@@ -138,6 +166,14 @@ class RegistrationFilter implements InputFilterAwareInterface
                             'max' => self::EMAIL_MAX_LENGTH,
                         ),
                     ),
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please enter Email'
+                            )
+                        )
+                    )
                 ),
             )));
 
@@ -166,6 +202,14 @@ class RegistrationFilter implements InputFilterAwareInterface
                         'name' => 'identical',
                         'options' => array('token' => 'email'),
                     ),
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please enter Confirm Email'
+                            )
+                        )
+                    )
                 ),
             )));
             //TODO strength indicator
@@ -185,7 +229,15 @@ class RegistrationFilter implements InputFilterAwareInterface
                             'max' => self::PASSWORD_MAX_LENGTH,
                         ),
                     ),
-                ),
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please enter Password'
+                            )
+                        )
+                    )
+                )
             )));
 
             //Confirm Password
@@ -208,6 +260,14 @@ class RegistrationFilter implements InputFilterAwareInterface
                         'name' => 'identical',
                         'options' => array('token' => 'password'),
                     ),
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please enter Confirm Password'
+                            )
+                        )
+                    )
                 ),
             )));
 
@@ -218,7 +278,18 @@ class RegistrationFilter implements InputFilterAwareInterface
                 'filters' => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please select Country'
+                            )
+                        )
+                    )
                 )
+
             )));
 
             // Date of birth
@@ -235,6 +306,14 @@ class RegistrationFilter implements InputFilterAwareInterface
                             )
                         ),
                     ),
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please select Date Of Birth'
+                            )
+                        )
+                    )
                 ),
             )));
             $inputFilter->add($factory->createInput(array(
@@ -260,7 +339,19 @@ class RegistrationFilter implements InputFilterAwareInterface
                     ),
                     array(
                         'name' => 'Application\Form\Validator\BadWordValidator',
-                        'options' => array()
+                        'options' => array(
+                            'messages' => array(
+                                BadWordValidator::BAD_WORDS => 'Display Name contains bad words'
+                            )
+                        )
+                    ),
+                    array(
+                        'name' => 'NotEmpty',
+                        'options' => array(
+                            'messages' => array(
+                                NotEmpty::IS_EMPTY => 'Please enter Display Name'
+                            )
+                        )
                     )
                 ),
             )));
@@ -269,15 +360,16 @@ class RegistrationFilter implements InputFilterAwareInterface
                'name' => 'avatar',
                'required' => false
             )));
-            /*$inputFilter->add($factory->createInput(array(
+            $inputFilter->add($factory->createInput(array(
                 'name' => 'default_avatar',
                 'required' => true,
                 'inarrayvalidator' => false
-            )));*/
+            )));
             //TODO set compulsory by admin
             $inputFilter->add($factory->createInput(array(
                 'name' => 'term1',
                 'required' => true,
+
             )));
             //TODO set compulsory by admin
             $inputFilter->add($factory->createInput(array(

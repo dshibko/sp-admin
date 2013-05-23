@@ -1,58 +1,197 @@
-<?php echo $this->partial('header')?>
-
 <?php
 $title = $this->translate('Registration');
 $this->headTitle($title);
 ?>
-
-<h1><?php echo $this->escapeHtml($title);?></h1>
-<?php $this->renderMessages();?>
-<?php
-
-$form = $this->form;
-$form->prepare();
-$form->setAttribute('action', $this->url('registration', array('action' => 'index')));
-
-echo $this->form()->openTag($form);
-echo $this->formRow($form->get('title'));
-echo $this->formRow($form->get('first_name'));
-echo $this->formRow($form->get('last_name'));
-echo $this->formRow($form->get('email'));
-echo $this->formRow($form->get('confirm_email'));
-echo $this->formRow($form->get('password'));?>
-<div class="password-meter">
-    <div class="password-meter-message"> </div>
-    <div class="password-meter-bg">
-        <div class="password-meter-bar"></div>
-    </div>
+<?php echo $this->partial('partials/header');?>
+<div role="main" class="registration-section">
+    <h1><?php echo $this->escapeHtml($title);?></h1>
+    <?php $this->renderMessages();?>
+    <aside class="connect-facebook clearfix">
+        <div>
+            <h2>Connect your account for a one click login</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus ligula, facilisis id scelerisque in, eleifend ut elit. Aenean a facilisis augue. </p>
+        </div>
+        <?php echo $this->renderFacebookButton($this->translate('Connect to Facebook'));?>
+    </aside>
+    <?php
+    $form = $this->form;
+    $invalidInputClass = ' invalid-input';
+    $form->prepare();
+    $form->setAttribute('action', $this->url('registration', array('action' => 'index')));
+    echo $this->form()->openTag($form);?>
+    <?php if ($form->getInputFilter()->getMessages()):?>
+        <div class="form-errors">
+            <?php echo $this->formElementerrors($form->get('title'));?>
+            <?php echo $this->formElementerrors($form->get('first_name'));?>
+            <?php echo $this->formElementerrors($form->get('last_name'));?>
+            <?php echo $this->formElementerrors($form->get('gender'));?>
+            <?php echo $this->formElementerrors($form->get('date_of_birth'));?>
+            <?php echo $this->formElementerrors($form->get('country'));?>
+            <?php echo $this->formElementerrors($form->get('email'));?>
+            <?php echo $this->formElementerrors($form->get('confirm_email'));?>
+            <?php echo $this->formElementerrors($form->get('password'));?>
+            <?php echo $this->formElementerrors($form->get('confirm_password'));?>
+            <?php echo $this->formElementerrors($form->get('display_name'));?>
+            <?php echo $this->formElementerrors($form->get('avatar'));?>
+            <?php echo $this->formElementerrors($form->get('term1'));?>
+            <?php echo $this->formElementerrors($form->get('term2'));?>
+        </div>
+    <?php endif;?>
+    <section>
+        <div>
+            <h2><?php echo $this->translate('Enter Personal Info');?></h2>
+        </div>
+        <div>
+            <?php echo $this->formLabel($form->get('title'));?>
+            <?php
+                if ($this->formElementerrors($form->get('title'))){
+                    $form->get('title')->setAttribute('class', $form->get('title')->getAttribute('class') . $invalidInputClass);
+                };
+            ?>
+            <?php echo $this->formElement($form->get('title'));?>
+        </div>
+        <div>
+            <?php echo $this->formLabel($form->get('first_name'));?>
+            <?php
+            if ($this->formElementerrors($form->get('first_name'))){
+                $form->get('first_name')->setAttribute('class', $form->get('first_name')->getAttribute('class') . $invalidInputClass);
+            };
+            ?>
+            <?php echo $this->formElement($form->get('first_name'));?>
+        </div>
+        <div>
+            <?php echo $this->formLabel($form->get('last_name'));?>
+            <?php
+            if ($this->formElementerrors($form->get('last_name'))){
+                $form->get('last_name')->setAttribute('class', $form->get('last_name')->getAttribute('class') . $invalidInputClass);
+            };
+            ?>
+            <?php echo $this->formElement($form->get('last_name'));?>
+        </div>
+        <div>
+            <?php echo $this->formLabel($form->get('gender'));?>
+            <?php echo $this->formElement($form->get('gender'));?>
+        </div>
+        <div class="date-birth">
+            <?php //TODO doesn't render?>
+            <?php echo $this->formLabel($form->get('date_of_birth'));?>
+            <?php echo $this->formSelect($form->get('day'));?>
+            <?php echo $this->formSelect($form->get('month'));?>
+            <?php echo $this->formSelect($form->get('year'));?>
+        </div>
+        <div>
+            <?php echo $this->formLabel($form->get('country'));?>
+            <?php
+                if ($this->formElementerrors($form->get('country'))){
+                    $form->get('country')->setAttribute('class', $form->get('country')->getAttribute('class') . $invalidInputClass);
+                };
+            ?>
+            <?php echo $this->formElement($form->get('country'));?>
+        </div>
+    </section>
+    <section>
+        <div>
+            <h2><?php echo $this->translate('Enter Email Addresses');?></h2>
+        </div>
+        <div>
+            <?php echo $this->formLabel($form->get('email'));?>
+            <?php
+                if ($this->formElementerrors($form->get('email'))){
+                    $form->get('email')->setAttribute('class', $form->get('email')->getAttribute('class') . $invalidInputClass);
+                };
+            ?>
+            <?php echo $this->formElement($form->get('email'));?>
+        </div>
+        <div>
+            <?php echo $this->formLabel($form->get('confirm_email'));?>
+            <?php
+            if ($this->formElementerrors($form->get('confirm_email'))){
+                $form->get('confirm_email')->setAttribute('class', $form->get('confirm_email')->getAttribute('class') . $invalidInputClass);
+            };
+            ?>
+            <?php echo $this->formElement($form->get('confirm_email'));?>
+        </div>
+    </section>
+    <section>
+        <div>
+            <h2><?php echo $this->translate('Enter Your Password');?></h2>
+        </div>
+        <div>
+            <?php echo $this->formLabel($form->get('password'));?>
+            <?php
+                if ($this->formElementerrors($form->get('password'))){
+                    $form->get('password')->setAttribute('class', $form->get('password')->getAttribute('class') . $invalidInputClass);
+                };
+            ?>
+            <?php echo $this->formElement($form->get('password'));?>
+        </div>
+        <div>
+            <?php echo $this->formLabel($form->get('confirm_password'));?>
+            <?php
+                if ($this->formElementerrors($form->get('confirm_password'))){
+                    $form->get('confirm_password')->setAttribute('class', $form->get('confirm_password')->getAttribute('class') . $invalidInputClass);
+                };
+            ?>
+            <?php echo $this->formElement($form->get('confirm_password'));?>
+        </div>
+    </section>
+    <section>
+        <div>
+            <h2><?php echo $this->translate('Enter Your Display Name');?></h2>
+        </div>
+        <div>
+            <?php echo $this->formLabel($form->get('display_name'));?>
+            <?php
+                if ($this->formElementerrors($form->get('display_name'))){
+                    $form->get('display_name')->setAttribute('class', $form->get('display_name')->getAttribute('class') . $invalidInputClass);
+                };
+            ?>
+            <?php echo $this->formElement($form->get('display_name'));?>
+        </div>
+    </section>
+    <section>
+        <div>
+            <h2><?php echo $this->translate('Enter Your Avatar');?></h2>
+        </div>
+        <div class="block-input-file">
+            <?php echo $this->formLabel($form->get('avatar'));?>
+            <?php
+                if ($this->formElementerrors($form->get('avatar'))){
+                    $form->get('avatar')->setAttribute('class', $form->get('avatar')->getAttribute('class') . $invalidInputClass);
+                };
+            ?>
+            <?php echo $this->formElement($form->get('avatar'));?>
+        </div>
+        <div class="avatar ideal-full-width claerfix">
+            <span class="desktopLabel"><?php echo $this->translate('Or choose from selection');?></span>
+            <?php echo $this->renderDefaultAvatars($this->default_avatar);?>
+        </div>
+    </section>
+    <section class="email-settings">
+        <div>
+            <h2><?php echo $this->translate('Email Settings');?></h2>
+        </div>
+        <div>
+            <label>
+                <?php echo $this->formElement($form->get('term1'));?>
+                <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magn</span>
+            </label>
+            <label>
+                <?php echo $this->formElement($form->get('term2'));?>
+                <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magn</span>
+            </label>
+        </div>
+    </section>
+    <section class="buttons-block clearfix">
+        <div>
+            <button type="submit"><?php echo $this->translate('Register');?></button>
+        </div>
+    </section>
+    <?php
+        echo $this->formHidden($form->get('csrf'));
+        echo $this->formHidden($form->get('date_of_birth'));
+        echo $this->form()->closeTag();
+    ?>
 </div>
-<?php echo $this->formRow($form->get('confirm_password'));
-echo $this->formRow($form->get('country'));
-echo $this->formRow($form->get('day'));
-echo $this->formRow($form->get('month'));
-echo $this->formRow($form->get('year'));
-echo $this->formHidden($form->get('date_of_birth'));
-echo $this->formRow($form->get('gender'));
-echo $this->formRow($form->get('display_name'));
-echo $this->formRow($form->get('avatar'));
-?>
-<?php echo $this->renderDefaultAvatars($this->default_avatar);?>
-<?php
-
-echo $this->formRow($form->get('term1'));
-echo $this->formRow($form->get('term2'));
-echo $this->formHidden($form->get('csrf'));
-echo $this->formSubmit($form->get('submit'));
-
-echo $this->form()->closeTag();
-
-?>
-<?php echo $this->renderFacebookButton();?>
-<script type="text/javascript">
-    (function($){
-        $(document).ready(function () {
-            $('#register').validate();
-        });
-    }(jQuery));
-</script>
-<?php echo $this->partial('footer');?>
+<script src="/js/register.js"></script>
+<?php echo $this->partial('partials/footer');?>
