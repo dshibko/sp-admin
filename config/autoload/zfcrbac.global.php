@@ -20,7 +20,7 @@ return array(
                 array('route' => 'admin-forgot', 'roles' => 'Guest'),
                 array('route' => 'admin-home', 'roles' => 'Guest'),
                 array('route' => 'admin', 'roles' => 'Regional Manager'),
-                array('route' => '.*', 'roles' => array('Member', 'Regional Manager', 'Super Admin')),
+                array('route' => '.*', 'roles' => array('User', 'Regional Manager', 'Super Admin')),
             ),
         ),
         'providers' => array(
