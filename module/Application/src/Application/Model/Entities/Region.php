@@ -14,6 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Region extends BasicObject {
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_default", type="boolean")
+     */
+    private $isDefault = false;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=50, nullable=false)
@@ -205,6 +212,22 @@ class Region extends BasicObject {
         return $this->getRegionGameplayBlocks()->filter(function (RegionGameplayContent $regionGameplayContent) use ($order) {
             return $order == $regionGameplayContent->getOrder();
         })->first();
+    }
+
+    /**
+     * @param boolean $isDefault
+     */
+    public function setIsDefault($isDefault)
+    {
+        $this->isDefault = $isDefault;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsDefault()
+    {
+        return $this->isDefault;
     }
 
 }

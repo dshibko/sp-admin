@@ -33,7 +33,6 @@ class RegionDAO extends AbstractDAO {
         return '\Application\Model\Entities\Region';
     }
 
-
     /**
      * @param bool $hydrate
      * @param bool $skipCache
@@ -46,5 +45,19 @@ class RegionDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'e')
             ->orderBy('e.id', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\Region
+     * @throws \Exception
+     */
+    public function getDefaultRegion($hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('r')
+            ->from($this->getRepositoryName(), 'r')
+            ->where($qb->expr()->eq('r.isDefault', true));
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 }

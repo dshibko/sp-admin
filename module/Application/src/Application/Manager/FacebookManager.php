@@ -22,6 +22,7 @@ class FacebookManager extends BasicManager
     const FACEBOOK_AVATAR_FOLDER = 'small';
     const DEFAULT_AVATAR_ID = 1;
     const GRAPH_API_URL = 'https://graph.facebook.com/';
+
     /**
      * @var FacebookManager
      */

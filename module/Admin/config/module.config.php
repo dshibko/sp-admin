@@ -143,6 +143,55 @@ return array(
                     ),
                 ),
             ),
+            'admin-content-languages' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/languages/[:action][/language-:language]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Languages',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-settings' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/settings/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Settings',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-settings-region-language' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/settings/region-language/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Settings',
+                        'action'     => 'region',
+                    ),
+                ),
+            ),
+            'admin-settings-footer-images' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/settings/footer-images/[region-:region][/:action][/image-:image]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'region' => '[0-9]+',
+                        'image' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Settings',
+                        'action'     => 'footerImages',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -164,7 +213,9 @@ return array(
         'invokables' => array(
             'Admin\Controller\Index' => 'Admin\Controller\IndexController',
             'Admin\Controller\Auth' => 'Admin\Controller\AuthController',
-            'Admin\Controller\Content' => 'Admin\Controller\ContentController'
+            'Admin\Controller\Content' => 'Admin\Controller\ContentController',
+            'Admin\Controller\Settings' => 'Admin\Controller\SettingsController',
+            'Admin\Controller\Languages' => 'Admin\Controller\LanguagesController',
         ),
     ),
     'view_manager' => array(
@@ -179,6 +230,7 @@ return array(
             'error/admin-redirect' => __DIR__ . '/../view/error/redirect.phtml',
             'admin/partials/breadcrumbs' => __DIR__ . '/../view/partials/breadcrumbs.phtml',
             'admin/partials/menu' => __DIR__ . '/../view/partials/menu.phtml',
+            'admin/partials/select' => __DIR__ . '/../view/partials/select.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -230,6 +282,26 @@ return array(
                             'reports' => array(
                                 'title' => 'Match Reports',
                                 'route' => 'admin-content-reports',
+                            ),
+                            'languages' => array(
+                                'title' => 'Languages',
+                                'route' => 'admin-content-languages',
+                            ),
+                        ),
+                    ),
+                    'settings' => array(
+                        'title' => 'Settings',
+                        'label' => 'icon-cogs',
+                        'route' => 'admin-settings',
+                        'sub-menu' => true,
+                        'pages' => array(
+                            'region-language' => array(
+                                'title' => 'Region/Language',
+                                'route' => 'admin-settings-region-language',
+                            ),
+                            'footer-images' => array(
+                                'title' => 'Footer Images',
+                                'route' => 'admin-settings-footer-images',
                             ),
                         ),
                     ),

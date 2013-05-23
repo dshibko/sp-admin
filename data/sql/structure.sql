@@ -67,12 +67,14 @@ ALTER TABLE `user` ADD FOREIGN KEY (avatar_id) REFERENCES `avatar`(id);
 CREATE TABLE `region` (
 	id INT AUTO_INCREMENT NOT NULL,
 	display_name VARCHAR(50) NOT NULL,
+	is_default TINYINT(1) DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 CREATE TABLE `language` (
 	id INT AUTO_INCREMENT NOT NULL,
 	language_code VARCHAR(5) NOT NULL,
 	display_name VARCHAR(40) NOT NULL,
+	is_default TINYINT(1) DEFAULT 0,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 CREATE TABLE `country` (
@@ -312,3 +314,10 @@ CREATE TABLE `region_gameplay_content` (
 ) ENGINE = InnoDB;
 ALTER TABLE `region_gameplay_content` ADD FOREIGN KEY (region_id) REFERENCES `region`(id);
 ALTER TABLE `region_gameplay_content` ADD FOREIGN KEY (foreground_image_id) REFERENCES `content_image`(id);
+CREATE TABLE `footer_image` (
+	id INT AUTO_INCREMENT NOT NULL,
+	region_id INT NOT NULL,
+	footer_image VARCHAR(255),
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `footer_image` ADD FOREIGN KEY (region_id) REFERENCES `region`(id);
