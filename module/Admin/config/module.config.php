@@ -247,6 +247,7 @@ return array(
             'admin/partials/breadcrumbs' => __DIR__ . '/../view/partials/breadcrumbs.phtml',
             'admin/partials/menu' => __DIR__ . '/../view/partials/menu.phtml',
             'admin/partials/select' => __DIR__ . '/../view/partials/select.phtml',
+            'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml'
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
