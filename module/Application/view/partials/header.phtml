@@ -1,0 +1,23 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
+    <title>Score Predictor</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" href="css/ie.css">
+    <script src="js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
+    <?php echo $this->headScript()->prependFile($this->basePath() . '/js/main.js')
+    ->prependFile($this->basePath() . '/js/jquery.cookie.js')
+    ->prependFile($this->basePath() . '/js/jquery.validate.password.js')
+    ->prependFile($this->basePath() . '/js/jquery.validate.js')
+    ->prependFile($this->basePath() . '/js/vendor/jquery-1.9.1.min.js');
+    ?>
+</head>
+<body>

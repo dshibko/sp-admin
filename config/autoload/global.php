@@ -57,8 +57,5 @@ return array(
                               user_education_history,
                               user_work_history,
                               publish_actions',
-    'default_avatar_1_id' => 1,
-    'default_avatar_2_id' => 2,
-    'default_avatar_3_id' => 3,
-    'default_avatar_4_id' => 4
+
 );

@@ -40,13 +40,18 @@ $first = true;
         </a>
         <?php if ($showSubMenu) : ?>
             <ul class="sub-menu">
-                <?php foreach($page as $subPage): ?>
+                <?php foreach($page as $subPage):
+                    $use = $subPage->useRouteMatch();
+                    $subPage->setUseRouteMatch(false);
+                    ?>
                     <li <?=$subPage->isActive(true) ? 'class="active"' : ''?>>
                         <a href="<?=$subPage->getHref()?>">
                             <?=$this->translate($subPage->getTitle())?>
                         </a>
                     </li>
-                <?php endforeach; ?>
+                <?php
+                    $subPage->setUseRouteMatch($use);
+                    endforeach; ?>
             </ul>
         <?php endif; ?>
     </li>

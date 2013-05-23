@@ -20,6 +20,16 @@ return array(
                     ),
                 ),
             ),
+            'predict' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/predict',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Predict',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'registration' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -182,6 +192,7 @@ return array(
             'Application\Controller\Registration' => 'Application\Controller\RegistrationController',
             'Application\Controller\Auth' => 'Application\Controller\AuthController',
             'Application\Controller\User' => 'Application\Controller\UserController',
+            'Application\Controller\Predict' => 'Application\Controller\PredictController',
         ),
     ),
     'doctrine' => array(
@@ -209,6 +220,8 @@ return array(
             'application/index/index' => __DIR__ . '/../view/application/index/index.phtml',
             'error/404'               => __DIR__ . '/../view/error/404.phtml',
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
+            'header'                  => __DIR__ . '/../view/partials/header.phtml',
+            'footer'                  => __DIR__ . '/../view/partials/footer.phtml'
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',

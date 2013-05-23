@@ -109,6 +109,10 @@ header {
     width: 61.6em;
     height: 49.9em;
 }
+.banner-image-top img {
+    position: absolute;
+    bottom: 0;
+}
 .banner figcaption {
     position: absolute;
     top: 5.1em;

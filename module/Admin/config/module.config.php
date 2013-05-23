@@ -4,9 +4,9 @@ return array(
     'router' => array(
         'routes' => array(
             'admin-home' => array(
-                'type' => 'Literal',
+                'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/admin/',
+                    'route'    => '/admin[/]',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Index',
                         'action'     => 'index',

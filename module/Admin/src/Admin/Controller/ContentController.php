@@ -106,8 +106,6 @@ class ContentController extends AbstractActionController {
 
         try {
 
-            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null));
-
             $regionManager = RegionManager::getInstance($this->getServiceLocator());
 
             $regionId = (string) $this->params()->fromRoute('region', '');
@@ -118,7 +116,7 @@ class ContentController extends AbstractActionController {
                 $region = $regionManager->getDefaultRegion();
 
             $parentTitle = $this->getActivePage()->getParent()->getTitle();
-            $this->getActivePage()->getParent()->setTitle($parentTitle . " - " . $region->getDisplayName());
+            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $region->getDisplayName()));
 
             $regionGameplayBlocksCount = $region->getRegionGameplayBlocks()->count();
             if ($regionGameplayBlocksCount >= self::MAX_GAMEPLAY_BLOCKS_NUMBER) {
@@ -182,8 +180,6 @@ class ContentController extends AbstractActionController {
 
         try {
 
-            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null));
-
             $regionManager = RegionManager::getInstance($this->getServiceLocator());
 
             $regionId = (string) $this->params()->fromRoute('region', '');
@@ -194,7 +190,7 @@ class ContentController extends AbstractActionController {
                 $region = $regionManager->getDefaultRegion();
 
             $parentTitle = $this->getActivePage()->getParent()->getTitle();
-            $this->getActivePage()->getParent()->setTitle($parentTitle . " - " . $region->getDisplayName());
+            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $region->getDisplayName()));
 
             $blockOrder = (int) $this->params()->fromRoute('block', -1);
 
@@ -265,8 +261,6 @@ class ContentController extends AbstractActionController {
 
         try {
 
-            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null));
-
             $regionManager = RegionManager::getInstance($this->getServiceLocator());
 
             $regionId = (string) $this->params()->fromRoute('region', '');
@@ -277,7 +271,7 @@ class ContentController extends AbstractActionController {
                 $region = $regionManager->getDefaultRegion();
 
             $parentTitle = $this->getActivePage()->getParent()->getTitle();
-            $this->getActivePage()->getParent()->setTitle($parentTitle . " - " . $region->getDisplayName());
+            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $region->getDisplayName()));
 
             $blockOrder = (int) $this->params()->fromRoute('block', -1);
 

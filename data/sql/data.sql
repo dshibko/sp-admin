@@ -255,3 +255,23 @@ INSERT INTO `role` (`id`, `name`, `parent_id`) VALUES
 (2, 'Regional Manager', 1),
 (3, 'User', 2),
 (4, 'Guest', 3);
+
+-- Not for GIT
+
+INSERT INTO `content_image` (`id`, `width1280`, `width1024`, `width600`, `width480`) VALUES
+(11, '/img/content/519bc41d5b61c.jpg', '/img/content/519bc41d8c066.jpg', '/img/content/519bc41dc4b0d.jpg', '/img/content/519bc41df10b8.jpg'),
+(15, '/img/content/519bca8373490.png', '/img/content/519bca83a276e.png', '/img/content/519bca83c6642.png', '/img/content/519bca83e5e11.png'),
+(16, '/img/content/519c013fc8259.png', '/img/content/519c013fef4ae.png', '/img/content/519c01402c410.png', '/img/content/519c01405cdbc.png'),
+(17, '/img/content/519c0584e76ee.png', '/img/content/519c0585131ae.png', '/img/content/519c05855059a.png', '/img/content/519c05857899b.png'),
+(18, '/img/content/519c05b1ada2b.png', '/img/content/519c05b1e3d45.png', '/img/content/519c05b22cff3.png', '/img/content/519c05b27078d.png');
+
+INSERT INTO `region_content` (`id`, `region_id`, `headline_copy`, `register_button_copy`, `hero_background_image_id`, `hero_foreground_image_id`) VALUES
+(1, 1, 'Think you know football? Predict the score and win big', 'Start playing - it''s free', 11, 15);
+
+INSERT INTO `region_gameplay_content` (`id`, `region_id`, `heading`, `description`, `foreground_image_id`, `order`) VALUES
+(1, 1, 'Home or away, log on to predict the score for the upcoming match', 'Use your computer or mobile consectetur adipiscing elit. <a target="_blank" rel="nofollow" href="http://google.com/">Aenean </a>consectetur interdum suscipit. Curabitur massa magna, sollicitudin ut pharetra ac, ultrices in ipsum. Nullam sit amet nunc et neque interdum.<br>', 16, 1),
+(2, 1, 'Play against your friends to become top of your league', 'Use your computer or mobile consectetur adipiscing elit. Aenean consectetur interdum suscipit. Curabitur massa magna, sollicitudin ut pharetra ac, ultrices in ipsum. Nullam sit amet nunc et neque interdum.', 17, 2),
+(3, 1, 'Score big and win epic montly prizes', 'Use your computer or mobile consectetur adipiscing elit. Aenean consectetur interdum suscipit. Curabitur massa magna, sollicitudin ut pharetra ac, ultrices in ipsum. Nullam sit amet nunc et neque interdum.', 18, 3);
+
+INSERT INTO `user` (`id`, `title`, `first_name`, `last_name`, `email`, `password`, `country_id`, `birthday`, `gender`, `display_name`, `avatar_id`, `region_id`, `language_id`, `role_id`, `favourite_player_id`, `is_active`, `is_public`, `facebook_id`, `facebook_access_token`, `date`) VALUES
+(1, 'Mr.', 'Super', 'Admin', 'super@admin.com', '23dbc03773da498d7aed042dd9e40d36', 95, '1987-10-31', 'Male', 'Super Admin', 1, 1, 1, 1, NULL, 0, 0, NULL, NULL, '2013-05-04 15:43:00');

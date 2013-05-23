@@ -18,18 +18,20 @@ class RegistrationController extends AbstractActionController
 {
     const SETUP_PAGE_ROUTE = 'setup';
     const USER_SETTINGS_PAGE_ROUTE = 'user-settings';
-    const HOME_ROUTE = 'home';
+    const HOME_PAGE_ROUTE = 'home';
+    const LOGIN_PAGE_ROUTE = 'login';
+    const REGISTRATION_PAGE_ROUTE = 'registration';
 
     //TODO set permission only for guests
     public function indexAction()
     {
         $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        //if member - redirect to dashboard
+        if (!empty($user)) {
+            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+        }
         try {
-            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-            //if member - redirect to dashboard
-            if (!empty($user)) {
-                return $this->redirect()->toRoute('home');
-            }
             $form->get('submit')->setValue('Register');
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -51,50 +53,43 @@ class RegistrationController extends AbstractActionController
                     }
                 }
             }
-
-//            return new ViewModel(array(
-////                'default_avatar' => $this->getRequest()->getPost('default_avatar', null),
-////                'flashMessages' => $this->flashMessenger()->getMessages(),
-//            ));
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-//            return $this->redirect()->toRoute('registration');
         }
 
         $viewModel = new ViewModel(array(
             'form' => $form,
+            'default_avatar' => $this->getRequest()->getPost('default_avatar', null)
         ));
 
         $viewModel->setTerminal(true);
         return $viewModel;
 
     }
-
+    //TODO check is user active on all pages
     public function setUpAction()
     {
 
         $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
 
+        //if guest - redirect to login page
+        if (empty($user)) {
+            return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
+        }
         try {
-            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-
-            //if guest - redirect to login page
-            if (empty($user)) {
-                return $this->redirect()->toRoute('login');
-            }
             //if active user - redirect to dashboard
             if ($user->getIsActive()) {
-                return $this->redirect()->toRoute('home');
+                return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
             }
 
             $request = $this->getRequest();
-
             if ($request->isPost()) {
                 $form->setData($request->getPost());
                 if ($form->isValid()) {
                     $data = $form->getData();
                     RegistrationManager::getInstance($this->getServiceLocator())->setUp($data);
-                    return $this->redirect()->toRoute('home');
+                    return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
                 }
             }
 
@@ -115,12 +110,10 @@ class RegistrationController extends AbstractActionController
     public function facebookLoginAction()
     {
        try {
-
             $code = $this->getRequest()->getQuery('code');
             if (empty($code)) {
                 throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
             }
-            ;
             $facebook = $this->getServiceLocator()->get('facebook');
             if (!$facebook->getUser()) {
                 throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
@@ -138,7 +131,7 @@ class RegistrationController extends AbstractActionController
             }
 
             $currentUser = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-            $route = ($facebookUser->getIsActive()) ? self::HOME_ROUTE : self::SETUP_PAGE_ROUTE;
+            $route = ($facebookUser->getIsActive()) ? self::HOME_PAGE_ROUTE : self::SETUP_PAGE_ROUTE;
             if (empty($currentUser)){
                 //Sign In facebook user
                 AuthenticationManager::getInstance($this->getServiceLocator())->signIn($facebookUser->getEmail());
@@ -147,12 +140,12 @@ class RegistrationController extends AbstractActionController
                 $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT);
             }
             return $this->redirect()->toRoute($route);
-        } catch(\FacebookApiException $e){
+        } /*catch(\FacebookApiException $e){
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute('login');
-        } catch (\Exception $e) {
+            return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
+        }*/ catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute('registration');
+            return $this->redirect()->toRoute(self::REGISTRATION_PAGE_ROUTE);
         }
 
     }
