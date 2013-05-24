@@ -42,10 +42,7 @@ $this->headTitle($title);
                                                 <span class="fileupload-preview">
                                                     <?php if(!empty($image)) : ?>
                                                         <input type="hidden" name="<?=$element->getAttribute('name')?>[stored]" value="1"/>
-                                                        <a href="<?=$image->getWidth1280()?>" target="_blank">1280</a>
-                                                        <a href="<?=$image->getWidth1024()?>" target="_blank">1024</a>
-                                                        <a href="<?=$image->getWidth600()?>" target="_blank">600</a>
-                                                        <a href="<?=$image->getWidth480()?>" target="_blank">480</a>
+                                                        <a href="<?=$image->getWidth1280()?>" target="_blank">Open</a>
                                                     <?php endif; ?>
                                                 </span>
                                             </div>
@@ -106,10 +103,7 @@ $this->headTitle($title);
                                     <td><?=$block['heading']?></td>
                                     <td><?=$block['description']?></td>
                                     <td>
-                                        <a href="<?=$block['foregroundImage']['width1280']?>" target="_blank">1280</a>
-                                        <a href="<?=$block['foregroundImage']['width1024']?>" target="_blank">1024</a>
-                                        <a href="<?=$block['foregroundImage']['width600']?>" target="_blank">600</a>
-                                        <a href="<?=$block['foregroundImage']['width480']?>" target="_blank">480</a>
+                                        <a href="<?=$block['foregroundImage']['width1280']?>" target="_blank">Open</a>
                                     </td>
                                     <td>
                                         <a href="<?=$this->url('admin-content-landing', array('action' => 'editBlock', 'block' => $block['order'], 'region' => $this->activeRegion->getId()))?>" class="btn mini blue">

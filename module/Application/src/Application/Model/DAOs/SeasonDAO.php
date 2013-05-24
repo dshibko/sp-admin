@@ -53,4 +53,25 @@ class SeasonDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    /**
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param int $seasonId
+     * @return bool
+     */
+    public function checkSeasonDatesInterval($startDate, $endDate, $seasonId = -1) {
+        $startDate->setTime(0, 0, 0);
+        $endDate->setTime(0, 0, 0);
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('s.id'))
+            ->from($this->getRepositoryName(), 's')
+            ->where($qb->expr()->orx(
+            $qb->expr()->andX($qb->expr()->lte('s.startDate', ":startDate"), $qb->expr()->gte('s.endDate', ":startDate")),
+            $qb->expr()->andX($qb->expr()->lte('s.startDate', ":endDate"), $qb->expr()->gte('s.endDate', ":endDate"))))
+            ->andWhere($qb->expr()->neq('s.id', $seasonId))
+            ->setParameter("startDate", $startDate)
+            ->setParameter("endDate", $endDate);
+        return $this->getQuery($qb, false)->getSingleScalarResult() == 0;
+    }
+
 }

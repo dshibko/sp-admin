@@ -57,11 +57,22 @@ class SeasonController extends AbstractActionController {
                 $form->setData($post);
                 if ($form->isValid()) {
                     try {
+
+                        $dates = $form->get('dates')->getValue();
+                        $startDate = array_shift(explode(" - ", $dates));
+                        $startDate = \DateTime::createFromFormat('d/m/Y', $startDate);
+                        $endDate = array_pop(explode(" - ", $dates));
+                        $endDate = \DateTime::createFromFormat('d/m/Y', $endDate);
+
+                        $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
+                        if (!$seasonManager->checkDates($startDate, $endDate))
+                            throw new \Exception(MessagesConstants::ERROR_SEASON_DATES_ARE_NOT_AVAILABLE);
+
                         $imageManager = ImageManager::getInstance($this->getServiceLocator());
 
-                        list($displayName, $startDate, $endDate, $feederId, $regionsData) = $this->prepareUpdateData($form, $regionFieldsets, $imageManager);
+                        list($displayName, $feederId, $regionsData) = $this->prepareUpdateData($form, $regionFieldsets, $imageManager);
 
-                        SeasonManager::getInstance($this->getServiceLocator())->createSeason($displayName, $startDate, $endDate, $feederId, $regionsData);
+                        $seasonManager->createSeason($displayName, $startDate, $endDate, $feederId, $regionsData);
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_SEASON_CREATED);
 
@@ -121,11 +132,21 @@ class SeasonController extends AbstractActionController {
                 if ($form->isValid()) {
                     try {
 
+                        $dates = $form->get('dates')->getValue();
+                        $startDate = array_shift(explode(" - ", $dates));
+                        $startDate = \DateTime::createFromFormat('d/m/Y', $startDate);
+                        $endDate = array_pop(explode(" - ", $dates));
+                        $endDate = \DateTime::createFromFormat('d/m/Y', $endDate);
+
+                        $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
+                        if (!$seasonManager->checkDates($startDate, $endDate, $id))
+                            throw new \Exception(MessagesConstants::ERROR_SEASON_DATES_ARE_NOT_AVAILABLE);
+
                         $imageManager = ImageManager::getInstance($this->getServiceLocator());
 
-                        list($displayName, $startDate, $endDate, $feederId, $regionsData) = $this->prepareUpdateData($form, $regionFieldsets, $imageManager);
+                        list($displayName, $feederId, $regionsData) = $this->prepareUpdateData($form, $regionFieldsets, $imageManager);
 
-                        SeasonManager::getInstance($this->getServiceLocator())->updateSeason($displayName, $startDate, $endDate, $feederId, $regionsData, $id);
+                        $seasonManager->updateSeason($displayName, $startDate, $endDate, $feederId, $regionsData, $id);
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_SEASON_UPDATED);
 
@@ -185,11 +206,6 @@ class SeasonController extends AbstractActionController {
 
     private function prepareUpdateData($form, $regionFieldsets, $imageManager) {
         $displayName = $form->get('displayName')->getValue();
-        $dates = $form->get('dates')->getValue();
-        $startDate = array_shift(explode(" - ", $dates));
-        $startDate = \DateTime::createFromFormat('d/m/Y', $startDate);
-        $endDate = array_pop(explode(" - ", $dates));
-        $endDate = \DateTime::createFromFormat('d/m/Y', $endDate);
         $feederId = $form->get('feederId')->getValue();
 
         $regionsData = array();
@@ -214,6 +230,6 @@ class SeasonController extends AbstractActionController {
             $regionsData[$regionData['region']['id']] = $regionData;
         }
 
-        return array($displayName, $startDate, $endDate, $feederId, $regionsData);
+        return array($displayName, $feederId, $regionsData);
     }
 }

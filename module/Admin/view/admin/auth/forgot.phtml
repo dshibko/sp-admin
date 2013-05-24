@@ -4,7 +4,7 @@ $this->headTitle($title);
 ?>
 <h3 class="form-title"><?= $this->escapeHtml($title); ?></h3>
 <?php
-$this->renderMessages(true, true);
+print $this->renderMessages(true, true);
 if ($this->isValid) :
 ?>
 <form action="" method="POST" id="new-pwd">

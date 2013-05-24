@@ -195,9 +195,33 @@ class SeasonManager extends BasicManager {
         return $season;
     }
 
+    /**
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param int $seasonId
+     * @return bool
+     */
+    public function checkDates($startDate, $endDate, $seasonId = -1) {
+        $seasonDAO = SeasonDAO::getInstance($this->getServiceLocator());
+        return $seasonDAO->checkSeasonDatesInterval($startDate, $endDate, $seasonId);
+    }
+
     public function deleteSeason($id) {
         $seasonDAO = SeasonDAO::getInstance($this->getServiceLocator());
         $season = $seasonDAO->findOneById($id);
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        foreach ($season->getLeagues() as $league) {
+            if ($league->getLogoPath() != null)
+                $imageManager->deleteImage($league->getLogoPath());
+            if ($league->getPrizes() != null && is_array($league->getPrizes()) && count($league->getPrizes()) > 0) {
+                foreach ($league->getPrizes() as $prize) {
+                    if ($prize->getPrizeImage() != null)
+                        $imageManager->deleteImage($prize->getPrizeImage());
+                    if ($prize->getPostWinImage() != null)
+                        $imageManager->deleteImage($prize->getPostWinImage());
+                }
+            }
+        }
         $seasonDAO->remove($season);
     }
 

@@ -37,7 +37,7 @@ class RenderMessages extends AbstractHelper
             $html .= $admin ? $this->renderAdminMessage($message, 'alert-success') : $this->renderAppMessage($message);
         foreach ($current ? $flashMessenger->getCurrentMessages() : $flashMessenger->getMessages() as $message)
             $html .= $admin ? $this->renderAdminMessage($message, 'alert-info') : $this->renderAppMessage($message);
-        print $html;
+        return $html;
     }
 
     private function renderAdminMessage($message, $class) {
