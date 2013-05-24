@@ -13,9 +13,8 @@ use \Application\Model\DAOs\LanguageDAO;
 use \Application\Model\DAOs\RegionDAO;
 use \Application\Model\DAOs\CountryDAO;
 
-class ApplicationManager extends BasicManager {
 
-    const LANGUAGE_FILES_DIRECTORY = 'module/Application/language/';
+class ApplicationManager extends BasicManager {
 
     /**
      * @var ApplicationManager
@@ -104,46 +103,5 @@ class ApplicationManager extends BasicManager {
             }
         }
         return $countries;
-    }
-
-    //Get languages for select options
-    /**
-     * @return array
-     */
-    public function getLanguagesSelectOptions(){
-        $data = $this->getAllLanguages(true);
-        $languages = array();
-        if (!empty($data) && is_array($data)){
-            foreach($data as $language){
-                $languages[$language['id']] = $language['displayName'];
-            }
-        }
-        return $languages;
-    }
-
-    public function getAppLanguageFolder()
-    {
-        return getcwd() .DIRECTORY_SEPARATOR . self::LANGUAGE_FILES_DIRECTORY;
-    }
-    /**
-     * @param string $fileName
-     * @return array $data
-     */
-    public function getPOFileContent($fileName = 'en_EN')
-    {
-        $data = array();
-        $poFile = $this->getAppLanguageFolder() . $fileName . '.po';
-        if (file_exists($poFile)){
-            $poParser = $this->getServiceLocator()->get('poparser');
-            $content = $poParser->read($poFile);
-            if (!empty($content)){
-                foreach($content as $id => $value){
-                    if (!empty($id)){
-                        $data[$id] = !empty($value['msgstr'][0]) ? $value['msgstr'][0] : '';
-                    }
-                }
-            }
-        }
-        return $data;
     }
 }

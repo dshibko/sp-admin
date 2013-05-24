@@ -80,7 +80,7 @@ $this->headTitle($title);
         <!-- BEGIN EXAMPLE TABLE PORTLET-->
         <div class="portlet box grey">
             <div class="portlet-title">
-                <h4><i class="icon-user"></i><?=$this->translate('Gameplay Blocks')?></h4>
+                <h4><?=$this->translate('Gameplay Blocks')?></h4>
                 <div class="actions">
                     <?php if (count($this->gameplayBlocks) < $this->maxBlocks): ?>
                         <a href="<?=$this->url('admin-content-landing', array('region' => $this->activeRegion->getId(),'action' => 'addBlock'))?>" class="btn green"><i class="icon-plus"></i> <?=$this->translate('Add')?></a>

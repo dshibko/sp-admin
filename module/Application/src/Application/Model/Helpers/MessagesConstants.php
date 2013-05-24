@@ -21,6 +21,9 @@ class MessagesConstants
     const SUCCESS_FOOTER_SOCIAL_CREATED = "A footer social was created successfully.";
     const SUCCESS_FOOTER_SOCIAL_UPDATED = "A footer social was updated successfully.";
     const SUCCESS_FOOTER_SOCIAL_DELETED = "A footer social was deleted successfully.";
+    const SUCCESS_LANGUAGE_UPDATED = 'Language was updated successfully';
+    const SUCCESS_LANGUAGE_CREATED = 'Language was created successfully';
+
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
     const ERROR_MAX_GAMEPLAY_BLOCKS_NUMBER = "You can't create more than %s gameplay blocks.";
@@ -30,6 +33,9 @@ class MessagesConstants
     const ERROR_INVALID_OLD_PASSWORD = 'Invalid old password';
     const ERROR_REGION_NOT_FOUND = "Selected region was not found.";
     const ERROR_LANGUAGE_NOT_FOUND = "Selected language was not found.";
+    const ERROR_UPDATE_PO_FILE_FAILED = 'Po file update failed';
+    const ERROR_CONVERTING_PO_FILE_TO_MO_FAILED = 'Converting Po file to Mo failed';
+    const ERROR_UPDATE_LANGUAGE_COUNTRIES_FAILED = 'Language countries update failed';
 
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";

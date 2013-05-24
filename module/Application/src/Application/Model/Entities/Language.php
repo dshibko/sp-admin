@@ -109,7 +109,7 @@ class Language extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Country", mappedBy="language")
+     * @ORM\OneToMany(targetEntity="Country", mappedBy="language", cascade={"persist"})
      */
     private $countries;
 

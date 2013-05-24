@@ -46,6 +46,9 @@ $first = true;
                     ?>
                     <li <?=$subPage->isActive(true) ? 'class="active"' : ''?>>
                         <a href="<?=$subPage->getHref()?>">
+                            <?php if ($subPage->getLabel() != null): ?>
+                                <i class="<?=$subPage->getLabel()?>"></i>
+                            <?php endif; ?>
                             <?=$this->translate($subPage->getTitle())?>
                         </a>
                     </li>
