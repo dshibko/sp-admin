@@ -1,0 +1,284 @@
+.predict-section {
+
+  .predict-content {
+    width: 90.4em;
+    box-shadow: 7px 0px 20px rgba(50, 50, 50, 0.75);
+
+    .make-prediction {
+      .vertical-gradient(#fefefe, #e9f0f8);
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fefefe', endColorstr='#e9f0f8',GradientType=0 );
+
+      .ideal-form.stack .ideal-field {
+        width: auto!important;
+      }
+
+      > header {
+          position: relative;
+          background: #404040;
+
+          .game-date {
+            display: block;
+            color: #fff;
+            text-transform: uppercase;
+            text-align: center;
+            font: normal 1.6em/2.8 "ProximaNova-Bold", Helvetica, Arial;
+          }
+
+          li {
+            position: absolute;
+            top: 0;
+            padding: 0 2em;
+            list-style: none;
+
+            .vertical-gradient(#949494, #686868);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#949494', endColorstr='#686868',GradientType=0 );
+
+            a {
+              display: block;
+              color: #fff;
+              text-decoration: none;
+              font: normal 1.6em/2.8 "ProximaNova-Bold", Helvetica, Arial;
+
+              &:hover {
+                color: #ccc;
+              }
+            }
+
+            &.prev-match {
+              left: 0;   
+              box-shadow: 3px 0px 10px rgba(50, 50, 50, 0.75);
+
+              a {
+                padding: 0 0 0 1.5em;
+                background: url(../img/prev-match.png) no-repeat left center;
+              }       
+            }
+            &.next-match {
+              right: 0;
+              box-shadow: -3px 0px 10px rgba(50, 50, 50, 0.75);
+
+              a {
+                padding: 0 1.5em 0 0;
+                background: url(../img/next-match.png) no-repeat right center;
+              }
+            }
+
+          }
+
+          .flag-new-prediction {
+            display: block;
+            position: absolute;
+            bottom: -4em;
+            left: 50%;
+            margin-left: -6.5em;
+            width: 13em;
+            height: 4em;
+            text-align: center;
+
+            &:before {
+              position: absolute;
+              z-index: 1;
+              content: "";
+              display: block;
+              width: 0;
+              height: 0;
+              border-left: 6.5em solid transparent;
+              border-right: 6.5em solid transparent;
+              border-top: 4em solid #de1012;
+            }
+
+            span {
+              position: relative;
+              z-index: 2;
+              display: block;
+              padding: 0.6em 0 0;
+              color: #fff;
+              text-transform: uppercase;
+              font: normal 1.2em/1 "ProximaNova-Reg", Helvetica, Arial;
+            }
+          }
+      }
+
+      .make-prediction-content {
+        position: relative;
+        padding: 4em 1em 1em;
+        text-align: center;
+
+        .home-team, .league-logo, .away-team {
+          display: inline-block;
+          width: 29em;
+          text-align: center;
+          vertical-align: top;
+
+          &.ideal-wrap {
+            float: none;
+            clear: none;
+          }
+
+          label {
+            width: 15.5em!important;
+            text-align: center;
+
+            figure {
+              display: inline-block;
+              width: 11em;
+              height: 11em;
+              line-height: 11em;
+
+              img {
+                max-width: 11em;
+                max-height: 11em;
+              }
+            }
+
+            span {
+              display: block;
+              margin: 0.4em 0 0 0;
+              color: @blue;
+              font: normal 2.3em/1.2 "ProximaNova-Bold", Helvetica, Arial;
+            }
+          }
+
+          .ideal-wrap .ideal-field {
+            margin: 3em 0 0 0;
+            width: 11em!important;
+            max-width: 11em;
+
+              input[type="text"] {
+                padding: 0;
+                max-width: 110px;
+                width: 10em;
+                height: 1.2em;
+                text-align: center;
+                color: #000;
+                font: normal 5.3em/1 "ProximaNova-Bold", Helvetica, Arial;
+              }
+            }
+
+          section .ideal-field {
+            margin: 0 0 1em;
+            text-align: left;
+            clear: left;
+          }
+          .ideal-select {
+            width: 14em;
+          }
+        }
+
+        .away-team {
+          label {
+            float: right;
+            margin: 0 0 0 1.5em ;
+          }
+          .ideal-wrap .ideal-field {
+            float: right;
+            margin: 3em 0 0 1em;
+          }
+          section .ideal-field {
+            margin: 0 0 1em;
+            text-align: left;
+            float: right;
+            clear: right;
+          }
+        }
+
+        .league-logo {
+            margin: 3em 0 0;
+            width: 10em;
+
+            img {
+              margin: 0 0 2.4em;
+              max-width: 10em;
+              height: auto;
+            }
+
+            em {
+              display: block;
+              color: #648ac0;
+              text-transform: uppercase;
+              font: normal 4em/1 "ProximaNova-Bold", Helvetica, Arial;
+            }
+            span {
+              display: block;
+              color: @blue;
+              text-transform: uppercase;
+              font: normal 1.5em/1 "ProximaNova-Bold", Helvetica, Arial;
+            }
+        }
+
+        .buttons-block {
+          width: 100%;
+          max-width: 100%;
+          text-align: center;
+
+          button {
+            display: block;
+            margin: 1em auto 0;
+            width: 13em;
+            height: 2.3em;
+            border: 2px solid #9c1f4b;
+            color: #fff;
+            text-decoration: none;
+            text-shadow: none;
+            font: normal 2.5em/2.1 "ProximaNova-Bold", Helvetica, Arial;
+            box-shadow: 0px 2px 5px #666;
+
+            .vertical-gradient(#af496e, #9c1f4b);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#af496e', endColorstr='#9c1f4b',GradientType=0 );
+          }
+
+          
+        }
+
+      }
+    }
+
+
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width:  767px) {
+  .predict-section .predict-content {
+    width: 100%;
+    font-size: 70%;
+  }
+  .predict-section .predict-content .make-prediction > header li {
+      padding: 0 0.8em;
+      a {
+        font: normal 1.4em/3.2 "ProximaNova-Bold", Helvetica, Arial;
+          span {
+            display: none;
+          }
+      }
+      &.prev-match {
+        a {
+          padding: 0 0 0 1em;
+        }
+      }
+      &.next-match {
+        a {
+          padding: 0 1em 0 0;
+        }
+      }
+    } 
+
+    // .ideal-form .ideal-field, .ideal-form  .ideal-label,
+    // .predict-section .predict-content .make-prediction .make-prediction-content .away-team .ideal-wrap .ideal-field,
+    // .predict-section .predict-content .make-prediction .make-prediction-content .away-team label  {
+    //     float: none;
+    //     margin: 0 0 1em;
+    //     display: block;
+    //   }
+    .ideal-form.stack .ideal-wrap.home-team, .ideal-form.stack .ideal-wrap.away-team {
+      width: 40%!important;
+    }
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .predict-section .predict-content .make-prediction .make-prediction-content .home-team .ideal-wrap .ideal-field input[type="text"] {
+    max-width: 90px;
+  }
+}
+
+

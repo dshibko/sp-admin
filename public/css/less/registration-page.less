@@ -21,7 +21,7 @@
     }
     label {
         color: #4e4e4e;
-        font: normal 1.6em/1 "ProximaNova-Reg", Helvetica, Arial;
+        font: normal 1.6em/1.55 "ProximaNova-Reg", Helvetica, Arial;
     }
     .date-birth {
         .day.ideal-select {
@@ -72,11 +72,44 @@
             }
         }
     }
+    .keeplogin {
+        .ideal-radiocheck {
+            padding: 0;
+        }
+    }
 
     .buttons-block {
         border: none;
         div {
-            float: right;
+            width: 100%;
+            text-align: center;
+
+            .ideal-button {
+                margin: 0 0 0 1em;
+            }
+        }
+
+        &.signIn-buttons-block {
+            max-width: 460px;
+            width: 100%;
+            margin: 0 auto 3em;
+            div.ideal-wrap {
+                float: right;
+                width: auto;
+            }
+            p {
+                color: #4e4e4e;
+                font: normal 1.5em/1.55 "ProximaNova-Reg", Helvetica, Arial;
+                a {
+                    color: @blue;
+                    text-decoration: underline;
+                    font-family: "ProximaNova-Bold", Helvetica, Arial;
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
         }
     }
 }
@@ -96,6 +129,9 @@
             list-style: disc;
             margin-left: 2em;
         }
+    }    
+    p {
+        margin-bottom: 1em;
     }
 }
 
@@ -143,3 +179,24 @@ aside.connect-facebook {
 }
 
 
+
+
+
+@media only screen and (min-width: 320px) and (max-width:  767px) {
+    .keeplogin {
+        > label:first-child {
+            display: none;
+        }
+    }
+}
+@media screen and (min-width: 768px) and (orientation: portrait) {
+    .registration-section label {
+        font-size: 1.8em;
+    }
+    .ideal-form .buttons-block button[type="submit"] {
+        font: normal 1.7em/1 "ProximaNova-Bold", Helvetica, Arial;
+    }
+    .registration-section .buttons-block.signIn-buttons-block p {
+        font: normal 1.7em/1.6 "ProximaNova-Bold", Helvetica, Arial;
+    }
+}

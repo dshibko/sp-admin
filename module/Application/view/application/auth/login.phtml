@@ -1,29 +1,62 @@
 <?php
-$title = $this->translate('Login');
+$title = $this->translate('Sign In');
 $this->headTitle($title);
 ?>
 <?php echo $this->partial('partials/header');?>
-<h1><?php echo $this->escapeHtml($title);?></h1>
-<?php $this->renderMessages();?>
-<?php
+<div role="main" class="registration-section">
+    <h1><?php echo $this->escapeHtml($title);?></h1>
+    <aside class="connect-facebook clearfix">
+        <div>
+            <h2>Connect your account for a one click login</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus ligula, facilisis id scelerisque in, eleifend ut elit. Aenean a facilisis augue. </p>
+        </div>
+        <?php echo $this->renderFacebookButton($this->translate('Login with Facebook'));?>
+    </aside>
 
-$form = $this->form;
-$form->prepare();
-$form->setAttribute('action', $this->url('login', array('action' => 'authenticate')));
-echo $this->formElementerrors($form->get('email'));
-echo $this->formElementerrors($form->get('password'));
-echo $this->form()->openTag($form);
-echo $this->formLabel($form->get('email'));
-echo $this->formElement($form->get('email'));
-echo $this->formLabel($form->get('password'));
-echo $this->formElement($form->get('password'));
-echo $this->formLabel($form->get('rememberme'));
-echo $this->formElement($form->get('rememberme'));
-echo $this->formSubmit($form->get('submit'));
-echo $this->form()->closeTag();
-?>
-
-<a href="<?php echo $this->url('forgot');?>"><?php echo $this->translate('Forgotten password'); ?></a>
-<a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Not a member?');?></a>
-<?php echo $this->renderFacebookButton();?>
+    <?php
+    $form = $this->form;
+    $form->prepare();
+    $form->setAttribute('action', $this->url('login', array('action' => 'authenticate'))); ?>
+    <?php    echo $this->form()->openTag($form);?>
+        <?php if ($form->getInputFilter()->getMessages() || $this->renderMessages()):?>
+            <div class="form-errors">
+                <?php if ($this->renderMessages()):?>
+                     <p><?php echo $this->renderMessages();?></p>
+                <?php endif;?>
+                <?php echo $this->formElementerrors($form->get('email'));?>
+                <?php echo $this->formElementerrors($form->get('password')); ?>
+            </div>
+        <?php endif;?>
+    <section>
+        <div>
+            <h2><?php echo $this->translate('Enter Your Credentials');?></h2>
+        </div>
+        <div>
+            <?php  echo $this->formLabel($form->get('email'));?>
+            <?php  echo $this->formElement($form->get('email'));?>
+        </div>
+        <div>
+            <?php  echo $this->formLabel($form->get('password'));?>
+            <?php  echo $this->formElement($form->get('password'));?>
+        </div>
+        <div class="keeplogin">
+            <label>&nbsp;</label>
+            <label for="loginkeeping"><input id="loginkeeping" type="checkbox" name="rememberme" value=""><?php echo $this->translate('Remember me');?></label>
+        </div>
+    </section>
+    <section class="buttons-block signIn-buttons-block clearfix">
+        <div>
+            <button type="submit"><?php echo $this->translate('Sign In');?></button>
+        </div>
+        <p>
+            <a href="<?php echo $this->url('forgot');?>"><?php echo $this->translate('Forgotten password');?></a>
+        </p>
+        <p>
+            <?php echo $this->translate('Not a memeber?');?>
+            <a href="<?php echo $this->url('registration');?>"><?php echo $this->translate('Register');?></a>
+        </p>
+    </section>
+   <?php echo $this->form()->closeTag();?>
+</div>
+<script src="/js/login.js"></script>
 <?php echo $this->partial('partials/footer');?>

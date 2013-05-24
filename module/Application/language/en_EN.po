@@ -1,24 +1,35 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
 
 msgid "Forgot Password?"
-msgstr "Forgot Password"
+msgstr "Forgot Password?111"
 
 msgid "Login"
 msgstr "Login"
 
 msgid "Forgotten password"
-msgstr "Forgotten password"
+msgstr "Forgotten password323232323"
 
 msgid "Not a member?"
-msgstr "Already a member?"
+msgstr "Already a member?222222"
 
 msgid "Reset Password"
-msgstr "Reset Password"
+msgstr "Reset Password3ddd3"
 
 msgid "Reset Password Page"
-msgstr "Reset Password Page"
+msgstr "Reset Password Page234"
 
 msgid "Already a member?"
-msgstr "Already a member?"
+msgstr "Already a member?222"
 
 msgid "Login with Facebook"
 msgstr "Login with Facebook"
@@ -95,9 +106,6 @@ msgstr "Regional Settings"
 msgid "Your country"
 msgstr "Your country"
 
-msgid "You cannot change your coutry in the middle of a league. We will prompt you to re-confirm your details at the start of the the league"
-msgstr "You cannot change your coutry in the middle of a league. We will prompt you to re-confirm your details at the start of the the league"
-
 msgid "Email Settings"
 msgstr "Email Settings"
 
@@ -109,9 +117,6 @@ msgstr "A 404 error occurred"
 
 msgid "The requested controller was unable to dispatch the request."
 msgstr "The requested controller was unable to dispatch the request."
-
-msgid "The requested controller could not be mapped to an existing controller class."
-msgstr "The requested controller could not be mapped to an existing controller class."
 
 msgid "The requested controller was not dispatchable."
 msgstr "The requested controller was not dispatchable."
@@ -151,4 +156,3 @@ msgstr "An error occurred"
 
 msgid "Skeleton Application"
 msgstr "Test Zend Application"
-

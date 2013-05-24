@@ -157,7 +157,7 @@ class LanguageManager extends BasicManager {
         }
         return $languages;
     }
-     //TODO setCountries to language error
+
     /**
      * @param \Application\Model\Entities\Language $language
      * @param array $countries
@@ -168,15 +168,17 @@ class LanguageManager extends BasicManager {
         if (!empty($countries)){
             $countryDAO = CountryDAO::getInstance($this->getServiceLocator());
             //Clear old countries
-            //$language->getCountries()->clear();
+            foreach ($language->getCountries() as $country) {
+                $country->setLanguage(null);
+                $countryDAO->save($country, false, false);
+            }
             foreach($countries as $countryId){
                 $country = $countryDAO->findOneById($countryId);
                 $country->setLanguage($language);
-                $countryDAO->save($country, false);
+                $countryDAO->save($country, false, false);
             }
            $countryDAO->flush();
-           // print_r(count($language->getCountries())); die;
-            //LanguageDAO::getInstance($this->getServiceLocator())->save($language);
+           $countryDAO->clearCache();
         }
         return true;
     }
