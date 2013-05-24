@@ -43,9 +43,7 @@ class RegionManager extends BasicManager {
     }
 
     public function getAllRegions($hydrate = false, $skipCache = false) {
-        $regions = RegionDAO::getInstance($this->getServiceLocator())->getAllRegions($hydrate, $skipCache);
-//        return array(array_shift($regions)); // TODO remove array_shift
-        return $regions;
+        return RegionDAO::getInstance($this->getServiceLocator())->getAllRegions($hydrate, $skipCache);
     }
 
     private $nonHydratedRegions;
