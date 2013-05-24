@@ -115,18 +115,20 @@ class LanguagesController extends AbstractActionController
             $languageCodeElement = $languageForm->get('language_code');
             $languageCodeElement->setValue($language->getLanguageCode());
             $languageCodeElement->setAttribute('disabled', 'disabled');
-           // $languageCodeElement->setRequired(false);
+            $languageForm->getInputFilter()->get('language_code')->setRequired(false);
+
             //Display Name
             $displayNameElement = $languageForm->get('display_name');
             $displayNameElement->setValue($language->getDisplayName());
-            //$disp
-            $strings = $languageManager->getPoFileContent($language->getLanguageCode());
 
+            $strings = $languageManager->getPoFileContent($language->getLanguageCode());
+            //TODO save countries and display name
             if ($request->isPost()) {
                 $languageForm->setData($request->getPost());
                 if ($languageForm->isValid()) {
+                    $data = $languageForm->getData();
                     //Update Po file content
-                    if (!$languageManager->savePoFileContent($language->getLanguageCode(), $languageForm->get('strings')->getValue())) {
+                    if (!$languageManager->savePoFileContent($language->getLanguageCode(), $data['strings'])) {
                         throw new \Exception(MessagesConstants::ERROR_UPDATE_PO_FILE_FAILED);
                     }
                     //Generate Mo from Po file
@@ -134,7 +136,8 @@ class LanguagesController extends AbstractActionController
                         throw new \Exception(MessagesConstants::ERROR_CONVERTING_PO_FILE_TO_MO_FAILED);
                     }
                     //Update language countries
-                    $countries = $languageForm->get('countries')->getValue();
+                    $countries = $data['countries'];
+                    $language->setDisplayName($data['display_name']);
                     if (!$languageManager->updateLanguageCountries($language, $countries)) {
                         throw new \Exception(MessagesConstants::ERROR_UPDATE_LANGUAGE_COUNTRIES_FAILED);
                     }

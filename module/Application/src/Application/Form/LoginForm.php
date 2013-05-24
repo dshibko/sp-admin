@@ -13,12 +13,12 @@ class LoginForm extends Form {
         $this->setInputFilter(new LoginInputFilter());
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-vertical login-form');
-
+        $this->setAttribute('id', 'login');
         $this->add(array(
             'name' => 'email',
             'type'  => 'text',
             'attributes' => array(
-                'placeholder' => 'Email',
+                'class' => 'required email error'
             ),
             'options' => array(
                 'label' => 'Email',
@@ -29,7 +29,7 @@ class LoginForm extends Form {
             'name' => 'password',
             'type'  => 'password',
             'attributes' => array(
-                'placeholder' => 'Password',
+                'class' => 'required password'
             ),
             'options' => array(
                 'label' => 'Password',
