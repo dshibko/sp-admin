@@ -14,21 +14,27 @@
                         <?php
                             $form = $this->form;
                             $form->prepare();
-                            $form->setAttribute('action', $this->url('admin-content-languages', array('action' => $this->action)));
-
+                            $form->setAttribute('action', $this->url('admin-content-languages', $this->url_params));
                             echo $this->form()->openTag($form);
                         ?>
-                        <div class="controls">  
-                            <?php if (!empty($this->countryValues)):?>
-                                <?php $form->get('countries')->setValue($this->countryValues);?>
-                            <?php endif;?>
+                        <div class="controls">
                             <?php echo $this->formSelect($form->get('countries'));?>
                             <?php echo $this->formLabel($form->get('language_code'));?>
                             <?php echo $this->formElement($form->get('language_code'));?>
+                            <?php echo $this->formLabel($form->get('display_name'));?>
+                            <?php echo $this->formElement($form->get('display_name'));?>
+                            <label><?php echo $this->translate('Language Strings');?></label>
+                            <?php $strings = $this->form->get('strings')->getValue();?>
                             <?php if (!empty($this->strings)):?>
                                 <?php foreach($this->strings as $id=>$string):?>
                                     <label><?php echo $id;?></label>
-                                     <textarea rows="2" cols="50" name="strings[<?php echo $id;?>]"><?php echo $string;?></textarea>
+                                    <?php
+                                        $value = ($this->url_params['action'] == 'edit') ? $string : '';
+                                        if (!empty($strings[$id])){
+                                            $value = $strings[$id];
+                                        }
+                                    ?>
+                                    <textarea rows="2" cols="50" name="strings[<?php echo $id;?>]"><?php echo $value;?></textarea>
                                 <?php endforeach;?>
                             <?php endif;?>
                         </div>

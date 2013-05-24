@@ -4,6 +4,7 @@ namespace Application\Form;
 
 use Zend\Form\Form;
 use Application\Manager\ApplicationManager;
+use Application\Manager\LanguageManager;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Form\Filter\SetUpFormFilter;
@@ -99,7 +100,7 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
             'options' => array(
                 'label' => 'Language',
                 'empty_option' => 'Please Select',
-                'value_options' => ApplicationManager::getInstance($this->getServiceLocator())->getLanguagesSelectOptions(),
+                'value_options' => LanguageManager::getInstance($this->getServiceLocator())->getLanguagesSelectOptions(),
             ),
             'attributes' => array(
                 'value' => $this->getUserLanguageId()

@@ -2,7 +2,7 @@
 namespace Application\Form\Validator;
 
 use Zend\Validator\AbstractValidator;
-
+//TODO move to vendor/neoco
 class BadWordValidator  extends AbstractValidator
 {
     const BAD_WORDS = 'badWords';

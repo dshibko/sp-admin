@@ -3,6 +3,7 @@
 namespace Admin\Form;
 
 use Zend\Form\Form;
+use Admin\Form\Filter\LanguageFormFilter;
 
 class LanguageForm extends Form {
 
@@ -13,6 +14,8 @@ class LanguageForm extends Form {
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-vertical');
         $this->setCountries($countries);
+        $languageFilter = new LanguageFormFilter();
+        $this->setInputFilter($languageFilter->getInputFilter());
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
@@ -30,9 +33,30 @@ class LanguageForm extends Form {
 
         ));
         $this->add(array(
+            'name' => 'strings',
+            'options' => array(
+                'label' => 'Strings',
+            ),
+            'attributes' => array(
+                'class' => '',
+                'type' => 'text'
+            )
+        ));
+
+        $this->add(array(
             'name' => 'language_code',
             'options' => array(
                 'label' => 'Code',
+            ),
+            'attributes' => array(
+                'class' => '',
+                'type' => 'text'
+            )
+        ));
+        $this->add(array(
+            'name' => 'display_name',
+            'options' => array(
+                'label' => 'Display Name',
             ),
             'attributes' => array(
                 'class' => '',

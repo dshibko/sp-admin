@@ -60,7 +60,7 @@ class Country extends BasicObject {
     /**
      * @var \Language
      *
-     * @ORM\ManyToOne(targetEntity="Language")
+     * @ORM\ManyToOne(targetEntity="Language", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      * })

@@ -7,10 +7,14 @@ use \Application\Manager\ExceptionManager;
 use \Neoco\Controller\AbstractActionController;
 use \Admin\Form\LanguageForm;
 use \Application\Manager\ApplicationManager;
+use \Application\Model\Helpers\MessagesConstants;
+use \Application\Model\Entities\Language;
 
-class LanguagesController extends AbstractActionController {
+class LanguagesController extends AbstractActionController
+{
 
     const LANGUAGE_LIST_PAGE_ROUTE = 'admin-content-languages';
+
     public function indexAction()
     {
 
@@ -19,7 +23,7 @@ class LanguagesController extends AbstractActionController {
 
             $languages = $languageManager->getAllLanguages(true);
 
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $languages = array();
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
@@ -28,48 +32,130 @@ class LanguagesController extends AbstractActionController {
             'languages' => $languages,
         );
     }
-
+    //TODO get strings from form on validation error
     public function addAction()
     {
+        $strings = array();
+        $params = array('action' => 'add');
+        $request = $this->getRequest();
+        $languageForm = new LanguageForm(ApplicationManager::getInstance($this->getServiceLocator())->getCountriesSelectOptions());
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+        try {
+            $language = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+            $strings = $languageManager->getPoFileContent($language->getLanguageCode());
+            //Add validation of language code
+            if ($request->isPost()) {
+                $languageForm->setData($request->getPost());
+                if ($languageForm->isValid()) {
+                    $data = $languageForm->getData();
+                    $newLanguage = new Language();
+                    $newLanguage->setDisplayName($data['display_name'])
+                                ->setLanguageCode($data['language_code']);
+                    //Update language countries
+                    if (!$languageManager->updateLanguageCountries($newLanguage, $data['countries'])) {
+                        throw new \Exception(MessagesConstants::ERROR_UPDATE_LANGUAGE_COUNTRIES_FAILED);
+                    }
+                    //Create Po file content
+                    if (!$languageManager->savePoFileContent($newLanguage->getLanguageCode(), $data['strings'])) {
+                        throw new \Exception(MessagesConstants::ERROR_UPDATE_PO_FILE_FAILED);
+                    }
+                    //Generate Mo from Po file
+                    if (!$languageManager->convertPoToMo($newLanguage->getLanguageCode())) {
+                        throw new \Exception(MessagesConstants::ERROR_CONVERTING_PO_FILE_TO_MO_FAILED);
+                    }
+                    $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_LANGUAGE_CREATED);
+                    return $this->redirect()->toRoute(self::LANGUAGE_LIST_PAGE_ROUTE);
+                } else {
+                    foreach ($languageForm->getMessages() as $el => $messages) {
+                        $this->flashMessenger()->addErrorMessage($languageForm->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
+                    }
 
+                }
+            }
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+        }
+
+        return array(
+            'title' => 'Add Language',
+            'form' => $languageForm,
+            'url_params' => $params,
+            'strings' => $strings
+        );
     }
 
     public function editAction()
     {
-        $languageId = (string) $this->params()->fromRoute('language', '');
-        $countryValues = array();
+        $languageId = (string)$this->params()->fromRoute('language', '');
         $language = null;
         $strings = array();
-
-        if (empty($languageId)){
+        $params = array();
+        $request = $this->getRequest();
+        if (empty($languageId) && !$request->isPost()) {
             return $this->redirect()->toRoute(self::LANGUAGE_LIST_PAGE_ROUTE);
         }
         $languageManager = LanguageManager::getInstance($this->getServiceLocator());
-        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
         $languageForm = new LanguageForm(ApplicationManager::getInstance($this->getServiceLocator())->getCountriesSelectOptions());
         try {
+            //TODO remove input filter for code and display name
             $language = $languageManager->getLanguageById($languageId);
+            $countryValues = array();
             $countries = $language->getCountries();
-            if (!empty($countries)){
-                foreach($countries as $country){
+            if (!empty($countries)) {
+                foreach ($countries as $country) {
                     $countryValues[] = $country->getId();
                 }
             }
+            $params = array(
+                'language' => $language->getId(),
+                'action' => 'edit'
+            );
             $languageForm->get('countries')->setValue($countryValues);
+            //Language Code
             $languageCodeElement = $languageForm->get('language_code');
             $languageCodeElement->setValue($language->getLanguageCode());
-            $languageCodeElement->setAttribute('disabled','disabled');
-            $strings = $applicationManager->getPOFileContent($language->getLanguageCode());
-        } catch(\Exception $e) {
+            $languageCodeElement->setAttribute('disabled', 'disabled');
+           // $languageCodeElement->setRequired(false);
+            //Display Name
+            $displayNameElement = $languageForm->get('display_name');
+            $displayNameElement->setValue($language->getDisplayName());
+            //$disp
+            $strings = $languageManager->getPoFileContent($language->getLanguageCode());
+
+            if ($request->isPost()) {
+                $languageForm->setData($request->getPost());
+                if ($languageForm->isValid()) {
+                    //Update Po file content
+                    if (!$languageManager->savePoFileContent($language->getLanguageCode(), $languageForm->get('strings')->getValue())) {
+                        throw new \Exception(MessagesConstants::ERROR_UPDATE_PO_FILE_FAILED);
+                    }
+                    //Generate Mo from Po file
+                    if (!$languageManager->convertPoToMo($language->getLanguageCode())) {
+                        throw new \Exception(MessagesConstants::ERROR_CONVERTING_PO_FILE_TO_MO_FAILED);
+                    }
+                    //Update language countries
+                    $countries = $languageForm->get('countries')->getValue();
+                    if (!$languageManager->updateLanguageCountries($language, $countries)) {
+                        throw new \Exception(MessagesConstants::ERROR_UPDATE_LANGUAGE_COUNTRIES_FAILED);
+                    }
+                    $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_LANGUAGE_UPDATED);
+                    return $this->redirect()->toRoute(self::LANGUAGE_LIST_PAGE_ROUTE);
+                } else {
+                    foreach ($languageForm->getMessages() as $el => $messages) {
+                        $this->flashMessenger()->addErrorMessage($languageForm->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
+                    }
+
+                }
+            }
+        } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
         return array(
             'title' => 'Edit Language',
-            'action' => 'edit',
-            'form'  => $languageForm,
-            'language' => $language,
-            'strings' => $strings
+            'form' => $languageForm,
+            'strings' => $strings,
+            'url_params' => $params
         );
     }
 

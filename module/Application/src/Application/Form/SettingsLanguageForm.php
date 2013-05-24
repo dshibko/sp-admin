@@ -6,6 +6,7 @@ use \Application\Form\Filter\SettingsLanguageFilter;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Manager\ApplicationManager;
+use Application\Manager\LanguageManager;
 
 class SettingsLanguageForm extends Form {
     protected $type;
@@ -45,7 +46,7 @@ class SettingsLanguageForm extends Form {
             'options' => array(
                 'label' => 'Language',
                 'empty_option' => 'Please Select',
-                'value_options' => ApplicationManager::getInstance($this->getServiceLocator())->getLanguagesSelectOptions(),
+                'value_options' => LanguageManager::getInstance($this->getServiceLocator())->getLanguagesSelectOptions(),
             ),
             'attributes' => array(
                 'value' => ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser()->getLanguage()->getId(),
