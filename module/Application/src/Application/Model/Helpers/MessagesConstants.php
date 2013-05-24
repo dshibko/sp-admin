@@ -36,6 +36,7 @@ class MessagesConstants
     const ERROR_UPDATE_PO_FILE_FAILED = 'Po file update failed';
     const ERROR_CONVERTING_PO_FILE_TO_MO_FAILED = 'Converting Po file to Mo failed';
     const ERROR_UPDATE_LANGUAGE_COUNTRIES_FAILED = 'Language countries update failed';
+    const ERROR_SEASON_DATES_ARE_NOT_AVAILABLE = 'Dates interval you selected intersects with another season\'s interval.';
 
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";

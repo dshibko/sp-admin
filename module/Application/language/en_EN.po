@@ -11,25 +11,25 @@ msgstr ""
 "X-Generator: Poedit 1.5.5\n"
 
 msgid "Forgot Password?"
-msgstr "Forgot Password?111"
+msgstr "Forgot Password"
 
 msgid "Login"
 msgstr "Login"
 
 msgid "Forgotten password"
-msgstr "Forgotten password323232323"
+msgstr "Forgotten password"
 
 msgid "Not a member?"
-msgstr "Already a member?222222"
+msgstr "Already a member?"
 
 msgid "Reset Password"
-msgstr "Reset Password3ddd3"
+msgstr "Reset Password"
 
 msgid "Reset Password Page"
-msgstr "Reset Password Page234"
+msgstr "Reset Password Page"
 
 msgid "Already a member?"
-msgstr "Already a member?222"
+msgstr "Already a member???"
 
 msgid "Login with Facebook"
 msgstr "Login with Facebook"
@@ -106,6 +106,13 @@ msgstr "Regional Settings"
 msgid "Your country"
 msgstr "Your country"
 
+msgid ""
+"You cannot change your coutry in the middle of a league. We will prompt you "
+"to re-confirm your details at the start of the the league"
+msgstr ""
+"You cannot change your coutry in the middle of a league. We will prompt you "
+"to re-confirm your details at the start of the the league"
+
 msgid "Email Settings"
 msgstr "Email Settings"
 
@@ -117,6 +124,11 @@ msgstr "A 404 error occurred"
 
 msgid "The requested controller was unable to dispatch the request."
 msgstr "The requested controller was unable to dispatch the request."
+
+msgid ""
+"The requested controller could not be mapped to an existing controller class."
+msgstr ""
+"The requested controller could not be mapped to an existing controller class."
 
 msgid "The requested controller was not dispatchable."
 msgstr "The requested controller was not dispatchable."

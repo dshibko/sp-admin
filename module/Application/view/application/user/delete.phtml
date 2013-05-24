@@ -4,7 +4,7 @@ $this->headTitle($title);
 ?>
 
 <h1><?php echo $this->escapeHtml($title);?></h1>
-<?php $this->renderMessages();?>
+<?php print $this->renderMessages();?>
 <p><?php echo $this->translate('Are you sure?');?></p>
 <form action="<?php echo $this->url('delete-account');?>" method="post">
     <input type="hidden" value="<?php echo base64_encode($this->user->getId());?>" name="user_id"/>

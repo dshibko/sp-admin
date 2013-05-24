@@ -8,13 +8,13 @@ INSERT INTO  `avatar` (
 `is_default`
 )
 VALUES (
- '/img/avatar/original/user_default_1.jpg',  '/img/avatar/big/user_default_1.jpg',  '/img/avatar/medium/user_default_1.jpg',  '/img/avatar/small/user_default_1.jpg',  '/img/avatar/tiny/user_default_1',  '1'
+ '/img/avatar/original/user_default_1.jpg',  '/img/avatar/big/user_default_1.jpg',  '/img/avatar/medium/user_default_1.jpg',  '/img/avatar/small/user_default_1.jpg',  '/img/avatar/tiny/user_default_1.jpg',  '1'
 ), (
- '/img/avatar/original/user_default_2.jpg',  '/img/avatar/big/user_default_2.jpg',  '/img/avatar/medium/user_default_2.jpg',  '/img/avatar/small/user_default_2.jpg',  '/img/avatar/tiny/user_default_2',  '1'
+ '/img/avatar/original/user_default_2.jpg',  '/img/avatar/big/user_default_2.jpg',  '/img/avatar/medium/user_default_2.jpg',  '/img/avatar/small/user_default_2.jpg',  '/img/avatar/tiny/user_default_2.jpg',  '1'
 ), (
- '/img/avatar/original/user_default_3.jpg',  '/img/avatar/big/user_default_3.jpg',  '/img/avatar/medium/user_default_3.jpg',  '/img/avatar/small/user_default_3.jpg',  '/img/avatar/tiny/user_default_3',  '1'
+ '/img/avatar/original/user_default_3.jpg',  '/img/avatar/big/user_default_3.jpg',  '/img/avatar/medium/user_default_3.jpg',  '/img/avatar/small/user_default_3.jpg',  '/img/avatar/tiny/user_default_3.jpg',  '1'
 ), (
- '/img/avatar/original/user_default_4.jpg',  '/img/avatar/big/user_default_4.jpg',  '/img/avatar/medium/user_default_4.jpg',  '/img/avatar/small/user_default_4.jpg',  '/img/avatar/tiny/user_default_4',  '1'
+ '/img/avatar/original/user_default_4.jpg',  '/img/avatar/big/user_default_4.jpg',  '/img/avatar/medium/user_default_4.jpg',  '/img/avatar/small/user_default_4.jpg',  '/img/avatar/tiny/user_default_4.jpg',  '1'
 );
 
 -- Countries List
