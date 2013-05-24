@@ -84,5 +84,5 @@ if ($(document).width() <  turnOffCustomStylePoint)
   registerOptions.disableCustom = 'select';
 
 var $register = $('#register').idealforms(registerOptions).data('idealforms');
-$('#reset').click(function(){ $myform.reset().fresh().focusFirst() });
+$('#reset').click(function(){ $register.reset().fresh().focusFirst() });
 $register.focusFirst();
