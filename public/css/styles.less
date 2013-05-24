@@ -13,6 +13,9 @@
 
 @import "less/home-page.less";
 @import "less/registration-page.less";
+//@import "less/predict-page.less";
+
+
 
 /* ==========================================================================
    Media Queries
@@ -282,11 +285,17 @@
     }
     footer[role="contentinfo"] {
       article {
-        img {
-          display: block;
-          float: left;
-          /*width: 13em;*/
+        figure {
+            display: block;
+            float: left;
+            width: 13em;
+            text-align: center;
+
+            img {
+              max-width: 13em;
+            }
         }
+        
         h2 {
             margin: 1em 0 0 10.1em;
         }

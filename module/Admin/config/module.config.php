@@ -219,6 +219,7 @@ return array(
             'Admin\Controller\Index' => 'Admin\Controller\IndexController',
             'Admin\Controller\Auth' => 'Admin\Controller\AuthController',
             'Admin\Controller\Content' => 'Admin\Controller\ContentController',
+            'Admin\Controller\Season' => 'Admin\Controller\SeasonController',
             'Admin\Controller\Settings' => 'Admin\Controller\SettingsController',
             'Admin\Controller\Languages' => 'Admin\Controller\LanguagesController',
         ),
@@ -231,6 +232,7 @@ return array(
             'layout/admin-layout'           => __DIR__ . '/../view/layout/layout.phtml',
             'layout/admin-login-layout'           => __DIR__ . '/../view/layout/layout2.phtml',
             'admin/index/index' => __DIR__ . '/../view/admin/index/index.phtml',
+            'admin/season/edit' => __DIR__ . '/../view/admin/season/add.phtml',
             'admin/content/edit-block' => __DIR__ . '/../view/admin/content/add-block.phtml',
             'admin/content/edit-footer-social' => __DIR__ . '/../view/admin/content/add-footer-social.phtml',
             'error/admin-redirect' => __DIR__ . '/../view/error/redirect.phtml',
@@ -255,6 +257,32 @@ return array(
                         'label' => 'icon-dashboard',
                         'route' => 'admin-home',
                     ),
+                    'seasons' => array(
+                        'title' => 'Seasons',
+                        'label' => 'icon-calendar',
+                        'route' => 'admin-seasons',
+                        'action' => 'index',
+                        'pages' => array(
+                            array(
+                                'title' => 'Create Season',
+                                'label' => 'icon-plus',
+                                'route' => 'admin-seasons',
+                                'action' => 'add',
+                            ),
+                            array(
+                                'title' => 'Edit Season',
+                                'label' => 'icon-edit',
+                                'route' => 'admin-seasons',
+                                'action' => 'edit',
+                            ),
+                            array(
+                                'title' => 'Delete Season',
+                                'label' => 'icon-minus',
+                                'route' => 'admin-seasons',
+                                'action' => 'delete',
+                            ),
+                        )
+                    ),
                     'content' => array(
                         'title' => 'Content',
                         'label' => 'icon-tasks',
@@ -263,6 +291,7 @@ return array(
                         'pages' => array(
                             'landing' => array(
                                 'title' => 'Landing',
+                                'label' => 'icon-list-alt',
                                 'route' => 'admin-content-landing',
                                 'useRouteMatch' => true,
                                 'pages' => array(
@@ -288,18 +317,22 @@ return array(
                             ),
                             'reports' => array(
                                 'title' => 'Match Reports',
+                                'label' => 'icon-bar-chart',
                                 'route' => 'admin-content-reports',
                             ),
                             'languages' => array(
                                 'title' => 'Languages',
+                                'label' => 'icon-refresh',
                                 'route' => 'admin-content-languages',
                             ),
                             'footer-images' => array(
                                 'title' => 'Footer Images',
+                                'label' => 'icon-picture',
                                 'route' => 'admin-content-footer-images',
                             ),
                             'footer-social' => array(
                                 'title' => 'Footer Socials',
+                                'label' => 'icon-twitter',
                                 'route' => 'admin-content-footer-socials',
                                 'useRouteMatch' => true,
                                 'pages' => array(

@@ -74,7 +74,7 @@
             <details open="open" class="popup">
                 <summary class="login-popup-button"><span><?php echo $this->translate('Regular Login');?></span></summary>
                 <div class="login-form popup-content">
-                    <form action="<?php echo $this->url('login');?>" method="post">
+                    <form action="<?php echo $this->url('login');?>" method="post" novalidate="true">
                         <p class="field">
                             <label for="email"><?php echo $this->translate('Email');?></label>
                             <input id="email" name="email" required="required" type="text" placeholder="Email">
