@@ -154,3 +154,6 @@
     text-align: left;
     font: normal 1.2em/2 "ProximaNova-Reg", Helvetica, Arial;
 }
+.lt-ie8 .registration-section .buttons-block.signIn-buttons-block {
+  max-width: 585px;
+}

@@ -61,6 +61,7 @@ $(document).ready(function () {
     if ( navigator.userAgent.indexOf(" Safari/") != -1 && navigator.userAgent.indexOf(" Version/5") != -1) {
         $('body').addClass("safari5");
     };
+    $('#make-prediction').addClass("stack");
 
 
         ;(function(window, document, undefined) {
