@@ -157,6 +157,11 @@ class Module
                     $footerSocials->setServiceLocator($sm->getServiceLocator());
                     return $footerSocials;
                 },
+                'settingsHelper' => function($sm){
+                    $settingsHelper = new \Neoco\View\Helper\SettingsHelper();
+                    $settingsHelper->setServiceLocator($sm->getServiceLocator());
+                    return $settingsHelper;
+                },
             )
         );
     }

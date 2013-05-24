@@ -256,6 +256,13 @@ INSERT INTO `role` (`id`, `name`, `parent_id`) VALUES
 (3, 'User', 2),
 (4, 'Guest', 3);
 
+-- Default Settings
+INSERT INTO `settings` (`id`, `setting_key`, `setting_value`) VALUES
+(1, 'site-background-colour', '#560a24'),
+(2, 'site-footer-colour', '#350616'),
+(3, 'bad-words', 'Real, Madrid, Soccer'),
+(4, 'ahead-predictions-days', 5);
+
 -- Not for GIT
 
 INSERT INTO `content_image` (`id`, `width1280`, `width1024`, `width600`, `width480`) VALUES

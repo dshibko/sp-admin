@@ -15,7 +15,7 @@ class MessagesConstants
     const SUCCESS_GAMEPLAY_BLOCK_CREATED = "A gameplay block was created successfully.";
     const SUCCESS_GAMEPLAY_BLOCK_UPDATED = "A gameplay block was updated successfully.";
     const SUCCESS_GAMEPLAY_BLOCK_DELETED = "A gameplay block was deleted successfully.";
-    const SUCCESS_REGION_LANGUAGE_UPDATED = "Default region and language were updated successfully.";
+    const SUCCESS_SETTINGS_UPDATED = "Settings were updated successfully.";
     const SUCCESS_FOOTER_IMAGE_ADDED = "A footer image was added successfully.";
     const SUCCESS_FOOTER_IMAGE_DELETED = "A footer image was deleted successfully.";
     const SUCCESS_FOOTER_SOCIAL_CREATED = "A footer social was created successfully.";

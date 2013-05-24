@@ -331,3 +331,9 @@ CREATE TABLE `footer_social` (
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 ALTER TABLE `footer_social` ADD FOREIGN KEY (region_id) REFERENCES `region`(id);
+CREATE TABLE `settings` (
+	id INT AUTO_INCREMENT NOT NULL,
+	setting_key VARCHAR(100) NOT NULL,
+	setting_value VARCHAR(500) NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;

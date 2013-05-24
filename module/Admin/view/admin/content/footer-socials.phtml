@@ -8,7 +8,7 @@ $this->headTitle($title);
             <ul class="nav nav-tabs">
                 <?php foreach ($this->regions as $i => $region) : ?>
                 <li <?= ($region['id'] == $this->activeRegion->getId() ? ' class="active"' : '')?>>
-                    <a href="<?=$this->url('admin-settings-footer-images', array('region' => $region['id']))?>"><?=$region['displayName']?></a>
+                    <a href="<?=$this->url('admin-content-footer-images', array('region' => $region['id']))?>"><?=$region['displayName']?></a>
                 </li>
                 <?php endforeach; ?>
             </ul>
@@ -19,7 +19,7 @@ $this->headTitle($title);
                             <div class="portlet-title">
                                 <h4><i class="icon-user"></i><?=$this->translate('Footer Socials')?></h4>
                                 <div class="actions">
-                                    <a href="<?=$this->url('admin-settings-footer-socials', array('region' => $this->activeRegion->getId(),'action' => 'addFooterSocial'))?>" class="btn green"><i class="icon-plus"></i> <?=$this->translate('Add')?></a>
+                                    <a href="<?=$this->url('admin-content-footer-socials', array('region' => $this->activeRegion->getId(),'action' => 'addFooterSocial'))?>" class="btn green"><i class="icon-plus"></i> <?=$this->translate('Add')?></a>
                                 </div>
                             </div>
                             <div class="portlet-body">
@@ -44,7 +44,7 @@ $this->headTitle($title);
                                             <img src="<?=$social['icon']?>" alt=""/>
                                         </td>
                                         <td>
-                                            <a href="<?=$this->url('admin-settings-footer-socials', array('action' => 'editFooterSocial', 'social' => $social['order'], 'region' => $this->activeRegion->getId()))?>" class="btn mini blue">
+                                            <a href="<?=$this->url('admin-content-footer-socials', array('action' => 'editFooterSocial', 'social' => $social['order'], 'region' => $this->activeRegion->getId()))?>" class="btn mini blue">
                                                 <i class="icon-edit"></i>
                                                 <?=$this->translate('Edit')?>
                                             </a>
@@ -63,7 +63,7 @@ $this->headTitle($title);
                                                 <div class="modal-footer">
                                                     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
                                                     <button data-dismiss="modal" class="btn blue"
-                                                            onclick="window.location.href = '<?=$this->url('admin-settings-footer-socials', array('action' => 'deleteFooterSocial', 'social' => $social['order'], 'region' => $this->activeRegion->getId()))?>';">Confirm</button>
+                                                            onclick="window.location.href = '<?=$this->url('admin-content-footer-socials', array('action' => 'deleteFooterSocial', 'social' => $social['order'], 'region' => $this->activeRegion->getId()))?>';">Confirm</button>
                                                 </div>
                                             </div>
                                         </td>

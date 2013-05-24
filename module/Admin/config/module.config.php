@@ -167,42 +167,32 @@ return array(
                     ),
                 ),
             ),
-            'admin-settings-region-language' => array(
-                'type' => 'Literal',
-                'options' => array(
-                    'route'    => '/admin/settings/region-language/',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\Settings',
-                        'action'     => 'region',
-                    ),
-                ),
-            ),
-            'admin-settings-footer-images' => array(
+            'admin-content-footer-images' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/settings/footer-images/[region-:region][/:action][/image-:image]',
+                    'route'    => '/admin/content/footer-images/[region-:region][/:action][/image-:image]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'region' => '[0-9]+',
                         'image' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Admin\Controller\Settings',
+                        'controller' => 'Admin\Controller\Content',
                         'action'     => 'footerImages',
                     ),
                 ),
             ),
-            'admin-settings-footer-socials' => array(
+            'admin-content-footer-socials' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/settings/footer-socials/[region-:region][/:action][/social-:social]',
+                    'route'    => '/admin/content/footer-socials/[region-:region][/:action][/social-:social]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'region' => '[0-9]+',
                         'social' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'Admin\Controller\Settings',
+                        'controller' => 'Admin\Controller\Content',
                         'action'     => 'footerSocials',
                     ),
                 ),
@@ -242,7 +232,7 @@ return array(
             'layout/admin-login-layout'           => __DIR__ . '/../view/layout/layout2.phtml',
             'admin/index/index' => __DIR__ . '/../view/admin/index/index.phtml',
             'admin/content/edit-block' => __DIR__ . '/../view/admin/content/add-block.phtml',
-            'admin/settings/edit-footer-social' => __DIR__ . '/../view/admin/settings/add-footer-social.phtml',
+            'admin/content/edit-footer-social' => __DIR__ . '/../view/admin/content/add-footer-social.phtml',
             'error/admin-redirect' => __DIR__ . '/../view/error/redirect.phtml',
             'admin/partials/breadcrumbs' => __DIR__ . '/../view/partials/breadcrumbs.phtml',
             'admin/partials/menu' => __DIR__ . '/../view/partials/menu.phtml',
@@ -304,42 +294,35 @@ return array(
                                 'title' => 'Languages',
                                 'route' => 'admin-content-languages',
                             ),
+                            'footer-images' => array(
+                                'title' => 'Footer Images',
+                                'route' => 'admin-content-footer-images',
+                            ),
+                            'footer-social' => array(
+                                'title' => 'Footer Socials',
+                                'route' => 'admin-content-footer-socials',
+                                'useRouteMatch' => true,
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Add Footer Social',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-socials',
+                                        'action' => 'addFooterSocial',
+                                    ),
+                                    array(
+                                        'title' => 'Edit Footer Social',
+                                        'label' => 'icon-edit',
+                                        'route' => 'admin-content-footer-socials',
+                                        'action' => 'editFooterSocial',
+                                    ),
+                                ),
+                            ),
                         ),
                     ),
                     'settings' => array(
                         'title' => 'Settings',
                         'label' => 'icon-cogs',
                         'route' => 'admin-settings',
-                        'sub-menu' => true,
-                        'pages' => array(
-                            'region-language' => array(
-                                'title' => 'Region/Language',
-                                'route' => 'admin-settings-region-language',
-                            ),
-                            'footer-images' => array(
-                                'title' => 'Footer Images',
-                                'route' => 'admin-settings-footer-images',
-                            ),
-                            'footer-social' => array(
-                                'title' => 'Footer Socials',
-                                'route' => 'admin-settings-footer-socials',
-                                'useRouteMatch' => true,
-                                'pages' => array(
-                                    array(
-                                        'title' => 'Add Footer Social',
-                                        'label' => 'icon-plus',
-                                        'route' => 'admin-settings-footer-socials',
-                                        'action' => 'addFooterSocial',
-                                    ),
-                                    array(
-                                        'title' => 'Edit Footer Social',
-                                        'label' => 'icon-edit',
-                                        'route' => 'admin-settings-footer-socials',
-                                        'action' => 'editFooterSocial',
-                                    ),
-                                ),
-                            ),
-                        ),
                     ),
                 ),
             ),
