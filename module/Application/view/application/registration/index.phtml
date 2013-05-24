@@ -19,10 +19,11 @@ $this->headTitle($title);
     $form->prepare();
     $form->setAttribute('action', $this->url('registration', array('action' => 'index')));
     echo $this->form()->openTag($form);?>
-    <?php if ($form->getInputFilter()->getMessages() || $this->renderMessages()):?>
+    <?php $errors = $this->renderMessages();?>
+    <?php if ($form->getInputFilter()->getMessages() || $errors):?>
         <div class="form-errors">
-            <?php if ($this->renderMessages()):?>
-                <p><?php echo $this->renderMessages();?></p>
+            <?php if (!empty($errors)):?>
+                <p><?php echo $errors;?></p>
             <?php endif;?>
             <?php echo $this->formElementerrors($form->get('title'));?>
             <?php echo $this->formElementerrors($form->get('first_name'));?>

@@ -18,10 +18,11 @@ $this->headTitle($title);
     $form->prepare();
     $form->setAttribute('action', $this->url('login', array('action' => 'authenticate'))); ?>
     <?php    echo $this->form()->openTag($form);?>
-        <?php if ($form->getInputFilter()->getMessages() || $this->renderMessages()):?>
+        <?php $errors = $this->renderMessages();?>
+        <?php if ($form->getInputFilter()->getMessages() || $errors):?>
             <div class="form-errors">
-                <?php if ($this->renderMessages()):?>
-                     <p><?php echo $this->renderMessages();?></p>
+                <?php if (!empty($errors)):?>
+                     <p><?php echo $errors;?></p>
                 <?php endif;?>
                 <?php echo $this->formElementerrors($form->get('email'));?>
                 <?php echo $this->formElementerrors($form->get('password')); ?>
@@ -41,7 +42,7 @@ $this->headTitle($title);
         </div>
         <div class="keeplogin">
             <label>&nbsp;</label>
-            <label for="loginkeeping"><input id="loginkeeping" type="checkbox" name="rememberme" value=""><?php echo $this->translate('Remember me');?></label>
+            <label for="loginkeeping"><input id="loginkeeping" type="checkbox" name="rememberme" value="1"><?php echo $this->translate('Remember me');?></label>
         </div>
     </section>
     <section class="buttons-block signIn-buttons-block clearfix">

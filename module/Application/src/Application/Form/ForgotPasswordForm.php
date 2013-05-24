@@ -8,7 +8,7 @@ use \Application\Form\Filter\ForgotPasswordFilter;
 class ForgotPasswordForm extends Form {
 
     public function __construct($name = null) {
-        parent::__construct('auth');
+        parent::__construct('forgot');
 
         $this->setInputFilter(new ForgotPasswordFilter());
         $this->setAttribute('method', 'post');
@@ -17,9 +17,7 @@ class ForgotPasswordForm extends Form {
         $this->add(array(
             'name' => 'email',
             'type'  => 'text',
-            'attributes' => array(
-                'placeholder' => 'Email',
-            ),
+            'attributes' => array(),
             'options' => array(
                 'label' => 'Email',
             ),
