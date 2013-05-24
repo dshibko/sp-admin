@@ -1,33 +1,17 @@
 var is_iphone = navigator.userAgent.match(/iPhone/i);
 
-// function loaded() {
-//   document.addEventListener('touchmove', function(e){ e.preventDefault(); });
-// }
-// document.addEventListener('DOMContentLoaded', loaded);
-
-function is_touch_device() {
-    try {
-        document.createEvent("TouchEvent");
-        return true;
-    } catch ( e ) {
-        return false;
-    }
+function is_touch_device() {  
+  try {  
+    document.createEvent("TouchEvent");  
+    return true;  
+  } catch ( e ) {  
+    return false;  
+  }  
 }
 
 $(document).ready(function () {
 
-    /******************************START COOKIE BAR*******************************/
-    var cookie_bar_displayed = $.cookie('cookie_bar_displayed');
-    if (!cookie_bar_displayed){
-        $('.cookie-bar').show(function(){
-            $.cookie('cookie_bar_displayed', 1, { expires: 365 * 10,path : "/"}); //Expires in 10 years
-        });
-    }
-    $('.close-cookie-bar').click(function(){
-        $('.cookie-bar').hide();
-    });
-    /******************************* END COOKIE BAR*****************************/
-    
+// Only do anything if the browser does not support placeholders
     if (!Modernizr.input.placeholder) {
 
         // Format all elements with the placeholder attribute and insert it as a value
@@ -42,11 +26,11 @@ $(document).ready(function () {
                     $(this).removeClass('placeholder');
                 }
             }).blur(function() {
-                    if($(this).val() == '') {
-                        $(this).val($(this).attr('placeholder'));
-                        $(this).addClass('placeholder');
-                    }
-                });
+                if($(this).val() == '') {
+                    $(this).val($(this).attr('placeholder'));
+                    $(this).addClass('placeholder');
+                }
+            });
         });
 
         // Clean up any placeholders if the form gets submitted
@@ -76,10 +60,10 @@ $(document).ready(function () {
 
     if ( navigator.userAgent.indexOf(" Safari/") != -1 && navigator.userAgent.indexOf(" Version/5") != -1) {
         $('body').addClass("safari5");
-    }
+    };
 
 
-    ;(function(window, document, undefined) {
+        ;(function(window, document, undefined) {
         'use strict';
 
         var htmlElement     = document.getElementsByTagName('html')[0],

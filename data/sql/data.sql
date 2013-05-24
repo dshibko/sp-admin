@@ -234,19 +234,19 @@ INSERT INTO `country` (`id`, `name`, `short_name`, `iso_code`, `dial_code`) VALU
 (213, 'South Sudan', 'SouthSudan', 'SS', 211);
 
 -- Default Language
-INSERT INTO `language` (`id`, `language_code`, `display_name`) VALUES ('1', 'en_EN', 'English');
+INSERT INTO `language` (`id`, `language_code`, `display_name`, `is_default`) VALUES ('1', 'en_EN', 'English', 1);
 UPDATE `country` SET `language_id` = 1 WHERE `id` IN (1, 2, 95, 196);
 
 -- Default Regions
-INSERT INTO `region` (`id`, `display_name`) VALUES ('1', 'British Isles');
+INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('1', 'British Isles', 1);
 UPDATE `country` SET `region_id` = 1 WHERE `id` IN (95, 66);
-INSERT INTO `region` (`id`, `display_name`) VALUES ('2', 'US/Canada');
+INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('2', 'US/Canada', 0);
 UPDATE `country` SET `region_id` = 2 WHERE `id` IN (1, 2);
-INSERT INTO `region` (`id`, `display_name`) VALUES ('3', 'Western Europe');
+INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('3', 'Western Europe', 0);
 UPDATE `country` SET `region_id` = 3 WHERE `id` IN (49, 58, 68, 74, 80, 83, 90);
-INSERT INTO `region` (`id`, `display_name`) VALUES ('4', 'Central Europe');
+INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('4', 'Central Europe', 0);
 UPDATE `country` SET `region_id` = 4 WHERE `id` IN (46, 54, 60, 66, 72, 82, 88, 89, 92);
-INSERT INTO `region` (`id`, `display_name`) VALUES ('5', 'Eastern Europe');
+INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('5', 'Eastern Europe', 0);
 UPDATE `country` SET `region_id` = 5 WHERE `id` IN (48, 56, 71, 73, 89, 94);
 
 -- Default Roles
@@ -255,6 +255,13 @@ INSERT INTO `role` (`id`, `name`, `parent_id`) VALUES
 (2, 'Regional Manager', 1),
 (3, 'User', 2),
 (4, 'Guest', 3);
+
+-- Default Settings
+INSERT INTO `settings` (`id`, `setting_key`, `setting_value`) VALUES
+(1, 'site-background-colour', '#560a24'),
+(2, 'site-footer-colour', '#350616'),
+(3, 'bad-words', 'Real, Madrid, Soccer'),
+(4, 'ahead-predictions-days', 5);
 
 -- Not for GIT
 

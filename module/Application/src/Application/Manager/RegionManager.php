@@ -26,21 +26,17 @@ class RegionManager extends BasicManager {
         return self::$instance;
     }
 
-    /**
-     * @var \Application\Model\Entities\Region
-     */
-    protected $defaultRegion = -1;
+    public function getSelectedRegion() {
+        return $this->getDefaultRegion();
+    }
 
     /**
      * @return \Application\Model\Entities\Region
      */
     public function getDefaultRegion()
     {
-        if ($this->defaultRegion == -1)
-            $this->defaultRegion = array_shift($this->getAllRegions());
-        return $this->defaultRegion;
+        return RegionDAO::getInstance($this->getServiceLocator())->getDefaultRegion();
     }
-
 
     public function getRegionById($id, $hydrate = false, $skipCache = false) {
         return RegionDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
@@ -65,6 +61,22 @@ class RegionManager extends BasicManager {
             if ($region->getId() == $id)
                 return $region;
         return false;
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     */
+    public function setDefaultRegion($region) {
+        $regionDAO = RegionDAO::getInstance($this->getServiceLocator());
+        $oldDefaultRegion = $this->getDefaultRegion();
+        if ($oldDefaultRegion->getId() != $region->getId()) {
+            $oldDefaultRegion->setIsDefault(false);
+            $region->setIsDefault(true);
+            $regionDAO->save($oldDefaultRegion, false, false);
+            $regionDAO->save($region, false, false);
+            $regionDAO->flush();
+            $regionDAO->clearCache();
+        }
     }
 
 }

@@ -44,4 +44,19 @@ class LanguageDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'l');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
+
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\Language
+     * @throws \Exception
+     */
+    public function getDefaultLanguage($hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l')
+            ->where($qb->expr()->eq('l.isDefault', true));
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
 }

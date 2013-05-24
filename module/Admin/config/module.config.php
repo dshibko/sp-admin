@@ -143,6 +143,60 @@ return array(
                     ),
                 ),
             ),
+            'admin-content-languages' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/languages/[:action][/language-:language]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Languages',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-settings' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/settings/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Settings',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-content-footer-images' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/footer-images/[region-:region][/:action][/image-:image]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'region' => '[0-9]+',
+                        'image' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Content',
+                        'action'     => 'footerImages',
+                    ),
+                ),
+            ),
+            'admin-content-footer-socials' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/footer-socials/[region-:region][/:action][/social-:social]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'region' => '[0-9]+',
+                        'social' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Content',
+                        'action'     => 'footerSocials',
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -164,7 +218,9 @@ return array(
         'invokables' => array(
             'Admin\Controller\Index' => 'Admin\Controller\IndexController',
             'Admin\Controller\Auth' => 'Admin\Controller\AuthController',
-            'Admin\Controller\Content' => 'Admin\Controller\ContentController'
+            'Admin\Controller\Content' => 'Admin\Controller\ContentController',
+            'Admin\Controller\Settings' => 'Admin\Controller\SettingsController',
+            'Admin\Controller\Languages' => 'Admin\Controller\LanguagesController',
         ),
     ),
     'view_manager' => array(
@@ -176,9 +232,12 @@ return array(
             'layout/admin-login-layout'           => __DIR__ . '/../view/layout/layout2.phtml',
             'admin/index/index' => __DIR__ . '/../view/admin/index/index.phtml',
             'admin/content/edit-block' => __DIR__ . '/../view/admin/content/add-block.phtml',
+            'admin/content/edit-footer-social' => __DIR__ . '/../view/admin/content/add-footer-social.phtml',
             'error/admin-redirect' => __DIR__ . '/../view/error/redirect.phtml',
             'admin/partials/breadcrumbs' => __DIR__ . '/../view/partials/breadcrumbs.phtml',
             'admin/partials/menu' => __DIR__ . '/../view/partials/menu.phtml',
+            'admin/partials/select' => __DIR__ . '/../view/partials/select.phtml',
+            'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml'
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -231,7 +290,39 @@ return array(
                                 'title' => 'Match Reports',
                                 'route' => 'admin-content-reports',
                             ),
+                            'languages' => array(
+                                'title' => 'Languages',
+                                'route' => 'admin-content-languages',
+                            ),
+                            'footer-images' => array(
+                                'title' => 'Footer Images',
+                                'route' => 'admin-content-footer-images',
+                            ),
+                            'footer-social' => array(
+                                'title' => 'Footer Socials',
+                                'route' => 'admin-content-footer-socials',
+                                'useRouteMatch' => true,
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Add Footer Social',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-socials',
+                                        'action' => 'addFooterSocial',
+                                    ),
+                                    array(
+                                        'title' => 'Edit Footer Social',
+                                        'label' => 'icon-edit',
+                                        'route' => 'admin-content-footer-socials',
+                                        'action' => 'editFooterSocial',
+                                    ),
+                                ),
+                            ),
                         ),
+                    ),
+                    'settings' => array(
+                        'title' => 'Settings',
+                        'label' => 'icon-cogs',
+                        'route' => 'admin-settings',
                     ),
                 ),
             ),

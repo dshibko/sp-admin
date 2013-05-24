@@ -33,6 +33,21 @@ class RegionContentDAO extends AbstractDAO {
         return '\Application\Model\Entities\RegionContent';
     }
 
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\RegionContent|array
+     */
+    public function getRegionContent($region, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('c, f, b')
+            ->from($this->getRepositoryName(), 'c')
+            ->join('c.heroForegroundImage', 'f')
+            ->join('c.heroBackgroundImage', 'b')
+            ->where($qb->expr()->eq('c.region', $region->getId()));
+        return $this->getQuery($qb, $skipCache)->getSingleResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
 
 
 }

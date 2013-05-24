@@ -15,10 +15,21 @@ class MessagesConstants
     const SUCCESS_GAMEPLAY_BLOCK_CREATED = "A gameplay block was created successfully.";
     const SUCCESS_GAMEPLAY_BLOCK_UPDATED = "A gameplay block was updated successfully.";
     const SUCCESS_GAMEPLAY_BLOCK_DELETED = "A gameplay block was deleted successfully.";
+    const SUCCESS_SETTINGS_UPDATED = "Settings were updated successfully.";
+    const SUCCESS_FOOTER_IMAGE_ADDED = "A footer image was added successfully.";
+    const SUCCESS_FOOTER_IMAGE_DELETED = "A footer image was deleted successfully.";
+    const SUCCESS_FOOTER_SOCIAL_CREATED = "A footer social was created successfully.";
+    const SUCCESS_FOOTER_SOCIAL_UPDATED = "A footer social was updated successfully.";
+    const SUCCESS_FOOTER_SOCIAL_DELETED = "A footer social was deleted successfully.";
+    const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
+    const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
     const ERROR_MAX_GAMEPLAY_BLOCKS_NUMBER = "You can't create more than %s gameplay blocks.";
+    const ERROR_SOCIAL_NOT_FOUND = "A footer social was not found.";
     const ERROR_GAMEPLAY_BLOCK_NOT_FOUND = "A gameplay block was not found.";
     const ERROR_INVALID_SETTING_FORM_TYPE = 'Invalid form type';
     const ERROR_INVALID_OLD_PASSWORD = 'Invalid old password';
+    const ERROR_REGION_NOT_FOUND = "Selected region was not found.";
+    const ERROR_LANGUAGE_NOT_FOUND = "Selected language was not found.";
 
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";

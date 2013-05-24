@@ -17,11 +17,11 @@ use Application\Model\Entities\Region;
 
 class RegistrationManager extends BasicManager
 {
+
     const MEMBER_ROLE_ID = 3;
-    const DEFAULT_LANGUAGE_ID = 1;
-    const DEFAULT_REGION_ID = 1;
     const ACTIVE_USER_STATUS = 1;
     const DEFAULT_AVATAR_ID = 1;
+
     /**
      * @var RegistrationManager
      */
@@ -51,7 +51,7 @@ class RegistrationManager extends BasicManager
     public function register(array $data)
     {
         $data['role'] = RoleDAO::getInstance($this->getServiceLocator())->findOneById(self::MEMBER_ROLE_ID);
-        $data['language'] = LanguageDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_LANGUAGE_ID);
+        $data['language'] = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
         $data['region'] = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
         $data['country'] = CountryDAO::getInstance($this->getServiceLocator())->findOneById($data['country']);
         $data['date'] = new \DateTime();

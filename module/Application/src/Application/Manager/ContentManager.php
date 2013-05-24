@@ -2,6 +2,10 @@
 
 namespace Application\Manager;
 
+use \Application\Model\Entities\FooterSocial;
+use \Application\Model\DAOs\FooterSocialDAO;
+use \Application\Model\Entities\FooterImage;
+use \Application\Model\DAOs\FooterImageDAO;
 use \Application\Model\Entities\RegionGameplayContent;
 use \Application\Model\DAOs\RegionGameplayContentDAO;
 use \Application\Model\Entities\RegionContent;
@@ -38,7 +42,7 @@ class ContentManager extends BasicManager {
      * @param $registerButtonCopy
      */
     public function saveRegionContent($region, $heroBackgroundImage, $heroForegroundImage, $headlineCopy, $registerButtonCopy) {
-        $regionContent = $region->getRegionContent();
+        $regionContent = ContentManager::getInstance($this->getServiceLocator())->getRegionContent($region);
         if ($regionContent == null) {
             $regionContent = new RegionContent();
             $regionContent->setRegion($region);
@@ -55,6 +59,16 @@ class ContentManager extends BasicManager {
         $regionContent->setHeadlineCopy($headlineCopy);
         $regionContent->setRegisterButtonCopy($registerButtonCopy);
         RegionContentDAO::getInstance($this->getServiceLocator())->save($regionContent);
+    }
+
+    /**
+     * @param $region
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\RegionContent|array
+     */
+    public function getRegionContent($region, $hydrate = false, $skipCache = false) {
+        return RegionContentDAO::getInstance($this->getServiceLocator())->getRegionContent($region, $hydrate, $skipCache);
     }
 
     /**
@@ -128,6 +142,114 @@ class ContentManager extends BasicManager {
      */
     public function getGameplayBlocks($region, $hydrate = false, $skipCache = false) {
         return RegionGameplayContentDAO::getInstance($this->getServiceLocator())->getRegionGameplayBlocks($region, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getFooterImages($region, $hydrate = false, $skipCache = false) {
+        return FooterImageDAO::getInstance($this->getServiceLocator())->getFooterImages($region, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param string $footerImagePath
+     */
+    public function addFooterImage($region, $footerImagePath) {
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        $imageManager->resizeImage($footerImagePath, ImageManager::FOOTER_IMAGE_WIDTH, ImageManager::FOOTER_IMAGE_HEIGHT);
+        $footerImage = new FooterImage();
+        $footerImage->setRegion($region);
+        $footerImage->setFooterImage($footerImagePath);
+        FooterImageDAO::getInstance($this->getServiceLocator())->save($footerImage);
+    }
+
+    public function deleteFooterImage($footerImageId) {
+        $footerImageDAO = FooterImageDAO::getInstance($this->getServiceLocator());
+        $footerImage = $footerImageDAO->findOneById($footerImageId);
+        if ($footerImage != null) {
+            ImageManager::getInstance($this->getServiceLocator())->deleteImage($footerImage->getFooterImage());
+            $footerImageDAO->remove($footerImage);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getFooterSocials($region, $hydrate = false, $skipCache = false) {
+        return FooterSocialDAO::getInstance($this->getServiceLocator())->getFooterSocials($region, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\ContentImage $icon
+     * @param $url
+     * @param $copy
+     * @param $order
+     * @param \Application\Model\Entities\FooterSocial|null $footerSocial
+     */
+    public function saveFooterSocial($region, $icon, $url, $copy, $order, $footerSocial = null) {
+        if ($footerSocial == null) {
+            $footerSocial = new FooterSocial();
+            $footerSocial->setRegion($region);
+        } elseif ($icon != null)
+            ImageManager::getInstance($this->getServiceLocator())->deleteImage($footerSocial->getIcon());
+        if ($icon != null)
+            $footerSocial->setIcon($icon);
+        $footerSocial->setUrl($url);
+        $footerSocial->setCopy($copy);
+        $footerSocial->setOrder($order);
+        FooterSocialDAO::getInstance($this->getServiceLocator())->save($footerSocial);
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param $fromOrder
+     * @param $lastOrder
+     */
+    public function swapFooterSocialsFromOrder($region, $fromOrder, $lastOrder) {
+        $footerSocialDAO = FooterSocialDAO::getInstance($this->getServiceLocator());
+        for ($i = $fromOrder; $i < $lastOrder; $i++) {
+            $footerSocial = $region->getFooterSocialByOrder($i);
+            $footerSocial->setOrder($i + 1);
+            $footerSocialDAO->save($footerSocial, false, false);
+        }
+        $footerSocialDAO->flush();
+        $footerSocialDAO->clearCache();
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param $toOrder
+     * @param $lastOrder
+     */
+    public function swapFooterSocialsToOrder($region, $toOrder, $lastOrder) {
+        $footerSocialDAO = FooterSocialDAO::getInstance($this->getServiceLocator());
+        for ($i = $lastOrder; $i > $toOrder; $i--) {
+            $footerSocial = $region->getFooterSocialByOrder($i);
+            $footerSocial->setOrder($i - 1);
+            $footerSocialDAO->save($footerSocial, false, false);
+        }
+        $footerSocialDAO->flush();
+        $footerSocialDAO->clearCache();
+    }
+
+    /**
+     * @param \Application\Model\Entities\FooterSocial $footerSocial
+     * @return bool
+     */
+    public function deleteFooterSocial($footerSocial) {
+        ImageManager::getInstance($this->getServiceLocator())->deleteImage($footerSocial->getIcon());
+        ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsToOrder($footerSocial->getRegion(), $footerSocial->getOrder(), $footerSocial->getRegion()->getFooterSocials()->count());
+        FooterSocialDAO::getInstance($this->getServiceLocator())->remove($footerSocial);
     }
 
 }

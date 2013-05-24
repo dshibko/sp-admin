@@ -96,6 +96,7 @@ class Module
             'Zend\Loader\ClassMapAutoloader' => array(
                 array(
                     'Facebook' => 'vendor/facebook/facebook.php',
+                    'I18n_Pofile' => 'vendor/poparser/I18n_Pofile.php'
                 ),
             ),
             'Zend\Loader\StandardAutoloader' => array(
@@ -145,7 +146,22 @@ class Module
                     $defaultAvatars = new \Neoco\View\Helper\DefaultAvatars();
                     $defaultAvatars->setServiceLocator($sm->getServiceLocator());
                     return $defaultAvatars;
-                }
+                },
+                'footerImage' => function($sm){
+                    $footerImage = new \Neoco\View\Helper\FooterImage();
+                    $footerImage->setServiceLocator($sm->getServiceLocator());
+                    return $footerImage;
+                },
+                'footerSocials' => function($sm){
+                    $footerSocials = new \Neoco\View\Helper\FooterSocials();
+                    $footerSocials->setServiceLocator($sm->getServiceLocator());
+                    return $footerSocials;
+                },
+                'settingsHelper' => function($sm){
+                    $settingsHelper = new \Neoco\View\Helper\SettingsHelper();
+                    $settingsHelper->setServiceLocator($sm->getServiceLocator());
+                    return $settingsHelper;
+                },
             )
         );
     }
@@ -191,7 +207,11 @@ class Module
                         'secret' => $config['facebook_secret_key']
                     ));
                     return $facebook;
+                },
+                'poparser' => function($sm){
+                     return new \I18n_Pofile();
                 }
+
             ),
         );
     }

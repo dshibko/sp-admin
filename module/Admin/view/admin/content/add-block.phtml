@@ -52,10 +52,10 @@ $this->headTitle($title);
                                     </span>
                                     <a href="#" class="btn fileupload-exists" data-dismiss="fileupload"><?=$this->translate('Remove')?></a>
                                 </div>
-                                <?php if (!empty($hint)) : ?>
-                                    <span class="help-inline"><?=$hint?></span>
-                                <?php endif; ?>
                             </div>
+                        <?php endif; ?>
+                        <?php if (!empty($hint)) : ?>
+                            <span class="help-inline"><?=$hint?></span>
                         <?php endif; ?>
                     </div>
                 </div>

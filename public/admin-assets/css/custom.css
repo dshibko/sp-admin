@@ -32,3 +32,12 @@
 iframe.wysihtml5-sandbox {
     width: 100% !important;
 }
+
+.help-inline {
+    margin-top: 0;
+    margin-bottom: 6px;
+}
+
+.form .fileupload {
+    margin-bottom: 3px;
+}

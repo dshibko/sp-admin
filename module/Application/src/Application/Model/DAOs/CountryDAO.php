@@ -46,6 +46,7 @@ class CountryDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
     /**
+     * @param bool $isoCode
      * @param bool $hydrate
      * @param bool $skipCache
      * @return \Application\Model\Entities\Country
@@ -62,4 +63,5 @@ class CountryDAO extends AbstractDAO {
             ->setParameter('iso_code', $isoCode);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
+
 }
