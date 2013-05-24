@@ -9,6 +9,7 @@
 
 namespace Admin;
 
+use \Admin\View\Helpers\RegionFieldsetsRenderer;
 use \Zend\ModuleManager\ModuleManager;
 use \Zend\I18n\View\Helper\Translate;
 use \DoctrineModule\Authentication\Adapter\ObjectRepository;
@@ -71,4 +72,20 @@ class Module
         );
     }
 
+    /**
+     * @return array|\Zend\ServiceManager\Config
+     */
+    public function getViewHelperConfig()
+    {
+        return array(
+            'factories' => array(
+                'renderRegionFieldsets' => function($sm) {
+                    $translator = $sm->getServiceLocator()->get('translator');
+                    $h = new RegionFieldsetsRenderer();
+                    $h->setTranslator($translator);
+                    return $h;
+                },
+            )
+        );
+    }
 }

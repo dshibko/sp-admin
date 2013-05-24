@@ -11,11 +11,6 @@ class RegionFieldsetsRenderer extends AbstractHelper
 
     protected $translator;
 
-    function __construct($translator)
-    {
-        $this->translator = $translator;
-    }
-
     /**
      * @param $regionFieldsets
      * @param bool $add
@@ -27,19 +22,17 @@ class RegionFieldsetsRenderer extends AbstractHelper
                <div class="span12">
                   <div class="tabbable tabbable-custom boxless">
                      <ul class="nav nav-tabs">';
-        $first = true;
-        foreach ($regionFieldsets as $i => $regionFieldset) {
+        $i = 0;
+        foreach ($regionFieldsets as $regionFieldset) {
             $region = $regionFieldset->getRegion();
-            $html .= '<li' . ($first ? ' class="active"' : '') . '><a href="#tab_' . ($i + 1) . '" data-toggle="tab">' . $region['displayName'] . '</a></li>';
-            $first = false;
+            $html .= '<li' . ($i == 0 ? ' class="active"' : '') . '><a href="#tab_' . (++$i) . '" data-toggle="tab">' . $region['displayName'] . '</a></li>';
         }
         $html .= '</ul><div class="tab-content">';
-        $first = true;
-        foreach ($regionFieldsets as $i => $regionFieldset) {
-            $html .= '<div class="tab-pane' . ($first ? ' active' : '') . '" id="tab_' . ($i + 1) . '">';
+        $i = 0;
+        foreach ($regionFieldsets as $regionFieldset) {
+            $html .= '<div class="tab-pane' . ($i == 0 ? ' active' : '') . '" id="tab_' . (++$i) . '">';
             $html .= $this->renderRegionFieldset($regionFieldset, $add);
             $html .= '</div>';
-            $first = false;
         }
         $html .= '</div></div></div></div>';
         print $html;
@@ -80,6 +73,12 @@ class RegionFieldsetsRenderer extends AbstractHelper
                 </div>';
         }
         return $html;
+    }
+
+
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
     }
 
 }
