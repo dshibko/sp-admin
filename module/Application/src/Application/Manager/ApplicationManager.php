@@ -13,13 +13,15 @@ use \Application\Model\DAOs\LanguageDAO;
 use \Application\Model\DAOs\RegionDAO;
 use \Application\Model\DAOs\CountryDAO;
 
-
 class ApplicationManager extends BasicManager {
 
+    const DEFAULT_COUNTRY_ID = 95;
+    const DEFAULT_COUNTRY_ISO_CODE = 'GB';
     /**
      * @var ApplicationManager
      */
     private static $instance;
+
 
     /**
      * @static
@@ -56,6 +58,7 @@ class ApplicationManager extends BasicManager {
         return $this->currentUser;
     }
 
+
     /**
      * @var \Application\Model\Entities\User
      */
@@ -71,25 +74,43 @@ class ApplicationManager extends BasicManager {
         return $this->currentSeason;
     }
 
+    /**
+     * @param bool $hydrate
+     * @return array
+     */
     public function getAllRegions($hydrate = false)
     {
         return RegionDAO::getInstance($this->getServiceLocator())->getAllRegions($hydrate);
     }
 
+    /**
+     * @param bool $hydrate
+     * @return array
+     */
     public function getAllLanguages($hydrate = false)
     {
         return LanguageDAO::getInstance($this->getServiceLocator())->getAllLanguages($hydrate);
     }
+
+    /**
+     * @param bool $hydrate
+     * @return array
+     */
     public function getAllCountries($hydrate = false)
     {
         return CountryDAO::getInstance($this->getServiceLocator())->getAllCountries($hydrate);
     }
 
+    /**
+     * @param $isoCode
+     * @param bool $hydrate
+     * @return \Application\Model\Entities\Country
+     */
     public function getCountryByISOCode($isoCode, $hydrate = false)
     {
         return CountryDAO::getInstance($this->getServiceLocator())->getCountryByISOCode($isoCode, $hydrate);
     }
-    //Get countries for select options
+
     /**
      * @return array
      */
@@ -103,5 +124,13 @@ class ApplicationManager extends BasicManager {
             }
         }
         return $countries;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultCountry()
+    {
+        return CountryDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_COUNTRY_ID);
     }
 }

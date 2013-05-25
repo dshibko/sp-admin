@@ -10,7 +10,9 @@ use Application\Helper\AvatarHelper;
 use Application\Model\DAOs\LanguageDAO;
 use Application\Model\DAOs\UserDAO;
 use Application\Model\DAOs\AvatarDAO;
+use Application\Model\DAOs\CountryDAO;
 use Application\Manager\ImageManager;
+use Zend\Http\PhpEnvironment\RemoteAddress;
 
 class UserManager extends BasicManager {
 
@@ -18,6 +20,43 @@ class UserManager extends BasicManager {
      * @var UserManager
      */
     private static $instance;
+
+    /**
+     * @var  \Application\Model\Entities\Country
+     */
+    protected $userGeoIpCountry;
+    protected $userGeoIpIsoCode;
+
+
+    /**
+     * @param $userGeoIpCountry
+     * @return \Application\Manager\UserManager
+     */
+    public function setUserGeoIpCountry($userGeoIpCountry)
+    {
+        $this->userGeoIpCountry = $userGeoIpCountry;
+        return $this;
+    }
+
+    /**
+     * @return \Application\Model\Entities\Country
+     */
+    public function getUserGeoIpCountry()
+    {
+        if (null === $this->userGeoIpCountry){
+            $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+            $isoCode = $this->getUserGeoIpIsoCode();
+            if (empty($isoCode)){
+                $isoCode = ApplicationManager::DEFAULT_COUNTRY_ISO_CODE;
+            }
+            $applicationManager->getCountryByISOCode($isoCode);
+            if (empty($country)){
+                $country =  $applicationManager->getDefaultCountry();
+            }
+            $this->userGeoIpCountry = $country;
+        }
+        return $this->userGeoIpCountry;
+    }
 
     private function deleteAvatarImages(\Application\Model\Entities\Avatar $avatar)
     {
@@ -256,5 +295,29 @@ class UserManager extends BasicManager {
         return UserDAO::getInstance($this->getServiceLocator())->getActiveUsersNumber($season);
     }
 
+    /**
+     * @return string
+     */
+    public function getUserGeoIpIsoCode()
+    {
+        if (null === $this->userGeoIpIsoCode){
+            $remoteAddresses = new RemoteAddress();
+            $this->userGeoIpIsoCode = geoip_country_code_by_name($remoteAddresses->getIpAddress());
+        }
+        return $this->userGeoIpIsoCode;
+    }
+
+    /**
+     * @param \Application\Model\Entities\Country $country
+     * @return mixed
+     */
+    public function getUserLanguageByCountry(\Application\Model\Entities\Country $country)
+    {
+        $language = $country->getLanguage();
+        if (!empty($language) && $language instanceof \Application\Model\Entities\Language){
+            return $language;
+        }
+        return LanguageDAO::getInstance($this->getServiceLocator())->getDefaultLanguage();
+    }
 
 }

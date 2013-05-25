@@ -71,19 +71,23 @@ class RegistrationController extends AbstractActionController
     public function setUpAction()
     {
 
-        $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
         $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
 
         //if guest - redirect to login page
         if (empty($user)) {
             return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
         }
+        //if active user - redirect to dashboard
+        if ($user->getIsActive()) {
+            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+        }
+        $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
         try {
-            //if active user - redirect to dashboard
-            if ($user->getIsActive()) {
-                return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
-            }
-
+            $userManager = UserManager::getInstance($this->getServiceLocator());
+            $country = $userManager->getUserGeoIpCountry();
+            $language = $userManager->getUserLanguageByCountry($country);
+            $form->get('region')->setValue($country->getId());
+            $form->get('language')->setValue($language->getId());
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $form->setData($request->getPost());
