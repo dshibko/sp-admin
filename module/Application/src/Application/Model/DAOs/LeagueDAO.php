@@ -56,4 +56,49 @@ class LeagueDAO extends AbstractDAO {
         return $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
     }
 
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getGlobalLeagues($hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l')
+            ->where($qb->expr()->eq('l.isGlobal', true));
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
+     * @param \Application\Model\Entities\League $league
+     * @param \Application\Model\Entities\User $user
+     * @param bool $skipCache
+     * @return bool
+     */
+    public function getIsUserInLeague($league, $user, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('l.id'))
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.leagueUsers', 'lu')
+            ->where($qb->expr()->eq('l.id', $league->getId()))
+            ->andWhere($qb->expr()->eq('lu.user', $user->getId()));
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult() > 0;
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getRegionalLeagues($region, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l')
+            ->where($qb->expr()->eq('l.isGlobal', false))
+            ->andWhere($qb->expr()->eq('l.isPrivate', false))
+            ->andWhere($qb->expr()->eq('l.region', $region->getId()));
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
 }
