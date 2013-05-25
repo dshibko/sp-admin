@@ -21,9 +21,9 @@ return array(
                 ),
             ),
             'predict' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/predict',
+                    'route'    => '/predict[/][ahead-:ahead]',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Predict',
                         'action'     => 'index',

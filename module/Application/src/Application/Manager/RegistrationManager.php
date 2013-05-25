@@ -96,10 +96,19 @@ class RegistrationManager extends BasicManager
         $user->populate($data);
         UserDAO::getInstance($this->getServiceLocator())->save($user);
 
+        $this->registerUserInLeagues($user);
+
+        return true;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function registerUserInLeagues($user) {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         $globalLeagues = $leagueDAO->getGlobalLeagues();
-        foreach ($globalLeagues as $globalLeague)
-            if ($leagueDAO->getIsUserInLeague($globalLeague, $user)) {
+        foreach ($globalLeagues as $globalLeague) {
+            if (!$leagueDAO->getIsUserInLeague($globalLeague, $user)) {
                 $leagueUser = new LeagueUser();
                 $leagueUser->setUser($user);
                 $leagueUser->setJoinDate(new \DateTime());
@@ -107,9 +116,10 @@ class RegistrationManager extends BasicManager
                 $globalLeague->addLeagueUser($leagueUser);
                 $leagueDAO->save($globalLeague, false, false);
             }
+        }
         $regionalLeagues = $leagueDAO->getRegionalLeagues($user->getRegion());
         foreach ($regionalLeagues as $regionalLeague)
-            if ($leagueDAO->getIsUserInLeague($regionalLeague, $user)) {
+            if (!$leagueDAO->getIsUserInLeague($regionalLeague, $user)) {
                 $leagueUser = new LeagueUser();
                 $leagueUser->setUser($user);
                 $leagueUser->setJoinDate(new \DateTime());
@@ -119,7 +129,6 @@ class RegistrationManager extends BasicManager
             }
         $leagueDAO->flush();
         $leagueDAO->clearCache();
-
-        return true;
     }
+
 }

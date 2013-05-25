@@ -2,6 +2,7 @@
 
 namespace Opta\Manager;
 
+use \Application\Manager\ApplicationManager;
 use \Application\Model\Entities\MatchGoal;
 use \Application\Manager\LogManager;
 use \Application\Model\Helpers\MessagesConstants;
@@ -129,7 +130,7 @@ class OptaManager extends BasicManager {
 
                         $teamDAO->save($team);
 
-                        $teamDAO->detach($team);
+//                        $teamDAO->detach($team);
 
                     } catch (\Exception $e) {
                         ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
@@ -159,6 +160,10 @@ class OptaManager extends BasicManager {
 
 //            $nonCalculatedMatches = array();
 
+            $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+            $edition = $applicationManager->getAppEdition();
+            $optaId = $applicationManager->getAppOptaId();
+
             $seasonDAO = SeasonDAO::getInstance($this->getServiceLocator());
             $seasonFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'season_id');
             $season = $seasonDAO->getRepository()->findOneByFeederId($seasonFeederId);
@@ -168,76 +173,88 @@ class OptaManager extends BasicManager {
             if ($season != null) {
 
                 $competitionFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'competition_id');
-                $competition = $season->getCompetitionByFeederId($competitionFeederId);
 
-                if ($competition != null) {
+                if ($edition != ApplicationManager::COMPETITION_EDITION || $optaId == $competitionFeederId) {
 
-                    $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
+                    $competition = $season->getCompetitionByFeederId($competitionFeederId);
 
-                    $this->setProgressLength($xml->SoccerDocument->MatchData->count());
+                    if ($competition != null) {
 
-                    foreach ($xml->SoccerDocument->MatchData as $matchXml) {
-                        try {
-                            $matchFeederId = $this->getIdFromString($this->getXmlAttribute($matchXml, 'uID'));
-                            $match = $matchDAO->getRepository()->findOneByFeederId($matchFeederId);
-                            if ($match == null) {
-                                $match = new Match();
-                                $match->setFeederId($matchFeederId);
+                        $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
+
+                        $this->setProgressLength($xml->SoccerDocument->MatchData->count());
+
+                        foreach ($xml->SoccerDocument->MatchData as $matchXml) {
+                            try {
+
+                                $team1FeederId = $this->getIdFromString($this->getXmlAttribute($matchXml->TeamData->{0}, 'TeamRef'));
+                                $team2FeederId = $this->getIdFromString($this->getXmlAttribute($matchXml->TeamData->{1}, 'TeamRef'));
+
+                                if ($edition == ApplicationManager::CLUB_EDITION)
+                                    if ($team1FeederId != $optaId && $team2FeederId != $optaId) {
+                                        $this->doProgress($console);
+                                        continue;
+                                    }
+
+                                $matchFeederId = $this->getIdFromString($this->getXmlAttribute($matchXml, 'uID'));
+                                $match = $matchDAO->getRepository()->findOneByFeederId($matchFeederId);
+                                if ($match == null) {
+                                    $match = new Match();
+                                    $match->setFeederId($matchFeederId);
+                                }
+
+                                $match->setCompetition($competition);
+                                $match->setWeek($this->getXmlAttribute($matchXml->MatchInfo, 'MatchDay'));
+                                $status = $this->getXmlAttribute($matchXml->MatchInfo, 'Period');
+                                if (!in_array($status, Match::getAvailableStatuses()))
+                                    $status = Match::LIVE_STATUS;
+
+    //                            $isJustFinishedMatch = $status == Match::FULL_TIME_STATUS && $match->getStatus() != Match::FULL_TIME_STATUS;
+    //                            $isNonCalculatedMatch = $isJustFinishedMatch && !$match->getPredictions()->isEmpty();
+
+                                $match->setStatus($status);
+                                $timezoneAbbr = $this->getNodeValue($matchXml->MatchInfo, 'TZ');
+                                $timezone = !empty($timezoneAbbr) ? new \DateTimeZone(timezone_name_from_abbr($timezoneAbbr)) : null;
+                                $match->setStartTime($this->getNodeValue($matchXml->MatchInfo, 'Date', 'Y-m-d G:i:s', $timezone));
+
+                                $match->setStadiumName($this->getNodeValue($matchXml->Stat, 0));
+                                $match->setCityName($this->getNodeValue($matchXml->Stat, 1));
+
+                                $team2Side = $this->getXmlAttribute($matchXml->TeamData->{1}, 'Side');
+
+                                if ($team2Side == 'Home') {
+                                    $homeTeamFeederId = $team2FeederId;
+                                    $awayTeamFeederId = $team1FeederId;
+                                } else {
+                                    $homeTeamFeederId = $team1FeederId;
+                                    $awayTeamFeederId = $team2FeederId;
+                                }
+
+                                $match->setHomeTeam($teamDAO->getRepository()->findOneByFeederId($homeTeamFeederId));
+                                $match->setAwayTeam($teamDAO->getRepository()->findOneByFeederId($awayTeamFeederId));
+
+                                if ($match->getHomeTeam() == null || $match->getAwayTeam() == null) {
+                                    $missedFeederId = $match->getHomeTeam() == null ? $homeTeamFeederId : $awayTeamFeederId;
+                                    LogManager::getInstance($this->getServiceLocator())->logOptaWarning(sprintf(MessagesConstants::WARNING_TEAM_MISSED, $missedFeederId));
+                                } else {
+    //                                if ($isJustFinishedMatch) {
+    //
+    //                                }
+                                    $matchDAO->save($match);
+                                }
+
+    //                            if (!$isNonCalculatedMatch)
+//                                    $matchDAO->detach($match);
+    //                            else
+    //                                $nonCalculatedMatches[] = $match;
+
+                            } catch (\Exception $e) {
+                                ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
                             }
 
-                            $match->setCompetition($competition);
-                            $match->setWeek($this->getXmlAttribute($matchXml->MatchInfo, 'MatchDay'));
-                            $status = $this->getXmlAttribute($matchXml->MatchInfo, 'Period');
-                            if (!in_array($status, Match::getAvailableStatuses()))
-                                $status = Match::LIVE_STATUS;
+                            $this->doProgress($console);
 
-//                            $isJustFinishedMatch = $status == Match::FULL_TIME_STATUS && $match->getStatus() != Match::FULL_TIME_STATUS;
-//                            $isNonCalculatedMatch = $isJustFinishedMatch && !$match->getPredictions()->isEmpty();
-
-                            $match->setStatus($status);
-                            $timezoneAbbr = $this->getNodeValue($matchXml->MatchInfo, 'TZ');
-                            $timezone = !empty($timezoneAbbr) ? new \DateTimeZone(timezone_name_from_abbr($timezoneAbbr)) : null;
-                            $match->setStartTime($this->getNodeValue($matchXml->MatchInfo, 'Date', 'Y-m-d G:i:s', $timezone));
-
-                            $match->setStadiumName($this->getNodeValue($matchXml->Stat, 0));
-                            $match->setCityName($this->getNodeValue($matchXml->Stat, 1));
-
-                            $team1FeederId = $this->getIdFromString($this->getXmlAttribute($matchXml->TeamData->{0}, 'TeamRef'));
-                            $team2FeederId = $this->getIdFromString($this->getXmlAttribute($matchXml->TeamData->{1}, 'TeamRef'));
-                            $team2Side = $this->getXmlAttribute($matchXml->TeamData->{1}, 'Side');
-
-                            if ($team2Side == 'Home') {
-                                $homeTeamFeederId = $team2FeederId;
-                                $awayTeamFeederId = $team1FeederId;
-                            } else {
-                                $homeTeamFeederId = $team1FeederId;
-                                $awayTeamFeederId = $team2FeederId;
-                            }
-
-                            $match->setHomeTeam($teamDAO->getRepository()->findOneByFeederId($homeTeamFeederId));
-                            $match->setAwayTeam($teamDAO->getRepository()->findOneByFeederId($awayTeamFeederId));
-
-                            if ($match->getHomeTeam() == null || $match->getAwayTeam() == null) {
-                                $missedFeederId = $match->getHomeTeam() == null ? $homeTeamFeederId : $awayTeamFeederId;
-                                LogManager::getInstance($this->getServiceLocator())->logOptaWarning(sprintf(MessagesConstants::WARNING_TEAM_MISSED, $missedFeederId));
-                            } else {
-//                                if ($isJustFinishedMatch) {
-//
-//                                }
-                                $matchDAO->save($match);
-                            }
-
-//                            if (!$isNonCalculatedMatch)
-                                $matchDAO->detach($match);
-//                            else
-//                                $nonCalculatedMatches[] = $match;
-
-                        } catch (\Exception $e) {
-                            ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
                         }
-
-                        $this->doProgress($console);
-
                     }
                 }
             }

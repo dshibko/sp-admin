@@ -5,6 +5,7 @@ namespace Application\Model\DAOs;
 use \Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Doctrine\ORM\Query\Expr;
 
 class TeamDAO extends AbstractDAO {
 
@@ -32,5 +33,23 @@ class TeamDAO extends AbstractDAO {
     function getRepositoryName() {
         return '\Application\Model\Entities\Team';
     }
+
+    /**
+     * @param integer $teamId
+     * @param integer $competitionId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    function getTeamSquadInCompetition($teamId, $competitionId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('p.displayName, p.position, p.shirtNumber, p.id')
+            ->from('Application\Model\Entities\Player', 'p')
+            ->join('p.competitions', 'cp', Expr\Join::WITH, 'cp.id = ' . $competitionId)
+            ->where($qb->expr()->eq('p.team', $teamId))
+            ->orderBy('p.position', 'ASC');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
 
 }

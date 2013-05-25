@@ -1,1 +1,89 @@
-Predict
+<div role="main" class="predict-section clearfix">
+    <div class="predict-content">
+        <section class="make-prediction">
+            <header>
+                <strong class="flag-new-prediction"><span>New</span></strong>
+                <time class="game-date">
+                    <?=$this->current['startTime']->format('D d M h.i a');?>
+                </time>
+                <ul class="direction-nav">
+                    <?php if ($this->ahead > 0) : ?>
+                        <li class="prev-match">
+                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead != 1 ? $this->ahead - 1 : null));?>">Prev <span>match</span></a>
+                        </li>
+                    <?php endif; ?>
+                    <?php if ($this->ahead < $this->maxAhead) : ?>
+                        <li class="next-match">
+                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead + 1));?>">Next <span>match</span></a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </header>
+
+            <div class="make-prediction-content clearfix">
+                <form id="make-prediction">
+                    <div class="home-team">
+                        <div>
+                            <label for="home-team-score">
+                                <figure>
+                                    <img src="/img/club/chelsea-fc.png" alt="">
+                                </figure>
+                                <span>
+                                    <?=$this->current['homeName'];?>
+                                </span>
+                            </label>
+                            <input type="text" class="required" maxlength="10" name="home-team-score" id="home-team-score">
+                        </div>
+                        <section>
+                            <select>
+                                <option value="default">&ndash; Select scorer &ndash;</option>
+                                <?php foreach ($this->current['homeSquad'] as $player) : ?>
+                                    <option value="<?=$player['id']?>"><?=$player['shirtNumber']?>. <?=$player['displayName']?> <?=$player['position']?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </section>
+                    </div>
+
+                    <div class="league-logo">
+                        <img src="/img/league-logo.png" alt="">
+                        <em>VS</em>
+                        <span class="">Scorers</span>
+                    </div>
+
+                    <div class="away-team">
+                        <div>
+                            <label for="away-team-score">
+                                <figure>
+                                    <img src="/img/club/chelsea-fc.png" alt="">
+                                </figure>
+                                <span>
+                                    <?=$this->current['awayName'];?>
+                                </span>
+                            </label>
+                            <input type="text" class="required" maxlength="10" name="away-team-score" id="away-team-score">
+                        </div>
+                        <section>
+                            <select>
+                                <option value="default">&ndash; Select scorer &ndash;</option>
+                                <?php foreach ($this->current['awaySquad'] as $player) : ?>
+                                    <option value="<?=$player['id']?>"><?=$player['shirtNumber']?>. <?=$player['displayName']?> <?=$player['position']?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </section>
+                    </div>
+
+                    <div class="buttons-block">
+                        <button type="submit">Save prediction</button>
+                        <p>
+                            Time left
+                            <time class="competition-countdown">02 20 36 19</time>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+</div>
+
+<script src="/js/make-prediction.js"></script>

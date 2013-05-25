@@ -12,8 +12,10 @@ class DispatcherController extends AbstractActionController {
 
     public function dispatchAction() {
 
+        error_reporting(E_ERROR | E_PARSE);
+
         try {
-            \Application\Manager\LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables();
+//            \Application\Manager\LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables();
 //            \Application\Manager\PredictionManager::getInstance($this->getServiceLocator())->predict(137, \Application\Manager\UserManager::getInstance($this->getServiceLocator())->getUserById(1),
 //                4, 2, array(
 //                    array(

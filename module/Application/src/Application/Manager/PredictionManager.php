@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use \Application\Model\DAOs\TeamDAO;
 use \Application\Model\DAOs\PlayerDAO;
 use \Application\Model\Entities\PredictionPlayer;
 use \Application\Model\Helpers\MessagesConstants;
@@ -49,7 +50,7 @@ class PredictionManager extends BasicManager {
             $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
             $playerDAO = PlayerDAO::getInstance($this->getServiceLocator());
 
-            $prediction = $predictionDAO->getUserPrediction($match, $user);
+            $prediction = $predictionDAO->getUserPrediction($match->getId(), $user->getId());
             if ($prediction == null) {
                 $prediction = new Prediction();
                 $prediction->setMatch($match);
@@ -96,6 +97,52 @@ class PredictionManager extends BasicManager {
         $avgNumberOfPrediction = PredictionDAO::getInstance($this->getServiceLocator())->getAvgNumberOfPrediction($season);
         $avgNumberOfPrediction = number_format(ceil($avgNumberOfPrediction * 100) / 100, 2);
         return $avgNumberOfPrediction;
+    }
+
+    /**
+     * @param \DateTime $fromTime
+     * @param $offset
+     * @param \Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return mixed
+     */
+    public function getNearestMatchWithPrediction($fromTime, $offset, $user, $season, $hydrate = false, $skipCache = false) {
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+        $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        $matchData = $matchDAO->getNearestMatch($fromTime, $offset, $season, $skipCache);
+        if (!empty($matchData)) {
+            $match = $matchDAO->getMatchInfo($matchData['matchId'], $hydrate, $skipCache);
+            $homeSquad = $teamDAO->getTeamSquadInCompetition($match['homeId'], $matchData['competitionId'], $hydrate, $skipCache);
+            $match['homeSquad'] = $this->preparePlayers($homeSquad);
+            $awaySquad = $teamDAO->getTeamSquadInCompetition($match['awayId'], $matchData['competitionId'], $hydrate, $skipCache);
+            $match['awaySquad'] = $this->preparePlayers($awaySquad);
+            $match['prediction'] = $predictionDAO->getUserPrediction($user->getId(), $matchData['matchId']);
+            return $match;
+        } else
+            return null;
+    }
+
+    public function getMatchesLeftInTheSeason($fromTime, $season, $skipCache = false) {
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+        return $matchDAO->getMatchesLeftInTheSeason($fromTime, $season, $skipCache);
+    }
+
+    public static $positionsOrder = array('Goalkeeper', 'Defender', 'Midfielder', 'Forward');
+    public static $positionsAbbreviation = array('GK', 'DF', 'MF', 'FW');
+
+    private function preparePlayers($players) {
+        usort($players, function($p1, $p2) {
+            $pos1 = array_search($p1['position'], PredictionManager::$positionsOrder);
+            $pos2 = array_search($p2['position'], PredictionManager::$positionsOrder);
+            return $pos1 != $pos2 ? $pos1 - $pos2 : $p1['shirtNumber'] - $p2['shirtNumber'];
+        });
+        array_walk($players, function(&$p) {
+            $p['position'] = PredictionManager::$positionsAbbreviation[array_search($p['position'], PredictionManager::$positionsOrder)];
+        });
+        return $players;
     }
 
 }

@@ -52,6 +52,13 @@ class MessagesConstants
     const ERROR_ACTIVE_PAGE_NOT_FOUND = "Active page was not found.";
     const ERROR_CANNOT_GET_FACEBOOK_USER_ID_FROM_REQUEST = 'Cannot get facebook user id from request';
     const ERROR_CANNOT_GET_USER_BY_FACEBOOK_ID = 'Cannot get user by facebook id';
+    const ERROR_APP_CONFIG_NOT_FOUND = 'Application config was not found.';
+    const ERROR_APP_EDITION_CONFIG_NOT_FOUND = 'Application edition config was not found.';
+    const ERROR_APP_OPTA_CONFIG_NOT_FOUND = 'Application opta config was not found.';
+    const ERROR_APP_UNKNOWN_EDITION = 'Unknown application edition configured.';
+    const ERROR_APP_WRONG_OPTA_CONFIG = 'Wrong opta id configured. Must be an integer.';
+    const ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED = 'You can\'t predict on this match result. You can predict just on %s matches in the future.';
+    const ERROR_NO_MORE_MATCHES_IN_THE_SEASON = 'No more matches will be played in this season. Please join us when next season starts.';
 
     const SUCCESS_RECOVERY_LINK_SENT = "Recovery link was sent to your email. The link is active for 3 hours.";
     const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to yout email. The link is active for 60 minutes';

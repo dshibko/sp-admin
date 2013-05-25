@@ -54,7 +54,7 @@ $(document).ready(function () {
 
 
     if($(".popup").size()!=0) { $(".popup").Popup();}
-    $(".popup").click(function(event) {
+    $(".login-popup-button").click(function(event) {
         return false;
     });
 

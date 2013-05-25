@@ -16,6 +16,9 @@ use \Application\Model\DAOs\CountryDAO;
 
 class ApplicationManager extends BasicManager {
 
+    const CLUB_EDITION = 'club';
+    const COMPETITION_EDITION = 'competition';
+
     /**
      * @var ApplicationManager
      */
@@ -89,6 +92,7 @@ class ApplicationManager extends BasicManager {
     {
         return CountryDAO::getInstance($this->getServiceLocator())->getCountryByISOCode($isoCode, $hydrate);
     }
+
     //Get countries for select options
     /**
      * @return array
@@ -104,4 +108,43 @@ class ApplicationManager extends BasicManager {
         }
         return $countries;
     }
+
+    public function getAppEdition() {
+        return array_shift($this->getAppConfig());
+    }
+
+    public function getAppOptaId() {
+        return array_pop($this->getAppConfig());
+    }
+
+    /**
+     * @var array
+     */
+    private $appConfig;
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    private function getAppConfig() {
+        if ($this->appConfig == null) {
+            $config = $this->getServiceLocator()->get('config');
+            if (!array_key_exists('app', $config))
+                throw new \Exception(MessagesConstants::ERROR_APP_CONFIG_NOT_FOUND);
+            $appConfig = $config['app'];
+            if (!array_key_exists('edition', $appConfig))
+                throw new \Exception(MessagesConstants::ERROR_APP_EDITION_CONFIG_NOT_FOUND);
+            if (!array_key_exists('opta_id', $appConfig))
+                throw new \Exception(MessagesConstants::ERROR_APP_OPTA_CONFIG_NOT_FOUND);
+            $edition = $appConfig['edition'];
+            if ($edition != self::CLUB_EDITION && $edition != self::COMPETITION_EDITION)
+                throw new \Exception(MessagesConstants::ERROR_APP_UNKNOWN_EDITION);
+            $optaId = $appConfig['opta_id'];
+            if (!preg_match('/[0-9]+/', $optaId))
+                throw new \Exception(MessagesConstants::ERROR_APP_WRONG_OPTA_CONFIG);
+            $this->appConfig = array($edition, $optaId);
+        }
+        return $this->appConfig;
+    }
+
 }

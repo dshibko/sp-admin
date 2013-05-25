@@ -13,8 +13,7 @@
 
 @import "less/home-page.less";
 @import "less/registration-page.less";
-
-
+@import "less/predict-page.less";
 
 /* ==========================================================================
    Media Queries
@@ -169,7 +168,7 @@
     .inner-page header[role="banner"] {
         height: auto;
     }
-    .inner-page div[role="main"] {
+    .inner-page div[role="main"].registration-section {
         margin: -1em auto 0em;
     }
     .inner-page div[role="main"] h1 {
@@ -264,6 +263,9 @@
     }
     .ideal-select {
         font-size: 1.7em;
+    }
+    .registration-section label {
+        font-size: 1.8em;
     }
     .ideal-form .ideal-error {
         width: 130px;

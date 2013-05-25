@@ -65,7 +65,7 @@ class LeagueDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('l')
             ->from($this->getRepositoryName(), 'l')
-            ->where($qb->expr()->eq('l.isGlobal', true));
+            ->where($qb->expr()->eq('l.isGlobal', 1));
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
@@ -95,8 +95,8 @@ class LeagueDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('l')
             ->from($this->getRepositoryName(), 'l')
-            ->where($qb->expr()->eq('l.isGlobal', false))
-            ->andWhere($qb->expr()->eq('l.isPrivate', false))
+            ->where($qb->expr()->eq('l.isGlobal', 0))
+            ->andWhere($qb->expr()->eq('l.isPrivate', 0))
             ->andWhere($qb->expr()->eq('l.region', $region->getId()));
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }

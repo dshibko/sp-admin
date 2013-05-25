@@ -113,14 +113,14 @@ class Player extends BasicObject {
     /**
      * @var string
      *
-     * @ORM\Column(name="position", type="string", length=5, nullable=false)
+     * @ORM\Column(name="position", type="string", length=50, nullable=false)
      */
     private $position;
 
     /**
-     * @var boolean
+     * @var integer
      *
-     * @ORM\Column(name="shirt_number", type="boolean", nullable=true)
+     * @ORM\Column(name="shirt_number", type="integer", nullable=true)
      */
     private $shirtNumber;
 
@@ -246,7 +246,7 @@ class Player extends BasicObject {
     /**
      * Set shirtNumber
      *
-     * @param boolean $shirtNumber
+     * @param integer $shirtNumber
      * @return Player
      */
     public function setShirtNumber($shirtNumber)
@@ -260,7 +260,7 @@ class Player extends BasicObject {
     /**
      * Get shirtNumber
      *
-     * @return boolean 
+     * @return integer
      */
     public function getShirtNumber()
     {
