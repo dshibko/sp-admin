@@ -16,6 +16,8 @@ use \Application\Model\DAOs\CountryDAO;
 
 class ApplicationManager extends BasicManager {
 
+    const DEFAULT_COUNTRY_ID = 95;
+    const DEFAULT_COUNTRY_ISO_CODE = 'GB';
     const CLUB_EDITION = 'club';
     const COMPETITION_EDITION = 'competition';
 
@@ -74,20 +76,38 @@ class ApplicationManager extends BasicManager {
         return $this->currentSeason;
     }
 
+    /**
+     * @param bool $hydrate
+     * @return array
+     */
     public function getAllRegions($hydrate = false)
     {
         return RegionDAO::getInstance($this->getServiceLocator())->getAllRegions($hydrate);
     }
 
+    /**
+     * @param bool $hydrate
+     * @return array
+     */
     public function getAllLanguages($hydrate = false)
     {
         return LanguageDAO::getInstance($this->getServiceLocator())->getAllLanguages($hydrate);
     }
+
+    /**
+     * @param bool $hydrate
+     * @return array
+     */
     public function getAllCountries($hydrate = false)
     {
         return CountryDAO::getInstance($this->getServiceLocator())->getAllCountries($hydrate);
     }
 
+    /**
+     * @param $isoCode
+     * @param bool $hydrate
+     * @return \Application\Model\Entities\Country
+     */
     public function getCountryByISOCode($isoCode, $hydrate = false)
     {
         return CountryDAO::getInstance($this->getServiceLocator())->getCountryByISOCode($isoCode, $hydrate);
@@ -107,6 +127,14 @@ class ApplicationManager extends BasicManager {
             }
         }
         return $countries;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDefaultCountry()
+    {
+        return CountryDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_COUNTRY_ID);
     }
 
     public function getAppEdition() {

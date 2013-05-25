@@ -19,7 +19,7 @@ $this->headTitle($title);
                         <th><?=$this->translate('Name')?></th>
                         <th><?=$this->translate('Code')?></th>
                         <th><?=$this->translate('Default')?></th>
-                        <th style="width: 150px"></th>
+                        <th style="width: 60px"></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -32,10 +32,6 @@ $this->headTitle($title);
                             <a href="<?=$this->url('admin-content-languages', array('action' => 'edit', 'language' => $language['id']))?>" class="btn mini blue">
                                 <i class="icon-edit"></i>
                                 <?=$this->translate('Edit')?>
-                            </a>
-                            <a href="<?=$this->url('admin-content-languages', array('action' => 'delete', 'language' => $language['id']))?>" class="btn mini red">
-                                <i class="icon-trash"></i>
-                                <?=$this->translate('Delete')?>
                             </a>
                         </td>
                     </tr>

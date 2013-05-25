@@ -73,8 +73,15 @@ function phpmo_parse_po_file($in) {
     // iterate over lines
     while(($line = fgets($fh, 65536)) !== false) {
         $line = trim($line);
-        if ($line === '')
+        if ($line === ''){
+            if (!$fuzzy)
+                $hash[] = $temp;
+            $temp = array ();
+            $state = null;
+            $fuzzy = false;
             continue;
+        }
+
 
         list ($key, $data) = preg_split('/\s/', $line, 2);
 
@@ -136,8 +143,10 @@ function phpmo_parse_po_file($in) {
     fclose($fh);
 
     // add final entry
-    if ($state == 'msgstr')
+    if ($state == 'msgstr') {
         $hash[] = $temp;
+    }
+
 
     // Cleanup data, merge multiline entries, reindex hash for ksort
     $temp = $hash;
@@ -159,6 +168,7 @@ function phpmo_parse_po_file($in) {
 /* Write a GNU gettext style machine object. */
 /* @link http://www.gnu.org/software/gettext/manual/gettext.html#MO-Files */
 function phpmo_write_mo_file($hash, $out) {
+
 	// sort by msgid
 	ksort($hash, SORT_STRING);
 	// our mo file data

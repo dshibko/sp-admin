@@ -32,7 +32,7 @@ class LanguagesController extends AbstractActionController
             'languages' => $languages,
         );
     }
-    //TODO get strings from form on validation error
+
     public function addAction()
     {
         $strings = array();
@@ -97,7 +97,6 @@ class LanguagesController extends AbstractActionController
         $languageManager = LanguageManager::getInstance($this->getServiceLocator());
         $languageForm = new LanguageForm(ApplicationManager::getInstance($this->getServiceLocator())->getCountriesSelectOptions());
         try {
-            //TODO remove input filter for code and display name
             $language = $languageManager->getLanguageById($languageId);
             $countryValues = array();
             $countries = $language->getCountries();
@@ -122,7 +121,7 @@ class LanguagesController extends AbstractActionController
             $displayNameElement->setValue($language->getDisplayName());
 
             $strings = $languageManager->getPoFileContent($language->getLanguageCode());
-            //TODO save countries and display name
+
             if ($request->isPost()) {
                 $languageForm->setData($request->getPost());
                 if ($languageForm->isValid()) {

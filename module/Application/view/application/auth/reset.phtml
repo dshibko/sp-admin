@@ -3,27 +3,77 @@ $title = $this->translate('Reset Password');
 $this->headTitle($title);
 ?>
 <?php echo $this->partial('partials/header');?>
-<h1><?php echo $this->escapeHtml($title);?></h1>
-<?php print $this->renderMessages();?>
-<?php
-if ($this->isValid){
-    $form = $this->form;
+<div role="main" class="registration-section">
+    <h1><?php echo $this->escapeHtml($title);?></h1>
+    <?php $form = $this->form;
     $form->prepare();
-    $form->setAttribute('action', '');
-    echo $this->formElementerrors($form->get('password'));
-    echo $this->formElementerrors($form->get('confirm_password'));
-    echo $this->form()->openTag($form);
-    echo $this->formLabel($form->get('password'));
-    echo $this->formElement($form->get('password'));
-    echo $this->formLabel($form->get('confirm_password'));
-    echo $this->formElement($form->get('confirm_password'));
-    echo $this->formHidden($form->get('csrf'));
-    echo $this->formSubmit($form->get('submit'));
-    echo $this->form()->closeTag();
-}
-if ($this->displayLinkToResetPage):?>
-   <a href="<?php echo $this->url('forgot')?>"><?php echo $this->translate('Reset Password Page');?></a>
-<?php endif;?>
+    $form->setAttribute('action', ''); ?>
+
+    <?php $errors = $this->renderMessages();?>
+
+    <?php if ($form->getInputFilter()->getMessages() || $errors):?>
+    <div class="form-errors">
+        <?php if (!empty($errors)):?>
+        <p><?php echo $errors;?></p>
+        <?php endif;?>
+        <?php echo $this->formElementerrors($form->get('password')); ?>
+        <?php echo $this->formElementerrors($form->get('confirm_password')); ?>
+    </div>
+    <?php endif;?>
+    <?php if ($this->isValid): ?>
+    <?php echo $this->form()->openTag($form);  ?>
+         <section>
+             <div>
+                 <?php echo $this->formLabel($form->get('password'));;?>
+                 <?php echo $this->formElement($form->get('password'));;?>
+             </div>
+         </section>
+        <section>
+            <div>
+                <?php echo $this->formLabel($form->get('confirm_password'));;?>
+                <?php echo $this->formElement($form->get('confirm_password'));;?>
+            </div>
+        </section>
+        <section class="buttons-block signIn-buttons-block clearfix">
+            <div>
+                <button type="submit"><?php echo $this->translate('Submit');?></button>
+            </div>
+        </section>
+    <?php echo $this->formHidden($form->get('csrf')); ?>
+    <?php  echo $this->form()->closeTag(); ?>
+    <?php endif; ?>
+    
+    <?php if ($this->displayLinkToResetPage):?>
+        <section class="clearfix">
+            <p><a href="<?php echo $this->url('forgot')?>"><?php echo $this->translate('Reset Password Page');?></a></p>
+        </section>
+    <?php endif;?>
+</div>
+<script type="text/javascript">
+    var turnOffCustomStylePoint = 767;
+
+    var loginOptions = {
+
+        responsiveAt: turnOffCustomStylePoint,
+        onFail:function(){},
+        onSuccess: function(){},
+        inputs: {
+            'password': {
+                filters: 'required pass max',
+                data: { max: 15 }
+            },
+            'confirm_password': {
+                filters: 'required max equalto',
+                data: { max: 15,  equalto : '#password' }
+            }
+        }
+    };
+    if ($(document).width() <  turnOffCustomStylePoint)
+        loginOptions.disableCustom = 'select';
+
+   $('#reset').idealforms(loginOptions).data('idealforms');
+
+</script>
 <?php echo $this->partial('partials/footer');?>
 
 

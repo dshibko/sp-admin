@@ -8,72 +8,10 @@ use Application\Manager\LanguageManager;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Form\Filter\SetUpFormFilter;
-use Zend\Http\PhpEnvironment\RemoteAddress;
 use Application\Model\Entities\Language;
 use Application\Model\Entities\Country;
 
 class SetUpForm extends Form implements ServiceLocatorAwareInterface{
-
-    const DEFAULT_COUNTRY_ISO_CODE = 'GB';
-    const DEFAULT_LANGUAGE_ID = 1;
-    const DEFAULT_COUNTRY_ID = 95;
-
-    private $remoteAddress;
-    private $country_code;
-    private $country;
-
-    private function getUserCountryCode()
-    {
-        if (null === $this->country_code){
-            $this->country_code = geoip_country_code_by_name($this->getRemoteAddress()->getIpAddress());
-        }
-
-        return $this->country_code;
-    }
-    /**
-     *  @return Application\Model\Entities\Country
-    */
-    private function getUserCountry()
-    {
-        if (null === $this->country){
-            $isoCode = $this->getUserCountryCode();
-            if (empty($isoCode)){
-                $isoCode = self::DEFAULT_COUNTRY_ISO_CODE;
-            }
-
-            $country = ApplicationManager::getInstance($this->getServiceLocator())->getCountryByISOCode($isoCode);
-            if (empty($country)){
-                $country = ApplicationManager::getInstance($this->getServiceLocator())->getCountryByISOCode(self::DEFAULT_COUNTRY_ISO_CODE);
-            }
-
-            $this->country = $country;
-        }
-
-        return $this->country;
-
-    }
-
-    private function getUserLanguageId()
-    {
-        $language_id = self::DEFAULT_LANGUAGE_ID;
-        $country = $this->getUserCountry();
-        $language = $country->getLanguage();
-        if (!empty($language) && $language instanceof Language){
-            $language_id = $language->getId();
-        }
-        return $language_id;
-    }
-
-    private function getUserCountryId()
-    {
-        $country_id = self::DEFAULT_COUNTRY_ID;
-
-        $country = $this->getUserCountry();
-        if (!empty($country) && $country instanceof Country){
-            $country_id = $country->getId();
-        }
-        return $country_id;
-    }
 
     public function getServiceLocator ()
     {
@@ -88,7 +26,6 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
 
     public function __construct(ServiceLocatorInterface $serviceLocator = null) {
         parent::__construct('setup');
-        $this->setRemoteAddress(new RemoteAddress());
         $this->setAttribute('method', 'post');
         $this->setServiceLocator($serviceLocator)
              ->setInputFilter(new SetUpFormFilter());
@@ -103,7 +40,7 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
                 'value_options' => LanguageManager::getInstance($this->getServiceLocator())->getLanguagesSelectOptions(),
             ),
             'attributes' => array(
-                'value' => $this->getUserLanguageId()
+                'value' => ''
             )
 
         ));
@@ -119,7 +56,7 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
 
             ),
             'attributes' => array(
-                'value' => $this->getUserCountryId()
+                'value' => ''
             )
 
         ));
@@ -141,18 +78,5 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
                 'id' => 'submitbutton',
             ),
         ));
-
-        //$this->setDefaults('language',1);
-    }
-
-    public function setRemoteAddress(RemoteAddress $remoteAddress)
-    {
-        $this->remoteAddress = $remoteAddress;
-        return $this;
-    }
-
-    public function getRemoteAddress()
-    {
-        return $this->remoteAddress;
     }
 }
