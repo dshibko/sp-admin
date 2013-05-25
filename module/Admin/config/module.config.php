@@ -324,6 +324,20 @@ return array(
                                 'title' => 'Languages',
                                 'label' => 'icon-refresh',
                                 'route' => 'admin-content-languages',
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Add New Language',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-languages',
+                                        'action' => 'add',
+                                    ),
+                                    array(
+                                        'title' => 'Edit Language',
+                                        'label' => 'icon-edit',
+                                        'route' => 'admin-content-languages',
+                                        'action' => 'edit',
+                                    ),
+                                ),
                             ),
                             'footer-images' => array(
                                 'title' => 'Footer Images',

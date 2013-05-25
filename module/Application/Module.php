@@ -25,10 +25,6 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
-        $translator = $e->getApplication()->getServiceManager()->get('translator');
-        //TODO set fallback to en_US
-        //TODO set translator for validation
-        //\Zend\Validator\AbstractValidator::setDefaultTranslator($translator);// Set translator for validation
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
@@ -38,6 +34,8 @@ class Module
     }
 
     public function onAppDispatch(\Zend\Mvc\MvcEvent $e) {
+        $translator = $e->getApplication()->getServiceManager()->get('translator');
+        $translator->setLocale(\Application\Manager\LanguageManager::getInstance($e->getApplication()->getServiceManager())->getDefaultLanguage()->getLanguageCode());
         $matches = $e->getRouteMatch();
         if ($matches != null) {
             $user = ApplicationManager::getInstance($e->getApplication()->getServiceManager())->getCurrentUser();

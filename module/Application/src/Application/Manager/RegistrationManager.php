@@ -96,29 +96,29 @@ class RegistrationManager extends BasicManager
         $user->populate($data);
         UserDAO::getInstance($this->getServiceLocator())->save($user);
 
-        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
-        $globalLeagues = $leagueDAO->getGlobalLeagues();
-        foreach ($globalLeagues as $globalLeague)
-            if ($leagueDAO->getIsUserInLeague($globalLeague, $user)) {
-                $leagueUser = new LeagueUser();
-                $leagueUser->setUser($user);
-                $leagueUser->setJoinDate(new \DateTime());
-                $leagueUser->setLeague($globalLeague);
-                $globalLeague->addLeagueUser($leagueUser);
-                $leagueDAO->save($globalLeague, false, false);
-            }
-        $regionalLeagues = $leagueDAO->getRegionalLeagues($user->getRegion());
-        foreach ($regionalLeagues as $regionalLeague)
-            if ($leagueDAO->getIsUserInLeague($regionalLeague, $user)) {
-                $leagueUser = new LeagueUser();
-                $leagueUser->setUser($user);
-                $leagueUser->setJoinDate(new \DateTime());
-                $leagueUser->setLeague($regionalLeague);
-                $regionalLeague->addLeagueUser($leagueUser);
-                $leagueDAO->save($regionalLeague, false, false);
-            }
-        $leagueDAO->flush();
-        $leagueDAO->clearCache();
+//        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+//        $globalLeagues = $leagueDAO->getGlobalLeagues();
+//        foreach ($globalLeagues as $globalLeague)
+//            if ($leagueDAO->getIsUserInLeague($globalLeague, $user)) {
+//                $leagueUser = new LeagueUser();
+//                $leagueUser->setUser($user);
+//                $leagueUser->setJoinDate(new \DateTime());
+//                $leagueUser->setLeague($globalLeague);
+//                $globalLeague->addLeagueUser($leagueUser);
+//                $leagueDAO->save($globalLeague, false, false);
+//            }
+//        $regionalLeagues = $leagueDAO->getRegionalLeagues($user->getRegion());
+//        foreach ($regionalLeagues as $regionalLeague)
+//            if ($leagueDAO->getIsUserInLeague($regionalLeague, $user)) {
+//                $leagueUser = new LeagueUser();
+//                $leagueUser->setUser($user);
+//                $leagueUser->setJoinDate(new \DateTime());
+//                $leagueUser->setLeague($regionalLeague);
+//                $regionalLeague->addLeagueUser($leagueUser);
+//                $leagueDAO->save($regionalLeague, false, false);
+//            }
+//        $leagueDAO->flush();
+//        $leagueDAO->clearCache();
 
         return true;
     }

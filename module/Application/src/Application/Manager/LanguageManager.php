@@ -89,6 +89,7 @@ class LanguageManager extends BasicManager {
         if (file_exists($poFile)){
             $poParser = $this->getServiceLocator()->get('poparser');
             $content = $poParser->read($poFile);
+            //print_r($content); die;
             if (!empty($content)){
                 foreach($content as $id => $value){
                     if (!empty($id)){
@@ -118,7 +119,6 @@ class LanguageManager extends BasicManager {
         }
         if (!empty($data)){
             $poParser = $this->getServiceLocator()->get('poparser');
-            $poParser->read($poFile);
             foreach($data as $msgid => $msgstr){
                 $poParser->update_entry( $msgid, $msgstr);
             }

@@ -18,7 +18,8 @@ class ResetPasswordForm extends Form {
             'type'  => 'text',
             'attributes' => array(
                 'placeholder' => 'Password',
-                'type' => 'password'
+                'type' => 'password',
+                'id' => 'password'
             ),
             'options' => array(
                 'label' => 'Password',
