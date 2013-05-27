@@ -41,3 +41,7 @@ iframe.wysihtml5-sandbox {
 .form .fileupload {
     margin-bottom: 3px;
 }
+
+.new-club td{
+    background-color: #de9683 !important;
+}

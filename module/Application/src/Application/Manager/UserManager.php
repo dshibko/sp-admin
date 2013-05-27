@@ -272,20 +272,20 @@ class UserManager extends BasicManager {
      *   @param \Application\Model\Entities\User $user
      *   @return bool
      */
-    public function deleteAccount(\Application\Model\Entities\User $user)
+    public function deleteAccount(\Application\Model\Entities\User $user, $deleteFacebookApp = true)
     {
         //TODO remove predictions, etc all user data
-        if ($user->getFacebookId()){
+        if ($user->getFacebookId() && $deleteFacebookApp){
             //remove facebook application
             $facebook = $this->getServiceLocator()->get('facebook');
             $facebook->api('/'.$user->getFacebookId(). '/permissions', 'DELETE', array('access_token' => $user->getFacebookAccessToken()));
         }
         $avatar = $user->getAvatar();
-        UserDAO::getInstance($this->getServiceLocator())->remove($user, false);
+        UserDAO::getInstance($this->getServiceLocator())->remove($user, false, false);
         if (!$avatar->getIsDefault()){
             //TODO move these lines to method
             $this->deleteAvatarImages($avatar);
-            AvatarDAO::getInstance($this->getServiceLocator())->remove($avatar, false);
+            AvatarDAO::getInstance($this->getServiceLocator())->remove($avatar, false, false);
         }
         UserDAO::getInstance($this->getServiceLocator())->flush();
         return true;

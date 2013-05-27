@@ -18,49 +18,49 @@ class Team extends BasicObject {
      *
      * @ORM\Column(name="stadium_capacity", type="integer")
      */
-    private $stadiumCapacity;
+    protected $stadiumCapacity;
 
     /**
      * @var string
      *
      * @ORM\Column(name="stadium_name", type="string", length=50)
      */
-    private $stadiumName;
+    protected $stadiumName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="manager", type="string", length=100)
      */
-    private $manager;
+    protected $manager;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="feeder_id", type="integer", nullable=false)
      */
-    private $feederId;
+    protected $feederId;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="founded", type="integer")
      */
-    private $founded;
+    protected $founded;
 
     /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=50, nullable=false)
      */
-    private $displayName;
+    protected $displayName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="short_name", type="string", length=10)
      */
-    private $shortName;
+    protected $shortName;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -75,14 +75,14 @@ class Team extends BasicObject {
      *   }
      * )
      */
-    private $competitions;
+    protected $competitions;
 
     /**
      * @var string
      *
      * @ORM\Column(name="logo_path", type="string", length=255, nullable=true)
      */
-    private $logoPath;
+    protected $logoPath;
 
     /**
      * @var integer
@@ -91,28 +91,34 @@ class Team extends BasicObject {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Match", mappedBy="homeTeam")
      */
-    private $homeMatches;
+    protected $homeMatches;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Match", mappedBy="awayTeam")
      */
-    private $awayMatches;
+    protected $awayMatches;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Player", mappedBy="team", cascade={"persist"})
      */
-    private $players;
+    protected $players;
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_blocked", type="boolean")
+     */
+    private $isBlocked = false;
 
     /**
      * Constructor
@@ -307,12 +313,11 @@ class Team extends BasicObject {
         return $this->feederId;
     }
 
-    /**
-     * @param string $shortName
-     */
+
     public function setShortName($shortName)
     {
         $this->shortName = $shortName;
+        return $this;
     }
 
     /**
@@ -427,6 +432,25 @@ class Team extends BasicObject {
     public function clearCompetitions()
     {
         $this->competitions->clear();
+    }
+
+
+    /**
+     * @param $isBlocked
+     * @return \Application\Model\Entities\Team
+     */
+    public function setIsBlocked($isBlocked)
+    {
+        $this->isBlocked = $isBlocked;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsBlocked()
+    {
+        return $this->isBlocked;
     }
 
 

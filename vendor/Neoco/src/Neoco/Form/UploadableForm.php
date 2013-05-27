@@ -37,7 +37,17 @@ abstract class UploadableForm extends Form implements \Zend\InputFilter\InputFil
                 }
                 $inputSpec[$element->getName()] = $validators;
             }
+            if ($element->getAttribute('maxlength')){
+                $inputSpec[$element->getName()]['validators'][] = array(
+                    'name' => 'StringLength',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                        'max' => $element->getAttribute('maxlength'),
+                    ),
+                );
+            }
         }
+
         return $inputSpec;
     }
 
