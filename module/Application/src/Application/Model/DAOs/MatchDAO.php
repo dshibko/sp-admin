@@ -81,9 +81,10 @@ class MatchDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'm')
             ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
             ->where($qb->expr()->gt('m.startTime', ":fromTime"))
-            ->andWhere($qb->expr()->eq('m.status', ':status'))
+            ->andWhere($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
             ->setParameter("fromTime", $fromTime)
-            ->setParameter("status", Match::PRE_MATCH_STATUS)
+            ->setParameter("status1", Match::PRE_MATCH_STATUS)
+            ->setParameter("status2", Match::LIVE_STATUS)
             ->setFirstResult($offset)
             ->setMaxResults(1);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
@@ -115,10 +116,11 @@ class MatchDAO extends AbstractDAO {
      */
     function getMatchInfo($matchId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('m.startTime, h.id as homeId, h.displayName as homeName, h.logoPath as homeLogo, a.id as awayId, a.displayName as awayName, a.logoPath as awayLogo')
+        $qb->select('m.id, m.status, m.startTime, m.timezone, h.id as homeId, h.displayName as homeName, h.logoPath as homeLogo, a.id as awayId, a.displayName as awayName, a.logoPath as awayLogo, c.displayName as competitionName')
             ->from($this->getRepositoryName(), 'm')
             ->join('m.homeTeam', 'h')
             ->join('m.awayTeam', 'a')
+            ->join('m.competition', 'c')
             ->where($qb->expr()->eq('m.id', $matchId));
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }

@@ -38,7 +38,6 @@ class SeasonController extends AbstractActionController {
 
         try {
             $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
-            $regions = array(array_shift($regions));// TODO to remove this line
 
             $regionFieldsets = array();
 
@@ -111,7 +110,6 @@ class SeasonController extends AbstractActionController {
                 return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE);
 
             $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
-            $regions = array(array_shift($regions));// TODO to remove this line
 
             $regionFieldsets = array();
 

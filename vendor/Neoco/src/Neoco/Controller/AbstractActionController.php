@@ -46,4 +46,15 @@ class AbstractActionController extends \Zend\Mvc\Controller\AbstractActionContro
         return $this->sessionContainer;
     }
 
+    public function generateSecurityKey(array $data) {
+        return md5(serialize($data));
+    }
+
+    public function checkSecurityKey(array $data, $post) {
+        if (!array_key_exists('check_key', $post) || empty($post['check_key']) ||
+            md5(serialize($data)) != $post['check_key'])
+            throw new \Exception(MessagesConstants::ERROR_SECURITY_CHECK_FAILED);
+        return true;
+    }
+
 }

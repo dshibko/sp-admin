@@ -40,10 +40,11 @@ class PredictionDAO extends AbstractDAO {
 
     function getUserPrediction($matchId, $userId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('p')
+        $qb->select('p, pl')
             ->from($this->getRepositoryName(), 'p')
             ->join('p.match', 'm', Expr\Join::WITH, 'm.id = ' . $matchId)
-            ->join('p.user', 'u', Expr\Join::WITH, 'u.id = ' . $userId);
+            ->join('p.user', 'u', Expr\Join::WITH, 'u.id = ' . $userId)
+            ->leftJoin('p.predictionPlayers', 'pl');
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 

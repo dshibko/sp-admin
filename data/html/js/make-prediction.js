@@ -18,3 +18,5 @@ if ($(document).width() <  turnOffCustomStylePoint)
 
 var $makePrediction = $('#make-prediction').idealforms(makePredictionOptions).data('idealforms');
 // $makePrediction.focusFirst();
+
+

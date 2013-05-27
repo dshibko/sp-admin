@@ -59,6 +59,13 @@ class Match extends BasicObject {
     private $startTime;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="timezone", type="string")
+     */
+    private $timezone;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="week", type="integer")
@@ -614,6 +621,22 @@ class Match extends BasicObject {
     public function removeHomeMatch(MatchGoal $matchGoal)
     {
         $this->matchGoals->removeElement($matchGoal);
+    }
+
+    /**
+     * @param string $timezone
+     */
+    public function setTimezone($timezone)
+    {
+        $this->timezone = $timezone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTimezone()
+    {
+        return $this->timezone ? $this->timezone : 'UTC';
     }
 
 }

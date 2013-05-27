@@ -214,8 +214,17 @@ class OptaManager extends BasicManager {
 
                                 $match->setStatus($status);
                                 $timezoneAbbr = $this->getNodeValue($matchXml->MatchInfo, 'TZ');
+                                $match->setTimezone($timezoneAbbr);
                                 $timezone = !empty($timezoneAbbr) ? new \DateTimeZone(timezone_name_from_abbr($timezoneAbbr)) : null;
-                                $match->setStartTime($this->getNodeValue($matchXml->MatchInfo, 'Date', 'Y-m-d G:i:s', $timezone));
+                                $startTime = $this->getNodeValue($matchXml->MatchInfo, 'Date', 'Y-m-d G:i:s', $timezone);
+                                if ($startTime->getOffset() != 0) {
+                                    $offsetInterval = new \DateInterval('PT' . abs($startTime->getOffset()) . 'S');
+                                    if ($startTime->getOffset() > 0)
+                                        $startTime->sub($offsetInterval);
+                                    else
+                                        $startTime->add($offsetInterval);
+                                }
+                                $match->setStartTime($startTime);
 
                                 $match->setStadiumName($this->getNodeValue($matchXml->Stat, 0));
                                 $match->setCityName($this->getNodeValue($matchXml->Stat, 1));
@@ -419,8 +428,12 @@ class OptaManager extends BasicManager {
         $xmlValue = $xmlNode != null ? $xmlNode->__toString() : null;
         if (empty($xmlValue) || $xmlValue == 'Unknown')
             return null;
-        else if ($format != null)
-            $xmlValue = \DateTime::createFromFormat($format, $xmlValue, $tz);
+        else if ($format != null) {
+            if ($tz != null && $tz instanceof \DateTimeZone)
+                $xmlValue = \DateTime::createFromFormat($format, $xmlValue, $tz);
+            else
+                $xmlValue = \DateTime::createFromFormat($format, $xmlValue);
+        }
         return $xmlValue;
 
     }

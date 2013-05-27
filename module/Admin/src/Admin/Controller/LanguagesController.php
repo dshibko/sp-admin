@@ -51,10 +51,8 @@ class LanguagesController extends AbstractActionController
                     $newLanguage = new Language();
                     $newLanguage->setDisplayName($data['display_name'])
                                 ->setLanguageCode($data['language_code']);
-                    //Update language countries
-                    if (!$languageManager->updateLanguageCountries($newLanguage, $data['countries'])) {
-                        throw new \Exception(MessagesConstants::ERROR_UPDATE_LANGUAGE_COUNTRIES_FAILED);
-                    }
+
+                    $oldErrorReporting = error_reporting(E_ERROR);
                     //Create Po file content
                     if (!$languageManager->savePoFileContent($newLanguage->getLanguageCode(), $data['strings'])) {
                         throw new \Exception(MessagesConstants::ERROR_UPDATE_PO_FILE_FAILED);
@@ -62,6 +60,12 @@ class LanguagesController extends AbstractActionController
                     //Generate Mo from Po file
                     if (!$languageManager->convertPoToMo($newLanguage->getLanguageCode())) {
                         throw new \Exception(MessagesConstants::ERROR_CONVERTING_PO_FILE_TO_MO_FAILED);
+                    }
+                    error_reporting($oldErrorReporting);
+
+                    //Update language countries
+                    if (!$languageManager->updateLanguageCountries($newLanguage, $data['countries'])) {
+                        throw new \Exception(MessagesConstants::ERROR_UPDATE_LANGUAGE_COUNTRIES_FAILED);
                     }
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_LANGUAGE_CREATED);
                     return $this->redirect()->toRoute(self::LANGUAGE_LIST_PAGE_ROUTE);
@@ -129,6 +133,8 @@ class LanguagesController extends AbstractActionController
                 $languageForm->setData($request->getPost());
                 if ($languageForm->isValid()) {
                     $data = $languageForm->getData();
+
+                    $oldErrorReporting = error_reporting(E_ERROR);
                     //Update Po file content
                     if (!$languageManager->savePoFileContent($language->getLanguageCode(), $data['strings'])) {
                         throw new \Exception(MessagesConstants::ERROR_UPDATE_PO_FILE_FAILED);
@@ -137,6 +143,8 @@ class LanguagesController extends AbstractActionController
                     if (!$languageManager->convertPoToMo($language->getLanguageCode())) {
                         throw new \Exception(MessagesConstants::ERROR_CONVERTING_PO_FILE_TO_MO_FAILED);
                     }
+                    error_reporting($oldErrorReporting);
+
                     //Update language countries
                     $countries = $data['countries'];
                     $language->setDisplayName($data['display_name']);

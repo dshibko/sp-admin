@@ -62,7 +62,7 @@
                 </figcaption>
             </figure>
             <aside class="find-out-more">
-                <span>Find out more</span>
+                <span><?=$this->translate('Find out more')?></span>
             </aside>
         </div>
 
@@ -126,7 +126,7 @@
         </article>
         <?php endforeach; ?>
         <aside class="ready-try">
-            <p>Ready to try? <a href="<?=$this->url("registration")?>" class="cta"><?=$this->content['registerButtonCopy']?></a></p>
+            <p><?=$this->translate('Ready to try?');?> <a href="<?=$this->url("registration")?>" class="cta"><?=$this->content['registerButtonCopy']?></a></p>
         </aside>
     </div>
 

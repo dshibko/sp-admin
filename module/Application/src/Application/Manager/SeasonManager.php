@@ -160,12 +160,22 @@ class SeasonManager extends BasicManager {
             if (!$region) continue;
 
             $seasonRegion = $season->getSeasonRegionByRegionId($region->getId());
+            if ($seasonRegion == null) {
+                $seasonRegion = new SeasonRegion();
+                $seasonRegion->setSeason($season);
+                $seasonRegion->setRegion($region);
+            }
             $seasonRegion->setDisplayName($regionRow['displayName']);
             $seasonRegion->setTerms($regionRow['terms']);
 
             $seasonRegionDAO->save($seasonRegion, false, false);
 
             $prize = $globalLeague->getPrizeByRegionId($region->getId());
+            if ($prize == null) {
+                $prize = new Prize();
+                $prize->setLeague($globalLeague);
+                $prize->setRegion($region);
+            }
             if (!empty($regionRow['prizeImagePath']))
                 $prize->setPrizeImage($regionRow['prizeImagePath']);
             $prize->setPrizeTitle($regionRow['prizeTitle']);
@@ -178,6 +188,14 @@ class SeasonManager extends BasicManager {
             $prizeDAO->save($prize, false, false);
 
             $regionLeague = $season->getRegionalLeagueByRegionId($region->getId());
+            if ($regionLeague == null) {
+                $regionLeague = new League();
+                $regionLeague->setIsGlobal(false);
+                $regionLeague->setIsPrivate(false);
+                $regionLeague->setRegion($region);
+                $regionLeague->setCreationDate(new \DateTime());
+                $regionLeague->setSeason($season);
+            }
             $regionLeague->setDisplayName(self::REGIONAL_LEAGUE_PREFIX . $season->getDisplayName() . " " . $region->getDisplayName());
             $regionLeague->setStartDate($season->getStartDate());
             $regionLeague->setEndDate($season->getEndDate());

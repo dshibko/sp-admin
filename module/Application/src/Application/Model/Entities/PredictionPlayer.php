@@ -16,6 +16,20 @@ class PredictionPlayer extends BasicObject {
     /**
      * @var integer
      *
+     * @ORM\Column(name="player_id", type="integer")
+     */
+    private $playerId;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="team_id", type="integer")
+     */
+    private $teamId;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="`order`", type="integer", nullable=false)
      */
     private $order;
@@ -161,4 +175,37 @@ class PredictionPlayer extends BasicObject {
     {
         return $this->player;
     }
+
+    /**
+     * @param int $playerId
+     */
+    public function setPlayerId($playerId)
+    {
+        $this->playerId = $playerId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPlayerId()
+    {
+        return $this->playerId;
+    }
+
+    /**
+     * @param int $teamId
+     */
+    public function setTeamId($teamId)
+    {
+        $this->teamId = $teamId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTeamId()
+    {
+        return $this->teamId;
+    }
+
 }

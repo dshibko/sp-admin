@@ -25,6 +25,7 @@ class Module
 
     public function onBootstrap(MvcEvent $e)
     {
+        date_default_timezone_set('UTC');
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
@@ -35,10 +36,14 @@ class Module
 
     public function onAppDispatch(\Zend\Mvc\MvcEvent $e) {
         $translator = $e->getApplication()->getServiceManager()->get('translator');
-        $translator->setLocale(\Application\Manager\LanguageManager::getInstance($e->getApplication()->getServiceManager())->getDefaultLanguage()->getLanguageCode());
+        $user = ApplicationManager::getInstance($e->getApplication()->getServiceManager())->getCurrentUser();
+        if ($user == null) {
+            $language = \Application\Manager\LanguageManager::getInstance($e->getApplication()->getServiceManager())->getDefaultLanguage()->getLanguageCode();
+        } else
+            $language = $user->getLanguage()->getLanguageCode();
+        $translator->setLocale($language);
         $matches = $e->getRouteMatch();
         if ($matches != null) {
-            $user = ApplicationManager::getInstance($e->getApplication()->getServiceManager())->getCurrentUser();
             if ($user != null) {
                 if ($matches->getMatchedRouteName() != self::SETUP_PAGE_ROUTE) {
                     if (!$user->getIsActive())
@@ -136,8 +141,6 @@ class Module
                     $facebookLoginButton->setFacebookAPI($facebook)
                                         ->setScope($config['facebook_permissions'])
                                         ->setRequest($sm->getServiceLocator()->get('Request'));
-
-
                     return $facebookLoginButton;
                 },
                 'renderDefaultAvatars' => function($sm){
@@ -159,6 +162,15 @@ class Module
                     $settingsHelper = new \Neoco\View\Helper\SettingsHelper();
                     $settingsHelper->setServiceLocator($sm->getServiceLocator());
                     return $settingsHelper;
+                },
+                'squadSelect' => function($sm) {
+                    return new \Neoco\View\Helper\SquadSelect();
+                },
+                'clubLogo' => function($sm) {
+                    $h = new \Neoco\View\Helper\ClubLogo();
+                    $config = $sm->getServiceLocator()->get('config');
+                    $h->setDefaultLogo($config['default_club_logo']);
+                    return $h;
                 },
             )
         );
@@ -209,7 +221,6 @@ class Module
                 'poparser' => function($sm){
                      return new \I18n_Pofile();
                 }
-
             ),
         );
     }

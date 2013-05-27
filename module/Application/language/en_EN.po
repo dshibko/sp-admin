@@ -1,276 +1,371 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Zend\n"
-"POT-Creation-Date: 2013-05-25 19:20+0300\n"
-"PO-Revision-Date: 2013-05-25 19:20+0300\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2013-05-27 17:10+0300\n"
+"PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.5\n"
-"X-Poedit-KeywordsList: _;gettext;gettext_noop;translate\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-SearchPath-0: e:\\MyProjects\\scorepredictor\\tru002\\module"
-"\\Application\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: C:\\WebServers\\home\\sp.loc\\tru002\\module\\Application"
+"\\view\\\n"
+"X-Poedit-SearchPath-0: C:\\WebServers\\home\\sp.loc\\tru002\\module"
+"\\Application\\view\n"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/forgot.phtml:2
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/forgot.phtml:2
 msgid "Forgot Password?"
 msgstr "Forgot Password?"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/forgot.phtml:31
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/reset.phtml:39
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/forgot.phtml:31
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/reset.phtml:39
 msgid "Submit"
 msgstr "Submit"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/login.phtml:2
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/login.phtml:50
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:2
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:50
+#, fuzzy
 msgid "Sign In"
-msgstr "Sign In"
+msgstr "Sign in"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/login.phtml:13
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:72
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:13
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:72
 msgid "Login with Facebook"
 msgstr "Login with Facebook"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/login.phtml:33
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:33
 msgid "Enter Your Credentials"
 msgstr "Enter Your Credentials"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/login.phtml:45
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:88
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:45
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:88
 msgid "Remember me"
 msgstr "Remember me"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/login.phtml:53
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:94
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:53
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:94
 msgid "Forgotten password"
 msgstr "Forgotten password"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/login.phtml:56
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:96
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:56
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:96
 msgid "Not a member?"
-msgstr "Not a member?"
+msgstr "Already a member?"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/login.phtml:57
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:97
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/index.phtml:191
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:57
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:97
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:191
 msgid "Register"
-msgstr "Register"
+msgstr "Registration"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/reset.phtml:2
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/reset.phtml:2
 msgid "Reset Password"
 msgstr "Reset Password"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/auth/reset.phtml:48
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/reset.phtml:48
 msgid "Reset Password Page"
 msgstr "Reset Password Page"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:71
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:65
+msgid "Find out more"
+msgstr "Find out more"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:71
 msgid "Already a member?"
 msgstr "Already a member?"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:75
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:75
 msgid "Regular Login"
 msgstr "Regular Login"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:79
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:79
 msgid "Email"
 msgstr "Email"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:83
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:83
 msgid "Password"
 msgstr "Password"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:91
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:91
 msgid "Sign in"
 msgstr "Sign in"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/index/index.phtml:100
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:100
 msgid "Close"
 msgstr "Close"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/index.phtml:2
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:129
+msgid "Ready to try?"
+msgstr "Ready to try?"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:7
+msgid "New"
+msgstr "New"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:15
+msgid "Prev"
+msgstr "Prev"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:15
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:20
+msgid "match"
+msgstr "match"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:20
+msgid "Next"
+msgstr "Next"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:29
+msgid "Match in progress"
+msgstr "Match in progress"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:32
+msgid "You predicted"
+msgstr "You predicted"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:85
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:112
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:135
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:136
+msgid "Select scorer"
+msgstr "Select scorer"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:92
+msgid "VS"
+msgstr "VS"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:93
+msgid "Scorers"
+msgstr "Scorers"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:120
+msgid "Save prediction"
+msgstr "Save prediction"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:122
+msgid "Edit your prediction"
+msgstr "Edit your prediction"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:129
+msgid "Time left"
+msgstr "Time left"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:132
+msgid "days hours mins secs"
+msgstr "days hours mins secs"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:2
 msgid "Registration"
 msgstr "Registration"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/index.phtml:14
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:14
 msgid "Connect with Facebook"
 msgstr "Connect with Facebook"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/index.phtml:46
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:46
 msgid "Enter Personal Info"
 msgstr "Enter Personal Info"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/index.phtml:98
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:98
 msgid "Enter Email Addresses"
 msgstr "Enter Email Addresses"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/index.phtml:121
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:121
 msgid "Enter Your Password"
 msgstr "Enter Your Password"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/index.phtml:144
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:144
 msgid "Enter Your Display Name"
 msgstr "Enter Your Display Name"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/index.phtml:158
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:158
 msgid "Enter Your Avatar"
 msgstr "Enter Your Avatar"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/index.phtml:170
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:84
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:170
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:84
 msgid "Or choose from selection"
 msgstr "Or choose from selection"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/index.phtml:176
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:116
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:176
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:116
 msgid "Email Settings"
 msgstr "Email Settings"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/registration/setup.phtml:2
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/setup.phtml:2
 msgid "Set Up"
 msgstr "Set Up"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/delete.phtml:2
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:144
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/delete.phtml:2
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:144
 msgid "Delete Account"
 msgstr "Delete Account"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/delete.phtml:8
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/delete.phtml:8
 msgid "Are you sure?"
 msgstr "Are you sure?"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/delete.phtml:11
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/delete.phtml:11
 msgid "Yes"
 msgstr "Yes"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/delete.phtml:12
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/delete.phtml:12
 msgid "No"
 msgstr "No"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:2
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:2
 msgid "Settings"
 msgstr "Settings"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:10
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:10
 msgid "Connect your account to a one click login"
 msgstr "Connect your account to a one click login"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:14
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:14
 msgid "Change your Password"
 msgstr "Change your Password"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:42
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:42
 msgid "Change your email addresses"
 msgstr "Change your email addresses"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:59
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:59
 msgid "Change your display name"
 msgstr "Change your display name"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:73
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:73
 msgid "Change your avatar"
 msgstr "Change your avatar"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:74
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:74
 msgid "User avatar"
 msgstr "User avatar"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:93
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:93
 msgid "Regional Settings"
 msgstr "Regional Settings"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:95
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:95
 msgid "Your country"
 msgstr "Your country"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:98
-msgid "You cannot change your coutry in the middle of a league. We will prompt you to re-confirm your details at the start of the the league"
-msgstr "You cannot change your coutry in the middle of a league. We will prompt you to re-confirm your details at the start of the the league"
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:98
+msgid ""
+"You cannot change your country in the middle of a league. We will prompt you "
+"to re-confirm your details at the start of the the league."
+msgstr ""
+"You cannot change your country in the middle of a league. We will prompt you "
+"to re-confirm your details at the start of the the league."
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/application/user/settings.phtml:131
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:131
 msgid "Profile Type"
 msgstr "Profile Type"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:1
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:1
 msgid "A 404 error occurred"
 msgstr "A 404 error occurred"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:10
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:10
 msgid "The requested controller was unable to dispatch the request."
 msgstr "The requested controller was unable to dispatch the request."
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:13
-msgid "The requested controller could not be mapped to an existing controller class."
-msgstr "The requested controller could not be mapped to an existing controller class."
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:13
+msgid ""
+"The requested controller could not be mapped to an existing controller class."
+msgstr ""
+"The requested controller could not be mapped to an existing controller class."
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:16
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:16
 msgid "The requested controller was not dispatchable."
 msgstr "The requested controller was not dispatchable."
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:19
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:19
 msgid "The requested URL could not be matched by routing."
 msgstr "The requested URL could not be matched by routing."
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:22
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:22
 msgid "We cannot determine at this time why a 404 was generated."
 msgstr "We cannot determine at this time why a 404 was generated."
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:34
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:34
 msgid "Controller"
 msgstr "Controller"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:41
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:41
 #, php-format
 msgid "resolves to %s"
 msgstr "resolves to %s"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:53
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/index.phtml:8
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:53
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:8
 msgid "Additional information"
 msgstr "Additional information"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:56
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:80
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/index.phtml:11
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/index.phtml:35
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:56
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:80
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:11
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:35
 msgid "File"
 msgstr "File"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:60
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:84
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/index.phtml:15
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/index.phtml:39
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:60
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:84
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:15
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:39
 msgid "Message"
 msgstr "Message"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:64
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:88
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/index.phtml:19
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/index.phtml:43
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:64
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:88
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:19
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:43
 msgid "Stack trace"
 msgstr "Stack trace"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:74
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/index.phtml:29
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:74
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:29
 msgid "Previous exceptions"
 msgstr "Previous exceptions"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/404.phtml:103
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/index.phtml:58
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:103
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:58
 msgid "No Exception available"
 msgstr "No Exception available"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/error/index.phtml:1
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:1
 msgid "An error occurred"
 msgstr "An error occurred"
 
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/layout/layout.phtml:6
-msgid "Skeleton Application"
-msgstr "Skeleton Application"
-
-#: e:\MyProjects\scorepredictor\tru002\module\Application/view/partials/cookie-bar.phtml:3
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/cookie-bar.phtml:3
 msgid "Dismiss"
 msgstr "Dismiss"
 
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:6
+msgid "Stay up to date with FC Barcelona"
+msgstr "Stay up to date with FC Barcelona"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:7
+msgid "See behind the scenes, match updates <br>and exclusive content"
+msgstr "See behind the scenes, match updates <br>and exclusive content"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:14
+msgid "Terms"
+msgstr "Terms"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:17
+msgid "Contact us"
+msgstr "Contact us"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:20
+msgid "Privacy"
+msgstr "Privacy"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:23
+msgid "Visit our main site"
+msgstr "Visit our main site"
+
+#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:26
+msgid "Cookies policy"
+msgstr "Cookies policy"

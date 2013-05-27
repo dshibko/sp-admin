@@ -57,5 +57,5 @@ return array(
                               user_education_history,
                               user_work_history,
                               publish_actions',
-
+    'default_club_logo' => '/img/club/chelsea-fc.png',
 );
