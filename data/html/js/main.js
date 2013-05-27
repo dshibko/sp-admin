@@ -71,7 +71,8 @@ $(document).ready(function () {
             documentElement = document.documentElement,
             layouts = {
                 mobile: {
-                    width: 750,
+                    // width: 750,
+                    width: 767,
                     base: 16,
                     min: 16,
                     max: 16,
@@ -82,7 +83,8 @@ $(document).ready(function () {
                     base:       12,
                     min:        12,
                     max:        12,
-                    breakpoint: 751
+                    breakpoint: 767
+                    // breakpoint: 751
                 },
                 tabletlandscape: {
                     width:      1024,
