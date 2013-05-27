@@ -34,6 +34,7 @@ class SettingsEmailForm extends Form {
                 'class' => 'required email',
                 'maxlength' => RegistrationFilter::EMAIL_MAX_LENGTH,
                 'type' => 'text',
+                'id' => 'settings-email'
             )
         ));
 
