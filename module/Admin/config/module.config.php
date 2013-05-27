@@ -157,6 +157,20 @@ return array(
                     ),
                 ),
             ),
+            'admin-clubs' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/clubs/[:action][/:club]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'club' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Clubs',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'admin-settings' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -222,6 +236,7 @@ return array(
             'Admin\Controller\Season' => 'Admin\Controller\SeasonController',
             'Admin\Controller\Settings' => 'Admin\Controller\SettingsController',
             'Admin\Controller\Languages' => 'Admin\Controller\LanguagesController',
+            'Admin\Controller\Clubs' => 'Admin\Controller\ClubsController'
         ),
     ),
     'view_manager' => array(
@@ -280,6 +295,20 @@ return array(
                                 'label' => 'icon-minus',
                                 'route' => 'admin-seasons',
                                 'action' => 'delete',
+                            ),
+                        )
+                    ),
+                    'clubs' => array(
+                        'title' => 'Clubs',
+                        'label' => 'icon-cogs',
+                        'route' => 'admin-clubs',
+                        'action' => 'index',
+                        'pages'  => array(
+                            array(
+                                'title' => 'Edit Club',
+                                'label' => 'icon-edit',
+                                'route' => 'admin-clubs',
+                                'action' => 'edit',
                             ),
                         )
                     ),
@@ -371,6 +400,7 @@ return array(
                         'label' => 'icon-cogs',
                         'route' => 'admin-settings',
                     ),
+
                 ),
             ),
         ),

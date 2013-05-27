@@ -187,6 +187,7 @@ CREATE TABLE `team` (
 	stadium_capacity INT,
 	stadium_name VARCHAR(50),
 	manager VARCHAR(100),
+	is_blocked TINYINT(1) NOT NULL DEFAULT '0'
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 ALTER TABLE `match` ADD FOREIGN KEY (competition_id) REFERENCES `competition`(id);

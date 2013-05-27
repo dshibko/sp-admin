@@ -40,10 +40,21 @@ class LanguageManager extends BasicManager {
         return LanguageDAO::getInstance($this->getServiceLocator())->getDefaultLanguage();
     }
 
+    /**
+     * @param $id
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\Language
+     */
     public function getLanguageById($id, $hydrate = false, $skipCache = false) {
         return LanguageDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
     }
 
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
     public function getAllLanguages($hydrate = false, $skipCache = false) {
         return LanguageDAO::getInstance($this->getServiceLocator())->getAllLanguages($hydrate, $skipCache);
     }

@@ -91,7 +91,6 @@ class LanguagesController extends AbstractActionController
     public function editAction()
     {
         $languageId = (string)$this->params()->fromRoute('language', '');
-        $language = null;
         $strings = array();
         $params = array();
         $request = $this->getRequest();
@@ -102,6 +101,10 @@ class LanguagesController extends AbstractActionController
         $languageForm = new LanguageForm(ApplicationManager::getInstance($this->getServiceLocator())->getCountriesSelectOptions());
         try {
             $language = $languageManager->getLanguageById($languageId);
+            if (null === $language){ //Cannot find language
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_CANNOT_FIND_LANGUAGE);
+                return $this->redirect()->toRoute(self::LANGUAGE_LIST_PAGE_ROUTE);
+            }
             $countryValues = array();
             $countries = $language->getCountries();
             if (!empty($countries)) {
@@ -151,6 +154,7 @@ class LanguagesController extends AbstractActionController
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_LANGUAGE_UPDATED);
                     return $this->redirect()->toRoute(self::LANGUAGE_LIST_PAGE_ROUTE);
                 } else {
+                    //TODO move this to separate method
                     foreach ($languageForm->getMessages() as $el => $messages) {
                         $this->flashMessenger()->addErrorMessage($languageForm->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
                     }

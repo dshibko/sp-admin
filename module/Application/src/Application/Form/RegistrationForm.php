@@ -17,6 +17,9 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
     const MISS = 'Miss';
     const MRS = 'Mrs';
     const DEFAULT_YEAR = 1985;
+    const MALE = 'male';
+    const FEMALE = 'female';
+
     protected $captcha;
     protected $serviceLocator;
 
@@ -250,8 +253,8 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'Gender',
                 'empty_option' => '&ndash; Please select &ndash;',
                 'value_options' => array(
-                    'male' => 'Male',
-                    'female' => 'Female'
+                    self::MALE => 'Male',
+                    self::FEMALE => 'Female'
 
                 ),
             )

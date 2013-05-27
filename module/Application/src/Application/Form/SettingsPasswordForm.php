@@ -20,7 +20,7 @@ class SettingsPasswordForm extends Form {
     }
     public function __construct($type = 'change_password') {
         parent::__construct('reset');
-        //TODO js validation
+
         $this->setInputFilter(new SettingsPasswordFilter());
         $this->setAttribute('method', 'post')->setAttribute('id', 'settings-change-password');
         $this->setType($type);
@@ -31,7 +31,8 @@ class SettingsPasswordForm extends Form {
             'attributes' => array(
                 'type' => 'password',
                 'maxlength' => RegistrationFilter::PASSWORD_MAX_LENGTH,
-                'class' => 'required'
+                'class' => 'required',
+                'id' => 'old-password'
             ),
             'options' => array(
                 'label' => 'Old password',
@@ -44,6 +45,7 @@ class SettingsPasswordForm extends Form {
             'attributes' => array(
                 'type' => 'password',
                 'maxlength' => RegistrationFilter::PASSWORD_MAX_LENGTH,
+                'id' => 'new-password',
                 'class' => 'required password'
             ),
             'options' => array(
@@ -56,6 +58,7 @@ class SettingsPasswordForm extends Form {
             'name' => 'confirm_new_password',
             'attributes' => array(
                 'type' => 'password',
+                'id' => 'confirm-new-password',
                 'maxlength' => RegistrationFilter::PASSWORD_MAX_LENGTH,
                 'class' => 'required password'
             ),

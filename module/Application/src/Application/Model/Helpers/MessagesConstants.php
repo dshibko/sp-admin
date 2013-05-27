@@ -23,6 +23,7 @@ class MessagesConstants
     const SUCCESS_FOOTER_SOCIAL_DELETED = "A footer social was deleted successfully.";
     const SUCCESS_LANGUAGE_UPDATED = 'Language was updated successfully';
     const SUCCESS_LANGUAGE_CREATED = 'Language was created successfully';
+    const SUCCESS_CLUB_SAVED = 'Club was successfully saved';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -37,6 +38,10 @@ class MessagesConstants
     const ERROR_CONVERTING_PO_FILE_TO_MO_FAILED = 'Converting Po file to Mo failed';
     const ERROR_UPDATE_LANGUAGE_COUNTRIES_FAILED = 'Language countries update failed';
     const ERROR_SEASON_DATES_ARE_NOT_AVAILABLE = 'Dates interval you selected intersects with another season\'s interval.';
+    const ERROR_CANNOT_FIND_CLUB = 'Cannot find club';
+    const ERROR_CANNOT_FIND_LANGUAGE = 'Cannot find language';
+    const ERROR_INVALID_CLUB_ID = 'Invalid Club Id';
+    const SUCCESS_SYNC_WITH_FEED = 'Data successfully sync with feed';
 
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";

@@ -16,6 +16,7 @@ class ImageManager extends BasicManager {
     const IMAGE_TYPE_LEAGUE = 'league';
     const IMAGE_TYPE_CONTENT = 'content';
     const IMAGE_TYPE_OTHER = 'other';
+    const IMAGE_TYPE_CLUB = 'club';
 
     const IMAGES_DIR_PATH = '/img/';
 
@@ -23,6 +24,8 @@ class ImageManager extends BasicManager {
 
     const FOOTER_IMAGE_WIDTH = 182;
     const FOOTER_IMAGE_HEIGHT = 206;
+
+    const CLUB_LOGO_SIZE = 110;
 
     /**
      * @var ImageManager
