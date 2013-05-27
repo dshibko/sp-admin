@@ -173,6 +173,7 @@ CREATE TABLE `match` (
 	home_team_shootout_score TINYINT,
 	away_team_shootout_score TINYINT,
 	status ENUM('PreMatch', 'Live', 'FullTime', 'Postponed', 'Abandoned'),
+	timezone VARCHAR(5),
 	start_time DATETIME,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
@@ -233,7 +234,7 @@ CREATE TABLE `prediction_player` (
 	id INT AUTO_INCREMENT NOT NULL,
 	prediction_id INT NOT NULL,
 	team_id INT NOT NULL,
-	player_id INT NOT NULL,
+	player_id INT,
 	`order` TINYINT NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;

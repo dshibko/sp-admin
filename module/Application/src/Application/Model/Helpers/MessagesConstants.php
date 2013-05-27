@@ -59,6 +59,8 @@ class MessagesConstants
     const ERROR_APP_WRONG_OPTA_CONFIG = 'Wrong opta id configured. Must be an integer.';
     const ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED = 'You can\'t predict on this match result. You can predict just on %s matches in the future.';
     const ERROR_NO_MORE_MATCHES_IN_THE_SEASON = 'No more matches will be played in this season. Please join us when next season starts.';
+    const ERROR_SECURITY_CHECK_FAILED = 'Bad request. Security check failed.';
+    const ERROR_MATCH_IS_LIVE = 'Match is being played now. You can\'t predict anymore.';
 
     const SUCCESS_RECOVERY_LINK_SENT = "Recovery link was sent to your email. The link is active for 3 hours.";
     const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to yout email. The link is active for 60 minutes';
@@ -84,5 +86,9 @@ class MessagesConstants
     const EXPIRED_RECOVERY_PASSWORD_HASH = 'You need to reset your password again because your recovery link expired.';
 
     const ACCESS_DENIED_NEED_LOGIN = 'Please sign in to access this page';
+
+
+    // Opta
+    const WARNING_TEAM_MISSED = 'A team was missed.';
 
 }

@@ -50,7 +50,7 @@ class RegionFieldsetsRenderer extends AbstractHelper
                     $html .= '<div class="input-prepend"><textarea class="span12 wysihtml5 m-wrap" rows="6" name="' . $element->getAttribute('name') . '">' . $element->getValue() . '</textarea></div>';
                     break;
                 case 'file':
-                    $image = $add ? '': $element->getValue();
+                    $image = $add ? '': (is_string($element->getValue()) ? $element->getValue() : '');
                     $html .= '<div class="fileupload fileupload-' . (!empty($image) ? 'exists' : 'new') . '" data-provides="fileupload">
                     <div class="input-append">
                     <div class="uneditable-input">

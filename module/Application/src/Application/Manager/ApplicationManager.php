@@ -175,4 +175,16 @@ class ApplicationManager extends BasicManager {
         return $this->appConfig;
     }
 
+    /**
+     * @param \DateTime $dateTime
+     * @param string $timezone
+     * @return \DateTime
+     */
+    public function getLocalTime($dateTime, $timezone) {
+        $localTime = new \DateTime();
+        $localTime->setTimestamp($dateTime->getTimestamp());
+        $localTime->setTimezone(new \DateTimeZone(timezone_name_from_abbr($timezone)));
+        return $localTime;
+    }
+
 }

@@ -51,7 +51,7 @@ class DispatcherController extends AbstractActionController {
 //                ));
 
 //            $this->parseF7File('Z:\home\zend.loc\opta\feeds\F7\8\2012\2013-05-08-20-56-29-504593057.json', $this->getConsole());
-//            $this->parseF1File('Z:\home\zend.loc\opta\feeds\F1\8\2012\2013-05-13-12-16-19-987650526.json', $this->getConsole());
+            $this->parseF1File('Z:\home\zend.loc\opta\feeds\F1\8\2012\2013-05-13-12-16-19-987650526.json', $this->getConsole());
 //            $this->parseF40File('Z:\home\zend.loc\opta\feeds\F40\2012-09-26-19-36-38-1292557115.json', $this->getConsole());
 //            $this->parseF40File('Z:\home\zend.loc\opta\feeds\F40\8\2012\2013-05-10-12-37-31-1793567476.json', $this->getConsole());
 

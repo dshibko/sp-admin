@@ -240,14 +240,8 @@ UPDATE `country` SET `language_id` = 1 WHERE `id` IN (1, 2, 95, 196);
 -- Default Regions
 INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('1', 'British Isles', 1);
 UPDATE `country` SET `region_id` = 1 WHERE `id` IN (95, 66);
-INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('2', 'US/Canada', 0);
-UPDATE `country` SET `region_id` = 2 WHERE `id` IN (1, 2);
-INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('3', 'Western Europe', 0);
-UPDATE `country` SET `region_id` = 3 WHERE `id` IN (49, 58, 68, 74, 80, 83, 90);
-INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('4', 'Central Europe', 0);
-UPDATE `country` SET `region_id` = 4 WHERE `id` IN (46, 54, 60, 66, 72, 82, 88, 89, 92);
-INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('5', 'Eastern Europe', 0);
-UPDATE `country` SET `region_id` = 5 WHERE `id` IN (48, 56, 71, 73, 89, 94);
+INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES ('2', 'Spanish', 0);
+UPDATE `country` SET `region_id` = 2 WHERE `id` IN (9, 10, 17, 22, 24, 25, 26, 29, 30, 31, 32, 33, 34, 38, 39, 41, 42, 90);
 
 -- Default Roles
 INSERT INTO `role` (`id`, `name`, `parent_id`) VALUES

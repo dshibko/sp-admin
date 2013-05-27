@@ -108,7 +108,7 @@ return array(
             'user-settings' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/settings',
+                    'route'    => '/settings[/]',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
                         'controller'    => 'User',
@@ -119,7 +119,7 @@ return array(
             'delete-account' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/delete',
+                    'route'    => '/delete[/]',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
                         'controller'    => 'User',

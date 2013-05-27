@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use \Application\Model\Entities\Match;
 use \Application\Model\DAOs\TeamDAO;
 use \Application\Model\DAOs\PlayerDAO;
 use \Application\Model\Entities\PredictionPlayer;
@@ -78,9 +79,10 @@ class PredictionManager extends BasicManager {
                     throw new \Exception(MessagesConstants::ERROR_TEAM_NOT_FOUND);
                 $predictionScore->setTeam($team);
                 $playerId = $scoreRow['scorer'];
-                $player = $playerDAO->findOneById($playerId);
-                if ($player == null)
-                    throw new \Exception(MessagesConstants::ERROR_PLAYER_NOT_FOUND);
+                if ($playerId != null)
+                    $player = $playerDAO->findOneById($playerId);
+                else
+                    $player = null;
                 $predictionScore->setPlayer($player);
                 $predictionScore->setOrder($scoreRow['order']);
                 $prediction->addPredictionPlayer($predictionScore);
@@ -115,11 +117,12 @@ class PredictionManager extends BasicManager {
         $matchData = $matchDAO->getNearestMatch($fromTime, $offset, $season, $skipCache);
         if (!empty($matchData)) {
             $match = $matchDAO->getMatchInfo($matchData['matchId'], $hydrate, $skipCache);
+            $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
             $homeSquad = $teamDAO->getTeamSquadInCompetition($match['homeId'], $matchData['competitionId'], $hydrate, $skipCache);
             $match['homeSquad'] = $this->preparePlayers($homeSquad);
             $awaySquad = $teamDAO->getTeamSquadInCompetition($match['awayId'], $matchData['competitionId'], $hydrate, $skipCache);
             $match['awaySquad'] = $this->preparePlayers($awaySquad);
-            $match['prediction'] = $predictionDAO->getUserPrediction($user->getId(), $matchData['matchId']);
+            $match['prediction'] = $predictionDAO->getUserPrediction($matchData['matchId'], $user->getId(), true, $skipCache);
             return $match;
         } else
             return null;

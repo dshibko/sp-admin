@@ -157,3 +157,40 @@
 .lt-ie8 .registration-section .buttons-block.signIn-buttons-block {
   max-width: 585px;
 }
+
+
+/***make-prediction-content***/
+.lt-ie8 .make-prediction > header {
+  height: 4.4em;
+}
+.lt-ie8 .make-prediction-content .home-team  {
+  float: left;
+  margin: 0 2em 0;
+  width: 38%;
+}
+.lt-ie8 .make-prediction-content .home-team label {
+  float: left;
+}
+.lt-ie8 .make-prediction-content .league-logo {
+  float: left;
+  margin: 0 2em 0;
+}
+.lt-ie8 .make-prediction-content .away-team {
+  float: right;
+  margin: 0 2em 0;
+  width: 38%;
+}
+.lt-ie8 .make-prediction-content .home-team input, .lt-ie8 .make-prediction-content .away-team input {
+  width: 90px;
+  max-width: 90px;
+  height: 50px;
+  margin: 0 0 1em;
+  text-align: center;
+  font: normal 5.3em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
+.lt-ie8 .make-prediction-content .home-team select, .lt-ie8 .make-prediction-content .away-team select {
+  margin: 1em 0 1em;
+}
+.lt-ie8 .make-prediction .make-prediction-content .league-logo em {
+  margin: 0 0 1em;
+}
