@@ -115,6 +115,7 @@
     .home-team, .away-team {
       display: inline-block;
       width: 39%!important;
+      overflow: hidden;
       text-align: center;
       vertical-align: top;
 
@@ -161,12 +162,16 @@
           }
         }
 
-      section .ideal-field {
-        float: none;
-        display: block;
-        margin: 0 0 1em;
-        text-align: left;
-        clear: left;
+      section {
+        float: left;
+
+        .ideal-field {
+          float: none;
+          display: block;
+          margin: 0 0 1em;
+          text-align: left;
+          clear: left;
+        }
       }
       .ideal-select {
         width: 14em;
@@ -207,6 +212,9 @@
           font: normal 4em/1 "ProximaNova-Bold", Helvetica, Arial;
         }
         span {
+          position: absolute;
+          left: 0;
+          right: 0;
           display: block;
           color: @blue;
           text-transform: uppercase;
@@ -319,11 +327,21 @@
             height: 1.2em;
           }
         }
+
+        section  {
+          float: none;
+          clear: right;
+          width: 100%;
+
+        }
       }
 
       .league-logo {
         width: 7.2em;
         margin: 3em 1em 0;
+        span {
+          display: none;
+        }
       }
 
     }
