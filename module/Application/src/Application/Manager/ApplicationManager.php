@@ -108,9 +108,9 @@ class ApplicationManager extends BasicManager {
      * @param bool $hydrate
      * @return \Application\Model\Entities\Country
      */
-    public function getCountryByISOCode($isoCode, $hydrate = false)
+    public function getCountryByISOCode($isoCode, $hydrate = false, $skipCache = false)
     {
-        return CountryDAO::getInstance($this->getServiceLocator())->getCountryByISOCode($isoCode, $hydrate);
+        return CountryDAO::getInstance($this->getServiceLocator())->getCountryByISOCode($isoCode, $hydrate, $skipCache);
     }
 
     //Get countries for select options

@@ -41,6 +41,7 @@ return array(
     'app_name' => 'Score Predictor',
     'admin_assets_path_prefix' => '/admin-',
     'skip-cache-uri-patterns' => array('/admin/*'),
+    'is_geo_ip_blocked' => false,
     'facebook_api_key' => '639647056062341',
     'facebook_secret_key' => '73bc16bfe1d05f4c213a34a6c2d2ebfa',
     'facebook_permissions' => 'email,
@@ -57,5 +58,5 @@ return array(
                               user_education_history,
                               user_work_history,
                               publish_actions',
-    'default_club_logo' => '/img/club/chelsea-fc.png',
+    'default_club_logo' => '/img/club-logo.png',
 );

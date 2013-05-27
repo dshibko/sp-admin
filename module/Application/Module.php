@@ -9,6 +9,7 @@
 
 namespace Application;
 
+use \Application\Manager\UserManager;
 use \Application\Manager\ApplicationManager;
 use \DoctrineModule\Authentication\Adapter\ObjectRepository;
 use \Zend\Authentication\AuthenticationService;
@@ -38,7 +39,8 @@ class Module
         $translator = $e->getApplication()->getServiceManager()->get('translator');
         $user = ApplicationManager::getInstance($e->getApplication()->getServiceManager())->getCurrentUser();
         if ($user == null) {
-            $language = \Application\Manager\LanguageManager::getInstance($e->getApplication()->getServiceManager())->getDefaultLanguage()->getLanguageCode();
+            $userManager = UserManager::getInstance($e->getApplication()->getServiceManager());
+            $language = $userManager->getUserLanguage()->getLanguageCode();
         } else
             $language = $user->getLanguage()->getLanguageCode();
         $translator->setLocale($language);

@@ -67,7 +67,7 @@ class RegistrationController extends AbstractActionController
         return $viewModel;
 
     }
-    //TODO check is user active on all pages
+
     public function setUpAction()
     {
 
