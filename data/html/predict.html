@@ -8,6 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>Score Predictor - Predict</title>
         <meta name="description" content="">
+        <meta name="format-detection" content="telephone=no">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
         <link rel="stylesheet" href="css/normalize.min.css">
@@ -101,15 +102,14 @@
                                     <a href="">Prev <span>match</span></a>
                                 </li>
                                 <li class="next-match">
-                                    <a href="">Next <span>match</spn></a>
+                                    <a href="">Next <span>match</span></a>
                                 </li>
                             </ul>
                         </header>
-
                         <div class="make-prediction-content clearfix">
                             <form id="make-prediction">
                                 <div class="home-team">
-                                    <div>
+                                    <fieldset>
                                         <label for="home-team-score">
                                             <figure>
                                                 <img src="img/clubs/fc-barcelona.png" alt="">
@@ -117,7 +117,7 @@
                                             <span>FC Barcelona</span>
                                         </label>
                                         <input type="text" class="required" maxlength="10" name="home-team-score">
-                                    </div>
+                                    </fieldset>
                                     <section>
                                         <select>
                                             <option value="default">&ndash; Select scorer &ndash;</option>
@@ -133,19 +133,19 @@
                                 <div class="league-logo">
                                     <img src="img/clubs/league-logo.png" alt="">
                                     <em>VS</em>
-                                    <span class="">Scorers</span>
+                                    <span class="">ScorersScorers</span>
                                 </div>
 
                                 <div class="away-team">
-                                    <div>
+                                    <fieldset>
                                         <label for="away-team-score">
                                             <figure>
                                                 <img src="img/clubs/chelsea-fc.png" alt="">
                                             </figure>
-                                            <span>Chelsea FC</span>
+                                            <span>Chelsea FC Chelsea FC</span>
                                         </label>
                                         <input type="text" class="required" maxlength="10" name="away-team-score">
-                                    </div>
+                                    </fieldset>
                                     <section>
                                         <select>
                                             <option value="default">&ndash; Select scorer &ndash;</option>
@@ -156,7 +156,7 @@
                                             <option value="">1</option>
                                         </select>
                                         <select>
-                                            <option value="default">&ndash; Select scorer &ndash;</option>
+                                            <option value="default">&ndash; Select scorer Select scorer Select scorer &ndash;</option>
                                             <option value="">1</option>
                                         </select>
                                     </section>
@@ -164,12 +164,15 @@
 
                                 <div class="buttons-block">
                                     <button type="submit">Make prediction</button>
-                                    <p>
-                                        Time left
-                                        <time class="competition-countdown">02 20 36 19</time>
-                                    </p>
                                 </div>
                             </form>
+                            <aside class="competition-countdown">
+                                <h4>Time left</h4>
+                                <p>
+                                    <strong>02 20 36 19</strong>
+                                    days hours mins secs
+                                </p>
+                            </aside>
                         </div>
                     </section>
                 </div>
