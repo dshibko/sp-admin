@@ -27,6 +27,18 @@ class UserManager extends BasicManager {
     protected $userGeoIpCountry;
     protected $userGeoIpIsoCode;
 
+    /**
+     * @static
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
+     * @return UserManager
+     */
+    public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
+        if (self::$instance == null) {
+            self::$instance = new UserManager();
+            self::$instance->setServiceLocator($serviceLocatorInterface);
+        }
+        return self::$instance;
+    }
 
     /**
      * @param $userGeoIpCountry
@@ -58,6 +70,25 @@ class UserManager extends BasicManager {
         return $this->userGeoIpCountry;
     }
 
+    /**
+     * @return \Application\Model\Entities\Language
+     */
+    public function getUserLanguage()
+    {
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $isoCode = $this->getUserGeoIpIsoCode();
+        $language = null;
+        if ($isoCode != null) {
+            $country = $applicationManager->getCountryByISOCode($isoCode);
+            if (!empty($country)) {
+                $language = $country->getLanguage();
+            }
+        }
+        if ($language == null)
+            $language = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+        return $language;
+    }
+
     private function deleteAvatarImages(\Application\Model\Entities\Avatar $avatar)
     {
         //TODO change web separator to directory separator
@@ -79,19 +110,6 @@ class UserManager extends BasicManager {
             unlink($publicPath.$avatar->getTinyImagePath());
         }
         return true;
-    }
-
-    /**
-     * @static
-     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return UserManager
-     */
-    public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
-        if (self::$instance == null) {
-            self::$instance = new UserManager();
-            self::$instance->setServiceLocator($serviceLocatorInterface);
-        }
-        return self::$instance;
     }
 
     public function getRegisteredUsersNumber() {
@@ -295,11 +313,23 @@ class UserManager extends BasicManager {
         return UserDAO::getInstance($this->getServiceLocator())->getActiveUsersNumber($season);
     }
 
+    private $isGeoIpBlocked = -1;
+
+    private function getIsGeoIpBlocked() {
+        if ($this->isGeoIpBlocked === -1) {
+            $config = $this->getServiceLocator()->get('config');
+            $this->isGeoIpBlocked = $config['is_geo_ip_blocked'];
+        }
+        return $this->isGeoIpBlocked;
+    }
+
     /**
      * @return string
      */
     public function getUserGeoIpIsoCode()
     {
+        if ($this->getIsGeoIpBlocked())
+            return null;
         if (null === $this->userGeoIpIsoCode){
             $remoteAddresses = new RemoteAddress();
             $this->userGeoIpIsoCode = geoip_country_code_by_name($remoteAddresses->getIpAddress());

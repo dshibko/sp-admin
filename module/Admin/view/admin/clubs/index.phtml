@@ -21,9 +21,6 @@ $this->headTitle($title);
                         <th><?=$this->translate('Short Name')?></th>
                         <th><?=$this->translate('Founded')?></th>
                         <th><?=$this->translate('Logo')?></th>
-                        <th><?=$this->translate('Stadium Capacity')?></th>
-                        <th><?=$this->translate('Stadium Name')?></th>
-                        <th><?=$this->translate('Manager')?></th>
                         <th style="width: 60px"></th>
                     </tr>
                     </thead>
@@ -38,9 +35,6 @@ $this->headTitle($title);
                                 <a href="<?=$club['logoPath'];?>" target="_blank"><?php echo $this->translate('Open');?></a>
                             <?php endif;?>
                         </td>
-                        <td><?=$club['stadiumCapacity'];?></td>
-                        <td><?=$club['stadiumName'];?></td>
-                        <td><?=$club['manager'];?></td>
                         <td>
                             <a href="<?=$this->url('admin-clubs', array('action' => 'edit', 'club' => $club['id']))?>" class="btn mini blue">
                                 <i class="icon-edit"></i>
@@ -97,7 +91,7 @@ $this->headTitle($title);
         var messages = {perPage: "_MENU_ " + "<?=$this->translate('clubs per page')?>", nextLink: "<?=$this->translate('Next')?>",
             prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ clubs')?>"};
        var oTable = $('#clubs-table').dataTable({
-            "aoColumns": [null, null, null, null, null, null, null, {bSortable: false}],
+            "aoColumns": [null, null, null, null, {bSortable: false}],
            // "aaSorting": aaSorting,
            // "bFilter": false,
             "oLanguage": {

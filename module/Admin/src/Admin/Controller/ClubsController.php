@@ -65,6 +65,7 @@ class ClubsController extends AbstractActionController
 
                         $logoValue = $form->get('logoPath')->getValue();
                         if (!array_key_exists('stored', $logoValue) || $logoValue['stored'] == 0) {
+                            $imageManager->deleteImage($club->getLogoPath());
                             $logoPath = $imageManager->saveUploadedImage($form->get('logoPath'), ImageManager::IMAGE_TYPE_CLUB);
                             $imageManager->resizeImage($logoPath, ImageManager::CLUB_LOGO_SIZE, ImageManager::CLUB_LOGO_SIZE);
                             $club->setLogoPath($logoPath);
