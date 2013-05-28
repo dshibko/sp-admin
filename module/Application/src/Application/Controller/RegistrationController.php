@@ -52,6 +52,10 @@ class RegistrationController extends AbstractActionController
                         //TODO send welcome email
                         return $this->redirect()->toRoute(self::SETUP_PAGE_ROUTE);
                     }
+                }else{
+                    foreach ($form->getMessages() as $el => $messages) {
+                        $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages) . "<br />");
+                    }
                 }
             }
         } catch (\Exception $e) {

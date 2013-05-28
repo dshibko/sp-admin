@@ -34,7 +34,6 @@ class PlayersController extends AbstractActionController
     {
 
         $playerId = (string)$this->params()->fromRoute('player', '');
-        $isBlocked = false;
         if (empty($playerId)) {
             $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_INVALID_PLAYER_ID);
             return $this->redirect()->toRoute(self::PLAYERS_LIST_ROUTE);
@@ -89,12 +88,11 @@ class PlayersController extends AbstractActionController
                                 $player->setIsBlocked(true);
                             }
                         }
-
                         $player->setDisplayName($data['displayName'])
                              ->setShirtNumber($data['shirtNumber']);
                         $playerManager->save($player);
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_PLAYER_SAVED);
-                        return $this->redirect()->toRoute(self::PLAYERS_LIST_ROUTE);
+                        return $this->redirect()->toUrl($this->url()->fromRoute(self::PLAYERS_LIST_ROUTE,$params));
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
                     }
@@ -109,6 +107,7 @@ class PlayersController extends AbstractActionController
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toUrl($this->url()->fromRoute(self::PLAYERS_LIST_ROUTE,$params));
         }
 
         return array(
@@ -126,6 +125,7 @@ class PlayersController extends AbstractActionController
             $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_INVALID_PLAYER_ID);
             return $this->redirect()->toRoute(self::PLAYERS_LIST_ROUTE);
         }
+        $params = array();
         $playerManager = PlayerManager::getInstance($this->serviceLocator);
         try {
             $player = $playerManager->getPlayerById($playerId);
@@ -136,11 +136,15 @@ class PlayersController extends AbstractActionController
             $player->setIsBlocked(false);
             $playerManager->save($player);
             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_SYNC_WITH_FEED);
+            $params = array(
+                'action' => 'edit',
+                'player' => $player->getId()
+            );
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
-        return $this->redirect()->toRoute(self::PLAYERS_LIST_ROUTE);
+        return $this->redirect()->toUrl($this->url()->fromRoute(self::PLAYERS_LIST_ROUTE,$params));
     }
 
 }
