@@ -315,7 +315,7 @@ return array(
                     ),
                     'clubs' => array(
                         'title' => 'Clubs',
-                        'label' => 'icon-cogs',
+                        'label' => 'icon-group',
                         'route' => 'admin-clubs',
                         'action' => 'index',
                         'pages'  => array(

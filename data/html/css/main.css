@@ -503,7 +503,7 @@ div[role="main"]  aside.ready-try {
     font: normal 4em/1 "ProximaNova-Bold", Helvetica, Arial;
 }
 
-/***registration-section***/
+/**.registration***/
 .ideal-tabs {
     display: none;
 }
@@ -580,75 +580,75 @@ div[role="main"]  aside.ready-try {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#667cbd', endColorstr='#2547a0',GradientType=0 );
 }
 
-.registration-section {
+.registration {
     background: #fff;
 }
-.registration-section section {
+.registration section {
     margin: 3em 2.4em 1em 3em;
     padding: 0 1em 1.6em;
     border-bottom: 1px solid #d5d5d5;
 }
-.registration-section .ideal-wrap {
+.registration .ideal-wrap {
     left: 50%;
     margin-left: -225px;
 }
-.registration-section .ideal-wrap.ideal-full-width, .registration-section .buttons-block .ideal-wrap {
+.registration .ideal-wrap.ideal-full-width, .registration .buttons-block .ideal-wrap {
     left: 0;
     margin-left: 0;
 }
-.registration-section .ideal-form h2 {
+.registration .ideal-form h2 {
     margin-bottom: 0.5em;
     color: #144a9b;
     font: normal 2.3em/1 "ProximaNova-Bold", Helvetica, Arial;
 }
-.registration-section label {
+.registration label {
     color: #4e4e4e;
     font: normal 1.6em/1 "ProximaNova-Reg", Helvetica, Arial;
 }
-.registration-section .date-birth .day.ideal-select {
+.registration .date-birth .day.ideal-select {
     margin-right: 0.8em;
     width: 60px;
 }
-.registration-section .date-birth .month.ideal-select {
+.registration .date-birth .month.ideal-select {
     margin-right: 0.8em;
     width: 120px;
 }
-.registration-section .date-birth .year.ideal-select {
+.registration .date-birth .year.ideal-select {
     width: 75px;
 }
-.registration-section .avatar .ideal-radiocheck {
+.registration .avatar .ideal-radiocheck {
     max-width: 630px;
 }
-.registration-section .avatar span:first-child, .registration-section .avatar label {
+.registration .avatar span:first-child, .registration .avatar label {
     float: left;
     clear: none;
     margin: 0;
 }
-.registration-section .avatar span:first-child {
+.registration .avatar span:first-child {
     margin-top: 58px;
 }
-.registration-section .avatar .ideal-radio {
+.registration .avatar .ideal-radio {
     top: 40%;
 }
-.registration-section .avatar .desktopLabel {
+.registration .avatar .desktopLabel {
     font: normal 1.7em/1.6 "ProximaNova-Reg", Helvetica, Arial;
 }
-.registration-section .email-settings .ideal-radiocheck {
+.registration .email-settings .ideal-radiocheck {
     padding: 0;
 }
-.registration-section .email-settings .ideal-radiocheck .ideal-radiocheck-label {
+.registration .email-settings .ideal-radiocheck .ideal-radiocheck-label {
     padding: 0 0 0 28px;
 }
-.registration-section .email-settings label {
+.registration .email-settings label {
     width: 470px;
     margin: 1em 0 0em;
     padding-right: 0;
     font: normal 1.6em/1.6 "ProximaNova-Reg", Helvetica, Arial;
 }
-.registration-section .buttons-block {
+.registration .buttons-block {
     border: none;
 }
-.registration-section .buttons-block div {
+.registration .buttons-block div {
     float: right;
 }
 
@@ -894,7 +894,7 @@ aside.connect-facebook .login-with-facebook span {
     .inner-page header[role="banner"] {
         height: auto;
     }
-    .inner-page div[role="main"].registration-section {
+    .inner-page div[role="main"].registration {
         margin: -1em auto 0em;
     }
     .inner-page div[role="main"] h1 {
@@ -913,41 +913,41 @@ aside.connect-facebook .login-with-facebook span {
         max-width: 28em;
         width: 100%;
     }
-    .registration-section section {
+    .registration section {
         margin: 2em 0.4em 1em 0.4em;
         padding: 0 1em 1.6em;
     }
-    .registration-section .ideal-wrap {
+    .registration .ideal-wrap {
         left: 50%;
         margin-left: -145px;
     }
-    .registration-section .date-birth .day, .registration-section .date-birth .month, .registration-section .date-birth .year {
+    .registration .date-birth .day, .registration .date-birth .month, .registration .date-birth .year {
         margin-bottom: 0.6em;
     }
-    .registration-section .avatar .ideal-radiocheck, .registration-section .ideal-wrap.avatar {
+    .registration .avatar .ideal-radiocheck, .registration .ideal-wrap.avatar {
         max-width: 100%;
         width: 100%;
     }
-    .registration-section .avatar span:first-child, .registration-section .avatar label {
+    .registration .avatar span:first-child, .registration .avatar label {
 
     }
-    .block-input-file, .registration-section .avatar span.desktopLabel {
+    .block-input-file, .registration .avatar span.desktopLabel {
         display: none;
     }
-    .registration-section .avatar .ideal-radio {
+    .registration .avatar .ideal-radio {
         top: auto;
         margin-top: 45px;
     }
-    .registration-section .email-settings .ideal-wrap {
+    .registration .email-settings .ideal-wrap {
         left: 0;
         margin-left: 0;
         width: 100%;
         max-width: 100%;
     }
-    .registration-section .email-settings label {
+    .registration .email-settings label {
         width: 100%;
     }
-    .registration-section .ideal-form.stack .buttons-block div {
+    .registration .ideal-form.stack .buttons-block div {
         width: auto!important;
     }
 
@@ -987,7 +987,7 @@ aside.connect-facebook .login-with-facebook span {
     .ideal-select {
         font-size: 1.7em;
     }
-    .registration-section label {
+    .registration label {
         font-size: 1.8em;
     }
     .ideal-form .ideal-error {

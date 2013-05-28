@@ -118,3 +118,43 @@ aside.find-out-more {
     -o-background-size: cover;
     background-size: cover; 
 }
+
+
+
+@media only screen and (min-width: 320px) and (max-width:  767px) {
+
+    /***home article***/
+    .article-image-left, .article-image-right {
+        display: block;
+    }
+    .article-image-left > div, .article-image-right > div {
+        left: 0;
+        display: block;
+        margin: 3em 6% 3em;
+        padding: 0;
+        width: 88%;
+    }
+    .article-image-left figure, .article-image-right figure {
+        display: block;
+        width: 100%;
+        margin: 0;
+    }
+    .article-image-left.user-content h2, .article-image-right.user-content h2 {
+        font: normal 2.3em/1.06 "ProximaNova-Bold", Helvetica, Arial;
+    }
+    .article-image-left figure img, .article-image-right figure img {
+        margin: 0 0 0 0;
+        display: block;
+    }
+
+    div[role="main"] aside.ready-try {
+        background: #fff;
+        font: normal 2.1em/1.4 "ProximaNova-Bold", Helvetica, Arial;
+    }
+    .ready-try .cta {
+        display: block;
+        width: 90%;
+        margin: 0.4em auto;
+    }
+
+}

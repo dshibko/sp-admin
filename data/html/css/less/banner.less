@@ -47,3 +47,55 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#af496e', endColorstr='#9c1f4b',GradientType=0 );
     
 }
+
+
+
+@media only screen and (min-width: 320px) and (max-width:  767px) {
+    .banner {
+        figcaption {
+            top: 9.5em;
+            right: 0;
+            left: 0;
+            max-width: 100%;
+            width: 92%;
+            margin: 0 4%;
+            font: normal 2.2em/1.2 "ProximaNova-Bold", Helvetica, Arial;
+
+            .cta {
+                width: 95%;
+                height: 2.8em;
+                font: normal 0.9em/2.6 "ProximaNova-Bold", Helvetica, Arial;
+            }
+        }
+        .banner-image-top {
+            margin: 0 3%;
+            width: 96%;
+            height: auto;
+        }
+        aside.find-out-more {
+            display: none;
+        }
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .banner {
+        .banner-image-top {
+            width: 49.379em;
+            height: 40em;
+        }
+        figcaption {
+            right: 1.0em;
+            font: normal 3.6em/1.2 "ProximaNova-Bold", Helvetica, Arial;
+        }
+        aside.connect-facebook {
+            div {
+                max-width: 65em;
+            }
+            .login-with-facebook span {
+                height: 2.8em;
+                font: normal 1.7em/2.8 "ProximaNova-Bold", Helvetica, Arial;
+            }
+        }
+    }
+}
