@@ -43,13 +43,11 @@ class PredictController extends AbstractActionController {
 
             if ($matchesLeft == 0)
                 throw new \Exception(MessagesConstants::ERROR_NO_MORE_MATCHES_IN_THE_SEASON);
-            else
-                $matchesLeft--;
 
             if ($ahead > $matchesLeft)
                 throw new \Exception(MessagesConstants::ERROR_MATCH_NOT_FOUND);
 
-             $currentMatch = $predictionManager->getNearestMatchWithPrediction(new \DateTime(), $ahead, $user, $season);
+            $currentMatch = $predictionManager->getNearestMatchWithPrediction(new \DateTime(), $ahead, $user, $season);
 
             if ($currentMatch == null)
                 throw new \Exception(MessagesConstants::ERROR_MATCH_NOT_FOUND);
@@ -60,6 +58,8 @@ class PredictController extends AbstractActionController {
                 $currentMatch['status'] = Match::LIVE_STATUS;
 
             if ($currentMatch['status'] == Match::PRE_MATCH_STATUS) {
+
+                $matchesLeft--;
 
                 $securityKey = $this->generateSecurityKey(array($currentMatch['id'], $currentMatch['homeId'], $currentMatch['awayId']));
 

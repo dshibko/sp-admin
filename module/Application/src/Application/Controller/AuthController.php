@@ -109,7 +109,7 @@ class AuthController extends AbstractActionController
         try {
 
             AuthenticationManager::getInstance($this->getServiceLocator())->logout();
-            $this->flashmessenger()->addMessage(MessagesConstants::INFO_LOGGED_OUT);
+//            $this->flashmessenger()->addMessage(MessagesConstants::INFO_LOGGED_OUT);
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);

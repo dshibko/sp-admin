@@ -181,6 +181,8 @@ class ApplicationManager extends BasicManager {
      * @return \DateTime
      */
     public function getLocalTime($dateTime, $timezone) {
+        if ($timezone == null)
+            $timezone = 'UTC';
         $localTime = new \DateTime();
         $localTime->setTimestamp($dateTime->getTimestamp());
         $localTime->setTimezone(new \DateTimeZone(timezone_name_from_abbr($timezone)));

@@ -21,7 +21,7 @@ return array(
                     'port' => 'port', // to change
                     'user' => 'user', // to change
                     'password' => 'password', // to change
-                    'dbname' => 'dbname' // to change
+                    'dbname' => 'dbname', // to change
                 )
             )
         ),

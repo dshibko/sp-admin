@@ -33,6 +33,16 @@ class Module
         $sharedEvents = $eventManager->getSharedManager();
         $sharedEvents->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, array($this, 'onAppDispatch'), 100);
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onAppDispatchError'), -1);
+        $eventManager->attach(MvcEvent::EVENT_FINISH, array($this, 'onFinish'), 500);
+    }
+
+    public function onFinish(\Zend\Mvc\MvcEvent $e) {
+        $response = $e->getResponse();
+        if ($response instanceof \Zend\Http\AbstractMessage) {
+            $header = new \Zend\Http\Header\ContentType();
+            $header->value = 'text/html; charset=utf-8';
+            $response->getHeaders()->addHeader($header);
+        }
     }
 
     public function onAppDispatch(\Zend\Mvc\MvcEvent $e) {
