@@ -5,7 +5,6 @@ namespace Admin\Form;
 use \Neoco\Form\UploadableForm;
 use Zend\Form\Form;
 use \Zend\InputFilter\InputFilter;
-use \Admin\Form\Filter\ClubFormFilter;
 
 class ClubForm extends UploadableForm {
 

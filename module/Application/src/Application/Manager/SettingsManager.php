@@ -11,6 +11,7 @@ class SettingsManager extends BasicManager {
     const SITE_BACKGROUND_COLOR_KEY = 'site-background-colour';
     const SITE_FOOTER_COLOR_KEY = 'site-footer-colour';
     const AHEAD_PREDICTIONS_DAYS = 'ahead-predictions-days';
+    const BAD_WORDS = 'bad-words';
 
     /**
      * @var SettingsManager

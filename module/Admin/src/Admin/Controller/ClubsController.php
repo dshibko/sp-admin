@@ -124,15 +124,11 @@ class ClubsController extends AbstractActionController
             $club->setIsBlocked(false);
             $teamManager->save($club);
             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_SYNC_WITH_FEED);
-            return $this->redirect()->toRoute(self::CLUBS_LIST_ROUTE);
         } catch (\Exception $e) {
-            $clubs = array();
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
-        return array(
-            'clubs' => $clubs,
-        );
+        return $this->redirect()->toRoute(self::CLUBS_LIST_ROUTE);
     }
 
 }

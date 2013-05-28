@@ -46,6 +46,17 @@ abstract class UploadableForm extends Form implements \Zend\InputFilter\InputFil
                     ),
                 );
             }
+            if ($element->getAttribute('between')){
+                $inputSpec[$element->getName()]['validators'][] = array(
+                    'name' => 'Zend\Validator\Between',
+                    'options' => $element->getAttribute('between')
+                );
+            }
+            if ($element->getAttribute('digits')){
+                $inputSpec[$element->getName()]['validators'][] = array(
+                    'name' => 'Zend\Validator\Digits',
+                );
+            }
         }
 
         return $inputSpec;

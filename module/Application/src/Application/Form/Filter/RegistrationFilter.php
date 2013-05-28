@@ -9,7 +9,7 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Model\DAOs\UserDAO;
 use Zend\Validator\NotEmpty;
-use Application\Form\Validator\BadWordValidator;
+use Neoco\Validator\BadWordValidator;
 
 class RegistrationFilter implements InputFilterAwareInterface
 {
@@ -338,7 +338,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                         ),
                     ),
                     array(
-                        'name' => 'Application\Form\Validator\BadWordValidator',
+                        'name' => 'Neoco\Validator\BadWordValidator',
                         'options' => array(
                             'messages' => array(
                                 BadWordValidator::BAD_WORDS => 'Display Name contains bad words'

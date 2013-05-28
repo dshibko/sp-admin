@@ -17,7 +17,8 @@ class ImageManager extends BasicManager {
     const IMAGE_TYPE_CONTENT = 'content';
     const IMAGE_TYPE_OTHER = 'other';
     const IMAGE_TYPE_CLUB = 'club';
-
+    const IMAGE_PLAYER_AVATAR = 'player/avatar';
+    const IMAGE_PLAYER_BACKGROUND = 'player/background';
     const IMAGES_DIR_PATH = '/img/';
 
     const WEB_SEPARATOR = '/';

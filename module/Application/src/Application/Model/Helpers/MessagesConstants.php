@@ -24,6 +24,8 @@ class MessagesConstants
     const SUCCESS_LANGUAGE_UPDATED = 'Language was updated successfully';
     const SUCCESS_LANGUAGE_CREATED = 'Language was created successfully';
     const SUCCESS_CLUB_SAVED = 'Club was successfully saved';
+    const SUCCESS_SYNC_WITH_FEED = 'Data successfully sync with feed';
+    const SUCCESS_PLAYER_SAVED = 'Player was successfully saved';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -41,7 +43,8 @@ class MessagesConstants
     const ERROR_CANNOT_FIND_CLUB = 'Cannot find club';
     const ERROR_CANNOT_FIND_LANGUAGE = 'Cannot find language';
     const ERROR_INVALID_CLUB_ID = 'Invalid Club Id';
-    const SUCCESS_SYNC_WITH_FEED = 'Data successfully sync with feed';
+    const ERROR_INVALID_PLAYER_ID = 'Invalid Player Id';
+    const ERROR_CANNOT_FIND_PLAYER = 'Cannot find player';
 
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";
