@@ -108,21 +108,6 @@ return array(
                     ),
                 ),
             ),
-            'admin-leagues' => array(
-                'type'    => 'segment',
-                'options' => array(
-                    'route'    => '/admin/leagues[/][:action][/:id]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id'     => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Admin\Controller',
-                        'controller' => 'League',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
             'admin-content' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -281,7 +266,6 @@ return array(
             'Admin\Controller\Languages' => 'Admin\Controller\LanguagesController',
             'Admin\Controller\Clubs' => 'Admin\Controller\ClubsController',
             'Admin\Controller\Players' => 'Admin\Controller\PlayersController',
-            'Admin\Controller\League' => 'Admin\Controller\LeagueController',
             'Admin\Controller\Fixtures' => 'Admin\Controller\FixturesController'
         ),
     ),
@@ -368,6 +352,26 @@ return array(
                                 'title' => 'Edit Player',
                                 'label' => 'icon-edit',
                                 'route' => 'admin-players',
+                                'action' => 'edit',
+                            ),
+                        )
+                    ),
+                    'fixtures' => array(
+                        'title' => 'Fixtures',
+                        'label' => 'icon-calendar',
+                        'route' => 'admin-fixtures',
+                        'action' => 'index',
+                        'pages' => array(
+                            array(
+                                'title' => 'Add Fixture',
+                                'label' => 'icon-plus',
+                                'route' => 'admin-fixtures',
+                                'action' => 'add',
+                            ),
+                            array(
+                                'title' => 'Edit Fixture',
+                                'label' => 'icon-edit',
+                                'route' => 'admin-fixture',
                                 'action' => 'edit',
                             ),
                         )
