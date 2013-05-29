@@ -21,6 +21,10 @@ class FixtureFilter extends InputFilter
         )));
 
         $this->add($factory->createInput(array(
+            'name'     => 'competition',
+            'required' => true,
+        )));
+        $this->add($factory->createInput(array(
             'name'     => 'date',
             'required' => true,
             'validators' => array(

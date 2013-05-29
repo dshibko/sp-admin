@@ -70,7 +70,7 @@ class FixturesController extends AbstractActionController
             );
             $isBlocked = (bool)$fixture->getIsBlocked();
             $request = $this->getRequest();
-
+            $form->getInputFilter()->get('competition')->setRequired(false);
             if ($request->isPost()) {
                 $post = $request->getPost();
                 $form->setData($post);
@@ -135,6 +135,7 @@ class FixturesController extends AbstractActionController
         $matchManager = MatchManager::getInstance($this->serviceLocator);
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
 
         $form = new FixtureForm(array(), $teamManager->getTeamsSelectOptions());
         try {
@@ -142,6 +143,9 @@ class FixturesController extends AbstractActionController
                 'action' => 'add'
             );
             $seasons = $seasonManager->getCurrentAndFutureSeasons(true);
+            $currentSeason = $applicationManager->getCurrentSeason();
+            $currentSeasonId = (!is_null($currentSeason) && $currentSeason instanceof \Application\Model\Entities\Season) ? $currentSeason->getId() : null;
+
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $post = $request->getPost();
@@ -155,7 +159,7 @@ class FixturesController extends AbstractActionController
                             ->setAwayTeam($teamManager->getTeamById($data['awayTeam']))
                             ->setHomeTeam($teamManager->getTeamById($data['homeTeam']))
                             ->setStartTime($dateTime)
-                            ->setCompetition(CompetitionManager::getInstance($this->getServiceLocator())->getCompetitionById(1));
+                            ->setCompetition(CompetitionManager::getInstance($this->getServiceLocator())->getCompetitionById($data['competition']));
                     $matchManager->save($fixture);
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                     return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, array('action' => 'edit', 'fixture' => $fixture->getId())));
@@ -175,7 +179,8 @@ class FixturesController extends AbstractActionController
             'params' => $params,
             'isBlocked' => 1,
             'title' => 'Add Fixture',
-            'seasons' => $seasons
+            'seasons' => $seasons,
+            'currentSeasonId' => $currentSeasonId
         );
     }
 

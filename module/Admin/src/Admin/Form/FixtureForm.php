@@ -18,6 +18,17 @@ class FixtureForm extends RegionalisedForm {
         $this->setAttribute('method', 'post');
         $this->setTeams($teams)->setInputFilter(new FixtureFilter());
 
+        //Competition
+
+        $this->add(array(
+            'name' => 'competition',
+            'type'  => 'hidden',
+            'attributes' => array(
+            ),
+            'options' => array(
+                'label' => 'Competition',
+            ),
+        ));
         //Home Team
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
