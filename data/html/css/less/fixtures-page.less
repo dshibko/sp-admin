@@ -60,6 +60,8 @@
         }
 
         &.action-block {
+          min-width: 18em;
+
           div {
             padding: 0.2em 0 0;
             min-height: 8.4em;
@@ -78,16 +80,15 @@
             font: normal 3em/1 "ProximaNova-Bold", Helvetica, Arial;
           }
           a {
-            display: block;
-            padding: 0 0.6em 0 1.4em;
-            min-width: 10em;
+            display: inline-block;
+            padding: 0.3em 0.6em 0.3em 1.4em;
             border-radius: 4px;
-            background: #c9d6e8 url("../img/arrow-right-blue.png") no-repeat 0.7em center;
+            background: #c9d6e8 url("../img/arrow-right-blue.png") no-repeat 0.7em 0.4em;
             color: @blue;
             text-align: left;
             text-decoration: none;
             // white-space: nowrap;
-            font: normal 1.7em/1.8 "ProximaNova-Bold", Helvetica, Arial;
+            font: normal 1.7em/1 "ProximaNova-Bold", Helvetica, Arial;
 
             &:hover {
               color: @light-blue;
@@ -170,17 +171,19 @@
                 font: normal 1.6em/1.4 "ProximaNova-Reg", Helvetica, Arial;
               }
               a {
-                padding: 0 0.5em 0 1.24em;
-                min-width: 9.5em;
-                background: #c9d6e8 url("../img/arrow-right-blue.png") no-repeat 0.5em 0.64em;
+                padding: 0.8em 0.5em 0.8em 1.24em;
+                background: #c9d6e8 url("../img/arrow-right-blue.png") no-repeat 0.5em 0.78em;
                 -webkit-background-size: auto;
                 -moz-background-size: auto;
                 -o-background-size: auto;
                 background-size: auto; 
-                font: normal 2em/2.4 "ProximaNova-Bold", Helvetica, Arial;
+                font: normal 2em/1 "ProximaNova-Bold", Helvetica, Arial;
 
               }
             }
+          }
+          &.action-block {
+            min-width: 20em;
           }
         }
       }
@@ -198,6 +201,9 @@
           }
           &.away-team {
             padding: 1.4em 4em 1.3em 0.4em;
+          }
+          &.action-block {
+            min-width: 18em;
           }
         }
       }
