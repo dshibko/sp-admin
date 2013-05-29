@@ -29,8 +29,18 @@ class CompetitionDAO extends AbstractDAO {
     /**
      * @return string
      */
-    function getRepositoryName() {
+    public function getRepositoryName() {
         return '\Application\Model\Entities\Competition';
+    }
+
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getAllCompetitions($hydrate = false, $skipCache = false)
+    {
+        return parent::findAll($hydrate, $skipCache);
     }
 
 }
