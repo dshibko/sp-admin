@@ -128,11 +128,6 @@ class PredictionManager extends BasicManager {
             return null;
     }
 
-    public function getMatchesLeftInTheSeason($fromTime, $season, $skipCache = false) {
-        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
-        return $matchDAO->getMatchesLeftInTheSeason($fromTime, $season, $skipCache);
-    }
-
     public static $positionsOrder = array('Goalkeeper', 'Defender', 'Midfielder', 'Forward');
     public static $positionsAbbreviation = array('GK', 'DF', 'MF', 'FW');
 

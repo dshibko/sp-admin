@@ -2,6 +2,7 @@
 
 namespace Application\Controller;
 
+use \Application\Manager\MatchManager;
 use \Application\Model\Entities\Match;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Manager\SettingsManager;
@@ -21,11 +22,12 @@ class PredictController extends AbstractActionController {
     public function indexAction() {
 
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
+        $matchManager = MatchManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
         $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
 
         $currentMatch = array();
-        $ahead = $maxAhead = 0;
+        $ahead = $maxAhead = $liveMatches = 0;
         $securityKey = '';
 
         try {
@@ -34,17 +36,23 @@ class PredictController extends AbstractActionController {
 
             $ahead = (int) $this->params()->fromRoute('ahead', 0);
 
-            if ($ahead > $maxAhead)
-                throw new \Exception(sprintf(MessagesConstants::ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED, $maxAhead));
-
             $user = $applicationManager->getCurrentUser();
             $season = $applicationManager->getCurrentSeason();
-            $matchesLeft = $predictionManager->getMatchesLeftInTheSeason(new \DateTime(), $season);
+
+            if ($season == null)
+                throw new \Exception(MessagesConstants::INFO_OUT_OF_SEASON);
+
+            $matchesLeft = $matchManager->getMatchesLeftInTheSeasonNumber(new \DateTime(), $season);
 
             if ($matchesLeft == 0)
                 throw new \Exception(MessagesConstants::ERROR_NO_MORE_MATCHES_IN_THE_SEASON);
 
-            if ($ahead > $matchesLeft)
+            $liveMatches = $matchManager->getLiveMatchesNumber(new \DateTime(), $season);
+
+            if ($ahead > $maxAhead + $liveMatches - 1)
+                throw new \Exception(sprintf(MessagesConstants::ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED, $maxAhead));
+
+            if ($ahead > $matchesLeft + $liveMatches - 1)
                 throw new \Exception(MessagesConstants::ERROR_MATCH_NOT_FOUND);
 
             $currentMatch = $predictionManager->getNearestMatchWithPrediction(new \DateTime(), $ahead, $user, $season);
@@ -58,8 +66,6 @@ class PredictController extends AbstractActionController {
                 $currentMatch['status'] = Match::LIVE_STATUS;
 
             if ($currentMatch['status'] == Match::PRE_MATCH_STATUS) {
-
-                $matchesLeft--;
 
                 $securityKey = $this->generateSecurityKey(array($currentMatch['id'], $currentMatch['homeId'], $currentMatch['awayId']));
 
@@ -145,6 +151,7 @@ class PredictController extends AbstractActionController {
             'current' => $currentMatch,
             'ahead' => $ahead,
             'maxAhead' => $maxAhead,
+            'liveMatches' => $liveMatches,
             'securityKey' => $securityKey,
         );
 
