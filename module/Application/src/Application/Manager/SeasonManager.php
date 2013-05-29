@@ -61,8 +61,7 @@ class SeasonManager extends BasicManager {
         $globalLeague->setStartDate($season->getStartDate());
         $globalLeague->setEndDate($season->getEndDate());
         $globalLeague->setSeason($season);
-        $globalLeague->setIsGlobal(true);
-        $globalLeague->setIsPrivate(false);
+        $globalLeague->setType(League::GLOBAL_TYPE);
         $globalLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
         $globalLeague->setCreationDate(new \DateTime());
         foreach ($users as $user) {
@@ -108,9 +107,8 @@ class SeasonManager extends BasicManager {
             $regionLeague->setStartDate($season->getStartDate());
             $regionLeague->setEndDate($season->getEndDate());
             $regionLeague->setSeason($season);
-            $regionLeague->setRegion($region);
-            $regionLeague->setIsGlobal(false);
-            $regionLeague->setIsPrivate(false);
+            $regionLeague->addRegion($region);
+            $regionLeague->setType(League::REGIONAL_TYPE);
             $regionLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
             $regionLeague->setCreationDate(new \DateTime());
             foreach ($users as $user) {
@@ -190,10 +188,10 @@ class SeasonManager extends BasicManager {
             $regionLeague = $season->getRegionalLeagueByRegionId($region->getId());
             if ($regionLeague == null) {
                 $regionLeague = new League();
-                $regionLeague->setIsGlobal(false);
-                $regionLeague->setIsPrivate(false);
-                $regionLeague->setRegion($region);
+                $regionLeague->setType(League::REGIONAL_TYPE);
+                $regionLeague->addRegion($region);
                 $regionLeague->setCreationDate(new \DateTime());
+                $regionLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
                 $regionLeague->setSeason($season);
             }
             $regionLeague->setDisplayName(self::REGIONAL_LEAGUE_PREFIX . $season->getDisplayName() . " " . $region->getDisplayName());
