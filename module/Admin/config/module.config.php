@@ -352,7 +352,7 @@ return array(
                                 'label' => 'icon-minus',
                                 'route' => 'admin-leagues',
                                 'action' => 'delete',
-                            ),
+                            )
                         )
                     ),
                     'clubs' => array(
