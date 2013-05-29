@@ -129,7 +129,7 @@ class MatchDAO extends AbstractDAO {
      * @return array
      * @throws \Exception
      */
-    public function getAllFixtures() {
+    public function getAllMatches() {
         $query = $this->getEntityManager()->createQuery('
             SELECT
                 m.id,

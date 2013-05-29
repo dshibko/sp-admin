@@ -39,5 +39,27 @@ class CompetitionManager extends BasicManager
         return CompetitionDAO::getInstance($this->getServiceLocator())->getAllCompetitions($hydrate, $skipCache);
     }
 
+    /**
+     * @param array $fields
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getAllCompetitionsByFields(array $fields, $hydrate = false, $skipCache = false)
+    {
+        return CompetitionDAO::getInstance($this->getServiceLocator())->getAllCompetitionsByFields($fields, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param $id
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return mixed
+     */
+    public function getCompetitionById($id, $hydrate = false, $skipCache = false)
+    {
+        return CompetitionDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
+    }
+
 
 }

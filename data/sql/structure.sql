@@ -367,3 +367,8 @@ ALTER TABLE  `league` DROP  `region_id`;
 -- oko 29.05
 
 ALTER TABLE  `prediction` DROP  `scorers_predicted`;
+
+-- okh 29.05
+
+ALTER TABLE `match`  ADD COLUMN `is_blocked` TINYINT(1) NOT NULL DEFAULT '0' AFTER `start_time`;
+ALTER TABLE `match`  CHANGE COLUMN `feeder_id` `feeder_id` INT(11) NULL AFTER `away_team_id`;

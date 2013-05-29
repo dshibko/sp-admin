@@ -58,4 +58,30 @@ class TeamManager extends BasicManager
         TeamDAO::getInstance($this->getServiceLocator())->save($team);
     }
 
+    /**
+     * @param $fields
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getAllTeamsByFields($fields, $hydrate = false, $skipCache = false)
+    {
+        return TeamDAO::getInstance($this->getServiceLocator())->findAllByFields($fields, $hydrate, $skipCache);
+    }
+
+    /**
+     * @return array
+     */
+    public function getTeamsSelectOptions()
+    {
+        $options = array();
+        $teams = $this->getAllTeamsByFields(array('id', 'displayName'), true);
+        if (!empty($teams)){
+            foreach($teams as $team){
+                $options[$team['id']] = $team['displayName'];
+            }
+        }
+        return $options;
+    }
+
 }
