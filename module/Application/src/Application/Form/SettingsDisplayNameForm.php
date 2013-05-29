@@ -35,10 +35,10 @@ class SettingsDisplayNameForm extends Form {
     }
     public function __construct($type = 'change_display_name', ServiceLocatorInterface $serviceLocator) {
         parent::__construct();
-        $this->setInputFilter(new SettingsDisplayNameFilter());
+
         $this->setAttribute('method', 'post')->setAttribute('id', 'settings-change-display-name');
         $this->setType($type)->setServiceLocator($serviceLocator);
-
+        $this->setInputFilter(new SettingsDisplayNameFilter($serviceLocator));
         //Display Name
         $this->add(array(
             'name' => 'display_name',

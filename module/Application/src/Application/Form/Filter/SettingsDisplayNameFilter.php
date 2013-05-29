@@ -5,11 +5,27 @@ namespace Application\Form\Filter;
 use Zend\InputFilter\Factory as InputFactory;
 use Zend\InputFilter\InputFilter;
 use Application\Form\Filter\RegistrationFilter;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+
 
 class SettingsDisplayNameFilter extends InputFilter
 {
-    function __construct()
+    protected $serviceLocator;
+
+    public function getServiceLocator()
     {
+        return $this->serviceLocator;
+    }
+
+    public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
+    function __construct(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->setServiceLocator($serviceLocator);
         $factory = new InputFactory();
 
         //Display Name
@@ -29,10 +45,7 @@ class SettingsDisplayNameFilter extends InputFilter
                         'max' => RegistrationFilter::DISPLAY_NAME_MAX_LENGTH,
                     ),
                 ),
-                array(
-                    'name' => 'Application\Form\Validator\BadWordValidator',
-                    'options' => array()
-                )
+                $this->getServiceLocator()->get('badWordValidator')
             ),
         )));
     }

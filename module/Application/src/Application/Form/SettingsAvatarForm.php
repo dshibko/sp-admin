@@ -2,7 +2,6 @@
 namespace Application\Form;
 
 use Zend\Form\Form;
-use \Application\Form\Filter\SettingsDisplayNameFilter;
 use Application\Form\Filter\RegistrationFilter;
 use Application\Manager\ApplicationManager;
 
@@ -22,7 +21,6 @@ class SettingsAvatarForm extends Form {
     }
     public function __construct($type = 'change_avatar') {
         parent::__construct();
-        $this->setInputFilter(new SettingsDisplayNameFilter());
         $this->setAttribute('method', 'post')->setAttribute('id', 'settings-change-avatar');
         $this->setType($type);
 

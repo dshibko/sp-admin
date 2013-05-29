@@ -15,7 +15,6 @@ class ClubsController extends AbstractActionController
 
     public function indexAction()
     {
-
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         try {
             $clubs = $teamManager->getAllTeams(true);
@@ -33,7 +32,7 @@ class ClubsController extends AbstractActionController
     public function editAction()
     {
         $clubId = (string)$this->params()->fromRoute('club', '');
-        $isBlocked = false;
+
         if (empty($clubId)) {
             $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_INVALID_CLUB_ID);
             return $this->redirect()->toRoute(self::CLUBS_LIST_ROUTE);
@@ -60,32 +59,28 @@ class ClubsController extends AbstractActionController
                 );
                 $form->setData($post);
                 if ($form->isValid()){
-                    try {
-                        $imageManager = ImageManager::getInstance($this->getServiceLocator());
-
-                        $logoValue = $form->get('logoPath')->getValue();
-                        if (!array_key_exists('stored', $logoValue) || $logoValue['stored'] == 0) {
-                            $imageManager->deleteImage($club->getLogoPath());
-                            $logoPath = $imageManager->saveUploadedImage($form->get('logoPath'), ImageManager::IMAGE_TYPE_CLUB);
-                            $imageManager->resizeImage($logoPath, ImageManager::CLUB_LOGO_SIZE, ImageManager::CLUB_LOGO_SIZE);
-                            $club->setLogoPath($logoPath);
-                        }
-                        $data = $form->getData();
-                        //Check changed data
-                        if (!$club->getIsBlocked()){
-                            if ($club->getDisplayName() != $data['displayName'] || $club->getShortName() != $data['shortName']){
-                                $club->setIsBlocked(true);
-                            }
-                        }
-
-                        $club->setDisplayName($data['displayName'])
-                             ->setShortName($data['shortName']);
-                        $teamManager->save($club);
-                        $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CLUB_SAVED);
-                        return $this->redirect()->toRoute(self::CLUBS_LIST_ROUTE);
-                    } catch (\Exception $e) {
-                        $this->flashMessenger()->addErrorMessage($e->getMessage());
+                    $imageManager = ImageManager::getInstance($this->getServiceLocator());
+                    $logoValue = $form->get('logoPath')->getValue();
+                    if (!array_key_exists('stored', $logoValue) || $logoValue['stored'] == 0) {
+                        $imageManager->deleteImage($club->getLogoPath());
+                        $logoPath = $imageManager->saveUploadedImage($form->get('logoPath'), ImageManager::IMAGE_TYPE_CLUB);
+                        $imageManager->resizeImage($logoPath, ImageManager::CLUB_LOGO_SIZE, ImageManager::CLUB_LOGO_SIZE);
+                        $club->setLogoPath($logoPath);
                     }
+                    $data = $form->getData();
+                    //Check changed data
+                    if (!$club->getIsBlocked()){
+                        if ($club->getDisplayName() != $data['displayName'] || $club->getShortName() != $data['shortName']){
+                            $club->setIsBlocked(true);
+                        }
+                    }
+
+                    $club->setDisplayName($data['displayName'])
+                         ->setShortName($data['shortName']);
+                    $teamManager->save($club);
+                    $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CLUB_SAVED);
+                    return $this->redirect()->toUrl($this->url()->fromRoute(self::CLUBS_LIST_ROUTE,$params));
+
                 }else{
                     foreach ($form->getMessages() as $el => $messages) {
                         $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
@@ -97,6 +92,7 @@ class ClubsController extends AbstractActionController
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toUrl($this->url()->fromRoute(self::CLUBS_LIST_ROUTE,$params));
         }
 
         return array(
@@ -114,6 +110,7 @@ class ClubsController extends AbstractActionController
             $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_INVALID_CLUB_ID);
             return $this->redirect()->toRoute(self::CLUBS_LIST_ROUTE);
         }
+        $params = array();
         $teamManager = TeamManager::getInstance($this->serviceLocator);
         try {
             $club = $teamManager->getTeamById($clubId);
@@ -124,11 +121,15 @@ class ClubsController extends AbstractActionController
             $club->setIsBlocked(false);
             $teamManager->save($club);
             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_SYNC_WITH_FEED);
+            $params = array(
+                'action' => 'edit',
+                'club' => $club->getId()
+            );
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
-        return $this->redirect()->toRoute(self::CLUBS_LIST_ROUTE);
+        return $this->redirect()->toUrl($this->url()->fromRoute(self::CLUBS_LIST_ROUTE,$params));
     }
 
 }

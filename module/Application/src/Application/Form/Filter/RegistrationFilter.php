@@ -22,6 +22,7 @@ class RegistrationFilter implements InputFilterAwareInterface
 
     protected $inputFilter;
     protected $repository;
+    protected $serviceLocator;
 
     public function __construct(ServiceLocatorInterface $serviceLocator){
           $this->setServiceLocator($serviceLocator);
@@ -59,6 +60,7 @@ class RegistrationFilter implements InputFilterAwareInterface
 
             $inputFilter = new InputFilter();
             $factory = new InputFactory();
+
             //Title
             $inputFilter->add($factory->createInput(array(
                 'name' => 'title',
@@ -302,7 +304,6 @@ class RegistrationFilter implements InputFilterAwareInterface
                         'options' => array(
                             'messages' => array(
                                 'dateInvalidDate' => 'Invalid Date of birth'
-
                             )
                         ),
                     ),
@@ -337,14 +338,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                             'max' => self::DISPLAY_NAME_MAX_LENGTH,
                         ),
                     ),
-                    array(
-                        'name' => 'Neoco\Validator\BadWordValidator',
-                        'options' => array(
-                            'messages' => array(
-                                BadWordValidator::BAD_WORDS => 'Display Name contains bad words'
-                            )
-                        )
-                    ),
+                    $this->getServiceLocator()->get('badWordValidator'),
                     array(
                         'name' => 'NotEmpty',
                         'options' => array(

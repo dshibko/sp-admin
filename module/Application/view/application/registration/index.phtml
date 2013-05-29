@@ -26,20 +26,6 @@ $this->headTitle($title);
                 <?php if (!empty($errors)):?>
                     <p><?php echo $errors;?></p>
                 <?php endif;?>
-                <?php echo $this->formElementerrors($form->get('title'));?>
-                <?php echo $this->formElementerrors($form->get('first_name'));?>
-                <?php echo $this->formElementerrors($form->get('last_name'));?>
-                <?php echo $this->formElementerrors($form->get('gender'));?>
-                <?php echo $this->formElementerrors($form->get('date_of_birth'));?>
-                <?php echo $this->formElementerrors($form->get('country'));?>
-                <?php echo $this->formElementerrors($form->get('email'));?>
-                <?php echo $this->formElementerrors($form->get('confirm_email'));?>
-                <?php echo $this->formElementerrors($form->get('password'));?>
-                <?php echo $this->formElementerrors($form->get('confirm_password'));?>
-                <?php echo $this->formElementerrors($form->get('display_name'));?>
-                <?php echo $this->formElementerrors($form->get('avatar'));?>
-                <?php echo $this->formElementerrors($form->get('term1'));?>
-                <?php echo $this->formElementerrors($form->get('term2'));?>
             </div>
         <?php endif;?>
         <section>

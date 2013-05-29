@@ -232,6 +232,11 @@ class Module
                 },
                 'poparser' => function($sm){
                      return new \I18n_Pofile();
+                },
+                'badWordValidator' => function($sm){
+                    $badWordValidator = new \Neoco\Validator\BadWordValidator();
+                    $badWordValidator->setServiceLocator($sm);
+                    return $badWordValidator;
                 }
             ),
         );

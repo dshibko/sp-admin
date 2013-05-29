@@ -2,266 +2,102 @@
 $title = $this->translate('Settings');
 $this->headTitle($title);
 ?>
-<div role="main" class="registration-section">
+<div role="main">
+    <div class="one-column registration">
     <h1><?php echo $this->escapeHtml($title);?></h1>
-<?php $errors = $this->renderMessages();?>
-<?php if (!empty($errors)):?>
-    <div class="form-errors">
-        <p><?php echo $errors;?></p>
-    </div>
-<?php endif;?>
-<?php if (!$this->user->getFacebookId()):?>
-<aside class="connect-facebook clearfix">
-    <div>
-        <h2>Connect your account for a one click login</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus ligula, facilisis id scelerisque in, eleifend ut elit. Aenean a facilisis augue. </p>
-    </div>
-    <?php echo $this->renderFacebookButton($this->translate('Connect with Facebook'));?>
-</aside>
-<!--PASSWORD FORM START-->
-    <?php
-        $this->passwordForm->prepare();
-        $this->passwordForm->setAttribute('action', $this->url('user-settings'));
-        echo $this->form()->openTag($this->passwordForm);
-    ?>
-    <section>
-        <div>
-            <h2><?php echo $this->translate('Change your Password');?></h2>
-        </div>
-        <?php if ($this->passwordForm->getInputFilter()->getMessages()):?>
-            <div class="form-errors">
-                <?php
-                echo $this->formElementerrors($this->passwordForm->get('password'));
-                echo $this->formElementerrors($this->passwordForm->get('new_password'));
-                echo $this->formElementerrors($this->passwordForm->get('confirm_new_password'));
-                ?>
-            </div>
-        <?php endif;?>
-        <div>
-            <?php echo $this->formLabel($this->passwordForm->get('password')); ?>
-            <?php  echo $this->formElement($this->passwordForm->get('password')); ?>
-        </div>
-        <div>
-            <?php echo $this->formLabel($this->passwordForm->get('new_password')); ?>
-            <?php  echo $this->formElement($this->passwordForm->get('new_password')); ?>
-        </div>
-        <div>
-            <?php echo $this->formLabel($this->passwordForm->get('confirm_new_password')); ?>
-            <?php  echo $this->formElement($this->passwordForm->get('confirm_new_password')); ?>
-        </div>
-    </section>
-    <section class="buttons-block clearfix">
-        <div>
-            <button type="submit"><?php echo $this->translate('Save changes');?></button>
-        </div>
-    </section>
-    <?php
-        echo $this->formHidden($this->passwordForm->get('type'));
-        echo $this->form()->closeTag();
-    ?>
-<!--PASSWORD FORM END-->
-
-<!--EMAIL FORM START-->
-    <?php
-        $this->emailForm->prepare();
-        $this->emailForm->setAttribute('action', $this->url('user-settings'));
-        echo $this->form()->openTag($this->emailForm);
-    ?>
-
-    <section>
-        <div>
-            <h2><?php echo $this->translate('Change your email addresses');?></h2>
-        </div>
-        <?php if ($this->emailForm->getInputFilter()->getMessages()):?>
+    <?php $errors = $this->renderMessages();?>
+    <?php if (!empty($errors)):?>
         <div class="form-errors">
-            <?php
-            echo $this->formElementerrors($this->emailForm->get('email'));
-            echo $this->formElementerrors($this->emailForm->get('confirm_email'));
-            ?>
+            <p><?php echo $errors;?></p>
         </div>
-        <?php endif;?>
-        <div>
-            <?php echo $this->formLabel($this->emailForm->get('email')); ?>
-            <?php  echo $this->formElement($this->emailForm->get('email')); ?>
-        </div>
-        <div>
-            <?php echo $this->formLabel($this->emailForm->get('confirm_email')); ?>
-            <?php  echo $this->formElement($this->emailForm->get('confirm_email')); ?>
-        </div>
-    </section>
-    <section class="buttons-block clearfix">
-        <div>
-            <button type="submit"><?php echo $this->translate('Save changes');?></button>
-        </div>
-    </section>
-    <?php
-        echo $this->formHidden($this->emailForm->get('type'));
-        echo $this->form()->closeTag();
-    ?>
-<!--EMAIL FORM END-->
-
-<!--DISPLAY NAME FORM START-->
-    <?php
-        $this->displayNameForm->prepare();
-        $this->displayNameForm->setAttribute('action', $this->url('user-settings'));
-        echo $this->form()->openTag($this->displayNameForm);
-    ?>
-
-<section>
-    <div>
-        <h2><?php echo $this->translate('Change your display name');?></h2>
-    </div>
-    <?php if ($this->displayNameForm->getInputFilter()->getMessages()):?>
-    <div class="form-errors">
-        <?php echo $this->formElementerrors($this->displayNameForm->get('display_name'));?>
-    </div>
     <?php endif;?>
-    <div>
-        <?php echo $this->formLabel($this->displayNameForm->get('display_name')); ?>
-        <?php  echo $this->formElement($this->displayNameForm->get('display_name')); ?>
-    </div>
-</section>
-<section class="buttons-block clearfix">
-    <div>
-        <button type="submit"><?php echo $this->translate('Save changes');?></button>
-    </div>
-</section>
-    <?php
-    echo $this->formHidden($this->displayNameForm->get('type'));
-    echo $this->form()->closeTag();
-    ?>
-<!--DISPLAY NAME FORM END-->
-
-<!--AVATAR FORM START-->
-    <?php
-    $this->avatarForm->prepare();
-    $this->avatarForm->setAttribute('action', $this->url('user-settings'));
-    echo $this->form()->openTag($this->avatarForm);
-    ?>
-
-<section>
-    <div>
-        <h2><?php echo $this->translate('Change your display name');?></h2>
-    </div>
-    <img src="<?php echo $this->user->getAvatar()->getSmallImagePath();?>" alt="<?php echo $this->translate('User avatar');?>"/>
-    <?php if ($this->avatarForm->getInputFilter()->getMessages()):?>
-    <div class="form-errors">
-        <?php echo $this->formElementerrors($this->avatarForm->get('avatar'));?>
-    </div>
-    <?php endif;?>
-    <div class="block-input-file">
-        <?php echo $this->formLabel($this->avatarForm->get('avatar')); ?>
-        <?php  echo $this->formElement($this->avatarForm->get('avatar')); ?>
-    </div>
-    <div class="avatar ideal-full-width claerfix">
-        <span class="desktopLabel"><?php echo $this->translate('Or choose from selection');?></span>
-        <?php echo $this->renderDefaultAvatars();?>
-    </div>
-</section>
-<section class="buttons-block clearfix">
-    <div>
-        <button type="submit"><?php echo $this->translate('Save changes');?></button>
-    </div>
-</section>
-    <?php
-    echo $this->formHidden($this->avatarForm->get('type'));
-    echo $this->form()->closeTag();
-    ?>
-<!--AVATAR FORM END-->
-<?php endif;?>
-<?php //TODO move to view helper?>
-<?php if ($this->user->getFacebookId()):?>
-    <section>
-        <img src="http://graph.facebook.com/<?php echo $this->user->getFacebookId();?>/picture?width=72&height=72" />
-    </section>
-<?php endif;?>
-<!--REGIONAL SETTINGS FORM START-->
-<?php
-    $this->languageForm->prepare();
-    $this->languageForm->setAttribute('action', $this->url('user-settings'));
-    echo $this->form()->openTag($this->languageForm);
-?>
-
-    <section>
+    <?php if (!$this->user->getFacebookId()):?>
+    <aside class="connect-facebook clearfix">
         <div>
-            <h2><?php echo $this->translate('Regional Settings');?></h2>
+            <h2>Connect your account for a one click login</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus ligula, facilisis id scelerisque in, eleifend ut elit. Aenean a facilisis augue. </p>
         </div>
-        <div class="country">
-            <?php echo $this->translate('Your country');?>
-            <?php echo $this->user->getCountry()->getName();?>
-            <p>
-                <?php echo $this->translate('You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league.');?>
-            </p>
-        </div>
-        <?php if ($this->languageForm->getInputFilter()->getMessages()):?>
-            <div class="form-errors">
-                <?php echo $this->formElementerrors($this->languageForm->get('language'));?>
+        <?php echo $this->renderFacebookButton($this->translate('Connect with Facebook'));?>
+    </aside>
+    <!--PASSWORD FORM START-->
+        <?php
+            $this->passwordForm->prepare();
+            $this->passwordForm->setAttribute('action', $this->url('user-settings'));
+            echo $this->form()->openTag($this->passwordForm);
+        ?>
+        <section>
+            <div>
+                <h2><?php echo $this->translate('Change your Password');?></h2>
             </div>
-        <?php endif;?>
-        <div>
-            <?php echo $this->formLabel($this->languageForm->get('language')); ?>
-            <?php  echo $this->formElement($this->languageForm->get('language')); ?>
-        </div>
+            <div>
+                <?php echo $this->formLabel($this->passwordForm->get('password')); ?>
+                <?php  echo $this->formElement($this->passwordForm->get('password')); ?>
+            </div>
+            <div>
+                <?php echo $this->formLabel($this->passwordForm->get('new_password')); ?>
+                <?php  echo $this->formElement($this->passwordForm->get('new_password')); ?>
+            </div>
+            <div>
+                <?php echo $this->formLabel($this->passwordForm->get('confirm_new_password')); ?>
+                <?php  echo $this->formElement($this->passwordForm->get('confirm_new_password')); ?>
+            </div>
+        </section>
+        <section class="buttons-block clearfix">
+            <div>
+                <button type="submit"><?php echo $this->translate('Save changes');?></button>
+            </div>
+        </section>
+        <?php
+            echo $this->formHidden($this->passwordForm->get('type'));
+            echo $this->form()->closeTag();
+        ?>
+    <!--PASSWORD FORM END-->
 
-    </section>
-    <section class="buttons-block clearfix">
-        <div>
-            <button type="submit"><?php echo $this->translate('Save changes');?></button>
-        </div>
-    </section>
-    <?php
-    echo $this->formHidden($this->languageForm->get('type'));
-    echo $this->form()->closeTag();
-    ?>
-<!--REGIONAL SETTINGS FORM END-->
+    <!--EMAIL FORM START-->
+        <?php
+            $this->emailForm->prepare();
+            $this->emailForm->setAttribute('action', $this->url('user-settings'));
+            echo $this->form()->openTag($this->emailForm);
+        ?>
 
-<!--EMAIL SETTINGS FORM START-->
-    <?php
-    $this->emailSettingsForm->prepare();
-    $this->emailSettingsForm->setAttribute('action', $this->url('user-settings'));
-    echo $this->form()->openTag($this->emailSettingsForm);
-    ?>
+        <section>
+            <div>
+                <h2><?php echo $this->translate('Change your email addresses');?></h2>
+            </div>
+            <div>
+                <?php echo $this->formLabel($this->emailForm->get('email')); ?>
+                <?php  echo $this->formElement($this->emailForm->get('email')); ?>
+            </div>
+            <div>
+                <?php echo $this->formLabel($this->emailForm->get('confirm_email')); ?>
+                <?php  echo $this->formElement($this->emailForm->get('confirm_email')); ?>
+            </div>
+        </section>
+        <section class="buttons-block clearfix">
+            <div>
+                <button type="submit"><?php echo $this->translate('Save changes');?></button>
+            </div>
+        </section>
+        <?php
+            echo $this->formHidden($this->emailForm->get('type'));
+            echo $this->form()->closeTag();
+        ?>
+    <!--EMAIL FORM END-->
 
-    <section class="email-settings">
-        <div>
-            <h2><?php echo $this->translate('Email Settings');?></h2>
-        </div>
-        <div>
-            <label>
-                <?php echo $this->formElement($this->emailSettingsForm->get('term1'));?>
-                <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy </span>
-            </label>
-            <label>
-                <?php echo $this->formElement($this->emailSettingsForm->get('term2'));?>
-                <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</span>
-            </label>
-        </div>
-    </section>
-    <section class="buttons-block clearfix">
-        <div>
-            <button type="submit"><?php echo $this->translate('Save changes');?></button>
-        </div>
-    </section>
-    <?php
-    echo $this->formHidden($this->emailSettingsForm->get('type'));
-    echo $this->form()->closeTag();
-    ?>
-<!--EMAIL SETTINGS FORM END-->
-
-<!--PUBLIC PROFILE FORM START-->
-    <?php
-        $this->publicProfileForm->prepare();
-        $this->publicProfileForm->setAttribute('action', $this->url('user-settings'));
-        echo $this->form()->openTag($this->publicProfileForm);
-    ?>
+    <!--DISPLAY NAME FORM START-->
+        <?php
+            $this->displayNameForm->prepare();
+            $this->displayNameForm->setAttribute('action', $this->url('user-settings'));
+            echo $this->form()->openTag($this->displayNameForm);
+        ?>
 
     <section>
         <div>
-            <h2><?php echo $this->translate('Profile Type');?></h2>
+            <h2><?php echo $this->translate('Change your display name');?></h2>
         </div>
         <div>
-            <?php echo $this->formLabel($this->publicProfileForm->get('is_public')); ?>
-            <?php  echo $this->formElement($this->publicProfileForm->get('is_public')); ?>
+            <?php echo $this->formLabel($this->displayNameForm->get('display_name')); ?>
+            <?php  echo $this->formElement($this->displayNameForm->get('display_name')); ?>
         </div>
     </section>
     <section class="buttons-block clearfix">
@@ -269,16 +105,150 @@ $this->headTitle($title);
             <button type="submit"><?php echo $this->translate('Save changes');?></button>
         </div>
     </section>
+        <?php
+        echo $this->formHidden($this->displayNameForm->get('type'));
+        echo $this->form()->closeTag();
+        ?>
+    <!--DISPLAY NAME FORM END-->
+
+    <!--AVATAR FORM START-->
+        <?php
+        $this->avatarForm->prepare();
+        $this->avatarForm->setAttribute('action', $this->url('user-settings'));
+        echo $this->form()->openTag($this->avatarForm);
+        ?>
+
+    <section>
+        <div>
+            <h2><?php echo $this->translate('Change your display name');?></h2>
+        </div>
+        <img src="<?php echo $this->user->getAvatar()->getSmallImagePath();?>" alt="<?php echo $this->translate('User avatar');?>"/>
+        <div class="block-input-file">
+            <?php echo $this->formLabel($this->avatarForm->get('avatar')); ?>
+            <?php  echo $this->formElement($this->avatarForm->get('avatar')); ?>
+        </div>
+        <div class="avatar ideal-full-width claerfix">
+            <span class="desktopLabel"><?php echo $this->translate('Or choose from selection');?></span>
+            <?php echo $this->renderDefaultAvatars();?>
+        </div>
+    </section>
+    <section class="buttons-block clearfix">
+        <div>
+            <button type="submit"><?php echo $this->translate('Save changes');?></button>
+        </div>
+    </section>
+        <?php
+        echo $this->formHidden($this->avatarForm->get('type'));
+        echo $this->form()->closeTag();
+        ?>
+    <!--AVATAR FORM END-->
+    <?php endif;?>
+    <?php //TODO move to view helper?>
+    <?php if ($this->user->getFacebookId()):?>
+        <section>
+            <img src="http://graph.facebook.com/<?php echo $this->user->getFacebookId();?>/picture?width=72&height=72" />
+        </section>
+    <?php endif;?>
+    <!--REGIONAL SETTINGS FORM START-->
     <?php
-    echo $this->formHidden($this->publicProfileForm->get('type'));
-    echo $this->form()->closeTag();
+        $this->languageForm->prepare();
+        $this->languageForm->setAttribute('action', $this->url('user-settings'));
+        echo $this->form()->openTag($this->languageForm);
     ?>
-<!--PUBLIC PROFILE FORM END-->
-<section>
-    <div class="delete-account">
-        <a href="<?php echo $this->url('delete-account');?>"><?php echo $this->translate('Delete Account');?></a>
+
+        <section>
+            <div>
+                <h2><?php echo $this->translate('Regional Settings');?></h2>
+            </div>
+            <div class="country">
+                <?php echo $this->translate('Your country');?>
+                <?php echo $this->user->getCountry()->getName();?>
+                <p>
+                    <?php echo $this->translate('You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league.');?>
+                </p>
+            </div>
+            <div>
+                <?php echo $this->formLabel($this->languageForm->get('language')); ?>
+                <?php  echo $this->formElement($this->languageForm->get('language')); ?>
+            </div>
+
+        </section>
+        <section class="buttons-block clearfix">
+            <div>
+                <button type="submit"><?php echo $this->translate('Save changes');?></button>
+            </div>
+        </section>
+        <?php
+        echo $this->formHidden($this->languageForm->get('type'));
+        echo $this->form()->closeTag();
+        ?>
+    <!--REGIONAL SETTINGS FORM END-->
+
+    <!--EMAIL SETTINGS FORM START-->
+        <?php
+        $this->emailSettingsForm->prepare();
+        $this->emailSettingsForm->setAttribute('action', $this->url('user-settings'));
+        echo $this->form()->openTag($this->emailSettingsForm);
+        ?>
+
+        <section class="email-settings">
+            <div>
+                <h2><?php echo $this->translate('Email Settings');?></h2>
+            </div>
+            <div>
+                <label>
+                    <?php echo $this->formElement($this->emailSettingsForm->get('term1'));?>
+                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy </span>
+                </label>
+                <label>
+                    <?php echo $this->formElement($this->emailSettingsForm->get('term2'));?>
+                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</span>
+                </label>
+            </div>
+        </section>
+        <section class="buttons-block clearfix">
+            <div>
+                <button type="submit"><?php echo $this->translate('Save changes');?></button>
+            </div>
+        </section>
+        <?php
+        echo $this->formHidden($this->emailSettingsForm->get('type'));
+        echo $this->form()->closeTag();
+        ?>
+    <!--EMAIL SETTINGS FORM END-->
+
+    <!--PUBLIC PROFILE FORM START-->
+        <?php
+            $this->publicProfileForm->prepare();
+            $this->publicProfileForm->setAttribute('action', $this->url('user-settings'));
+            echo $this->form()->openTag($this->publicProfileForm);
+        ?>
+
+        <section>
+            <div>
+                <h2><?php echo $this->translate('Profile Type');?></h2>
+            </div>
+            <div>
+                <?php echo $this->formLabel($this->publicProfileForm->get('is_public')); ?>
+                <?php  echo $this->formElement($this->publicProfileForm->get('is_public')); ?>
+            </div>
+        </section>
+        <section class="buttons-block clearfix">
+            <div>
+                <button type="submit"><?php echo $this->translate('Save changes');?></button>
+            </div>
+        </section>
+        <?php
+        echo $this->formHidden($this->publicProfileForm->get('type'));
+        echo $this->form()->closeTag();
+        ?>
+    <!--PUBLIC PROFILE FORM END-->
+    <section>
+        <div class="delete-account">
+            <a href="<?php echo $this->url('delete-account');?>"><?php echo $this->translate('Delete Account');?></a>
+        </div>
+    </section>
     </div>
-</section>
 </div>
 <script type="text/javascript">
     var turnOffCustomStylePoint = 767;
