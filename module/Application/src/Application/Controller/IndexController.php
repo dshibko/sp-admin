@@ -16,6 +16,8 @@ class IndexController extends AbstractActionController {
 
     public function indexAction() {
 
+        $content = $gameplayBlocks = array();
+
         try {
 
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
@@ -27,22 +29,22 @@ class IndexController extends AbstractActionController {
 
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
             $regionManager = RegionManager::getInstance($this->getServiceLocator());
-            $region = $regionManager->getSelectedRegion(); // TODO to replace by GeoIP
+            $region = $regionManager->getSelectedRegion();
 
             $content = $contentManager->getRegionContent($region, true);
             $gameplayBlocks = $contentManager->getGameplayBlocks($region, true);
 
-            $viewModel = new ViewModel(array(
-                'content' => $content,
-                'blocks' => $gameplayBlocks,
-            ));
-
-            $viewModel->setTerminal(true);
-            return $viewModel;
-
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
+
+        $viewModel = new ViewModel(array(
+            'content' => $content,
+            'blocks' => $gameplayBlocks,
+        ));
+
+        $viewModel->setTerminal(true);
+        return $viewModel;
 
     }
 

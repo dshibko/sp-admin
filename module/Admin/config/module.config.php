@@ -400,7 +400,7 @@ return array(
                     ),
                     'fixtures' => array(
                         'title' => 'Fixtures',
-                        'label' => 'icon-calendar',
+                        'label' => 'icon-time',
                         'route' => 'admin-fixtures',
                         'action' => 'index',
                         'pages' => array(

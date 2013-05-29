@@ -639,4 +639,8 @@ class Match extends BasicObject {
         return $this->timezone ? $this->timezone : 'UTC';
     }
 
+    public function getIsLive() {
+        return $this->getStatus() == self::LIVE_STATUS || ($this->getStatus() == self::PRE_MATCH_STATUS && $this->getStartTime() < new \DateTime());
+    }
+
 }

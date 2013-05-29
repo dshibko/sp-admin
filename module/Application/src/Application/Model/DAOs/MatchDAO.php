@@ -80,8 +80,11 @@ class MatchDAO extends AbstractDAO {
         $qb->select('m.id as matchId, c.id as competitionId, c.displayName as competitionName')
             ->from($this->getRepositoryName(), 'm')
             ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->join('m.homeTeam', 'h')
             ->where($qb->expr()->gt('m.startTime', ":fromTime"))
             ->andWhere($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
+            ->orderBy('m.startTime', 'ASC')
+            ->addOrderBy('h.displayName', 'ASC')
             ->setParameter("fromTime", $fromTime)
             ->setParameter("status1", Match::PRE_MATCH_STATUS)
             ->setParameter("status2", Match::LIVE_STATUS)
@@ -96,7 +99,26 @@ class MatchDAO extends AbstractDAO {
      * @param bool $skipCache
      * @return integer
      */
-    function getMatchesLeftInTheSeason(\DateTime $fromTime, Season $season, $skipCache = false) {
+    function getLiveMatchesNumber(\DateTime $fromTime, Season $season, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('m.id'))
+            ->from($this->getRepositoryName(), 'm')
+            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->where($qb->expr()->andX($qb->expr()->lt('m.startTime', ":fromTime"), $qb->expr()->eq('m.status', ":status1")))
+            ->orWhere($qb->expr()->eq('m.status', ':status2'))
+            ->setParameter("fromTime", $fromTime)
+            ->setParameter("status1", Match::PRE_MATCH_STATUS)
+            ->setParameter("status2", Match::LIVE_STATUS);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @param \DateTime $fromTime
+     * @param \Application\Model\Entities\Season $season
+     * @param bool $skipCache
+     * @return integer
+     */
+    function getMatchesLeftInTheSeasonNumber(\DateTime $fromTime, Season $season, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('m.id'))
             ->from($this->getRepositoryName(), 'm')
@@ -106,6 +128,30 @@ class MatchDAO extends AbstractDAO {
             ->setParameter("fromTime", $fromTime)
             ->setParameter("status", Match::PRE_MATCH_STATUS);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @param \DateTime $fromTime
+     * @param \Application\Model\Entities\Season $season
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    function getMatchesLeftInTheSeason(\DateTime $fromTime, Season $season, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('m.id, m.status, m.startTime, m.timezone, h.displayName as homeName, h.logoPath as homeLogo, a.displayName as awayName, a.logoPath as awayLogo, c.displayName as competitionName')
+            ->from($this->getRepositoryName(), 'm')
+            ->join('m.homeTeam', 'h')
+            ->join('m.awayTeam', 'a')
+            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->where($qb->expr()->gt('m.startTime', ":fromTime"))
+            ->andWhere($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
+            ->setParameter("status1", Match::PRE_MATCH_STATUS)
+            ->setParameter("status2", Match::LIVE_STATUS)
+            ->setParameter("fromTime", $fromTime)
+            ->orderBy('m.startTime', 'ASC')
+            ->addOrderBy('h.displayName', 'ASC');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
     /**
