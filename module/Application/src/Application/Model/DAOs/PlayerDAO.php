@@ -41,7 +41,15 @@ class PlayerDAO extends AbstractDAO {
      */
     public function getAllPlayers($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('p, t')
+        $qb->select('
+                    p.id,
+                    p.displayName,
+                    p.position,
+                    p.shirtNumber,
+                    p.imagePath,
+                    p.backgroundImagePath,
+                    t.displayName as team_name
+        ')
             ->from($this->getRepositoryName(), 'p')
             ->join('p.team','t')
             ->orderBy('p.displayName', 'ASC');

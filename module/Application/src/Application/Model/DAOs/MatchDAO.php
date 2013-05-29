@@ -125,4 +125,34 @@ class MatchDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function getAllFixtures() {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT
+                m.id,
+                m.startTime as date_and_time,
+                c.displayName as competition_name,
+                s.displayName as season_name,
+                at.displayName as away_team,
+                ht.displayName as home_team
+            FROM
+               '.$this->getRepositoryName().' as m
+            INNER JOIN
+                    m.competition c
+            INNER JOIN
+                    c.season s
+            INNER JOIN
+                    m.awayTeam at
+            INNER JOIN
+                    m.homeTeam ht
+            ORDER BY
+                    date_and_time DESC
+        ');
+        return $query->getArrayResult();
+    }
+
+
 }
