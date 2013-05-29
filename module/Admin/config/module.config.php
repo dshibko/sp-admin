@@ -108,6 +108,21 @@ return array(
                     ),
                 ),
             ),
+            'admin-leagues' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/admin/leagues[/][:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Admin\Controller',
+                        'controller' => 'League',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'admin-content' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -251,7 +266,8 @@ return array(
             'Admin\Controller\Settings' => 'Admin\Controller\SettingsController',
             'Admin\Controller\Languages' => 'Admin\Controller\LanguagesController',
             'Admin\Controller\Clubs' => 'Admin\Controller\ClubsController',
-            'Admin\Controller\Players' => 'Admin\Controller\PlayersController'
+            'Admin\Controller\Players' => 'Admin\Controller\PlayersController',
+            'Admin\Controller\League' => 'Admin\Controller\LeagueController',
         ),
     ),
     'view_manager' => array(
@@ -313,6 +329,32 @@ return array(
                             ),
                         )
                     ),
+                    'leagues' => array(
+                        'title' => 'Leagues',
+                        'label' => 'icon-table',
+                        'route' => 'admin-leagues',
+                        'action' => 'index',
+                        'pages' => array(
+                            array(
+                                'title' => 'Create League',
+                                'label' => 'icon-plus',
+                                'route' => 'admin-leagues',
+                                'action' => 'add',
+                            ),
+                            array(
+                                'title' => 'Edit Season',
+                                'label' => 'icon-edit',
+                                'route' => 'admin-leagues',
+                                'action' => 'edit',
+                            ),
+                            array(
+                                'title' => 'Delete Season',
+                                'label' => 'icon-minus',
+                                'route' => 'admin-leagues',
+                                'action' => 'delete',
+                            ),
+                        )
+                    ),
                     'clubs' => array(
                         'title' => 'Clubs',
                         'label' => 'icon-group',
@@ -329,7 +371,7 @@ return array(
                     ),
                     'players' => array(
                         'title' => 'Players',
-                        'label' => 'icon-cogs',
+                        'label' => 'icon-user',
                         'route' => 'admin-players',
                         'action' => 'index',
                         'pages'  => array(

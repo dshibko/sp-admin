@@ -13,6 +13,15 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class League extends BasicObject {
 
+    const GLOBAL_TYPE = 'Global';
+    const REGIONAL_TYPE = 'Regional';
+    const MINI_TYPE = 'Mini';
+    const PRIVATE_TYPE = 'Private';
+
+    public static function getAvailableTypes() {
+        return array(self::GLOBAL_TYPE, self::REGIONAL_TYPE, self::MINI_TYPE, self::PRIVATE_TYPE);
+    }
+
     /**
      * @var string
      *
@@ -21,18 +30,11 @@ class League extends BasicObject {
     private $displayName;
 
     /**
-     * @var boolean
+     * @var string
      *
-     * @ORM\Column(name="is_global", type="boolean", nullable=false)
+     * @ORM\Column(name="type", type="string", length=10, nullable=false)
      */
-    private $isGlobal;
-
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="is_private", type="boolean", nullable=false)
-     */
-    private $isPrivate;
+    private $type;
 
     /**
      * @var \DateTime
@@ -92,14 +94,19 @@ class League extends BasicObject {
     private $season;
 
     /**
-     * @var Region
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToOne(targetEntity="Region")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="region_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToMany(targetEntity="Region", inversedBy="leagues", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\JoinTable(name="league_region",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="league_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="region_id", referencedColumnName="id")
+     *   }
+     * )
      */
-    private $region;
+    private $regions;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -148,49 +155,43 @@ class League extends BasicObject {
     }
 
     /**
-     * Set isGlobal
-     *
-     * @param boolean $isGlobal
-     * @return League
-     */
-    public function setIsGlobal($isGlobal)
-    {
-        $this->isGlobal = $isGlobal;
-    
-        return $this;
-    }
-
-    /**
      * Get isGlobal
      *
      * @return boolean 
      */
     public function getIsGlobal()
     {
-        return $this->isGlobal;
+        return $this->getType() == League::GLOBAL_TYPE;
     }
 
     /**
-     * Set isPrivate
+     * Get isRegional
      *
-     * @param boolean $isPrivate
-     * @return League
+     * @return boolean 
      */
-    public function setIsPrivate($isPrivate)
+    public function getIsRegional()
     {
-        $this->isPrivate = $isPrivate;
-    
-        return $this;
+        return $this->getType() == League::REGIONAL_TYPE;
+    }
+
+    /**
+     * Get isMini
+     *
+     * @return boolean
+     */
+    public function getIsMini()
+    {
+        return $this->getType() == League::MINI_TYPE;
     }
 
     /**
      * Get isPrivate
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getIsPrivate()
     {
-        return $this->isPrivate;
+        return $this->getType() == League::PRIVATE_TYPE;
     }
 
     /**
@@ -260,6 +261,22 @@ class League extends BasicObject {
     public function getLogoPath()
     {
         return $this->logoPath;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -342,26 +359,13 @@ class League extends BasicObject {
     }
 
     /**
-     * Set region
-     *
-     * @param Region $region
-     * @return League
-     */
-    public function setRegion(Region $region = null)
-    {
-        $this->region = $region;
-    
-        return $this;
-    }
-
-    /**
      * Get region
      *
      * @return Region
      */
     public function getRegion()
     {
-        return $this->region;
+        return $this->getRegions()->first();
     }
 
     /**
@@ -475,6 +479,45 @@ class League extends BasicObject {
     public function getPrizes()
     {
         return $this->prizes;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $regions
+     */
+    public function setRegions($regions)
+    {
+        $this->regions = $regions;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRegions()
+    {
+        return $this->regions;
+    }
+
+    /**
+     * Add regions
+     *
+     * @param Region $regions
+     * @return League
+     */
+    public function addRegion(Region $regions)
+    {
+        $this->regions[] = $regions;
+
+        return $this;
+    }
+
+    /**
+     * Remove regions
+     *
+     * @param Region $regions
+     */
+    public function removeRegion(Region $regions)
+    {
+        $this->regions->removeElement($regions);
     }
 
     private $prizesByRegion = array();

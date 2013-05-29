@@ -66,4 +66,8 @@ class LeagueManager extends BasicManager {
 
     }
 
+    public function getAllLeagues($hydrate = false, $skipCache = false) {
+        return LeagueDAO::getInstance($this->getServiceLocator())->getAllLeagues($hydrate, $skipCache);
+    }
+
 }
