@@ -31,106 +31,119 @@ class Player extends BasicObject {
      *   }
      * )
      */
-    private $competitions;
+    protected $competitions;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="join_date", type="date")
      */
-    private $joinDate;
+    protected $joinDate;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="birth_date", type="date")
      */
-    private $birthDate;
+    protected $birthDate;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="height", type="integer")
      */
-    private $height;
+    protected $height;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="weight", type="integer")
      */
-    private $weight;
+    protected $weight;
 
     /**
      * @var string
      *
      * @ORM\Column(name="country", type="string", length=100)
      */
-    private $country;
+    protected $country;
 
     /**
      * @var string
      *
      * @ORM\Column(name="real_position", type="string", length=50)
      */
-    private $realPosition;
+    protected $realPosition;
 
     /**
      * @var string
      *
      * @ORM\Column(name="real_position_side", type="string", length=20)
      */
-    private $realPositionSide;
+    protected $realPositionSide;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="feeder_id", type="integer", nullable=false)
      */
-    private $feederId;
+    protected $feederId;
 
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      *
      * @ORM\Column(name="surname", type="string", length=100, nullable=false)
      */
-    private $surname;
+    protected $surname;
 
     /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=50, nullable=false)
      */
-    private $displayName;
+    protected $displayName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="position", type="string", length=50, nullable=false)
      */
-    private $position;
+    protected $position;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="shirt_number", type="integer", nullable=true)
      */
-    private $shirtNumber;
+    protected $shirtNumber;
 
     /**
      * @var string
      *
      * @ORM\Column(name="image_path", type="string", length=255, nullable=true)
      */
-    private $imagePath;
+    protected $imagePath;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="background_image_path", type="string", length=255, nullable=true)
+     */
+    protected $backgroundImagePath;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_blocked", type="boolean")
+     */
+    protected $isBlocked = false;
     /**
      * @var integer
      *
@@ -138,7 +151,7 @@ class Player extends BasicObject {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Team
@@ -148,7 +161,7 @@ class Player extends BasicObject {
      *   @ORM\JoinColumn(name="team_id", referencedColumnName="id")
      * })
      */
-    private $team;
+    protected $team;
 
 
     /**
@@ -514,6 +527,44 @@ class Player extends BasicObject {
     public function clearCompetitions()
     {
         $this->competitions->clear();
+    }
+
+
+    /**
+     * @param $backgroundImagePath
+     * @return \Application\Model\Entities\Player
+     */
+    public function setBackgroundImagePath($backgroundImagePath)
+    {
+        $this->backgroundImagePath = $backgroundImagePath;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBackgroundImagePath()
+    {
+        return $this->backgroundImagePath;
+    }
+
+
+    /**
+     * @param $isBlocked
+     * @return Player
+     */
+    public function setIsBlocked($isBlocked)
+    {
+        $this->isBlocked = $isBlocked;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsBlocked()
+    {
+        return $this->isBlocked;
     }
 
 }

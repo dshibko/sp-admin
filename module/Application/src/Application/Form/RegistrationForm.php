@@ -294,7 +294,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'unchecked_value' => 0
             ),
             'attributes' => array(
-                'class' => 'required'
+//                'class' => 'required'
             )
         ));
 
@@ -310,7 +310,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'unchecked_value' => 0
             ),
             'attributes' => array(
-                'class' => 'required'
+//                'class' => 'required'
             )
         ));
 

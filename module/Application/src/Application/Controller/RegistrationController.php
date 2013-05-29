@@ -52,6 +52,10 @@ class RegistrationController extends AbstractActionController
                         //TODO send welcome email
                         return $this->redirect()->toRoute(self::SETUP_PAGE_ROUTE);
                     }
+                }else{
+                    foreach ($form->getMessages() as $el => $messages) {
+                        $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages) . "<br />");
+                    }
                 }
             }
         } catch (\Exception $e) {
@@ -85,7 +89,7 @@ class RegistrationController extends AbstractActionController
         try {
             $userManager = UserManager::getInstance($this->getServiceLocator());
             $country = $userManager->getUserGeoIpCountry();
-            $language = $userManager->getUserLanguageByCountry($country);
+            $language = $userManager->getUserLanguage();
             $form->get('region')->setValue($country->getId());
             $form->get('language')->setValue($language->getId());
             $request = $this->getRequest();

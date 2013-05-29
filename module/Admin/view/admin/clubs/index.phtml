@@ -21,12 +21,12 @@ $this->headTitle($title);
                         <th><?=$this->translate('Short Name')?></th>
                         <th><?=$this->translate('Founded')?></th>
                         <th><?=$this->translate('Logo')?></th>
-                        <th style="width: 60px"></th>
+                        <th style="width: 60px"><?=$this->translate('Action')?></th>
                     </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($this->clubs as $club) : ?>
-                    <tr class="odd gradeX <?php echo (empty($club['logoPath']) ? ' new-club' : '');?>">
+                    <tr class="odd gradeX <?php echo (empty($club['logoPath']) ? ' new-item' : '');?>">
                         <td><?=$club['displayName'];?></td>
                         <td><?=$club['shortName'];?></td>
                         <td><?=$club['founded'];?></td>
@@ -53,7 +53,6 @@ $this->headTitle($title);
     </div>
 </div>
 <!-- BEGIN PAGE LEVEL STYLES -->
-<link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/glyphicons/css/glyphicons.css" />
 <link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/data-tables/DT_bootstrap.css" />
 <link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/css/custom.css" />
 <!-- END PAGE LEVEL STYLES -->

@@ -337,17 +337,4 @@ class UserManager extends BasicManager {
         return $this->userGeoIpIsoCode;
     }
 
-    /**
-     * @param \Application\Model\Entities\Country $country
-     * @return mixed
-     */
-    public function getUserLanguageByCountry(\Application\Model\Entities\Country $country)
-    {
-        $language = $country->getLanguage();
-        if (!empty($language) && $language instanceof \Application\Model\Entities\Language){
-            return $language;
-        }
-        return LanguageDAO::getInstance($this->getServiceLocator())->getDefaultLanguage();
-    }
-
 }
