@@ -341,3 +341,29 @@ CREATE TABLE `settings` (
 	setting_value VARCHAR(500) NOT NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
+
+-- oko 28.05
+
+ALTER TABLE  `league` ADD  `type` ENUM(  'Global',  'Regional',  'Mini',  'Private' ) NOT NULL AFTER  `season_id`;
+UPDATE `league` SET `type` = 'Global' WHERE `is_global` = 1;
+UPDATE `league` SET `type` = 'Regional' WHERE `region_id` is not null;
+ALTER TABLE  `league` DROP  `is_global` , DROP  `is_private` ;
+
+CREATE TABLE `league_region` (
+	id INT AUTO_INCREMENT NOT NULL,
+	league_id INT NOT NULL,
+	region_id INT NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `league_region` ADD FOREIGN KEY (league_id) REFERENCES `league`(id);
+ALTER TABLE `league_region` ADD FOREIGN KEY (region_id) REFERENCES `region`(id);
+
+INSERT INTO `league_region` (`league_id`, `region_id`)
+SELECT `id`, `region_id` FROM `league` WHERE `region_id` is not null;
+
+ALTER TABLE `league` DROP FOREIGN KEY `league_ibfk_3`;
+ALTER TABLE  `league` DROP  `region_id`;
+
+-- oko 29.05
+
+ALTER TABLE  `prediction` DROP  `scorers_predicted`;

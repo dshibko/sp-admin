@@ -69,6 +69,14 @@ class Region extends BasicObject {
     {
         return $this->id;
     }
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="League", mappedBy="regions")
+     */
+    private $leagues;
+
     /**
      * @var \Doctrine\Common\Collections\Collection
      *

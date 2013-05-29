@@ -102,6 +102,23 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
     }
 
     /**
+     * @param array $fields
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     * @throws \Exception
+     */
+    public function findAllByFields(array $fields, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $selectArr = array();
+        foreach ($fields as $field)
+            $selectArr[] = 'e.' . $field;
+        $qb->select(implode(',', $selectArr))
+            ->from($this->getRepositoryName(), 'e');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
      * @param bool $skipCache
      * @return int
      * @throws \Exception

@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use \Application\Model\Entities\League;
 use \Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -65,7 +66,7 @@ class LeagueDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('l')
             ->from($this->getRepositoryName(), 'l')
-            ->where($qb->expr()->eq('l.isGlobal', 1));
+            ->where($qb->expr()->eq('l.type', League::GLOBAL_TYPE));
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
@@ -95,9 +96,17 @@ class LeagueDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('l')
             ->from($this->getRepositoryName(), 'l')
-            ->where($qb->expr()->eq('l.isGlobal', 0))
-            ->andWhere($qb->expr()->eq('l.isPrivate', 0))
+            ->where($qb->expr()->eq('l.type', League::REGIONAL_TYPE))
             ->andWhere($qb->expr()->eq('l.region', $region->getId()));
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    public function getAllLeagues($hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l.id, l.type, l.displayName, l.startDate, l.endDate, s.displayName as seasonName')
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.season', 's')
+            ->orderBy('l.startDate', 'DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 

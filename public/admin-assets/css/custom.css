@@ -45,3 +45,19 @@ iframe.wysihtml5-sandbox {
 .new-item td{
     background-color: #de9683 !important;
 }
+
+.datatable-filter {
+    margin-bottom: 6px;
+}
+
+.datatable-filter label {
+    display: inline;
+    padding-right: 10px;
+}
+
+.datatable-filter select {
+    width: auto;
+    height: auto;
+    line-height: 20px;
+    margin-bottom: 4px;
+}

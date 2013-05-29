@@ -80,7 +80,7 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
 
         $this->add(array(
             'name' => 'ahead-predictions-days',
-            'type'  => 'number',
+            'type'  => 'text',
             'options' => array(
                 'label' => 'Ahead predictions days',
             ),

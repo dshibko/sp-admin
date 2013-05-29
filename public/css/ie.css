@@ -225,3 +225,18 @@
 .lt-ie8 .make-prediction .make-prediction-content .league-logo em {
   margin: 0 0 1em;
 }
+.lt-ie8  .make-prediction > header .flag-new-prediction {
+  background: #de1012;
+  height: 3em;
+  bottom: -3em;
+}
+
+
+/***fixtures***/
+.ie8 .fixtures table {
+  border-collapse: separate;
+  position: relative;
+}
+.ie8 .fixtures table tr.flag-new-prediction td {
+  position: relative;
+}
