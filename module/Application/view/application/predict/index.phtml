@@ -72,10 +72,10 @@
                                 <label for="home-team-score">
                                     <figure>
                                         <img src="<?=$this->clubLogo($this->current['homeLogo'])?>" alt="<?=$this->current['homeName'];?>">
+                                        <figcaption>
+                                            <?=$this->current['homeName'];?>
+                                        </figcaption>
                                     </figure>
-                                    <span>
-                                        <?=$this->current['homeName'];?>
-                                    </span>
                                 </label>
                                 <input type="text" class="required" maxlength="2" name="home-team-score" id="home-team-score" value="<?=$this->current['prediction']['homeTeamScore']?>">
                             </fieldset>
@@ -99,10 +99,10 @@
                                 <label for="away-team-score">
                                     <figure>
                                         <img src="<?=$this->clubLogo($this->current['awayLogo'])?>" alt="<?=$this->current['awayName'];?>">
+                                        <figcaption>
+                                            <?=$this->current['awayName'];?>
+                                        </figcaption>
                                     </figure>
-                                    <span>
-                                        <?=$this->current['awayName'];?>
-                                    </span>
                                 </label>
                                 <input type="text" class="required" maxlength="2" name="away-team-score" id="away-team-score" value="<?=$this->current['prediction']['awayTeamScore']?>">
                             </fieldset>

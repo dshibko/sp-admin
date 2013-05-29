@@ -30,8 +30,6 @@ class FixtureManager extends BasicManager
 
 
     /**
-     * @param bool $hydrate
-     * @param bool $skipCache
      * @return array
      */
     public function getAllFixtures()
