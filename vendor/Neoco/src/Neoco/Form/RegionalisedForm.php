@@ -45,4 +45,13 @@ abstract class RegionalisedForm extends Form {
 
     abstract protected function initFormByObject($dataObject);
 
+    protected function setElementValue($elementName, $value) {
+        if ($this->has($elementName)) {
+            $el = $this->get($elementName);
+            $elValue = $el->getValue();
+            if (empty($elValue))
+                $el->setValue($value);
+        }
+    }
+
 }

@@ -11,6 +11,8 @@ class MessagesConstants
     const INFO_ADMIN_NO_PREV_MATCH = "No matches played";
     const SUCCESS_SEASON_CREATED = "A season was created successfully.";
     const SUCCESS_SEASON_UPDATED = "A season was updated successfully.";
+    const SUCCESS_LEAGUE_CREATED = "A league was created successfully.";
+    const SUCCESS_LEAGUE_UPDATED = "A league was updated successfully.";
     const SUCCESS_LANDING_UPDATED = "A landing page content was updated successfully.";
     const SUCCESS_GAMEPLAY_BLOCK_CREATED = "A gameplay block was created successfully.";
     const SUCCESS_GAMEPLAY_BLOCK_UPDATED = "A gameplay block was updated successfully.";
@@ -40,6 +42,7 @@ class MessagesConstants
     const ERROR_CONVERTING_PO_FILE_TO_MO_FAILED = 'Converting Po file to Mo failed';
     const ERROR_UPDATE_LANGUAGE_COUNTRIES_FAILED = 'Language countries update failed';
     const ERROR_SEASON_DATES_ARE_NOT_AVAILABLE = 'Dates interval you selected intersects with another season\'s interval.';
+    const ERROR_LEAGUE_DATES_ARE_NOT_AVAILABLE = 'Dates interval you selected has to be between selected seasons dates.';
     const ERROR_CANNOT_FIND_CLUB = 'Cannot find club';
     const ERROR_CANNOT_FIND_LANGUAGE = 'Cannot find language';
     const ERROR_INVALID_CLUB_ID = 'Invalid Club Id';

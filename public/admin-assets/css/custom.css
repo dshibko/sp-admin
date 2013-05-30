@@ -61,3 +61,7 @@ iframe.wysihtml5-sandbox {
     line-height: 20px;
     margin-bottom: 4px;
 }
+
+div.row-fluid div.tab-pane.hidden {
+    display: none;
+}

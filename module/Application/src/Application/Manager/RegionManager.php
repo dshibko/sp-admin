@@ -90,4 +90,9 @@ class RegionManager extends BasicManager {
         }
     }
 
+    public function getUsers($regionId, $hydrate = false, $skipCache = false) {
+        $regionDAO = RegionDAO::getInstance($this->getServiceLocator());
+        return $regionDAO->getUsersByRegion($regionId, $hydrate, $skipCache);
+    }
+
 }

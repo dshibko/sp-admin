@@ -367,3 +367,9 @@ ALTER TABLE  `league` DROP  `region_id`;
 -- oko 29.05
 
 ALTER TABLE  `prediction` DROP  `scorers_predicted`;
+
+-- oko 30.05
+
+ALTER TABLE  `league_region` ADD  `display_name` VARCHAR( 255 ) NULL;
+ALTER TABLE `user` DROP FOREIGN KEY `user_ibfk_3`;
+ALTER TABLE  `user` DROP  `region_id`;

@@ -46,6 +46,22 @@ class SeasonDAO extends AbstractDAO {
     /**
      * @param bool $hydrate
      * @param bool $skipCache
+     * @return array
+     * @throws \Exception
+     */
+    public function getAllNotFinishedSeasons($hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('s')
+            ->from($this->getRepositoryName(), 's')
+            ->where($qb->expr()->gt('s.endDate', ":now"))
+            ->orderBy('s.startDate', 'ASC')
+            ->setParameter("now", new \DateTime());
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
      * @return array|\Application\Model\Entities\Season
      */
     public function getCurrentSeason($hydrate = false, $skipCache = false) {

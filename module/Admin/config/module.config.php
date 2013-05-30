@@ -300,7 +300,8 @@ return array(
             'admin/partials/breadcrumbs' => __DIR__ . '/../view/partials/breadcrumbs.phtml',
             'admin/partials/menu' => __DIR__ . '/../view/partials/menu.phtml',
             'admin/partials/select' => __DIR__ . '/../view/partials/select.phtml',
-            'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml'
+            'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml',
+            'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -351,10 +352,16 @@ return array(
                         'action' => 'index',
                         'pages' => array(
                             array(
-                                'title' => 'Create League',
+                                'title' => 'Add Mini League',
                                 'label' => 'icon-plus',
                                 'route' => 'admin-leagues',
-                                'action' => 'add',
+                                'action' => 'addMiniLeague',
+                            ),
+                            array(
+                                'title' => 'Edit Mini League',
+                                'label' => 'icon-edit',
+                                'route' => 'admin-leagues',
+                                'action' => 'editMiniLeague',
                             ),
                             array(
                                 'title' => 'Edit Season',
