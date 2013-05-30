@@ -28,6 +28,7 @@ class MessagesConstants
     const SUCCESS_CLUB_SAVED = 'Club was successfully saved';
     const SUCCESS_SYNC_WITH_FEED = 'Data successfully sync with feed';
     const SUCCESS_PLAYER_SAVED = 'Player was successfully saved';
+    const SUCCESS_FIXTURE_SAVED = 'Fixture was successfully saved';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -48,6 +49,8 @@ class MessagesConstants
     const ERROR_INVALID_CLUB_ID = 'Invalid Club Id';
     const ERROR_INVALID_PLAYER_ID = 'Invalid Player Id';
     const ERROR_CANNOT_FIND_PLAYER = 'Cannot find player';
+    const ERROR_INVALID_FIXTURE_ID = 'Invalid Fixture Id';
+    const ERROR_CANNOT_FIND_FIXTURE = 'Cannot find fixture';
 
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";

@@ -44,6 +44,16 @@ class SeasonDAO extends AbstractDAO {
     }
 
     /**
+     * @param array $fields
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getAllSeasonsByFields(array $fields, $hydrate = false, $skipCache = false)
+    {
+         return parent::findAllByFields($fields,$hydrate, $skipCache);
+    }
+    /**
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
@@ -95,6 +105,24 @@ class SeasonDAO extends AbstractDAO {
             ->setParameter("startDate", $startDate)
             ->setParameter("endDate", $endDate);
         return $this->getQuery($qb, false)->getSingleScalarResult() == 0;
+    }
+
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getCurrentAndFutureSeasons($hydrate = false, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+        $qb->select('s,c')
+            ->from($this->getRepositoryName(), 's')
+            ->join('s.competitions', 'c')
+            ->where($qb->expr()->gte('s.endDate', ':today'))
+            ->setParameter('today', $today);
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
 }

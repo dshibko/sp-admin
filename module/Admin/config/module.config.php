@@ -302,6 +302,7 @@ return array(
             'admin/partials/select' => __DIR__ . '/../view/partials/select.phtml',
             'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml',
             'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
+            'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -364,13 +365,13 @@ return array(
                                 'action' => 'editMiniLeague',
                             ),
                             array(
-                                'title' => 'Edit Season',
+                                'title' => 'Edit League',
                                 'label' => 'icon-edit',
                                 'route' => 'admin-leagues',
                                 'action' => 'edit',
                             ),
                             array(
-                                'title' => 'Delete Season',
+                                'title' => 'Delete League',
                                 'label' => 'icon-minus',
                                 'route' => 'admin-leagues',
                                 'action' => 'delete',
@@ -420,7 +421,7 @@ return array(
                             array(
                                 'title' => 'Edit Fixture',
                                 'label' => 'icon-edit',
-                                'route' => 'admin-fixture',
+                                'route' => 'admin-fixtures',
                                 'action' => 'edit',
                             ),
                         )

@@ -33,15 +33,14 @@
 
         <div id="wrapper">
             <header role="banner">
-                <a href="index.html" class="logo">
-                    <img src="img/fcbarcelona-355.png" alt="FCBARCELONA Score Predictor">
-                </a>
-                <nav role="navigation" class="main-navigation" style="display:none;">
+                <nav role="navigation" class="main-navigation">
                     <ul class="clearfix">
-                        <li>
+                        <li class="active">
+                            <strong class="flag-unread-items"><span>1</span></strong>
                             <a href="">Predict</a>
                         </li>
                         <li>
+                            <strong class="flag-unread-items"><span>52</span></strong>
                             <a href="">Results</a>
                         </li>
                         <li>
@@ -53,13 +52,13 @@
                         <li>
                             <a href="">Prizes</a>
                         </li>
-                        <li class="user-navigation popup">
-                            <details>
+                        <li class="user-navigation">
+                            <details open="open" class="popup">
                                 <summary class="login-popup-button">User Navigation</summary>
                                 <div class="popup-content">
                                     <ul>
-                                        <li>
-                                            <img src="" alt="">
+                                        <li class="user-profile clearfix">
+                                            <img src="img/users/photo-1.png" alt="">
                                             <strong>Bob Visions</strong>
                                             <a href="">View full profile</a>
                                         </li>
@@ -74,9 +73,13 @@
                             </details>
                         </li>
                     </ul>
+                    <a class="mobilenav expand" href="" style="">mobile navigation</a>
                 </nav>
 
                 <div  class="banner">
+                    <a href="index.html" class="logo">
+                        <img src="img/fcbarcelona-355.png" alt="FCBARCELONA Score Predictor">
+                    </a>
                     <figure>
                         <div data-alt="FCBARCELONA Score Predictor Banner" data-picture="">
                             <div data-src="img/banner-innerpage-480.png"></div>
@@ -109,7 +112,7 @@
                                        <img src="img/clubs/fc-barcelona.png" alt="" >
                                    </div>
                                    <figcaption>
-                                       FC Barcelonadfgdfgdfg
+                                       FC Barcelona
                                        <time>Thur 22 nov 7.30 PM</time>
                                    </figcaption>
                                </figure>
@@ -118,7 +121,7 @@
                                <div>
                                    <span>Premier League</span>
                                    <em>VS</em>
-                                   <a href="">Predicir el resultado</a>
+                                   <a href="">Predict the score</a>
                                </div>
                            </td>
                            <td class="away-team">

@@ -48,9 +48,11 @@
     }
     Popup.prototype.show = function() {
         this.content.addClass("popup-opened");
+        this.button.addClass("active");
     }
     Popup.prototype.hide = function() {
         this.content.removeClass("popup-opened");
+        this.button.removeClass("active");
     }
     
     $.fn.extend({
