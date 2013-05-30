@@ -19,12 +19,13 @@ class SeasonController extends AbstractActionController {
 
     public function indexAction() {
 
+        $seasons = array();
+
         try {
 
-            $seasons = SeasonManager::getInstance($this->getServiceLocator())->getAllSeasons(false);
+            $seasons = SeasonManager::getInstance($this->getServiceLocator())->getAllSeasons();
 
         } catch(\Exception $e) {
-            $seasons = array();
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
@@ -155,8 +156,9 @@ class SeasonController extends AbstractActionController {
                     }
                 } else
                     $form->handleErrorMessages($form->getMessages(), $this->flashMessenger());
-            } else
-                $form->initForm($season);
+            }
+
+            $form->initForm($season);
 
             return array(
                 'id' => $id,

@@ -301,7 +301,8 @@ return array(
             'admin/partials/menu' => __DIR__ . '/../view/partials/menu.phtml',
             'admin/partials/select' => __DIR__ . '/../view/partials/select.phtml',
             'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml',
-            'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml'
+            'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
+            'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -352,19 +353,25 @@ return array(
                         'action' => 'index',
                         'pages' => array(
                             array(
-                                'title' => 'Create League',
+                                'title' => 'Add Mini League',
                                 'label' => 'icon-plus',
                                 'route' => 'admin-leagues',
-                                'action' => 'add',
+                                'action' => 'addMiniLeague',
                             ),
                             array(
-                                'title' => 'Edit Season',
+                                'title' => 'Edit Mini League',
+                                'label' => 'icon-edit',
+                                'route' => 'admin-leagues',
+                                'action' => 'editMiniLeague',
+                            ),
+                            array(
+                                'title' => 'Edit League',
                                 'label' => 'icon-edit',
                                 'route' => 'admin-leagues',
                                 'action' => 'edit',
                             ),
                             array(
-                                'title' => 'Delete Season',
+                                'title' => 'Delete League',
                                 'label' => 'icon-minus',
                                 'route' => 'admin-leagues',
                                 'action' => 'delete',

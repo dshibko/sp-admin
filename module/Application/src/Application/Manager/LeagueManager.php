@@ -2,6 +2,12 @@
 
 namespace Application\Manager;
 
+use \Application\Model\Entities\LeagueUser;
+use \Doctrine\Common\Collections\ArrayCollection;
+use \Application\Model\Entities\LeagueRegion;
+use \Application\Model\Entities\Prize;
+use \Application\Model\DAOs\RegionDAO;
+use \Application\Model\Entities\League;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\DAOs\LeagueUserDAO;
 use \Application\Model\DAOs\SeasonDAO;
@@ -68,6 +74,80 @@ class LeagueManager extends BasicManager {
 
     public function getAllLeagues($hydrate = false, $skipCache = false) {
         return LeagueDAO::getInstance($this->getServiceLocator())->getAllLeagues($hydrate, $skipCache);
+    }
+
+    /**
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param int $seasonId
+     * @return bool
+     */
+    public function checkDates($startDate, $endDate, $seasonId) {
+        return LeagueDAO::getInstance($this->getServiceLocator())->checkLeagueDatesInterval($startDate, $endDate, $seasonId);
+    }
+
+    public function getLeagueById($id, $hydrate = false, $skipCache = false) {
+        return LeagueDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
+    }
+
+    public function saveMiniLeague($displayName, $seasonId, $startDate, $endDate, $regionsData, $leagueId = -1) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        if ($leagueId == -1) {
+            $league = new League();
+            $season = SeasonDAO::getInstance($this->getServiceLocator())->findOneById($seasonId);
+            $league->setSeason($season);
+            $league->setCreationDate(new \DateTime());
+            $league->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
+        } else
+            $league = $leagueDAO->findOneById($leagueId);
+        $league->setStartDate($startDate);
+        $league->setEndDate($endDate);
+        $league->setType(League::MINI_TYPE);
+        $league->setDisplayName($displayName);
+        $regionDAO = RegionDAO::getInstance($this->getServiceLocator());
+        $regionManager = RegionManager::getInstance($this->getServiceLocator());
+        $prizes = array();
+        $leagueRegions = array();
+        $leagueUsers = array();
+        foreach ($regionsData as $regionId => $regionRow) {
+            $region = $regionDAO->findOneById($regionId);
+            if ($region != null) {
+                $prize = new Prize();
+                if (empty($regionRow['prizeImagePath']))
+                    $regionRow['prizeImagePath'] = $league->getPrizeByRegionId($regionId)->getPrizeImage();
+                $prize->setPrizeImage($regionRow['prizeImagePath']);
+                $prize->setPrizeDescription($regionRow['prizeDescription']);
+                $prize->setPrizeTitle($regionRow['prizeTitle']);
+                if (empty($regionRow['postWinImagePath']))
+                    $regionRow['postWinImagePath'] = $league->getPrizeByRegionId($regionId)->getPostWinImage();
+                $prize->setPostWinImage($regionRow['postWinImagePath']);
+                $prize->setPostWinDescription($regionRow['postWinDescription']);
+                $prize->setPostWinTitle($regionRow['postWinTitle']);
+                $prize->setLeague($league);
+                $prize->setRegion($region);
+                $prizes [] = $prize;
+                $leagueRegion = new LeagueRegion();
+                $leagueRegion->setDisplayName($regionRow['displayName']);
+                $leagueRegion->setLeague($league);
+                $leagueRegion->setRegion($region);
+                $leagueRegions [] = $leagueRegion;
+                $users = $regionManager->getUsers($regionId);
+                foreach ($users as $user) {
+                    $leagueUser = new LeagueUser();
+                    $leagueUser->setUser($user);
+                    $leagueUser->setJoinDate(new \DateTime());
+                    $leagueUser->setLeague($league);
+                    $leagueUsers [] = $leagueUser;
+                }
+            }
+        }
+        $league->getPrizes()->clear();
+        $league->setPrizes(new ArrayCollection($prizes));
+        $league->getLeagueRegions()->clear();
+        $league->setLeagueRegions(new ArrayCollection($leagueRegions));
+        $league->getLeagueUsers()->clear();
+        $league->setLeagueUsers(new ArrayCollection($leagueUsers));
+        $leagueDAO->save($league);
     }
 
 }

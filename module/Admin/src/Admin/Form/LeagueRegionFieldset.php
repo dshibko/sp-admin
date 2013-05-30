@@ -5,7 +5,7 @@ namespace Admin\Form;
 use \Neoco\Form\RegionFieldset;
 use \Zend\Form\Fieldset;
 
-class SeasonRegionFieldset extends RegionFieldset {
+class LeagueRegionFieldset extends RegionFieldset {
 
     public function __construct($region) {
 
@@ -18,7 +18,7 @@ class SeasonRegionFieldset extends RegionFieldset {
                 'required' => 'required'
             ),
             'options' => array(
-                'label' => 'User facing season name',
+                'label' => 'User facing league name',
             ),
         ));
 
@@ -90,32 +90,19 @@ class SeasonRegionFieldset extends RegionFieldset {
             ),
         ));
 
-        $this->add(array(
-            'name' => 'terms',
-            'type'  => 'textarea',
-            'attributes' => array(
-                'required' => 'required'
-            ),
-            'options' => array(
-                'label' => 'Terms',
-            ),
-        ));
-
     }
 
     /**
-     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\League $league
      */
-    function initFieldsetByObject($season) {
+    function initFieldsetByObject($league) {
         $region = $this->getRegion();
-        foreach ($season->getSeasonRegions() as $seasonRegion)
-            if ($seasonRegion->getRegion()->getId() == $region['id']) {
-                $this->get('displayName')->setValue($seasonRegion->getDisplayName());
-                $this->get('terms')->setValue($seasonRegion->getTerms());
+        foreach ($league->getLeagueRegions() as $leagueRegion)
+            if ($leagueRegion->getRegion()->getId() == $region['id']) {
+                $this->get('displayName')->setValue($leagueRegion->getDisplayName());
                 break;
             }
-        $globalLeague = $season->getGlobalLeague();
-        foreach ($globalLeague->getPrizes() as $prize)
+        foreach ($league->getPrizes() as $prize)
             if ($prize->getRegion()->getId() == $region['id']) {
                 foreach ($this->getElements() as $element) {
                     $getter = 'get' . ucfirst($element->getName());

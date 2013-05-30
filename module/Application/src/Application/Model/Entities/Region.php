@@ -80,13 +80,6 @@ class Region extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="User", mappedBy="region")
-     */
-    protected $users;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
      * @ORM\OneToMany(targetEntity="RegionGameplayContent", mappedBy="region")
      */
     protected $regionGameplayBlocks;
@@ -110,43 +103,9 @@ class Region extends BasicObject {
      */
     public function __construct()
     {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->countries = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
-    /**
-     * Add users
-     *
-     * @param User $users
-     * @return Region
-     */
-    public function addUser(User $users)
-    {
-        $this->users[] = $users;
-    
-        return $this;
-    }
-
-    /**
-     * Remove users
-     *
-     * @param User $users
-     */
-    public function removeUser(User $users)
-    {
-        $this->users->removeElement($users);
-    }
-
-    /**
-     * Get users
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getUsers()
-    {
-        return $this->users;
-    }
-
     /**
      * Add countries
      *
@@ -246,6 +205,22 @@ class Region extends BasicObject {
     public function getIsDefault()
     {
         return $this->isDefault;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $leagues
+     */
+    public function setLeagues($leagues)
+    {
+        $this->leagues = $leagues;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLeagues()
+    {
+        return $this->leagues;
     }
 
 }

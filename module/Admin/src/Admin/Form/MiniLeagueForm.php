@@ -7,15 +7,15 @@ use \Neoco\Form\RegionFieldset;
 use \Zend\InputFilter\InputFilter;
 use \Admin\Form\Filter\LoginInputFilter;
 
-class SeasonForm extends RegionalisedForm {
+class MiniLeagueForm extends RegionalisedForm {
 
     public function __construct($regionFieldsets) {
 
-        parent::__construct($regionFieldsets, 'season');
+        parent::__construct($regionFieldsets, 'league');
 
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
-        $this->setInputFilter(new \Admin\Form\Filter\SeasonInputFilter());
+        $this->setInputFilter(new \Admin\Form\Filter\LeagueInputFilter());
 
         $this->add(array(
             'name' => 'displayName',
@@ -24,6 +24,17 @@ class SeasonForm extends RegionalisedForm {
             ),
             'options' => array(
                 'label' => 'Internal season name',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'season',
+            'type'  => 'select',
+            'attributes' => array(
+            ),
+            'options' => array(
+                'label' => 'Season',
+                'disable_inarray_validator' => true,
             ),
         ));
 
@@ -38,12 +49,12 @@ class SeasonForm extends RegionalisedForm {
         ));
 
         $this->add(array(
-            'name' => 'feederId',
-            'type'  => 'text',
+            'name' => 'regions',
+            'type'  => 'hidden',
             'attributes' => array(
             ),
             'options' => array(
-                'label' => 'Feeder season id',
+                'label' => 'Regions',
             ),
         ));
 
@@ -58,12 +69,15 @@ class SeasonForm extends RegionalisedForm {
     }
 
     /**
-     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\League $league
      */
-    protected function initFormByObject($season) {
-        $this->setElementValue('displayName', $season->getDisplayName());
-        $this->setElementValue('dates', $season->getStartDate()->format('d/m/Y') . ' - ' . $season->getEndDate()->format('d/m/Y'));
-        $this->setElementValue('feederId', $season->getFeederId());
+    protected function initFormByObject($league) {
+        $this->setElementValue('displayName', $league->getDisplayName());
+        $this->setElementValue('dates', $league->getStartDate()->format('d/m/Y') . ' - ' . $league->getEndDate()->format('d/m/Y'));
+        $regionIds = array();
+        foreach ($league->getLeagueRegions() as $leagueRegion)
+            $regionIds[] = $leagueRegion->getRegion()->getId();
+        $this->setElementValue('regions', implode(",", $regionIds));
     }
 
 }

@@ -111,6 +111,13 @@ class League extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
+     * @ORM\OneToMany(targetEntity="LeagueRegion", mappedBy="league", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $leagueRegions;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
      * @ORM\ManyToMany(targetEntity="User", inversedBy="leagues", cascade={"persist"})
      * @ORM\JoinTable(name="league_user",
      *   joinColumns={
@@ -129,6 +136,10 @@ class League extends BasicObject {
     public function __construct()
     {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->leagueRegions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->leagueUsers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->prizes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->regions = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -444,7 +455,7 @@ class League extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Prize", mappedBy="league", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Prize", mappedBy="league", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $prizes;
 
@@ -522,6 +533,10 @@ class League extends BasicObject {
 
     private $prizesByRegion = array();
 
+    /**
+     * @param $id
+     * @return \Application\Model\Entities\Prize
+     */
     public function getPrizeByRegionId($id)
     {
         if (!array_key_exists($id, $this->prizesByRegion))
@@ -531,6 +546,61 @@ class League extends BasicObject {
                     break;
                 }
         return $this->prizesByRegion[$id];
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $leagueRegions
+     */
+    public function setLeagueRegions($leagueRegions)
+    {
+        $this->leagueRegions = $leagueRegions;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLeagueRegions()
+    {
+        return $this->leagueRegions;
+    }
+
+    /**
+     * Add leagueRegion
+     *
+     * @param LeagueRegion $leagueRegions
+     * @return League
+     */
+    public function addLeagueRegion(LeagueRegion $leagueRegion)
+    {
+        $this->leagueRegions[] = $leagueRegion;
+
+        return $this;
+    }
+
+    /**
+     * Remove leagueRegions
+     *
+     * @param LeagueRegion $leagueRegions
+     */
+    public function removeLeagueRegion(LeagueRegion $leagueRegions)
+    {
+        $this->leagueRegions->removeElement($leagueRegions);
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $prizes
+     */
+    public function setPrizes($prizes)
+    {
+        $this->prizes = $prizes;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $leagueUsers
+     */
+    public function setLeagueUsers($leagueUsers)
+    {
+        $this->leagueUsers = $leagueUsers;
     }
 
 }

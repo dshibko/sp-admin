@@ -110,4 +110,35 @@ class LeagueDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    /**
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param int $seasonId
+     * @return bool
+     */
+    public function checkLeagueDatesInterval($startDate, $endDate, $seasonId) {
+        $startDate->setTime(0, 0, 0);
+        $endDate->setTime(0, 0, 0);
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('s.id'))
+            ->from($this->getRepositoryName(), 's')
+            ->where($qb->expr()->andX(
+            $qb->expr()->andX($qb->expr()->lte('s.startDate', ":startDate"), $qb->expr()->gte('s.endDate', ":startDate")),
+            $qb->expr()->andX($qb->expr()->lte('s.startDate', ":endDate"), $qb->expr()->gte('s.endDate', ":endDate"))))
+            ->andWhere($qb->expr()->eq('s.id', $seasonId))
+            ->setParameter("startDate", $startDate)
+            ->setParameter("endDate", $endDate);
+        return $this->getQuery($qb, false)->getSingleScalarResult() > 0;
+    }
+
+    public function findOneById($id, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l, lr, p, s')
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.leagueRegions', 'lr')
+            ->join('l.prizes', 'p')
+            ->join('l.season', 's')
+            ->where($qb->expr()->eq('l.id', $id));
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
 }
