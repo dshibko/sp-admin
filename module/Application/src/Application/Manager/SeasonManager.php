@@ -37,10 +37,32 @@ class SeasonManager extends BasicManager {
         return self::$instance;
     }
 
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
     public function getAllSeasons($hydrate = false, $skipCache = false) {
         return SeasonDAO::getInstance($this->getServiceLocator())->getAllSeasons($hydrate, $skipCache);
     }
 
+    /**
+     * @param array $fields
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getAllSeasonsByFields(array $fields, $hydrate = false, $skipCache = false)
+    {
+       return SeasonDAO::getInstance($this->getServiceLocator())->getAllSeasonsByFields($fields, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param $id
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return mixed
+     */
     public function getSeasonById($id, $hydrate = false, $skipCache = false) {
         return SeasonDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
     }
@@ -239,6 +261,11 @@ class SeasonManager extends BasicManager {
             }
         }
         $seasonDAO->remove($season);
+    }
+
+    public function getCurrentAndFutureSeasons($hydrate = false, $skipCache = false)
+    {
+        return SeasonDAO::getInstance($this->getServiceLocator())->getCurrentAndFutureSeasons($hydrate, $skipCache);
     }
 
 }

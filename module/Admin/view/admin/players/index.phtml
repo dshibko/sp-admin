@@ -10,11 +10,16 @@ $this->headTitle($title);
             </div>
             <div class="portlet-body">
                 <?php if (!empty($this->players)) : ?>
-                <select id="players-filter">
-                     <option value="-1"><?php echo $this->translate('All');?></option>
-                     <option selected="selected" value="1"><?php echo $this->translate('Active');?></option>
-                     <option value="0"><?php echo $this->translate('Inactive');?></option>
-                </select>
+                <div class="datatable-filter">
+                    <label>
+                        <select id="players-filter">
+                             <option value="-1"><?php echo $this->translate('All');?></option>
+                             <option selected="selected" value="1"><?php echo $this->translate('Active');?></option>
+                             <option value="0"><?php echo $this->translate('Inactive');?></option>
+                        </select>
+                        <?php echo $this->translate('filter by status');?>
+                    </label>
+                </div>
                 <table class="table table-striped table-bordered table-hover" id="players-table">
                     <thead>
                     <tr>
@@ -107,7 +112,7 @@ $this->headTitle($title);
         /* Custom filtering function which will filter data in column four between two values */
 
 
-        var messages = {perPage: "_MENU_ " + "<?=$this->translate('clubs per page')?>", nextLink: "<?=$this->translate('Next')?>",
+        var messages = {perPage: "_MENU_ " + "<?=$this->translate('players per page')?>", nextLink: "<?=$this->translate('Next')?>",
             prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ clubs')?>"};
        var oTable = $('#players-table').dataTable({
             "aoColumns": [null, null,null, null, null,null,null,{bSortable: false}],

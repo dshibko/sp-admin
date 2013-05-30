@@ -6,7 +6,8 @@ use \Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class CompetitionDAO extends AbstractDAO {
+class CompetitionDAO extends AbstractDAO
+{
 
     /**
      * @var CompetitionDAO
@@ -18,7 +19,8 @@ class CompetitionDAO extends AbstractDAO {
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
      * @return CompetitionDAO
      */
-    public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
+    public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface)
+    {
         if (self::$instance == null) {
             self::$instance = new CompetitionDAO();
             self::$instance->setServiceLocator($serviceLocatorInterface);
@@ -29,7 +31,8 @@ class CompetitionDAO extends AbstractDAO {
     /**
      * @return string
      */
-    public function getRepositoryName() {
+    public function getRepositoryName()
+    {
         return '\Application\Model\Entities\Competition';
     }
 
@@ -41,6 +44,17 @@ class CompetitionDAO extends AbstractDAO {
     public function getAllCompetitions($hydrate = false, $skipCache = false)
     {
         return parent::findAll($hydrate, $skipCache);
+    }
+
+    /**
+     * @param array $fields
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getAllCompetitionsByFields(array $fields, $hydrate = false, $skipCache = false)
+    {
+        return parent::findAllByFields($fields, $hydrate, $skipCache);
     }
 
 }

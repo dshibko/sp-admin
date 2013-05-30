@@ -127,6 +127,9 @@ $this->headTitle($this->title);
         $('button.reset').click(function(e){
             e.preventDefault();
             this.form.reset();
+            $('.check-values').each(function(){
+                $(this).data('changed', 0);
+            });
         });
         App.init(); // initlayout and core plugins
     });

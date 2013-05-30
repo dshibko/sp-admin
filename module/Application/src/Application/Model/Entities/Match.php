@@ -28,49 +28,49 @@ class Match extends BasicObject {
      *
      * @ORM\Column(name="status", type="string", columnDefinition="ENUM('PreMatch', 'Live', 'FullTime', 'Postponed', 'Abandoned')")
      */
-    private $status;
+    protected $status;
 
     /**
      * @var string
      *
      * @ORM\Column(name="stadium_name", type="string", length=100)
      */
-    private $stadiumName;
+    protected $stadiumName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="city_name", type="string", length=100)
      */
-    private $cityName;
+    protected $cityName;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="feeder_id", type="integer", nullable=false)
      */
-    private $feederId;
+    protected $feederId;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="start_time", type="datetime")
      */
-    private $startTime;
+    protected $startTime;
 
     /**
      * @var string
      *
      * @ORM\Column(name="timezone", type="string")
      */
-    private $timezone;
+    protected $timezone;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="week", type="integer")
      */
-    private $week;
+    protected $week;
 
     /**
      * @var integer
@@ -79,14 +79,14 @@ class Match extends BasicObject {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="Prediction", mappedBy="match")
      */
-    private $predictions;
+    protected $predictions;
 
     /**
      * @var Prediction
@@ -96,7 +96,7 @@ class Match extends BasicObject {
      *   @ORM\JoinColumn(name="featured_prediction_id", referencedColumnName="id")
      * })
      */
-    private $featuredPrediction;
+    protected $featuredPrediction;
 
     /**
      * @var Team
@@ -106,7 +106,7 @@ class Match extends BasicObject {
      *   @ORM\JoinColumn(name="away_team_id", referencedColumnName="id")
      * })
      */
-    private $awayTeam;
+    protected $awayTeam;
 
     /**
      * @var Team
@@ -116,7 +116,7 @@ class Match extends BasicObject {
      *   @ORM\JoinColumn(name="home_team_id", referencedColumnName="id")
      * })
      */
-    private $homeTeam;
+    protected $homeTeam;
 
     /**
      * @var Competition
@@ -126,7 +126,7 @@ class Match extends BasicObject {
      *   @ORM\JoinColumn(name="competition_id", referencedColumnName="id")
      * })
      */
-    private $competition;
+    protected $competition;
 
     /**
      * @var Player
@@ -136,63 +136,70 @@ class Match extends BasicObject {
      *   @ORM\JoinColumn(name="featured_player_id", referencedColumnName="id")
      * })
      */
-    private $featuredPlayer;
+    protected $featuredPlayer;
 
     /**
      * @var boolean
      *
      * @ORM\Column(name="is_double_points", type="boolean")
      */
-    private $isDoublePoints;
+    protected $isDoublePoints;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="home_team_full_time_score", type="integer")
      */
-    private $homeTeamFullTimeScore;
+    protected $homeTeamFullTimeScore;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="away_team_full_time_score", type="integer")
      */
-    private $awayTeamFullTimeScore;
+    protected $awayTeamFullTimeScore;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="home_team_extra_time_score", type="integer")
      */
-    private $homeTeamExtraTimeScore;
+    protected $homeTeamExtraTimeScore;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="away_team_extra_time_score", type="integer")
      */
-    private $awayTeamExtraTimeScore;
+    protected $awayTeamExtraTimeScore;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="home_team_shootout_score", type="integer")
      */
-    private $homeTeamShootoutScore;
+    protected $homeTeamShootoutScore;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="away_team_shootout_score", type="integer")
      */
-    private $awayTeamShootoutScore;
+    protected $awayTeamShootoutScore;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="MatchGoal", mappedBy="match", cascade={"persist", "remove"})
      */
-    private $matchGoals;
+    protected $matchGoals;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_blocked", type="boolean")
+     */
+    protected $isBlocked = false;
 
     /**
      * Constructor
@@ -473,11 +480,13 @@ class Match extends BasicObject {
     }
 
     /**
-     * @param boolean $isDoublePoints
+     * @param $isDoublePoints
+     * @return \Application\Model\Entities\Match
      */
     public function setIsDoublePoints($isDoublePoints)
     {
         $this->isDoublePoints = $isDoublePoints;
+        return $this;
     }
 
     /**
@@ -637,6 +646,29 @@ class Match extends BasicObject {
     public function getTimezone()
     {
         return $this->timezone ? $this->timezone : 'UTC';
+    }
+
+
+    /**
+     * @param $isBlocked
+     * @return \Application\Model\Entities\Match
+     */
+    public function setIsBlocked($isBlocked)
+    {
+        $this->isBlocked = $isBlocked;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsBlocked()
+    {
+        return $this->isBlocked;
+    }
+
+    public function getIsLive() {
+        return $this->getStatus() == self::LIVE_STATUS || ($this->getStatus() == self::PRE_MATCH_STATUS && $this->getStartTime() < new \DateTime());
     }
 
 }

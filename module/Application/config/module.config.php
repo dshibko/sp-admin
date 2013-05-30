@@ -30,6 +30,16 @@ return array(
                     ),
                 ),
             ),
+            'fixtures' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/fixtures[/]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Fixtures',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'registration' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -193,6 +203,7 @@ return array(
             'Application\Controller\Auth' => 'Application\Controller\AuthController',
             'Application\Controller\User' => 'Application\Controller\UserController',
             'Application\Controller\Predict' => 'Application\Controller\PredictController',
+            'Application\Controller\Fixtures' => 'Application\Controller\FixturesController',
         ),
     ),
     'doctrine' => array(

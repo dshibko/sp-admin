@@ -300,7 +300,8 @@ return array(
             'admin/partials/breadcrumbs' => __DIR__ . '/../view/partials/breadcrumbs.phtml',
             'admin/partials/menu' => __DIR__ . '/../view/partials/menu.phtml',
             'admin/partials/select' => __DIR__ . '/../view/partials/select.phtml',
-            'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml'
+            'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml',
+            'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml'
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -400,7 +401,7 @@ return array(
                     ),
                     'fixtures' => array(
                         'title' => 'Fixtures',
-                        'label' => 'icon-calendar',
+                        'label' => 'icon-time',
                         'route' => 'admin-fixtures',
                         'action' => 'index',
                         'pages' => array(
@@ -413,7 +414,7 @@ return array(
                             array(
                                 'title' => 'Edit Fixture',
                                 'label' => 'icon-edit',
-                                'route' => 'admin-fixture',
+                                'route' => 'admin-fixtures',
                                 'action' => 'edit',
                             ),
                         )
