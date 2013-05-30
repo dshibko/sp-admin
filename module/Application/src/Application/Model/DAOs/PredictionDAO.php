@@ -318,9 +318,22 @@ class PredictionDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
-
-
-
-
+    function getPredictableCount($seasonId, $userId, $maxAhead) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('unp', 'u');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+                SELECT count(mt.id) unp FROM (
+                    SELECT m.id
+                    FROM `match` m
+                    INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                    WHERE m.status = \'' . Match::PRE_MATCH_STATUS . '\'
+                    AND m.start_time > NOW()
+                    ORDER BY m.start_time ASC
+                    LIMIT 0, ' . $maxAhead . ') mt
+                WHERE NOT EXISTS(SELECT 1 FROM prediction p WHERE p.match_id = mt.id AND p.user_id = ' . $userId . ')
+             ', $rsm);
+        return $query->getSingleScalarResult();
+    }
 
 }

@@ -295,8 +295,6 @@ class OptaManager extends BasicManager {
 
         try {
 
-            $match = null;
-
             $this->startProgress($console, true, 'F7');
 
             $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
@@ -399,12 +397,12 @@ class OptaManager extends BasicManager {
 
                 $matchDAO->save($match);
 
+                ScoringManager::getInstance($this->getServiceLocator())->calculateMatchScores($match);
+
             }
 
             $this->finishProgress($console, true, 'F7');
 
-            if ($match != null)
-                ScoringManager::getInstance($this->getServiceLocator())->calculateMatchScores($match);
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);

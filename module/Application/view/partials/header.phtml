@@ -28,6 +28,7 @@
     <script src="/js/jquery.cookie.js"></script>
     <script src="/js/vendor/picturefill.js"></script>
     <script src="/js/vendor/jquery.idealforms.min.js"></script>
+    <script src="/js/login-popup.js"></script>
     <script src="/js/main.js"></script>
 </head>
 <body class="inner-page" style="background: <?=$this->settingsHelper()->getBackgroundColor()?>">
@@ -37,10 +38,12 @@
 <div id="wrapper">
     <?php echo $this->partial('partials/cookie-bar');?>
     <header role="banner">
-        <a href="/" class="logo">
-            <img src="/img/fcbarcelona-355.png" alt="FCBARCELONA Score Predictor">
-        </a>
+        <?php echo $this->navigation('navigation')->menu()
+        ->setPartial('partials/menu'); ?>
         <div  class="banner">
+            <a href="/" class="logo">
+                <img src="/img/fcbarcelona-355.png" alt="FCBARCELONA Score Predictor">
+            </a>
             <figure>
                 <div data-alt="FCBARCELONA Score Predictor Banner" data-picture="">
                     <div data-src="/img/banner-innerpage-480.png"></div>

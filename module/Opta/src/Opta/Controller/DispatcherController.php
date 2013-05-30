@@ -15,7 +15,7 @@ class DispatcherController extends AbstractActionController {
         error_reporting(E_ERROR | E_PARSE);
 
         try {
-//            \Application\Manager\LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables();
+            \Application\Manager\LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables();
 //            \Application\Manager\PredictionManager::getInstance($this->getServiceLocator())->predict(137, \Application\Manager\UserManager::getInstance($this->getServiceLocator())->getUserById(1),
 //                4, 2, array(
 //                    array(
@@ -50,8 +50,8 @@ class DispatcherController extends AbstractActionController {
 //                    ),
 //                ));
 
-//            $this->parseF7File('Z:\home\zend.loc\opta\feeds\F7\8\2012\2013-05-08-20-56-29-504593057.json', $this->getConsole());
-            $this->parseF1File('Z:\home\zend.loc\opta\feeds\F1\8\2012\2013-05-13-12-16-19-987650526.json', $this->getConsole());
+//            $this->parseF7File('Z:\home\zend.loc\opta\feeds\F7\8\2012\2013-04-21-16-58-02-1643751763.json', $this->getConsole());
+//            $this->parseF1File('Z:\home\zend.loc\opta\feeds\F1\8\2012\2013-05-13-12-16-19-987650526.json', $this->getConsole());
 //            $this->parseF40File('Z:\home\zend.loc\opta\feeds\F40\2012-09-26-19-36-38-1292557115.json', $this->getConsole());
 //            $this->parseF40File('Z:\home\zend.loc\opta\feeds\F40\8\2012\2013-05-10-12-37-31-1793567476.json', $this->getConsole());
 

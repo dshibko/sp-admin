@@ -14,8 +14,7 @@ use \Application\Model\DAOs\RegionDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 
-class PredictionManager extends BasicManager
-{
+class PredictionManager extends BasicManager {
 
     /**
      * @var PredictionManager
@@ -27,8 +26,7 @@ class PredictionManager extends BasicManager
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
      * @return PredictionManager
      */
-    public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface)
-    {
+    public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
         if (self::$instance == null) {
             self::$instance = new PredictionManager();
             self::$instance->setServiceLocator($serviceLocatorInterface);
@@ -44,8 +42,7 @@ class PredictionManager extends BasicManager
      * @param array $scoresData
      * @throws \Exception
      */
-    public function predict($matchId, $user, $homeTeamScore, $awayTeamScore, $scoresData)
-    {
+    public function predict($matchId, $user, $homeTeamScore, $awayTeamScore, $scoresData) {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
         $match = $matchDAO->findOneById($matchId);
 
@@ -71,7 +68,7 @@ class PredictionManager extends BasicManager
                 $predictionScore = new PredictionPlayer();
                 $predictionScore->setPrediction($prediction);
                 $team = null;
-                if (array_key_exists('side', $scoreRow)) {
+                if (array_key_exists('side', $scoreRow))  {
                     $side = $scoreRow['side'];
                     if ($side == 'home')
                         $team = $match->getHomeTeam();
@@ -98,8 +95,7 @@ class PredictionManager extends BasicManager
 
     }
 
-    public function getAvgNumberOfPrediction($season)
-    {
+    public function getAvgNumberOfPrediction($season) {
         $avgNumberOfPrediction = PredictionDAO::getInstance($this->getServiceLocator())->getAvgNumberOfPrediction($season);
         $avgNumberOfPrediction = number_format(ceil($avgNumberOfPrediction * 100) / 100, 2);
         return $avgNumberOfPrediction;
@@ -114,8 +110,7 @@ class PredictionManager extends BasicManager
      * @param bool $skipCache
      * @return mixed
      */
-    public function getNearestMatchWithPrediction($fromTime, $offset, $user, $season, $hydrate = false, $skipCache = false)
-    {
+    public function getNearestMatchWithPrediction($fromTime, $offset, $user, $season, $hydrate = false, $skipCache = false) {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
         $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
@@ -136,16 +131,13 @@ class PredictionManager extends BasicManager
     public static $positionsOrder = array('Goalkeeper', 'Defender', 'Midfielder', 'Forward');
     public static $positionsAbbreviation = array('GK', 'DF', 'MF', 'FW');
 
-    private function preparePlayers($players)
-    {
-        usort($players, function($p1, $p2)
-        {
+    private function preparePlayers($players) {
+        usort($players, function($p1, $p2) {
             $pos1 = array_search($p1['position'], PredictionManager::$positionsOrder);
             $pos2 = array_search($p2['position'], PredictionManager::$positionsOrder);
             return $pos1 != $pos2 ? $pos1 - $pos2 : $p1['shirtNumber'] - $p2['shirtNumber'];
         });
-        array_walk($players, function(&$p)
-        {
+        array_walk($players, function(&$p) {
             $p['position'] = PredictionManager::$positionsAbbreviation[array_search($p['position'], PredictionManager::$positionsOrder)];
         });
         return $players;
@@ -258,4 +250,14 @@ class PredictionManager extends BasicManager
     {
         return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionCorrectScorersOrderSum($predictionIds, $skipCache);
     }
+
+    public function getPredictableCount() {
+        $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+        if ($season == null) return 0;
+        $maxAhead = SettingsManager::getInstance($this->getServiceLocator())->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        return $predictionDAO->getPredictableCount($season->getId(), $user->getId(), $maxAhead);
+    }
+
 }
