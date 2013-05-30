@@ -67,7 +67,7 @@ class ScoringManager extends BasicManager {
                             $goalScorers[$scorerId] = 0;
                         $playerGoals = $prediction->getPredictionPlayers()->filter(function(PredictionPlayer $predictionPlayer) use ($goal) {
                             return $predictionPlayer->getTeam()->getId() == $goal->getTeam()->getId() &&
-                                $predictionPlayer->getPlayer()->getId() == $goal->getPlayer()->getId();
+                                $predictionPlayer->getPlayer() != null && $predictionPlayer->getPlayer()->getId() == $goal->getPlayer()->getId();
                         });
                         if ($goalScorers[$scorerId]++ < count($playerGoals)) {
                             $correctScorers++;
@@ -98,7 +98,7 @@ class ScoringManager extends BasicManager {
     }
 
     private function getMatchResult($homeScore, $awayScore) {
-        return $homeScore != $awayScore ?  (($homeScore - $awayScore) / abs($homeScore - $awayScore))  : 0;
+        return $homeScore != $awayScore ?  (($homeScore - $awayScore) / abs($homeScore - $awayScore)) : 0;
     }
 
 }

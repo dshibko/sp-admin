@@ -1,0 +1,42 @@
+<?php if ($this->getCurrentUser() != null) : ?>
+<nav role="navigation" class="main-navigation">
+    <ul class="clearfix">
+<?php
+    $pages = $this->container->getPages();
+    foreach ($pages as $page) : if ($page->getRoute() == 'admin-home') continue;
+        $classes = $page->isActive(true) ? 'active' : '';
+        ?>
+        <li class="<?=$classes?>">
+            <?php
+                $unreadItems = $this->getUnreadItems($page->getRoute());
+                if ($unreadItems > 0) :
+            ?>
+                <strong class="flag-unread-items"><span><?=$unreadItems?></span></strong>
+            <?php endif; ?>
+            <a href="<?=$page->getHref()?>"><?= $this->translate($page->getTitle()); ?></a>
+        </li>
+<?php endforeach; ?>
+        <li class="user-navigation">
+            <details open="open" class="popup">
+                <summary class="login-popup-button"><?=$this->translate('User Navigation')?></summary>
+                <div class="popup-content">
+                    <ul>
+                        <li class="user-profile clearfix">
+                            <img src="<?=$this->getCurrentUser()->getAvatar()->getTinyImagePath()?>" alt="">
+                            <strong><?=$this->getCurrentUser()->getDisplayName()?></strong>
+                            <a href="#"><?=$this->translate('View full profile')?></a>
+                        </li>
+                        <li>
+                            <a href="<?=$this->url('user-settings')?>"><?=$this->translate('Settings')?></a>
+                        </li>
+                        <li>
+                            <a href="<?=$this->url('logout')?>"><?=$this->translate('Sign out')?></a>
+                        </li>
+                    </ul>
+                </div>
+            </details>
+        </li>
+    </ul>
+    <a class="mobilenav expand" href="" style="">mobile navigation</a>
+</nav>
+<?php endif; ?>

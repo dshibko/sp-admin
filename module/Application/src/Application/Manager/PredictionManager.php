@@ -143,4 +143,13 @@ class PredictionManager extends BasicManager {
         return $players;
     }
 
+    public function getPredictableCount() {
+        $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+        if ($season == null) return 0;
+        $maxAhead = SettingsManager::getInstance($this->getServiceLocator())->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        return $predictionDAO->getPredictableCount($season->getId(), $user->getId(), $maxAhead);
+    }
+
 }

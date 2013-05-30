@@ -233,10 +233,23 @@ return array(
             'error/index'             => __DIR__ . '/../view/error/index.phtml',
             'partials/header'         => __DIR__ . '/../view/partials/header.phtml',
             'partials/footer'         => __DIR__ . '/../view/partials/footer.phtml',
-            'partials/cookie-bar'     => __DIR__ . '/../view/partials/cookie-bar.phtml'
+            'partials/cookie-bar'     => __DIR__ . '/../view/partials/cookie-bar.phtml',
+            'partials/menu'           => __DIR__ . '/../view/partials/menu.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
+        ),
+    ),
+    'navigation' => array(
+        'default' => array(
+            'predict' => array(
+                'title' => 'Predict',
+                'route' => 'predict',
+            ),
+            'fixtures' => array(
+                'title' => 'Fixtures',
+                'route' => 'fixtures',
+            ),
         ),
     ),
 );
