@@ -39,6 +39,7 @@ class ClubsController extends AbstractActionController
         }
         $params = array();
         $form = new ClubForm();
+        $isBlocked = false;
         $teamManager = TeamManager::getInstance($this->serviceLocator);
         try {
             $club = $teamManager->getTeamById($clubId);
@@ -92,7 +93,6 @@ class ClubsController extends AbstractActionController
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toUrl($this->url()->fromRoute(self::CLUBS_LIST_ROUTE,$params));
         }
 
         return array(

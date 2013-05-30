@@ -65,3 +65,7 @@ iframe.wysihtml5-sandbox {
 div.row-fluid div.tab-pane.hidden {
     display: none;
 }
+
+.form-select{
+    width: 247px;
+}
