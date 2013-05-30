@@ -141,7 +141,7 @@ class MatchManager extends BasicManager
             $numberOfPredictionsPerHour = $predictionManager->getNumberOfPredictionsPerHour($predictionIds, self::HOURS_FROM_NOW);
 
             //Match full time analytics
-            if ($match->getAwayTeamFullTimeScore() && $match->getHomeTeamFullTimeScore()){
+            if ($match->getStatus() == Match::FULL_TIME_STATUS){
                 $correctResultCount = $predictionManager->getUsersCountWithCorrectResult($predictionIds);
                 $correctScoreCount = $predictionManager->getUsersCountWithCorrectScore($predictionIds);
                 $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);

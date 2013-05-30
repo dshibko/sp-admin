@@ -97,7 +97,7 @@ $this->headTitle($this->title);
                                 <?php endforeach;?>
                             </ul>
                         <?php else :?>
-                            <?php echo $this->translate('none');?>
+                            <?php echo $this->translate('Empty');?>
                         <?php endif;?>
                     </dd>
                     <dt><?php echo $this->translate('Percentage of registered users that made a prediction');?></dt>
@@ -111,7 +111,7 @@ $this->headTitle($this->title);
                             <?php endforeach;?>
                         </ul>
                         <?php else :?>
-                            <?php echo $this->translate('none');?>
+                            <?php echo $this->translate('Empty');?>
                         <?php endif;?>
                     </dd>
                     <dt><?php echo $this->translate('Top 5 most popular scorers');?></dt>
@@ -123,7 +123,7 @@ $this->headTitle($this->title);
                             <?php endforeach;?>
                         </ul>
                         <?php else :?>
-                        <?php echo $this->translate('none');?>
+                            <?php echo $this->translate('Empty');?>
                         <?php endif;?>
                     </dd>
                     <?php if (!empty($this->isFullTime)):?>
@@ -135,52 +135,21 @@ $this->headTitle($this->title);
                         <dd><div class="custom-chart" data-percent="<?php echo (!empty($this->analytics['correct_scorers']) ? $this->analytics['correct_scorers'] : 0);?>"><?php echo (!empty($this->analytics['correct_scorers']) ? $this->analytics['correct_scorers'] : 0);?>%</div></dd>
                         <dt><?php echo $this->translate('Percentage of registered users with correct scores order');?></dt>
                         <dd><div class="custom-chart" data-percent="<?php echo (!empty($this->analytics['correct_scorers_order']) ? $this->analytics['correct_scorers_order'] : 0);?>"><?php echo (!empty($this->analytics['correct_scorers_order']) ? $this->analytics['correct_scorers_order'] : 0);?>%</div></dd>
-
+                        <dt><?php echo $this->translate('Percentage of registered users with perfect result');?></dt>
                         <?php if (!empty($this->analytics['perfect_result']['users'])):?>
-                            <dt><?php echo $this->translate('Percentage of registered users with perfect result');?></dt>
                             <dd><div class="custom-chart" data-percent="<?php echo (!empty($this->analytics['perfect_result']['percentage']) ? $this->analytics['perfect_result']['percentage'] : 0);?>"><?php echo (!empty($this->analytics['perfect_result']['percentage']) ? $this->analytics['perfect_result']['percentage'] : 0);?>%</div></dd>
                             <ul>
                                 <?php foreach($this->analytics['perfect_result']['users'] as $user):?>
-                                    <li><a href="javascript:void(0);"><?php echo $user['displayName'];?></a></li>
+                                    <li><a href="<?php echo $this->url('admin-fixtures',array('action'=>'getuserdata', 'fixture'=>$user['id']))?>"><?php echo $user['displayName'];?></a></li>
                                 <?php endforeach;?>
                             </ul>
                         <?php else :?>
-                            <?php echo $this->translate('none');?>
+                            <?php echo $this->translate('Empty');?>
                         <?php endif;?>
                     <?php endif;?>
                 </dl>
             </div>
         </div>
-      <h2><?php echo $this->translate('Prediction Analytics');?></h2>
-      <?php if (!empty($this->analytics)):?>
-        <div class="fixture-analytics">
-    
-
-          
-            <?php if (!empty($this->isFullTime)):?>
-
-                <div class="correct-score">
-                    Correct score: <?php echo (!empty($this->analytics['correct_score']) ? $this->analytics['correct_score'] : 0);?>%
-                </div>
-                <div class="correct-scorers-order">
-                    Correct scorers: <?php echo (!empty($this->analytics['correct_scorers']) ? $this->analytics['correct_scorers'] : 0);?>%
-                </div
-                <div class="correct-scorers-order">
-                    Correct scorers order: <?php echo (!empty($this->analytics['correct_scorers_order']) ? $this->analytics['correct_scorers_order'] : 0);?>%
-                </div>
-                <div class="perfect-result">
-                    Perfect Result
-                    <?php if (!empty($this->analytics['prefect_result'])):?>
-                    <ul>
-                        <?php foreach($this->analytics['prefect_result'] as $user):?>
-                        <li><?php echo $user['displayName']?></li>
-                        <?php endforeach;?>
-                    </ul>
-                    <?php endif;?>
-                </div>
-            <?php endif;?>
-        </div>
-      <?php endif;?>
 </div>
 <?php if (!$this->isBlocked):?>
     <div id="deleteModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
@@ -189,7 +158,6 @@ $this->headTitle($this->title);
             <h3 id="myModalLabel3"><?php echo $this->translate('Please Confirm')?></h3>
         </div>
         <div class="modal-body">
-            <?php //TODO change?>
             <p><?php echo $this->translate("If you'd like to change home team, away team, date or kick-off time  you have to be aware that it will override the data feed permanently.");?></p>
         </div>
         <div class="modal-footer">

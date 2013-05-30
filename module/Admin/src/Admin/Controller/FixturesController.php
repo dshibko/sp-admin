@@ -12,6 +12,8 @@ use \Application\Manager\CompetitionManager;
 use \Application\Manager\ApplicationManager;
 use \Application\Manager\TeamManager;
 use \Application\Model\Entities\Match;
+use \Application\Manager\UserManager;
+use \Application\Manager\ExportManager;
 
 class FixturesController extends AbstractActionController
 {
@@ -76,7 +78,7 @@ class FixturesController extends AbstractActionController
             //Get match analytics
             $analytics = $matchManager->getMatchAnalytics($fixture);
             //Check full time
-            if ($fixture->getAwayTeamFullTimeScore() && $fixture->getHomeTeamFullTimeScore()){
+            if ($fixture->getStatus() == Match::FULL_TIME_STATUS){
                 $isFullTime = true;
             }
             $form->getInputFilter()->get('competition')->setRequired(false);
@@ -222,6 +224,46 @@ class FixturesController extends AbstractActionController
         }
 
         return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE,$params));
+    }
+
+    public function getUserDataAction()
+    {
+        $userId = (string)$this->params()->fromRoute('fixture', '');
+        $userManager =  UserManager::getInstance($this->getServiceLocator());
+        $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+        if (empty($userId)) {
+            $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_INVALID_USER_ID);
+            return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
+        }
+        try {
+            $user = $userManager->getUserById($userId);
+            if (is_null($user)) {
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_CANNOT_FIND_USER);
+                return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
+            }
+            $data = array(
+                array(
+                    'id' => $user->getId(),
+                    'displayName' => $user->getDisplayName()
+                )
+            );
+
+            $content = $exportManager->exportArrayToCSV($data, array('id' => 'number','displayName' => 'string'));
+            $response = $this->getResponse();
+            $headers = $response->getHeaders();
+            $headers->addHeaderLine('Content-Type', 'text/csv');
+            $headers->addHeaderLine('Content-Disposition', "attachment; filename=\"user_export.csv\"");
+            $headers->addHeaderLine('Accept-Ranges', 'bytes');
+            $headers->addHeaderLine('Content-Length', strlen($content));
+
+            $response->setContent($content);
+
+            return $response;
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
+        }
     }
 
 }
