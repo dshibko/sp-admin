@@ -40,6 +40,7 @@ class PlayersController extends AbstractActionController
         }
         $params = array();
         $form = new PlayerForm();
+        $isBlocked = false;
         $playerManager = PlayerManager::getInstance($this->serviceLocator);
         try {
             $player = $playerManager->getPlayerById($playerId);
@@ -107,7 +108,6 @@ class PlayersController extends AbstractActionController
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toUrl($this->url()->fromRoute(self::PLAYERS_LIST_ROUTE,$params));
         }
 
         return array(

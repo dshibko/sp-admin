@@ -54,7 +54,9 @@ class FixturesController extends AbstractActionController
             return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
         }
         $params = array();
-
+        $analytics = array();
+        $isBlocked = 0;
+        $isFullTime = false;
         $matchManager = MatchManager::getInstance($this->serviceLocator);
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         $form = new FixtureForm(array(), $teamManager->getTeamsSelectOptions());
@@ -68,8 +70,15 @@ class FixturesController extends AbstractActionController
                 'fixture' => $fixture->getId(),
                 'action' => 'edit'
             );
+
             $isBlocked = (bool)$fixture->getIsBlocked();
             $request = $this->getRequest();
+            //Get match analytics
+            $analytics = $matchManager->getMatchAnalytics($fixture);
+            //Check full time
+            if ($fixture->getAwayTeamFullTimeScore() && $fixture->getHomeTeamFullTimeScore()){
+                $isFullTime = true;
+            }
             $form->getInputFilter()->get('competition')->setRequired(false);
             if ($request->isPost()) {
                 $post = $request->getPost();
@@ -79,7 +88,8 @@ class FixturesController extends AbstractActionController
                     $startTime = $data['date'] . $data['kick_off_time'];
                     $isChangedDate = strtotime($startTime) != $fixture->getStartTime()->getTimestamp();
                     $isChangedHomeTeam = $fixture->getHomeTeam()->getId() != $data['homeTeam'];
-                    $isChangedAwayTeam = $fixture->getAwayTeam() != $data['awayTeam'];
+                    $isChangedAwayTeam = $fixture->getAwayTeam()->getId() != $data['awayTeam'];
+
                     //Check changed data
                     if (!$fixture->getIsBlocked()) {
                         if ($isChangedHomeTeam || $isChangedAwayTeam || $isChangedDate) {
@@ -119,14 +129,15 @@ class FixturesController extends AbstractActionController
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
         }
 
         return array(
             'form' => $form,
             'params' => $params,
             'title' => 'Edit Fixture',
-            'isBlocked' => $isBlocked
+            'isBlocked' => $isBlocked,
+            'analytics' => $analytics,
+            'isFullTime' => $isFullTime
         );
     }
 
@@ -145,7 +156,7 @@ class FixturesController extends AbstractActionController
             $seasons = $seasonManager->getCurrentAndFutureSeasons(true);
             $currentSeason = $applicationManager->getCurrentSeason();
             $currentSeasonId = (!is_null($currentSeason) && $currentSeason instanceof \Application\Model\Entities\Season) ? $currentSeason->getId() : null;
-
+            $form->get('submit')->setValue('Create');
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $post = $request->getPost();

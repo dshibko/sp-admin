@@ -18,7 +18,7 @@ $this->headTitle($this->title);
                 <div class="control-group form-horizontal">
                     <label class="control-label"><?=$this->translate('Seasons')?></label>
                     <div class="controls">
-                        <select class="seasons-select" name="season">
+                        <select class="seasons-select form-select" name="season">
                             <option value=""><?php echo $this->translate('- Select Season -');?></option>
                             <?php foreach($this->seasons as $season):?>
                                 <option value="<?php echo $season['id']?>" <?php echo ($season['id'] == $this->currentSeasonId) ? 'selected="selected"' : '';?>><?php echo $season['displayName'];?></option>
@@ -29,7 +29,7 @@ $this->headTitle($this->title);
                 <div class="control-group form-horizontal competitions-wrapper" style="display:none;">
                     <label class="control-label"><?=$this->translate('Competition')?></label>
                     <div class="controls">
-                        <select class="competitions-select" name="competition">
+                        <select class="competitions-select form-select" name="competition">
                         </select>
                     </div>
                 </div>
@@ -41,12 +41,12 @@ $this->headTitle($this->title);
                 $class = $element->getAttribute('class');
             ?>
             <?php if ($element->getAttribute('name') != 'submit'):?>
-            <div class="control-group form-horizontal">
+            <div class="control-group form-horizontal clearfix">
                 <label class="control-label"><?=$this->translate($element->getLabel())?></label>
                 <div class="controls">
                     <?php if ($type == 'text') : ?>
                     <div class="input-prepend">
-                        <span class="add-on"><i class="icon-time"></i></span><input class="m-wrap medium check-values <?php echo $class;?>" type="<?=$element->getAttribute('type');?>" name="<?=$element->getAttribute('name');?>" <?php echo ($element->getAttribute('maxlength') ? 'maxlength="'.$element->getAttribute('maxlength'). '"' : '');?>  data-changed="0" data-original_value="<?=$element->getValue();?>" value="<?=$element->getValue();?>"/>
+                        <span class="add-on"><i class="icon-time"></i></span><input class="m-wrap medium check-values <?php echo $class;?>" type="<?=$element->getAttribute('type');?>" name="<?=$element->getAttribute('name');?>" <?php echo ($element->getAttribute('maxlength') ? 'maxlength="'.$element->getAttribute('maxlength'). '"' : '');?>  data-original_value="<?=$element->getValue();?>" value="<?=$element->getValue();?>"/>
                     </div>
                     <?php elseif ($type == 'select'): ?>
                         <?php echo $this->formSelect($element);?>
@@ -77,6 +77,110 @@ $this->headTitle($this->title);
      <div>
      <?php echo $this->form()->closeTag();?>
 </div>
+        <div class="portlet box green">
+            <div class="portlet-title">
+                <h4><i class="icon-reorder"></i><?php echo $this->translate('Prediction Analytics');?></h4>
+                <div class="tools">
+                    <a class="collapse" href="javascript:;"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <dl>
+                    <dt><?php echo $this->translate('Total number of predictions');?></dt>
+                    <dd><?php echo (!empty($this->analytics['predictions_number']) ? $this->analytics['predictions_number'] : 0);?></dd>
+                    <dt><?php echo $this->translate('Number of predictions each hour over time');?></dt>
+                    <dd>
+                        <?php if (!empty($this->analytics['number_of_predictions_per_hour'])):?>
+                            <ul>
+                                <?php foreach($this->analytics['number_of_predictions_per_hour'] as $analytics):?>
+                                <li><?php echo date('h a', strtotime($analytics['date']));?> - <?php echo $analytics['number'];?></li>
+                                <?php endforeach;?>
+                            </ul>
+                        <?php else :?>
+                            <?php echo $this->translate('none');?>
+                        <?php endif;?>
+                    </dd>
+                    <dt><?php echo $this->translate('Percentage of registered users that made a prediction');?></dt>
+                    <dd><div class="custom-chart" data-percent="<?php echo (!empty($this->analytics['made_prediction']) ? $this->analytics['made_prediction'] : 0);?>"><?php echo (!empty($this->analytics['made_prediction']) ? $this->analytics['made_prediction'] : 0);?>%</div></dd>
+                    <dt><?php echo $this->translate('Top 5 most popular scores');?></dt>
+                    <dd>
+                        <?php if (!empty($this->analytics['top_scores'])):?>
+                        <ul>
+                            <?php foreach($this->analytics['top_scores'] as $score):?>
+                            <li><?php echo $score['home_team_score'];?> : <?php echo $score['away_team_score'];?></li>
+                            <?php endforeach;?>
+                        </ul>
+                        <?php else :?>
+                            <?php echo $this->translate('none');?>
+                        <?php endif;?>
+                    </dd>
+                    <dt><?php echo $this->translate('Top 5 most popular scorers');?></dt>
+                    <dd>
+                        <?php if (!empty($this->analytics['top_scorers'])):?>
+                        <ul>
+                            <?php foreach($this->analytics['top_scorers'] as $scorer):?>
+                            <li><?php echo $scorer['player_name'];?> (<?php echo $scorer['team_name'];?>)</li>
+                            <?php endforeach;?>
+                        </ul>
+                        <?php else :?>
+                        <?php echo $this->translate('none');?>
+                        <?php endif;?>
+                    </dd>
+                    <?php if (!empty($this->isFullTime)):?>
+                        <dt><?php echo $this->translate('Percentage of registered users with correct result');?></dt>
+                        <dd><div class="custom-chart" data-percent="<?php echo (!empty($this->analytics['correct_result']) ? $this->analytics['correct_result'] : 0);?>"><?php echo (!empty($this->analytics['correct_result']) ? $this->analytics['correct_result'] : 0);?>%</div></dd>
+                        <dt><?php echo $this->translate('Percentage of registered users with correct score');?></dt>
+                        <dd><div class="custom-chart" data-percent="<?php echo (!empty($this->analytics['correct_score']) ? $this->analytics['correct_score'] : 0);?>"><?php echo (!empty($this->analytics['correct_score']) ? $this->analytics['correct_score'] : 0);?>%</div></dd>
+                        <dt><?php echo $this->translate('Percentage of registered users with correct scorers');?></dt>
+                        <dd><div class="custom-chart" data-percent="<?php echo (!empty($this->analytics['correct_scorers']) ? $this->analytics['correct_scorers'] : 0);?>"><?php echo (!empty($this->analytics['correct_scorers']) ? $this->analytics['correct_scorers'] : 0);?>%</div></dd>
+                        <dt><?php echo $this->translate('Percentage of registered users with correct scores order');?></dt>
+                        <dd><div class="custom-chart" data-percent="<?php echo (!empty($this->analytics['correct_scorers_order']) ? $this->analytics['correct_scorers_order'] : 0);?>"><?php echo (!empty($this->analytics['correct_scorers_order']) ? $this->analytics['correct_scorers_order'] : 0);?>%</div></dd>
+
+                        <?php if (!empty($this->analytics['perfect_result']['users'])):?>
+                            <dt><?php echo $this->translate('Percentage of registered users with perfect result');?></dt>
+                            <dd><div class="custom-chart" data-percent="<?php echo (!empty($this->analytics['perfect_result']['percentage']) ? $this->analytics['perfect_result']['percentage'] : 0);?>"><?php echo (!empty($this->analytics['perfect_result']['percentage']) ? $this->analytics['perfect_result']['percentage'] : 0);?>%</div></dd>
+                            <ul>
+                                <?php foreach($this->analytics['perfect_result']['users'] as $user):?>
+                                    <li><a href="javascript:void(0);"><?php echo $user['displayName'];?></a></li>
+                                <?php endforeach;?>
+                            </ul>
+                        <?php else :?>
+                            <?php echo $this->translate('none');?>
+                        <?php endif;?>
+                    <?php endif;?>
+                </dl>
+            </div>
+        </div>
+      <h2><?php echo $this->translate('Prediction Analytics');?></h2>
+      <?php if (!empty($this->analytics)):?>
+        <div class="fixture-analytics">
+    
+
+          
+            <?php if (!empty($this->isFullTime)):?>
+
+                <div class="correct-score">
+                    Correct score: <?php echo (!empty($this->analytics['correct_score']) ? $this->analytics['correct_score'] : 0);?>%
+                </div>
+                <div class="correct-scorers-order">
+                    Correct scorers: <?php echo (!empty($this->analytics['correct_scorers']) ? $this->analytics['correct_scorers'] : 0);?>%
+                </div
+                <div class="correct-scorers-order">
+                    Correct scorers order: <?php echo (!empty($this->analytics['correct_scorers_order']) ? $this->analytics['correct_scorers_order'] : 0);?>%
+                </div>
+                <div class="perfect-result">
+                    Perfect Result
+                    <?php if (!empty($this->analytics['prefect_result'])):?>
+                    <ul>
+                        <?php foreach($this->analytics['prefect_result'] as $user):?>
+                        <li><?php echo $user['displayName']?></li>
+                        <?php endforeach;?>
+                    </ul>
+                    <?php endif;?>
+                </div>
+            <?php endif;?>
+        </div>
+      <?php endif;?>
 </div>
 <?php if (!$this->isBlocked):?>
     <div id="deleteModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
@@ -101,11 +205,14 @@ $this->headTitle($this->title);
 <link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/chosen-bootstrap/chosen/chosen.css" />
 <link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-datepicker/css/datepicker.css" />
 <link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-timepicker/compiled/timepicker.css" />
+<link href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/jquery-easy-pie-chart/jquery.easy-pie-chart.css" rel="stylesheet" type="text/css" media="screen"/>
+
 <!-- END PAGE LEVEL STYLES -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/chosen-bootstrap/chosen/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+<script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/jquery-easy-pie-chart/jquery.easy-pie-chart.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -128,6 +235,9 @@ $this->headTitle($this->title);
         <?php endforeach;?>
     <?php endif;?>
     jQuery(document).ready(function() {
+        $('.custom-chart').easyPieChart({
+            animate : 1000
+        });
         $('.my-picker').datepicker().on('changeDate', function(){
               $(this).change();
         });
@@ -139,9 +249,10 @@ $this->headTitle($this->title);
               if (!$(this).data('blocked')){
                   var changed = false;
                   $('.check-values').each(function(){
-                        if ($(this).data('changed')){
+                      var val = $(this).val();
+                      if (val != $(this).data('original_value')){
                             changed = true;
-                        }
+                      }
                   });
                   if (changed){
                       return true;
@@ -155,21 +266,17 @@ $this->headTitle($this->title);
               }
         });
 
-        $('.check-values').change(function(){
-           var val = $(this).val();
-           if (val != $(this).data('original_value')){
-               $(this).data('changed', 1);
-           }else{
-               $(this).data('changed', 0);
-           }
-        });
+
         $('button.reset').click(function(e){
             e.preventDefault();
-
             this.form.reset();
-            $('.check-values').each(function(){
-                $(this).data('changed', 0);
-            });
+            $('.chosen').trigger('liszt:updated');
+            var checkbox = $('.double-points-checkbox');
+            if (checkbox.is(':checked')){
+                checkbox.closest('span').addClass('checked');
+            }else{
+                checkbox.closest('span').removeClass('checked');
+            }
         });
 
         //Select seasons
@@ -181,7 +288,6 @@ $this->headTitle($this->title);
                 competitions_select.empty();
                 competitions_wrapper.hide();
             }else{
-                
                 var competitions = seasons[val + "_"];
                 if (competitions.length){
                     competitions_select.empty();
