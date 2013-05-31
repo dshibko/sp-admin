@@ -246,3 +246,33 @@
 .lt-ie8 .fixtures table tr td.action-block, .lt-ie8 .fixtures table tr td.action-block div {
   width: 17em;
 }
+
+
+/***your-results***/
+.lt-ie8 .your-results > header {
+  height: 4.4em;
+}
+.lt-ie8 .your-results .your-results-content .scorers .home-team  {
+  float: left;
+  margin: 0 2em 0;
+  width: 35%!important;
+}
+
+.lt-ie8 .your-results-content .league-block {
+  float: left;
+  margin: 0 2em 0;
+}
+.lt-ie8 .your-results .your-results-content .scorers .away-team {
+  float: right;
+  margin: 0 2em 0;
+  width: 35%!important;
+}
+
+.lt-ie8 .your-results .your-results-content .league-block em {
+  margin: 0 0 1em;
+}
+.lt-ie8  .your-results > header .flag-new-prediction {
+  background: #de1012;
+  height: 3em;
+  bottom: -3em;
+}
