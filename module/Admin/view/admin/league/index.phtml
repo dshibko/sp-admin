@@ -7,6 +7,9 @@ $this->headTitle($title);
         <div class="portlet box grey">
             <div class="portlet-title">
                 <h4><?=$title;?></h4>
+                <div class="actions">
+                    <a href="<?=$this->url('admin-leagues', array('action' => 'addMiniLeague'))?>" class="btn green"><i class="icon-plus"></i> <?=$this->translate('Add Mini League')?></a>
+                </div>
             </div>
             <div class="portlet-body">
                 <?php if (!empty($this->leagues)) : ?>
@@ -36,7 +39,7 @@ $this->headTitle($title);
                             <option value="2"><?php echo $this->translate('Future');?></option>
                             <option value="3"><?php echo $this->translate('Past');?></option>
                         </select>
-                        <?php echo $this->translate('filter by season')?>
+                        <?php echo $this->translate('filter by time')?>
                     </label>
                 </div>
                 <table class="table table-striped table-bordered table-hover" id="leagues-table">
@@ -59,7 +62,7 @@ $this->headTitle($title);
                             <td><?=$league['startDate']->format("j F Y");?></td>
                             <td><?=$league['endDate']->format("j F Y");?></td>
                             <td>
-                                <a href="<?=$this->url('admin-players', array('action' => 'edit', 'player' => $league['id']))?>" class="btn mini blue">
+                                <a href="<?=$this->url('admin-leagues', array('action' => $league['type'] == \Application\Model\Entities\League::MINI_TYPE ? 'editMiniLeague' : 'edit', 'id' => $league['id']))?>" class="btn mini blue">
                                     <i class="icon-edit"></i>
                                     <?=$this->translate('Edit')?>
                                 </a>
@@ -108,7 +111,7 @@ $this->headTitle($title);
             prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ leagues')?>"};
        var oTable = $('#leagues-table').dataTable({
             "aoColumns": [null, null, null, null, null, {bSortable: false}],
-           // "aaSorting": aaSorting,
+            "aaSorting": [[3,"desc"]],
            // "bFilter": false,
             "oLanguage": {
                 "sLengthMenu": messages.perPage,

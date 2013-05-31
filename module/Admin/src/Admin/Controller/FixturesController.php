@@ -12,6 +12,8 @@ use \Application\Manager\CompetitionManager;
 use \Application\Manager\ApplicationManager;
 use \Application\Manager\TeamManager;
 use \Application\Model\Entities\Match;
+use \Application\Manager\UserManager;
+use \Application\Manager\ExportManager;
 
 class FixturesController extends AbstractActionController
 {
@@ -54,7 +56,9 @@ class FixturesController extends AbstractActionController
             return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
         }
         $params = array();
-
+        $analytics = array();
+        $isBlocked = 0;
+        $isFullTime = false;
         $matchManager = MatchManager::getInstance($this->serviceLocator);
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         $form = new FixtureForm(array(), $teamManager->getTeamsSelectOptions());
@@ -68,8 +72,15 @@ class FixturesController extends AbstractActionController
                 'fixture' => $fixture->getId(),
                 'action' => 'edit'
             );
+
             $isBlocked = (bool)$fixture->getIsBlocked();
             $request = $this->getRequest();
+            //Get match analytics
+            $analytics = $matchManager->getMatchAnalytics($fixture);
+            //Check full time
+            if ($fixture->getStatus() == Match::FULL_TIME_STATUS){
+                $isFullTime = true;
+            }
             $form->getInputFilter()->get('competition')->setRequired(false);
             if ($request->isPost()) {
                 $post = $request->getPost();
@@ -79,7 +90,8 @@ class FixturesController extends AbstractActionController
                     $startTime = $data['date'] . $data['kick_off_time'];
                     $isChangedDate = strtotime($startTime) != $fixture->getStartTime()->getTimestamp();
                     $isChangedHomeTeam = $fixture->getHomeTeam()->getId() != $data['homeTeam'];
-                    $isChangedAwayTeam = $fixture->getAwayTeam() != $data['awayTeam'];
+                    $isChangedAwayTeam = $fixture->getAwayTeam()->getId() != $data['awayTeam'];
+
                     //Check changed data
                     if (!$fixture->getIsBlocked()) {
                         if ($isChangedHomeTeam || $isChangedAwayTeam || $isChangedDate) {
@@ -119,14 +131,15 @@ class FixturesController extends AbstractActionController
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
         }
 
         return array(
             'form' => $form,
             'params' => $params,
             'title' => 'Edit Fixture',
-            'isBlocked' => $isBlocked
+            'isBlocked' => $isBlocked,
+            'analytics' => $analytics,
+            'isFullTime' => $isFullTime
         );
     }
 
@@ -145,7 +158,7 @@ class FixturesController extends AbstractActionController
             $seasons = $seasonManager->getCurrentAndFutureSeasons(true);
             $currentSeason = $applicationManager->getCurrentSeason();
             $currentSeasonId = (!is_null($currentSeason) && $currentSeason instanceof \Application\Model\Entities\Season) ? $currentSeason->getId() : null;
-
+            $form->get('submit')->setValue('Create');
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $post = $request->getPost();
@@ -211,6 +224,46 @@ class FixturesController extends AbstractActionController
         }
 
         return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE,$params));
+    }
+
+    public function getUserDataAction()
+    {
+        $userId = (string)$this->params()->fromRoute('fixture', '');
+        $userManager =  UserManager::getInstance($this->getServiceLocator());
+        $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+        if (empty($userId)) {
+            $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_INVALID_USER_ID);
+            return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
+        }
+        try {
+            $user = $userManager->getUserById($userId);
+            if (is_null($user)) {
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_CANNOT_FIND_USER);
+                return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
+            }
+            $data = array(
+                array(
+                    'id' => $user->getId(),
+                    'displayName' => $user->getDisplayName()
+                )
+            );
+
+            $content = $exportManager->exportArrayToCSV($data, array('id' => 'number','displayName' => 'string'));
+            $response = $this->getResponse();
+            $headers = $response->getHeaders();
+            $headers->addHeaderLine('Content-Type', 'text/csv');
+            $headers->addHeaderLine('Content-Disposition', "attachment; filename=\"user_export.csv\"");
+            $headers->addHeaderLine('Accept-Ranges', 'bytes');
+            $headers->addHeaderLine('Content-Length', strlen($content));
+
+            $response->setContent($content);
+
+            return $response;
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
+        }
     }
 
 }

@@ -184,6 +184,11 @@ class Module
                     $h->setDefaultLogo($config['default_club_logo']);
                     return $h;
                 },
+                'getUnreadItems' => function($sm) {
+                    $h = new \Neoco\View\Helper\UnreadItems();
+                    $h->setServiceLocator($sm->getServiceLocator());
+                    return $h;
+                },
             )
         );
     }

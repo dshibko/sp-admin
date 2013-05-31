@@ -33,10 +33,11 @@ class FixtureForm extends RegionalisedForm {
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                'class' => 'check-values',
+                'class' => 'check-values chosen',
                 'tabindex' => 6,
-                'data-changed' => 0,
-                'data-original_value'=> ''
+                'style' => 'width:247px',
+                'data-original_value'=> '',
+                'data-placeholder' => 'Choose Home Team'
             ),
             'name' => 'homeTeam',
             'options' => array(
@@ -51,10 +52,11 @@ class FixtureForm extends RegionalisedForm {
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                'class' => 'check-values',
+                'class' => 'check-values chosen',
                 'tabindex' => 6,
-                'data-changed' => 0,
-                'data-original_value'=> ''
+                'style' => 'width:247px',
+                'data-original_value'=> '',
+                'data-placeholder' => 'Choose Away Team'
             ),
             'name' => 'awayTeam',
             'options' => array(
@@ -100,7 +102,9 @@ class FixtureForm extends RegionalisedForm {
                 'checked_value' => 1,
                 'unchecked_value' => 0
             ),
-            'attributes' => array()
+            'attributes' => array(
+                'class' => 'double-points-checkbox'
+            )
         ));
 
         $this->add(array(

@@ -5,6 +5,7 @@ namespace Application\Model\DAOs;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Doctrine\ORM\Query\Expr;
 
 class RegionDAO extends AbstractDAO {
 
@@ -60,4 +61,20 @@ class RegionDAO extends AbstractDAO {
             ->where($qb->expr()->eq('r.isDefault', true));
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
+
+    /**
+     * @param integer $regionId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     * @throws \Exception
+     */
+    public function getUsersByRegion($regionId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('u')
+            ->from('\Application\Model\Entities\User', 'u')
+            ->join('u.country', 'c', Expr\Join::WITH, 'c.region = ' . $regionId);
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
 }

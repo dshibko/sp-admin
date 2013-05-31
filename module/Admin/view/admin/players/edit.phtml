@@ -22,7 +22,7 @@ $this->headTitle($this->title);
                     <div class="controls">
                         <?php if ($type == 'text') : ?>
                             <div class="input-prepend">
-                                <span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium check-values" type="<?=$element->getAttribute('type');?>" name="<?=$element->getAttribute('name');?>" <?php echo ($element->getAttribute('maxlength') ? 'maxlength="'.$element->getAttribute('maxlength'). '"' : '');?>data-changed="0" data-original_value="<?=$element->getValue();?>" value="<?=$element->getValue();?>"/>
+                                <span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium check-values" type="<?=$element->getAttribute('type');?>" name="<?=$element->getAttribute('name');?>" <?php echo ($element->getAttribute('maxlength') ? 'maxlength="'.$element->getAttribute('maxlength'). '"' : '');?> data-original_value="<?=$element->getValue();?>" value="<?=$element->getValue();?>"/>
                             </div>
                         <?php elseif($type == 'file'): $image = $element->getValue();?>
                             <div class="fileupload fileupload-<?=(!empty($image) ? 'exists' : 'new')?>" data-provides="fileupload">
@@ -103,9 +103,10 @@ $this->headTitle($this->title);
               if (!$(this).data('blocked')){
                   var changed = false;
                   $('.check-values').each(function(){
-                        if ($(this).data('changed')){
+                      var val = $(this).val();
+                      if (val != $(this).data('original_value')){
                             changed = true;
-                        }
+                      }
                   });
                   if (changed){
                       return true;
@@ -118,21 +119,9 @@ $this->headTitle($this->title);
                   return false;
               }
         });
-
-        $('.check-values').change(function(){
-           var val = $(this).val();
-           if (val != $(this).data('original_value')){
-               $(this).data('changed', 1);
-           }else{
-               $(this).data('changed', 0);
-           }
-        });
         $('button.reset').click(function(e){
             e.preventDefault();
             this.form.reset();
-            $('.check-values').each(function(){
-                $(this).data('changed', 0);
-            });
         });
         App.init(); // initlayout and core plugins
     });

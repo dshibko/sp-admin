@@ -53,7 +53,6 @@ class RegistrationManager extends BasicManager
     {
         $data['role'] = RoleDAO::getInstance($this->getServiceLocator())->findOneById(self::MEMBER_ROLE_ID);
         $data['language'] = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
-        $data['region'] = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
         $data['country'] = CountryDAO::getInstance($this->getServiceLocator())->findOneById($data['country']);
         $data['date'] = new \DateTime();
         $data['date_of_birth'] = new \DateTime($data['date_of_birth']);

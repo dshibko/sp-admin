@@ -160,16 +160,6 @@ class User extends BasicObject {
     private $language;
 
     /**
-     * @var Region
-     *
-     * @ORM\ManyToOne(targetEntity="Region")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="region_id", referencedColumnName="id")
-     * })
-     */
-    private $region;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="League", mappedBy="creator")
@@ -505,23 +495,6 @@ class User extends BasicObject {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
-     */
-    public function setRegion($region)
-    {
-        $this->region = $region;
-        return $this;
-    }
-
-    /**
-     * @return \Application\Model\Entities\Region
-     */
-    public function getRegion()
-    {
-        return $this->region;
-    }
-
-    /**
      * @param \Doctrine\Common\Collections\Collection $leagues
      */
     public function setLeagues($leagues)
@@ -715,12 +688,8 @@ class User extends BasicObject {
         if (isset($data['date']) && $data['date'] instanceof \DateTime){
             $this->setDate($data['date']);
         }
-
         if (isset($data['language']) && $data['language'] instanceof \Application\Model\Entities\Language){
             $this->setLanguage($data['language']);
-        }
-        if (isset($data['region']) && $data['region'] instanceof \Application\Model\Entities\Region){
-            $this->setRegion($data['region']);
         }
         if (isset($data['role']) && $data['role'] instanceof \Application\Model\Entities\Role){
             $this->setRole($data['role']);

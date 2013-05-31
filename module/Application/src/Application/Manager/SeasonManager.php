@@ -46,6 +46,10 @@ class SeasonManager extends BasicManager {
         return SeasonDAO::getInstance($this->getServiceLocator())->getAllSeasons($hydrate, $skipCache);
     }
 
+    public function getAllNotFinishedSeasons($hydrate = false, $skipCache = false) {
+        return SeasonDAO::getInstance($this->getServiceLocator())->getAllNotFinishedSeasons($hydrate, $skipCache);
+    }
+
     /**
      * @param array $fields
      * @param bool $hydrate
@@ -54,7 +58,7 @@ class SeasonManager extends BasicManager {
      */
     public function getAllSeasonsByFields(array $fields, $hydrate = false, $skipCache = false)
     {
-       return SeasonDAO::getInstance($this->getServiceLocator())->getAllSeasonsByFields($fields, $hydrate, $skipCache);
+        return SeasonDAO::getInstance($this->getServiceLocator())->getAllSeasonsByFields($fields, $hydrate, $skipCache);
     }
 
     /**
@@ -99,6 +103,7 @@ class SeasonManager extends BasicManager {
 
         $seasonRegionDAO = SeasonRegionDAO::getInstance($this->getServiceLocator());
         $prizeDAO = PrizeDAO::getInstance($this->getServiceLocator());
+        $regionManager = RegionManager::getInstance($this->getServiceLocator());
 
         foreach ($regionsData as $id => $regionRow) {
             $region = RegionManager::getInstance($this->getServiceLocator())->getNonHydratedRegionFromArray($id);
@@ -123,7 +128,6 @@ class SeasonManager extends BasicManager {
 
             $prizeDAO->save($prize, false, false);
 
-            $users = $region->getUsers();
             $regionLeague = new League();
             $regionLeague->setDisplayName(self::REGIONAL_LEAGUE_PREFIX . $season->getDisplayName() . " " . $region->getDisplayName());
             $regionLeague->setStartDate($season->getStartDate());
@@ -133,6 +137,7 @@ class SeasonManager extends BasicManager {
             $regionLeague->setType(League::REGIONAL_TYPE);
             $regionLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
             $regionLeague->setCreationDate(new \DateTime());
+            $users = $regionManager->getUsers($region->getId());
             foreach ($users as $user) {
                 $leagueUser = new LeagueUser();
                 $leagueUser->setUser($user);
