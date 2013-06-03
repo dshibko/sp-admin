@@ -29,6 +29,13 @@ class LeagueUser
     /**
      * @var integer
      *
+     * @ORM\Column(name="previous_place", type="integer")
+     */
+    private $previousPlace;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="place", type="integer")
      */
     private $place;
@@ -180,6 +187,22 @@ class LeagueUser
     public function getPoints()
     {
         return $this->points;
+    }
+
+    /**
+     * @param int $previousPlace
+     */
+    public function setPreviousPlace($previousPlace)
+    {
+        $this->previousPlace = $previousPlace;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPreviousPlace()
+    {
+        return $this->previousPlace;
     }
 
 }

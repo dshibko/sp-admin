@@ -10,16 +10,6 @@ $this->headTitle($title);
             </div>
             <div class="portlet-body">
                 <?php if (!empty($this->players)) : ?>
-                <div class="datatable-filter">
-                    <label>
-                        <select id="players-filter">
-                             <option value="-1"><?php echo $this->translate('All');?></option>
-                             <option selected="selected" value="1"><?php echo $this->translate('Active');?></option>
-                             <option value="0"><?php echo $this->translate('Inactive');?></option>
-                        </select>
-                        <?php echo $this->translate('filter by status');?>
-                    </label>
-                </div>
                 <table class="table table-striped table-bordered table-hover" id="players-table">
                     <thead>
                     <tr>
@@ -29,7 +19,6 @@ $this->headTitle($title);
                         <th><?=$this->translate('Shirt Number');?></th>
                         <th><?=$this->translate('Avatar');?></th>
                         <th><?=$this->translate('Background Image');?></th>
-                        <th><?=$this->translate('Status');?></th>
                         <th style="width: 60px"><?php echo $this->translate('Action');?></th>
                     </tr>
                     </thead>
@@ -49,13 +38,6 @@ $this->headTitle($title);
                             <?php if (!empty($player['backgroundImagePath'])):?>
                             <a href="<?=$player['backgroundImagePath'];?>" target="_blank"><?php echo $this->translate('Open');?></a>
                             <?php endif;?>
-                        </td>
-                        <td>
-                           <?php
-                                $statuses = array('active', 'inactive');
-
-                            ?>
-                            <?php echo $statuses[rand(0,1)];?>
                         </td>
                         <td>
                             <a href="<?=$this->url('admin-players', array('action' => 'edit', 'player' => $player['id']))?>" class="btn mini blue">
@@ -86,27 +68,6 @@ $this->headTitle($title);
 <!-- END PAGE LEVEL SCRIPTS -->
 <script type="text/javascript">
 
-    jQuery.fn.dataTableExt.afnFiltering.push(
-        function( oSettings, aData, iDataIndex ) {
-            var status = jQuery('#players-filter').val();
-            var value = aData[6];
-            switch(status){
-                case '1':{
-                    if (value != 'active'){
-                        return false;
-                    }
-                    break;
-                }
-                case '0':{
-                    if (value != 'inactive'){
-                        return false;
-                    }
-                    break;
-                }
-            }
-            return true;
-        }
-    );
     jQuery(document).ready(function() {
         App.init(); // initlayout and core plugins
         /* Custom filtering function which will filter data in column four between two values */
@@ -115,7 +76,7 @@ $this->headTitle($title);
         var messages = {perPage: "_MENU_ " + "<?=$this->translate('players per page')?>", nextLink: "<?=$this->translate('Next')?>",
             prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ clubs')?>"};
        var oTable = $('#players-table').dataTable({
-            "aoColumns": [null, null,null, null, null,null,null,{bSortable: false}],
+            "aoColumns": [null, null,null, null, null,null,{bSortable: false}],
            // "aaSorting": aaSorting,
            // "bFilter": false,
             "oLanguage": {
@@ -126,9 +87,6 @@ $this->headTitle($title);
                 },
                 "sInfo": messages.showingLabel
             }
-        });
-        $('#players-filter').change(function(){
-            oTable.fnDraw();
         });
     });
 </script>

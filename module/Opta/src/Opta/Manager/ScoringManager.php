@@ -82,6 +82,9 @@ class ScoringManager extends BasicManager {
                 $points += $correctScorers * self::GOAL_SCORER_POINTS;
                 $points += $correctScorersOrder * self::GOAL_SCORER_ORDER_POINTS;
 
+                if ($match->getIsDoublePoints())
+                    $points *= 2;
+
                 $prediction->setIsCorrectResult($isCorrectResult);
                 $prediction->setIsCorrectScore($isCorrectScore);
                 $prediction->setCorrectScorers($correctScorers);

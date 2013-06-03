@@ -90,7 +90,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'options' => array(
                 'disable_inarray_validator' => true,
                 'label' => 'Title',
-                'empty_option' => '&ndash; Please select &ndash;',
+                'empty_option' => 'Please select',
                 'value_options' => array(
                     self::MR => self::MR,
                     self::MRS => self::MRS,
@@ -192,7 +192,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'options' => array(
                 'disable_inarray_validator' => true,
                 'label' => 'Country',
-                'empty_option' => '&ndash; Please select &ndash;',
+                'empty_option' => 'Please select',
                 'value_options' => ApplicationManager::getInstance($this->getServiceLocator())->getCountriesSelectOptions()
             ),
             'attributes' => array(
@@ -251,7 +251,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
                 'label' => 'Gender',
-                'empty_option' => '&ndash; Please select &ndash;',
+                'empty_option' => 'Please select',
                 'value_options' => array(
                     self::MALE => 'Male',
                     self::FEMALE => 'Female'

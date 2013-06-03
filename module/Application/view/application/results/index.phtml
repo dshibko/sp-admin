@@ -1,0 +1,119 @@
+<?php $this->getUnreadItems()->setIsFirstResultView($this->firstResultView); ?>
+<div role="main" class="two-column-section clearfix">
+    <div class="first-column results">
+        <?php if (!empty($this->current)) : ?>
+            <section class="your-results">
+                <header>
+                    <?php if (!$this->current['prediction']['wasViewed']) : ?>
+                        <strong class="flag-new-prediction"><span><?=$this->translate('New')?></span></strong>
+                    <?php endif; ?>
+                    <time class="game-date">
+                        <?php print $this->current['localStartTime']->format('D d M h.i a');?>
+                        <?php //print strftime('%a %e %b %I.%M %P', $this->current['localStartTime']->getTimestamp()); ?>
+                    </time>
+                    <ul class="direction-nav">
+                        <?php if ($this->back < $this->maxBack) : ?>
+                            <li class="prev-match">
+                                <a href="<?=$this->url('results', array('back' => $this->back != 1 ? $this->back + 1 : null));?>"><?=$this->translate('Prev')?> <span><?=$this->translate('match')?></span></a>
+                            </li>
+                        <?php endif; ?>
+                        <?php if ($this->back > 0) : ?>
+                            <li class="next-match">
+                                <a href="<?=$this->url('results', array('back' => $this->back - 1));?>"><?=$this->translate('Next')?> <span><?=$this->translate('match')?></span></a>
+                            </li>
+                        <?php endif; ?>
+                    </ul>
+                </header>
+
+                <div class="your-results-content clearfix">
+                    <h1>Your results</h1>
+                    <div class="scorers clearfix">
+                        <div class="home-team">
+                            <figure class="clearfix">
+                                <img src="<?=$this->clubLogo($this->current['homeLogo'])?>" alt="<?=$this->current['homeName'];?>">
+                                <figcaption>
+                                    <?=$this->current['homeName'];?>
+                                </figcaption>
+                            </figure>
+
+                            <section>
+                                <strong><?=$this->current['homeTeamFullTimeScore']?></strong>
+                                <ul>
+                                    <?php foreach ($this->current['goals']['homeScorers'] as $scorer) :?>
+                                        <li>
+                                            <?=$scorer['displayName']?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </section>
+                        </div>
+
+                        <div class="league-block">
+                            <strong>Premier league</strong>
+                            <em>VS</em>
+                            <span class="">Scorers</span>
+                        </div>
+
+                        <div class="away-team">
+                            <figure class="clearfix">
+                                <img src="<?=$this->clubLogo($this->current['awayLogo'])?>" alt="<?=$this->current['awayName'];?>">
+                                <figcaption>
+                                    <?=$this->current['awayName'];?>
+                                </figcaption>
+                            </figure>
+
+                            <section>
+                                <strong><?=$this->current['awayTeamFullTimeScore']?></strong>
+                                <ul>
+                                    <?php foreach ($this->current['goals']['awayScorers'] as $scorer) :?>
+                                    <li>
+                                        <?=$scorer['displayName']?>
+                                    </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+
+                    <div class="points">
+                        <table>
+                            <tbody>
+                                <?php foreach ($this->breakpoints as $breakpointText => $points) : ?>
+                                    <tr>
+                                        <th><?=$breakpointText?></th>
+                                        <td><span class="prediction-<?= $points == '+0' ? 'un' : ''?>successful"><?=$points?></span></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" class="total">
+                                        <h3><?=$this->translate('Total')?></h3>
+                                        <strong>+<?=$this->current['prediction']['points']?> <abbr title="Points"><?=$this->translate('PTS')?></abbr></strong>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+<!--                    <div class="award">-->
+<!--                        <article class="king clearfix">-->
+<!--                            <img src="/img/award/crown.png" alt="">-->
+<!--                            <h2>Bow to the king</h2>-->
+<!--                            <p>You are top of your social league</p>-->
+<!--                        </article>-->
+<!--                        <aside class="clearfix">-->
+<!--                            <h3>Share this</h3>-->
+<!--                            <ul class="social-links">-->
+<!--                                <li><a href="">tweet</a></li>-->
+<!--                                <li><a href="">like</a></li>-->
+<!--                            </ul>-->
+<!--                        </aside>-->
+<!--                    </div>-->
+                </div>
+            </section>
+        <?php else: ?>
+            <?= $this->renderMessages(); ?>
+        <?php endif; ?>
+    </div>
+
+</div>

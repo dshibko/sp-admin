@@ -22,10 +22,11 @@ var TableManaged = function () {
                     null,
                     null,
                     { "sType": 'gender' },
+                    null,
                     null];
 
             if (aaSorting == undefined)
-                aaSorting = [[ 3, "desc" ]];
+                aaSorting = [[ 4, "desc" ]];
 
             // begin first table
             $('#users-table').dataTable({

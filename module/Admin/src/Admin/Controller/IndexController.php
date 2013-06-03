@@ -25,6 +25,8 @@ class IndexController extends AbstractActionController {
         if (!$router->isGranted('admin'))
             return $this->redirect()->toRoute(self::ADMIN_LOGIN_PAGE_ROUTE);
 
+        $nextMatchId = $prevMatchId = -1;
+
         try {
             $userManager = UserManager::getInstance($this->getServiceLocator());
             $registeredUsersNumber = $userManager->getRegisteredUsersNumber();
@@ -38,17 +40,19 @@ class IndexController extends AbstractActionController {
                 $inactiveUsersNumber = $registeredUsersNumber - $activeUsersNumber;
 
                 $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
-                $avgNumberOfPredictions = $predictionManager->getAvgNumberOfPrediction($currentSeason);
+                $avgNumberOfPredictions = $predictionManager->getAvgNumberOfPredictions($currentSeason);
                 $matchManager = MatchManager::getInstance($this->getServiceLocator());
                 $nextMatch = $matchManager->getNextMatch();
-                if ($nextMatch != null)
+                if ($nextMatch != null) {
                     $nextMatchPredictions = $nextMatch->getPredictions()->count();
-                else
+                    $nextMatchId = $nextMatch->getId();
+                } else
                     $nextMatchPredictions = MessagesConstants::INFO_ADMIN_NO_NEXT_MATCH;
                 $prevMatch = $matchManager->getPrevMatch();
-                if ($prevMatch != null)
+                if ($prevMatch != null) {
                     $prevMatchPredictions = $prevMatch->getPredictions()->count();
-                else
+                    $prevMatchId = $prevMatch->getId();
+                } else
                     $prevMatchPredictions = MessagesConstants::INFO_ADMIN_NO_PREV_MATCH;
             }
 
@@ -66,7 +70,9 @@ class IndexController extends AbstractActionController {
             'avgNumberOfPredictions' => $avgNumberOfPredictions,
             'nextMatchPredictions' => $nextMatchPredictions,
             'prevMatchPredictions' => $prevMatchPredictions,
-            'usersRegisteredInPast7Days' => $usersRegisteredInPast7Days
+            'usersRegisteredInPast7Days' => $usersRegisteredInPast7Days,
+            'nextMatchId' => $nextMatchId,
+            'prevMatchId' => $prevMatchId,
         ));
 
     }

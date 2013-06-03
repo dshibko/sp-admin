@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use \Doctrine\ORM\Query\ResultSetMapping;
 use \Application\Model\Entities\League;
 use \Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -39,22 +40,36 @@ class LeagueDAO extends AbstractDAO {
      * @return array
      */
     public function getLeagueUsersScores($league) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('date', 'date');
+        $rsm->addScalarResult('predictions_count', 'predictions_count');
+        $rsm->addScalarResult('predictions_players_count', 'predictions_players_count');
+        $rsm->addScalarResult('points', 'points');
+        $rsm->addScalarResult('correct_results', 'correct_results');
+        $rsm->addScalarResult('correct_scores', 'correct_scores');
+        $rsm->addScalarResult('correct_scorers', 'correct_scorers');
+        $rsm->addScalarResult('correct_scorers_order', 'correct_scorers_order');
         $query = $this->getEntityManager()
-            ->createQuery('SELECT lu, u, SUM(p.points) as points,
-             ((SUM(p.isCorrectResult) / COUNT(p)) + (SUM(p.isCorrectScore) / COUNT(p)) + (SUM(p.correctScorers) / SUM(p.homeTeamScore + p.awayTeamScore)) + (SUM(p.correctScorersOrder) / SUM(p.homeTeamScore + p.awayTeamScore))) / 4 as accuracy,
-             COUNT(p.id) as predictions_count, SUM(p.isCorrectResult) as correct_results, SUM(p.isCorrectScore) as correct_scores, SUM(p.correctScorers) as correct_scorers
-             FROM \Application\Model\Entities\LeagueUser lu
-             JOIN lu.user u
-             JOIN lu.league l WITH l.id = ' . $league->getId() . '
-             JOIN u.predictions p WITH p.points is not null
-             JOIN p.match m
-             WHERE m.startTime >= :startDate
-             AND m.startTime <= :endDate
-             GROUP BY lu.id
-             ')
-            ->setParameter('startDate', $league->getStartDate()->format('Y-m-d'))
-            ->setParameter('endDate', $league->getEndDate()->format('Y-m-d'));
-        return $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->createNativeQuery('
+                SELECT lu.id, u.date,
+                COUNT(p.id) as predictions_count,
+                IFNULL(SUM(pp.players), 0) as predictions_players_count,
+                SUM(p.points) as points,
+                SUM(p.is_correct_result) as correct_results,
+                SUM(p.is_correct_score) as correct_scores,
+                SUM(p.correct_scorers) as correct_scorers,
+                SUM(p.correct_scorers_order) as correct_scorers_order
+                FROM league_user lu
+                INNER JOIN user u ON u.id = lu.user_id
+                INNER JOIN league l ON l.id = lu.league_id AND l.id = ' . $league->getId() . '
+                INNER JOIN prediction p ON p.user_id = u.id AND p.points is not null
+                INNER JOIN `match` m ON m.id = p.match_id
+                LEFT OUTER JOIN (SELECT pp.prediction_id, COUNT(pp.id) players FROM prediction_player pp WHERE pp.player_id is not null GROUP BY pp.prediction_id) pp ON pp.prediction_id = p.id
+                WHERE DATE(m.start_time) >= l.start_date AND DATE(m.start_time) <= l.end_date
+                GROUP BY lu.id
+          ', $rsm);
+        return $query->getArrayResult();
     }
 
     /**
@@ -103,7 +118,7 @@ class LeagueDAO extends AbstractDAO {
 
     public function getAllLeagues($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('l.id, l.type, l.displayName, l.startDate, l.endDate, s.displayName as seasonName')
+        $qb->select('l.id, l.type, l.displayName, l.startDate, l.endDate, s.displayName as seasonName, s.id as seasonId')
             ->from($this->getRepositoryName(), 'l')
             ->join('l.season', 's')
             ->orderBy('l.startDate', 'DESC');

@@ -42,7 +42,8 @@ class CountryDAO extends AbstractDAO {
     public function getAllCountries($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('c')
-            ->from($this->getRepositoryName(), 'c');
+            ->from($this->getRepositoryName(), 'c')
+            ->orderBy('c.name', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
     /**

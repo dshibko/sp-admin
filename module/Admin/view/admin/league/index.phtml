@@ -62,7 +62,12 @@ $this->headTitle($title);
                             <td><?=$league['startDate']->format("j F Y");?></td>
                             <td><?=$league['endDate']->format("j F Y");?></td>
                             <td>
-                                <a href="<?=$this->url('admin-leagues', array('action' => $league['type'] == \Application\Model\Entities\League::MINI_TYPE ? 'editMiniLeague' : 'edit', 'id' => $league['id']))?>" class="btn mini blue">
+                                <?php
+                                    $url = $league['type'] == \Application\Model\Entities\League::MINI_TYPE  ?
+                                        $this->url('admin-leagues', array('action' => 'editMiniLeague', 'id' => $league['id'])) :
+                                        $this->url('admin-seasons', array('action' => 'edit', 'id' => $league['seasonId']));
+                                ?>
+                                <a href="<?=$url?>" class="btn mini blue">
                                     <i class="icon-edit"></i>
                                     <?=$this->translate('Edit')?>
                                 </a>

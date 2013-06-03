@@ -1,4 +1,7 @@
-var turnOffCustomStylePoint = 767;
+function isMobile() {
+    return is_iphone || is_touch_device();
+}
+var turnOffCustomStylePoint = isMobile() ? 767 : 0;
 
 var makePredictionOptions = {
 
@@ -39,13 +42,8 @@ var numbersKeys = [48, 49, 50, 51, 52, 53, 54 , 55, 56, 57,
 
 $(document).ready(function () {
 
-    if ($('div.away-team label').height() != $('div.home-team label').height()) {
-        var maxHeight = Math.max($('div.away-team label').height(), $('div.home-team label').height());
-        var minHeight = Math.min($('div.away-team label').height(), $('div.home-team label').height());
-        $('div.league-logo em').height($('div.league-logo em').height() + maxHeight - minHeight);
-        $('div.home-team label').height(maxHeight);
-        $('div.away-team label').height(maxHeight);
-    }
+    $(window).resize(resizeFix);
+    resizeFix();
 
     var countdown = $('aside.competition-countdown');
     var untilTime = countdown.find('strong').text();
@@ -140,4 +138,17 @@ function getPrevGoalsValue(id) {
 
 function setPrevGoalsValue(id, value) {
     prevValues[id] = value;
+}
+
+var emHeight = -1;
+
+function resizeFix() {
+    $('div.away-team label').height('auto');
+    $('div.home-team label').height('auto');
+    var maxHeight = Math.max($('div.away-team label').height(), $('div.home-team label').height());
+    var minHeight = Math.min($('div.away-team label').height(), $('div.home-team label').height());
+    if (emHeight == -1) emHeight = $('div.league-logo em').height();
+    $('div.league-logo em').height(emHeight + maxHeight - minHeight);
+    $('div.home-team label').height(maxHeight);
+    $('div.away-team label').height(maxHeight);
 }

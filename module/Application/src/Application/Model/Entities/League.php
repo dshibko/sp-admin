@@ -225,7 +225,7 @@ class League extends BasicObject {
      */
     public function getStartDate()
     {
-        return $this->startDate;
+        return $this->startDate->setTime(0, 0, 0);
     }
 
     /**
@@ -248,7 +248,7 @@ class League extends BasicObject {
      */
     public function getEndDate()
     {
-        return $this->endDate;
+        return $this->endDate->setTime(0, 0, 0)->add(new \DateInterval('P1D'));
     }
 
     /**
@@ -601,6 +601,16 @@ class League extends BasicObject {
     public function setLeagueUsers($leagueUsers)
     {
         $this->leagueUsers = $leagueUsers;
+    }
+
+    /**
+     * @param \DateTime $dateTime
+     * @return bool
+     */
+    public function getIsActive($dateTime) {
+        $startDate = $this->getStartDate();
+        $endDate = $this->getEndDate();
+        return $dateTime > $startDate && $dateTime < $endDate;
     }
 
 }

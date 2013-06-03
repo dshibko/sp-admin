@@ -75,15 +75,17 @@ class Module
             $controller = $matches->getParam('controller');
             if (strpos($controller, __NAMESPACE__) === 0) {
                 $response = $e->getResponse();
-                $response->setStatusCode(\Zend\Http\Response::STATUS_CODE_302);
-                $headers = new \Zend\Http\Headers();
-                $url = new \Zend\View\Helper\Url();
-                $url->setRouter($e->getApplication()->getServiceManager()->get('router'));
-                $headers->addHeaderLine("Location", $url->__invoke(self::LOGIN_PAGE_ROUTE));
-                $response->setHeaders($headers);
-                $response->send();
-                $e->stopPropagation();
-                return false;
+                if ($response->getStatusCode() == \Zend\Http\Response::STATUS_CODE_403) {
+                    $response->setStatusCode(\Zend\Http\Response::STATUS_CODE_302);
+                    $headers = new \Zend\Http\Headers();
+                    $url = new \Zend\View\Helper\Url();
+                    $url->setRouter($e->getApplication()->getServiceManager()->get('router'));
+                    $headers->addHeaderLine("Location", $url->__invoke(self::LOGIN_PAGE_ROUTE));
+                    $response->setHeaders($headers);
+                    $response->send();
+                    $e->stopPropagation();
+                    return false;
+                }
             }
         }
         return true;

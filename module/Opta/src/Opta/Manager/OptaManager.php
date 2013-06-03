@@ -81,8 +81,10 @@ class OptaManager extends BasicManager {
                         }
                         if (!$team->hasCompetition($competition))
                             $team->addCompetition($competition);
-                        $team->setDisplayName($teamXml->Name->__toString());
-                        $team->setShortName($this->getNodeValue($teamXml->SYMID));
+                        if (!$team->getIsBlocked()) {
+                            $team->setDisplayName($teamXml->Name->__toString());
+                            $team->setShortName($this->getNodeValue($teamXml->SYMID));
+                        }
                         $team->setFounded($this->getNodeValue($teamXml->Founded));
                         $team->setStadiumName($this->getNodeValue($teamXml->Stadium, 'Name'));
                         $team->setStadiumCapacity($this->getNodeValue($teamXml->Stadium, 'Capacity'));
@@ -113,14 +115,16 @@ class OptaManager extends BasicManager {
                                 $player->addCompetition($competition);
 
                             $player->setTeam($team);
-                            $player->setDisplayName($playerXml->Name->__toString());
+                            if (!$player->getIsBlocked()) {
+                                $player->setDisplayName($playerXml->Name->__toString());
+                                $player->setShirtNumber($this->getNodeValue($playerXml->Stat, 6));
+                            }
                             $player->setPosition($playerXml->Position->__toString());
                             $player->setName($playerXml->Stat->{0}->__toString());
                             $player->setSurname($playerXml->Stat->{1}->__toString());
                             $player->setBirthDate($this->getNodeValue($playerXml->Stat, 3, 'Y-m-d'));
                             $player->setWeight($this->getNodeValue($playerXml->Stat, 4));
                             $player->setHeight($this->getNodeValue($playerXml->Stat, 5));
-                            $player->setShirtNumber($this->getNodeValue($playerXml->Stat, 6));
                             $player->setRealPosition($this->getNodeValue($playerXml->Stat, 7));
                             $player->setRealPositionSide($this->getNodeValue($playerXml->Stat, 8));
                             $player->setJoinDate($this->getNodeValue($playerXml->Stat, 9, 'Y-m-d'));
@@ -129,8 +133,6 @@ class OptaManager extends BasicManager {
                         }
 
                         $teamDAO->save($team);
-
-//                        $teamDAO->detach($team);
 
                     } catch (\Exception $e) {
                         ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
@@ -213,34 +215,35 @@ class OptaManager extends BasicManager {
     //                            $isNonCalculatedMatch = $isJustFinishedMatch && !$match->getPredictions()->isEmpty();
 
                                 $match->setStatus($status);
-                                $timezoneAbbr = $this->getNodeValue($matchXml->MatchInfo, 'TZ');
-                                $match->setTimezone($timezoneAbbr);
-                                $timezone = !empty($timezoneAbbr) ? new \DateTimeZone(timezone_name_from_abbr($timezoneAbbr)) : null;
-                                $startTime = $this->getNodeValue($matchXml->MatchInfo, 'Date', 'Y-m-d G:i:s', $timezone);
-                                if ($startTime->getOffset() != 0) {
-                                    $offsetInterval = new \DateInterval('PT' . abs($startTime->getOffset()) . 'S');
-                                    if ($startTime->getOffset() > 0)
-                                        $startTime->sub($offsetInterval);
-                                    else
-                                        $startTime->add($offsetInterval);
+                                if (!$match->getIsBlocked()) {
+                                    $timezoneAbbr = $this->getNodeValue($matchXml->MatchInfo, 'TZ');
+                                    $match->setTimezone($timezoneAbbr);
+                                    $timezone = !empty($timezoneAbbr) ? new \DateTimeZone(timezone_name_from_abbr($timezoneAbbr)) : null;
+                                    $startTime = $this->getNodeValue($matchXml->MatchInfo, 'Date', 'Y-m-d G:i:s', $timezone);
+                                    if ($startTime->getOffset() != 0) {
+                                        $offsetInterval = new \DateInterval('PT' . abs($startTime->getOffset()) . 'S');
+                                        if ($startTime->getOffset() > 0)
+                                            $startTime->sub($offsetInterval);
+                                        else
+                                            $startTime->add($offsetInterval);
+                                    }
+                                    $match->setStartTime($startTime);
+                                    $team2Side = $this->getXmlAttribute($matchXml->TeamData->{1}, 'Side');
+
+                                    if ($team2Side == 'Home') {
+                                        $homeTeamFeederId = $team2FeederId;
+                                        $awayTeamFeederId = $team1FeederId;
+                                    } else {
+                                        $homeTeamFeederId = $team1FeederId;
+                                        $awayTeamFeederId = $team2FeederId;
+                                    }
+
+                                    $match->setHomeTeam($teamDAO->getRepository()->findOneByFeederId($homeTeamFeederId));
+                                    $match->setAwayTeam($teamDAO->getRepository()->findOneByFeederId($awayTeamFeederId));
                                 }
-                                $match->setStartTime($startTime);
 
                                 $match->setStadiumName($this->getNodeValue($matchXml->Stat, 0));
                                 $match->setCityName($this->getNodeValue($matchXml->Stat, 1));
-
-                                $team2Side = $this->getXmlAttribute($matchXml->TeamData->{1}, 'Side');
-
-                                if ($team2Side == 'Home') {
-                                    $homeTeamFeederId = $team2FeederId;
-                                    $awayTeamFeederId = $team1FeederId;
-                                } else {
-                                    $homeTeamFeederId = $team1FeederId;
-                                    $awayTeamFeederId = $team2FeederId;
-                                }
-
-                                $match->setHomeTeam($teamDAO->getRepository()->findOneByFeederId($homeTeamFeederId));
-                                $match->setAwayTeam($teamDAO->getRepository()->findOneByFeederId($awayTeamFeederId));
 
                                 if ($match->getHomeTeam() == null || $match->getAwayTeam() == null) {
                                     $missedFeederId = $match->getHomeTeam() == null ? $homeTeamFeederId : $awayTeamFeederId;

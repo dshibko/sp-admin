@@ -90,7 +90,10 @@ $this->headTitle($title);
                         <?=$this->translate('Next Match Predictions')?>
                     </div>
                 </div>
-                <a class="more" href="#">
+                <?php
+                $nextMatchLink = $this->nextMatchId != -1 ? $this->url('admin-fixtures', array('action' => 'edit', 'fixture' => $this->nextMatchId)) : '#';
+                ?>
+                <a class="more" href="<?=$nextMatchLink?>">
                     <?=$this->translate('View more')?> <i class="m-icon-swapright m-icon-white"></i>
                 </a>
             </div>
@@ -108,7 +111,10 @@ $this->headTitle($title);
                         <?=$this->translate('Previous Match Predictions')?>
                     </div>
                 </div>
-                <a class="more" href="#">
+                <?php
+                $prevMatchLink = $this->prevMatchId != -1 ? $this->url('admin-fixtures', array('action' => 'edit', 'fixture' => $this->prevMatchId)) : '#';
+                ?>
+                <a class="more" href="<?=$prevMatchLink?>">
                     <?=$this->translate('View more')?> <i class="m-icon-swapright m-icon-white"></i>
                 </a>
             </div>
@@ -132,6 +138,7 @@ $this->headTitle($title);
                                     <th><?=$this->translate('Name')?></th>
                                     <th class="hidden-480"><?=$this->translate('Email')?></th>
                                     <th><?=$this->translate('Gender')?></th>
+                                    <th><?=$this->translate('Facebook')?></th>
                                     <th class="hidden-480"><?=$this->translate('Joined')?></th>
                                 </tr>
                             </thead>
@@ -142,6 +149,9 @@ $this->headTitle($title);
                                         <td class="hidden-480"><a href="mailto:<?=$user['email']?>"><?=$user['email']?></a></td>
                                         <td>
                                             <div class="glyphicons no-js <?=strtolower($user['gender']) == 'male' ? 'user' : 'girl'?>"><i></i></div>
+                                        </td>
+                                        <td>
+                                            <?=empty($user['facebookId']) ? 'NO' : 'YES'?>
                                         </td>
                                         <td class="hidden-480">
                                             <?=$user['date']->format("j F H:i")?>

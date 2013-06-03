@@ -378,3 +378,8 @@ ALTER TABLE `match`  CHANGE COLUMN `feeder_id` `feeder_id` INT(11) NULL AFTER `a
 ALTER TABLE  `league_region` ADD  `display_name` VARCHAR( 255 ) NULL;
 ALTER TABLE `user` DROP FOREIGN KEY `user_ibfk_3`;
 ALTER TABLE  `user` DROP  `region_id`;
+
+-- oko 31.05
+
+ALTER TABLE  `prediction` ADD  `was_viewed` TINYINT( 1 ) NOT NULL AFTER  `points`;
+ALTER TABLE  `league_user` ADD  `previous_place` INT NULL AFTER  `place`;
