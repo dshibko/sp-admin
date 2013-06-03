@@ -84,7 +84,19 @@ class Module
                     $h = new RegionFieldsetsRenderer();
                     $h->setTranslator($translator);
                     return $h;
-                },
+                }
+            ),
+        );
+    }
+
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'accountFilter' => function($sm){
+                    $filter = new \Admin\Form\Filter\AccountFormFilter($sm);
+                    return $filter;
+                }
             )
         );
     }

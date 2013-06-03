@@ -29,14 +29,13 @@ class MessagesConstants
     const SUCCESS_SYNC_WITH_FEED = 'Data successfully sync with feed';
     const SUCCESS_PLAYER_SAVED = 'Player was successfully saved';
     const SUCCESS_FIXTURE_SAVED = 'Fixture was successfully saved';
+    const SUCCESS_ACCOUNT_SAVED = 'Account was successfully saved';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
     const ERROR_MAX_GAMEPLAY_BLOCKS_NUMBER = "You can't create more than %s gameplay blocks.";
     const ERROR_SOCIAL_NOT_FOUND = "A footer social was not found.";
     const ERROR_GAMEPLAY_BLOCK_NOT_FOUND = "A gameplay block was not found.";
-    const ERROR_INVALID_SETTING_FORM_TYPE = 'Invalid form type';
-    const ERROR_INVALID_OLD_PASSWORD = 'Invalid old password';
     const ERROR_REGION_NOT_FOUND = "Selected region was not found.";
     const ERROR_LANGUAGE_NOT_FOUND = "Selected language was not found.";
     const ERROR_UPDATE_PO_FILE_FAILED = 'Po file update failed';
@@ -78,6 +77,8 @@ class MessagesConstants
     const ERROR_NO_FINISHED_MATCHES_IN_THE_SEASON = 'No matches were played in this season.';
     const ERROR_SECURITY_CHECK_FAILED = 'Bad request. Security check failed.';
     const ERROR_MATCH_IS_LIVE = 'Match is being played now. You can\'t predict anymore.';
+    const ERROR_INVALID_SETTING_FORM_TYPE = 'Invalid form type';
+    const ERROR_INVALID_OLD_PASSWORD = 'Invalid old password';
 
     const SUCCESS_RECOVERY_LINK_SENT = "Recovery link was sent to your email. The link is active for 3 hours.";
     const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to yout email. The link is active for 60 minutes';

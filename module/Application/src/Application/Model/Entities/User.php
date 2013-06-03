@@ -19,69 +19,69 @@ class User extends BasicObject {
      *
      * @ORM\Column(name="is_active", type="boolean")
      */
-    private $isActive = false;
+    protected $isActive = false;
 
     /**
      * @var bool
      *
      * @ORM\Column(name="is_public", type="boolean")
      */
-    private $isPublic = true;
+    protected $isPublic = true;
     /**
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=5, nullable=false)
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string
      *
      * @ORM\Column(name="first_name", type="string", length=30, nullable=false)
      */
-    private $firstName;
+    protected $firstName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="last_name", type="string", length=30, nullable=false)
      */
-    private $lastName;
+    protected $lastName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=50, nullable=false)
      */
-    private $email;
+    protected $email;
 
     /**
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=100, nullable=false)
      */
-    private $password;
+    protected $password;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="birthday", type="date", nullable=false)
      */
-    private $birthday;
+    protected $birthday;
 
     /**
      * @var string
      *
      * @ORM\Column(name="gender", type="string", length=10, nullable=false)
      */
-    private $gender;
+    protected $gender;
 
     /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=20, nullable=false)
      */
-    private $displayName;
+    protected $displayName;
 
     /**
      * @var \Avatar
@@ -91,14 +91,14 @@ class User extends BasicObject {
      *   @ORM\JoinColumn(name="avatar_id", referencedColumnName="id")
      * })
      */
-    private $avatar;
+    protected $avatar;
 
     /**
      * @var integer
      *
      * @ORM\Column(name="favourite_player_id", type="integer", nullable=true)
      */
-    private $favouritePlayerId;
+    protected $favouritePlayerId;
 
     /**
      * @var integer
@@ -107,21 +107,21 @@ class User extends BasicObject {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var bigint
      *
      * @ORM\Column(name="facebook_id", type="bigint", nullable=true, options={"unsigned"=true})
      */
-    private $facebookId;
+    protected $facebookId;
 
     /**
      * @var string
      *
      * @ORM\Column(name="facebook_access_token", type="string", length=300, nullable=true)
      */
-    private $facebookAccessToken;
+    protected $facebookAccessToken;
     /**
      * @var \Role
      *
@@ -130,14 +130,14 @@ class User extends BasicObject {
      *   @ORM\JoinColumn(name="role_id", referencedColumnName="id")
      * })
      */
-    private $role;
+    protected $role;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="datetime", nullable=false)
      */
-    private $date;
+    protected $date;
 
     /**
      * @var Country
@@ -147,7 +147,7 @@ class User extends BasicObject {
      *   @ORM\JoinColumn(name="country_id", referencedColumnName="id")
      * })
      */
-    private $country;
+    protected $country;
 
     /**
      * @var Language
@@ -157,28 +157,28 @@ class User extends BasicObject {
      *   @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      * })
      */
-    private $language;
+    protected $language;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="League", mappedBy="creator")
      */
-    private $ownLeagues;
+    protected $ownLeagues;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\ManyToMany(targetEntity="League", mappedBy="users")
      */
-    private $leagues;
+    protected $leagues;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="LeagueUser", mappedBy="user")
      */
-    private $leagueUsers;
+    protected $leagueUsers;
 
     /**
      * Set title
@@ -533,7 +533,7 @@ class User extends BasicObject {
      *
      * @ORM\OneToMany(targetEntity="Prediction", mappedBy="user")
      */
-    private $predictions;
+    protected $predictions;
 
 
     /**

@@ -337,4 +337,9 @@ class UserManager extends BasicManager {
         return $this->userGeoIpIsoCode;
     }
 
+    public function save(\Application\Model\Entities\User $user)
+    {
+        UserDAO::getInstance($this->getServiceLocator())->save($user);
+    }
+
 }
