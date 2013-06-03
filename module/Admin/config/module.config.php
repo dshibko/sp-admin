@@ -320,6 +320,11 @@ return array(
                         'label' => 'icon-dashboard',
                         'route' => 'admin-home',
                     ),
+                    'admin-account' => array(
+                        'title' => 'My Account',
+                        'label' => 'icon-user',
+                        'route' => 'admin-account'
+                    ),
                     'seasons' => array(
                         'title' => 'Seasons',
                         'label' => 'icon-calendar',
