@@ -40,6 +40,16 @@ return array(
                     ),
                 ),
             ),
+            'results' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/results[/][back-:back]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Results',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'registration' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -204,6 +214,7 @@ return array(
             'Application\Controller\User' => 'Application\Controller\UserController',
             'Application\Controller\Predict' => 'Application\Controller\PredictController',
             'Application\Controller\Fixtures' => 'Application\Controller\FixturesController',
+            'Application\Controller\Results' => 'Application\Controller\ResultsController',
         ),
     ),
     'doctrine' => array(
@@ -245,6 +256,10 @@ return array(
             'predict' => array(
                 'title' => 'Predict',
                 'route' => 'predict',
+            ),
+            'results' => array(
+                'title' => 'Results',
+                'route' => 'results',
             ),
             'fixtures' => array(
                 'title' => 'Fixtures',

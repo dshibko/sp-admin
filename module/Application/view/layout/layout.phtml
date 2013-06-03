@@ -1,4 +1,8 @@
-<?php echo $this->partial('partials/header');?>
-        <?php echo $this->content; ?>
-        <?php echo $this->inlineScript() ?>
-<?php echo $this->partial('partials/footer');?>
+<?php
+$children = $this->viewModel()->getCurrent()->getChildren();
+$child = $children[0];
+$attributes = property_exists($child, 'attributes') ? $child->attributes : array();
+echo $this->partial('partials/header', array('attributes' => $attributes));
+echo $this->content;
+echo $this->inlineScript();
+echo $this->partial('partials/footer');

@@ -95,8 +95,8 @@ class PredictionManager extends BasicManager {
 
     }
 
-    public function getAvgNumberOfPrediction($season) {
-        $avgNumberOfPrediction = PredictionDAO::getInstance($this->getServiceLocator())->getAvgNumberOfPrediction($season);
+    public function getAvgNumberOfPredictions($season) {
+        $avgNumberOfPrediction = PredictionDAO::getInstance($this->getServiceLocator())->getAvgNumberOfPredictions($season);
         $avgNumberOfPrediction = number_format(ceil($avgNumberOfPrediction * 100) / 100, 2);
         return $avgNumberOfPrediction;
     }
@@ -122,6 +122,28 @@ class PredictionManager extends BasicManager {
             $match['homeSquad'] = $this->preparePlayers($homeSquad);
             $awaySquad = $teamDAO->getTeamSquadInCompetition($match['awayId'], $matchData['competitionId'], $hydrate, $skipCache);
             $match['awaySquad'] = $this->preparePlayers($awaySquad);
+            $match['prediction'] = $predictionDAO->getUserPrediction($matchData['matchId'], $user->getId(), true, $skipCache);
+            return $match;
+        } else
+            return null;
+    }
+
+    /**
+     * @param $offset
+     * @param \Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return mixed
+     */
+    public function getLastMatchWithPrediction($offset, $user, $season, $hydrate = false, $skipCache = false) {
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        $matchData = $matchDAO->getLastMatch($offset, $user, $season, $skipCache);
+        if (!empty($matchData)) {
+            $match = $matchDAO->getMatchInfo($matchData['matchId'], $hydrate, $skipCache);
+            $match['goals'] = $matchDAO->getMatchGoals($matchData['matchId'], $hydrate, $skipCache);
+            $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
             $match['prediction'] = $predictionDAO->getUserPrediction($matchData['matchId'], $user->getId(), true, $skipCache);
             return $match;
         } else
@@ -242,7 +264,6 @@ class PredictionManager extends BasicManager {
 
     /**
      * @param array $predictionIds
-     * @param bool $hydrate
      * @param bool $skipCache
      * @return mixed
      */
@@ -258,6 +279,13 @@ class PredictionManager extends BasicManager {
         $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
         return $predictionDAO->getPredictableCount($season->getId(), $user->getId(), $maxAhead);
+    }
+
+    public function makeResultViewed($matchId, $userId) {
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        $prediction = $predictionDAO->getUserPrediction($matchId, $userId);
+        $prediction->setWasViewed(true);
+        $predictionDAO->save($prediction);
     }
 
 }

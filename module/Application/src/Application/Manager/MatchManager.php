@@ -58,6 +58,21 @@ class MatchManager extends BasicManager
         return $matchDAO->getMatchesLeftInTheSeasonNumber($fromTime, $season, $skipCache);
     }
 
+    public function getFinishedMatchesInTheSeasonNumber($user, $season, $skipCache = false)
+    {
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+        return $matchDAO->getFinishedMatchesInTheSeasonNumber($user, $season, $skipCache);
+    }
+
+    public function getFinishedNotViewedMatchesInTheSeasonNumber($skipCache = false)
+    {
+        $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+        if ($season == null) return 0;
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+        return $matchDAO->getFinishedNotViewedMatchesInTheSeasonNumber($user, $season, $skipCache);
+    }
+
     public function getLiveMatchesNumber($fromTime, $season, $skipCache = false)
     {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());

@@ -8,7 +8,7 @@
         ?>
         <li class="<?=$classes?>">
             <?php
-                $unreadItems = $this->getUnreadItems($page->getRoute());
+                $unreadItems = $this->getUnreadItems()->getItems($page->getRoute());
                 if ($unreadItems > 0) :
             ?>
                 <strong class="flag-unread-items"><span><?=$unreadItems?></span></strong>

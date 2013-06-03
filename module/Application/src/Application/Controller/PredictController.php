@@ -144,6 +144,7 @@ class PredictController extends AbstractActionController {
                 $maxAhead = $matchesLeft;
 
         } catch (\Exception $e) {
+            var_dump($e->getMessage());die;
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 

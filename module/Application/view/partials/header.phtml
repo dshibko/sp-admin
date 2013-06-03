@@ -39,7 +39,7 @@
     <?php echo $this->partial('partials/cookie-bar');?>
     <header role="banner">
         <?php echo $this->navigation('navigation')->menu()
-        ->setPartial('partials/menu'); ?>
+        ->setPartial('partials/menu', array('attributes' => $this->attributes)); ?>
         <div  class="banner">
             <a href="/" class="logo">
                 <img src="/img/fcbarcelona-355.png" alt="FCBARCELONA Score Predictor">

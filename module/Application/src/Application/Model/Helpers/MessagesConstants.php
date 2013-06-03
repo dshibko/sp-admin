@@ -53,6 +53,7 @@ class MessagesConstants
     const ERROR_CANNOT_FIND_FIXTURE = 'Cannot find fixture';
     const ERROR_INVALID_USER_ID = 'Invalid user id';
     const ERROR_CANNOT_FIND_USER = 'Cannot find user';
+
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
@@ -61,7 +62,7 @@ class MessagesConstants
     const ERROR_WRONG_EMAIL_OR_PASSWORD = "Wrong email or password.";
     const ERROR_UPLOAD_FAILED = "Upload filed due to unknown problems.";
     const ERROR_WRONG_DATES_SELECTED = "Wrong start and end dates selected.";
-    const ERROR_MATCH_NOT_FOUND = "Match you want to make a prediction was not found.";
+    const ERROR_MATCH_NOT_FOUND = "The match was not found.";
     const ERROR_TEAM_NOT_FOUND = "Team you want to make a prediction was not found.";
     const ERROR_PLAYER_NOT_FOUND = "Player you want to mark as a scorer was not found.";
     const ERROR_ACTIVE_PAGE_NOT_FOUND = "Active page was not found.";
@@ -74,6 +75,7 @@ class MessagesConstants
     const ERROR_APP_WRONG_OPTA_CONFIG = 'Wrong opta id configured. Must be an integer.';
     const ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED = 'You can\'t predict on this match result. You can predict just on %s matches in the future.';
     const ERROR_NO_MORE_MATCHES_IN_THE_SEASON = 'No more matches will be played in this season. Please join us when next season starts.';
+    const ERROR_NO_FINISHED_MATCHES_IN_THE_SEASON = 'No matches were played in this season.';
     const ERROR_SECURITY_CHECK_FAILED = 'Bad request. Security check failed.';
     const ERROR_MATCH_IS_LIVE = 'Match is being played now. You can\'t predict anymore.';
 
@@ -93,6 +95,14 @@ class MessagesConstants
 
     const INFO_LOGGED_OUT = "You've been logged out.";
     const INFO_OUT_OF_SEASON = "There is no season in play.";
+    const INFO_YOU_PREDICTED_THE_DRAW = "You predicted the draw";
+    const INFO_YOU_PREDICTED_THE_WINNER = "You predicted the winner would be %s";
+    const INFO_YOU_PREDICTED_THE_SCORE = "You predicted the score would be %s";
+    const INFO_YOU_PREDICTED_THE_SCORERS = "You predicted the scorer(s) would be %s";
+    const INFO_YOU_PREDICTED_SCORER_ORDER = "You predicted that %s will score goal number %s of %s";
+    const INFO_YOUR_ACCURACY = "You were %s accurate in your prediction";
+    const INFO_THIS_IS_DOUBLE_POINTS_MATCH = "This is double points match";
+
     const FAILED_CONNECTION_TO_FACEBOOK = 'Error happened while connecting to your facebook account. Please try again later';
     const FAILED_RETRIEVING_FACEBOOK_DATA = 'Error happened while retrieving your facebook data. Please try again later.';
     const FAILED_UPDATING_DATA_FROM_FACEBOOK = 'Error happened while updating data. Please try again later';

@@ -16,6 +16,13 @@ class Prediction extends BasicObject {
     /**
      * @var boolean
      *
+     * @ORM\Column(name="was_viewed", type="boolean")
+     */
+    private $wasViewed;
+
+    /**
+     * @var boolean
+     *
      * @ORM\Column(name="is_correct_result", type="boolean")
      */
     private $isCorrectResult;
@@ -118,6 +125,7 @@ class Prediction extends BasicObject {
     public function __construct()
     {
         $this->predictionPlayers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->wasViewed = false;
     }
     
     /**
@@ -387,6 +395,22 @@ class Prediction extends BasicObject {
     public function getCorrectScorersOrder()
     {
         return $this->correctScorersOrder;
+    }
+
+    /**
+     * @param boolean $wasViewed
+     */
+    public function setWasViewed($wasViewed)
+    {
+        $this->wasViewed = $wasViewed;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getWasViewed()
+    {
+        return $this->wasViewed;
     }
 
 }

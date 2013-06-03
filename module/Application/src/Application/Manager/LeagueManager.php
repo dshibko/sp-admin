@@ -42,30 +42,46 @@ class LeagueManager extends BasicManager {
 
             $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
             $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-            foreach ($season->getLeagues() as $league) {
-                $usersData = $leagueDAO->getLeagueUsersScores($league);
-                usort($usersData, function($u2, $u1) {
-                    $res = $u1['points'] != $u2['points'] ? $u1['points'] - $u2['points'] :
-                        (floor(100 * $u1['accuracy']) != floor(100 * $u2['accuracy']) ? $u1['accuracy'] - $u2['accuracy'] :
-                        ($u1['predictions_count'] != $u2['predictions_count'] ? $u1['predictions_count'] - $u2['predictions_count'] :
-                        ($u1['correct_results'] != $u2['correct_results'] ? $u1['correct_results'] - $u2['correct_results'] :
-                        ($u1['correct_scores'] != $u2['correct_scores'] ? $u1['correct_scores'] - $u2['correct_scores'] :
-                        ($u1['correct_scorers'] != $u2['correct_scorers'] ? $u1['correct_scorers'] - $u2['correct_scorers'] :
-                        ($u1[0]['user']['date']->getTimestamp() - $u2[0]['user']['date']->getTimestamp()))))));
-                    return (int)($res/abs($res));
-                });
+            $now = new \DateTime();
+            foreach ($season->getLeagues() as $league)
+                if ($league->getType() != League::MINI_TYPE || $league->getIsActive($now)) {
+                    $usersData = $leagueDAO->getLeagueUsersScores($league);
 
-                foreach ($usersData as $i => $userRow) {
-                    $leagueUser = $leagueUserDAO->findOneById($userRow[0]['id']);
-                    $leagueUser->setPlace($i + 1);
-                    $leagueUser->setPoints($userRow['points']);
-                    $leagueUser->setAccuracy(floor(100 * $userRow['accuracy']));
-                    $leagueUserDAO->save($leagueUser, false, false);
+                    foreach ($usersData as $i => $userRow) {
+                        $userRow['accuracy'] = $userRow['correct_results'] / $userRow['predictions_count'] + $userRow['correct_scores'] / $userRow['predictions_count'];
+                        $divider = 2;
+                        if ($userRow['predictions_players_count'] > 0) {
+                            $userRow['accuracy'] += $userRow['correct_scorers'] / $userRow['predictions_players_count'] + $userRow['correct_scorers_order'] / $userRow['predictions_players_count'];
+                            $divider = 4;
+                        }
+                        $userRow['accuracy'] /= $divider;
+                        $userRow['date'] = new \DateTime($userRow['date']);
+                        $usersData[$i] = $userRow;
+                    }
+
+                    usort($usersData, function($u2, $u1) {
+                        $res = $u1['points'] != $u2['points'] ? $u1['points'] - $u2['points'] :
+                            (floor(100 * $u1['accuracy']) != floor(100 * $u2['accuracy']) ? $u1['accuracy'] - $u2['accuracy'] :
+                            ($u1['predictions_count'] != $u2['predictions_count'] ? $u1['predictions_count'] - $u2['predictions_count'] :
+                            ($u1['correct_results'] != $u2['correct_results'] ? $u1['correct_results'] - $u2['correct_results'] :
+                            ($u1['correct_scores'] != $u2['correct_scores'] ? $u1['correct_scores'] - $u2['correct_scores'] :
+                            ($u1['correct_scorers'] != $u2['correct_scorers'] ? $u1['correct_scorers'] - $u2['correct_scorers'] :
+                            ($u1['date']->getTimestamp() != $u2['date']->getTimestamp() ? $u1['date']->getTimestamp() - $u2['date']->getTimestamp() : 1))))));
+                        return (int)($res/abs($res));
+                    });
+
+                    foreach ($usersData as $i => $userRow) {
+                        $leagueUser = $leagueUserDAO->findOneById($userRow['id']);
+                        $leagueUser->setPreviousPlace($leagueUser->getPlace());
+                        $leagueUser->setPlace($i + 1);
+                        $leagueUser->setPoints($userRow['points']);
+                        $leagueUser->setAccuracy(floor(100 * $userRow['accuracy']));
+                        $leagueUserDAO->save($leagueUser, false, false);
+                    }
+                    $leagueUserDAO->flush();
+                    $leagueUserDAO->clearCache();
+
                 }
-                $leagueUserDAO->flush();
-                $leagueUserDAO->clearCache();
-
-            }
 
         } else
             throw new \Exception(MessagesConstants::INFO_OUT_OF_SEASON);

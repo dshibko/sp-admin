@@ -59,18 +59,20 @@ $this->headTitle($this->title);
                 </div>
             </div>
             <?php else:?>
-                <div class="form-actions">
-                    <a href="#deleteModal" role="button" class="btn blue update-fixture" data-blocked="<?php echo (!empty($this->isBlocked) ? 1 : 0);?>" data-toggle="modal">
-                        <i class="icon-ok"></i> <?=$this->translate($element->getValue());?>
-                    </a>
-                    <?php if ($this->isBlocked && $this->params['action'] != 'add'):?>
-                        <a href="<?php echo $this->url('admin-fixtures', array('action'=> 'syncwithfeed', 'fixture'=>(!empty($this->params['fixture']) ? $this->params['fixture'] : null )))?>" role="button" class="btn blue">
-                            <i class="icon-ok"></i> <?=$this->translate('Sync with feed');?>
+                <?php if (!$this->isFullTime) : ?>
+                    <div class="form-actions">
+                        <a href="#deleteModal" role="button" class="btn blue update-fixture" data-blocked="<?php echo (!empty($this->isBlocked) ? 1 : 0);?>" data-toggle="modal">
+                            <i class="icon-ok"></i> <?=$this->translate($element->getValue());?>
                         </a>
-                    <?php endif;?>
-                    <button type="button" class="btn reset"><?php echo $this->translate('Cancel');?></button>
+                        <?php if ($this->isBlocked && $this->params['action'] != 'add'):?>
+                            <a href="<?php echo $this->url('admin-fixtures', array('action'=> 'syncwithfeed', 'fixture'=>(!empty($this->params['fixture']) ? $this->params['fixture'] : null )))?>" role="button" class="btn blue">
+                                <i class="icon-ok"></i> <?=$this->translate('Sync with feed');?>
+                            </a>
+                        <?php endif;?>
+                        <button type="button" class="btn reset"><?php echo $this->translate('Cancel');?></button>
 
-                </div>
+                    </div>
+                <?php endif;?>
             <?php endif;?>
             <?php endforeach;?>
         </div>

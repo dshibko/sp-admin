@@ -45,23 +45,6 @@ class PlayerForm extends UploadableForm {
             ),
         ));
 
-        //Player Status
-        $this->add(array(
-            'name' => 'title',
-            'type' => 'Zend\Form\Element\Select',
-            'options' => array(
-                'disable_inarray_validator' => true,
-                'label' => 'Status',
-                'value_options' => array(
-                    1 => 'Active',
-                    0 => 'Inactive'
-                ),
-            ),
-            'attributes' => array(
-                'class' => 'required'
-            )
-        ));
-
         //Background Image
         $this->add(array(
             'name' => 'backgroundImagePath',

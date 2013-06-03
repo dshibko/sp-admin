@@ -44,7 +44,7 @@ class PredictionDAO extends AbstractDAO {
      * @param $userId
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return mixed
+     * @return \Application\Model\Entities\Prediction
      */
     function getUserPrediction($matchId, $userId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -60,7 +60,7 @@ class PredictionDAO extends AbstractDAO {
      * @param \Application\Model\Entities\Season $season
      * @return integer
      */
-    function getAvgNumberOfPrediction($season) {
+    function getAvgNumberOfPredictions($season) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('avg', 'a');
         $query = $this->getEntityManager()
@@ -69,6 +69,7 @@ class PredictionDAO extends AbstractDAO {
              INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $season->getId() . '
              LEFT JOIN prediction p ON p.match_id = m.id
              WHERE m.start_time < NOW()
+             AND m.status = \'' . Match::FULL_TIME_STATUS . '\'
              GROUP BY m.id) pr
              ', $rsm);
         return $query->getSingleScalarResult();
