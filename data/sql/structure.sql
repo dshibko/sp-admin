@@ -383,3 +383,27 @@ ALTER TABLE  `user` DROP  `region_id`;
 
 ALTER TABLE  `prediction` ADD  `was_viewed` TINYINT( 1 ) NOT NULL AFTER  `points`;
 ALTER TABLE  `league_user` ADD  `previous_place` INT NULL AFTER  `place`;
+
+-- okh 05.06
+
+CREATE TABLE `match_region` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`match_id` INT(11) NOT NULL,
+	`region_id` INT(11) NOT NULL,
+	`title` VARCHAR(255) NULL DEFAULT NULL,
+	`intro` TEXT NULL,
+	`header_image_path` VARCHAR(255) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `match_id` (`match_id`),
+	INDEX `region_id` (`region_id`),
+	CONSTRAINT `match_region_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `match` (`id`),
+	CONSTRAINT `match_region_ibfk_2` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+ROW_FORMAT=DEFAULT;
+
+ALTER TABLE `match_region`  ADD COLUMN `featured_player_id` INT(11) NOT NULL AFTER `region_id`;
+ALTER TABLE `match_region`  ADD INDEX `featured_player_id` (`featured_player_id`);
+ALTER TABLE `match_region`  ADD CONSTRAINT `match_region` FOREIGN KEY (`featured_player_id`) REFERENCES `player` (`id`);
+ALTER TABLE `match_region`  CHANGE COLUMN `featured_player_id` `featured_player_id` INT(11) NULL AFTER `region_id`;
