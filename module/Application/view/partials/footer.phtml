@@ -11,19 +11,22 @@
         <nav class="clearfix">
             <ul>
                 <li>
-                    <a href="#"><?=$this->translate('Terms')?></a>
+                    <a href="<?php echo $this->url('terms');?>"><?=$this->translate('Terms')?></a>
                 </li>
                 <li>
-                    <a href="#"><?=$this->translate('Contact us')?></a>
+                    <a href="<?php echo $this->url('contact');?>"><?=$this->translate('Contact us')?></a>
                 </li>
                 <li>
-                    <a href="#"><?=$this->translate('Privacy')?></a>
+                    <a href="<?php echo $this->url('privacy')?>"><?=$this->translate('Privacy')?></a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url('help');?>"><?=$this->translate('Help & Support')?></a>
                 </li>
                 <li>
                     <a href="#"><?=$this->translate('Visit our main site')?></a>
                 </li>
                 <li>
-                    <a href="#"><?=$this->translate('Cookies policy')?></a>
+                    <a href="<?php echo $this->url('cookies');?>"><?=$this->translate('Cookies policy')?></a>
                 </li>
                 <li>
                     <p>&copy; FC Barcelona 2012</p>

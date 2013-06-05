@@ -14,6 +14,8 @@ use \Application\Manager\ApplicationManager;
 use \Application\Manager\ContentManager;
 use \Application\Manager\RegionManager;
 use Zend\View\Model\ViewModel;
+use Application\Form\SetUpForm;
+use Application\Manager\UserManager;
 
 class PredictController extends AbstractActionController {
 
@@ -39,6 +41,15 @@ class PredictController extends AbstractActionController {
             $user = $applicationManager->getCurrentUser();
             $season = $applicationManager->getCurrentSeason();
 
+            //Get setup form
+            if (!$user->getIsActive()){
+                $userManager = UserManager::getInstance($this->getServiceLocator());
+                $setUpForm = $this->getServiceLocator()->get('Application\Form\SetUpForm');
+                $country = $userManager->getUserGeoIpCountry();
+                $language = $userManager->getUserLanguage();
+                $setUpForm ->get('region')->setValue($country->getId());
+                $setUpForm ->get('language')->setValue($language->getId());
+            }
             if ($season == null)
                 throw new \Exception(MessagesConstants::INFO_OUT_OF_SEASON);
 
@@ -144,17 +155,19 @@ class PredictController extends AbstractActionController {
                 $maxAhead = $matchesLeft;
 
         } catch (\Exception $e) {
-            var_dump($e->getMessage());die;
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
-
-        return array(
+        $params = array(
             'current' => $currentMatch,
             'ahead' => $ahead,
             'maxAhead' => $maxAhead,
             'liveMatches' => $liveMatches,
             'securityKey' => $securityKey,
         );
+        if (!empty($setUpForm)){
+            $params['setUpForm'] = $setUpForm;
+        }
+        return $params;
 
     }
 

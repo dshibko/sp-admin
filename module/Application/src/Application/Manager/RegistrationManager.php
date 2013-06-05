@@ -76,13 +76,6 @@ class RegistrationManager extends BasicManager
     {
 
         $country = CountryDAO::getInstance($this->getServiceLocator())->findOneById($data['region']);
-
-        $region = $country->getRegion();
-        if (!empty($region) && $region instanceof Region)
-            $data['region'] = $region;
-        else
-            $data['region'] = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
-
         $data['active'] = self::ACTIVE_USER_STATUS;
         $data['language'] = LanguageDAO::getInstance($this->getServiceLocator())->findOneById($data['language']);
         $data['country'] = $country;
@@ -116,16 +109,20 @@ class RegistrationManager extends BasicManager
                 $leagueDAO->save($globalLeague, false, false);
             }
         }
-        $regionalLeagues = $leagueDAO->getRegionalLeagues($user->getRegion());
-        foreach ($regionalLeagues as $regionalLeague)
-            if (!$leagueDAO->getIsUserInLeague($regionalLeague, $user)) {
-                $leagueUser = new LeagueUser();
-                $leagueUser->setUser($user);
-                $leagueUser->setJoinDate(new \DateTime());
-                $leagueUser->setLeague($regionalLeague);
-                $regionalLeague->addLeagueUser($leagueUser);
-                $leagueDAO->save($regionalLeague, false, false);
-            }
+
+        $region = $user->getCountry()->getRegion();
+        if ($region != null) {
+            $regionalLeagues = $leagueDAO->getRegionalLeagues($region);
+            foreach ($regionalLeagues as $regionalLeague)
+                if (!$leagueDAO->getIsUserInLeague($regionalLeague, $user)) {
+                    $leagueUser = new LeagueUser();
+                    $leagueUser->setUser($user);
+                    $leagueUser->setJoinDate(new \DateTime());
+                    $leagueUser->setLeague($regionalLeague);
+                    $regionalLeague->addLeagueUser($leagueUser);
+                    $leagueDAO->save($regionalLeague, false, false);
+                }
+        }
         $leagueDAO->flush();
         $leagueDAO->clearCache();
     }
