@@ -55,14 +55,24 @@ class Module
             $language = $user->getLanguage()->getLanguageCode();
         $translator->setLocale($language);
         $matches = $e->getRouteMatch();
+        $detect = new \Neoco\Mobile\Detect();
+
         if ($matches != null) {
             if ($user != null) {
-                if ($matches->getMatchedRouteName() != self::SETUP_PAGE_ROUTE) {
-                    if (!$user->getIsActive())
-                        return $this->toRedirect(self::SETUP_PAGE_ROUTE, $e);
-                } else {
-                    if ($user->getIsActive())
-                        return $this->toRedirect(self::PREDICT_PAGE_ROUTE, $e);
+                $routeName = $matches->getMatchedRouteName();
+                if (!$user->getIsActive()) {
+                    if ($detect->isMobile() || $detect->isTablet()){
+                        if ($routeName != self::SETUP_PAGE_ROUTE){
+                            return $this->toRedirect(self::SETUP_PAGE_ROUTE, $e);
+                        }
+                    }else{
+                        if ($e->getRequest()->isPost() && $routeName == self::SETUP_PAGE_ROUTE){
+                            return true;
+                        }
+                        if ($routeName != self::PREDICT_PAGE_ROUTE || $e->getRequest()->isPost()){
+                            return $this->toRedirect(self::PREDICT_PAGE_ROUTE, $e);
+                        }
+                    }
                 }
             }
         }

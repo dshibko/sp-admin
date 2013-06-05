@@ -36,7 +36,6 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
                 'label' => 'Language',
-                'empty_option' => 'Please Select',
                 'value_options' => LanguageManager::getInstance($this->getServiceLocator())->getLanguagesSelectOptions(),
             ),
             'attributes' => array(
@@ -51,7 +50,6 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
                 'label' => 'Region',
-                'empty_option' => 'Please Select',
                 'value_options' => ApplicationManager::getInstance($this->getServiceLocator())->getCountriesSelectOptions(),
 
             ),
