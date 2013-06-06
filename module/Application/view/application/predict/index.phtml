@@ -1,8 +1,5 @@
 <?php $this->headTitle($this->translate('Predict'));?>
-<?php echo $this->partial('partials/invite-friends');?>
 <div role="main" class="two-column-section clearfix">
-    <a href="javascript:void(0);" onclick="inviteFriends(); return false;">Invite friends</a>
-
     <div class="first-column predict">
         <?php if (!empty($this->current)) : ?>
             <section class="carousel-wrap make-prediction">
