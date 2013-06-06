@@ -282,7 +282,8 @@ return array(
             'Admin\Controller\Clubs' => 'Admin\Controller\ClubsController',
             'Admin\Controller\Players' => 'Admin\Controller\PlayersController',
             'Admin\Controller\League' => 'Admin\Controller\LeagueController',
-            'Admin\Controller\Fixtures' => 'Admin\Controller\FixturesController'
+            'Admin\Controller\Fixtures' => 'Admin\Controller\FixturesController',
+            'Admin\Controller\User' => 'Admin\Controller\UserController',
         ),
     ),
     'view_manager' => array(
@@ -320,10 +321,23 @@ return array(
                         'label' => 'icon-dashboard',
                         'route' => 'admin-home',
                     ),
+                    'users' => array(
+                        'title' => 'Users',
+                        'label' => 'icon-underline',
+                        'route' => 'admin-users',
+                        'pages' => array(
+                            array(
+                                'title' => 'View',
+                                'label' => 'icon-eye-open',
+                                'route' => 'admin-user-view',
+                            ),
+                        )
+                    ),
                     'admin-account' => array(
                         'title' => 'My Account',
                         'label' => 'icon-user',
-                        'route' => 'admin-account'
+                        'route' => 'admin-account',
+                        'exclude-from-menu' => true,
                     ),
                     'seasons' => array(
                         'title' => 'Seasons',

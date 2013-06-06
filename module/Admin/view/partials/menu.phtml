@@ -24,6 +24,8 @@ $first = true;
             $classes [] = 'active';
         $props = $page->getCustomProperties();
         $showSubMenu = array_key_exists('sub-menu', $props) ? $props['sub-menu'] : false;
+        $exclude = array_key_exists('exclude-from-menu', $props) ? $props['exclude-from-menu'] : false;
+        if ($exclude) continue;
     ?>
     <li<?=empty($classes) ? '' : (' class="' . implode(" ", $classes) . '"')?>>
         <a href="<?=$page->getHref()?>">

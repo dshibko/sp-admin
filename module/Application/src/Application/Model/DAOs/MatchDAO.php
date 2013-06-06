@@ -226,7 +226,7 @@ class MatchDAO extends AbstractDAO {
      */
     function getMatchInfo($matchId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('m.id, m.status, m.startTime, m.timezone, m.isDoublePoints, h.id as homeId, h.displayName as homeName,
+        $qb->select('m.id, m.status, m.startTime, m.timezone, m.isDoublePoints, m.hasLineUp, h.id as homeId, h.displayName as homeName,
             h.logoPath as homeLogo, a.id as awayId, a.displayName as awayName, a.logoPath as awayLogo,
             c.displayName as competitionName, m.homeTeamFullTimeScore, m.awayTeamFullTimeScore')
             ->from($this->getRepositoryName(), 'm')
@@ -282,5 +282,14 @@ class MatchDAO extends AbstractDAO {
         return $query->getArrayResult();
     }
 
+    function getMatchTeamSquad($matchId, $teamId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('p.displayName, p.position, p.shirtNumber, p.id, lup.isStart')
+            ->from('Application\Model\Entities\LineUpPlayer', 'lup')
+            ->join('lup.player', 'p')
+            ->where($qb->expr()->eq('lup.team', $teamId))
+            ->andWhere($qb->expr()->eq('lup.match', $matchId));
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
 
 }

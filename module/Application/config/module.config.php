@@ -326,6 +326,7 @@ return array(
             'partials/cookie-bar'     => __DIR__ . '/../view/partials/cookie-bar.phtml',
             'partials/menu'           => __DIR__ . '/../view/partials/menu.phtml',
             'partials/invite-friends' => __DIR__ . '/../view/partials/invite-friends.phtml',
+            'partials/right-column'   => __DIR__ . '/../view/partials/right-column.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',

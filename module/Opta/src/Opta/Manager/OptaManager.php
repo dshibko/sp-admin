@@ -2,6 +2,8 @@
 
 namespace Opta\Manager;
 
+use \Application\Model\Entities\LineUpPlayer;
+use \Application\Model\DAOs\LineUpPlayerDAO;
 use \Application\Manager\ApplicationManager;
 use \Application\Model\Entities\MatchGoal;
 use \Application\Manager\LogManager;
@@ -303,8 +305,9 @@ class OptaManager extends BasicManager {
             $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
             $matchFeederId = $this->getIdFromString($this->getXmlAttribute($xml->SoccerDocument, 'uID'));
             $type = $this->getXmlAttribute($xml->SoccerDocument, 'Type');
+            $match = $matchDAO->getRepository()->findOneByFeederId($matchFeederId);
 
-            if ($type == 'Result' && ($match = $matchDAO->getRepository()->findOneByFeederId($matchFeederId)) != null &&
+            if ($type == 'Result' && $match != null &&
                 $match->getStatus() != Match::FULL_TIME_STATUS) {
 
                 $result = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo->Result, 'Type');
@@ -404,8 +407,53 @@ class OptaManager extends BasicManager {
 
             }
 
-            $this->finishProgress($console, true, 'F7');
+            $period = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo, 'Period');
 
+            if ($type == 'Latest' && $period == 'PreMatch' && $match != null && !$match->getHasLineUp() &&
+                $match->getStatus() == Match::PRE_MATCH_STATUS) {
+                $teamData = $xml->SoccerDocument->MatchData->TeamData;
+                if ($teamData != null) {
+                    $playerDAO = PlayerDAO::getInstance($this->getServiceLocator());
+                    $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
+                    $lineUpPlayerDAO = LineUpPlayerDAO::getInstance($this->getServiceLocator());
+                    $homeTeamData = $teamData->{0};
+                    $awayTeamData = $teamData->{1};
+                    $teamsData = array($homeTeamData, $awayTeamData);
+                    $hasLineUp = false;
+                    foreach ($teamsData as $teamData) {
+                        $teamFeederId = $this->getIdFromString($this->getXmlAttribute($teamData, 'TeamRef'));
+                        $teamObj = $teamDAO->getRepository()->findOneByFeederId($teamFeederId);
+                        if ($teamObj != null && $teamData->PlayerLineUp != null) {
+                            $hasLineUp = true;
+                            $squad = $teamData->PlayerLineUp->MatchPlayer;
+                            foreach ($squad as $player) {
+                                $lineUpPlayer = new LineUpPlayer();
+                                $playerFeederId = $this->getIdFromString($this->getXmlAttribute($player, 'PlayerRef'));
+                                $playerObj = $playerDAO->getRepository()->findOneByFeederId($playerFeederId);
+                                $lineUpPlayer->setPlayer($playerObj);
+                                $lineUpPlayer->setMatch($match);
+                                $lineUpPlayer->setTeam($teamObj);
+                                $status = $this->getXmlAttribute($player, 'Status');
+                                $lineUpPlayer->setIsStart(strtolower($status) == 'start');
+                                $lineUpPlayerDAO->save($lineUpPlayer, false, false);
+                            }
+                        }
+                    }
+                    if ($hasLineUp) {
+                        $lineUpPlayerDAO->flush();
+                        $lineUpPlayerDAO->clearCache();
+                        $match->setHasLineUp(true);
+                        $matchDAO->save($match);
+                    }
+                }
+            }
+
+            if ($type == 'Latest' && ($period == 'FirstHalf' || $period == 'SecondHalf') && $match != null && $match->getStatus() == Match::PRE_MATCH_STATUS) {
+                $match->setStatus(Match::LIVE_STATUS);
+                $matchDAO->save($match);
+            }
+
+            $this->finishProgress($console, true, 'F7');
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);

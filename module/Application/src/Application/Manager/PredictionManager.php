@@ -118,9 +118,11 @@ class PredictionManager extends BasicManager {
         if (!empty($matchData)) {
             $match = $matchDAO->getMatchInfo($matchData['matchId'], $hydrate, $skipCache);
             $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
-            $homeSquad = $teamDAO->getTeamSquadInCompetition($match['homeId'], $matchData['competitionId'], $hydrate, $skipCache);
+            $homeSquad = $match['hasLineUp'] ? $matchDAO->getMatchTeamSquad($matchData['matchId'], $match['homeId'], $hydrate, $skipCache) :
+                $teamDAO->getTeamSquadInCompetition($match['homeId'], $matchData['competitionId'], $hydrate, $skipCache);
             $match['homeSquad'] = $this->preparePlayers($homeSquad);
-            $awaySquad = $teamDAO->getTeamSquadInCompetition($match['awayId'], $matchData['competitionId'], $hydrate, $skipCache);
+            $awaySquad = $match['hasLineUp'] ? $matchDAO->getMatchTeamSquad($matchData['matchId'], $match['awayId'], $hydrate, $skipCache) :
+                $teamDAO->getTeamSquadInCompetition($match['awayId'], $matchData['competitionId'], $hydrate, $skipCache);
             $match['awaySquad'] = $this->preparePlayers($awaySquad);
             $match['prediction'] = $predictionDAO->getUserPrediction($matchData['matchId'], $user->getId(), true, $skipCache);
             return $match;
@@ -157,7 +159,10 @@ class PredictionManager extends BasicManager {
         usort($players, function($p1, $p2) {
             $pos1 = array_search($p1['position'], PredictionManager::$positionsOrder);
             $pos2 = array_search($p2['position'], PredictionManager::$positionsOrder);
-            return $pos1 != $pos2 ? $pos1 - $pos2 : $p1['shirtNumber'] - $p2['shirtNumber'];
+            $isStart1 = array_key_exists('isStart', $p1) ? $p1['isStart'] : 0;
+            $isStart2 = array_key_exists('isStart', $p2) ? $p2['isStart'] : 0;
+            return $isStart1 != $isStart2 ? $isStart2 - $isStart1 :
+                ($pos1 != $pos2 ? $pos1 - $pos2 : $p1['shirtNumber'] - $p2['shirtNumber']);
         });
         array_walk($players, function(&$p) {
             $p['position'] = PredictionManager::$positionsAbbreviation[array_search($p['position'], PredictionManager::$positionsOrder)];

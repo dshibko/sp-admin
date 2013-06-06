@@ -2,7 +2,7 @@
 <div role="main" class="two-column-section clearfix">
     <div class="first-column results">
         <?php if (!empty($this->current)) : ?>
-            <section class="your-results">
+            <section class="carousel-wrap your-results">
                 <header>
                     <?php if (!$this->current['prediction']['wasViewed']) : ?>
                         <strong class="flag-new-prediction"><span><?=$this->translate('New')?></span></strong>
@@ -101,7 +101,7 @@
 <!--                            <h2>Bow to the king</h2>-->
 <!--                            <p>You are top of your social league</p>-->
 <!--                        </article>-->
-<!--                        <aside class="clearfix">-->
+<!--                        <footer class="clearfix">-->
 <!--                            <h3>Share this</h3>-->
 <!--                            <ul class="social-links">-->
 <!--                                <li><a href="">tweet</a></li>-->
@@ -115,5 +115,7 @@
             <?= $this->renderMessages(); ?>
         <?php endif; ?>
     </div>
+
+    <?php echo $this->partial('partials/right-column'); ?>
 
 </div>
