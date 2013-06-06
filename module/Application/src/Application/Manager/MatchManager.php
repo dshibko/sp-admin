@@ -9,6 +9,10 @@ use \Neoco\Manager\BasicManager;
 use \Application\Manager\UserManager;
 use \Application\Manager\PredictionManager;
 use \Application\Model\DAOs\MatchRegionDAO;
+use \Application\Model\Entities\FeaturedPlayer;
+use \Application\Model\DAOs\FeaturedGoalkeeperDAO;
+use \Application\Model\DAOs\FeaturedPlayerDAO;
+use \Application\Model\DAOs\FeaturedPredictionDAO;
 
 class MatchManager extends BasicManager
 {
@@ -120,19 +124,26 @@ class MatchManager extends BasicManager
     {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
         $matchDAO->save($match, false, false);
+
         $matchRegionDAO = \Application\Model\DAOs\MatchRegionDAO::getInstance($this->getServiceLocator());
+        $featuredPlayerDAO = FeaturedPlayerDAO::getInstance($this->getServiceLocator());
+        $featuredGoalkeeperDAO = FeaturedGoalkeeperDAO::getInstance($this->getServiceLocator());
+        $featuredPredictionDAO = FeaturedPredictionDAO::getInstance($this->getServiceLocator());
+
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+
         if (!empty($regionsData)){
             foreach ($regionsData as $id => $regionRow) {
                 $region = RegionManager::getInstance($this->getServiceLocator())->getNonHydratedRegionFromArray($id);
                 if (!$region) {
                     continue;
                 }
-                $matchReportRegions = $match->getMatchRegions();
+                $matchRegions = $match->getMatchRegions();
                 $regionId = $region->getId();
                 $reportKey = null;
 
                 //Check if region has already exist
-                if (!$matchReportRegions->exists(
+                if (!$matchRegions->exists(
                     function($key, $element) use ($regionId, &$reportKey){
                         if ($element->getRegion()->getId() == $regionId){
                             $reportKey = $key;
@@ -146,28 +157,69 @@ class MatchManager extends BasicManager
                         ->setRegion($region);
 
                 }else{
-                    $matchRegion = $matchReportRegions->get($reportKey);
+                    $matchRegion = $matchRegions->get($reportKey);
                 }
 
 
                 $matchRegion->setTitle($regionRow['title'])
                     ->setIntro($regionRow['intro']);
 
-                //Set Player
+                //Set Featured Player
                 if (!empty($regionRow['featured_player'])){
-                    $player = PlayerManager::getInstance($this->getServiceLocator())->getPlayerById($regionRow['featured_player']);
-                    if (!is_null($player)){
-                        $matchRegion->setFeaturedPlayer($player);
+                    $featuredPlayer = $matchRegion->getFeaturedPlayer();
+                    if (is_null($featuredPlayer)){
+                        $featuredPlayer = new \Application\Model\Entities\FeaturedPlayer();
                     }
+
+                    $player = PlayerManager::getInstance($this->getServiceLocator())->getPlayerById($regionRow['featured_player']['id']);
+
+                    $featuredPlayer->setPlayer($player)
+                                   ->setMatchesPlayed((int)$regionRow['featured_player']['matches_played'])
+                                   ->setGoals((int)$regionRow['featured_player']['goals'])
+                                   ->setMatchStarts((int)$regionRow['featured_player']['match_starts'])
+                                   ->setMinutesPlayed((int)$regionRow['featured_player']['minutes_played']);
+                    $featuredPlayerDAO->save($featuredPlayer, false, false);
+                    $matchRegion->setFeaturedPlayer($featuredPlayer);
+                }
+
+                //Set Featured Goalkeeper
+                if (!empty($regionRow['featured_goalkeeper'])){
+                    //$featuredGoalkeeperDAO->get
+                    $featuredGoalkeeper = $matchRegion->getFeaturedGoalKeeper();
+                    if (is_null($featuredGoalkeeper)){
+                        $featuredGoalkeeper = new \Application\Model\Entities\FeaturedGoalkeeper();
+                    }
+                    $player = PlayerManager::getInstance($this->getServiceLocator())->getPlayerById($regionRow['featured_goalkeeper']['id']);
+                    $featuredGoalkeeper->setPlayer($player)
+                        ->setSaves((int)$regionRow['featured_goalkeeper']['saves'])
+                        ->setMatchesPlayed((int)$regionRow['featured_goalkeeper']['matches_played'])
+                        ->setPenaltySaves((int)$regionRow['featured_goalkeeper']['penalty_saves'])
+                        ->setCleanSheets((int)$regionRow['featured_goalkeeper']['clean_sheets']);
+                    $featuredGoalkeeperDAO->save($featuredGoalkeeper, false, false);
+
+                    $matchRegion->setFeaturedGoalKeeper($featuredGoalkeeper);
+
+                }
+
+                //Set Featured Prediction
+                if (!empty($regionRow['featured_prediction'])){
+                    $featuredPrediction = $matchRegion->getFeaturedPrediction();
+                    if (is_null($featuredPrediction)){
+                        $featuredPrediction = new \Application\Model\Entities\FeaturedPrediction();
+                    }
+                    $featuredPrediction->setName($regionRow['featured_prediction']['name'])
+                        ->setCopy($regionRow['featured_prediction']['copy']);
+                    if (!empty($regionRow['featured_prediction']['image'])){
+                        $imageManager->deleteImage($featuredPrediction->getImagePath());
+                        $featuredPrediction->setImagePath($regionRow['featured_prediction']['image']);
+                    }
+                    $featuredPredictionDAO->save($featuredPrediction, false, false);
+                    $matchRegion->setFeaturedPrediction($featuredPrediction);
                 }
 
                 //Set header image
                 if (!empty($regionRow['header_image_path'])){
-                    $imageManager = ImageManager::getInstance($this->getServiceLocator());
-                    $oldHeader = $imageManager->getAppPublicPath() . $matchRegion->getHeaderImagePath();
-                    if (file_exists($oldHeader)){
-                        unlink($oldHeader);
-                    }
+                    $imageManager->deleteImage($matchRegion->getHeaderImagePath());
                     $matchRegion->setHeaderImagePath($regionRow['header_image_path']);
                 }
 
@@ -179,6 +231,9 @@ class MatchManager extends BasicManager
         $matchDAO->flush();
         $matchDAO->clearCache();
         $matchRegionDAO->clearCache();
+        $featuredPredictionDAO->clearCache();
+        $featuredPlayerDAO->clearCache();
+        $featuredPredictionDAO->clearCache();
 
         return $match;
     }

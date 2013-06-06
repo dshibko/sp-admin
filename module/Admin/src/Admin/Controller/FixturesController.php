@@ -26,9 +26,13 @@ class FixturesController extends AbstractActionController
     private function setPlayersForFieldsets(array $fieldsets)
     {
         $playerManager = PlayerManager::getInstance($this->getServiceLocator());
-        $options = $playerManager->getPlayersSelectOptions();;
+        $players = $playerManager->getPlayersByPositions(array(PlayerManager::DEFENDER_POSITION, PlayerManager::MIDFIELDER_POSITION, PlayerManager::FORWARD_POSITION), true);
+        $playersOptions = $playerManager->getPlayersSelectOptions($players);
+        $goalkeepers = $playerManager->getInstance($this->getServiceLocator())->getPlayersByPositions(array(PlayerManager::GOALKEEPER_POSITION), true);
+        $goalkeepersOptions = $playerManager->getPlayersSelectOptions($goalkeepers);
         foreach($fieldsets as &$fieldset){
-            $fieldset->get('featured_player')->setValueOptions($options);
+            $fieldset->get('featured_player')->setValueOptions($playersOptions);
+            $fieldset->get('featured_goalkeeper')->setValueOptions($goalkeepersOptions);
         }
         unset($fieldset);
         return $fieldsets;
@@ -109,6 +113,7 @@ class FixturesController extends AbstractActionController
                 $form->setData($post);
                 if ($form->isValid()) {
                     $data = $form->getData();
+
                     $startTime = $data['date'] . $data['kick_off_time'];
                     $isChangedDate = strtotime($startTime) != $fixture->getStartTime()->getTimestamp();
                     $isChangedHomeTeam = $fixture->getHomeTeam()->getId() != $data['homeTeam'];
@@ -131,6 +136,7 @@ class FixturesController extends AbstractActionController
                     }
                     $fixture->setIsDoublePoints(!empty($data['isDoublePoints']));
                     $regionsData = $regionManager->getMatchRegionsFieldsetData($regionFieldsets);
+
                     $matchManager->save($fixture, $regionsData);
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                     return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));

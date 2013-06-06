@@ -119,16 +119,37 @@ class RegionManager extends BasicManager {
             $regionsData[$region['id']] = array(
                 'title' => $fieldset->get('title')->getValue(),
                 'intro' => $fieldset->get('intro')->getValue(),
-                'featured_player' => $fieldset->get('featured_player')->getValue()
+                'featured_player' => array(
+                    'id' => $fieldset->get('featured_player')->getValue(),
+                    'goals' => $fieldset->get('player_goals')->getValue(),
+                    'matches_played' => $fieldset->get('player_matches_played')->getValue(),
+                    'match_starts' => $fieldset->get('player_match_starts')->getValue(),
+                    'minutes_played' => $fieldset->get('player_minutes_played')->getValue(),
+                ),
+                'featured_goalkeeper' => array(
+                    'id' => $fieldset->get('featured_goalkeeper')->getValue(),
+                    'saves' => $fieldset->get('goalkeeper_saves')->getValue(),
+                    'matches_played' => $fieldset->get('goalkeeper_matches_played')->getValue(),
+                    'penalty_saves' => $fieldset->get('goalkeeper_penalty_saves')->getValue(),
+                    'clean_sheets'  => $fieldset->get('goalkeeper_clean_sheets')->getValue()
+                ),
+                'featured_prediction' => array(
+                    'name' => $fieldset->get('prediction_name')->getValue(),
+                    'copy' => $fieldset->get('prediction_copy')->getValue(),
+                )
             );
             $headerImage = $fieldset->get('header_image')->getValue();
+            $predictionImage = $fieldset->get('prediction_image')->getValue();
             //TODO resize background
-            $image = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
-            if ($image){
-                $regionsData[$region['id']]['header_image_path'] = $image;
+            $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
+            $pImage = ($predictionImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('prediction_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
+            if ($hImage){
+                $regionsData[$region['id']]['header_image_path'] = $hImage;
+            }
+            if ($pImage){
+               $regionsData[$region['id']]['featured_prediction']['image'] = $pImage;
             }
         }
-
         return $regionsData;
     }
 

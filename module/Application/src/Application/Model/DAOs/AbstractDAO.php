@@ -84,7 +84,7 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('e')
             ->from($this->getRepositoryName(), 'e')
-            ->where($qb->expr()->eq('e.id', $id));
+            ->where($qb->expr()->eq('e.id', ':id'))->setParameter('id',$id);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 

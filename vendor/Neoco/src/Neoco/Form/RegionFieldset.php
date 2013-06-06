@@ -19,9 +19,8 @@ abstract class RegionFieldset extends UploadableFieldset {
     /**
      * @return array
      */
-    public function getInputFilterSpecification()
+    public function getInputFilterSpecification($inputSpec = array())
     {
-        $inputSpec = array();
         foreach ($this->getElements() as $element) {
             $required = $element->getAttribute('required');
             $validators = array('required' => $required);
