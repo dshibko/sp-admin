@@ -8,6 +8,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use \Application\Manager\UserManager;
 use \Application\Manager\PredictionManager;
+use \Application\Model\DAOs\MatchRegionDAO;
 
 class MatchManager extends BasicManager
 {
@@ -112,10 +113,74 @@ class MatchManager extends BasicManager
 
     /**
      * @param \Application\Model\Entities\Match $match
+     * @param array $regionsData
+     * @return \Application\Model\Entities\Match
      */
-    public function save(\Application\Model\Entities\Match $match)
+    public function save(\Application\Model\Entities\Match $match, array $regionsData = array())
     {
-        MatchDAO::getInstance($this->getServiceLocator())->save($match);
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+        $matchDAO->save($match, false, false);
+        $matchRegionDAO = \Application\Model\DAOs\MatchRegionDAO::getInstance($this->getServiceLocator());
+        if (!empty($regionsData)){
+            foreach ($regionsData as $id => $regionRow) {
+                $region = RegionManager::getInstance($this->getServiceLocator())->getNonHydratedRegionFromArray($id);
+                if (!$region) {
+                    continue;
+                }
+                $matchReportRegions = $match->getMatchRegions();
+                $regionId = $region->getId();
+                $reportKey = null;
+
+                //Check if region has already exist
+                if (!$matchReportRegions->exists(
+                    function($key, $element) use ($regionId, &$reportKey){
+                        if ($element->getRegion()->getId() == $regionId){
+                            $reportKey = $key;
+                            return true;
+                        }
+                        return false;
+                    })
+                ){
+                    $matchRegion = new \Application\Model\Entities\MatchRegion();
+                    $matchRegion->setMatch($match)
+                        ->setRegion($region);
+
+                }else{
+                    $matchRegion = $matchReportRegions->get($reportKey);
+                }
+
+
+                $matchRegion->setTitle($regionRow['title'])
+                    ->setIntro($regionRow['intro']);
+
+                //Set Player
+                if (!empty($regionRow['featured_player'])){
+                    $player = PlayerManager::getInstance($this->getServiceLocator())->getPlayerById($regionRow['featured_player']);
+                    if (!is_null($player)){
+                        $matchRegion->setFeaturedPlayer($player);
+                    }
+                }
+
+                //Set header image
+                if (!empty($regionRow['header_image_path'])){
+                    $imageManager = ImageManager::getInstance($this->getServiceLocator());
+                    $oldHeader = $imageManager->getAppPublicPath() . $matchRegion->getHeaderImagePath();
+                    if (file_exists($oldHeader)){
+                        unlink($oldHeader);
+                    }
+                    $matchRegion->setHeaderImagePath($regionRow['header_image_path']);
+                }
+
+                $matchRegionDAO->save($matchRegion, false, false);
+            }
+
+        }
+
+        $matchDAO->flush();
+        $matchDAO->clearCache();
+        $matchRegionDAO->clearCache();
+
+        return $match;
     }
 
     /**
@@ -184,8 +249,6 @@ class MatchManager extends BasicManager
                     'users' => $usersWithPerfectResult
                 );
             }
-
-
             //Total number of predictions
             $analytics['predictions_number'] = $totalNumberOfPredictions;
             //Number of predictions each hour

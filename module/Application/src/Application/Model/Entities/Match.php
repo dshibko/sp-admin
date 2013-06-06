@@ -19,6 +19,10 @@ class Match extends BasicObject {
     const POSTPONED_STATUS = 'Postponed';
     const ABANDONED_STATUS = 'Abandoned';
 
+    /**
+     * @static
+     * @return array
+     */
     public static function getAvailableStatuses() {
         return array(self::PRE_MATCH_STATUS, self::LIVE_STATUS, self::FULL_TIME_STATUS, self::POSTPONED_STATUS, self::ABANDONED_STATUS);
     }
@@ -209,12 +213,53 @@ class Match extends BasicObject {
     protected $isBlocked = false;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="MatchRegion", mappedBy="match", cascade={"remove"})
+     */
+    protected $matchRegions;
+
+
+    /**
+     * Get match report regions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMatchRegions()
+    {
+        return $this->matchRegions;
+    }
+
+
+    /**
+     * @param MatchRegion $matchRegion
+     * @return \Application\Model\Entities\Match
+     */
+    public function addMatchReportRegion(MatchRegion $matchRegion)
+    {
+        $this->matchRegions[] = $matchRegion;
+        return $this;
+    }
+
+
+    /**
+     * @param MatchRegion $matchRegion
+     * @return Match
+     */
+    public function removeMatchRegion(MatchRegion $matchRegion)
+    {
+        $this->matchRegions->removeElement($matchRegion);
+        return $this;
+    }
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->predictions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->matchGoals = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->matchRegions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->isDoublePoints = false;
     }
     
@@ -674,6 +719,9 @@ class Match extends BasicObject {
         return $this->isBlocked;
     }
 
+    /**
+     * @return bool
+     */
     public function getIsLive() {
         return $this->getStatus() == self::LIVE_STATUS || ($this->getStatus() == self::PRE_MATCH_STATUS && $this->getStartTime() < new \DateTime());
     }

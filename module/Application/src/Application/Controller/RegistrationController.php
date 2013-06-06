@@ -20,6 +20,7 @@ class RegistrationController extends AbstractActionController
     const USER_SETTINGS_PAGE_ROUTE = 'user-settings';
     const HOME_PAGE_ROUTE = 'home';
     const LOGIN_PAGE_ROUTE = 'login';
+    const PREDICT_PAGE_ROUTE = 'predict';
     const REGISTRATION_PAGE_ROUTE = 'registration';
 
     //TODO set permission only for guests
@@ -83,7 +84,7 @@ class RegistrationController extends AbstractActionController
         }
         //if active user - redirect to dashboard
         if ($user->getIsActive()) {
-            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+            return $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
         }
         $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
         try {
@@ -98,7 +99,11 @@ class RegistrationController extends AbstractActionController
                 if ($form->isValid()) {
                     $data = $form->getData();
                     RegistrationManager::getInstance($this->getServiceLocator())->setUp($data);
-                    return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+                    return $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
+                }else{
+                    foreach ($form->getMessages() as $el => $messages) {
+                        $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages) . "<br />");
+                    }
                 }
             }
 
@@ -107,12 +112,11 @@ class RegistrationController extends AbstractActionController
         }
 
         $viewModel = new ViewModel(array(
-            'form' => $form,
+            'form' => $form
         ));
 
         $viewModel->setTerminal(true);
         return $viewModel;
-
     }
 
     //TODO move to auth controller

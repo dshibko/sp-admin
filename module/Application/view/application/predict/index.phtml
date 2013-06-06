@@ -1,4 +1,8 @@
+<?php $this->headTitle($this->translate('Predict'));?>
+<?php echo $this->partial('partials/invite-friends');?>
 <div role="main" class="two-column-section clearfix">
+    <a href="javascript:void(0);" onclick="inviteFriends(); return false;">Invite friends</a>
+
     <div class="first-column predict">
         <?php if (!empty($this->current)) : ?>
             <section class="carousel-wrap make-prediction">
@@ -24,7 +28,6 @@
                         <?php endif; ?>
                     </ul>
                 </header>
-
                 <div class="make-prediction-content clearfix">
                     <?php if ($this->current['status'] == \Application\Model\Entities\Match::LIVE_STATUS) : ?>
                         <div>
@@ -147,6 +150,11 @@
     <?php echo $this->partial('partials/right-column'); ?>
 
 </div>
+
+<?php if (!$this->getCurrentUser()->getIsActive()):?>
+    <?php echo $this->partial('partials/setup-popup', array('form'=>$this->setUpForm));?>
+<?php endif;?>
+
 <script type="text/javascript">
     var liveMatchRedirect = '<?=$this->url('predict', array('ahead' => $this->ahead > 0 ? $this->ahead : null))?>';
     var savedHomeScore = <?=!empty($this->current['prediction']) ? $this->current['prediction']['homeTeamScore'] : -1 ?>;

@@ -158,6 +158,79 @@ return array(
                     ),
                 ),
             ),
+            //Privacy Page
+            'privacy' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/privacy',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Content',
+                        'action'        => 'privacy',
+                    ),
+                ),
+            ),
+            //Terms Page
+            'terms' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/terms',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Content',
+                        'action'        => 'terms',
+                    ),
+                ),
+            ),
+            //Help Page
+            'help' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/help',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Content',
+                        'action'        => 'help',
+                    ),
+                ),
+            ),
+
+            //Cookies Page
+            'cookies' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/cookies',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Content',
+                        'action'        => 'cookies',
+                    ),
+                ),
+            ),
+            //Facebook Canvas Page
+            'facebook-canvas' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/canvas/',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Content',
+                        'action'        => 'facebookCanvas',
+                    ),
+                ),
+            ),
+            //Contact Page
+            'contact' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/contact',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Content',
+                        'action'        => 'contact',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -215,7 +288,13 @@ return array(
             'Application\Controller\Predict' => 'Application\Controller\PredictController',
             'Application\Controller\Fixtures' => 'Application\Controller\FixturesController',
             'Application\Controller\Results' => 'Application\Controller\ResultsController',
+            'Application\Controller\Content' => 'Application\Controller\ContentController',
         ),
+    ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'formErrors' => 'Neoco\Controller\Plugin\FormErrors',
+        )
     ),
     'doctrine' => array(
         'driver' => array(
@@ -246,6 +325,7 @@ return array(
             'partials/footer'         => __DIR__ . '/../view/partials/footer.phtml',
             'partials/cookie-bar'     => __DIR__ . '/../view/partials/cookie-bar.phtml',
             'partials/menu'           => __DIR__ . '/../view/partials/menu.phtml',
+            'partials/invite-friends' => __DIR__ . '/../view/partials/invite-friends.phtml',
             'partials/right-column'   => __DIR__ . '/../view/partials/right-column.phtml',
         ),
         'template_path_stack' => array(

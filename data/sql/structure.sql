@@ -617,3 +617,27 @@ UPDATE `country` SET `flag_image` = "/img/flags/203.png", `original_flag_image` 
 UPDATE `country` SET `flag_image` = "/img/flags/118.png", `original_flag_image` = "http://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Flag_of_Macau.svg/28px-Flag_of_Macau.svg.png" WHERE `id` = 118;
 UPDATE `country` SET `flag_image` = "/img/flags/179.png", `original_flag_image` = "http://upload.wikimedia.org/wikipedia/en/thumb/c/c3/Flag_of_France.svg/28px-Flag_of_France.svg.png" WHERE `id` = 179;
 UPDATE `country` SET `flag_image` = "/img/flags/156.png", `original_flag_image` = "http://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Flag_of_Equatorial_Guinea.svg/28px-Flag_of_Equatorial_Guinea.svg.png" WHERE `id` = 156;
+
+-- okh 05.06
+
+CREATE TABLE `match_region` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`match_id` INT(11) NOT NULL,
+	`region_id` INT(11) NOT NULL,
+	`title` VARCHAR(255) NULL DEFAULT NULL,
+	`intro` TEXT NULL,
+	`header_image_path` VARCHAR(255) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `match_id` (`match_id`),
+	INDEX `region_id` (`region_id`),
+	CONSTRAINT `match_region_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `match` (`id`),
+	CONSTRAINT `match_region_ibfk_2` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+ROW_FORMAT=DEFAULT;
+
+ALTER TABLE `match_region`  ADD COLUMN `featured_player_id` INT(11) NOT NULL AFTER `region_id`;
+ALTER TABLE `match_region`  ADD INDEX `featured_player_id` (`featured_player_id`);
+ALTER TABLE `match_region`  ADD CONSTRAINT `match_region` FOREIGN KEY (`featured_player_id`) REFERENCES `player` (`id`);
+ALTER TABLE `match_region`  CHANGE COLUMN `featured_player_id` `featured_player_id` INT(11) NULL AFTER `region_id`;

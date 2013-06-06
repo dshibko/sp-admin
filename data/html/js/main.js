@@ -57,6 +57,12 @@ $(document).ready(function () {
     $(".popup").click(function(event) {
         return false;
     });
+    if($('.dialog:visible').length) {
+        $('body').addClass('no-scroll');
+    }
+
+
+
 
     if ( navigator.userAgent.indexOf(" Safari/") != -1 && navigator.userAgent.indexOf(" Version/5") != -1) {
         $('body').addClass("safari5");

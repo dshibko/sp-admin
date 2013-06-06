@@ -14,10 +14,25 @@ use \Application\Manager\TeamManager;
 use \Application\Model\Entities\Match;
 use \Application\Manager\UserManager;
 use \Application\Manager\ExportManager;
+use \Application\Manager\RegionManager;
+use \Application\Manager\ImageManager;
+use \Application\Manager\PlayerManager;
 
 class FixturesController extends AbstractActionController
 {
     const FIXTURES_LIST_ROUTE = 'admin-fixtures';
+
+    //TODO move to manager!!!
+    private function setPlayersForFieldsets(array $fieldsets)
+    {
+        $playerManager = PlayerManager::getInstance($this->getServiceLocator());
+        $options = $playerManager->getPlayersSelectOptions();;
+        foreach($fieldsets as &$fieldset){
+            $fieldset->get('featured_player')->setValueOptions($options);
+        }
+        unset($fieldset);
+        return $fieldsets;
+    }
 
     public function indexAction()
     {
@@ -61,7 +76,10 @@ class FixturesController extends AbstractActionController
         $isFullTime = false;
         $matchManager = MatchManager::getInstance($this->serviceLocator);
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
-        $form = new FixtureForm(array(), $teamManager->getTeamsSelectOptions());
+        $regionManager = RegionManager::getInstance($this->getServiceLocator());
+        $regionFieldsets = $regionManager->getRegionsFieldsets('\Admin\Form\FixtureRegionFieldset');
+        $regionFieldsets = $this->setPlayersForFieldsets($regionFieldsets);
+        $form = new FixtureForm($regionFieldsets, $teamManager->getTeamsSelectOptions());
         try {
             $fixture = $matchManager->getMatchById($fixtureId);
             if (is_null($fixture)) {
@@ -78,12 +96,16 @@ class FixturesController extends AbstractActionController
             //Get match analytics
             $analytics = $matchManager->getMatchAnalytics($fixture);
             //Check full time
-            if ($fixture->getStatus() == Match::FULL_TIME_STATUS){
+            if ($fixture->getStatus() == Match::FULL_TIME_STATUS) {
                 $isFullTime = true;
             }
             $form->getInputFilter()->get('competition')->setRequired(false);
             if ($request->isPost()) {
-                $post = $request->getPost();
+                $post = array_merge_recursive(
+                    $request->getPost()->toArray(),
+                    $request->getFiles()->toArray()
+                );
+
                 $form->setData($post);
                 if ($form->isValid()) {
                     $data = $form->getData();
@@ -98,36 +120,26 @@ class FixturesController extends AbstractActionController
                             $fixture->setIsBlocked(true);
                         }
                     }
-                    if ($isChangedAwayTeam){
+                    if ($isChangedAwayTeam) {
                         $fixture->setAwayTeam($teamManager->getTeamById($data['awayTeam']));
                     }
-                    if ($isChangedHomeTeam){
+                    if ($isChangedHomeTeam) {
                         $fixture->setHomeTeam($teamManager->getTeamById($data['homeTeam']));
                     }
-                    if ($isChangedDate){
+                    if ($isChangedDate) {
                         $fixture->setStartTime(new \DateTime($startTime));
                     }
                     $fixture->setIsDoublePoints(!empty($data['isDoublePoints']));
-                    $matchManager->save($fixture);
+                    $regionsData = $regionManager->getMatchRegionsFieldsetData($regionFieldsets);
+                    $matchManager->save($fixture, $regionsData);
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                     return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
                 } else {
-                    foreach ($form->getMessages() as $el => $messages) {
-                        $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
-                    }
+                    $form->handleErrorMessages($form->getMessages(), $this->flashMessenger());
                 }
             }
-            $awayTeamId = $fixture->getAwayTeam()->getId();
-            $homeTeamId = $fixture->getHomeTeam()->getId();
-            $form->populateValues(array(
-                'awayTeam' => $awayTeamId,
-                'homeTeam' => $homeTeamId,
-                'date' => $fixture->getStartTime()->format('m/d/Y'),
-                'kick_off_time' => $fixture->getStartTime()->format('h:i A'),
-                'isDoublePoints' => $fixture->getIsDoublePoints()
-            ));
-            $form->get('awayTeam')->setAttribute('data-original_value', $awayTeamId);
-            $form->get('homeTeam')->setAttribute('data-original_value', $homeTeamId);
+
+            $form->initForm($fixture);
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -149,8 +161,11 @@ class FixturesController extends AbstractActionController
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $regionManager = RegionManager::getInstance($this->getServiceLocator());
+        $regionFieldsets = $regionManager->getRegionsFieldsets('\Admin\Form\FixtureRegionFieldset');
 
-        $form = new FixtureForm(array(), $teamManager->getTeamsSelectOptions());
+        $form = new FixtureForm($regionFieldsets, $teamManager->getTeamsSelectOptions());
+        $regionFieldsets = $this->setPlayersForFieldsets($regionFieldsets);
         try {
             $params = array(
                 'action' => 'add'
@@ -161,7 +176,10 @@ class FixturesController extends AbstractActionController
             $form->get('submit')->setValue('Create');
             $request = $this->getRequest();
             if ($request->isPost()) {
-                $post = $request->getPost();
+                $post = array_merge_recursive(
+                    $request->getPost()->toArray(),
+                    $request->getFiles()->toArray()
+                );
                 $form->setData($post);
                 if ($form->isValid()) {
                     $data = $form->getData();
@@ -169,17 +187,16 @@ class FixturesController extends AbstractActionController
                     $fixture = new Match();
                     $dateTime = new \DateTime($startTime);
                     $fixture->setIsDoublePoints(!empty($data['isDoublePoints']))
-                            ->setAwayTeam($teamManager->getTeamById($data['awayTeam']))
-                            ->setHomeTeam($teamManager->getTeamById($data['homeTeam']))
-                            ->setStartTime($dateTime)
-                            ->setCompetition(CompetitionManager::getInstance($this->getServiceLocator())->getCompetitionById($data['competition']));
-                    $matchManager->save($fixture);
+                        ->setAwayTeam($teamManager->getTeamById($data['awayTeam']))
+                        ->setHomeTeam($teamManager->getTeamById($data['homeTeam']))
+                        ->setStartTime($dateTime)
+                        ->setCompetition(CompetitionManager::getInstance($this->getServiceLocator())->getCompetitionById($data['competition']));
+                    $regionsData = $regionManager->getMatchRegionsFieldsetData($regionFieldsets);
+                    $matchManager->save($fixture, $regionsData);
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                     return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, array('action' => 'edit', 'fixture' => $fixture->getId())));
                 } else {
-                    foreach ($form->getMessages() as $el => $messages) {
-                        $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
-                    }
+                    $form->handleErrorMessages($form->getMessages(), $this->flashMessenger());
                 }
             }
         } catch (\Exception $e) {
@@ -207,7 +224,7 @@ class FixturesController extends AbstractActionController
         $params = array();
         $matchManager = MatchManager::getInstance($this->serviceLocator);
         try {
-            $fixture = $matchManager ->getMatchById($fixtureId);
+            $fixture = $matchManager->getMatchById($fixtureId);
             if (is_null($fixture)) {
                 $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_CANNOT_FIND_FIXTURE);
                 return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
@@ -223,13 +240,13 @@ class FixturesController extends AbstractActionController
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
-        return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE,$params));
+        return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
     }
 
     public function getUserDataAction()
     {
         $userId = (string)$this->params()->fromRoute('fixture', '');
-        $userManager =  UserManager::getInstance($this->getServiceLocator());
+        $userManager = UserManager::getInstance($this->getServiceLocator());
         $exportManager = ExportManager::getInstance($this->getServiceLocator());
 
         if (empty($userId)) {
@@ -249,7 +266,7 @@ class FixturesController extends AbstractActionController
                 )
             );
 
-            $content = $exportManager->exportArrayToCSV($data, array('id' => 'number','displayName' => 'string'));
+            $content = $exportManager->exportArrayToCSV($data, array('id' => 'number', 'displayName' => 'string'));
             $response = $this->getResponse();
             $headers = $response->getHeaders();
             $headers->addHeaderLine('Content-Type', 'text/csv');

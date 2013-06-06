@@ -5,7 +5,6 @@ namespace Application\Model\Entities;
 use Doctrine\ORM\Mapping as ORM;
 use \Neoco\Model\BasicObject;
 
-
 /**
  * User
  *
@@ -445,6 +444,7 @@ class User extends BasicObject {
 
     /**
      * @param \DateTime $date
+     * @return \Application\Model\Entities\User
      */
     public function setDate($date)
     {
@@ -462,6 +462,7 @@ class User extends BasicObject {
 
     /**
      * @param \Application\Model\Entities\Country $country
+     * @return \Application\Model\Entities\User
      */
     public function setCountry($country)
     {
@@ -479,6 +480,7 @@ class User extends BasicObject {
 
     /**
      * @param \Application\Model\Entities\Language $language
+     * @return \Application\Model\Entities\User
      */
     public function setLanguage($language)
     {
@@ -496,6 +498,7 @@ class User extends BasicObject {
 
     /**
      * @param \Doctrine\Common\Collections\Collection $leagues
+     * @return \Application\Model\Entities\User
      */
     public function setLeagues($leagues)
     {
@@ -513,6 +516,7 @@ class User extends BasicObject {
 
     /**
      * @param \Doctrine\Common\Collections\Collection $ownLeagues
+     * @return \Application\Model\Entities\User
      */
     public function setOwnLeagues($ownLeagues)
     {
@@ -531,7 +535,7 @@ class User extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Prediction", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="Prediction", mappedBy="user", cascade={"remove"}, orphanRemoval=true)
      */
     protected $predictions;
 
@@ -620,6 +624,7 @@ class User extends BasicObject {
 
     /**
      * @param \Application\Model\Entities\bigint $facebookId
+     * @return \Application\Model\Entities\User
      */
     public function setFacebookId($facebookId)
     {

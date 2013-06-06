@@ -42,7 +42,7 @@ class RegionFieldsetsRenderer extends AbstractHelper
         $html = '';
         foreach ($regionFieldset->getElements() as $element) {
             $type = $element->getAttribute('type');
-            $html .= '<div class="control-group">
+            $html .= '<div class="control-group clearfix">
     <label class="control-label">' . $this->translator->translate($element->getLabel()) . '</label>
     <div class="controls">';
             switch($type) {
@@ -65,6 +65,9 @@ class RegionFieldsetsRenderer extends AbstractHelper
                     <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">' . $this->translator->translate('Remove') . '</a>
                     </div>
                     </div>';
+                    break;
+                case 'select' :
+                    $html .= $this->getView()->formSelect($element);
                     break;
                 default:
                     $html .= '<div class="input-prepend"><span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium" type="' . $type . '" name="' . $element->getAttribute('name') . '" value="' . $element->getValue() . '"/></div>';

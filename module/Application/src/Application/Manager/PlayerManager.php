@@ -58,4 +58,16 @@ class PlayerManager extends BasicManager
         PlayerDAO::getInstance($this->getServiceLocator())->save($player);
     }
 
+    public function getPlayersSelectOptions()
+    {
+        $options = array();
+        $players = $this->getAllPlayers(true);
+        if (!empty($players)){
+            foreach($players as $player){
+                $options[$player['id']] = $player['displayName'];
+            }
+        }
+        return $options;
+    }
+
 }

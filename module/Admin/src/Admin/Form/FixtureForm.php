@@ -14,8 +14,8 @@ class FixtureForm extends RegionalisedForm {
     public function __construct($regionFieldsets, array $teams) {
 
         parent::__construct($regionFieldsets, 'fixture');
-        //TODO beautiful selects
         $this->setAttribute('method', 'post');
+        $this->setAttribute('enctype', 'multipart/form-data');
         $this->setTeams($teams)->setInputFilter(new FixtureFilter());
 
         //Competition
@@ -120,9 +120,20 @@ class FixtureForm extends RegionalisedForm {
     }
 
     /**
-     * @param \Application\Model\Entities\match $match
+     * @param \Application\Model\Entities\Match $match
      */
     protected function initFormByObject($match) {
+        $awayTeamId = $match->getAwayTeam()->getId();
+        $homeTeamId = $match->getHomeTeam()->getId();
+        $this->populateValues(array(
+            'awayTeam' => $awayTeamId,
+            'homeTeam' => $homeTeamId,
+            'date' => $match->getStartTime()->format('m/d/Y'),
+            'kick_off_time' => $match->getStartTime()->format('h:i A'),
+            'isDoublePoints' => $match->getIsDoublePoints()
+        ));
+        $this->get('awayTeam')->setAttribute('data-original_value', $awayTeamId);
+        $this->get('homeTeam')->setAttribute('data-original_value', $homeTeamId);
 
     }
 

@@ -96,8 +96,11 @@
 }
 
 
+.lt-ie8 .inner-page div[role="main"] .second-column .wrap .league th, .lt-ie8 .inner-page div[role="main"] .second-column .wrap .league td {
+  border-bottom: 1px solid #CCCCCC;
+}
 
-
+/***registration***/
 .lt-ie8  .registration form div {
     display: block;
     width: 600px;
@@ -278,4 +281,37 @@
   background: #de1012;
   height: 3em;
   bottom: -3em;
+}
+
+
+/***setup***/
+.lt-ie8 #setup-dialog header {
+  background: #dfe8f2;
+}
+.lt-ie8  #setup-dialog section fieldset {
+  padding: 3em 0 0;
+}
+.lt-ie8  #setup-dialog section fieldset label {
+  width: 20em;
+  margin: 0 0 0.2em;
+  text-align: left;
+}
+.lt-ie8  #setup-dialog section fieldset select {
+  margin: 0 0 1.5em;
+  width: 26em;
+  height: 30px;
+  font: normal 1.2em/2 Arial;
+}
+
+
+/***league***/
+.lt-ie8 .league-tables .league .block {
+  padding: 1.5em 0 0.1em;
+}
+.lt-ie8 .league-tables .league table tr td {
+  border-top: 1px solid #b5bcc6;
+}
+.lt-ie8 .league-tables .league header #season-filter select {
+  height: 28px;
+  font-size: 14px;
 }
