@@ -1,7 +1,6 @@
 <?php $this->headTitle($this->translate('Predict'));?>
 <?php echo $this->partial('partials/invite-friends');?>
 <div role="main" class="two-column-section clearfix">
-    <a href="javascript:void(0);" onclick="inviteFriends(); return false;">Invite friends</a>
 
     <div class="first-column predict">
         <?php if (!empty($this->current)) : ?>
@@ -140,6 +139,23 @@
                         <?php print $this->squadSelect('home-team-scorer', $this->current['homeSquad'], $this->translate('Select scorer'), 'style="display: none"'); ?>
                         <?php print $this->squadSelect('away-team-scorer', $this->current['awaySquad'], $this->translate('Select scorer'), 'style="display: none"'); ?>
                     <?php endif; ?>
+                </div>
+            </section>
+            <section class="match-banner">
+                <div class="clearfix">
+                    <img src="/img/match-report.png" alt="">
+                    <article>
+                        <h1>Match report</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur lorum adipiscing elit. Donec tempor dui id quam dapibus commodo. Suspendisse nulla arcu.</p>
+<!--                        <footer class="clearfix">-->
+<!--                            <h3>Share this</h3>-->
+<!--                            <ul class="social-links">-->
+<!--                                <li><a href="">like</a></li>-->
+<!--                                <li><a href="">tweet</a></li>-->
+<!--                                <li><a href="">Pin it</a></li>-->
+<!--                            </ul>-->
+<!--                        </footer>-->
+                    </article>
                 </div>
             </section>
         <?php else: ?>

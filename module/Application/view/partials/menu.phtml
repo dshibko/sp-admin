@@ -22,7 +22,7 @@
                 <div class="popup-content">
                     <ul>
                         <li class="user-profile clearfix">
-                            <img src="<?=$this->getCurrentUser()->getAvatar()->getTinyImagePath()?>" alt="">
+                            <img src="<?=$this->getUserAvatar($this->getCurrentUser()->getAvatar()->getMediumImagePath(), $this->getCurrentUser()->getFacebookId())?>" alt="">
                             <strong><?=$this->getCurrentUser()->getDisplayName()?></strong>
                             <a href="#"><?=$this->translate('View full profile')?></a>
                         </li>
