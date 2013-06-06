@@ -15,8 +15,8 @@
         <section class="block total-points">
             <table>
                 <thead>
-                <tr><th class="pts">Total pts</th>
-                    <th class="acy">acy</th>
+                <tr><th class="pts">Total <abbr title="Points">pts</abbr></th>
+                    <th class="acy"><abbr title="Accuracy">Acy</abbr></th>
                 </tr></thead>
                 <tbody>
                 <tr>
@@ -40,9 +40,9 @@
                             <td class="movement">
                                 <?php if ($leagueUser['previousPlace'] != null) : ?>
                                     <?php if ($leagueUser['previousPlace'] < $leagueUser['place']) : ?>
-                                        <img alt="Moved Up" src="/img/up.png" class="up">
+                                        <img title="Moved Up" alt="Moved Up" src="/img/up.png" class="up">
                                     <?php elseif ($leagueUser['previousPlace'] > $leagueUser['place']) : ?>
-                                        <img alt="Moved Down" src="/img/down.png" class="down">
+                                        <img title="Moved Down" alt="Moved Down" src="/img/down.png" class="down">
                                     <?php endif;?>
                                 <?php endif;?>
                             </td>
@@ -81,7 +81,7 @@
             </div>
         </section>
 
-        <p class="full"><a href="">View full league tables</a></p>
+        <p class="full"><a href="#">View full league tables</a></p>
     </div>
 
     <div class="facebook-invite">
