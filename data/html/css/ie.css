@@ -305,6 +305,9 @@
 
 
 /***league***/
+.lt-ie8 .league-tables .league .block {
+  padding: 1.5em 0 0.1em;
+}
 .lt-ie8 .league-tables .league table tr td {
   border-top: 1px solid #b5bcc6;
 }
