@@ -37,7 +37,7 @@ class LeagueUserDAO extends AbstractDAO {
     /**
      * @param \Application\Model\Entities\User $user
      * @param \Application\Model\Entities\Season $season
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Region|null $region
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
@@ -47,13 +47,14 @@ class LeagueUserDAO extends AbstractDAO {
         // TODO add custom qb with left join to get name, add time conditions
         $nowTime = new \DateTime();
         $nowTime->setTime(0, 0, 0);
+        $regionId = $region == null ? 0 : $region->getId();
         $query = $this->getEntityManager()->createQuery('
             SELECT
                 lu.points, lu.accuracy, lu.place, lu.previousPlace, l.type, lr.displayName
             FROM
                '.$this->getRepositoryName().' as lu
             INNER JOIN lu.league l WITH l.season = ' . $season->getId() . '
-            LEFT JOIN l.leagueRegions lr WITH lr.region = ' . $region->getId() . '
+            LEFT JOIN l.leagueRegions lr WITH lr.region = ' . $regionId . '
             WHERE lu.user = ' . $user->getId() . ' AND
                 :nowTime >= l.startDate AND :nowTime <= l.endDate
         ')->setParameter('nowTime', $nowTime);

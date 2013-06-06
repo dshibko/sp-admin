@@ -11,7 +11,7 @@ use Zend\View\Helper\AbstractHelper;
 /**
  *
  */
-    class LeagueStats extends AbstractHelper
+class LeagueStats extends AbstractHelper
 {
 
     /**
@@ -30,11 +30,11 @@ use Zend\View\Helper\AbstractHelper;
     private $wasInitialized = false;
     private $overallLeagueUsers;
     private $temporalLeagueUsers;
-    private $globalPoints;
-    private $globalAccuracy;
+    private $globalPoints = 0;
+    private $globalAccuracy = 0;
 
     /**
-     * @return \Neoco\View\Helper\UnreadItems
+     * @return \Neoco\View\Helper\LeagueStats
      */
     public function __invoke()
     {
@@ -61,11 +61,11 @@ use Zend\View\Helper\AbstractHelper;
     }
 
     public function getGlobalPoints() {
-        return $this->globalPoints;
+        return $this->globalPoints != null ? $this->globalPoints : 0;
     }
 
     public function getGlobalAccuracy() {
-        return $this->globalAccuracy;
+        return $this->globalAccuracy != null ? $this->globalAccuracy : 0;
     }
 
     public function getOverallLeagueUsers()

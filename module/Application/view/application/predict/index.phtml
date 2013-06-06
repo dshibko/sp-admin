@@ -174,6 +174,7 @@
     var liveMatchRedirect = '<?=$this->url('predict', array('ahead' => $this->ahead > 0 ? $this->ahead : null))?>';
     var savedHomeScore = <?=!empty($this->current['prediction']) ? $this->current['prediction']['homeTeamScore'] : -1 ?>;
     var savedAwayScore = <?=!empty($this->current['prediction']) ? $this->current['prediction']['awayTeamScore'] : -1 ?>;
+    var pageUnloadCopy = "<?=$this->translate('You didn\'t save the prediction.')?>";
 </script>
 <script type="text/javascript" src="/js/vendor/jquery.countdown.js"></script>
 <script type="text/javascript" src="/js/make-prediction.js"></script>
