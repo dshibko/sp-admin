@@ -99,7 +99,10 @@ figure {
     *zoom: 1;
 }
 
-
+.no-scroll {
+  height: 100%;
+  overflow: hidden;
+}
 
 
 /***inner page***/
@@ -193,10 +196,54 @@ a.show-more {
   }
 }
 
-.no-scroll {
-  height: 100%;
-  overflow: hidden;
+.inner-page div[role="main"] .match-banner {
+  .vertical-gradient(#b4c9e0, #ffffff);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4c9e0', endColorstr='#ffffff',GradientType=0 );
+
+  padding: 0 1.2em 0 3em;
+  margin: 0 0 1em;
+
+  div {
+    border-bottom: 1px solid #a1adbb;
+  }
+
+  img {
+    float: right;
+    margin: -2em 0 0 1em;
+    width: 53%;
+  }
+  article {
+    float: left;
+    width: 45%;
+
+    h1 {
+      padding: 1.05em 0 0.2em;
+    }
+    p {
+      font: normal 1.6em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+    }
+    footer {
+        padding: 2.4em 0 2em;
+
+        h3 {
+          float: left;
+          color: @gray;
+          text-align: left;
+          font: normal 1.5em/1 "ProximaNova-Bold", Helvetica, Arial;
+        }
+        .social-links {
+          float: left;
+          list-style: none;
+
+          li {
+            float: left;
+            margin: 0 0 0 1em;
+          }
+        }
+    }
+  }
 }
+
 
 
 @media only screen and (min-width: 320px) and (max-width:  767px) {
@@ -221,7 +268,40 @@ a.show-more {
     }
   }
 
+  .inner-page div[role="main"] .match-banner {
+    .vertical-gradient(#b4c9e0, #ffffff);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4c9e0', endColorstr='#ffffff',GradientType=0 );
+    
+    padding: 0 1.5em 0 1.5em;
+    div {
+      border-bottom: 1px solid #a1adbb;
+    }
+
+    img {
+      display: none;
+    }
+    article {
+      float: none;
+      width: 100%;
+
+      h1 {
+        padding: 0.4em 0 0.2em;
+        font: normal 3em/1.2 "ProximaNova-Bold", Helvetica, Arial;
+      }
+      p {
+        font: normal 1.5em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+      }
+      footer {
+        padding: 2em 0 2em;
+
+        h3 {
+          font: normal 1.5em/1 "ProximaNova-Bold", Helvetica, Arial;
+        }
+      }
+    }
+  }
 }
+
 @media screen and (min-width: 1025px) {
   .inner-page div[role="main"] {
     margin-bottom: 4em;
@@ -236,7 +316,7 @@ a.show-more {
         // max-width: 90.4em;
         // width: 100%;
         width: 74%;
-        box-shadow: 2px 0px 16px rgba(180, 180, 180, 0.75);
+        box-shadow: 2px 0px 16px rgba(0, 0, 0, 0.15);
       }
       aside.second-column {
         position: relative;
