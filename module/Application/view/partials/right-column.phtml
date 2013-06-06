@@ -1,3 +1,4 @@
+<?php echo $this->partial('partials/invite-friends');?>
 <aside role="complementary" class="second-column">
     <ul class="social-links clearfix">
         <li>&nbsp;</li>
@@ -87,6 +88,6 @@
     <div class="facebook-invite">
         <h1>Play against your mates</h1>
         <p>Create your own social league against your Facebook friends to find out who's top of the league</p>
-        <a href="" class="facebook">+ Invite your friends</a>
+        <a href="javascript:void(0);" onclick="inviteFriends();" class="facebook"><?php echo $this->translate('+ Invite your friends');?></a>
     </div>
 </aside>
