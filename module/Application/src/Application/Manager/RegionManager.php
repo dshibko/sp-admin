@@ -95,4 +95,41 @@ class RegionManager extends BasicManager {
         return $regionDAO->getUsersByRegion($regionId, $hydrate, $skipCache);
     }
 
+    /**
+     * @param String $fieldsetName Name of the form fieldset class
+     * @return array
+     */
+    public function getRegionsFieldsets($fieldsetName)
+    {
+        $regions = $this->getAllRegions(true);
+        $regionFieldsets = array();
+        foreach ($regions as $region){
+            $regionFieldsets[] = new $fieldsetName($region);
+        }
+        return $regionFieldsets;
+    }
+
+    public function getMatchRegionsFieldsetData(array $regionFieldsets)
+    {
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        $regionsData = array();
+        //Prepare regions data
+        foreach ($regionFieldsets as $fieldset) {
+            $region = $fieldset->getRegion();
+            $regionsData[$region['id']] = array(
+                'title' => $fieldset->get('title')->getValue(),
+                'intro' => $fieldset->get('intro')->getValue(),
+                'featured_player' => $fieldset->get('featured_player')->getValue()
+            );
+            $headerImage = $fieldset->get('header_image')->getValue();
+            //TODO resize background
+            $image = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
+            if ($image){
+                $regionsData[$region['id']]['header_image_path'] = $image;
+            }
+        }
+
+        return $regionsData;
+    }
+
 }

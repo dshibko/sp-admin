@@ -59,7 +59,7 @@ class MessagesConstants
     const ERROR_EMAIL_NOT_REGISTERED = "The email you input is not registered.";
     const ERROR_RECOVERY_LINK_INVALID = "Recovery link is not valid.";
     const ERROR_WRONG_EMAIL_OR_PASSWORD = "Wrong email or password.";
-    const ERROR_UPLOAD_FAILED = "Upload filed due to unknown problems.";
+    const ERROR_UPLOAD_FAILED = "Upload failed due to unknown problems.";
     const ERROR_WRONG_DATES_SELECTED = "Wrong start and end dates selected.";
     const ERROR_MATCH_NOT_FOUND = "The match was not found.";
     const ERROR_TEAM_NOT_FOUND = "Team you want to make a prediction was not found.";
