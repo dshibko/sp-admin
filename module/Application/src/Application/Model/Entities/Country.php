@@ -16,6 +16,13 @@ class Country extends BasicObject {
     /**
      * @var string
      *
+     * @ORM\Column(name="flag_image", type="string", length=50)
+     */
+    private $flagImage;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="name", type="string", length=40, nullable=false)
      */
     private $name;
@@ -264,5 +271,21 @@ class Country extends BasicObject {
     public function getRegion()
     {
         return $this->region;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFlagImage()
+    {
+        return $this->flagImage;
+    }
+
+    /**
+     * @param string $flagImage
+     */
+    public function setFlagImage($flagImage)
+    {
+        $this->flagImage = $flagImage;
     }
 }

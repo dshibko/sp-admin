@@ -323,7 +323,8 @@ return array(
                     'admin-account' => array(
                         'title' => 'My Account',
                         'label' => 'icon-user',
-                        'route' => 'admin-account'
+                        'route' => 'admin-account',
+                        'exclude-from-menu' => true,
                     ),
                     'seasons' => array(
                         'title' => 'Seasons',

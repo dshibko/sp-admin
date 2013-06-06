@@ -146,6 +146,13 @@ class Match extends BasicObject {
     protected $isDoublePoints;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="has_line_up", type="boolean")
+     */
+    protected $hasLineUp = false;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="home_team_full_time_score", type="integer")
@@ -669,6 +676,22 @@ class Match extends BasicObject {
 
     public function getIsLive() {
         return $this->getStatus() == self::LIVE_STATUS || ($this->getStatus() == self::PRE_MATCH_STATUS && $this->getStartTime() < new \DateTime());
+    }
+
+    /**
+     * @param boolean $hasLineUp
+     */
+    public function setHasLineUp($hasLineUp)
+    {
+        $this->hasLineUp = $hasLineUp;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getHasLineUp()
+    {
+        return $this->hasLineUp;
     }
 
 }

@@ -191,6 +191,11 @@ class Module
                     $h->setServiceLocator($sm->getServiceLocator());
                     return $h;
                 },
+                'getLeagueStats' => function($sm) {
+                    $h = new \Neoco\View\Helper\LeagueStats();
+                    $h->setServiceLocator($sm->getServiceLocator());
+                    return $h;
+                },
             )
         );
     }

@@ -156,4 +156,5 @@ class LeagueDAO extends AbstractDAO {
             ->where($qb->expr()->eq('l.id', $id));
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
+
 }

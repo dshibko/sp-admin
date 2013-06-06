@@ -1,0 +1,92 @@
+<aside role="complementary" class="second-column">
+    <ul class="social-links clearfix">
+        <li>&nbsp;</li>
+<!--        <li><a href="">Facebook</a></li>-->
+<!--        <li><a href="">Twitter</a></li>-->
+    </ul>
+    <div class="wrap">
+        <section class="user-profile clearfix" itemtype="http://schema.org/Person" itemscope="">
+            <img src="<?=$this->getCurrentUser()->getAvatar()->getMediumImagePath()?>" itemprop="photo" title="<?=$this->getCurrentUser()->getDisplayName()?>" alt="<?=$this->getCurrentUser()->getDisplayName()?>" >
+            <img src="<?=$this->getCurrentUser()->getCountry()->getFlagImage()?>" itemprop="nationality" alt="Great Britain" >
+            <h1 itemprop="name"><?=$this->getCurrentUser()->getDisplayName()?></h1>
+            <a href="#">View full profile</a>
+        </section>
+
+        <section class="block total-points">
+            <table>
+                <thead>
+                <tr><th class="pts">Total pts</th>
+                    <th class="acy">acy</th>
+                </tr></thead>
+                <tbody>
+                <tr>
+                    <td class="pts"><?=$this->getLeagueStats()->getGlobalPoints()?></td>
+                    <td class="acy">+<?=$this->getLeagueStats()->getGlobalAccuracy()?></td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="league">
+            <h1>Overall League</h1>
+            <div class="block">
+                <table>
+                    <tbody>
+                    <?php foreach($this->getLeagueStats()->getOverallLeagueUsers() as $leagueUser) : ?>
+                        <tr>
+                            <th>
+                                <?=$leagueUser['type'] == \Application\Model\Entities\League::GLOBAL_TYPE ? 'Global' : 'Local'?>
+                            </th>
+                            <td class="movement">
+                                <?php if ($leagueUser['previousPlace'] != null) : ?>
+                                    <?php if ($leagueUser['previousPlace'] < $leagueUser['place']) : ?>
+                                        <img alt="Moved Up" src="/img/up.png" class="up">
+                                    <?php elseif ($leagueUser['previousPlace'] > $leagueUser['place']) : ?>
+                                        <img alt="Moved Down" src="/img/down.png" class="down">
+                                    <?php endif;?>
+                                <?php endif;?>
+                            </td>
+                            <td class="score"><?=$leagueUser['place']?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="league">
+            <h1>Temporal Leagues</h1>
+            <div class="block">
+                <table>
+                    <tbody>
+                    <?php foreach($this->getLeagueStats()->getTemporalLeagueUsers() as $leagueUser) : ?>
+                        <tr>
+                            <th>
+                                <?=$leagueUser['displayName']?>
+                            </th>
+                            <td class="movement">
+                                <?php if ($leagueUser['previousPlace'] != null) : ?>
+                                    <?php if ($leagueUser['previousPlace'] < $leagueUser['place']) : ?>
+                                        <img alt="Moved Up" src="/img/up.png" class="up">
+                                    <?php elseif ($leagueUser['previousPlace'] > $leagueUser['place']) : ?>
+                                        <img alt="Moved Down" src="/img/down.png" class="down">
+                                    <?php endif;?>
+                                <?php endif;?>
+                            </td>
+                            <td class="score"><?=$leagueUser['place'] != null ? $leagueUser['place'] : '-'?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <p class="full"><a href="">View full league tables</a></p>
+    </div>
+
+    <div class="facebook-invite">
+        <h1>Play against your mates</h1>
+        <p>Create your own social league against your Facebook friends to find out who's top of the league</p>
+        <a href="" class="facebook">+ Invite your friends</a>
+    </div>
+</aside>
