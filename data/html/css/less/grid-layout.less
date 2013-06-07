@@ -1,6 +1,6 @@
 .grid-layout {
   position: relative;
-  /*margin: 0 0 0 2em;*/
+  margin: 0 auto;
 
   #container {
     margin: 0 auto;
@@ -12,14 +12,14 @@
 
   .item {
     float: left;
-    margin: 1% 0em 1% 0.8em;
+    margin: 1% 1% 1%;
     background: red;
 
     &.col1 {
-      width: 31.9%;
+      width: 31.3%;
     }
     &.col2 {
-      width: 65%;
+      width: 64.6%;
     }
 
     &.head-to-head-results {
@@ -53,7 +53,7 @@
           position: relative;
           z-index: 3;
           float: right;
-          margin: 4.4em 1.3em 1.4em 0;
+          margin: 4.4em 1.3em 1.2em 0;
           width: 48%;
 
           hgroup {
@@ -136,7 +136,7 @@
           float: right;
           position: relative;
           z-index: 3;
-          margin: 2.4em 1.3em 0.8em 0;
+          margin: 2.4em 1.3em 0.6em 0;
           width: 43%;
 
           h1 {
@@ -182,7 +182,65 @@
                 strong {
                   font: normal 1.6em/0.9 "ProximaNova-Bold", Helvetica, Arial;
                 }
+                span {
+                  padding: 0 0 0 0.1em;
+                }
               }
+            }
+          }
+        }
+      }
+    }
+
+    &.top5-predicted-scores {
+      section {
+        position: relative;
+        padding: 2em;
+        background: #f2e1e7;
+
+        div {
+          margin: 0 auto 0;
+          width: 24em; 
+          height: 24em;
+        }
+
+        h1 {
+          padding: 0.7em 0 0.2em;
+          color: #9c1a4a;
+          font: normal 2.3em/1 "ProximaNova-Bold", Helvetica, Arial;
+        }
+        ol {
+          list-style: none;
+          li {
+            position: relative;
+            padding: 0 0 0.3em 1.5em;
+            color: @dark-gray;
+            font: normal 1.6em/1 "ProximaNova-Reg", Helvetica, Arial;
+
+            &:before {
+              display: block;
+              content: "";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 0.9em;
+              height: 0.9em;
+              background: #a01749;
+            }
+            &:nth-child(1):before {
+              background: #a01749;
+            }
+            &:nth-child(2):before {
+              background: #b2466e;
+            }
+            &:nth-child(3):before {
+              background: #c47692;
+            }
+            &:nth-child(4):before {
+              background: #d6a4b7;
+            }
+            &:nth-child(5):before {
+              background: #e7c6d3;
             }
           }
         }
@@ -194,17 +252,16 @@
 
 @media only screen and (min-width: 320px) and (max-width:  767px) {
   .grid-layout {
-    margin: 0 0 0 1em;
+    margin: 0 auto;
 
     .item {
       float: left;
-      margin: 1% 0% 1% 0%;
 
       &.col1 {
-        width: 40%;
+        width: 48%;
       }
       &.col2 {
-        width: 97%;
+        width: 98%;
       }
 
       &.featured-player {
@@ -318,13 +375,40 @@
           }
         }
       }
+
+
+      &.top5-predicted-scores {
+        section {
+          padding: 1em;
+
+          div {
+            margin: 0 auto 0;
+            width: 12.3em; 
+            height: 12.3em;
+          }
+          h1 {
+            font: normal 2em/1 "ProximaNova-Bold", Helvetica, Arial;
+          }
+        }
+      }
     }
   }
 }
 
-
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-.grid-layout {
-    margin: 0 0 0 1em;
+  .grid-layout {
+    .item {
+
+      &.top5-predicted-scores {
+        section {
+          // padding: 1em;
+          div {
+            width: 170px; 
+            height: 170px;
+          }
+        }
+      }
+    }
   }
 }
+

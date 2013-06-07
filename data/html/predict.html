@@ -23,6 +23,7 @@
         <!--[if lt IE 9]>
             <link rel="stylesheet" href="css/ie.css">
             <script src="js/vendor/html5-3.6-respond-1.1.0.min.js"></script>
+            <script language="javascript" type="text/javascript" src="js/vendor/excanvas.min.js"></script>
         <![endif]-->
 
     </head>
@@ -256,10 +257,24 @@
                                           </li>
                                           <li class="small">
                                               <strong>8%</strong>
-                                              <sdpan>Bob Visions</sdpan>
+                                              <span>Bob Visions</span>
                                           </li>
                                         </ol>
                                     </div>
+                                </section>
+                            </div>
+                            <div class="item col1 top5-predicted-scores">
+                                <section>
+                                    <div id="chart_top5"></div>
+
+                                    <h1>Top 5 predicted scores</h1>
+                                    <ol>
+                                        <li>2-1 (14%)</li>
+                                        <li>1-2 (13%)</li>
+                                        <li>3-0 (12%)</li>
+                                        <li>0-0 (9%)</li>
+                                        <li>3-1 (8%)</li>
+                                    </ol>
                                 </section>
                             </div>
                         </div>
@@ -424,21 +439,58 @@
         <script src="js/vendor/jquery.idealforms.min.js"></script>
         <script src="js/make-prediction.js"></script>
         <script src="js/vendor/jquery.masonry.min.js"></script>
+        <script src="js/vendor/jquery.flot.js"></script>
+        <script src="js/vendor/jquery.flot.pie.js"></script>
         <script src="js/main.js"></script>
 
         <script>
             var $container = $('#container');
-            $container.imagesLoaded(function(){
-              $container.masonry({
-                itemSelector : '.item',
-                columnWidth : function( containerWidth ) {
+            $container.imagesLoaded(function () {
+                $(window).resize(function () {
+                    if ($(window).width() > 767) {
+                        $container.masonry({
+                            itemSelector: '.item',
+                            columnWidth: function (containerWidth) {
                                 return containerWidth / 3;
-                              },
-                // isAnimated: true,
-                isResizable: true,
-                isFitWidth: true
-              });
+                            },
+                            // isAnimated: true,
+                            isResizable: true,
+                            isFitWidth: true
+                        });
+                    }
+                    else {
+                        $container.masonry({
+                            itemSelector: '.item',
+                            columnWidth: function (containerWidth) {
+                                return containerWidth / 2;
+                            },
+                            // isAnimated: true,
+                            isResizable: true,
+                            isFitWidth: true
+                        });
+                    }
+                });
             });
+
+
+            $.plot('#chart_top5', 
+                [
+                  {color: '#a01749', data: 10},
+                  {color: '#b2466e', data: 20},
+                  {color: '#c47692', data: 30},
+                  {color: '#d6a4b7', data: 10},
+                  {color: '#e7c6d3', data: 30}
+                ], {
+                series: {
+                    pie: {
+                        innerRadius: 0.4,
+                        stroke: {color: '#f2e1e7', width: 0},
+                        show: true
+                    }
+                }
+            });
+
+
 
         </script>
 

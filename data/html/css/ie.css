@@ -326,3 +326,33 @@
 .lt-ie8 .grid-layout .item.top-predicted-scorers section div h1 {
   margin-bottom: 0.8em;
 }
+
+.lt-ie9 .grid-layout .item.top5-predicted-scores section ol li:before, .lt-ie8 .grid-layout .item.top5-predicted-scores section ol li small {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.9em;
+  height: 0.9em;
+  background: #a01749;
+}
+.lt-ie9 .grid-layout .item.top5-predicted-scores section ol li:first-child + *:before, .lt-ie8 .grid-layout .item.top5-predicted-scores section ol li:first-child + * small {
+  background: #b2466e;
+}
+.lt-ie9 .grid-layout .item.top5-predicted-scores section ol li:first-child + * + *:before, .lt-ie8 .grid-layout .item.top5-predicted-scores section ol li:first-child + * + * small {
+  background: #c47692;
+}
+.lt-ie9 .grid-layout .item.top5-predicted-scores section ol li:first-child + * + * + *:before, .lt-ie8 .grid-layout .item.top5-predicted-scores section ol li:first-child + * + * +* small {
+  background: #d6a4b7;
+}
+.lt-ie9 .grid-layout .item.top5-predicted-scores section ol li:first-child + * + * + * + *:before, .lt-ie8 .grid-layout .item.top5-predicted-scores section ol li:first-child + * + * + * + * small {
+  background: #e7c6d3;
+}
+
+.lt-ie8 .grid-layout .item.top5-predicted-scores section ol li {
+  *zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild( document.createElement("small") ).className="before"
+         );
+}
