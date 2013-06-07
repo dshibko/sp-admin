@@ -22,8 +22,77 @@
       width: 64.6%;
     }
 
-    &.head-to-head-results {
+    &.stacked-bar {
+      section {
+        background: #e6edf8;
+        position: relative;
+        padding: 2.5em 2em;
 
+        h1 {
+          padding: 0 0 0.5em;
+          font: normal 2.3em/1 "ProximaNova-Bold", Helvetica, Arial;
+        }
+
+        figure {
+          width: 100%;
+
+          ol {
+            background: @blue;
+            width: 100%;
+            list-style: none;
+
+            li {
+              float: left;
+              width: 50%;
+              height: 4em;
+
+              span {
+                display: block;
+                padding: 0 0 0 0.4em;
+                color: #fff;
+                font: normal 2.5em/1.7 "ProximaNova-Bold", Helvetica, Arial;
+              }
+
+              &:nth-child(1) {
+                background: @blue;
+                text-align: left;
+              }
+              &:nth-child(2) {
+                background: @dark-gray;
+                text-align: right;
+                span {
+                  padding: 0 0.4em 0 0;
+                }
+              }
+            }
+          }
+
+          ul.legend {
+            margin: 1.6em 0 0;
+            list-style: none;
+            li {
+              position: relative;
+              padding: 0 0 0.3em 1.5em;
+              color: @dark-gray;
+              font: normal 1.6em/1 "ProximaNova-Reg", Helvetica, Arial;
+
+              &:before {
+                display: block;
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 0.9em;
+                height: 0.9em;
+                background: @blue;
+              }
+              &:nth-child(1):before {
+                background: @dark-gray;
+              }
+            }
+          }
+        }
+      }
     }
 
     &.featured-player {
@@ -107,6 +176,22 @@
               }
             }
           }
+        }
+      }
+    }
+
+    &.help-tip {
+      section {
+        background: #e6edf8;
+        position: relative;
+        padding: 2.5em 2em 4em;
+
+        h1 {
+          padding: 0 0 0.3em;
+          font: normal 2.3em/1 "ProximaNova-Bold", Helvetica, Arial;
+        }
+        p {
+          font: normal 1.6em/1.2 "ProximaNova-Reg", Helvetica, Arial;
         }
       }
     }
@@ -198,7 +283,7 @@
         padding: 2em;
         background: #f2e1e7;
 
-        div {
+        figure {
           margin: 0 auto 0;
           width: 24em; 
           height: 24em;
@@ -264,6 +349,38 @@
         width: 98%;
       }
 
+      &.stacked-bar {
+        section {
+          padding: 1.5em 1em;
+          h1 {
+            padding: 0 0 0.5em;
+            font: normal 2em/1 "ProximaNova-Bold", Helvetica, Arial;
+          }
+          figure {
+            ol {
+              li {
+                height: 3em;
+
+                span {
+                  padding: 0 0 0 0.3em;
+                  font: normal 1.7em/1.8 "ProximaNova-Bold", Helvetica, Arial;
+                }
+                &:nth-child(2) {
+                  span {
+                    padding: 0 0.3em 0 0;
+                  }
+                }
+              }
+            }
+            ul.legend {
+              li {
+                font: normal 1.4em/0.9 "ProximaNova-Reg", Helvetica, Arial;
+              }
+            }
+          }
+        }
+    }
+
       &.featured-player {
         section {
           .player {
@@ -325,6 +442,20 @@
           }
         }
       }
+
+      &.help-tip {
+        section {
+          padding: 1.5em 1em 2em;
+
+          h1 {
+            padding: 0 0 0.3em;
+            font: normal 2em/1 "ProximaNova-Bold", Helvetica, Arial;
+          }
+          p {
+            font: normal 1.4em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+          }
+        }
+      }
       
       &.top-predicted-scorers {
         section {
@@ -381,7 +512,7 @@
         section {
           padding: 1em;
 
-          div {
+          figure {
             margin: 0 auto 0;
             width: 12.3em; 
             height: 12.3em;
@@ -402,7 +533,7 @@
       &.top5-predicted-scores {
         section {
           // padding: 1em;
-          div {
+          figure {
             width: 170px; 
             height: 170px;
           }

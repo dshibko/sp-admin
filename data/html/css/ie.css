@@ -327,7 +327,7 @@
   margin-bottom: 0.8em;
 }
 
-.lt-ie9 .grid-layout .item.top5-predicted-scores section ol li:before, .lt-ie8 .grid-layout .item.top5-predicted-scores section ol li small {
+.lt-ie9 .grid-layout .item.top5-predicted-scores section ol li:before, .lt-ie8 .grid-layout .item.top5-predicted-scores section ol li small,  {
   display: block;
   content: "";
   position: absolute;
@@ -350,9 +350,31 @@
   background: #e7c6d3;
 }
 
-.lt-ie8 .grid-layout .item.top5-predicted-scores section ol li {
+.lt-ie8 .grid-layout .item.top5-predicted-scores section ol li, .lt-ie8 .grid-layout .item.stacked-bar section figure ul.legend li {
   *zoom: expression( 
           this.runtimeStyle.zoom="1",
           this.appendChild( document.createElement("small") ).className="before"
          );
+}
+
+
+.lt-ie8 .grid-layout .item.stacked-bar section figure ul.legend li small {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0.9em;
+  height: 0.9em;
+  background: #144a9b;
+}
+.lt-ie9 .grid-layout .item.stacked-bar section figure ol li:first-child + * {
+  background: #363636;
+  text-align: right;
+}
+.lt-ie9 .grid-layout .item.stacked-bar section figure ol li:first-child + * span {
+  padding: 0 0.4em 0 0;
+}
+.lt-ie9 .grid-layout .item.stacked-bar section figure ul.legend li:first-child + *:before, .lt-ie8 .grid-layout .item.stacked-bar section figure ul.legend li:first-child + * small {
+  background: #363636;
 }
