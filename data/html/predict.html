@@ -596,15 +596,28 @@
                   {color: '#363636', data: 530},
                   {color: '#144a9b', data: 193},
                   {color: '#7f7f80', data: 20}
-                ], {
-                series: {
-                    pie: {
-                        innerRadius: 0.4,
-                        stroke: {color: '#e6edf8', width: 0},
-                        show: true
+                ], 
+                {
+                    series: {
+                        pie: {
+                            innerRadius: 0.4,
+                            stroke: {color: '#e6edf8', width: 0},
+                            show: true,
+                            radius: 1,
+                            label: {
+                                show: true,
+                                radius: 2/3,
+                                formatter: function(label, series) { 
+                                    return series.data[0][1];
+                                }
+                            }
+                        }
+                    },
+                    legend: {
+                        show: false
                     }
                 }
-            });
+            );
 
 
         </script>
