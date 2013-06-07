@@ -1,0 +1,330 @@
+.grid-layout {
+  position: relative;
+  /*margin: 0 0 0 2em;*/
+
+  #container {
+    margin: 0 auto;
+  }
+
+  .centered {
+    margin: 0 auto;
+  }
+
+  .item {
+    float: left;
+    margin: 1% 0em 1% 0.8em;
+    background: red;
+
+    &.col1 {
+      width: 31.9%;
+    }
+    &.col2 {
+      width: 65%;
+    }
+
+    &.head-to-head-results {
+
+    }
+
+    &.featured-player {
+      section {
+        position: relative;
+        overflow: hidden;
+
+        .bg {
+          position: absolute;
+          z-index: 1;
+          top: 0;
+          left: 0;
+          width: 100%;
+          max-width: 100%;
+          height: auto;
+        }
+        .player {
+          position: absolute;
+          z-index: 2;
+          top: 0;
+          left: 3em;
+          width: 50%;
+          max-width: 50%;
+        }
+
+        div {
+          position: relative;
+          z-index: 3;
+          float: right;
+          margin: 4.4em 1.3em 1.4em 0;
+          width: 48%;
+
+          hgroup {
+            margin:0 0 1.3em 0;
+            
+            h1 {
+              padding: 0;
+              color: #9e9e9f;
+              text-transform: uppercase;
+              font: normal 1.5em/1.2 "ProximaNova-Bold", Helvetica, Arial;
+            }
+            h2 {
+              color: #fff;
+              font: normal 2.4em/1 "ProximaNova-Bold", Helvetica, Arial;
+            }
+          }
+
+          ul {
+            padding: 1em 0em 2.4em 2em;
+            background: rgba(255, 255, 255, 0.7);
+          }
+          
+
+          li {
+            list-style: none;
+            float: left;
+            margin: 0 0 0 0.5em;
+            width: 29%;
+            color: @dark-gray;
+            font: normal 1.6em/1 "ProximaNova-Reg", Helvetica, Arial;
+
+            strong {
+              display: block;
+              color: @blue;
+              font: normal 1.6em/1 "ProximaNova-Bold", Helvetica, Arial;
+            }
+
+            &:first-child {
+              margin: 0;
+              padding: 0;
+              width: 100%;
+              vertical-align: bottom;
+              strong {
+                display: inline-block;
+                font: normal 6em/1 "ProximaNova-Bold", Helvetica, Arial;
+              }
+              span {
+                display: inline-block;
+                padding: 0 0 0 0.3em;
+                width: 6em;                
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &.top-predicted-scorers {
+      section {
+        position: relative;
+        overflow: hidden;
+
+        .bg {
+          position: absolute;
+          z-index: 1;
+          width: 100%;
+          max-width: 100%;
+          height: auto;
+        }
+        .player {
+          position: absolute;
+          z-index: 2;
+          top: 0;
+          left: 6em;
+          width: 59%;
+          max-width: 59%;
+        }
+
+        div {
+          float: right;
+          position: relative;
+          z-index: 3;
+          margin: 2.4em 1.3em 0.8em 0;
+          width: 43%;
+
+          h1 {
+            margin: 0 0 1.1em;
+            padding: 0;
+            color: #fff;
+            font: normal 2.3em/1.2 "ProximaNova-Bold", Helvetica, Arial;
+          }
+          ol {
+            li {
+              list-style: none;
+              margin: 0 0 0.5em;
+              color: #fff;
+              font: normal 1.6em/1 "ProximaNova-Reg", Helvetica, Arial;
+
+              strong {
+                display: block;
+              }
+              span {
+                padding: 0 0 0 0.7em;
+              }
+
+              &.big {
+                strong {
+                  font: normal 6em/0.5 "ProximaNova-Bold", Helvetica, Arial;
+                  sup {
+                    font: normal 0.5em/1 "ProximaNova-Bold", Helvetica, Arial;
+                  }
+                }
+                span {
+                  display: block;
+                  margin: -0.4em 0 0.5em;
+                }
+              }
+              &.middle {
+                padding: 0.2em 0 0 0.5em;
+                strong {
+                  font: normal 3em/0.8 "ProximaNova-Bold", Helvetica, Arial;
+                }
+              }
+              &.small {
+                padding: 0.2em 0 0 1.1em;
+                strong {
+                  font: normal 1.6em/0.9 "ProximaNova-Bold", Helvetica, Arial;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+}
+
+@media only screen and (min-width: 320px) and (max-width:  767px) {
+  .grid-layout {
+    margin: 0 0 0 1em;
+
+    .item {
+      float: left;
+      margin: 1% 0% 1% 0%;
+
+      &.col1 {
+        width: 40%;
+      }
+      &.col2 {
+        width: 97%;
+      }
+
+      &.featured-player {
+        section {
+          .player {
+            left: 1em;
+          }
+          div {
+            margin: 1.4em 1em 1em 0;
+
+            hgroup {
+              h1 {
+                display: none;
+              }
+              h2 {
+                font: normal 1.7em/1 "ProximaNova-Bold", Helvetica, Arial;
+              }
+            }
+
+            ul {
+              padding: 0.5em 0.5em 0 0.5em;
+              background: rgba(255, 255, 255, 0.7);
+            }
+            
+
+            li {
+              float: none;
+              margin: 0 0 0.5em;
+              width: 100%;
+              vertical-align: top;
+              font: normal 1.5em/1 "ProximaNova-Reg", Helvetica, Arial;
+
+              strong {
+                display: inline-block;
+                margin: 0 0.2em 0 0;
+                color: @blue;
+                font: normal 2.3em/0.9 "ProximaNova-Bold", Helvetica, Arial;
+              }
+              span {
+                display: inline-block;
+                width: 4em;
+              }
+
+              &:first-child {
+                padding: 0;
+                width: 100%;
+                strong {
+                  display: block;
+                  font: normal 4em/0.8 "ProximaNova-Bold", Helvetica, Arial;
+                }
+                span {
+                  display: block;
+                  padding: 0 0 0.5em 0.3em;
+                  width: 100%;                
+                }
+              }
+              &:last-child {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+      
+      &.top-predicted-scorers {
+        section {
+          .player {
+            left: 1em;
+          }
+          div {
+            margin: 1em 0.5em 0.3em 0;
+            width: 48%;
+
+            h1 {
+              margin: 0 0 0.8em;
+              font: normal 1.8em/1.2 "ProximaNova-Bold", Helvetica, Arial;
+            }
+            ol {
+              li {
+                margin: 0 0 0.8em;
+                font: normal 1.4em/1 "ProximaNova-Reg", Helvetica, Arial;
+
+                &.big {
+                  strong {
+                    font: normal 4em/0.5 "ProximaNova-Bold", Helvetica, Arial;
+                    sup {
+                      font: normal 0.5em/1 "ProximaNova-Bold", Helvetica, Arial;
+                    }
+                  }
+                  span {
+                    display: block;
+                    margin: -0.1em 0 0.5em;
+                  }
+                }
+                &.middle {
+                  strong {
+                    font: normal 2em/0.8 "ProximaNova-Bold", Helvetica, Arial;
+                  }
+                  span {
+                    padding: 0 0 0 0.4em;
+                  }
+                }
+                &.small {
+                  padding: 0.2em 0 0 0.9em;
+                  strong {
+                    font: normal 1em/1 "ProximaNova-Bold", Helvetica, Arial;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+.grid-layout {
+    margin: 0 0 0 1em;
+  }
+}

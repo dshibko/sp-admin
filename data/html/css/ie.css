@@ -315,3 +315,14 @@
   height: 28px;
   font-size: 14px;
 }
+
+/***report***/
+.lt-ie9 .grid-layout .item.featured-player section div ul {
+  background: #fff;
+}
+.lt-ie8 .grid-layout .item.top-predicted-scorers section div ol li.big strong {
+  font: normal 5em/0.8 "ProximaNova-Bold", Helvetica, Arial;
+}
+.lt-ie8 .grid-layout .item.top-predicted-scorers section div h1 {
+  margin-bottom: 0.8em;
+}

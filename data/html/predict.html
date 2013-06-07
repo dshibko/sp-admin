@@ -203,6 +203,67 @@
                             </article>
                         </div>
                     </section>
+                    <section class="grid-layout">
+                        <div id="container" class="clearfix masonry centered fluid">
+                            <div class="item col1 head-to-head-results">1</div>
+                            <div class="item col2 featured-player">
+                              <section class="clearfix">
+                                  <img src="img/report/featured-player-bg.png" alt="" class="bg">
+                                  <img src="img/report/player.png" alt="" class="player">
+                                  <div>
+                                        <hgroup>
+                                          <h1>Featured Player</h1>
+                                          <h2>Cesc Fabregas</h2>
+                                        </hgroup>
+                                        <ul class="clearfix">
+                                          <li>
+                                              <strong>23</strong>
+                                              <span>Goals this season</span>
+                                          </li>
+                                          <li>
+                                              <strong>12</strong>
+                                              <span>Matches played</span>
+                                          </li>
+                                          <li>
+                                              <strong>31</strong>
+                                              <span>Math <br>starts</span>
+                                          </li>
+                                          <li>
+                                              <strong>127</strong>
+                                              <span>Mins <br>played</span>
+                                          </li>
+                                        </ul>
+                                    </div>
+                              </section>
+                            </div>
+                            <div class="item col1 total-goals">...</div>
+                            <div class="item col1 did-you-know">...</div>
+                            <div class="item col1 top-scorers">...</div>
+                            <div class="item col2 top-predicted-scorers">
+                                <section class="clearfix">
+                                    <img src="img/report/top-predicted-scorers-bg.png" alt="" class="bg">
+                                    <img src="img/report/top-predicted-player.png" alt="" class="player">
+                                    <div>
+                                        <h1>Top predicted scorers</h1>
+                                        <ol class="clearfix">
+                                          <li class="big">
+                                              <strong>14<sup>%</sup></strong>
+                                              <span>Alex Song</span>
+                                          </li>
+                                          <li class="middle">
+                                              <strong>12%</strong>
+                                              <span>Cesc Fabregas</span>
+                                          </li>
+                                          <li class="small">
+                                              <strong>8%</strong>
+                                              <sdpan>Bob Visions</sdpan>
+                                          </li>
+                                        </ol>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </section>
                 </div>
 
                 <aside role="complementary" class="second-column">
@@ -362,7 +423,24 @@
         <script src="js/vendor/picturefill.js"></script>
         <script src="js/vendor/jquery.idealforms.min.js"></script>
         <script src="js/make-prediction.js"></script>
+        <script src="js/vendor/jquery.masonry.min.js"></script>
         <script src="js/main.js"></script>
+
+        <script>
+            var $container = $('#container');
+            $container.imagesLoaded(function(){
+              $container.masonry({
+                itemSelector : '.item',
+                columnWidth : function( containerWidth ) {
+                                return containerWidth / 3;
+                              },
+                // isAnimated: true,
+                isResizable: true,
+                isFitWidth: true
+              });
+            });
+
+        </script>
 
     </body>
 </html>
