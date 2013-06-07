@@ -1,30 +1,44 @@
 var $container = $('#container');
-$container.imagesLoaded(function () {
-    $(window).resize(function () {
-        if ($(window).width() > 767) {
-            $container.masonry({
-                itemSelector: '.item',
-                columnWidth: function (containerWidth) {
+$container.imagesLoaded(function(){
+  $container.masonry({
+    itemSelector : '.item',
+    columnWidth : function( containerWidth ) {
                     return containerWidth / 3;
-                },
-                // isAnimated: true,
-                isResizable: true,
-                isFitWidth: true
-            });
-        }
-        else {
-            $container.masonry({
-                itemSelector: '.item',
-                columnWidth: function (containerWidth) {
-                    return containerWidth / 2;
-                },
-                // isAnimated: true,
-                isResizable: true,
-                isFitWidth: true
-            });
-        }
-    });
+                  },
+    // isAnimated: true,
+    isResizable: true,
+    isFitWidth: true
+  });
 });
+
+
+// var $container = $('#container');
+// $container.imagesLoaded(function () {
+//     $(window).resize(function () {
+//         if ($(window).width() > 767) {
+//             $container.masonry({
+//                 itemSelector: '.item',
+//                 columnWidth: function (containerWidth) {
+//                     return containerWidth / 3;
+//                 },
+//                 // isAnimated: true,
+//                 isResizable: true,
+//                 isFitWidth: true
+//             });
+//         }
+//         else {
+//             $container.masonry({
+//                 itemSelector: '.item',
+//                 columnWidth: function (containerWidth) {
+//                     return containerWidth / 2;
+//                 },
+//                 // isAnimated: true,
+//                 isResizable: true,
+//                 isFitWidth: true
+//             });
+//         }
+//     });
+// });
 
 
 $.plot('#chart_top5', 
