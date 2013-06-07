@@ -42,12 +42,21 @@ class RegionFieldsetsRenderer extends AbstractHelper
         $html = '';
         foreach ($regionFieldset->getElements() as $element) {
             $type = $element->getAttribute('type');
+            $hint = $element->getAttribute('hint');
+            $fieldgroup = $element->getAttribute('fieldgroup');
+            $maxlength = $element->getAttribute('maxlength');
+           if (!empty($fieldgroup['type']) && $fieldgroup['type'] == 'start'){
+               $html .= '<div class="portlet box '.$fieldgroup['color'].'"><div class="portlet-title"><h4>'.$this->translator->translate($fieldgroup['title']).'</h4><div class="tools">
+                  <a class="collapse" href="javascript:;"></a>
+              </div></h4></div><div class="portlet-body">';
+           }
+
             $html .= '<div class="control-group clearfix">
     <label class="control-label">' . $this->translator->translate($element->getLabel()) . '</label>
     <div class="controls">';
             switch($type) {
                 case 'textarea':
-                    $html .= '<div class="input-prepend"><textarea class="span12 wysihtml5 m-wrap" rows="6" name="' . $element->getAttribute('name') . '">' . $element->getValue() . '</textarea></div>';
+                    $html .= '<div class="input-prepend"><textarea class="span12 wysihtml5 m-wrap" rows="6" name="' . $element->getAttribute('name') . '" '.(!empty($maxlength) ? 'maxlength="'.$maxlength.'"' : '').'>' . $element->getValue() . '</textarea></div>';
                     break;
                 case 'file':
                     $image = $add ? '': (is_string($element->getValue()) ? $element->getValue() : '');
@@ -70,10 +79,16 @@ class RegionFieldsetsRenderer extends AbstractHelper
                     $html .= $this->getView()->formSelect($element);
                     break;
                 default:
-                    $html .= '<div class="input-prepend"><span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium" type="' . $type . '" name="' . $element->getAttribute('name') . '" value="' . $element->getValue() . '"/></div>';
+                    $html .= '<div class="input-prepend"><span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium" type="' . $type . '" name="' . $element->getAttribute('name') . '" value="' . $element->getValue() . '" '.(!empty($maxlength) ? 'maxlength="'.$maxlength.'"' : '').'/></div>';
+            }
+            if (!empty($hint)){
+               $html .= '<span class="help-inline">'.$hint.'</span>';
             }
         $html .= '</div>
                 </div>';
+            if (!empty($fieldgroup['type']) && $fieldgroup['type'] == 'end'){
+                $html .= '</div></div>';
+            }
         }
         return $html;
     }

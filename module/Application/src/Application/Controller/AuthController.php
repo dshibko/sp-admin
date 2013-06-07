@@ -21,6 +21,7 @@ class AuthController extends AbstractActionController
     const HOME_PAGE_ROUTE = 'home';
     const LOGIN_PAGE_ROUTE = 'login';
     const FORGOT_PAGE_ROUTE = 'forgot';
+    const PREDICT_PAGE_ROUTE = 'predict';
 
     public function loginAction()
     {
@@ -45,7 +46,7 @@ class AuthController extends AbstractActionController
                         $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_WRONG_EMAIL_OR_PASSWORD);
                     }
                     if ($result->isValid()) {
-                        $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+                        $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
                     }
                 }
             }

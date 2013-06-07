@@ -637,7 +637,48 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ROW_FORMAT=DEFAULT;
 
-ALTER TABLE `match_region`  ADD COLUMN `featured_player_id` INT(11) NOT NULL AFTER `region_id`;
-ALTER TABLE `match_region`  ADD INDEX `featured_player_id` (`featured_player_id`);
-ALTER TABLE `match_region`  ADD CONSTRAINT `match_region` FOREIGN KEY (`featured_player_id`) REFERENCES `player` (`id`);
-ALTER TABLE `match_region`  CHANGE COLUMN `featured_player_id` `featured_player_id` INT(11) NULL AFTER `region_id`;
+CREATE TABLE `featured_player` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `player_id` INT(11) NULL,
+  `goals` INT(3) NULL DEFAULT '0',
+  `matches_played` INT(3) NULL DEFAULT '0',
+  `match_starts` INT(3) NULL DEFAULT '0',
+  `minutes_played` INT(6) NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  INDEX `player_id` (`player_id`),
+  CONSTRAINT `FK_featured_player_player` FOREIGN KEY (`player_id`) REFERENCES `player` (`id`)
+)
+  COLLATE='utf8_general_ci'
+  ENGINE=InnoDB
+  ROW_FORMAT=DEFAULT;
+
+CREATE TABLE `featured_goalkeeper` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `player_id` INT(11) NULL,
+  `saves` INT(6) NULL DEFAULT '0',
+  `matches_played` INT(3) NULL DEFAULT '0',
+  `penalty_saves` INT(6) NULL DEFAULT '0',
+  `clean_sheets` INT(3) NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  INDEX `player_id` (`player_id`),
+  CONSTRAINT `FK_featured_goalkeeper_player` FOREIGN KEY (`player_id`) REFERENCES `player` (`id`)
+)
+  COLLATE='utf8_general_ci'
+  ENGINE=InnoDB
+  ROW_FORMAT=DEFAULT;
+
+ALTER TABLE `match_region`  ADD COLUMN `featured_player_id` INT(11) NULL DEFAULT NULL AFTER `region_id`,  ADD COLUMN `featured_goalkeeper_id` INT(11) NULL DEFAULT NULL AFTER `featured_player_id`,  ADD INDEX `featured_player_id` (`featured_player_id`),  ADD INDEX `featured_goalkeeper_id` (`featured_goalkeeper_id`),  ADD CONSTRAINT `FK_match_region_featured_player` FOREIGN KEY (`featured_player_id`) REFERENCES `featured_player` (`id`),  ADD CONSTRAINT `FK_match_region_featured_goalkeeper` FOREIGN KEY (`featured_goalkeeper_id`) REFERENCES `featured_goalkeeper` (`id`);
+
+
+CREATE TABLE `featured_prediction` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(255) NULL,
+	`copy` TEXT NULL,
+	`image_path` VARCHAR(255) NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+ROW_FORMAT=DEFAULT;
+
+ALTER TABLE `match_region`  ADD COLUMN `featured_prediction_id` INT(11) NULL DEFAULT NULL AFTER `featured_goalkeeper_id`,  ADD INDEX `featured_prediction_id` (`featured_prediction_id`),  ADD CONSTRAINT `FK_match_region_featured_prediction` FOREIGN KEY (`featured_prediction_id`) REFERENCES `featured_prediction` (`id`);

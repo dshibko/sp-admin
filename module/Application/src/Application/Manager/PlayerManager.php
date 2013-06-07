@@ -9,6 +9,11 @@ use \Neoco\Manager\BasicManager;
 class PlayerManager extends BasicManager
 {
 
+    const GOALKEEPER_POSITION = 'Goalkeeper';
+    const DEFENDER_POSITION = 'Defender';
+    const FORWARD_POSITION = 'Forward';
+    const MIDFIELDER_POSITION = 'Midfielder';
+
     /**
      * @var PlayerManager
      */
@@ -58,10 +63,13 @@ class PlayerManager extends BasicManager
         PlayerDAO::getInstance($this->getServiceLocator())->save($player);
     }
 
-    public function getPlayersSelectOptions()
+    /**
+     * @param array $players
+     * @return array
+     */
+    public function getPlayersSelectOptions(array $players)
     {
         $options = array();
-        $players = $this->getAllPlayers(true);
         if (!empty($players)){
             foreach($players as $player){
                 $options[$player['id']] = $player['displayName'];
@@ -69,5 +77,18 @@ class PlayerManager extends BasicManager
         }
         return $options;
     }
+
+
+    /**
+     * @param array $positions
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getPlayersByPositions(array $positions, $hydrate = false, $skipCache = false)
+    {
+        return PlayerDAO::getInstance($this->getServiceLocator())->getPlayersByPositions($positions, $hydrate, $skipCache);
+    }
+
 
 }

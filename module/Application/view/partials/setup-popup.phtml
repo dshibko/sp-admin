@@ -9,9 +9,11 @@
             <p><?php echo $this->translate('Just one more thing');?></p>
         </header>
         <section>
-            <h1><?php echo $this->translate('Are these details correct?');?></h1>
-            <p><?php echo $this->translate('We need to know your region su we can make sure you are antered into the right league.');?></p>
-            <p class="note"><?php echo $this->translate('Note: once confirmed, you will not be able to change these settings until next season');?></p>
+            <div>
+                <h1><?php echo $this->translate('Are these details correct?');?></h1>
+                <p><?php echo $this->translate('We need to know your region su we can make sure you are antered into the right league.');?></p>
+                <p class="note"><?php echo $this->translate('Note: once confirmed, you will not be able to change these settings until next season');?></p>
+            </div>
             <fieldset>
                 <div>
                     <?php echo $this->formLabel($form->get('region'));?>

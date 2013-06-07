@@ -93,7 +93,8 @@ class PredictionDAO extends AbstractDAO {
         $qb->select('
             COUNT(pp.playerId) as scorers_count,
             t.displayName as team_name,
-            pl.displayName as player_name
+            pl.displayName as player_name,
+            pl.backgroundImagePath
         ');
         $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
         $qb->join('pp.player','pl');
@@ -124,12 +125,12 @@ class PredictionDAO extends AbstractDAO {
         $qb->select('
             p.homeTeamScore as home_team_score,
             p.awayTeamScore as away_team_score,
-            count(p.id) as scores
+            count(p.id) as scores_count
         ');
         $qb->from($this->getRepositoryName(),'p');
         $qb->where($qb->expr()->in('p.id',':ids'))->setParameter('ids', $predictionIds);
         $qb->groupBy('p.homeTeamScore, p.awayTeamScore');
-        $qb->orderBy('scores','DESC');
+        $qb->orderBy('scores_count','DESC');
         $qb->setMaxResults($limit);
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
@@ -297,6 +298,7 @@ class PredictionDAO extends AbstractDAO {
         $qb->where($qb->expr()->in('p.id',':ids'))->setParameter('ids', $predictionIds);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
+
 
     /**
      * @param array $predictionIds

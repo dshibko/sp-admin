@@ -42,14 +42,14 @@ class ApplicationManager extends BasicManager {
     /**
      * @var \Application\Model\Entities\User
      */
-    protected $currentUser = -1;
+    protected $currentUser;
 
     /**
      * @return \Application\Model\Entities\User
      */
     public function getCurrentUser()
     {
-        if ($this->currentUser == -1) {
+        if (is_null($this->currentUser)) {
             $identity = $this->getServiceLocator()->get('AuthService')->getIdentity();
             if ($identity == null) $this->currentUser = null;
             else
@@ -64,14 +64,14 @@ class ApplicationManager extends BasicManager {
     /**
      * @var \Application\Model\Entities\User
      */
-    protected $currentSeason = -1;
+    protected $currentSeason;
 
     /**
      * @return \Application\Model\Entities\Season
      */
     public function getCurrentSeason()
     {
-        if ($this->currentSeason == -1)
+        if (is_null($this->currentSeason))
             $this->currentSeason = SeasonDAO::getInstance($this->getServiceLocator())->getCurrentSeason();
         return $this->currentSeason;
     }
@@ -137,10 +137,16 @@ class ApplicationManager extends BasicManager {
         return CountryDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_COUNTRY_ID);
     }
 
+    /**
+     * @return mixed
+     */
     public function getAppEdition() {
         return array_shift($this->getAppConfig());
     }
 
+    /**
+     * @return mixed
+     */
     public function getAppOptaId() {
         return array_pop($this->getAppConfig());
     }
@@ -187,6 +193,19 @@ class ApplicationManager extends BasicManager {
         $localTime->setTimestamp($dateTime->getTimestamp());
         $localTime->setTimezone(new \DateTimeZone(timezone_name_from_abbr($timezone)));
         return $localTime;
+    }
+
+    /**
+     * @param User $user
+     * @return \Application\Model\Entities\Region
+     */
+    public function getUserRegion(\Application\Model\Entities\User $user)
+    {
+        $region = $user->getCountry()->getRegion();
+        if (is_null($region)){
+            $region = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
+        }
+        return $region;
     }
 
 }

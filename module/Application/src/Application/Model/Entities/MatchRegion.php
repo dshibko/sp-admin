@@ -63,15 +63,34 @@ class MatchRegion
     private $region;
 
     /**
-     * @var Featured Player
+     * @var FeaturedPlayer
      *
-     * @ORM\ManyToOne(targetEntity="Player")
+     * @ORM\OneToOne(targetEntity="FeaturedPlayer", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="featured_player_id", referencedColumnName="id")
      * })
      */
     private $featuredPlayer;
 
+    /**
+     * @var FeaturedGoalkeeper
+     *
+     * @ORM\OneToOne(targetEntity="FeaturedGoalkeeper", cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="featured_goalkeeper_id", referencedColumnName="id")
+     * })
+     */
+    private $featuredGoalKeeper;
+
+    /**
+     * @var FeaturedPrediction
+     *
+     * @ORM\OneToOne(targetEntity="FeaturedPrediction", cascade={"persist", "remove"})
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="featured_prediction_id", referencedColumnName="id")
+     * })
+     */
+    private $featuredPrediction;
 
     /**
      * @param string $headerImagePath
@@ -172,7 +191,7 @@ class MatchRegion
     }
 
     /**
-     * @param \Application\Model\Entities\Featured $featuredPlayer
+     * @param \Application\Model\Entities\FeaturedPlayer $featuredPlayer
      * @return \Application\Model\Entities\MatchRegion
      */
     public function setFeaturedPlayer($featuredPlayer)
@@ -182,10 +201,46 @@ class MatchRegion
     }
 
     /**
-     * @return \Application\Model\Entities\Player
+     * @return \Application\Model\Entities\FeaturedPlayer
      */
     public function getFeaturedPlayer()
     {
         return $this->featuredPlayer;
+    }
+
+    /**
+     * @param \Application\Model\Entities\FeaturedGoalkeeper $featuredGoalKeeper
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function setFeaturedGoalKeeper($featuredGoalKeeper)
+    {
+        $this->featuredGoalKeeper = $featuredGoalKeeper;
+        return $this;
+    }
+
+    /**
+     * @return \Application\Model\Entities\FeaturedGoalkeeper
+     */
+    public function getFeaturedGoalKeeper()
+    {
+        return $this->featuredGoalKeeper;
+    }
+
+    /**
+     * @param \Application\Model\Entities\FeaturedPrediction $featuredPrediction
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function setFeaturedPrediction($featuredPrediction)
+    {
+        $this->featuredPrediction = $featuredPrediction;
+        return $this;
+    }
+
+    /**
+     * @return \Application\Model\Entities\FeaturedPrediction
+     */
+    public function getFeaturedPrediction()
+    {
+        return $this->featuredPrediction;
     }
 }

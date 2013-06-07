@@ -742,4 +742,17 @@ class Match extends BasicObject {
         return $this->hasLineUp;
     }
 
+
+    /**
+     * @return array
+     */
+    public function getPredictionIds()
+    {
+        $predictionIds = array();
+        foreach($this->predictions as $prediction){
+            $predictionIds[] = $prediction->getId();
+        }
+        return $predictionIds;
+    }
+
 }

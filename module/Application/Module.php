@@ -196,6 +196,9 @@ class Module
                     $h->setDefaultLogo($config['default_club_logo']);
                     return $h;
                 },
+                'getUserAvatar' => function($sm) {
+                    return new \Neoco\View\Helper\GetUserAvatar();
+                },
                 'getUnreadItems' => function($sm) {
                     $h = new \Neoco\View\Helper\UnreadItems();
                     $h->setServiceLocator($sm->getServiceLocator());

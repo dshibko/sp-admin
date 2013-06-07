@@ -20,6 +20,7 @@ var makePredictionOptions = {
           awayScoreElement.val('0');
       if (awayScoreElement.val() != '' && homeScoreElement.val() == '')
           homeScoreElement.val('0');
+      unbindUnload();
   }
 
 };
@@ -80,6 +81,7 @@ $(document).ready(function () {
         if (jQuery.isNumeric(goals)) {
             goals = parseInt(goals);
             if (goals != getPrevGoalsValue(this.id)) {
+                initUnload();
                 var wrapperClass = this.id.substring(0, this.id.length - 6);
                 var originalSelectId = this.id + 'r';
                 var section = $(this).parents("." + wrapperClass).find('section');
@@ -107,6 +109,10 @@ $(document).ready(function () {
             }
         } else
             $(this).val('');
+    });
+
+    $(".home-team, .away-team").on("change", "select", function() {
+        initUnload();
     });
 
 });
@@ -151,4 +157,21 @@ function resizeFix() {
     $('div.league-logo em').height(emHeight + maxHeight - minHeight);
     $('div.home-team label').height(maxHeight);
     $('div.away-team label').height(maxHeight);
+}
+
+var unloadInitialized = false;
+
+function initUnload() {
+    if (!unloadInitialized) {
+        $(window).bind('beforeunload', pageUnload);
+        unloadInitialized = true;
+    }
+}
+
+function unbindUnload() {
+    $(window).unbind('beforeunload', pageUnload);
+}
+
+function pageUnload() {
+    return pageUnloadCopy;
 }

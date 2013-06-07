@@ -7,7 +7,6 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class PlayerDAO extends AbstractDAO {
-
     /**
      * @var PlayerDAO
      */
@@ -52,6 +51,20 @@ class PlayerDAO extends AbstractDAO {
         ')
             ->from($this->getRepositoryName(), 'p')
             ->join('p.team','t')
+            ->orderBy('p.displayName', 'ASC');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+
+    public function getPlayersByPositions(array $positions, $hydrate = false, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('
+                    p.id,
+                    p.displayName
+        ')
+            ->from($this->getRepositoryName(), 'p')
+            ->where($qb->expr()->in('p.position',':position'))->setParameter('position', $positions)
             ->orderBy('p.displayName', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }

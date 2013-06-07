@@ -118,7 +118,10 @@ class ImageManager extends BasicManager {
     }
 
     public function deleteImage($webImagePath) {
-        @unlink($this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $webImagePath));
+        $path = $this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $webImagePath);
+        if (file_exists($path)){
+            unlink($path);
+        }
     }
 
     /**

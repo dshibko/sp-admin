@@ -13,8 +13,6 @@ use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ApplicationManager;
 use \Application\Manager\ContentManager;
 use \Application\Manager\RegionManager;
-use Zend\View\Model\ViewModel;
-use Application\Form\SetUpForm;
 use Application\Manager\UserManager;
 
 class PredictController extends AbstractActionController {
@@ -31,7 +29,7 @@ class PredictController extends AbstractActionController {
         $currentMatch = array();
         $ahead = $maxAhead = $liveMatches = 0;
         $securityKey = '';
-
+        $matchReport = array();
         try {
 
             $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
@@ -71,6 +69,9 @@ class PredictController extends AbstractActionController {
             if ($currentMatch == null)
                 throw new \Exception(MessagesConstants::ERROR_MATCH_NOT_FOUND);
 
+            //Match report
+            $region = $applicationManager->getUserRegion($user);
+            $matchReport = $matchManager->getMatchRegionReport($currentMatch['id'], $region->getId());
             $utcTime = new \DateTime();
             $startUtcTime = $currentMatch['startTime'];
             if ($startUtcTime < $utcTime)
@@ -163,6 +164,7 @@ class PredictController extends AbstractActionController {
             'maxAhead' => $maxAhead,
             'liveMatches' => $liveMatches,
             'securityKey' => $securityKey,
+            'matchReport' => $matchReport
         );
         if (!empty($setUpForm)){
             $params['setUpForm'] = $setUpForm;
