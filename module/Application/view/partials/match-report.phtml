@@ -1,0 +1,69 @@
+<?php if (!empty($this->report)):?>
+    <img src="<?php echo $this->report['headerImage']?>" alt="Match Report Header Image"/>
+    <article>
+        <h1><?php echo $this->escapeHtml($this->report['title']);?></h1>
+        <p><?php echo $this->report['intro'];?></p>
+        <?php if (!empty($this->report['featuredPlayer'])):?>
+            <?php $featuredPlayer = $this->report['featuredPlayer'];?>
+            <div class="featured-player">
+                <img src="<?php echo $featuredPlayer['backgroundImage'];?>" alt="Featured Player">
+                <h3><?php echo $featuredPlayer['displayName'];?></h3>
+                <ul>
+                    <li><?php echo $featuredPlayer['goals'];?> Goals this season</li>
+                    <li><?php echo $featuredPlayer['matchesPlayed'];?> Matches played</li>
+                    <li><?php echo $featuredPlayer['matchStarts'];?> Match starts</li>
+                    <li><?php echo $featuredPlayer['minutesPlayed'];?> Mins played</li>
+                </ul>
+            </div>
+        <?php endif;?>
+        <?php if (!empty($this->report['featuredPrediction'])):?>
+            <?php $featuredPrediction = $this->report['featuredPrediction'];?>
+            <div class="featured-prediction">
+                <img src="<?php echo $featuredPrediction['backgroundImage'];?>" alt="Featured Prediction">
+                <h3><?php echo $featuredPrediction['name'];?></h3>
+                <p><?php echo $featuredPrediction['copy'];?></p>
+            </div>
+        <?php endif;?>
+        <?php if (!empty($this->report['featuredGoalkeeper'])):?>
+            <?php $featuredGoalkeeper = $this->report['featuredGoalkeeper'];?>
+            <div class="featured-goalkeeper">
+                <img src="<?php echo $featuredGoalkeeper['backgroundImage'];?>" alt="Featured Goalkeeper">
+                <h3><?php echo $featuredGoalkeeper['displayName'];?></h3>
+                <ul>
+                    <li><?php echo $featuredGoalkeeper['saves'];?> Saves this season</li>
+                    <li><?php echo $featuredGoalkeeper['matchesPlayed'];?> Matches played</li>
+                    <li><?php echo $featuredGoalkeeper['penaltySaves'];?> Penalty saves</li>
+                    <li><?php echo $featuredGoalkeeper['cleanSheets'];?> Clean sheets</li>
+                </ul>
+            </div>
+        <?php endif;?>
+        <?php if (!empty($this->report['topScorers'])):?>
+            <?php $topScorers = $this->report['topScorers'];?>
+            <div class="top-scorers">
+                <img src="<?php echo $topScorers['backgroundImage'];?>" alt="Top scorer background">
+                <h3><?php echo $this->translate('Top predicted scorers');?></h3>
+                <ul>
+                   <?php foreach($topScorers['scorers'] as $name => $percentage):?>
+                       <li><?php echo $percentage;?>% <?php echo $name;?></li>
+                   <?php endforeach;?>
+                </ul>
+            </div>
+        <?php endif;?>
+        <?php if (!empty($this->report['topScores'])):?>
+            <?php $topScores = $this->report['topScores'];?>
+            <ul>
+            <?php foreach($topScores as $score => $percentage):?>
+                <li><?php echo $score;?> (<?php echo $percentage;?>%)</li>
+            <?php endforeach;?>
+            </ul>
+        <?php endif;?>
+        <footer class="clearfix">
+            <h3><?php echo $this->translate('Share this');?></h3>
+            <ul class="social-links">
+                <li><a href="">like</a></li>
+                <li><a href="">tweet</a></li>
+                <li><a href="">Pin it</a></li>
+            </ul>
+        </footer>
+    </article>
+<?php endif;?>

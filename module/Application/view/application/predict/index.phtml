@@ -142,19 +142,7 @@
             </section>
             <section class="match-banner">
                 <div class="clearfix">
-                    <img src="/img/match-report.png" alt="">
-                    <article>
-                        <h1>Match report</h1>
-                        <p>Lorem ipsum dolor sit amet, consectetur lorum adipiscing elit. Donec tempor dui id quam dapibus commodo. Suspendisse nulla arcu.</p>
-<!--                        <footer class="clearfix">-->
-<!--                            <h3>Share this</h3>-->
-<!--                            <ul class="social-links">-->
-<!--                                <li><a href="">like</a></li>-->
-<!--                                <li><a href="">tweet</a></li>-->
-<!--                                <li><a href="">Pin it</a></li>-->
-<!--                            </ul>-->
-<!--                        </footer>-->
-                    </article>
+                    <?php echo $this->partial('partials/match-report', array('report' => $this->matchReport));?>
                 </div>
             </section>
         <?php else: ?>

@@ -33,4 +33,25 @@ class MatchRegionDAO extends AbstractDAO {
         return '\Application\Model\Entities\MatchRegion';
     }
 
+    /**
+     * @param $matchId
+     * @param $regionId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function getMatchRegionByMatchIdAndRegionId($matchId, $regionId, $hydrate = false, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('mr, m, p, g, pr')
+            ->from($this->getRepositoryName(), 'mr')
+            ->join('mr.match','m')
+            ->join('mr.featuredPlayer', 'p')
+            ->join('mr.featuredGoalKeeper', 'g')
+            ->join('mr.featuredPrediction', 'pr')
+            ->where($qb->expr()->eq('m',':matchId'))->setParameter('matchId', $matchId)
+            ->andWhere($qb->expr()->eq('mr.region',':regionId'))->setParameter('regionId', $regionId);
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
+    }
+
 }
