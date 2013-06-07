@@ -206,11 +206,22 @@
                     </section>
                     <section class="grid-layout">
                         <div id="container" class="clearfix masonry centered fluid">
-                            <div class="item col1 head-to-head-results">1</div>
+                            <div class="item col1 head-to-head-results pie-chart">
+                                <section>
+                                    <figure id="chart-head-to-head-results"></figure>
+
+                                    <h1>All time head-to-head results</h1>
+                                    <ol>
+                                        <li>FC Barcelona</li>
+                                        <li>Chelsea FC</li>
+                                        <li>Draws</li>
+                                    </ol>
+                                </section>
+                            </div>
                             <div class="item col2 featured-player">
                               <section class="clearfix">
                                   <img src="img/report/featured-player-bg.png" alt="" class="bg">
-                                  <img src="img/report/player.png" alt="" class="player">
+                                  <img src="img/report/player-1.png" alt="" class="player">
                                   <div>
                                         <hgroup>
                                           <h1>Featured Player</h1>
@@ -296,6 +307,36 @@
                                     </figure>
                                     
                                 </section>
+                            </div>
+                            <div class="item col2 featured-player">
+                              <section class="clearfix">
+                                  <img src="img/report/featured-player-bg.png" alt="" class="bg">
+                                  <img src="img/report/player-2.png" alt="" class="player">
+                                  <div>
+                                        <hgroup>
+                                          <h1>GOAL KEEPER</h1>
+                                          <h2>Victor Valdes</h2>
+                                        </hgroup>
+                                        <ul class="clearfix">
+                                          <li>
+                                              <strong>19</strong>
+                                              <span>Saves this season</span>
+                                          </li>
+                                          <li>
+                                              <strong>12</strong>
+                                              <span>Matches played</span>
+                                          </li>
+                                          <li>
+                                              <strong>31</strong>
+                                              <span>Penalty saves</span>
+                                          </li>
+                                          <li>
+                                              <strong>23</strong>
+                                              <span>Clean sheets</span>
+                                          </li>
+                                        </ul>
+                                    </div>
+                              </section>
                             </div>
                             <div class="item col1 top-scorers">...</div>
                             <div class="item col2 top-predicted-scorers">
@@ -548,6 +589,22 @@
                 }
             });
 
+
+            
+            $.plot('#chart-head-to-head-results', 
+                [
+                  {color: '#363636', data: 530},
+                  {color: '#144a9b', data: 193},
+                  {color: '#7f7f80', data: 20}
+                ], {
+                series: {
+                    pie: {
+                        innerRadius: 0.4,
+                        stroke: {color: '#e6edf8', width: 0},
+                        show: true
+                    }
+                }
+            });
 
 
         </script>
