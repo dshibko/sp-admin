@@ -206,7 +206,7 @@
                     </section>
                     <section class="grid-layout">
                         <div id="container" class="clearfix masonry centered fluid">
-                            <div class="item col1 head-to-head-results pie-chart">
+                            <div class="item col1 pie-chart head-to-head-results">
                                 <section>
                                     <figure id="chart-head-to-head-results"></figure>
 
@@ -248,7 +248,7 @@
                                     </div>
                               </section>
                             </div>
-                            <div class="item col1 season-total-goals stacked-bar">
+                            <div class="item col1 stacked-bar season-total-goals">
                                 <section>
                                     <h1>Total goals this season</h1>
                                     <figure>
@@ -272,7 +272,7 @@
                                     <p>Of the 11 countries that have appeared in a final, France are the only team never to have conceded a goal</p>
                                 </section>
                             </div>
-                            <div class="item col1 average-season-goals stacked-bar">
+                            <div class="item col1 stacked-bar average-season-goals ">
                                 <section>
                                     <h1>Average goals per game this season</h1>
                                     <figure>
@@ -290,7 +290,7 @@
                                     
                                 </section>
                             </div>
-                            <div class="item col1 games-since-last-sheet stacked-bar">
+                            <div class="item col1 stacked-bar games-since-last-sheet ">
                                 <section>
                                     <h1>Games since last clean sheet</h1>
                                     <figure>
@@ -306,6 +306,32 @@
                                         </figcaption>
                                     </figure>
                                     
+                                </section>
+                            </div>
+                            <div class="item col1 pie-chart away-form">
+                                <section>
+                                    <figure id="chart-away-form"></figure>
+
+                                    <h1>Away form</h1>
+                                    <p>For FC Barcelona this season</p>
+                                    <ol>
+                                        <li>Wins</li>
+                                        <li>Losses</li>
+                                        <li>Draws</li>
+                                    </ol>
+                                </section>
+                            </div>
+                            <div class="item col1 pie-chart home-form">
+                                <section>
+                                    <figure id="chart-home-form"></figure>
+
+                                    <h1>Home form</h1>
+                                    <p>For FC Barcelona this season</p>
+                                    <ol>
+                                        <li>Wins</li>
+                                        <li>Losses</li>
+                                        <li>Draws</li>
+                                    </ol>
                                 </section>
                             </div>
                             <div class="item col2 featured-player">
@@ -540,87 +566,8 @@
         <script src="js/vendor/jquery.masonry.min.js"></script>
         <script src="js/vendor/jquery.flot.js"></script>
         <script src="js/vendor/jquery.flot.pie.js"></script>
+        <script src="js/report.js"></script>
         <script src="js/main.js"></script>
-
-        <script>
-            var $container = $('#container');
-            $container.imagesLoaded(function () {
-                $(window).resize(function () {
-                    if ($(window).width() > 767) {
-                        $container.masonry({
-                            itemSelector: '.item',
-                            columnWidth: function (containerWidth) {
-                                return containerWidth / 3;
-                            },
-                            // isAnimated: true,
-                            isResizable: true,
-                            isFitWidth: true
-                        });
-                    }
-                    else {
-                        $container.masonry({
-                            itemSelector: '.item',
-                            columnWidth: function (containerWidth) {
-                                return containerWidth / 2;
-                            },
-                            // isAnimated: true,
-                            isResizable: true,
-                            isFitWidth: true
-                        });
-                    }
-                });
-            });
-
-
-            $.plot('#chart_top5', 
-                [
-                  {color: '#a01749', data: 10},
-                  {color: '#b2466e', data: 20},
-                  {color: '#c47692', data: 30},
-                  {color: '#d6a4b7', data: 10},
-                  {color: '#e7c6d3', data: 30}
-                ], {
-                series: {
-                    pie: {
-                        innerRadius: 0.4,
-                        stroke: {color: '#f2e1e7', width: 0},
-                        show: true
-                    }
-                }
-            });
-
-
-            
-            $.plot('#chart-head-to-head-results', 
-                [
-                  {color: '#363636', data: 530},
-                  {color: '#144a9b', data: 193},
-                  {color: '#7f7f80', data: 20}
-                ], 
-                {
-                    series: {
-                        pie: {
-                            innerRadius: 0.4,
-                            stroke: {color: '#e6edf8', width: 0},
-                            show: true,
-                            radius: 1,
-                            label: {
-                                show: true,
-                                radius: 2/3,
-                                formatter: function(label, series) { 
-                                    return series.data[0][1];
-                                }
-                            }
-                        }
-                    },
-                    legend: {
-                        show: false
-                    }
-                }
-            );
-
-
-        </script>
 
     </body>
 </html>
