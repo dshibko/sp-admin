@@ -1,44 +1,28 @@
-// var $container = $('#container');
-// $container.imagesLoaded(function(){
-//   $container.masonry({
-//     itemSelector : '.item',
-//     columnWidth : function( containerWidth ) {
-//                     return containerWidth / 3;
-//                   },
-//     // isAnimated: true,
-//     isResizable: true,
-//     isFitWidth: true
-//   });
-// });
-
-
-// var $container = $('#container');
-// $container.imagesLoaded(function () {
-//     $(window).resize(function () {
-//         if ($(window).width() > 767) {
-//             $container.masonry({
-//                 itemSelector: '.item',
-//                 columnWidth: function (containerWidth) {
-//                     return containerWidth / 3;
-//                 },
-//                 // isAnimated: true,
-//                 isResizable: true,
-//                 isFitWidth: true
-//             });
-//         }
-//         else {
-//             $container.masonry({
-//                 itemSelector: '.item',
-//                 columnWidth: function (containerWidth) {
-//                     return containerWidth / 2;
-//                 },
-//                 // isAnimated: true,
-//                 isResizable: true,
-//                 isFitWidth: true
-//             });
-//         }
-//     });
-// });
+$(document).ready(function () {
+        var gridFluid = function (size) {
+            console.log(size);
+            $('#container').masonry( 'destroy' );
+            $('#container').masonry({
+                itemSelector: '.item',
+                // isFitWidth: true,
+                columnWidth: function (containerWidth) {
+                    return containerWidth / size;
+                }
+            });
+        }
+        if ($(window).width() > 767){
+            gridFluid(3);
+        } else {
+            gridFluid(2);
+        }
+        $(window).on('resize', function () {
+            if ($(this).width() > 767) {
+                gridFluid(3);
+            } else {
+                gridFluid(2);
+            }
+        });
+    });
 
 
 $.plot('#chart_top5', 
