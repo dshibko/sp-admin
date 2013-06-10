@@ -4,7 +4,8 @@
 
   #container {
     margin: 0 auto;
-    width: 90.2em;
+    // width: 90.2em;
+    width: 100%;
   }
 
   .centered {
@@ -250,6 +251,55 @@
         }
         p {
           font: normal 1.6em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+        }
+      }
+    }
+
+    &.blockquote {
+      section {
+        position: relative;
+        overflow: hidden;
+
+        .bg {
+          position: absolute;
+          z-index: 1;
+          top: 0;
+          left: 0;
+          width: 100%;
+          max-width: 100%;
+          height: auto;
+        }
+
+        figure {
+          position: relative;
+          z-index: 3;
+          float: right;
+          margin: 1.4em 1.3em 1.2em 0;
+          width: 48%;
+          min-height: 27em;
+
+          blockquote {
+            position: relative; 
+            padding: 2.3em 0 0 0;
+            margin: 0;
+            color: #567fb9;
+            font: normal 2.3em/1.2 "ProximaNova-Bold", Helvetica, Arial;
+
+            &:before {
+              position: absolute;
+              top:0;
+              left: 0;
+              color: #fff;
+              content: "“";
+              margin: 0 0 0 -0.06em;
+              font: normal 5em/1 "ProximaNova-Bold", Helvetica, Arial;
+            }
+          }
+          figcaption {
+            margin: 0.2em 0 0 0;
+            color: #fff;
+            font: normal 1.7em/1 "ProximaNova-Reg", Helvetica, Arial;  
+          }
         }
       }
     }
@@ -534,6 +584,29 @@
           }
           p {
             font: normal 1.4em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+          }
+        }
+      }
+
+      &.blockquote {
+        section {
+          figure {
+            margin: 1em 1em 1em 0;
+            min-height: 10em;
+
+            blockquote {
+              padding: 1.2em 0 0 0;
+              font: normal 1.8em/1 "ProximaNova-Bold", Helvetica, Arial;
+
+              &:before {
+                margin: 0 0 0 -0.06em;
+                font: normal 2em/1 "ProximaNova-Bold", Helvetica, Arial;
+              }
+            }
+            figcaption {
+              margin: 0.2em 0 0 0;
+              font: normal 1.6em/1 "ProximaNova-Reg", Helvetica, Arial;  
+            }
           }
         }
       }
