@@ -447,22 +447,4 @@ class MatchManager extends BasicManager
 
         return $report;
     }
-
-    public function getGroupedFieldsetFields($fieldsets)
-    {
-        $groupedFieldsetFields = array();
-        if (!empty($fieldsets)){
-            foreach($fieldsets as $fieldset){
-                $data = array();
-                foreach($fieldset->getElements() as $element){
-                    $fieldgroup = $element->getAttribute('fieldgroup');
-                    if (!empty($fieldgroup['name'])){
-                        $data[$fieldgroup['name']][] = $element->getName();
-                    }
-                }
-                $groupedFieldsetFields[$fieldset->getName()] = $data;
-            }
-        }
-        return $groupedFieldsetFields;
-    }
 }
