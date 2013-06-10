@@ -38,6 +38,7 @@ class FixturesController extends AbstractActionController
         return $fieldsets;
     }
 
+
     public function indexAction()
     {
         $matchManager = MatchManager::getInstance($this->getServiceLocator());
@@ -83,6 +84,7 @@ class FixturesController extends AbstractActionController
         $regionManager = RegionManager::getInstance($this->getServiceLocator());
         $regionFieldsets = $regionManager->getRegionsFieldsets('\Admin\Form\FixtureRegionFieldset');
         $regionFieldsets = $this->setPlayersForFieldsets($regionFieldsets);
+
         $form = new FixtureForm($regionFieldsets, $teamManager->getTeamsSelectOptions());
         try {
             $fixture = $matchManager->getMatchById($fixtureId);
@@ -111,6 +113,56 @@ class FixturesController extends AbstractActionController
                 );
 
                 $form->setData($post);
+                $groupedFieldsetFields = $matchManager->getGroupedFieldsetFields($regionFieldsets);
+                //Check regions fields
+                $requiredRegionFieldGroups = array();
+                foreach ($post as $key => $data){
+                    if (is_array($data)){
+                        foreach($data as $fieldName => $regionData){
+                              if (!empty($regionData)){
+                                  //If field is image and is not uploaded
+                                  if (is_array($regionData) && isset($regionData['stored']) && empty($regionData['stored'])){
+                                      break;
+                                  }
+                                  if (isset($groupedFieldsetFields[$key])){
+                                      foreach($groupedFieldsetFields[$key] as $fields){
+                                        if (in_array($fieldName, $fields)){
+                                            if (empty($requiredRegionFieldGroups[$key])){
+                                                $requiredRegionFieldGroups[$key] = array();
+                                            }
+                                            //TODO merge
+                                            foreach($fields as $field){
+                                                if (!in_array($field, $requiredRegionFieldGroups[$key])){
+                                                    $requiredRegionFieldGroups[$key][] = $field;
+                                                }
+                                            }
+                                        }
+                                      }
+                                  }
+                              }
+                        }
+                    }
+                }
+
+                if (!empty($requiredRegionFieldGroups)){
+                    foreach ($requiredRegionFieldGroups as $region => $fieldGroups){
+                        if ($form->getInputFilter()->has($region)){
+                            $inputs = &$form->getInputFilter()->get($region)->getInputs();
+                            if (!empty($inputs) && is_array($inputs)){
+                                foreach($inputs as $name=> &$value){
+                                   if (in_array($name, $fieldGroups)){
+                                       $value->setRequired(true);
+                                       $value->setAllowEmpty(false);
+                                   }
+                                }
+                                unset($value);
+                            }
+                            unset($inputs);
+                        }
+                    }
+
+                }
+
                 if ($form->isValid()) {
                     $data = $form->getData();
 

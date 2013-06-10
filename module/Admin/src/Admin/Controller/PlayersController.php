@@ -78,8 +78,9 @@ class PlayersController extends AbstractActionController
                         $background = $form->get('backgroundImagePath')->getValue();
                         if (!array_key_exists('stored', $background) || $background['stored'] == 0) {
                             $imageManager->deleteImage($player->getBackgroundImagePath());
+
                             $backgroundPath = $imageManager->saveUploadedImage($form->get('backgroundImagePath'), ImageManager::IMAGE_PLAYER_BACKGROUND);
-                            $imageManager->resizeImage($backgroundPath, ImageManager::PLAYER_BACKGROUND_WIDTH, ImageManager::PLAYER_BACKGROUND_HEIGHT);
+                           // $imageManager->resizeImage($backgroundPath, ImageManager::PLAYER_BACKGROUND_WIDTH, ImageManager::PLAYER_BACKGROUND_HEIGHT);
                             $player->setBackgroundImagePath($backgroundPath);
                         }
                         $data = $form->getData();

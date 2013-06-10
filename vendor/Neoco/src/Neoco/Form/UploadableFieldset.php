@@ -27,6 +27,7 @@ abstract class UploadableFieldset extends Fieldset implements \Zend\InputFilter\
                 );
             }
             if ($element->getAttribute('between')){
+
                 $inputSpec[$element->getName()]['validators'][] = array(
                     'name' => 'Zend\Validator\Between',
                     'options' => $element->getAttribute('between')

@@ -130,6 +130,22 @@
 
                 </section>
             </div>
+            <!--FEATURED PREDICTION START-->
+                <?php if (!empty($this->report['featuredPrediction'])):?>
+                    <?php $featuredPrediction = $this->report['featuredPrediction'];?>
+                    <div class="item col2 blockquote">
+                        <section class="clearfix">
+                            <img src="<?php echo $featuredPrediction['backgroundImage'];?>" alt="Featured Prediction" class="bg">
+                            <figure>
+                                <blockquote>
+                                    <p><?php echo $featuredPrediction['copy'];?></p>
+                                </blockquote>
+                                <figcaption><?php echo $featuredPrediction['name'];?></figcaption>
+                            </figure>
+                        </section>
+                    </div>
+                <?php endif;?>
+            <!--FEATURED PREDICTION END-->
             <div class="item col1 pie-chart away-form">
                 <section>
                     <figure id="chart-away-form"></figure>
@@ -264,16 +280,6 @@
             <!--TOP SCORES BLOCK ENDS-->
         </div>
     </section>
-
-
-        <?php /*if (!empty($this->report['featuredPrediction'])):?>
-            <?php $featuredPrediction = $this->report['featuredPrediction'];?>
-            <div class="featured-prediction">
-                <img src="<?php echo $featuredPrediction['backgroundImage'];?>" alt="Featured Prediction">
-                <h3><?php echo $featuredPrediction['name'];?></h3>
-                <p><?php echo $featuredPrediction['copy'];?></p>
-            </div>
-        <?php endif;*/?>
 <?php endif;?>
 <script src="/js/vendor/jquery.masonry.min.js"></script>
 <script src="/js/vendor/jquery.flot.js"></script>
