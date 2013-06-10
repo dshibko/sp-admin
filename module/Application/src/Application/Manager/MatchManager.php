@@ -358,6 +358,7 @@ class MatchManager extends BasicManager
         $matchRegionDAO = MatchRegionDAO::getInstance($this->getServiceLocator());
         $matchRegion = $matchRegionDAO->getMatchRegionByMatchIdAndRegionId($matchId, $regionId);
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
+        $match = null;
 
         if (!is_null($matchRegion)) {
 
@@ -410,36 +411,40 @@ class MatchManager extends BasicManager
              }
 
             $match = $matchRegion->getMatch();
-            $predictionIds = $match->getPredictionIds();
-            if (!empty($predictionIds)){
+        }
 
-                //Match report top predicted scorers
-                $topScorers = $predictionManager->getTopScorers($predictionIds, self::MATCH_REPORT_TOP_SCORERS_NUMBER,true);
-                $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
-                if (!empty($topScorers) && $matchPredictionPlayersCount){
-                    $scorers = array();
-                    foreach($topScorers as $scorer){
-                        $scorers[$scorer['player_name']] = round( ($scorer['scorers_count'] / $matchPredictionPlayersCount) * 100);
-                    }
-                    $report['topScorers'] = array(
-                        'backgroundImage' => $topScorers[0]['backgroundImagePath'],//Get background image of top scorer TODO or default
-                        'scorers' => $scorers
-                    );
-                }
+        if (is_null($match)){
+            $match = MatchManager::getInstance($this->getServiceLocator())->getMatchById($matchId);
+        }
+        $predictionIds = $match->getPredictionIds();
+        if (!empty($predictionIds)){
 
-                //Match report top predicted scores
-                $topScores = $predictionManager->getTopScores($predictionIds, self::TOP_SCORES_NUMBER, true);
-                $totalNumberOfPredictions = count($predictionIds);
-                if (!empty($topScores) && $totalNumberOfPredictions){
-                    $scores = array();
-                    foreach($topScores as $score){
-                        $scores[$score['home_team_score'] . '-' . $score['away_team_score']]  = round( ($score['scores_count'] / $totalNumberOfPredictions) * 100 );
-                    }
-                    $report['topScores'] = $scores;
+            //Match report top predicted scorers
+            $topScorers = $predictionManager->getTopScorers($predictionIds, self::MATCH_REPORT_TOP_SCORERS_NUMBER,true);
+            $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
+            if (!empty($topScorers) && $matchPredictionPlayersCount){
+                $scorers = array();
+                foreach($topScorers as $scorer){
+                    $scorers[$scorer['player_name']] = round( ($scorer['scorers_count'] / $matchPredictionPlayersCount) * 100);
                 }
+                $report['topScorers'] = array(
+                    'backgroundImage' => $topScorers[0]['backgroundImagePath'],//Get background image of top scorer TODO or default
+                    'scorers' => $scorers
+                );
             }
 
+            //Match report top predicted scores
+            $topScores = $predictionManager->getTopScores($predictionIds, self::TOP_SCORES_NUMBER, true);
+            $totalNumberOfPredictions = count($predictionIds);
+            if (!empty($topScores) && $totalNumberOfPredictions){
+                $scores = array();
+                foreach($topScores as $score){
+                    $scores[$score['home_team_score'] . '-' . $score['away_team_score']]  = round( ($score['scores_count'] / $totalNumberOfPredictions) * 100 );
+                }
+                $report['topScores'] = $scores;
+            }
         }
+
         return $report;
     }
 }

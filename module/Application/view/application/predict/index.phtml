@@ -140,11 +140,9 @@
                     <?php endif; ?>
                 </div>
             </section>
-            <section class="match-banner">
-                <div class="clearfix">
-                    <?php echo $this->partial('partials/match-report', array('report' => $this->matchReport));?>
-                </div>
-            </section>
+            <!--MATCH REPORT START-->
+                <?php echo $this->partial('partials/match-report', array('report' => $this->matchReport));?>
+            <!--MATCH REPORT END-->
         <?php else: ?>
             <?= $this->renderMessages(); ?>
         <?php endif; ?>
