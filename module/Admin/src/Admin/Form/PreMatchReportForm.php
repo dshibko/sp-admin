@@ -5,7 +5,7 @@ namespace Admin\Form;
 use \Neoco\Form\RegionalisedForm;
 
 
-class MatchReportForm extends RegionalisedForm {
+class PreMatchReportForm extends RegionalisedForm {
 
     protected $type;
 

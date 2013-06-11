@@ -158,25 +158,25 @@ $this->headTitle($this->title);
         </div>
         <!--FEATURED PREDICTION ENDS-->
     <?php endif;?>
-    <?php if (!empty($this->matchReportForm)):?>
-        <!--MATCH REPORT STARTS-->
+    <?php if (!empty($this->preMatchReportForm)):?>
+        <!--PRE MATCH REPORT STARTS-->
         <div class="portlet box yellow">
             <div class="portlet-title">
-                <h4><i class="icon-reorder"></i><?php echo $this->translate('Match Report');?></h4>
+                <h4><i class="icon-reorder"></i><?php echo $this->translate('Pre Match Report Info');?></h4>
                 <div class="tools">
                     <a class="collapse" href="javascript:;"></a>
                 </div>
             </div>
             <div class="portlet-body">
                 <?php
-                $this->matchReportForm->prepare();
+                $this->preMatchReportForm->prepare();
                 $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
-                echo $this->form()->openTag($this->matchReportForm);
+                echo $this->form()->openTag($this->preMatchReportForm);
                 ?>
-                <?php echo $this->renderRegionFieldsets($this->matchReportForm->getFieldsets(), $this->params['action'] == 'add', 'report');?>
-                <?php echo $this->formHidden($this->matchReportForm->get('type'));?>
+                <?php echo $this->renderRegionFieldsets($this->preMatchReportForm->getFieldsets(), $this->params['action'] == 'add', 'pre-match-report');?>
+                <?php echo $this->formHidden($this->preMatchReportForm->get('type'));?>
                 <div class="form-actions">
-                    <button type="submit" class="btn blue"><?=$this->translate($this->matchReportForm->get('submit')->getValue());?></button>
+                    <button type="submit" class="btn blue"><?=$this->translate($this->preMatchReportForm->get('submit')->getValue());?></button>
                     <button type="button" class="btn reset"><?php echo $this->translate('Cancel');?></button>
                 </div>
                 <?php echo $this->form()->closeTag();?>

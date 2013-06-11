@@ -193,13 +193,13 @@ class MatchManager extends BasicManager
                 }
 
                 //Set match report
-                if (!empty($regionRow['match_report'])){
-                    $matchRegion->setTitle($regionRow['match_report']['title'])
-                        ->setIntro($regionRow['match_report']['intro']);
+                if (!empty($regionRow['pre_match_report'])){
+                    $matchRegion->setPreMatchReportTitle($regionRow['pre_match_report']['title'])
+                        ->setPreMatchReportIntro($regionRow['pre_match_report']['intro']);
                     //Set header image
-                    if (!empty($regionRow['match_report']['header_image_path'])) {
-                        $imageManager->deleteImage($matchRegion->getHeaderImagePath());
-                        $matchRegion->setHeaderImagePath($regionRow['match_report']['header_image_path']);
+                    if (!empty($regionRow['pre_match_report']['header_image_path'])) {
+                        $imageManager->deleteImage($matchRegion->getPreMatchReportHeaderImagePath());
+                        $matchRegion->setPreMatchReportHeaderImagePath($regionRow['pre_match_report']['header_image_path']);
                     }
                 }
 
@@ -353,7 +353,7 @@ class MatchManager extends BasicManager
      * @param $regionId
      * @return array
      */
-    public function getMatchRegionReport($matchId, $regionId)
+    public function getPreMatchRegionReport($matchId, $regionId)
     {
         $report = array();
         $matchRegionDAO = MatchRegionDAO::getInstance($this->getServiceLocator());
@@ -361,17 +361,16 @@ class MatchManager extends BasicManager
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
         $match = null;
         if (!is_null($matchRegion)) {
-
             //Match report title
-            $title = $matchRegion->getTitle();
+            $title = $matchRegion->getPreMatchReportTitle();
             $report['title'] = !empty($title) ? $title : '';
 
             //Match report intro
-            $intro = $matchRegion->getIntro();
+            $intro = $matchRegion->getPreMatchReportIntro();
             $report['intro'] = !empty($intro) ? $intro : '';
 
             //Match report header image
-            $headerImage =  $matchRegion->getHeaderImagePath();
+            $headerImage =  $matchRegion->getPreMatchReportHeaderImagePath();
             $report['headerImage'] = !empty($headerImage) ? $headerImage : '';
 
             //Match report featured player

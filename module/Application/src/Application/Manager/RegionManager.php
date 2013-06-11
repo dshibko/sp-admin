@@ -186,7 +186,7 @@ class RegionManager extends BasicManager {
      * @param array $regionFieldsets
      * @return array
      */
-    public function getMatchReportRegionsData(array $regionFieldsets)
+    public function getPreMatchReportRegionsData(array $regionFieldsets)
     {
         $imageManager = ImageManager::getInstance($this->getServiceLocator());
         $regionsData = array();
@@ -194,16 +194,16 @@ class RegionManager extends BasicManager {
         foreach ($regionFieldsets as $fieldset) {
             $region = $fieldset->getRegion();
             $regionsData[$region['id']] = array(
-                'match_report' => array(
-                    'title' => $fieldset->get('title')->getValue(),
-                    'intro' => $fieldset->get('intro')->getValue(),
+                'pre_match_report' => array(
+                    'title' => $fieldset->get('pre_match_report_title')->getValue(),
+                    'intro' => $fieldset->get('pre_match_report_intro')->getValue(),
                 )
             );
-            $headerImage = $fieldset->get('header_image')->getValue();
+            $headerImage = $fieldset->get('pre_match_report_header_image')->getValue();
             //TODO resize background
-            $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
+            $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('pre_match_report_header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
             if ($hImage){
-                $regionsData[$region['id']]['match_report']['header_image_path'] = $hImage;
+                $regionsData[$region['id']]['pre_match_report']['header_image_path'] = $hImage;
             }
         }
         return $regionsData;
