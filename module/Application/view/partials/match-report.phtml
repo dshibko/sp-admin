@@ -19,7 +19,7 @@
 <!--HEADER ENDS-->
 <section class="grid-layout">
     <div id="container" class="clearfix masonry centered fluid">
-        <div class="item col1 head-to-head-results pie-chart">
+        <div class="item col1 pie-chart head-to-head-results">
             <section>
                 <figure id="chart-head-to-head-results"></figure>
 
@@ -36,7 +36,8 @@
                 <?php $featuredPlayer = $this->report['featuredPlayer'];?>
                 <div class="item col2 featured-player">
                     <section class="clearfix">
-                        <img src="<?php echo $featuredPlayer['backgroundImage'];?>" alt="Featured Player" class="player"/>
+                        <img src="<?php echo !empty($featuredPlayer['backgroundImage']) ? $featuredPlayer['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
+                        <img src="<?php echo !empty($featuredPlayer['avatarImage']) ? $featuredPlayer['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Featured Player" class="player"/>
                         <div>
                             <hgroup>
                                 <h1><?php echo $this->translate('Featured Player');?></h1>
@@ -66,7 +67,7 @@
             <?php endif;?>
         <!--FEATURED PLAYER BLOCK ENDS-->
         <!--TOTAL GOALS THIS SEASON STARTS-->
-            <div class="item col1 season-total-goals stacked-bar">
+            <div class="item col1 stacked-bar season-total-goals">
                 <section>
                     <h1>Total goals this season</h1>
                     <figure>
@@ -92,7 +93,7 @@
                 <p>Of the 11 countries that have appeared in a final, France are the only team never to have conceded a goal</p>
             </section>
         </div>
-        <div class="item col1 average-season-goals stacked-bar">
+        <div class="item col1 stacked-bar average-season-goals ">
             <section>
                 <h1>Average goals per game this season</h1>
                 <figure>
@@ -110,7 +111,7 @@
 
             </section>
         </div>
-        <div class="item col1 games-since-last-sheet stacked-bar">
+        <div class="item col1 stacked-bar games-since-last-sheet ">
             <section>
                 <h1>Games since last clean sheet</h1>
                 <figure>
@@ -132,7 +133,7 @@
             <?php if (!empty($this->report['featuredPrediction']) && !empty($this->report['featuredPrediction']['copy'])):?>
                 <?php $featuredPrediction = $this->report['featuredPrediction'];?>
                 <div class="item col2 blockquote">
-                    <section class="clearfix">
+                    <section class="">
                         <img src="<?php echo $featuredPrediction['backgroundImage'];?>" alt="Featured Prediction" class="bg">
                         <figure>
                             <blockquote>
@@ -175,7 +176,8 @@
                 <?php $featuredGoalkeeper = $this->report['featuredGoalkeeper'];?>
                 <div class="item col2 featured-player">
                     <section class="clearfix">
-                        <img src="<?php echo $featuredGoalkeeper['backgroundImage'];?>" alt="Featured Goalkeeper" class="player">
+                        <img src="<?php echo !empty($featuredGoalkeeper['backgroundImage']) ? $featuredGoalkeeper['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
+                        <img src="<?php echo !empty($featuredGoalkeeper['avatarImage']) ? $featuredGoalkeeper['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Featured Goalkeeper" class="player"/>
                         <div>
                             <hgroup>
                                 <h1><?php echo $this->translate('GOAL KEEPER');?></h1>
@@ -205,13 +207,14 @@
             <?php endif;?>
         <!--FEATURED GOALKEEPER BLOCK ENDS-->
 
-        <div class="item col1 top-scorers">...</div>
+        <!--div class="item col1 top-scorers">...</div-->
         <!--TOP SCORERS BLOCK STARTS-->
             <?php if (!empty($this->report['topScorers'])):?>
                 <?php $topScorers = $this->report['topScorers'];?>
                 <div class="item col2 top-predicted-scorers">
                     <section class="clearfix">
-                        <img src="<?php echo $topScorers['backgroundImage'];?>" class="player" alt="Top scorer background">
+                        <img src="<?php echo !empty($topScorers['backgroundImage']) ? $topScorers['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
+                        <img src="<?php echo !empty($topScorers['avatarImage']) ? $topScorers['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Top scorer" class="player"/>
                         <div>
                             <h1><?php echo $this->translate('Top predicted scorers');?></h1>
                             <?php
@@ -248,31 +251,17 @@
                     </section>
                 </div>
                 <script type="text/javascript">
-                    (function($){
-                        $(document).ready(function(){
-                            var data = [];
-                            var colors = ['#a01749', '#b2466e','#c47692', '#d6a4b7', '#e7c6d3'];
-                            var percentage = [];
-                            <?php foreach($topScores as $percentage):?>
-                                percentage.push('<?php echo $percentage;?>');
-                            <?php endforeach;?>
-                            for (var i = 0; i < colors.length; i++){
-                                if (percentage[i] !== undefined){
-                                    data.push({color:colors[i],data:percentage[i]});
-                                }
-                            }
-                            $.plot('#chart_top5',
-                                data, {
-                                    series: {
-                                        pie: {
-                                            innerRadius: 0.4,
-                                            stroke: {color: '#f2e1e7', width: 0},
-                                            show: true
-                                        }
-                                    }
-                                });
-                        });
-                    }(jQuery));
+                    var topScoresData = [];
+                    var colors = ['#a01749', '#b2466e','#c47692', '#d6a4b7', '#e7c6d3'];
+                    var percentage = [];
+                    <?php foreach($topScores as $percentage):?>
+                        percentage.push('<?php echo $percentage;?>');
+                    <?php endforeach;?>
+                    for (var i = 0; i < colors.length; i++){
+                        if (percentage[i] !== undefined){
+                            topScoresData.push({color:colors[i],data:percentage[i]});
+                        }
+                    }
                 </script>
             <?php endif;?>
         <!--TOP SCORES BLOCK ENDS-->

@@ -93,6 +93,13 @@ class MatchRegion
     private $featuredPrediction;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="display_featured_player", type="boolean")
+     */
+    private $displayFeaturedPlayer;
+
+    /**
      * @param string $headerImagePath
      * @return \Application\Model\Entities\MatchRegion
      */
@@ -242,5 +249,23 @@ class MatchRegion
     public function getFeaturedPrediction()
     {
         return $this->featuredPrediction;
+    }
+
+    /**
+     * @param boolean $displayFeaturedPlayer
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function setDisplayFeaturedPlayer($displayFeaturedPlayer)
+    {
+        $this->displayFeaturedPlayer = $displayFeaturedPlayer;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDisplayFeaturedPlayer()
+    {
+        return $this->displayFeaturedPlayer;
     }
 }

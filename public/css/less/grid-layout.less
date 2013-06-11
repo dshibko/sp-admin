@@ -1,11 +1,11 @@
 .grid-layout {
   position: relative;
-  margin: 0 auto;
+  padding: 0 0 0 1.8%;
 
   #container {
     margin: 0 auto;
-    // width: 90.2em;
-    width: 100%;
+    // max-width: 90.2em;
+    // width: 100%;
   }
 
   .centered {
@@ -14,7 +14,7 @@
 
   .item {
     float: left;
-    margin: 1% 1% 1%;
+    margin: 10px 0 10px;
     background: red;
 
     &.col1 {
@@ -34,6 +34,8 @@
           margin: 0 auto 0;
           width: 24em; 
           height: 24em;
+          // max-width: 100%;
+          // max-height: 24em;
 
           .pieLabel {
             color: #fff;
@@ -181,7 +183,7 @@
           position: relative;
           z-index: 3;
           float: right;
-          margin: 4.4em 1.3em 1.2em 0;
+          margin: 3.8em 1.3em 1.2em 0;
           width: 48%;
 
           hgroup {
@@ -274,7 +276,7 @@
           position: relative;
           z-index: 3;
           float: right;
-          margin: 1.4em 1.3em 1.2em 0;
+          margin: 1.4em 1.3em 0.6em 0;
           width: 48%;
           min-height: 27em;
 
@@ -329,7 +331,7 @@
           float: right;
           position: relative;
           z-index: 3;
-          margin: 2.4em 1.3em 0.6em 0;
+          margin: 1.8em 1.3em 0.6em 0;
           width: 43%;
 
           h1 {
@@ -395,6 +397,9 @@
           margin: 0 auto 0;
           width: 24em; 
           height: 24em;
+          span {
+            display: none!important;
+          }
         }
 
         h1 {
@@ -445,10 +450,9 @@
 
 @media only screen and (min-width: 320px) and (max-width:  767px) {
   .grid-layout {
-    margin: 0 auto;
+    padding: 0 0 0 1.8%;
 
     .item {
-      float: left;
 
       &.col1 {
         width: 48%;
@@ -682,6 +686,7 @@
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .grid-layout {
+    padding: 0 0 0 1.8%;
     .item {
 
       &.top5-predicted-scores {
@@ -705,3 +710,17 @@
   }
 }
 
+@media screen and (min-width: 1025px) and (max-width: 1280px) {
+  .grid-layout {
+    .item {
+      &.pie-chart {
+        section {
+          figure {
+            width: 190px; 
+            height: 190px;
+          }
+        }
+      }
+    }
+  }
+}
