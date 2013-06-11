@@ -16,7 +16,7 @@ class RegionFieldsetsRenderer extends AbstractHelper
      * @param bool $add
      * @return string
      */
-    public function __invoke($regionFieldsets, $add = true)
+    public function __invoke($regionFieldsets, $add = true, $uniqueName = '')
     {
         $html = '<div class="row-fluid form-vertical">
                <div class="span12">
@@ -25,12 +25,12 @@ class RegionFieldsetsRenderer extends AbstractHelper
         $i = 0;
         foreach ($regionFieldsets as $regionFieldset) {
             $region = $regionFieldset->getRegion();
-            $html .= '<li' . ($i == 0 ? ' class="active"' : '') . '><a href="#tab_' . (++$i) . '" data-toggle="tab">' . $region['displayName'] . '</a></li>';
+            $html .= '<li' . ($i == 0 ? ' class="active"' : '') . '><a href="#tab_' . $uniqueName . (++$i) . '" data-toggle="tab">' . $region['displayName'] . '</a></li>';
         }
         $html .= '</ul><div class="tab-content">';
         $i = 0;
         foreach ($regionFieldsets as $regionFieldset) {
-            $html .= '<div class="tab-pane' . ($i == 0 ? ' active' : '') . '" id="tab_' . (++$i) . '">';
+            $html .= '<div class="tab-pane' . ($i == 0 ? ' active' : '') . '" id="tab_' . $uniqueName . (++$i) . '">';
             $html .= $this->renderRegionFieldset($regionFieldset, $add);
             $html .= '</div>';
         }
@@ -43,13 +43,13 @@ class RegionFieldsetsRenderer extends AbstractHelper
         foreach ($regionFieldset->getElements() as $element) {
             $type = $element->getAttribute('type');
             $hint = $element->getAttribute('hint');
-            $fieldgroup = $element->getAttribute('fieldgroup');
+           // $fieldgroup = $element->getAttribute('fieldgroup');
             $maxlength = $element->getAttribute('maxlength');
-           if (!empty($fieldgroup['type']) && $fieldgroup['type'] == 'start'){
+           /*if (!empty($fieldgroup['type']) && $fieldgroup['type'] == 'start'){
                $html .= '<div class="portlet box '.$fieldgroup['color'].'"><div class="portlet-title"><h4>'.$this->translator->translate($fieldgroup['title']).'</h4><div class="tools">
                   <a class="collapse" href="javascript:;"></a>
               </div></h4></div><div class="portlet-body">';
-           }
+           }*/
 
             $html .= '<div class="control-group clearfix">
     <label class="control-label">' . $this->translator->translate($element->getLabel()) . '</label>
@@ -86,9 +86,9 @@ class RegionFieldsetsRenderer extends AbstractHelper
             }
         $html .= '</div>
                 </div>';
-            if (!empty($fieldgroup['type']) && $fieldgroup['type'] == 'end'){
+            /*if (!empty($fieldgroup['type']) && $fieldgroup['type'] == 'end'){
                 $html .= '</div></div>';
-            }
+            }*/
         }
         return $html;
     }

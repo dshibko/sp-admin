@@ -3,21 +3,36 @@
 namespace Admin\Form;
 
 use \Neoco\Form\RegionalisedForm;
-use \Neoco\Form\RegionFieldset;
-use \Zend\InputFilter\InputFilter;
 use \Admin\Form\Filter\FixtureFilter;
 
 class FixtureForm extends RegionalisedForm {
 
     protected $teams = array();
+    protected $type;
 
-    public function __construct($regionFieldsets, array $teams) {
+    /**
+     * @param mixed $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
 
-        parent::__construct($regionFieldsets, 'fixture');
+    /**
+     * @return mixed
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function __construct(array $teams, $type = 'fixture_form') {
+
+        parent::__construct(array(), 'fixture');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
         $this->setTeams($teams)->setInputFilter(new FixtureFilter());
-
+        $this->setType($type);
         //Competition
 
         $this->add(array(
@@ -105,6 +120,14 @@ class FixtureForm extends RegionalisedForm {
             'attributes' => array(
                 'class' => 'double-points-checkbox'
             )
+        ));
+
+        $this->add(array(
+            'name' => 'type',
+            'type'  => 'hidden',
+            'attributes' => array(
+                'value' => $this->getType()
+            ),
         ));
 
         $this->add(array(

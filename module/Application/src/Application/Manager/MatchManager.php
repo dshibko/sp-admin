@@ -192,9 +192,17 @@ class MatchManager extends BasicManager
                     $matchRegion = $matchRegions->get($reportKey);
                 }
 
+                //Set match report
+                if (!empty($regionRow['match_report'])){
+                    $matchRegion->setTitle($regionRow['match_report']['title'])
+                        ->setIntro($regionRow['match_report']['intro']);
+                    //Set header image
+                    if (!empty($regionRow['match_report']['header_image_path'])) {
+                        $imageManager->deleteImage($matchRegion->getHeaderImagePath());
+                        $matchRegion->setHeaderImagePath($regionRow['match_report']['header_image_path']);
+                    }
+                }
 
-                $matchRegion->setTitle($regionRow['title'])
-                    ->setIntro($regionRow['intro']);
 
                 //Set Featured Player
                 if (!empty($regionRow['featured_player'])) {
@@ -249,11 +257,7 @@ class MatchManager extends BasicManager
                     $matchRegion->setFeaturedPrediction($featuredPrediction);
                 }
 
-                //Set header image
-                if (!empty($regionRow['header_image_path'])) {
-                    $imageManager->deleteImage($matchRegion->getHeaderImagePath());
-                    $matchRegion->setHeaderImagePath($regionRow['header_image_path']);
-                }
+
 
                 $matchRegionDAO->save($matchRegion, false, false);
             }
@@ -446,5 +450,20 @@ class MatchManager extends BasicManager
         }
 
         return $report;
+    }
+
+    public function getFieldsetWithPlayers(array $fieldsets, array $teamIds, array $positions, $fieldName)
+    {
+        $playerManager = PlayerManager::getInstance($this->getServiceLocator());
+        $players = $playerManager->getInstance($this->getServiceLocator())->getPlayersByPositionsFromTeams($positions, $teamIds, true);
+        $playersOptions = $playerManager->getPlayersSelectOptions($players);
+        foreach($fieldsets as &$fieldset){
+            if ($fieldset->has($fieldName)){
+                $fieldset->get($fieldName)->setValueOptions($playersOptions);
+            }
+
+        }
+        unset($fieldset);
+        return $fieldsets;
     }
 }
