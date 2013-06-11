@@ -109,16 +109,18 @@ class RegionManager extends BasicManager {
         return $regionFieldsets;
     }
 
-    public function getMatchRegionsFieldsetData(array $regionFieldsets)
+
+    /**
+     * @param array $regionFieldsets
+     * @return array
+     */
+    public function getFeaturedPlayerRegionsData(array $regionFieldsets)
     {
-        $imageManager = ImageManager::getInstance($this->getServiceLocator());
         $regionsData = array();
         //Prepare regions data
         foreach ($regionFieldsets as $fieldset) {
             $region = $fieldset->getRegion();
             $regionsData[$region['id']] = array(
-                'title' => $fieldset->get('title')->getValue(),
-                'intro' => $fieldset->get('intro')->getValue(),
                 'featured_player' => array(
                     'id' => $fieldset->get('featured_player')->getValue(),
                     'goals' => $fieldset->get('player_goals')->getValue(),
@@ -126,6 +128,22 @@ class RegionManager extends BasicManager {
                     'match_starts' => $fieldset->get('player_match_starts')->getValue(),
                     'minutes_played' => $fieldset->get('player_minutes_played')->getValue(),
                 ),
+            );
+        }
+        return $regionsData;
+    }
+
+    /**
+     * @param array $regionFieldsets
+     * @return array
+     */
+    public function getFeaturedGoalkeeperRegionsData(array $regionFieldsets)
+    {
+        $regionsData = array();
+        //Prepare regions data
+        foreach ($regionFieldsets as $fieldset) {
+            $region = $fieldset->getRegion();
+            $regionsData[$region['id']] = array(
                 'featured_goalkeeper' => array(
                     'id' => $fieldset->get('featured_goalkeeper')->getValue(),
                     'saves' => $fieldset->get('goalkeeper_saves')->getValue(),
@@ -133,26 +151,62 @@ class RegionManager extends BasicManager {
                     'penalty_saves' => $fieldset->get('goalkeeper_penalty_saves')->getValue(),
                     'clean_sheets'  => $fieldset->get('goalkeeper_clean_sheets')->getValue()
                 ),
+            );
+        }
+        return $regionsData;
+    }
+
+    /**
+     * @param array $regionFieldsets
+     * @return array
+     */
+    public function getFeaturedPredictionRegionsData(array $regionFieldsets)
+    {
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        $regionsData = array();
+        //Prepare regions data
+        foreach ($regionFieldsets as $fieldset) {
+            $region = $fieldset->getRegion();
+            $regionsData[$region['id']] = array(
                 'featured_prediction' => array(
                     'name' => $fieldset->get('prediction_name')->getValue(),
                     'copy' => $fieldset->get('prediction_copy')->getValue(),
                 )
             );
-            $headerImage = $fieldset->get('header_image')->getValue();
             $predictionImage = $fieldset->get('prediction_image')->getValue();
-            //TODO resize background
-            $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
             $pImage = ($predictionImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('prediction_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
-            if ($hImage){
-                $regionsData[$region['id']]['header_image_path'] = $hImage;
-            }
             if ($pImage){
-               $regionsData[$region['id']]['featured_prediction']['image'] = $pImage;
+                $regionsData[$region['id']]['featured_prediction']['image'] = $pImage;
             }
         }
         return $regionsData;
     }
 
-
+    /**
+     * @param array $regionFieldsets
+     * @return array
+     */
+    public function getMatchReportRegionsData(array $regionFieldsets)
+    {
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        $regionsData = array();
+        //Prepare regions data
+        foreach ($regionFieldsets as $fieldset) {
+            $region = $fieldset->getRegion();
+            $regionsData[$region['id']] = array(
+                'match_report' => array(
+                    'title' => $fieldset->get('title')->getValue(),
+                    'intro' => $fieldset->get('intro')->getValue(),
+                )
+            );
+            $headerImage = $fieldset->get('header_image')->getValue();
+            //TODO resize background
+            $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
+            if ($hImage){
+                $regionsData[$region['id']]['match_report']['header_image_path'] = $hImage;
+            }
+        }
+        return $regionsData;
+    }
 
 }

@@ -17,27 +17,20 @@ use \Application\Manager\ExportManager;
 use \Application\Manager\RegionManager;
 use \Application\Manager\ImageManager;
 use \Application\Manager\PlayerManager;
+use \Admin\Form\FeaturedPlayerForm;
+use \Admin\Form\FeaturedGoalkeeperForm;
+use \Admin\Form\FeaturedPredictionForm;
+use \Admin\Form\MatchReportForm;
+
 
 class FixturesController extends AbstractActionController
 {
     const FIXTURES_LIST_ROUTE = 'admin-fixtures';
-
-    //TODO move to manager!!!
-    private function setPlayersForFieldsets(array $fieldsets)
-    {
-        $playerManager = PlayerManager::getInstance($this->getServiceLocator());
-        $players = $playerManager->getPlayersByPositions(array(PlayerManager::DEFENDER_POSITION, PlayerManager::MIDFIELDER_POSITION, PlayerManager::FORWARD_POSITION), true);
-        $playersOptions = $playerManager->getPlayersSelectOptions($players);
-        $goalkeepers = $playerManager->getInstance($this->getServiceLocator())->getPlayersByPositions(array(PlayerManager::GOALKEEPER_POSITION), true);
-        $goalkeepersOptions = $playerManager->getPlayersSelectOptions($goalkeepers);
-        foreach($fieldsets as &$fieldset){
-            $fieldset->get('featured_player')->setValueOptions($playersOptions);
-            $fieldset->get('featured_goalkeeper')->setValueOptions($goalkeepersOptions);
-        }
-        unset($fieldset);
-        return $fieldsets;
-    }
-
+    const FIXTURE_FORM_TYPE = 'fixture';
+    const FEATURED_PLAYER_FORM_TYPE = 'featured_player';
+    const FEATURED_GOALKEEPER_FORM_TYPE = 'featured_goalkeeper';
+    const FEATURED_PREDICTION_FORM_TYPE = 'featured_prediction';
+    const MATCH_REPORT_FORM_TYPE = 'match_report';
 
     public function indexAction()
     {
@@ -66,8 +59,42 @@ class FixturesController extends AbstractActionController
             'currentSeasonId' => $currentSeasonId
         );
     }
+    //TODO move to manager
+    private function setRequiredFormFieldsets($form){
+        $requiredGroup = false;
+        foreach($form->getFieldsets() as $fieldset){
+            foreach($fieldset->getElements() as $element){
+                $value = $element->getValue();
+                //Check image value
+                if ($element->getAttribute('isImage')){
+                    if (!$value['stored'] && $value['error'] == UPLOAD_ERR_NO_FILE){
+                        $value = false;
+                    }
+                }
+                if (!empty($value)){
+                    $requiredGroup = true;
+                    break 2;
+                }
+            }
+        }
 
-
+        if ($requiredGroup){
+            foreach($form->getFieldsets() as $fieldset){
+                foreach($fieldset->getElements() as $element){
+                    if ($element->getAttribute('isImage')){
+                        $value = $element->getValue();
+                        if ($value ['stored'] == 1){
+                            continue;
+                        }
+                    }
+                    $form->getInputFilter()
+                        ->get($fieldset->getName())
+                        ->get($element->getName())
+                        ->setRequired(true)->setAllowEmpty(false);
+                }
+            }
+        }
+    }
     public function editAction()
     {
         $fixtureId = (string)$this->params()->fromRoute('fixture', '');
@@ -82,16 +109,33 @@ class FixturesController extends AbstractActionController
         $matchManager = MatchManager::getInstance($this->serviceLocator);
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         $regionManager = RegionManager::getInstance($this->getServiceLocator());
-        $regionFieldsets = $regionManager->getRegionsFieldsets('\Admin\Form\FixtureRegionFieldset');
-        $regionFieldsets = $this->setPlayersForFieldsets($regionFieldsets);
-
-        $form = new FixtureForm($regionFieldsets, $teamManager->getTeamsSelectOptions());
         try {
             $fixture = $matchManager->getMatchById($fixtureId);
             if (is_null($fixture)) {
                 $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_CANNOT_FIND_FIXTURE);
                 return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
             }
+            $teamIds = array($fixture->getHomeTeam()->getId(), $fixture->getAwayTeam());
+            $playerPositions = array(PlayerManager::DEFENDER_POSITION, PlayerManager::MIDFIELDER_POSITION, PlayerManager::FORWARD_POSITION);
+            $goalkeeperPositions = array(PlayerManager::GOALKEEPER_POSITION);
+            $featuredPlayerRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedPlayerFieldset');
+
+            $featuredPlayerRegions = $matchManager->getFieldsetWithPlayers($featuredPlayerRegions,$teamIds , $playerPositions, 'featured_player');
+
+            $featuredGoalkeeperRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedGoalkeeperFieldset');
+            $featuredGoalkeeperRegions = $matchManager->getFieldsetWithPlayers($featuredGoalkeeperRegions,$teamIds , $goalkeeperPositions, 'featured_goalkeeper');
+
+            $featuredPredictionRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedPredictionFieldset');
+
+            $matchReportRegions = $regionManager->getRegionsFieldsets('\Admin\Form\MatchReportFieldset');
+
+            $form = new FixtureForm($teamManager->getTeamsSelectOptions(), self::FIXTURE_FORM_TYPE);
+            $featuredPlayerForm = new FeaturedPlayerForm($featuredPlayerRegions, self::FEATURED_PLAYER_FORM_TYPE);
+            $featuredGoalkeeperForm = new FeaturedGoalkeeperForm($featuredGoalkeeperRegions,self::FEATURED_GOALKEEPER_FORM_TYPE);
+            $featuredPredictionForm = new FeaturedPredictionForm($featuredPredictionRegions, self::FEATURED_PREDICTION_FORM_TYPE);
+            $matchReportForm = new MatchReportForm($matchReportRegions,self::MATCH_REPORT_FORM_TYPE);
+
+
             $params = array(
                 'fixture' => $fixture->getId(),
                 'action' => 'edit'
@@ -105,99 +149,112 @@ class FixturesController extends AbstractActionController
             if ($fixture->getStatus() == Match::FULL_TIME_STATUS) {
                 $isFullTime = true;
             }
-            $form->getInputFilter()->get('competition')->setRequired(false);
             if ($request->isPost()) {
                 $post = array_merge_recursive(
                     $request->getPost()->toArray(),
                     $request->getFiles()->toArray()
                 );
+                $type = $post['type'];
+                switch($type){
+                    case self::FIXTURE_FORM_TYPE : {
+                        $form->setData($post);
+                        $form->getInputFilter()->get('competition')->setRequired(false);
+                        if ($form->isValid()) {
+                            $data = $form->getData();
 
-                $form->setData($post);
-                $groupedFieldsetFields = $matchManager->getGroupedFieldsetFields($regionFieldsets);
-                //Check regions fields
-                $requiredRegionFieldGroups = array();
-                foreach ($post as $key => $data){
-                    if (is_array($data)){
-                        foreach($data as $fieldName => $regionData){
-                              if (!empty($regionData)){
-                                  //If field is image and is not uploaded
-                                  if (is_array($regionData) && isset($regionData['stored']) && empty($regionData['stored'])){
-                                      break;
-                                  }
-                                  if (isset($groupedFieldsetFields[$key])){
-                                      foreach($groupedFieldsetFields[$key] as $fields){
-                                        if (in_array($fieldName, $fields)){
-                                            if (empty($requiredRegionFieldGroups[$key])){
-                                                $requiredRegionFieldGroups[$key] = array();
-                                            }
-                                            //TODO merge
-                                            foreach($fields as $field){
-                                                if (!in_array($field, $requiredRegionFieldGroups[$key])){
-                                                    $requiredRegionFieldGroups[$key][] = $field;
-                                                }
-                                            }
-                                        }
-                                      }
-                                  }
-                              }
-                        }
-                    }
-                }
+                            $startTime = $data['date'] . $data['kick_off_time'];
+                            $isChangedDate = strtotime($startTime) != $fixture->getStartTime()->getTimestamp();
+                            $isChangedHomeTeam = $fixture->getHomeTeam()->getId() != $data['homeTeam'];
+                            $isChangedAwayTeam = $fixture->getAwayTeam()->getId() != $data['awayTeam'];
 
-                if (!empty($requiredRegionFieldGroups)){
-                    foreach ($requiredRegionFieldGroups as $region => $fieldGroups){
-                        if ($form->getInputFilter()->has($region)){
-                            $inputs = &$form->getInputFilter()->get($region)->getInputs();
-                            if (!empty($inputs) && is_array($inputs)){
-                                foreach($inputs as $name=> &$value){
-                                   if (in_array($name, $fieldGroups)){
-                                       $value->setRequired(true);
-                                       $value->setAllowEmpty(false);
-                                   }
+                            //Check changed data
+                            if (!$fixture->getIsBlocked()) {
+                                if ($isChangedHomeTeam || $isChangedAwayTeam || $isChangedDate) {
+                                    $fixture->setIsBlocked(true);
                                 }
-                                unset($value);
                             }
-                            unset($inputs);
+                            if ($isChangedAwayTeam) {
+                                $fixture->setAwayTeam($teamManager->getTeamById($data['awayTeam']));
+                            }
+                            if ($isChangedHomeTeam) {
+                                $fixture->setHomeTeam($teamManager->getTeamById($data['homeTeam']));
+                            }
+                            if ($isChangedDate) {
+                                $fixture->setStartTime(new \DateTime($startTime));
+                            }
+                            $fixture->setIsDoublePoints(!empty($data['isDoublePoints']));
+
+                            $matchManager->save($fixture);
+                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
+                            return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
+                        } else {
+                            $form->handleErrorMessages($form->getMessages(), $this->flashMessenger());
                         }
+                        break;
                     }
-
-                }
-
-                if ($form->isValid()) {
-                    $data = $form->getData();
-
-                    $startTime = $data['date'] . $data['kick_off_time'];
-                    $isChangedDate = strtotime($startTime) != $fixture->getStartTime()->getTimestamp();
-                    $isChangedHomeTeam = $fixture->getHomeTeam()->getId() != $data['homeTeam'];
-                    $isChangedAwayTeam = $fixture->getAwayTeam()->getId() != $data['awayTeam'];
-
-                    //Check changed data
-                    if (!$fixture->getIsBlocked()) {
-                        if ($isChangedHomeTeam || $isChangedAwayTeam || $isChangedDate) {
-                            $fixture->setIsBlocked(true);
+                    case self::FEATURED_PLAYER_FORM_TYPE : {
+                        $featuredPlayerForm->setData($post);
+                        $this->setRequiredFormFieldsets($featuredPlayerForm);
+                        if ($featuredPlayerForm->isValid()){
+                            $regionsData = $regionManager->getFeaturedPlayerRegionsData($featuredPlayerRegions);
+                            $matchManager->save($fixture,$regionsData);
+                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
+                            return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
+                        }else{
+                            $featuredPlayerForm->handleErrorMessages($featuredPlayerForm->getMessages(), $this->flashMessenger());
                         }
+                        break;
                     }
-                    if ($isChangedAwayTeam) {
-                        $fixture->setAwayTeam($teamManager->getTeamById($data['awayTeam']));
+                    case self::FEATURED_GOALKEEPER_FORM_TYPE : {
+                        $featuredGoalkeeperForm->setData($post);
+                        $this->setRequiredFormFieldsets($featuredGoalkeeperForm);
+                        if ($featuredGoalkeeperForm->isValid()){
+                            $regionsData = $regionManager->getFeaturedGoalkeeperRegionsData($featuredGoalkeeperRegions);
+                            $matchManager->save($fixture,$regionsData);
+                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
+                            return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
+                        }else{
+                            $featuredGoalkeeperForm->handleErrorMessages($featuredGoalkeeperForm->getMessages(), $this->flashMessenger());
+                        }
+                        break;
                     }
-                    if ($isChangedHomeTeam) {
-                        $fixture->setHomeTeam($teamManager->getTeamById($data['homeTeam']));
+                    case self::FEATURED_PREDICTION_FORM_TYPE : {
+                        $featuredPredictionForm->setData($post);
+                        $this->setRequiredFormFieldsets($featuredPredictionForm);
+                        if ($featuredPredictionForm->isValid()){
+                            $regionsData = $regionManager->getFeaturedPredictionRegionsData($featuredPredictionRegions);
+                            $matchManager->save($fixture,$regionsData);
+                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
+                            return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
+                        }else{
+                            $featuredPredictionForm->handleErrorMessages($featuredPredictionForm->getMessages(), $this->flashMessenger());
+                        }
+                        break;
                     }
-                    if ($isChangedDate) {
-                        $fixture->setStartTime(new \DateTime($startTime));
+                    case self::MATCH_REPORT_FORM_TYPE :{
+                        $matchReportForm->setData($post);
+                        $this->setRequiredFormFieldsets($matchReportForm);
+                        if ($matchReportForm->isValid()){
+                            $regionsData = $regionManager->getMatchReportRegionsData($matchReportRegions);
+                            $matchManager->save($fixture,$regionsData);
+                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
+                            return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
+                        }else{
+                            $matchReportForm->handleErrorMessages($matchReportForm->getMessages(), $this->flashMessenger());
+                        }
+                        break;
                     }
-                    $fixture->setIsDoublePoints(!empty($data['isDoublePoints']));
-                    $regionsData = $regionManager->getMatchRegionsFieldsetData($regionFieldsets);
-
-                    $matchManager->save($fixture, $regionsData);
-                    $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
-                    return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
-                } else {
-                    $form->handleErrorMessages($form->getMessages(), $this->flashMessenger());
+                    default : {
+                        throw new \Exception(MessagesConstants::ERROR_INVALID_FORM_TYPE);
+                    }
                 }
             }
 
             $form->initForm($fixture);
+            $featuredPlayerForm->initForm($fixture);
+            $featuredGoalkeeperForm->initForm($fixture);
+            $featuredPredictionForm->initForm($fixture);
+            $matchReportForm->initForm($fixture);
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -205,6 +262,10 @@ class FixturesController extends AbstractActionController
 
         return array(
             'form' => $form,
+            'featuredPlayerForm' => $featuredPlayerForm,
+            'featuredGoalkeeperForm' => $featuredGoalkeeperForm,
+            'featuredPredictionForm' => $featuredPredictionForm,
+            'matchReportForm' => $matchReportForm,
             'params' => $params,
             'title' => 'Edit Fixture',
             'isBlocked' => $isBlocked,
@@ -220,10 +281,7 @@ class FixturesController extends AbstractActionController
         $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
         $regionManager = RegionManager::getInstance($this->getServiceLocator());
-        $regionFieldsets = $regionManager->getRegionsFieldsets('\Admin\Form\FixtureRegionFieldset');
-
-        $form = new FixtureForm($regionFieldsets, $teamManager->getTeamsSelectOptions());
-        $regionFieldsets = $this->setPlayersForFieldsets($regionFieldsets);
+        $form = new FixtureForm($teamManager->getTeamsSelectOptions(), self::FIXTURE_FORM_TYPE);
         try {
             $params = array(
                 'action' => 'add'
@@ -249,8 +307,7 @@ class FixturesController extends AbstractActionController
                         ->setHomeTeam($teamManager->getTeamById($data['homeTeam']))
                         ->setStartTime($dateTime)
                         ->setCompetition(CompetitionManager::getInstance($this->getServiceLocator())->getCompetitionById($data['competition']));
-                    $regionsData = $regionManager->getMatchRegionsFieldsetData($regionFieldsets);
-                    $matchManager->save($fixture, $regionsData);
+                    $matchManager->save($fixture);
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                     return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, array('action' => 'edit', 'fixture' => $fixture->getId())));
                 } else {

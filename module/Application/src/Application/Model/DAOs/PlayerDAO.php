@@ -56,6 +56,12 @@ class PlayerDAO extends AbstractDAO {
     }
 
 
+    /**
+     * @param array $positions
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
     public function getPlayersByPositions(array $positions, $hydrate = false, $skipCache = false)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -66,6 +72,27 @@ class PlayerDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'p')
             ->where($qb->expr()->in('p.position',':position'))->setParameter('position', $positions)
             ->orderBy('p.displayName', 'ASC');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
+     * @param array $positions
+     * @param array $teamIds
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getPlayersByPositionsFromTeams(array $positions, array $teamIds, $hydrate = false, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('
+                    p.id,
+                    p.displayName
+        ')
+        ->from($this->getRepositoryName(), 'p')
+        ->where($qb->expr()->in('p.team',':teamIds'))->setParameter('teamIds', $teamIds)
+        ->andWhere($qb->expr()->in('p.position',':position'))->setParameter('position', $positions)
+        ->orderBy('p.displayName', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 

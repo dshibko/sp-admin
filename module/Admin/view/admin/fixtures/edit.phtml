@@ -59,7 +59,7 @@ $this->headTitle($this->title);
                 </div>
             </div>
             <?php endforeach;?>
-            <?php echo $this->renderRegionFieldsets($form->getFieldsets(), $this->params['action'] == 'add'); ?>
+            <?php echo $this->formHidden($form->get('type'));?>
             <?php if (!$this->isFullTime) : ?>
             <div class="form-actions">
                 <a href="#deleteModal" role="button" class="btn blue update-fixture" data-blocked="<?php echo (!empty($this->isBlocked) ? 1 : 0);?>" data-toggle="modal">
@@ -79,6 +79,113 @@ $this->headTitle($this->title);
      <?php echo $this->form()->closeTag();?>
 </div>
 <?php if ($this->params['action'] == 'edit'):?>
+<!--REGIONALISED DATA START-->
+    <?php if (!empty($this->featuredPlayerForm)):?>
+        <!--FEATURED PLAYER STARTS-->
+            <div class="portlet box red">
+                <div class="portlet-title">
+                    <h4><i class="icon-reorder"></i><?php echo $this->translate('Featured Player');?></h4>
+                    <div class="tools">
+                        <a class="collapse" href="javascript:;"></a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <?php
+                    $this->featuredPlayerForm->prepare();
+                    $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
+                        echo $this->form()->openTag($this->featuredPlayerForm);
+                    ?>
+                        <?php echo $this->renderRegionFieldsets($this->featuredPlayerForm->getFieldsets(), $this->params['action'] == 'add', 'player');?>
+                    <?php echo $this->formHidden($this->featuredPlayerForm->get('type'));?>
+                    <div class="form-actions">
+                        <button type="submit" class="btn blue"><?=$this->translate($this->featuredPlayerForm->get('submit')->getValue());?></button>
+                        <button type="button" class="btn reset"><?php echo $this->translate('Cancel');?></button>
+                    </div>
+                    <?php echo $this->form()->closeTag();?>
+                </div>
+            </div>
+        <!--FEATURED PLAYER ENDS-->
+    <?php endif;?>
+    <?php if (!empty($this->featuredGoalkeeperForm)):?>
+    <!--FEATURED GOALKEEPER STARTS-->
+        <div class="portlet box green">
+            <div class="portlet-title">
+                <h4><i class="icon-reorder"></i><?php echo $this->translate('Featured Goalkeeper');?></h4>
+                <div class="tools">
+                    <a class="collapse" href="javascript:;"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <?php
+                $this->featuredGoalkeeperForm->prepare();
+                $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
+                echo $this->form()->openTag($this->featuredGoalkeeperForm);
+                ?>
+                <?php echo $this->renderRegionFieldsets($this->featuredGoalkeeperForm->getFieldsets(), $this->params['action'] == 'add', 'goalkeeper');?>
+                <?php echo $this->formHidden($this->featuredGoalkeeperForm->get('type'));?>
+                <div class="form-actions">
+                    <button type="submit" class="btn blue"><?=$this->translate($this->featuredGoalkeeperForm->get('submit')->getValue());?></button>
+                    <button type="button" class="btn reset"><?php echo $this->translate('Cancel');?></button>
+                </div>
+                <?php echo $this->form()->closeTag();?>
+            </div>
+        </div>
+    <!--FEATURED GOALKEEPER ENDS-->
+    <?php endif;?>
+    <?php if (!empty($this->featuredPredictionForm)):?>
+        <!--FEATURED PREDICTION STARTS-->
+        <div class="portlet box purple">
+            <div class="portlet-title">
+                <h4><i class="icon-reorder"></i><?php echo $this->translate('Featured Prediction');?></h4>
+                <div class="tools">
+                    <a class="collapse" href="javascript:;"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <?php
+                $this->featuredPredictionForm->prepare();
+                $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
+                echo $this->form()->openTag($this->featuredPredictionForm);
+                ?>
+                <?php echo $this->renderRegionFieldsets($this->featuredPredictionForm->getFieldsets(), $this->params['action'] == 'add', 'prediction');?>
+                <?php echo $this->formHidden($this->featuredPredictionForm->get('type'));?>
+                <div class="form-actions">
+                    <button type="submit" class="btn blue"><?=$this->translate($this->featuredPredictionForm->get('submit')->getValue());?></button>
+                    <button type="button" class="btn reset"><?php echo $this->translate('Cancel');?></button>
+                </div>
+                <?php echo $this->form()->closeTag();?>
+            </div>
+        </div>
+        <!--FEATURED PREDICTION ENDS-->
+    <?php endif;?>
+    <?php if (!empty($this->matchReportForm)):?>
+        <!--MATCH REPORT STARTS-->
+        <div class="portlet box yellow">
+            <div class="portlet-title">
+                <h4><i class="icon-reorder"></i><?php echo $this->translate('Match Report');?></h4>
+                <div class="tools">
+                    <a class="collapse" href="javascript:;"></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <?php
+                $this->matchReportForm->prepare();
+                $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
+                echo $this->form()->openTag($this->matchReportForm);
+                ?>
+                <?php echo $this->renderRegionFieldsets($this->matchReportForm->getFieldsets(), $this->params['action'] == 'add', 'report');?>
+                <?php echo $this->formHidden($this->matchReportForm->get('type'));?>
+                <div class="form-actions">
+                    <button type="submit" class="btn blue"><?=$this->translate($this->matchReportForm->get('submit')->getValue());?></button>
+                    <button type="button" class="btn reset"><?php echo $this->translate('Cancel');?></button>
+                </div>
+                <?php echo $this->form()->closeTag();?>
+            </div>
+        </div>
+        <!--MATCH REPORT ENDS-->
+    <?php endif;?>
+<!--REGIONALISED DATA ENDS-->
+
     <!--ANALYTICS START-->
         <div class="portlet box grey">
         <div class="portlet-title">

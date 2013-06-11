@@ -121,7 +121,7 @@ class LanguagesController extends AbstractActionController
             $languageCodeElement = $languageForm->get('language_code');
             $languageCodeElement->setValue($language->getLanguageCode());
             $languageCodeElement->setAttribute('disabled', 'disabled');
-            $languageForm->getInputFilter()->get('language_code')->setRequired(false);
+
 
             //Display Name
             $displayNameElement = $languageForm->get('display_name');
@@ -131,6 +131,7 @@ class LanguagesController extends AbstractActionController
 
             if ($request->isPost()) {
                 $languageForm->setData($request->getPost());
+                $languageForm->getInputFilter()->get('language_code')->setRequired(false);
                 if ($languageForm->isValid()) {
                     $data = $languageForm->getData();
 

@@ -71,7 +71,7 @@ class PredictController extends AbstractActionController {
 
             //Match report
             $region = $applicationManager->getUserRegion($user);
-            $matchReport = $matchManager->getMatchRgionReport($currentMatch['id'], $region->getId());
+            $matchReport = $matchManager->getMatchRegionReport($currentMatch['id'], $region->getId());
             $utcTime = new \DateTime();
             $startUtcTime = $currentMatch['startTime'];
             if ($startUtcTime < $utcTime)

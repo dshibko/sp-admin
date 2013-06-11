@@ -90,5 +90,17 @@ class PlayerManager extends BasicManager
         return PlayerDAO::getInstance($this->getServiceLocator())->getPlayersByPositions($positions, $hydrate, $skipCache);
     }
 
+    /**
+     * @param array $positions
+     * @param array $teamIds
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return mixed
+     */
+    public function getPlayersByPositionsFromTeams(array $positions, array $teamIds, $hydrate = false, $skipCache = false)
+    {
+        return PlayerDAO::getInstance($this->getServiceLocator())->getPlayersByPositionsFromTeams($positions, $teamIds,$hydrate, $skipCache);
+    }
+
 
 }
