@@ -30,6 +30,16 @@ return array(
                     ),
                 ),
             ),
+            'tables' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/tables[/][table-:table]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Tables',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'fixtures' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -289,6 +299,7 @@ return array(
             'Application\Controller\Fixtures' => 'Application\Controller\FixturesController',
             'Application\Controller\Results' => 'Application\Controller\ResultsController',
             'Application\Controller\Content' => 'Application\Controller\ContentController',
+            'Application\Controller\Tables' => 'Application\Controller\TablesController',
         ),
     ),
     'controller_plugins' => array(
@@ -345,6 +356,10 @@ return array(
             'fixtures' => array(
                 'title' => 'Fixtures',
                 'route' => 'fixtures',
+            ),
+            'tables' => array(
+                'title' => 'League Tables',
+                'route' => 'tables',
             ),
         ),
     ),
