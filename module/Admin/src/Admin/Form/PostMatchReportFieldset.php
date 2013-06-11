@@ -4,7 +4,7 @@ namespace Admin\Form;
 
 use \Neoco\Form\RegionFieldset;
 
-class FeaturedPredictionFieldset extends RegionFieldset
+class PostMatchReportFieldset extends RegionFieldset
 {
     const MAX_TITLE_LENGTH = 255;
 
@@ -13,44 +13,40 @@ class FeaturedPredictionFieldset extends RegionFieldset
 
         parent::__construct($region);
 
-        /*----------------------Featured Prediction Start----------------------*/
-
-        //Predictors name
+        //Title
         $this->add(array(
-            'name' => 'prediction_name',
+            'name' => 'post_match_report_title',
             'type' => 'text',
             'attributes' => array(
                 'maxlength' => self::MAX_TITLE_LENGTH,
             ),
             'options' => array(
-                'label' => 'Predictor Name',
+                'label' => 'Post Match Report Title',
             ),
         ));
 
-        //Prediction
+        //Intro
         $this->add(array(
-            'name' => 'prediction_copy',
+            'name' => 'post_match_report_intro',
             'type' => 'textarea',
-            'attributes' => array(
-            ),
+            'attributes' => array(),
             'options' => array(
-                'label' => 'Prediction',
+                'label' => 'Post Match Report Intro',
             ),
         ));
 
-        //Image
+        //Header Image
         $this->add(array(
-            'name' => 'prediction_image',
+            'name' => 'post_match_report_header_image',
             'type' => 'file',
             'attributes' => array(
                 'isImage' => true,
             ),
             'options' => array(
-                'label' => 'Image of the predictor',
+                'label' => 'Post Match Report Header Image',
             ),
         ));
 
-        /*----------------------Featured Prediction End------------------------*/
 
     }
 
@@ -62,13 +58,9 @@ class FeaturedPredictionFieldset extends RegionFieldset
         $region = $this->getRegion();
         foreach ($match->getMatchRegions() as $matchRegion) {
             if ($matchRegion->getRegion()->getId() == $region['id']) {
-                $featuredPrediction = $matchRegion->getFeaturedPrediction();
-                //Featured Prediction
-                if ($featuredPrediction) {
-                    $this->get('prediction_name')->setValue($featuredPrediction->getName());
-                    $this->get('prediction_copy')->setValue($featuredPrediction->getCopy());
-                    $this->get('prediction_image')->setValue($featuredPrediction->getImagePath());
-                }
+                $this->get('post_match_report_title')->setValue($matchRegion->getPostMatchReportTitle());
+                $this->get('post_match_report_intro')->setValue($matchRegion->getPostMatchReportIntro());
+                $this->get('post_match_report_header_image')->setValue($matchRegion->getPostMatchReportHeaderImagePath());
             }
         }
     }

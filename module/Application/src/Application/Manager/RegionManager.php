@@ -209,4 +209,27 @@ class RegionManager extends BasicManager {
         return $regionsData;
     }
 
+    public function getPostMatchReportRegionsData(array $regionFieldsets)
+    {
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        $regionsData = array();
+        //Prepare regions data
+        foreach ($regionFieldsets as $fieldset) {
+            $region = $fieldset->getRegion();
+            $regionsData[$region['id']] = array(
+                'post_match_report' => array(
+                    'title' => $fieldset->get('post_match_report_title')->getValue(),
+                    'intro' => $fieldset->get('post_match_report_intro')->getValue(),
+                )
+            );
+            $headerImage = $fieldset->get('post_match_report_header_image')->getValue();
+            //TODO resize background
+            $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('post_match_report_header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
+            if ($hImage){
+                $regionsData[$region['id']]['post_match_report']['header_image_path'] = $hImage;
+            }
+        }
+        return $regionsData;
+    }
+
 }

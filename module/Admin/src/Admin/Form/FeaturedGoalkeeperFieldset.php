@@ -6,9 +6,6 @@ use \Neoco\Form\RegionFieldset;
 
 class FeaturedGoalkeeperFieldset extends RegionFieldset
 {
-
-    const FIELD_GROUP_FEATURED_GOALKEEPER = 'featured_goalkeeper';
-
     const MAX_MATCH_STATS_VALUE = 999;
     const MIN_MATCH_STATS_VALUE = 0;
     const MAX_SEASON_PLAYED_MINUTES = 999999;
@@ -35,12 +32,6 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
                 'tabindex' => 6,
                 'style' => 'width:247px',
                 'data-placeholder' => 'Choose Featured Goalkeeper',
-                'fieldgroup' => array(
-                    'type' => 'start',
-                    'color' => 'green',
-                    'title' => 'Featured Goalkeeper',
-                    'name' => self::FIELD_GROUP_FEATURED_GOALKEEPER
-                )
             ),
             'name' => 'featured_goalkeeper',
             'options' => array(
@@ -63,9 +54,6 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
                 ),
                 'digits' => true,
                 'maxlength' => self::MAX_SEASON_SAVES_INPUT_LENGTH,
-                'fieldgroup' => array(
-                    'name' => self::FIELD_GROUP_FEATURED_GOALKEEPER
-                )
             ),
             'options' => array(
                 'label' => 'Number of saves this season',
@@ -82,9 +70,6 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
                     'max' => self::MAX_MATCH_STATS_VALUE
                 ),
                 'digits' => true,
-                'fieldgroup' => array(
-                    'name' => self::FIELD_GROUP_FEATURED_GOALKEEPER
-                )
             ),
             'options' => array(
                 'label' => 'Number of matches played this season (started and as a substitute)',
@@ -102,9 +87,6 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
                     'max' => self::MAX_SEASON_PENALTIES
                 ),
                 'digits' => true,
-                'fieldgroup' => array(
-                    'name' => self::FIELD_GROUP_FEATURED_GOALKEEPER
-                )
             ),
             'options' => array(
                 'label' => 'Number of penalty saves this season',
@@ -116,16 +98,12 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
             'name' => 'goalkeeper_clean_sheets',
             'type' => 'text',
             'attributes' => array(
-                'fieldgroup' => array(
-                    'maxlength' => self::MAX_INPUT_LENGTH,
-                    'between' => array(
-                        'min' => self::MIN_MATCH_STATS_VALUE,
-                        'max' => self::MAX_MATCH_STATS_VALUE
-                    ),
-                    'digits' => true,
-                    'type' => 'end',
-                    'name' => self::FIELD_GROUP_FEATURED_GOALKEEPER
-                )
+                'maxlength' => self::MAX_INPUT_LENGTH,
+                'between' => array(
+                    'min' => self::MIN_MATCH_STATS_VALUE,
+                    'max' => self::MAX_MATCH_STATS_VALUE
+                ),
+                'digits' => true,
             ),
             'options' => array(
                 'label' => 'Number of clean sheets this season',

@@ -111,6 +111,9 @@
 <!--                    </div>-->
                 </div>
             </section>
+            <!--POST MATCH REPORT START-->
+            <?php echo $this->partial('partials/post-match-report', array('report' => $this->matchReport));?>
+            <!--POST MATCH REPORT END-->
         <?php else: ?>
             <?= $this->renderMessages(); ?>
         <?php endif; ?>

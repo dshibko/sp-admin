@@ -27,13 +27,12 @@ class ResultsController extends AbstractActionController {
         $matchManager = MatchManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
         $translator = $this->getServiceLocator()->get('translator');
-
+        $matchReport = array();
         $currentMatch = $breakpoints = array();
         $back = $playedMatches = 0;
         $firstView = false;
 
         try {
-
             $back = (int) $this->params()->fromRoute('back', 0);
 
             $user = $applicationManager->getCurrentUser();
@@ -55,6 +54,9 @@ class ResultsController extends AbstractActionController {
             if ($currentMatch == null)
                 throw new \Exception($translator->translate(MessagesConstants::ERROR_MATCH_NOT_FOUND));
 
+            //Match report
+            $region = $applicationManager->getUserRegion($user);
+            $matchReport = $matchManager->getPostMatchRegionReport($currentMatch['id'], $region->getId());
             $predictionPlayers = $currentMatch['prediction']['predictionPlayers'];
             $predictionPlayersCount = 0;
             foreach ($predictionPlayers as $predictionPlayer)
@@ -156,6 +158,7 @@ class ResultsController extends AbstractActionController {
         return array(
             'current' => $currentMatch,
             'back' => $back,
+            'matchReport' => $matchReport,
             'maxBack' => $playedMatches - 1,
             'breakpoints' => $breakpoints,
             'firstResultView' => $firstView,

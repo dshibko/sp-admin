@@ -6,10 +6,6 @@ use \Neoco\Form\RegionFieldset;
 
 class FeaturedPlayerFieldset extends RegionFieldset
 {
-
-    const FIELD_GROUP_FEATURED_PLAYER = 'featured_player';
-
-
     const MAX_MATCH_STATS_VALUE = 999;
     const MIN_MATCH_STATS_VALUE = 0;
     const MAX_SEASON_PLAYED_MINUTES = 999999;
@@ -27,12 +23,6 @@ class FeaturedPlayerFieldset extends RegionFieldset
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                'fieldgroup' => array(
-                    'type' => 'start',
-                    'title' => 'Featured Player',
-                    'name' => self::FIELD_GROUP_FEATURED_PLAYER,
-                    'color' => 'red'
-                ),
                 'class' => 'chosen',
                 'tabindex' => 6,
                 'style' => 'width:247px',
@@ -59,9 +49,6 @@ class FeaturedPlayerFieldset extends RegionFieldset
                     'max' => self::MAX_MATCH_STATS_VALUE
                 ),
                 'digits' => true,
-                'fieldgroup' => array(
-                    'name' => self::FIELD_GROUP_FEATURED_PLAYER
-                ),
             ),
             'options' => array(
                 'label' => 'Number of goals scored this season',
@@ -78,9 +65,6 @@ class FeaturedPlayerFieldset extends RegionFieldset
                     'max' => self::MAX_MATCH_STATS_VALUE
                 ),
                 'digits' => true,
-                'fieldgroup' => array(
-                    'name' => self::FIELD_GROUP_FEATURED_PLAYER
-                ),
             ),
             'options' => array(
                 'label' => 'Number of matches played this season (started and as a substitute)',
@@ -98,9 +82,6 @@ class FeaturedPlayerFieldset extends RegionFieldset
                     'max' => self::MAX_MATCH_STATS_VALUE
                 ),
                 'digits' => true,
-                'fieldgroup' => array(
-                    'name' => self::FIELD_GROUP_FEATURED_PLAYER
-                ),
             ),
             'options' => array(
                 'label' => 'Number of match starts this season',
@@ -118,10 +99,6 @@ class FeaturedPlayerFieldset extends RegionFieldset
                     'max' => self::MAX_SEASON_PLAYED_MINUTES
                 ),
                 'digits' => true,
-                'fieldgroup' => array(
-                    'name' => self::FIELD_GROUP_FEATURED_PLAYER,
-                    'type' => 'end'
-                )
             ),
             'options' => array(
                 'label' => 'Total number of minutes played this season',

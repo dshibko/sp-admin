@@ -6,7 +6,6 @@ use \Neoco\Form\RegionFieldset;
 
 class PreMatchReportFieldset extends RegionFieldset
 {
-    const FIELD_GROUP_MATCH_REPORT = 'match_report';
     const MAX_TITLE_LENGTH = 255;
 
     public function __construct($region)
@@ -20,12 +19,6 @@ class PreMatchReportFieldset extends RegionFieldset
             'type' => 'text',
             'attributes' => array(
                 'maxlength' => self::MAX_TITLE_LENGTH,
-                'fieldgroup' => array(
-                    'type' => 'start',
-                    'color' => 'yellow',
-                    'title' => 'Match Report',
-                    'name' => self::FIELD_GROUP_MATCH_REPORT
-                )
             ),
             'options' => array(
                 'label' => 'Title',
@@ -37,9 +30,6 @@ class PreMatchReportFieldset extends RegionFieldset
             'name' => 'pre_match_report_intro',
             'type' => 'textarea',
             'attributes' => array(
-                'fieldgroup' => array(
-                    'name' => self::FIELD_GROUP_MATCH_REPORT
-                )
             ),
             'options' => array(
                 'label' => 'Intro',
@@ -52,10 +42,6 @@ class PreMatchReportFieldset extends RegionFieldset
             'type' => 'file',
             'attributes' => array(
                 'isImage' => true,
-                'fieldgroup' => array(
-                    'type' => 'end',
-                    'name' => self::FIELD_GROUP_MATCH_REPORT
-                )
             ),
             'options' => array(
                 'label' => 'Header Image',
