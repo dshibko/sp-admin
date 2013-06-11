@@ -25,20 +25,22 @@ $(document).ready(function () {
 });
 
 var plots = [];
-
-plots.push($.plot('#chart_top5',
-    topScoresData, {
-    series: {
-        pie: {
-            innerRadius: 0.4,
-            stroke: {color: '#f2e1e7', width: 0},
-            show: true,
-            label: {
-                show: false
+if (window.topScoresData !== undefined){
+    plots.push($.plot('#chart_top5',
+        window.topScoresData, {
+            series: {
+                pie: {
+                    innerRadius: 0.4,
+                    stroke: {color: '#f2e1e7', width: 0},
+                    show: true,
+                    label: {
+                        show: false
+                    }
+                }
             }
-        }
-    }
-}));
+    }));
+
+}
 
 
 
