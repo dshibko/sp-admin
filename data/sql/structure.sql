@@ -682,3 +682,7 @@ ENGINE=InnoDB
 ROW_FORMAT=DEFAULT;
 
 ALTER TABLE `match_region`  ADD COLUMN `featured_prediction_id` INT(11) NULL DEFAULT NULL AFTER `featured_goalkeeper_id`,  ADD INDEX `featured_prediction_id` (`featured_prediction_id`),  ADD CONSTRAINT `FK_match_region_featured_prediction` FOREIGN KEY (`featured_prediction_id`) REFERENCES `featured_prediction` (`id`);
+
+-- okh 11.06
+
+ALTER TABLE `match_region`  ADD COLUMN `display_featured_player` TINYINT(1) NULL DEFAULT NULL AFTER `header_image_path`;

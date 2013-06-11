@@ -1,46 +1,48 @@
-var $container = $('#container');
-$container.imagesLoaded(function(){
-  $container.masonry({
-    itemSelector : '.item',
-    columnWidth : function( containerWidth ) {
-                    return containerWidth / 3;
-                  },
-    // isAnimated: true,
-    isResizable: true,
-    isFitWidth: true
-  });
+$(document).ready(function () {
+        var gridFluid = function (size) {
+            //console.log(size);
+            $('#container').masonry( 'destroy' );
+            $('#container').masonry({
+                itemSelector: '.item',
+                // isFitWidth: true,
+                columnWidth: function (containerWidth) {
+                    return containerWidth / size;
+                }
+            });
+        }
+        if ($(window).width() > 767){
+            gridFluid(3);
+        } else {
+            gridFluid(2);
+        }
+        $(window).on('resize', function () {
+            if ($(this).width() > 767) {
+                gridFluid(3);
+            } else {
+                gridFluid(2);
+            }
+        });
 });
 
+var plots = [];
 
-// var $container = $('#container');
-// $container.imagesLoaded(function () {
-//     $(window).resize(function () {
-//         if ($(window).width() > 767) {
-//             $container.masonry({
-//                 itemSelector: '.item',
-//                 columnWidth: function (containerWidth) {
-//                     return containerWidth / 3;
-//                 },
-//                 // isAnimated: true,
-//                 isResizable: true,
-//                 isFitWidth: true
-//             });
-//         }
-//         else {
-//             $container.masonry({
-//                 itemSelector: '.item',
-//                 columnWidth: function (containerWidth) {
-//                     return containerWidth / 2;
-//                 },
-//                 // isAnimated: true,
-//                 isResizable: true,
-//                 isFitWidth: true
-//             });
-//         }
-//     });
-// });
+plots.push($.plot('#chart_top5',
+    topScoresData, {
+    series: {
+        pie: {
+            innerRadius: 0.4,
+            stroke: {color: '#f2e1e7', width: 0},
+            show: true,
+            label: {
+                show: false
+            }
+        }
+    }
+}));
 
-$.plot('#chart-head-to-head-results', 
+
+
+plots.push($.plot('#chart-head-to-head-results',
     [
       {color: '#363636', data: 530},
       {color: '#144a9b', data: 193},
@@ -66,10 +68,10 @@ $.plot('#chart-head-to-head-results',
             show: false
         }
     }
-);
+));
 
 
-$.plot('#chart-away-form', 
+plots.push($.plot('#chart-away-form', 
     [
       {color: '#363636', data: 53},
       {color: '#144a9b', data: 41},
@@ -95,10 +97,10 @@ $.plot('#chart-away-form',
             show: false
         }
     }
-);
+));
 
 
-$.plot('#chart-home-form', 
+plots.push($.plot('#chart-home-form', 
     [
       {color: '#363636', data: 53},
       {color: '#144a9b', data: 41},
@@ -124,7 +126,19 @@ $.plot('#chart-home-form',
             show: false
         }
     }
-);
+));
 
-
-
+$(window).on('resize', function() {
+    for (var i = plots.length - 1; i >= 0; i--) {
+        plots[i].resize();
+        plots[i].setupGrid();
+        plots[i].draw();
+    };
+});
+// $(function() {
+//     for (var i = plots.length - 1; i >= 0; i--) {
+//         plots[i].resize();
+//         plots[i].setupGrid();
+//         plots[i].draw();
+//     }
+// });

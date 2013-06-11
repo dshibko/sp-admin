@@ -52,7 +52,7 @@ class MessagesConstants
     const ERROR_CANNOT_FIND_FIXTURE = 'Cannot find fixture';
     const ERROR_INVALID_USER_ID = 'Invalid user id';
     const ERROR_CANNOT_FIND_USER = 'Cannot find user';
-
+    const ERROR_INVALID_FORM_TYPE = 'Invalid form type';
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";

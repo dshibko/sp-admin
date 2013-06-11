@@ -7,14 +7,15 @@ use \Zend\Form\Fieldset;
 abstract class UploadableFieldset extends Fieldset implements \Zend\InputFilter\InputFilterProviderInterface {
 
     public function getInputFilterSpecification($inputSpec = array()) {
-
+    
         foreach ($this->getElements() as $element) {
             if ($element->getAttribute('isImage')) {
                 $imageData = $element->getValue();
-                if ($imageData['stored'] == 1)
+                if ($imageData['stored'] == 1){
                     $validators = array('required' => false);
-                else
+                }else{
                     $validators['validators'] = array(array('name' => 'fileisimage'));
+                }
                 $inputSpec[$element->getName()] = array_merge($inputSpec[$element->getName()], $validators);
             }
             if ($element->getAttribute('maxlength')){

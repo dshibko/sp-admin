@@ -192,9 +192,17 @@ class MatchManager extends BasicManager
                     $matchRegion = $matchRegions->get($reportKey);
                 }
 
+                //Set match report
+                if (!empty($regionRow['match_report'])){
+                    $matchRegion->setTitle($regionRow['match_report']['title'])
+                        ->setIntro($regionRow['match_report']['intro']);
+                    //Set header image
+                    if (!empty($regionRow['match_report']['header_image_path'])) {
+                        $imageManager->deleteImage($matchRegion->getHeaderImagePath());
+                        $matchRegion->setHeaderImagePath($regionRow['match_report']['header_image_path']);
+                    }
+                }
 
-                $matchRegion->setTitle($regionRow['title'])
-                    ->setIntro($regionRow['intro']);
 
                 //Set Featured Player
                 if (!empty($regionRow['featured_player'])) {
@@ -248,13 +256,6 @@ class MatchManager extends BasicManager
                     $featuredPredictionDAO->save($featuredPrediction, false, false);
                     $matchRegion->setFeaturedPrediction($featuredPrediction);
                 }
-
-                //Set header image
-                if (!empty($regionRow['header_image_path'])) {
-                    $imageManager->deleteImage($matchRegion->getHeaderImagePath());
-                    $matchRegion->setHeaderImagePath($regionRow['header_image_path']);
-                }
-
                 $matchRegionDAO->save($matchRegion, false, false);
             }
 
@@ -359,20 +360,19 @@ class MatchManager extends BasicManager
         $matchRegion = $matchRegionDAO->getMatchRegionByMatchIdAndRegionId($matchId, $regionId);
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
         $match = null;
-
         if (!is_null($matchRegion)) {
 
             //Match report title
             $title = $matchRegion->getTitle();
-            $report['title'] = !empty($title) ? $title : '';//TODO get default title
+            $report['title'] = !empty($title) ? $title : '';
 
             //Match report intro
             $intro = $matchRegion->getIntro();
-            $report['intro'] = !empty($intro) ? $intro : '';//TODO get default intro
+            $report['intro'] = !empty($intro) ? $intro : '';
 
             //Match report header image
             $headerImage =  $matchRegion->getHeaderImagePath();
-            $report['headerImage'] = !empty($headerImage) ? $headerImage : ''; //TODO get default header image
+            $report['headerImage'] = !empty($headerImage) ? $headerImage : '';
 
             //Match report featured player
             $featuredPlayer = $matchRegion->getFeaturedPlayer();
@@ -383,7 +383,8 @@ class MatchManager extends BasicManager
                     'matchesPlayed' => (int)$featuredPlayer->getMatchesPlayed(),
                     'matchStarts' => (int)$featuredPlayer->getMatchStarts(),
                     'minutesPlayed' => (int)$featuredPlayer->getMinutesPlayed(),
-                    'backgroundImage' => $featuredPlayer->getPlayer()->getBackgroundImagePath()//TODO get default if
+                    'backgroundImage' => $featuredPlayer->getPlayer()->getBackgroundImagePath(),
+                    'avatarImage' => $featuredPlayer->getPlayer()->getImagePath()
                 );
             }
 
@@ -396,7 +397,8 @@ class MatchManager extends BasicManager
                     'matchesPlayed' => (int)$featuredGoalkeeper->getMatchesPlayed(),
                     'penaltySaves' => (int)$featuredGoalkeeper->getPenaltySaves(),
                     'cleanSheets' => (int)$featuredGoalkeeper->getCleanSheets(),
-                    'backgroundImage' => $featuredGoalkeeper->getPlayer()->getBackgroundImagePath()//TODO get default if
+                    'backgroundImage' => $featuredGoalkeeper->getPlayer()->getBackgroundImagePath(),
+                    'avatarImage' => $featuredGoalkeeper->getPlayer()->getImagePath()
                 );
             }
 
@@ -411,6 +413,30 @@ class MatchManager extends BasicManager
              }
 
             $match = $matchRegion->getMatch();
+
+            //Check featured player or goalkeeper to display
+            if (is_null($matchRegion->getDisplayFeaturedPlayer())){
+                if (!empty($report['featuredGoalkeeper']) && !empty($report['featuredPlayer'])){
+                    $displayFeaturedPlayer = rand(0,1);
+                    $matchRegions = $match->getMatchRegions();
+                    foreach($matchRegions as $mRegion){
+                        $mRegion->setDisplayFeaturedPlayer($displayFeaturedPlayer);
+                        $matchRegionDAO->save($mRegion, false,false);
+                    }
+                    $matchRegionDAO->flush();
+                    $matchRegionDAO->clearCache();
+                }
+            }
+            //Display only featured player or featured goalkeeper
+            if ($matchRegion->getDisplayFeaturedPlayer()){
+                  if (isset($report['featuredGoalkeeper'])){
+                      unset($report['featuredGoalkeeper']);
+                  }
+            }elseif (!is_null($matchRegion->getDisplayFeaturedPlayer())){
+                if (isset($report['featuredPlayer'])){
+                    unset($report['featuredPlayer']);
+                }
+            }
         }
 
         if (is_null($match)){
@@ -428,7 +454,8 @@ class MatchManager extends BasicManager
                     $scorers[$scorer['player_name']] = round( ($scorer['scorers_count'] / $matchPredictionPlayersCount) * 100);
                 }
                 $report['topScorers'] = array(
-                    'backgroundImage' => $topScorers[0]['backgroundImagePath'],//Get background image of top scorer TODO or default
+                    'backgroundImage' => $topScorers[0]['backgroundImagePath'],//Get background image of top scorer
+                    'avatarImage' =>  $topScorers[0]['imagePath'],
                     'scorers' => $scorers
                 );
             }
@@ -445,24 +472,21 @@ class MatchManager extends BasicManager
             }
         }
 
+
         return $report;
     }
 
-    public function getGroupedFieldsetFields($fieldsets)
+    public function getFieldsetWithPlayers(array $fieldsets, array $teamIds, array $positions, $fieldName)
     {
-        $groupedFieldsetFields = array();
-        if (!empty($fieldsets)){
-            foreach($fieldsets as $fieldset){
-                $data = array();
-                foreach($fieldset->getElements() as $element){
-                    $fieldgroup = $element->getAttribute('fieldgroup');
-                    if (!empty($fieldgroup['name'])){
-                        $data[$fieldgroup['name']][] = $element->getName();
-                    }
-                }
-                $groupedFieldsetFields[$fieldset->getName()] = $data;
+        $playerManager = PlayerManager::getInstance($this->getServiceLocator());
+        $players = $playerManager->getInstance($this->getServiceLocator())->getPlayersByPositionsFromTeams($positions, $teamIds, true);
+        $playersOptions = $playerManager->getPlayersSelectOptions($players);
+        foreach($fieldsets as &$fieldset){
+            if ($fieldset->has($fieldName)){
+                $fieldset->get($fieldName)->setValueOptions($playersOptions);
             }
         }
-        return $groupedFieldsetFields;
+        unset($fieldset);
+        return $fieldsets;
     }
 }

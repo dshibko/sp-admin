@@ -24,8 +24,9 @@ $(document).ready(function () {
         });
     });
 
+var plots = [];
 
-$.plot('#chart_top5', 
+plots.push($.plot('#chart_top5', 
     [
       {color: '#a01749', data: 10},
       {color: '#b2466e', data: 20},
@@ -37,14 +38,17 @@ $.plot('#chart_top5',
         pie: {
             innerRadius: 0.4,
             stroke: {color: '#f2e1e7', width: 0},
-            show: true
+            show: true,
+             label: {
+                show: false
+            }
         }
     }
-});
+}));
 
 
 
-$.plot('#chart-head-to-head-results', 
+plots.push($.plot('#chart-head-to-head-results', 
     [
       {color: '#363636', data: 530},
       {color: '#144a9b', data: 193},
@@ -70,10 +74,10 @@ $.plot('#chart-head-to-head-results',
             show: false
         }
     }
-);
+));
 
 
-$.plot('#chart-away-form', 
+plots.push($.plot('#chart-away-form', 
     [
       {color: '#363636', data: 53},
       {color: '#144a9b', data: 41},
@@ -99,10 +103,10 @@ $.plot('#chart-away-form',
             show: false
         }
     }
-);
+));
 
 
-$.plot('#chart-home-form', 
+plots.push($.plot('#chart-home-form', 
     [
       {color: '#363636', data: 53},
       {color: '#144a9b', data: 41},
@@ -128,7 +132,19 @@ $.plot('#chart-home-form',
             show: false
         }
     }
-);
+));
 
-
-
+$(window).on('resize', function() {
+    for (var i = plots.length - 1; i >= 0; i--) {
+        plots[i].resize();
+        plots[i].setupGrid();
+        plots[i].draw();
+    };
+});
+// $(function() {
+//     for (var i = plots.length - 1; i >= 0; i--) {
+//         plots[i].resize();
+//         plots[i].setupGrid();
+//         plots[i].draw();
+//     }
+// });

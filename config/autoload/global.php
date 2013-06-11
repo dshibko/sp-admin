@@ -59,4 +59,9 @@ return array(
                               user_work_history,
                               publish_actions',
     'default_club_logo' => '/img/club-logo.png',
+    'default_match_report_title' => 'Match Report',
+    'default_match_report_intro' => 'This is default match report intro',
+    'default_match_report_header_image' => '/img/match-report.png',
+    'default_player_background' => '/img/default-player-bg.png',
+    'default_player_avatar' => '/img/default-player-avatar.jpg'
 );
