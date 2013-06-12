@@ -67,4 +67,7 @@ return array(
     'default_post_match_report_header_image' => '/img/match-report.png',
     'default_player_background' => '/img/default-player-bg.png',
     'default_player_avatar' => '/img/default_player.png',
+    'move_up_image_source' => '/img/up.png',
+    'move_down_image_source'  => '/img/down.png',
+    'same_image_source' => '/img/dash.png'
 );

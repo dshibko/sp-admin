@@ -86,10 +86,10 @@ $this->headTitle($this->title);
                 <div class="portlet-title">
                     <h4><i class="icon-reorder"></i><?php echo $this->translate('Featured Player');?></h4>
                     <div class="tools">
-                        <a class="collapse" href="javascript:;"></a>
+                        <a class="expand" href="javascript:;"></a>
                     </div>
                 </div>
-                <div class="portlet-body">
+                <div class="portlet-body" style="display:none;">
                     <?php
                     $this->featuredPlayerForm->prepare();
                     $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
@@ -112,10 +112,10 @@ $this->headTitle($this->title);
             <div class="portlet-title">
                 <h4><i class="icon-reorder"></i><?php echo $this->translate('Featured Goalkeeper');?></h4>
                 <div class="tools">
-                    <a class="collapse" href="javascript:;"></a>
+                    <a class="expand" href="javascript:;"></a>
                 </div>
             </div>
-            <div class="portlet-body">
+            <div class="portlet-body" style="display:none;">
                 <?php
                 $this->featuredGoalkeeperForm->prepare();
                 $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
@@ -138,10 +138,10 @@ $this->headTitle($this->title);
             <div class="portlet-title">
                 <h4><i class="icon-reorder"></i><?php echo $this->translate('Featured Prediction');?></h4>
                 <div class="tools">
-                    <a class="collapse" href="javascript:;"></a>
+                    <a class="expand" href="javascript:;"></a>
                 </div>
             </div>
-            <div class="portlet-body">
+            <div class="portlet-body" style="display:none;">
                 <?php
                 $this->featuredPredictionForm->prepare();
                 $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
@@ -164,10 +164,10 @@ $this->headTitle($this->title);
             <div class="portlet-title">
                 <h4><i class="icon-reorder"></i><?php echo $this->translate('Pre Match Report Info');?></h4>
                 <div class="tools">
-                    <a class="collapse" href="javascript:;"></a>
+                    <a class="expand" href="javascript:;"></a>
                 </div>
             </div>
-            <div class="portlet-body">
+            <div class="portlet-body" style="display:none;">
                 <?php
                 $this->preMatchReportForm->prepare();
                 $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
@@ -190,10 +190,10 @@ $this->headTitle($this->title);
         <div class="portlet-title">
             <h4><i class="icon-reorder"></i><?php echo $this->translate('Post Match Report Info');?></h4>
             <div class="tools">
-                <a class="collapse" href="javascript:;"></a>
+                <a class="expand" href="javascript:;"></a>
             </div>
         </div>
-        <div class="portlet-body">
+        <div class="portlet-body" style="display:none;">
             <?php
             $this->postMatchReportForm->prepare();
             $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
@@ -217,10 +217,10 @@ $this->headTitle($this->title);
         <div class="portlet-title">
             <h4><i class="icon-reorder"></i><?php echo $this->translate('Prediction Analytics');?></h4>
             <div class="tools">
-                <a class="collapse" href="javascript:;"></a>
+                <a class="expand" href="javascript:;"></a>
             </div>
         </div>
-        <div class="portlet-body">
+        <div class="portlet-body" style="display:none;">
             <dl>
                 <dt><?php echo $this->translate('Total number of predictions');?></dt>
                 <dd><?php echo (!empty($this->analytics['predictions_number']) ? $this->analytics['predictions_number'] : 0);?></dd>

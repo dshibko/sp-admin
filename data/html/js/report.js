@@ -144,10 +144,3 @@ $(window).on('resize', function() {
         plots[i].draw();
     };
 });
-// $(function() {
-//     for (var i = plots.length - 1; i >= 0; i--) {
-//         plots[i].resize();
-//         plots[i].setupGrid();
-//         plots[i].draw();
-//     }
-// });

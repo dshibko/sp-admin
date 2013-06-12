@@ -164,7 +164,7 @@ class PredictionDAO extends AbstractDAO {
      * @return mixed
      * @throws \Exception
      */
-    public function getUsersCountWithCorrectScore(array $predictionIds, $skipCache = false)
+    public function getPredictionsCorrectScoreCount(array $predictionIds, $skipCache = false)
     {
         if (empty($predictionIds)){
             throw new \Exception('Empty prediction ids');
@@ -338,6 +338,25 @@ class PredictionDAO extends AbstractDAO {
                 WHERE NOT EXISTS(SELECT 1 FROM prediction p WHERE p.match_id = mt.id AND p.user_id = ' . $userId . ')
              ', $rsm);
         return $query->getSingleScalarResult();
+    }
+
+    public function getCorrectScorersPredictionsCount(array $predictionIds, array $scorersIds, $hydrate = true, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('
+            COUNT(pp.playerId) as scorers_count,
+            pl.displayName as player_name,
+            pl.backgroundImagePath,
+            pl.imagePath
+        ');
+        $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
+        $qb->join('pp.player','pl');
+        $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
+        $qb->andWhere($qb->expr()->in('pp.playerId',':playerIds'))->setParameter('playerIds', $scorersIds);
+        $qb->groupBy('pp.playerId');
+        $qb->orderBy('scorers_count','DESC');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
 }
