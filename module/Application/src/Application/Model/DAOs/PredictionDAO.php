@@ -94,7 +94,8 @@ class PredictionDAO extends AbstractDAO {
             COUNT(pp.playerId) as scorers_count,
             t.displayName as team_name,
             pl.displayName as player_name,
-            pl.backgroundImagePath
+            pl.backgroundImagePath,
+            pl.imagePath
         ');
         $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
         $qb->join('pp.player','pl');

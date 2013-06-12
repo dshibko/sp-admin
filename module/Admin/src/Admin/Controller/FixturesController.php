@@ -20,8 +20,8 @@ use \Application\Manager\PlayerManager;
 use \Admin\Form\FeaturedPlayerForm;
 use \Admin\Form\FeaturedGoalkeeperForm;
 use \Admin\Form\FeaturedPredictionForm;
-use \Admin\Form\MatchReportForm;
-
+use \Admin\Form\PreMatchReportForm;
+use \Admin\Form\PostMatchReportForm;
 
 class FixturesController extends AbstractActionController
 {
@@ -30,7 +30,8 @@ class FixturesController extends AbstractActionController
     const FEATURED_PLAYER_FORM_TYPE = 'featured_player';
     const FEATURED_GOALKEEPER_FORM_TYPE = 'featured_goalkeeper';
     const FEATURED_PREDICTION_FORM_TYPE = 'featured_prediction';
-    const MATCH_REPORT_FORM_TYPE = 'match_report';
+    const PRE_MATCH_REPORT_FORM_TYPE = 'pre_match_report';
+    const POST_MATCH_REPORT_FORM_TYPE = 'post_match_report';
 
     public function indexAction()
     {
@@ -109,6 +110,13 @@ class FixturesController extends AbstractActionController
         $matchManager = MatchManager::getInstance($this->serviceLocator);
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         $regionManager = RegionManager::getInstance($this->getServiceLocator());
+
+        $form = new FixtureForm(array(), self::FIXTURE_FORM_TYPE);
+        $featuredPlayerForm = new FeaturedPlayerForm(array(), self::FEATURED_PLAYER_FORM_TYPE);
+        $featuredGoalkeeperForm = new FeaturedGoalkeeperForm(array(),self::FEATURED_GOALKEEPER_FORM_TYPE);
+        $featuredPredictionForm = new FeaturedPredictionForm(array(), self::FEATURED_PREDICTION_FORM_TYPE);
+        $preMatchReportForm = new PreMatchReportForm(array(),self::PRE_MATCH_REPORT_FORM_TYPE);
+        $postMatchReportForm = new PostMatchReportForm(array(), self::POST_MATCH_REPORT_FORM_TYPE);
         try {
             $fixture = $matchManager->getMatchById($fixtureId);
             if (is_null($fixture)) {
@@ -127,14 +135,15 @@ class FixturesController extends AbstractActionController
 
             $featuredPredictionRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedPredictionFieldset');
 
-            $matchReportRegions = $regionManager->getRegionsFieldsets('\Admin\Form\MatchReportFieldset');
+            $preMatchReportRegions = $regionManager->getRegionsFieldsets('\Admin\Form\PreMatchReportFieldset');
+            $postMatchReportRegions = $regionManager->getRegionsFieldsets('\Admin\Form\PostMatchReportFieldset');
 
             $form = new FixtureForm($teamManager->getTeamsSelectOptions(), self::FIXTURE_FORM_TYPE);
             $featuredPlayerForm = new FeaturedPlayerForm($featuredPlayerRegions, self::FEATURED_PLAYER_FORM_TYPE);
             $featuredGoalkeeperForm = new FeaturedGoalkeeperForm($featuredGoalkeeperRegions,self::FEATURED_GOALKEEPER_FORM_TYPE);
             $featuredPredictionForm = new FeaturedPredictionForm($featuredPredictionRegions, self::FEATURED_PREDICTION_FORM_TYPE);
-            $matchReportForm = new MatchReportForm($matchReportRegions,self::MATCH_REPORT_FORM_TYPE);
-
+            $preMatchReportForm = new PreMatchReportForm($preMatchReportRegions,self::PRE_MATCH_REPORT_FORM_TYPE);
+            $postMatchReportForm = new PostMatchReportForm($postMatchReportRegions, self::POST_MATCH_REPORT_FORM_TYPE);
 
             $params = array(
                 'fixture' => $fixture->getId(),
@@ -231,16 +240,29 @@ class FixturesController extends AbstractActionController
                         }
                         break;
                     }
-                    case self::MATCH_REPORT_FORM_TYPE :{
-                        $matchReportForm->setData($post);
-                        $this->setRequiredFormFieldsets($matchReportForm);
-                        if ($matchReportForm->isValid()){
-                            $regionsData = $regionManager->getMatchReportRegionsData($matchReportRegions);
+                    case self::PRE_MATCH_REPORT_FORM_TYPE :{
+                        $preMatchReportForm->setData($post);
+                        $this->setRequiredFormFieldsets($preMatchReportForm);
+                        if ($preMatchReportForm->isValid()){
+                            $regionsData = $regionManager->getPreMatchReportRegionsData($preMatchReportRegions);
                             $matchManager->save($fixture,$regionsData);
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                             return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
                         }else{
-                            $matchReportForm->handleErrorMessages($matchReportForm->getMessages(), $this->flashMessenger());
+                            $preMatchReportForm->handleErrorMessages($preMatchReportForm->getMessages(), $this->flashMessenger());
+                        }
+                        break;
+                    }
+                    case self::POST_MATCH_REPORT_FORM_TYPE :{
+                        $postMatchReportForm->setData($post);
+                        $this->setRequiredFormFieldsets($postMatchReportForm);
+                        if ($postMatchReportForm->isValid()){
+                            $regionsData = $regionManager->getPostMatchReportRegionsData($postMatchReportRegions);
+                            $matchManager->save($fixture,$regionsData);
+                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
+                            return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
+                        }else{
+                            $postMatchReportForm->handleErrorMessages($postMatchReportForm->getMessages(), $this->flashMessenger());
                         }
                         break;
                     }
@@ -254,7 +276,8 @@ class FixturesController extends AbstractActionController
             $featuredPlayerForm->initForm($fixture);
             $featuredGoalkeeperForm->initForm($fixture);
             $featuredPredictionForm->initForm($fixture);
-            $matchReportForm->initForm($fixture);
+            $preMatchReportForm->initForm($fixture);
+            $postMatchReportForm->initForm($fixture);
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -265,7 +288,8 @@ class FixturesController extends AbstractActionController
             'featuredPlayerForm' => $featuredPlayerForm,
             'featuredGoalkeeperForm' => $featuredGoalkeeperForm,
             'featuredPredictionForm' => $featuredPredictionForm,
-            'matchReportForm' => $matchReportForm,
+            'preMatchReportForm' => $preMatchReportForm,
+            'postMatchReportForm' => $postMatchReportForm,
             'params' => $params,
             'title' => 'Edit Fixture',
             'isBlocked' => $isBlocked,
@@ -280,7 +304,6 @@ class FixturesController extends AbstractActionController
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
-        $regionManager = RegionManager::getInstance($this->getServiceLocator());
         $form = new FixtureForm($teamManager->getTeamsSelectOptions(), self::FIXTURE_FORM_TYPE);
         try {
             $params = array(

@@ -166,4 +166,25 @@ class LeagueManager extends BasicManager {
         $leagueDAO->save($league);
     }
 
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getTemporalLeagues($region, $hydrate = false, $skipCache = false) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getTemporalLeagues($region, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param int $leagueId
+     * @param int $top
+     * @return array
+     */
+    public function getLeagueTop($leagueId, $top) {
+        $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
+        return $leagueUserDAO->getLeagueTop($leagueId, $top);
+    }
+
 }

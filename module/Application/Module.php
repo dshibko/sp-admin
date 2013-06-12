@@ -96,6 +96,10 @@ class Module
                     $e->stopPropagation();
                     return false;
                 }
+                // TODO to remove next 3 lines
+                if ($response->getStatusCode() == \Zend\Http\Response::STATUS_CODE_404) {
+                    die;
+                }
             }
         }
         return true;

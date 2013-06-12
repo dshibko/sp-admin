@@ -141,7 +141,7 @@
                 </div>
             </section>
             <!--MATCH REPORT START-->
-                <?php echo $this->partial('partials/match-report', array('report' => $this->matchReport));?>
+                <?php echo $this->partial('partials/pre-match-report', array('report' => $this->matchReport));?>
             <!--MATCH REPORT END-->
         <?php else: ?>
             <?= $this->renderMessages(); ?>

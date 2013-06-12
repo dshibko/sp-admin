@@ -7,6 +7,7 @@ use \Application\Model\Entities\League;
 use \Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use Doctrine\ORM\Query\Expr;
 
 class LeagueDAO extends AbstractDAO {
 
@@ -73,6 +74,21 @@ class LeagueDAO extends AbstractDAO {
     }
 
     /**
+     * @param \Application\Model\Entities\Season $season
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getGlobalLeague($season, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l')
+            ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::GLOBAL_TYPE)
+            ->andWhere($qb->expr()->eq('l.season', $season->getId()));
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
@@ -102,6 +118,24 @@ class LeagueDAO extends AbstractDAO {
     }
 
     /**
+     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Region $region
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getRegionalLeague($season, $region, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.regions','r')
+            ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::REGIONAL_TYPE)
+            ->andWhere($qb->expr()->eq('r.id', $region->getId()))
+            ->andWhere($qb->expr()->eq('l.season', $season->getId()));
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
      * @param \Application\Model\Entities\Region $region
      * @param bool $hydrate
      * @param bool $skipCache
@@ -114,6 +148,22 @@ class LeagueDAO extends AbstractDAO {
             ->join('l.regions','r')
             ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::REGIONAL_TYPE)
             ->andWhere($qb->expr()->eq('r.id', $region->getId()));
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getTemporalLeagues($region, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l.id, lr.displayName')
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.leagueRegions','lr', Expr\Join::WITH, 'lr.region = ' . $region->getId())
+            ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::MINI_TYPE)
+            ->orderBy('l.endDate', 'DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 

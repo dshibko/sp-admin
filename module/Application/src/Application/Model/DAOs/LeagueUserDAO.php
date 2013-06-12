@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use \Application\Model\Entities\League;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -43,8 +44,6 @@ class LeagueUserDAO extends AbstractDAO {
      * @return array
      */
     public function getUserLeagues($user, $season, $region, $hydrate = false, $skipCache = false) {
-
-        // TODO add custom qb with left join to get name, add time conditions
         $nowTime = new \DateTime();
         $nowTime->setTime(0, 0, 0);
         $regionId = $region == null ? 0 : $region->getId();
@@ -59,12 +58,25 @@ class LeagueUserDAO extends AbstractDAO {
                 :nowTime >= l.startDate AND :nowTime <= l.endDate
         ')->setParameter('nowTime', $nowTime);
         return $query->getArrayResult();
+    }
 
-//        $qb->select('lu.points, lu.accuracy, lu.place, lu.previousPlace, l.type')
-//            ->from($this->getRepositoryName(), 'lu')
-//            ->join('lu.league', 'l', Expr\Join::WITH, 'l.season = ' . $season->getId())
-//            ->where($qb->expr()->eq('lu.user', $user->getId()));
-//        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    /**
+     * @param int $leagueId
+     * @param int $top
+     * @return array
+     */
+    public function getLeagueTop($leagueId, $top) {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT
+                lu.points, lu.accuracy, lu.place, lu.previousPlace, u.displayName, c.flagImage, c.name as country, u.id as userId
+            FROM
+               '.$this->getRepositoryName().' as lu
+            INNER JOIN lu.user u
+            INNER JOIN u.country c
+            WHERE lu.league = ' . $leagueId . '
+            ORDER BY lu.place ASC
+        ')->setMaxResults($top);
+        return $query->getArrayResult();
     }
 
 }

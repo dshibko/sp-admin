@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use \Application\Model\DAOs\LeagueDAO;
 use \Application\Model\DAOs\SeasonDAO;
 use \Application\Model\Entities\Season;
 use \Application\Model\Helpers\MessagesConstants;
@@ -32,7 +33,7 @@ class ApplicationManager extends BasicManager {
      * @return ApplicationManager
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
-        if (self::$instance == null) {
+        if (self::$instance === null) {
             self::$instance = new ApplicationManager();
             self::$instance->setServiceLocator($serviceLocatorInterface);
         }
@@ -51,7 +52,7 @@ class ApplicationManager extends BasicManager {
     {
         if (is_null($this->currentUser)) {
             $identity = $this->getServiceLocator()->get('AuthService')->getIdentity();
-            if ($identity == null) $this->currentUser = null;
+            if ($identity === null) $this->currentUser = null;
             else
                 if ($identity instanceof User)
                     $this->currentUser = $identity;
@@ -71,8 +72,11 @@ class ApplicationManager extends BasicManager {
      */
     public function getCurrentSeason()
     {
-        if (is_null($this->currentSeason))
+        if ($this->currentSeason === null) {
             $this->currentSeason = SeasonDAO::getInstance($this->getServiceLocator())->getCurrentSeason();
+            if ($this->currentSeason === null)
+                throw new \Exception(MessagesConstants::INFO_OUT_OF_SEASON);
+        }
         return $this->currentSeason;
     }
 
@@ -106,6 +110,7 @@ class ApplicationManager extends BasicManager {
     /**
      * @param $isoCode
      * @param bool $hydrate
+     * @param bool $skipCache
      * @return \Application\Model\Entities\Country
      */
     public function getCountryByISOCode($isoCode, $hydrate = false, $skipCache = false)
@@ -161,7 +166,7 @@ class ApplicationManager extends BasicManager {
      * @throws \Exception
      */
     private function getAppConfig() {
-        if ($this->appConfig == null) {
+        if ($this->appConfig === null) {
             $config = $this->getServiceLocator()->get('config');
             if (!array_key_exists('app', $config))
                 throw new \Exception(MessagesConstants::ERROR_APP_CONFIG_NOT_FOUND);
@@ -181,13 +186,46 @@ class ApplicationManager extends BasicManager {
         return $this->appConfig;
     }
 
+    private $globalLeagues = array();
+
+    /**
+     * @param Season|null $season
+     * @return \Application\Model\Entities\League
+     */
+    public function getGlobalLeague($season = null)
+    {
+        if ($season === null)
+            $season = $this->getCurrentSeason();
+        if (!array_key_exists($season->getId(), $this->globalLeagues))
+            $this->globalLeagues[$season->getId()] = LeagueDAO::getInstance($this->getServiceLocator())->getGlobalLeague($season);
+        return $this->globalLeagues[$season->getId()];
+    }
+
+    private $regionalLeagues = array();
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param Season|null $season
+     * @return \Application\Model\Entities\League
+     */
+    public function getRegionalLeague($region, $season = null)
+    {
+        if ($season === null)
+            $season = $this->getCurrentSeason();
+        if (!array_key_exists($season->getId(), $this->regionalLeagues))
+            $this->regionalLeagues[$season->getId()] = array();
+        if (!array_key_exists($region->getId(), $this->regionalLeagues[$season->getId()]))
+            $this->regionalLeagues[$season->getId()][$region->getId()] = LeagueDAO::getInstance($this->getServiceLocator())->getRegionalLeague($this->getCurrentSeason(), $region);
+        return $this->regionalLeagues[$season->getId()][$region->getId()];
+    }
+
     /**
      * @param \DateTime $dateTime
-     * @param string $timezone
+     * @param string|null $timezone
      * @return \DateTime
      */
-    public function getLocalTime($dateTime, $timezone) {
-        if ($timezone == null)
+    public function getLocalTime($dateTime, $timezone = null) {
+        if ($timezone === null)
             $timezone = 'UTC';
         $localTime = new \DateTime();
         $localTime->setTimestamp($dateTime->getTimestamp());
@@ -196,7 +234,7 @@ class ApplicationManager extends BasicManager {
     }
 
     /**
-     * @param User $user
+     * @param \Application\Model\Entities\User $user
      * @return \Application\Model\Entities\Region
      */
     public function getUserRegion(\Application\Model\Entities\User $user)

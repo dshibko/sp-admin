@@ -15,23 +15,44 @@ class MatchRegion
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=255, nullable=true)
+     * @ORM\Column(name="pre_match_report_title", type="string", length=255, nullable=true)
      */
-    private $title;
+    private $preMatchReportTitle;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="intro", type="text", nullable=true)
+     * @ORM\Column(name="pre_match_report_intro", type="text", nullable=true)
      */
-    private $intro;
+    private $preMatchReportIntro;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="header_image_path", type="string", length=255, nullable=true)
+     * @ORM\Column(name="pre_match_report_header_image_path", type="string", length=255, nullable=true)
      */
-    private $headerImagePath;
+    private $preMatchReportHeaderImagePath;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="post_match_report_title", type="string", length=255, nullable=true)
+     */
+    private $postMatchReportTitle;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="post_match_report_intro", type="text", nullable=true)
+     */
+    private $postMatchReportIntro;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="post_match_report_header_image_path", type="string", length=255, nullable=true)
+     */
+    private $postMatchReportHeaderImagePath;
 
     /**
      * @var integer
@@ -47,7 +68,7 @@ class MatchRegion
      *
      * @ORM\ManyToOne(targetEntity="Match")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="match_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="match_id", referencedColumnName="id")
      * })
      */
     private $match;
@@ -57,7 +78,7 @@ class MatchRegion
      *
      * @ORM\ManyToOne(targetEntity="Region")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="region_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
      * })
      */
     private $region;
@@ -67,7 +88,7 @@ class MatchRegion
      *
      * @ORM\OneToOne(targetEntity="FeaturedPlayer", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="featured_player_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="featured_player_id", referencedColumnName="id")
      * })
      */
     private $featuredPlayer;
@@ -77,7 +98,7 @@ class MatchRegion
      *
      * @ORM\OneToOne(targetEntity="FeaturedGoalkeeper", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="featured_goalkeeper_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="featured_goalkeeper_id", referencedColumnName="id")
      * })
      */
     private $featuredGoalKeeper;
@@ -87,28 +108,17 @@ class MatchRegion
      *
      * @ORM\OneToOne(targetEntity="FeaturedPrediction", cascade={"persist", "remove"})
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="featured_prediction_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="featured_prediction_id", referencedColumnName="id")
      * })
      */
     private $featuredPrediction;
 
     /**
-     * @param string $headerImagePath
-     * @return \Application\Model\Entities\MatchRegion
+     * @var bool
+     *
+     * @ORM\Column(name="display_featured_player", type="boolean")
      */
-    public function setHeaderImagePath($headerImagePath)
-    {
-        $this->headerImagePath = $headerImagePath;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHeaderImagePath()
-    {
-        return $this->headerImagePath;
-    }
+    private $displayFeaturedPlayer;
 
     /**
      * @return int
@@ -116,24 +126,6 @@ class MatchRegion
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @param string $intro
-     * @return \Application\Model\Entities\MatchRegion
-     */
-    public function setIntro($intro)
-    {
-        $this->intro = $intro;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIntro()
-    {
-        return $this->intro;
     }
 
     /**
@@ -170,24 +162,6 @@ class MatchRegion
     public function getRegion()
     {
         return $this->region;
-    }
-
-    /**
-     * @param string $title
-     * @return \Application\Model\Entities\MatchRegion
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->title;
     }
 
     /**
@@ -242,5 +216,131 @@ class MatchRegion
     public function getFeaturedPrediction()
     {
         return $this->featuredPrediction;
+    }
+
+    /**
+     * @param boolean $displayFeaturedPlayer
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function setDisplayFeaturedPlayer($displayFeaturedPlayer)
+    {
+        $this->displayFeaturedPlayer = $displayFeaturedPlayer;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getDisplayFeaturedPlayer()
+    {
+        return $this->displayFeaturedPlayer;
+    }
+
+    /**
+     * @param string $postMatchReportHeaderImagePath
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function setPostMatchReportHeaderImagePath($postMatchReportHeaderImagePath)
+    {
+        $this->postMatchReportHeaderImagePath = $postMatchReportHeaderImagePath;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostMatchReportHeaderImagePath()
+    {
+        return $this->postMatchReportHeaderImagePath;
+    }
+
+    /**
+     * @param string $postMatchReportIntro
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function setPostMatchReportIntro($postMatchReportIntro)
+    {
+        $this->postMatchReportIntro = $postMatchReportIntro;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostMatchReportIntro()
+    {
+        return $this->postMatchReportIntro;
+    }
+
+    /**
+     * @param string $postMatchReportTitle
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function setPostMatchReportTitle($postMatchReportTitle)
+    {
+        $this->postMatchReportTitle = $postMatchReportTitle;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPostMatchReportTitle()
+    {
+        return $this->postMatchReportTitle;
+    }
+
+    /**
+     * @param string $preMatchReportHeaderImagePath
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function setPreMatchReportHeaderImagePath($preMatchReportHeaderImagePath)
+    {
+        $this->preMatchReportHeaderImagePath = $preMatchReportHeaderImagePath;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreMatchReportHeaderImagePath()
+    {
+        return $this->preMatchReportHeaderImagePath;
+    }
+
+    /**
+     * @param string $preMatchReportIntro
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function setPreMatchReportIntro($preMatchReportIntro)
+    {
+        $this->preMatchReportIntro = $preMatchReportIntro;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreMatchReportIntro()
+    {
+        return $this->preMatchReportIntro;
+    }
+
+    /**
+     * @param string $preMatchReportTitle
+     * @return \Application\Model\Entities\MatchRegion
+     */
+    public function setPreMatchReportTitle($preMatchReportTitle)
+    {
+        $this->preMatchReportTitle = $preMatchReportTitle;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreMatchReportTitle()
+    {
+        return $this->preMatchReportTitle;
     }
 }
