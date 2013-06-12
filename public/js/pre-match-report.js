@@ -41,7 +41,11 @@ if (window.topScoresData !== undefined){
     }));
 
 }
-plots.push($.plot('#chart-away-form',
+
+
+
+if ($('#chart-head-to-head-results').size() > 0)
+plots.push($.plot('#chart-head-to-head-results',
     [
       {color: '#363636', data: 53, label : '%'},
       {color: '#144a9b', data: 41, label : '%'},
@@ -70,7 +74,8 @@ plots.push($.plot('#chart-away-form',
 ));
 
 
-plots.push($.plot('#chart-home-form', 
+if ($('#chart-away-form').size() > 0)
+plots.push($.plot('#chart-away-form',
     [
       {color: '#363636', data: 53, label : '%'},
       {color: '#144a9b', data: 41, label : '%'},
@@ -98,7 +103,9 @@ plots.push($.plot('#chart-home-form',
     }
 ));
 
-plots.push($.plot('#chart-head-to-head-results',
+
+if ($('#chart-home-form').size() > 0)
+plots.push($.plot('#chart-home-form',
     [
         {color: '#363636', data: 530, label:''},
         {color: '#144a9b', data: 193, label:''},

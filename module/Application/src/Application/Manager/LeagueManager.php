@@ -102,6 +102,12 @@ class LeagueManager extends BasicManager {
         return LeagueDAO::getInstance($this->getServiceLocator())->checkLeagueDatesInterval($startDate, $endDate, $seasonId);
     }
 
+    /**
+     * @param $id
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return League
+     */
     public function getLeagueById($id, $hydrate = false, $skipCache = false) {
         return LeagueDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
     }
@@ -180,11 +186,22 @@ class LeagueManager extends BasicManager {
     /**
      * @param int $leagueId
      * @param int $top
+     * @param int $offset
      * @return array
      */
-    public function getLeagueTop($leagueId, $top) {
+    public function getLeagueTop($leagueId, $top, $offset = 0) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-        return $leagueUserDAO->getLeagueTop($leagueId, $top);
+        return $leagueUserDAO->getLeagueTop($leagueId, $top, $offset);
+    }
+
+    /**
+     * @param int $leagueId
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getLeagueUsersCount($leagueId, $skipCache = false) {
+        $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
+        return $leagueUserDAO->getLeagueUsersCount($leagueId, $skipCache);
     }
 
 }

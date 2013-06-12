@@ -40,6 +40,16 @@ return array(
                     ),
                 ),
             ),
+            'full-table' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/tables/full-table-:table',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\FullTable',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'fixtures' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -300,6 +310,7 @@ return array(
             'Application\Controller\Results' => 'Application\Controller\ResultsController',
             'Application\Controller\Content' => 'Application\Controller\ContentController',
             'Application\Controller\Tables' => 'Application\Controller\TablesController',
+            'Application\Controller\FullTable' => 'Application\Controller\FullTableController',
         ),
     ),
     'controller_plugins' => array(
@@ -360,6 +371,12 @@ return array(
             'tables' => array(
                 'title' => 'League Tables',
                 'route' => 'tables',
+                'pages' => array(
+                    'full-table' => array(
+                        'title' => 'Full Table',
+                        'route' => 'full-table',
+                    )
+                ),
             ),
         ),
     ),
