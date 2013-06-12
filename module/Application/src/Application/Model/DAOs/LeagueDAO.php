@@ -163,6 +163,7 @@ class LeagueDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'l')
             ->join('l.leagueRegions','lr', Expr\Join::WITH, 'lr.region = ' . $region->getId())
             ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::MINI_TYPE)
+            ->andWhere($qb->expr()->lte('l.startDate', ':now'))->setParameter('now', new \DateTime())
             ->orderBy('l.endDate', 'DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
@@ -201,8 +202,8 @@ class LeagueDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('l, lr, p, s')
             ->from($this->getRepositoryName(), 'l')
-            ->join('l.leagueRegions', 'lr')
-            ->join('l.prizes', 'p')
+            ->leftJoin('l.leagueRegions', 'lr')
+            ->leftJoin('l.prizes', 'p')
             ->join('l.season', 's')
             ->where($qb->expr()->eq('l.id', $id));
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);

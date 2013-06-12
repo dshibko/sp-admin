@@ -25,9 +25,13 @@
                             </th>
                             <th><abbr title="Points"><?=$this->translate('pts')?></abbr></th>
                         </tr>
-                        <?php foreach ($this->globalTopUsers as $user) : ?>
-                            <tr<?=($user['userId'] == $this->getCurrentUser()->getId()) ? ' class="your-table-position"' : ''?>>
-                                <td class="position"><?=$user['place'] !== null ? $user['place'] : '&ndash;'?></td>
+                        <?php foreach ($this->globalTopUsers as $user) : $isActive = $user['userId'] == $this->getCurrentUser()->getId(); ?>
+                            <tr<?=$isActive ? ' class="your-table-position"' : ''?>>
+                                <td class="position">
+                                    <?php if ($isActive) : ?><span><?php endif;?>
+                                    <?=$user['place'] !== null ? $user['place'] : '&ndash;'?>
+                                    <?php if ($isActive) : ?></span><?php endif;?>
+                                </td>
                                 <td class="player"><?=$user['displayName']?></td>
                                 <td class="nationality"><img src="<?=$user['flagImage']?>" itemprop="nationality" alt="<?=$user['country']?>"></td>
                                 <td class="points"><?=$user['points'] !== null ? $user['points'] : '-'?></td>
@@ -41,7 +45,7 @@
 <!--                        <li><a href="">Like</a></li>-->
 <!--                        <li><a href="">Tweet</a></li>-->
 <!--                    </ul>-->
-                    <a href="<?=$this->url('tables', array('table' => $this->globalLeague->getId()))?>" class="more-info"><?=$this->translate('View full table')?></a>
+                    <a href="<?=$this->url('full-table', array('table' => $this->globalLeague->getId()))?>" class="more-info"><?=$this->translate('View full table')?></a>
                 </footer>
             </section>
 
@@ -68,12 +72,20 @@
                                 </th>
                                 <th><abbr title="Points"><?=$this->translate('pts')?></abbr></th>
                             </tr>
-                            <?php foreach ($this->regionalTopUsers as $user) : ?>
-                                <tr<?=($user['userId'] == $this->getCurrentUser()->getId()) ? ' class="your-table-position"' : ''?>>
-                                    <td class="position"><?=$user['place'] !== null ? $user['place'] : '&ndash;'?></td>
+                            <?php foreach ($this->regionalTopUsers as $user) : $isActive = $user['userId'] == $this->getCurrentUser()->getId(); ?>
+                                <tr<?=$isActive ? ' class="your-table-position"' : ''?>>
+                                    <td class="position">
+                                        <?php if ($isActive) : ?><span><?php endif;?>
+                                            <?=$user['place'] !== null ? $user['place'] : '&ndash;'?>
+                                        <?php if ($isActive) : ?></span><?php endif;?>
+                                    </td>
                                     <td class="player"><?=$user['displayName']?></td>
                                     <td class="nationality"><img src="<?=$user['flagImage']?>" itemprop="nationality" alt="<?=$user['country']?>"></td>
-                                    <td class="points"><?=$user['points'] !== null ? $user['points'] : '-'?></td>
+                                    <td class="points">
+                                        <?php if ($isActive) : ?><span><?php endif;?>
+                                            <?=$user['points'] !== null ? $user['points'] : '-'?>
+                                        <?php if ($isActive) : ?></span><?php endif;?>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>
@@ -84,7 +96,7 @@
     <!--                        <li><a href="">Like</a></li>-->
     <!--                        <li><a href="">Tweet</a></li>-->
     <!--                    </ul>-->
-                        <a href="<?=$this->url('tables', array('table' => $this->regionalLeague->getId()))?>" class="more-info"><?=$this->translate('View full table')?></a>
+                        <a href="<?=$this->url('full-table', array('table' => $this->regionalLeague->getId()))?>" class="more-info"><?=$this->translate('View full table')?></a>
                     </footer>
                 </section>
             <?php endif; ?>
@@ -101,9 +113,13 @@
                                 </th>
                                 <th><abbr title="Points"><?=$this->translate('pts')?></abbr></th>
                             </tr>
-                            <?php foreach ($temporalLeague['leagueUsers'] as $user) : ?>
-                            <tr<?=($user['userId'] == $this->getCurrentUser()->getId()) ? ' class="your-table-position"' : ''?>>
-                                <td class="position"><?=$user['place'] !== null ? $user['place'] : '&ndash;'?></td>
+                            <?php foreach ($temporalLeague['leagueUsers'] as $user) : $isActive = $user['userId'] == $this->getCurrentUser()->getId(); ?>
+                            <tr<?=$isActive ? ' class="your-table-position"' : ''?>>
+                                <td class="position">
+                                    <?php if ($isActive) : ?><span><?php endif;?>
+                                    <?=$user['place'] !== null ? $user['place'] : '&ndash;'?>
+                                    <?php if ($isActive) : ?></span><?php endif;?>
+                                </td>
                                 <td class="player"><?=$user['displayName']?></td>
                                 <td class="nationality"><img src="<?=$user['flagImage']?>" itemprop="nationality" alt="<?=$user['country']?>"></td>
                                 <td class="points"><?=$user['points'] !== null ? $user['points'] : '-'?></td>
@@ -112,7 +128,7 @@
                         </table>
                     </div>
                     <footer class="clearfix">
-                        <a href="<?=$this->url('tables', array('table' => $temporalLeague['id']))?>" class="more-info"><?=$this->translate('View full table')?></a>
+                        <a href="<?=$this->url('full-table', array('table' => $temporalLeague['id']))?>" class="more-info"><?=$this->translate('View full table')?></a>
                     </footer>
                 </section>
             <?php endforeach;?>

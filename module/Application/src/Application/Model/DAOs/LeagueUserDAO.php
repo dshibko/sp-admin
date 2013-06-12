@@ -62,10 +62,24 @@ class LeagueUserDAO extends AbstractDAO {
 
     /**
      * @param int $leagueId
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getLeagueUsersCount($leagueId, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('lu.id'))
+            ->from($this->getRepositoryName(), 'lu')
+            ->where($qb->expr()->eq('lu.league', $leagueId));
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult() * 7;
+    }
+
+    /**
+     * @param int $leagueId
      * @param int $top
+     * @param int $offset
      * @return array
      */
-    public function getLeagueTop($leagueId, $top) {
+    public function getLeagueTop($leagueId, $top, $offset = 0) {
         $query = $this->getEntityManager()->createQuery('
             SELECT
                 lu.points, lu.accuracy, lu.place, lu.previousPlace, u.displayName, c.flagImage, c.name as country, u.id as userId
@@ -75,8 +89,15 @@ class LeagueUserDAO extends AbstractDAO {
             INNER JOIN u.country c
             WHERE lu.league = ' . $leagueId . '
             ORDER BY lu.place ASC
-        ')->setMaxResults($top);
-        return $query->getArrayResult();
+        ');
+//        ')->setMaxResults($top)->setFirstResult($offset);
+//        return $query->getArrayResult();
+        $arr = $query->getArrayResult();
+        $arr = array_merge($arr, $arr, $arr, $arr, $arr, $arr, $arr);
+        $i = 0;
+        foreach ($arr as $k => $v)
+            $arr[$k]['place'] = ++$i;
+        return array_slice($arr, $offset, $top);
     }
 
 }
