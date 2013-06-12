@@ -30,7 +30,6 @@ if ($(document).width() <  turnOffCustomStylePoint)
 
 var formElement = $('#make-prediction');
 var $makePrediction = formElement.idealforms(makePredictionOptions).data('idealforms');
-$makePrediction.focusFirst();
 
 var prevValues = [];
 if (savedHomeScore != -1 && savedAwayScore != -1) {

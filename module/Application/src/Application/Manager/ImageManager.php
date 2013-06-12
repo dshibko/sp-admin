@@ -96,7 +96,7 @@ class ImageManager extends BasicManager {
             $image->thumbnail($thumbSize, $crop ? ImageInterface::THUMBNAIL_OUTBOUND : ImageInterface::THUMBNAIL_INSET)->save($thumbPath);
             $thumbWebPaths[] = $thumbWebPath;
         }
-        unlink($originalImagePath);
+        @unlink($originalImagePath);
         $contentImage = new ContentImage();
         $contentImage->setWidth1280($thumbWebPaths[0]);
         $contentImage->setWidth1024($thumbWebPaths[1]);
@@ -122,9 +122,8 @@ class ImageManager extends BasicManager {
 
     public function deleteImage($webImagePath) {
         $path = $this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $webImagePath);
-        if (file_exists($path)){
-            unlink($path);
-        }
+        if (file_exists($path) && is_file($path))
+            @unlink($path);
     }
 
     /**

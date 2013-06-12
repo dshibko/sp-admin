@@ -44,6 +44,7 @@ if (window.topScoresData !== undefined){
 
 
 
+if ($('#chart-head-to-head-results').size() > 0)
 plots.push($.plot('#chart-head-to-head-results',
     [
       {color: '#363636', data: 530},
@@ -73,7 +74,8 @@ plots.push($.plot('#chart-head-to-head-results',
 ));
 
 
-plots.push($.plot('#chart-away-form', 
+if ($('#chart-away-form').size() > 0)
+plots.push($.plot('#chart-away-form',
     [
       {color: '#363636', data: 53},
       {color: '#144a9b', data: 41},
@@ -102,7 +104,8 @@ plots.push($.plot('#chart-away-form',
 ));
 
 
-plots.push($.plot('#chart-home-form', 
+if ($('#chart-home-form').size() > 0)
+plots.push($.plot('#chart-home-form',
     [
       {color: '#363636', data: 53},
       {color: '#144a9b', data: 41},
