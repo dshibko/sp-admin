@@ -44,94 +44,100 @@ if (window.topScoresData !== undefined){
 
 
 
-if ($('#chart-head-to-head-results').size() > 0)
-plots.push($.plot('#chart-head-to-head-results',
-    [
-      {color: '#363636', data: 53, label : '%'},
-      {color: '#144a9b', data: 41, label : '%'},
-      {color: '#7f7f80', data: 6, label : '%'}
-    ], 
-    {
-        series: {
-            pie: {
-                innerRadius: 0.4,
-                stroke: {color: '#e6edf8', width: 0},
-                show: true,
-                radius: 1,
-                label: {
+if ($('#chart-head-to-head-results').size() > 0){
+    plots.push($.plot('#chart-head-to-head-results',
+        [
+            {color: '#363636', data: 530, label:''},
+            {color: '#144a9b', data: 193, label:''},
+            {color: '#7f7f80', data: 20,label:''}
+        ],
+        {
+            series: {
+                pie: {
+                    innerRadius: 0.4,
+                    stroke: {color: '#e6edf8', width: 0},
                     show: true,
-                    radius: 2/3,
-                    formatter: function(label, series) { 
-                        return series.data[0][1]+ label;
+                    radius: 1,
+                    label: {
+                        show: true,
+                        radius: 2/3,
+                        formatter: function(label, series) {
+                            return series.data[0][1] + label;
+                        }
                     }
                 }
+            },
+            legend: {
+                show: false
             }
-        },
-        legend: {
-            show: false
         }
-    }
-));
+    ));
+}
 
 
-if ($('#chart-away-form').size() > 0)
-plots.push($.plot('#chart-away-form',
-    [
-      {color: '#363636', data: 53, label : '%'},
-      {color: '#144a9b', data: 41, label : '%'},
-      {color: '#7f7f80', data: 6, label : '%'}
-    ], 
-    {
-        series: {
-            pie: {
-                innerRadius: 0.4,
-                stroke: {color: '#e6edf8', width: 0},
-                show: true,
-                radius: 1,
-                label: {
+
+if ($('#chart-away-form').size() > 0){
+    plots.push($.plot('#chart-away-form',
+        [
+            {color: '#363636', data: 53, label : '%'},
+            {color: '#144a9b', data: 41, label : '%'},
+            {color: '#7f7f80', data: 6, label : '%'}
+        ],
+        {
+            series: {
+                pie: {
+                    innerRadius: 0.4,
+                    stroke: {color: '#e6edf8', width: 0},
                     show: true,
-                    radius: 2/3,
-                    formatter: function(label, series) {
-                        return series.data[0][1] + label;
+                    radius: 1,
+                    label: {
+                        show: true,
+                        radius: 2/3,
+                        formatter: function(label, series) {
+                            return series.data[0][1] + label;
+                        }
                     }
                 }
+            },
+            legend: {
+                show: false
             }
-        },
-        legend: {
-            show: false
         }
-    }
-));
+    ));
+}
 
 
-if ($('#chart-home-form').size() > 0)
-plots.push($.plot('#chart-home-form',
-    [
-        {color: '#363636', data: 530, label:''},
-        {color: '#144a9b', data: 193, label:''},
-        {color: '#7f7f80', data: 20,label:''}
-    ],
-    {
-        series: {
-            pie: {
-                innerRadius: 0.4,
-                stroke: {color: '#e6edf8', width: 0},
-                show: true,
-                radius: 1,
-                label: {
+
+if ($('#chart-home-form').size() > 0){
+    plots.push($.plot('#chart-home-form',
+        [
+            {color: '#363636', data: 53, label : '%'},
+            {color: '#144a9b', data: 41, label : '%'},
+            {color: '#7f7f80', data: 6, label : '%'}
+        ],
+        {
+            series: {
+                pie: {
+                    innerRadius: 0.4,
+                    stroke: {color: '#e6edf8', width: 0},
                     show: true,
-                    radius: 2/3,
-                    formatter: function(label, series) {
-                        return series.data[0][1] + label;
+                    radius: 1,
+                    label: {
+                        show: true,
+                        radius: 2/3,
+                        formatter: function(label, series) {
+                            return series.data[0][1]+ label;
+                        }
                     }
                 }
+            },
+            legend: {
+                show: false
             }
-        },
-        legend: {
-            show: false
         }
-    }
-));
+    ));
+}
+
 
 $(window).on('resize', function() {
     for (var i = plots.length - 1; i >= 0; i--) {
