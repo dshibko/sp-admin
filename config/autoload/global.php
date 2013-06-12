@@ -63,5 +63,8 @@ return array(
     'default_match_report_intro' => 'This is default match report intro',
     'default_match_report_header_image' => '/img/match-report.png',
     'default_player_background' => '/img/default-player-bg.png',
-    'default_player_avatar' => '/img/default_player.png'
+    'default_player_avatar' => '/img/default_player.png',
+    'default_post_match_report_title' => 'Post Match Report',
+    'default_post_match_report_intro' => 'This is default post match report intro',
+    'default_post_match_report_header_image' => '/img/match-report.png',
 );

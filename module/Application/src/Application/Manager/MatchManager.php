@@ -192,7 +192,7 @@ class MatchManager extends BasicManager
                     $matchRegion = $matchRegions->get($reportKey);
                 }
 
-                //Set match report
+                //Set pre match report
                 if (!empty($regionRow['pre_match_report'])){
                     $matchRegion->setPreMatchReportTitle($regionRow['pre_match_report']['title'])
                         ->setPreMatchReportIntro($regionRow['pre_match_report']['intro']);
@@ -203,6 +203,16 @@ class MatchManager extends BasicManager
                     }
                 }
 
+                //Set post match report
+                if (!empty($regionRow['post_match_report'])){
+                    $matchRegion->setPostMatchReportTitle($regionRow['post_match_report']['title'])
+                        ->setPostMatchReportIntro($regionRow['post_match_report']['intro']);
+                    //Set header image
+                    if (!empty($regionRow['post_match_report']['header_image_path'])) {
+                        $imageManager->deleteImage($matchRegion->getPostMatchReportHeaderImagePath());
+                        $matchRegion->setPostMatchReportHeaderImagePath($regionRow['post_match_report']['header_image_path']);
+                    }
+                }
 
                 //Set Featured Player
                 if (!empty($regionRow['featured_player'])) {
@@ -487,5 +497,30 @@ class MatchManager extends BasicManager
         }
         unset($fieldset);
         return $fieldsets;
+    }
+
+    public function getPostMatchRegionReport($matchId, $regionId)
+    {
+        $report = array();
+        $matchRegionDAO = MatchRegionDAO::getInstance($this->getServiceLocator());
+        $matchRegion = $matchRegionDAO->getPostMatchRegionByMatchIdAndRegionId($matchId, $regionId);
+        $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
+        $match = null;
+        if (!is_null($matchRegion)) {
+
+            //Match report title
+            $title = $matchRegion->getPostMatchReportTitle();
+            $report['title'] = !empty($title) ? $title : '';
+
+            //Match report intro
+            $intro = $matchRegion->getPostMatchReportIntro();
+            $report['intro'] = !empty($intro) ? $intro : '';
+
+            //Match report header image
+            $headerImage =  $matchRegion->getPostMatchReportHeaderImagePath();
+            $report['headerImage'] = !empty($headerImage) ? $headerImage : '';
+        }
+
+        return $report;
     }
 }

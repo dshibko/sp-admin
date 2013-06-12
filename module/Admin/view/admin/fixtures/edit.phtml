@@ -182,7 +182,33 @@ $this->headTitle($this->title);
                 <?php echo $this->form()->closeTag();?>
             </div>
         </div>
-        <!--MATCH REPORT ENDS-->
+        <!--PRE MATCH REPORT ENDS-->
+    <?php endif;?>
+<?php if (!empty($this->postMatchReportForm)):?>
+    <!--PRE MATCH REPORT STARTS-->
+    <div class="portlet box blue">
+        <div class="portlet-title">
+            <h4><i class="icon-reorder"></i><?php echo $this->translate('Post Match Report Info');?></h4>
+            <div class="tools">
+                <a class="collapse" href="javascript:;"></a>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <?php
+            $this->postMatchReportForm->prepare();
+            $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
+            echo $this->form()->openTag($this->postMatchReportForm);
+            ?>
+            <?php echo $this->renderRegionFieldsets($this->postMatchReportForm->getFieldsets(), $this->params['action'] == 'add', 'post-match-report');?>
+            <?php echo $this->formHidden($this->postMatchReportForm->get('type'));?>
+            <div class="form-actions">
+                <button type="submit" class="btn blue"><?=$this->translate($this->postMatchReportForm->get('submit')->getValue());?></button>
+                <button type="button" class="btn reset"><?php echo $this->translate('Cancel');?></button>
+            </div>
+            <?php echo $this->form()->closeTag();?>
+        </div>
+    </div>
+    <!--PRE MATCH REPORT ENDS-->
     <?php endif;?>
 <!--REGIONALISED DATA ENDS-->
 
