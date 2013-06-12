@@ -60,6 +60,28 @@ class LeagueUserDAO extends AbstractDAO {
         return $query->getArrayResult();
     }
 
+    public function getUserLeaguesByTypes(\Application\Model\Entities\User $user, \Application\Model\Entities\Season $season, \Application\Model\Entities\Region $region, array $types)
+    {
+        $nowTime = new \DateTime();
+        $nowTime->setTime(0, 0, 0);
+        $regionId = $region == null ? 0 : $region->getId();
+        $query = $this->getEntityManager()->createQuery('
+            SELECT
+                lu.points,
+                lu.accuracy,
+                lu.place,
+                lu.previousPlace,
+                l.type,
+                lr.displayName
+            FROM
+               '.$this->getRepositoryName().' as lu
+            INNER JOIN lu.league l WITH l.season = ' . $season->getId() . '
+            LEFT JOIN l.leagueRegions lr WITH lr.region = ' . $regionId . '
+            WHERE lu.user = ' . $user->getId() . ' AND
+                :nowTime >= l.startDate AND :nowTime <= l.endDate AND l.type IN (:types)
+        ')->setParameter('nowTime', $nowTime)->setParameter('types', $types);
+        return $query->getArrayResult();
+    }
     /**
      * @param int $leagueId
      * @param int $top

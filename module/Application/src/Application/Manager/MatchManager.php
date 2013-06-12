@@ -13,6 +13,9 @@ use \Application\Model\Entities\FeaturedPlayer;
 use \Application\Model\DAOs\FeaturedGoalkeeperDAO;
 use \Application\Model\DAOs\FeaturedPlayerDAO;
 use \Application\Model\DAOs\FeaturedPredictionDAO;
+use \Application\Model\DAOs\MatchGoalDAO;
+use \Application\Model\DAOs\LeagueUserDAO;
+use \Application\Model\Entities\League;
 
 class MatchManager extends BasicManager
 {
@@ -20,6 +23,8 @@ class MatchManager extends BasicManager
     const HOURS_FROM_NOW = 12;
     const MATCH_REPORT_TOP_SCORERS_NUMBER = 3;
     const TOP_SCORES_NUMBER = 5;
+    const POST_MATCH_REPORT_TOP_SCORES_NUMBER = 1;
+    const POST_MATCH_REPORT_CORRECT_SCORERS_NUMBER = 3;
 
     /**
      * @var MatchManager
@@ -316,7 +321,7 @@ class MatchManager extends BasicManager
             //Match full time analytics
             if ($match->getStatus() == Match::FULL_TIME_STATUS) {
                 $correctResultCount = $predictionManager->getUsersCountWithCorrectResult($predictionIds);
-                $correctScoreCount = $predictionManager->getUsersCountWithCorrectScore($predictionIds);
+                $correctScoreCount = $predictionManager->getPredictionsCorrectScoreCount($predictionIds);
                 $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
                 $scorersSum = $predictionManager->getPredictionCorrectScorersSum($predictionIds);
                 $scorersOrderSum = $predictionManager->getPredictionCorrectScorersOrderSum($predictionIds, true);
@@ -485,6 +490,13 @@ class MatchManager extends BasicManager
         return $report;
     }
 
+    /**
+     * @param array $fieldsets
+     * @param array $teamIds
+     * @param array $positions
+     * @param $fieldName
+     * @return array
+     */
     public function getFieldsetWithPlayers(array $fieldsets, array $teamIds, array $positions, $fieldName)
     {
         $playerManager = PlayerManager::getInstance($this->getServiceLocator());
@@ -499,12 +511,20 @@ class MatchManager extends BasicManager
         return $fieldsets;
     }
 
+    /**
+     * @param $matchId
+     * @param $regionId
+     * @return array
+     */
     public function getPostMatchRegionReport($matchId, $regionId)
     {
         $report = array();
         $matchRegionDAO = MatchRegionDAO::getInstance($this->getServiceLocator());
         $matchRegion = $matchRegionDAO->getPostMatchRegionByMatchIdAndRegionId($matchId, $regionId);
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
+        $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+
         $match = null;
         if (!is_null($matchRegion)) {
 
@@ -519,8 +539,91 @@ class MatchManager extends BasicManager
             //Match report header image
             $headerImage =  $matchRegion->getPostMatchReportHeaderImagePath();
             $report['headerImage'] = !empty($headerImage) ? $headerImage : '';
+
+            $match = $matchRegion->getMatch();
+        }
+
+        if (is_null($match)){
+            $match = MatchManager::getInstance($this->getServiceLocator())->getMatchById($matchId);
+        }
+
+        $predictionIds = $match->getPredictionIds();
+
+        if (!empty($predictionIds)){
+
+            //Match report top predicted scores
+            $topScores = $predictionManager->getTopScores($predictionIds, self::POST_MATCH_REPORT_TOP_SCORES_NUMBER, true);
+            if (!empty($topScores[0])){//Get top predicted score
+                $report['topScore'] = $topScores[0];
+            }
+
+            //Match report correct scorers percentage
+            $correctScorers = $this->getMatchCorrectScorers($match);
+            if (!empty($correctScorers)){
+                $correctScorersIds = array();
+                foreach($correctScorers as $correctScorer){
+                    $correctScorersIds[] = $correctScorer->getPlayer()->getId();
+                }
+                if (!empty($correctScorersIds)){
+                    $totalPlayersPredictions = $predictionManager->getPredictionPlayersCount($predictionIds);
+                    if ($totalPlayersPredictions){
+                        $scorersCounts = $predictionManager->getCorrectScorersPredictionsCount($predictionIds, $correctScorersIds, true);
+                        if (!empty($scorersCounts)){
+                            $scorers = array();
+                            foreach($scorersCounts as $scorerCount){
+                                $scorers[$scorerCount['player_name']] = round( ($scorerCount['scorers_count'] / $totalPlayersPredictions) * 100);
+                            }
+                            $scorers = array_slice($scorers, 0, self::POST_MATCH_REPORT_CORRECT_SCORERS_NUMBER);
+                            $report['correctScorers'] = array(
+                                'scorers' => $scorers,
+                                'backgroundImage' => $correctScorers[0]->getPlayer()->getBackgroundImagePath(), // Get from the first scored in the match
+                                'avatarImage' => $correctScorers[0]->getPlayer()->getImagePath() // Get from the first scored in the match
+                            );
+                        }
+                    }
+                }
+            }
+
+            //Match report correctly predicted result
+            $totalNumberOfPredictions = count($predictionIds);
+            if ($totalNumberOfPredictions){
+                $correctScoreCount = $predictionManager->getPredictionsCorrectScoreCount($predictionIds);
+                $report['correctScore'] = round( ($correctScoreCount / $totalNumberOfPredictions) * 100);
+            }
+        }
+
+        //Leagues Positions
+
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+        $region = $applicationManager->getUserRegion($user);
+        $leagueUsers = $leagueUserDAO->getUserLeaguesByTypes($user, $season, $region, array(League::GLOBAL_TYPE, League::REGIONAL_TYPE));
+        if (!empty($leagueUsers)){
+            $report['leaguesMovement'] = array();
+            foreach($leagueUsers as $league){
+                if (!is_null($league['previousPlace'])){
+                    $movementPlaces = $league['previousPlace'] - $league['place'];
+                    $direction = ApplicationManager::USER_LEAGUE_MOVEMENT_SAME;
+                    if ($movementPlaces > 0 ){
+                        $direction = ApplicationManager::USER_LEAGUE_MOVEMENT_UP;
+                    }elseif($movementPlaces < 0){
+                        $direction =  ApplicationManager::USER_LEAGUE_MOVEMENT_DOWN;
+                    }
+                    $report['leaguesMovement'][] = array(
+                        'leagueName' => $league['displayName'],
+                        'places' => abs($movementPlaces),
+                        'direction' => $direction
+                    );
+                }
+
+            }
         }
 
         return $report;
+    }
+
+    public function getMatchCorrectScorers(\Application\Model\Entities\Match $match, $limit = -1, $hydrate = false, $skipCache = false)
+    {
+        return MatchGoalDAO::getInstance($this->getServiceLocator())->getMatchScorers($match->getId(), $limit, $hydrate, $skipCache);
     }
 }

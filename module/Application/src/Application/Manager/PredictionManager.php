@@ -95,6 +95,10 @@ class PredictionManager extends BasicManager {
 
     }
 
+    /**
+     * @param $season
+     * @return int|string
+     */
     public function getAvgNumberOfPredictions($season) {
         $avgNumberOfPrediction = PredictionDAO::getInstance($this->getServiceLocator())->getAvgNumberOfPredictions($season);
         $avgNumberOfPrediction = number_format(ceil($avgNumberOfPrediction * 100) / 100, 2);
@@ -155,6 +159,10 @@ class PredictionManager extends BasicManager {
     public static $positionsOrder = array('Goalkeeper', 'Defender', 'Midfielder', 'Forward');
     public static $positionsAbbreviation = array('GK', 'DF', 'MF', 'FW');
 
+    /**
+     * @param $players
+     * @return array
+     */
     private function preparePlayers($players) {
         usort($players, function($p1, $p2) {
             $pos1 = array_search($p1['position'], PredictionManager::$positionsOrder);
@@ -219,9 +227,9 @@ class PredictionManager extends BasicManager {
      * @param bool $skipCache
      * @return mixed
      */
-    public function getUsersCountWithCorrectScore(array $predictionIds, $skipCache = false)
+    public function getPredictionsCorrectScoreCount(array $predictionIds, $skipCache = false)
     {
-        return PredictionDAO::getInstance($this->getServiceLocator())->getUsersCountWithCorrectScore($predictionIds, $skipCache);
+        return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionsCorrectScoreCount($predictionIds, $skipCache);
     }
 
     /**
@@ -277,6 +285,9 @@ class PredictionManager extends BasicManager {
         return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionCorrectScorersOrderSum($predictionIds, $skipCache);
     }
 
+    /**
+     * @return int|mixed
+     */
     public function getPredictableCount() {
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
         if ($season == null) return 0;
@@ -286,11 +297,20 @@ class PredictionManager extends BasicManager {
         return $predictionDAO->getPredictableCount($season->getId(), $user->getId(), $maxAhead);
     }
 
+    /**
+     * @param $matchId
+     * @param $userId
+     */
     public function makeResultViewed($matchId, $userId) {
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
         $prediction = $predictionDAO->getUserPrediction($matchId, $userId);
         $prediction->setWasViewed(true);
         $predictionDAO->save($prediction);
+    }
+
+    public function getCorrectScorersPredictionsCount(array $predictionIds, array $scorersIds, $hydrate = true, $skipCache = false)
+    {
+        return PredictionDAO::getInstance($this->getServiceLocator())->getCorrectScorersPredictionsCount($predictionIds, $scorersIds,$hydrate ,$skipCache);
     }
 
 }

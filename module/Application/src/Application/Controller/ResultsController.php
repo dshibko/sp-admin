@@ -57,6 +57,7 @@ class ResultsController extends AbstractActionController {
             //Match report
             $region = $applicationManager->getUserRegion($user);
             $matchReport = $matchManager->getPostMatchRegionReport($currentMatch['id'], $region->getId());
+
             $predictionPlayers = $currentMatch['prediction']['predictionPlayers'];
             $predictionPlayersCount = 0;
             foreach ($predictionPlayers as $predictionPlayer)

@@ -41,14 +41,11 @@ if (window.topScoresData !== undefined){
     }));
 
 }
-
-
-
-plots.push($.plot('#chart-head-to-head-results',
+plots.push($.plot('#chart-away-form',
     [
-      {color: '#363636', data: 530},
-      {color: '#144a9b', data: 193},
-      {color: '#7f7f80', data: 20}
+      {color: '#363636', data: 53, label : '%'},
+      {color: '#144a9b', data: 41, label : '%'},
+      {color: '#7f7f80', data: 6, label : '%'}
     ], 
     {
         series: {
@@ -61,36 +58,7 @@ plots.push($.plot('#chart-head-to-head-results',
                     show: true,
                     radius: 2/3,
                     formatter: function(label, series) { 
-                        return series.data[0][1];
-                    }
-                }
-            }
-        },
-        legend: {
-            show: false
-        }
-    }
-));
-
-
-plots.push($.plot('#chart-away-form', 
-    [
-      {color: '#363636', data: 53},
-      {color: '#144a9b', data: 41},
-      {color: '#7f7f80', data: 6}
-    ], 
-    {
-        series: {
-            pie: {
-                innerRadius: 0.4,
-                stroke: {color: '#e6edf8', width: 0},
-                show: true,
-                radius: 1,
-                label: {
-                    show: true,
-                    radius: 2/3,
-                    formatter: function(label, series) { 
-                        return series.data[0][1] + '%';
+                        return series.data[0][1]+ label;
                     }
                 }
             }
@@ -104,9 +72,9 @@ plots.push($.plot('#chart-away-form',
 
 plots.push($.plot('#chart-home-form', 
     [
-      {color: '#363636', data: 53},
-      {color: '#144a9b', data: 41},
-      {color: '#7f7f80', data: 6}
+      {color: '#363636', data: 53, label : '%'},
+      {color: '#144a9b', data: 41, label : '%'},
+      {color: '#7f7f80', data: 6, label : '%'}
     ], 
     {
         series: {
@@ -118,8 +86,36 @@ plots.push($.plot('#chart-home-form',
                 label: {
                     show: true,
                     radius: 2/3,
-                    formatter: function(label, series) { 
-                        return series.data[0][1] + '%';
+                    formatter: function(label, series) {
+                        return series.data[0][1] + label;
+                    }
+                }
+            }
+        },
+        legend: {
+            show: false
+        }
+    }
+));
+
+plots.push($.plot('#chart-head-to-head-results',
+    [
+        {color: '#363636', data: 530, label:''},
+        {color: '#144a9b', data: 193, label:''},
+        {color: '#7f7f80', data: 20,label:''}
+    ],
+    {
+        series: {
+            pie: {
+                innerRadius: 0.4,
+                stroke: {color: '#e6edf8', width: 0},
+                show: true,
+                radius: 1,
+                label: {
+                    show: true,
+                    radius: 2/3,
+                    formatter: function(label, series) {
+                        return series.data[0][1] + label;
                     }
                 }
             }
@@ -137,10 +133,4 @@ $(window).on('resize', function() {
         plots[i].draw();
     };
 });
-// $(function() {
-//     for (var i = plots.length - 1; i >= 0; i--) {
-//         plots[i].resize();
-//         plots[i].setupGrid();
-//         plots[i].draw();
-//     }
-// });
+

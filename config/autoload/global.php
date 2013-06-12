@@ -70,4 +70,8 @@ return array(
     'default_post_match_report_title' => 'Post Match Report',
     'default_post_match_report_intro' => 'This is default post match report intro',
     'default_post_match_report_header_image' => '/img/match-report.png',
+    'move_up_image_source' => '/img/up.png',
+    'move_down_image_source'  => '/img/down.png',
+    'same_image_source' => '/img/dash.png'
+
 );
