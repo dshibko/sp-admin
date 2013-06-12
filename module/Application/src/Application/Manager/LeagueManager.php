@@ -187,11 +187,12 @@ class LeagueManager extends BasicManager {
      * @param int $leagueId
      * @param int $top
      * @param int $offset
+     * @param array|null $facebookIds
      * @return array
      */
-    public function getLeagueTop($leagueId, $top, $offset = 0) {
+    public function getLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-        return $leagueUserDAO->getLeagueTop($leagueId, $top, $offset);
+        return $leagueUserDAO->getLeagueTop($leagueId, $top, $offset, $facebookIds);
     }
 
     /**
@@ -202,6 +203,16 @@ class LeagueManager extends BasicManager {
     public function getLeagueUsersCount($leagueId, $skipCache = false) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
         return $leagueUserDAO->getLeagueUsersCount($leagueId, $skipCache);
+    }
+
+    /**
+     * @param int $leagueId
+     * @param int $userId
+     * @return int
+     */
+    public function getYourPlaceInLeague($leagueId, $userId) {
+        $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
+        return $leagueUserDAO->getYourPlaceInLeague($leagueId, $userId);
     }
 
 }

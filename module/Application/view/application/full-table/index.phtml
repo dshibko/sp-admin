@@ -4,12 +4,15 @@
             <h1><?=$this->translate('League Table')?></h1>
             <div class="league">
                 <header class="clearfix">
-                    <h2>December</h2>
+                    <h2><?=$this->seasonName?></h2>
                     <form id="season-filter">
                         <div>
-                            <select>
-                                <option value="default">&ndash; Select season &ndash;</option>
-                                <option value="">1</option>
+                            <select name='league-filter' id='league-filter'>
+                                <option value="everyone" selected="selected"><?=$this->translate('Everyone')?></option>
+                                <?php if ($this->getCurrentUser()->getFacebookId() !== null) : ?>
+                                    <option value="your-friends"><?=$this->translate('Your friends')?></option>
+                                <?php endif; ?>
+                                <option value="you-and-around"><?=$this->translate('You and around you')?></option>
                             </select>
                         </div>
                     </form>
@@ -20,6 +23,7 @@
                         <table id='league-table'>
                             <tr>
                                 <th colspan="3">
+                                    <h3><?=$this->leagueName?></h3>
                                 </th>
                                 <th><abbr title="Points"><?=$this->translate('pts')?></abbr></th>
                             </tr>
@@ -33,7 +37,11 @@
                                 </td>
                                 <td class="player"><?=$user['displayName']?></td>
                                 <td class="nationality"><img src="<?=$user['flagImage']?>" itemprop="nationality" alt="<?=$user['country']?>"></td>
-                                <td class="points"><?=$user['points'] !== null ? $user['points'] : '-'?></td>
+                                <td class="points">
+                                    <?php if ($isActive) : ?><span><?php endif;?>
+                                    <?=$user['points'] !== null ? $user['points'] : '-'?>
+                                    <?php if ($isActive) : ?></span><?php endif;?>
+                                </td>
                             </tr>
                             <?php endforeach; ?>
                             <?php if (!$this->onlyRows) : ?>
