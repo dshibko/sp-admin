@@ -25,7 +25,7 @@
 
     .block {
       margin-bottom: 1.2em;
-      padding: 1.5em 1.2em 0.1em;
+      padding: 1.5em 1.7em 0.1em 1.2em;
       border-radius: 7px;
       background: #E7EEF8;
     }
@@ -38,7 +38,7 @@
           border-top: none;
         }
         th {
-          padding: 0.7em 1.3em 0.7em 0.8em;
+          padding: 0.7em 0.4em 0.7em 0.8em;
           vertical-align: bottom;
           text-align: right;
 
@@ -64,17 +64,23 @@
           vertical-align: middle;
           font: normal 1.6em/1 "ProximaNova-Reg", Helvetica, Arial;
 
+          &.position {
+            width: 7%
+          }
           &.player {
-            width: 85%;
+            width: 71%;
           }
           &.nationality {
-            width: 15%;
+            width: 10%;
             img {
               max-width: 1.2em;
+              width: 19px;
+              height: 13px;
             }
           }
           &.points {
-            padding: 0.5em 0.6em 0.5em 0.2em;
+            width: 12%;
+            padding: 0.5em 0em 0.5em 0.2em;
             color: @blue;
             text-align: right;
             font: normal 2.3em/1 "ProximaNova-Bold", Helvetica, Arial;
@@ -119,6 +125,7 @@
               }
             }
             &.points {
+              padding: 0em 0em  0em 0.8em;
               span {
                 height: 2.1em;
                 line-height: 2.1em;
@@ -126,8 +133,8 @@
                 &:before {
                   top: -1px;
                   bottom: -1px;
-                  right: -1.3em;
-                  width: 1em;
+                  right: -0.7em;
+                  width: 0.7em;
                   background: #cedceb;
                 }
               }
@@ -233,8 +240,13 @@
             &.position {
               padding: 1em 0.8em 1em 0.6em;
             }
+            &.player {
+              width: 60%;
+            }
             &.points {
-              padding: 0.5em 0.4em 0.5em 0.2em;
+              padding: 0.5em 0em 0.5em 0.2em;
+              width: 23%;  
+              min-width: 60px;            
             }
           }
 
@@ -251,11 +263,11 @@
                 }
               }
               &.points {
-                padding: 0 0.4em 0 0.2em;
+                padding: 0 0em 0 0.2em;
                 span {
                   &:before {
-                    right: -0.9em;
-                    width: 0.7em;
+                    right: -0.7em;
+                    width: 0.71em;
                   }
                 }
               }

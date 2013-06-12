@@ -1,7 +1,9 @@
 $(document).ready(function () {
+        var count = 0;
         var gridFluid = function (size) {
-            console.log(size);
-            $('#container').masonry( 'destroy' );
+            if (count != 0){
+                $('#container').masonry( 'destroy' );
+            }
             $('#container').masonry({
                 itemSelector: '.item',
                 // isFitWidth: true,
@@ -9,6 +11,7 @@ $(document).ready(function () {
                     return containerWidth / size;
                 }
             });
+            count++;
         }
         if ($(window).width() > 767){
             gridFluid(3);
