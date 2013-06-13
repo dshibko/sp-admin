@@ -206,16 +206,19 @@
                     </section>
                     <section class="grid-layout">
                         <div id="container" class="clearfix masonry centered fluid">
-                            <div class="item col1 pie-chart head-to-head-results">
+                            <div class="item col1 pie-chart">
                                 <section>
-                                    <figure id="chart-head-to-head-results"></figure>
-
-                                    <h1>All time head-to-head results</h1>
-                                    <ol>
-                                        <li>FC Barcelona</li>
-                                        <li>Chelsea FC</li>
-                                        <li>Draws</li>
-                                    </ol>
+                                    <figure>
+                                        <div id="chart-head-to-head-results"></div>
+                                        <figcaption>
+                                            <h1>All time head-to-head results</h1>
+                                            <ol class="legend">
+                                                <li>FC Barcelona</li>
+                                                <li>Chelsea FC</li>
+                                                <li>Draws</li>
+                                            </ol>
+                                        </figcaption>
+                                    </figure>
                                 </section>
                             </div>
                             <div class="item col2 featured-player">
@@ -248,7 +251,7 @@
                                     </div>
                               </section>
                             </div>
-                            <div class="item col1 stacked-bar season-total-goals">
+                            <div class="item col1 stacked-bar">
                                 <section>
                                     <h1>Total goals this season</h1>
                                     <figure>
@@ -257,10 +260,10 @@
                                             <li style="width: 40%;"><span>6</span></li>
                                         </ol>
                                         <figcaption>
-                                            <ul class="legend">
+                                            <ol class="legend">
                                                 <li>FC Barcelona</li>
                                                 <li>Chelsea</li>
-                                            </ul>
+                                            </ol>
                                         </figcaption>
                                     </figure>
                                     
@@ -272,7 +275,7 @@
                                     <p>Of the 11 countries that have appeared in a final, France are the only team never to have conceded a goal</p>
                                 </section>
                             </div>
-                            <div class="item col1 stacked-bar average-season-goals ">
+                            <div class="item col1 stacked-bar">
                                 <section>
                                     <h1>Average goals per game this season</h1>
                                     <figure>
@@ -281,16 +284,16 @@
                                             <li style="width: 40%;"><span>1.56</span></li>
                                         </ol>
                                         <figcaption>
-                                            <ul class="legend">
+                                            <ol class="legend">
                                                 <li>FC Barcelona</li>
                                                 <li>Chelsea</li>
-                                            </ul>
+                                            </ol>
                                         </figcaption>
                                     </figure>
                                     
                                 </section>
                             </div>
-                            <div class="item col1 stacked-bar games-since-last-sheet ">
+                            <div class="item col1 stacked-bar">
                                 <section>
                                     <h1>Games since last clean sheet</h1>
                                     <figure>
@@ -299,10 +302,10 @@
                                             <li style="width: 50%;"><span>9</span></li>
                                         </ol>
                                         <figcaption>
-                                            <ul class="legend">
+                                            <ol class="legend">
                                                 <li>FC Barcelona</li>
                                                 <li>Chelsea</li>
-                                            </ul>
+                                            </ol>
                                         </figcaption>
                                     </figure>
                                     
@@ -319,30 +322,36 @@
                                     </figure>
                                 </section>
                             </div>
-                            <div class="item col1 pie-chart away-form">
+                            <div class="item col1 pie-chart">
                                 <section>
-                                    <figure id="chart-away-form"></figure>
-
-                                    <h1>Away form</h1>
-                                    <p>For FC Barcelona this season</p>
-                                    <ol>
-                                        <li>Wins</li>
-                                        <li>Losses</li>
-                                        <li>Draws</li>
-                                    </ol>
+                                    <figure>
+                                        <div id="chart-away-form"></div>
+                                        <figcaption>
+                                            <h1>Away form</h1>
+                                            <p>For FC Barcelona this season</p>
+                                            <ol class="legend">
+                                                <li>Wins</li>
+                                                <li>Losses</li>
+                                                <li>Draws</li>
+                                            </ol>
+                                        </figcaption>
+                                    </figure>
                                 </section>
                             </div>
-                            <div class="item col1 pie-chart home-form">
+                            <div class="item col1 pie-chart">
                                 <section>
-                                    <figure id="chart-home-form"></figure>
-
-                                    <h1>Home form</h1>
-                                    <p>For FC Barcelona this season</p>
-                                    <ol>
-                                        <li>Wins</li>
-                                        <li>Losses</li>
-                                        <li>Draws</li>
-                                    </ol>
+                                    <figure>
+                                        <div id="chart-home-form"></div>
+                                        <figcaption>
+                                            <h1>Home form</h1>
+                                            <p>For FC Barcelona this season</p>
+                                            <ol class="legend">
+                                                <li>Wins</li>
+                                                <li>Losses</li>
+                                                <li>Draws</li>
+                                            </ol>
+                                        </figcaption>
+                                    </figure>
                                 </section>
                             </div>
                             <div class="item col2 featured-player">
@@ -391,6 +400,28 @@
                                     </p>
                                 </section>
                             </div>
+                            <div class="item col1 summary left">
+                                <section>
+                                    <figure class="clearfix">
+                                        <div id="community-predicted-results"></div>
+                                        <figcaption>Community correctly predicted the results</figcaption>
+                                    </figure>
+                                </section>
+                            </div>
+                            <div class="item col1 summary left">
+                                <section>
+                                    <figure class="clearfix">
+                                        <div class="your-place">
+                                            <img src="img/up-place.png" class="up" title="Moved Up" alt="Moved Up">
+                                            <p>
+                                                <strong>50</strong> places
+                                            </p>
+                                            <img src="img/down-place.png" class="down" title="Moved Down" alt="Moved Down">
+                                        </div>
+                                        <figcaption>You moved up 50 places on the UK league this match</figcaption>
+                                    </figure>
+                                </section>
+                            </div>
                             <div class="item col2 top-predicted-scorers">
                                 <section class="clearfix">
                                     <img src="img/report/top-predicted-scorers-bg.png" alt="" class="bg">
@@ -414,18 +445,21 @@
                                     </div>
                                 </section>
                             </div>
-                            <div class="item col1 top5-predicted-scores">
+                            <div class="item col1 pie-chart top5-predicted-scores">
                                 <section>
-                                    <figure id="chart_top5"></figure>
-
-                                    <h1>Top 5 predicted scores</h1>
-                                    <ol>
-                                        <li>2-1 (14%)</li>
-                                        <li>1-2 (13%)</li>
-                                        <li>3-0 (12%)</li>
-                                        <li>0-0 (9%)</li>
-                                        <li>3-1 (8%)</li>
-                                    </ol>
+                                    <figure >
+                                        <div id="chart_top5"></div>
+                                        <figcaption>
+                                            <h1>Top 5 predicted scores</h1>
+                                            <ol class="legend">
+                                                <li>2-1 (14%)</li>
+                                                <li>1-2 (13%)</li>
+                                                <li>3-0 (12%)</li>
+                                                <li>0-0 (9%)</li>
+                                                <li>3-1 (8%)</li>
+                                            </ol>
+                                        </figcaption>
+                                    </figure>
                                 </section>
                             </div>
 
