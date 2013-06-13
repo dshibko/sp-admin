@@ -1803,7 +1803,6 @@ Licensed under the MIT license.
             if (grid.show && !grid.aboveData) {
                 drawGrid();
             }
-
             for (var i = 0; i < series.length; ++i) {
                 executeHooks(hooks.drawSeries, [ctx, series[i]]);
                 drawSeries(series[i]);

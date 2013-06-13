@@ -22,6 +22,9 @@ class ApplicationManager extends BasicManager {
     const CLUB_EDITION = 'club';
     const COMPETITION_EDITION = 'competition';
 
+    const USER_LEAGUE_MOVEMENT_UP = 'up';
+    const USER_LEAGUE_MOVEMENT_DOWN  = 'down';
+    const USER_LEAGUE_MOVEMENT_SAME = 'same';
     /**
      * @var ApplicationManager
      */

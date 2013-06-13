@@ -60,6 +60,28 @@ class LeagueUserDAO extends AbstractDAO {
         return $query->getArrayResult();
     }
 
+    public function getUserLeaguesByTypes(\Application\Model\Entities\User $user, \Application\Model\Entities\Season $season, \Application\Model\Entities\Region $region, array $types)
+    {
+        $nowTime = new \DateTime();
+        $nowTime->setTime(0, 0, 0);
+        $regionId = $region == null ? 0 : $region->getId();
+        $query = $this->getEntityManager()->createQuery('
+            SELECT
+                lu.points,
+                lu.accuracy,
+                lu.place,
+                lu.previousPlace,
+                l.type,
+                lr.displayName
+            FROM
+               '.$this->getRepositoryName().' as lu
+            INNER JOIN lu.league l WITH l.season = ' . $season->getId() . '
+            LEFT JOIN l.leagueRegions lr WITH lr.region = ' . $regionId . '
+            WHERE lu.user = ' . $user->getId() . ' AND
+                :nowTime >= l.startDate AND :nowTime <= l.endDate AND l.type IN (:types)
+        ')->setParameter('nowTime', $nowTime)->setParameter('types', $types);
+        return $query->getArrayResult();
+    }
     /**
      * @param int $leagueId
      * @param bool $skipCache
@@ -70,16 +92,18 @@ class LeagueUserDAO extends AbstractDAO {
         $qb->select($qb->expr()->count('lu.id'))
             ->from($this->getRepositoryName(), 'lu')
             ->where($qb->expr()->eq('lu.league', $leagueId));
-        return $this->getQuery($qb, $skipCache)->getSingleScalarResult() * 7;
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+//        return $this->getQuery($qb, $skipCache)->getSingleScalarResult() * 7;
     }
 
     /**
      * @param int $leagueId
      * @param int $top
      * @param int $offset
+     * @param array|null $facebookIds
      * @return array
      */
-    public function getLeagueTop($leagueId, $top, $offset = 0) {
+    public function getLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null) {
         $query = $this->getEntityManager()->createQuery('
             SELECT
                 lu.points, lu.accuracy, lu.place, lu.previousPlace, u.displayName, c.flagImage, c.name as country, u.id as userId
@@ -87,17 +111,34 @@ class LeagueUserDAO extends AbstractDAO {
                '.$this->getRepositoryName().' as lu
             INNER JOIN lu.user u
             INNER JOIN u.country c
-            WHERE lu.league = ' . $leagueId . '
+            WHERE lu.league = ' . $leagueId . ($facebookIds !== null ? ' AND u.facebookId IN (' . implode(",", $facebookIds) . ')' : '') . '
             ORDER BY lu.place ASC
         ');
-//        ')->setMaxResults($top)->setFirstResult($offset);
-//        return $query->getArrayResult();
-        $arr = $query->getArrayResult();
-        $arr = array_merge($arr, $arr, $arr, $arr, $arr, $arr, $arr);
-        $i = 0;
-        foreach ($arr as $k => $v)
-            $arr[$k]['place'] = ++$i;
-        return array_slice($arr, $offset, $top);
+        if ($top > 0)
+            $query->setMaxResults($top);
+        if ($offset > 0)
+            $query->setFirstResult($offset);
+        return $query->getArrayResult();
+//        $arr = $query->getArrayResult();
+//        $arr = array_merge($arr, $arr, $arr, $arr, $arr, $arr, $arr);
+//        $i = 0;
+//        foreach ($arr as $k => $v)
+//            $arr[$k]['place'] = ++$i;
+//        return array_slice($arr, $offset, $top);
+    }
+
+    /**
+     * @param int $leagueId
+     * @param int $userId
+     * @return array
+     */
+    public function getYourPlaceInLeague($leagueId, $userId) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('lu.place')
+            ->from($this->getRepositoryName(), 'lu')
+            ->where($qb->expr()->eq('lu.league', $leagueId))
+            ->andWhere($qb->expr()->eq('lu.user', $userId));
+        return $this->getQuery($qb)->getSingleScalarResult();
     }
 
 }

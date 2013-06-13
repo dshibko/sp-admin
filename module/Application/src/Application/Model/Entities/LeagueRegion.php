@@ -42,6 +42,13 @@ class LeagueRegion
     private $region;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="region_id", type="integer")
+     */
+    private $regionId;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", nullable=true)
@@ -110,5 +117,21 @@ class LeagueRegion
     public function getRegion()
     {
         return $this->region;
+    }
+
+    /**
+     * @param int $regionId
+     */
+    public function setRegionId($regionId)
+    {
+        $this->regionId = $regionId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRegionId()
+    {
+        return $this->regionId;
     }
 }
