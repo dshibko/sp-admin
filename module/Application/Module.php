@@ -213,6 +213,11 @@ class Module
                     $h->setServiceLocator($sm->getServiceLocator());
                     return $h;
                 },
+                'renderUserLeagueMovement' => function($sm){
+                    $userLeagueMovement = new \Neoco\View\Helper\UserLeagueMovement();
+                    $userLeagueMovement->setServiceLocator($sm->getServiceLocator());
+                    return $userLeagueMovement;
+                }
             )
         );
     }
