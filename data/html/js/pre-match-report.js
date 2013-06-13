@@ -27,7 +27,6 @@ $(document).ready(function () {
     });
 });
 
-
 var plots = [];
 if (window.topScoresData !== undefined){
     plots.push($.plot('#chart_top5',
@@ -42,7 +41,7 @@ if (window.topScoresData !== undefined){
                     }
                 }
             }
-    }));
+        }));
 
 }
 
