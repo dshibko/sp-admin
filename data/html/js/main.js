@@ -70,7 +70,39 @@ $(document).ready(function () {
     $('#make-prediction').addClass("stack");
 
 
-        ;(function(window, document, undefined) {
+
+
+//
+//nav
+//
+    var $breakpoint = 767;
+    var $window = $(window);
+
+    var burgerHeight = parseInt($('a.mobilenav').css('height'));
+    $('nav.main-navigation > ul').height('auto');
+    var navHeight = $('nav.main-navigation > ul').height();
+    $('nav.main-navigation > ul').height(0);
+    var border = 4;
+    var offset = navHeight - border;
+
+    $('a.mobilenav').click(function(e){
+        if( $('nav.main-navigation > ul').height() > 0 ){
+            $('nav.main-navigation > ul').animate({height: 0},200);
+            $('a.mobilenav').css('background-position', '12px 12px');
+        } else {
+            $('nav.main-navigation > ul').animate({height: offset},200);
+            $('a.mobilenav').css('background-position', '12px -24px');         
+        }
+        return false;
+    });
+//
+//
+//
+
+
+});
+
+    ;(function(window, document, undefined) {
         'use strict';
 
         var htmlElement     = document.getElementsByTagName('html')[0],
@@ -145,34 +177,3 @@ $(document).ready(function () {
 
         updateFontsize();
     }(window, document));
-
-//
-//nav
-//
-    var $breakpoint = 767;
-    var $window = $(window);
-
-    var burgerHeight = parseInt($('a.mobilenav').css('height'));
-    $('nav.main-navigation > ul').height('auto');
-    var navHeight = $('nav.main-navigation > ul').height();
-    $('nav.main-navigation > ul').height(0);
-    var border = 4;
-    var offset = navHeight - border;
-
-    $('a.mobilenav').click(function(e){
-        if( $('nav.main-navigation > ul').height() > 0 ){
-            $('nav.main-navigation > ul').animate({height: 0},200);
-            $('a.mobilenav').css('background-position', '12px 12px');
-        } else {
-            $('nav.main-navigation > ul').animate({height: offset},200);
-            $('a.mobilenav').css('background-position', '12px -24px');         
-        }
-        return false;
-    });
-//
-//
-//
-
-
-});
-
