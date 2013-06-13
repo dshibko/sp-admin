@@ -44,6 +44,7 @@ class MatchGoalDAO extends AbstractDAO {
     public function getMatchScorers($matchId, $limit = -1, $hydrate = false, $skipCache = false)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->distinct(true);
         $qb->select('
             mg,p
         ');

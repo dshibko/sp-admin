@@ -483,7 +483,7 @@ class MatchManager extends BasicManager
         }
         $predictionIds = $match->getPredictionIds();
         if (!empty($predictionIds)){
-
+            $totalNumberOfPredictions = count($predictionIds);
             //Match report top predicted scorers
             $topScorers = $predictionManager->getTopScorers($predictionIds, self::MATCH_REPORT_TOP_SCORERS_NUMBER,true);
             $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
@@ -501,7 +501,6 @@ class MatchManager extends BasicManager
 
             //Match report top predicted scores
             $topScores = $predictionManager->getTopScores($predictionIds, self::TOP_SCORES_NUMBER, true);
-            $totalNumberOfPredictions = count($predictionIds);
             if (!empty($topScores) && $totalNumberOfPredictions){
                 $scores = array();
                 foreach($topScores as $score){
@@ -575,7 +574,7 @@ class MatchManager extends BasicManager
         $predictionIds = $match->getPredictionIds();
 
         if (!empty($predictionIds)){
-
+            $totalNumberOfPredictions = count($predictionIds);
             //Match report top predicted scores
             $topScores = $predictionManager->getTopScores($predictionIds, self::POST_MATCH_REPORT_TOP_SCORES_NUMBER, true);
             if (!empty($topScores[0])){//Get top predicted score
@@ -590,27 +589,24 @@ class MatchManager extends BasicManager
                     $correctScorersIds[] = $correctScorer->getPlayer()->getId();
                 }
                 if (!empty($correctScorersIds)){
-                    $totalPlayersPredictions = $predictionManager->getPredictionPlayersCount($predictionIds);
-                    if ($totalPlayersPredictions){
-                        $scorersCounts = $predictionManager->getCorrectScorersPredictionsCount($predictionIds, $correctScorersIds, true);
-                        if (!empty($scorersCounts)){
-                            $scorers = array();
-                            foreach($scorersCounts as $scorerCount){
-                                $scorers[$scorerCount['player_name']] = round( ($scorerCount['scorers_count'] / $totalPlayersPredictions) * 100);
-                            }
-                            $scorers = array_slice($scorers, 0, self::POST_MATCH_REPORT_CORRECT_SCORERS_NUMBER);
-                            $report['correctScorers'] = array(
-                                'scorers' => $scorers,
-                                'backgroundImage' => $scorersCounts[0]['backgroundImagePath'],
-                                'avatarImage' => $scorersCounts[0]['imagePath']
-                            );
+                    $scorersPredictionsCount = $predictionManager->getCorrectScorersPredictionsCount($predictionIds, $correctScorersIds, true);
+                    if (!empty($scorersPredictionsCount)){
+                        $scorers = array();
+                        foreach($scorersPredictionsCount as $scorerCount){
+                            $scorers[$scorerCount['player_name']] = round( ($scorerCount['predictions_count'] / $totalNumberOfPredictions) * 100);
                         }
+                        $scorers = array_slice($scorers, 0, self::POST_MATCH_REPORT_CORRECT_SCORERS_NUMBER);
+                        $report['correctScorers'] = array(
+                            'scorers' => $scorers,
+                            'backgroundImage' => $scorersPredictionsCount[0]['backgroundImagePath'],
+                            'avatarImage' => $scorersPredictionsCount[0]['imagePath']
+                        );
                     }
+
                 }
             }
 
             //Match report correctly predicted result
-            $totalNumberOfPredictions = count($predictionIds);
             if ($totalNumberOfPredictions){
                 $correctScoreCount = $predictionManager->getPredictionsCorrectScoreCount($predictionIds);
                 $report['correctScore'] = round( ($correctScoreCount / $totalNumberOfPredictions) * 100);

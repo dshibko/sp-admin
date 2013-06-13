@@ -322,6 +322,12 @@ class PredictionDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
+    /**
+     * @param $seasonId
+     * @param $userId
+     * @param $maxAhead
+     * @return mixed
+     */
     function getPredictableCount($seasonId, $userId, $maxAhead) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('unp', 'u');
@@ -340,12 +346,19 @@ class PredictionDAO extends AbstractDAO {
         return $query->getSingleScalarResult();
     }
 
+    /**
+     * @param array $predictionIds
+     * @param array $scorersIds
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
     public function getCorrectScorersPredictionsCount(array $predictionIds, array $scorersIds, $hydrate = true, $skipCache = false)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
         $qb->select('
-            COUNT(pp.playerId) as scorers_count,
+            COUNT(pp.prediction) as predictions_count,
             pl.displayName as player_name,
             pl.backgroundImagePath,
             pl.imagePath
@@ -354,8 +367,8 @@ class PredictionDAO extends AbstractDAO {
         $qb->join('pp.player','pl');
         $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
         $qb->andWhere($qb->expr()->in('pp.playerId',':playerIds'))->setParameter('playerIds', $scorersIds);
-        $qb->groupBy('pp.playerId');
-        $qb->orderBy('scorers_count','DESC');
+        $qb->groupBy('pp.prediction');
+        $qb->orderBy('predictions_count','DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
