@@ -1,28 +1,32 @@
 $(document).ready(function () {
-        var gridFluid = function (size) {
-            //console.log(size);
+    var count = 0;
+    var gridFluid = function (size) {
+        if (count != 0){
             $('#container').masonry( 'destroy' );
-            $('#container').masonry({
-                itemSelector: '.item',
-                // isFitWidth: true,
-                columnWidth: function (containerWidth) {
-                    return containerWidth / size;
-                }
-            });
         }
-        if ($(window).width() > 767){
+        $('#container').masonry({
+            itemSelector: '.item',
+            // isFitWidth: true,
+            columnWidth: function (containerWidth) {
+                return containerWidth / size;
+            }
+        });
+        count++;
+    }
+    if ($(window).width() > 767){
+        gridFluid(3);
+    } else {
+        gridFluid(2);
+    }
+    $(window).on('resize', function () {
+        if ($(this).width() > 767) {
             gridFluid(3);
         } else {
             gridFluid(2);
         }
-        $(window).on('resize', function () {
-            if ($(this).width() > 767) {
-                gridFluid(3);
-            } else {
-                gridFluid(2);
-            }
-        });
+    });
 });
+
 
 var plots = [];
 if (window.topScoresData !== undefined){
@@ -42,7 +46,32 @@ if (window.topScoresData !== undefined){
 
 }
 
-
+plots.push($.plot('#community-predicted-results',
+    [
+        {color: '#90b1d4', data: 95},
+        {color: '#144a9b', data: 5}
+    ],
+    {
+        series: {
+            pie: {
+                innerRadius: 0.8,
+                stroke: {color: '#e6edf8', width: 0},
+                show: true,
+                radius: 1,
+                label: {
+                    show: true,
+                    radius: 0,
+                    formatter: function(label, series) {
+                        return series.data[0][1] + '%';
+                    }
+                }
+            }
+        },
+        legend: {
+            show: false
+        }
+    }
+));
 
 if ($('#chart-head-to-head-results').size() > 0){
     plots.push($.plot('#chart-head-to-head-results',

@@ -19,6 +19,21 @@
 <!--HEADER ENDS-->
 <section class="grid-layout">
     <div id="container" class="clearfix masonry centered fluid">
+        <div class="item col1 pie-chart">
+            <section>
+                <figure>
+                    <div id="chart-head-to-head-results"></div>
+                    <figcaption>
+                        <h1>All time head-to-head results</h1>
+                        <ol class="legend">
+                            <li>FC Barcelona</li>
+                            <li>Chelsea FC</li>
+                            <li>Draws</li>
+                        </ol>
+                    </figcaption>
+                </figure>
+            </section>
+        </div>
         <!--FEATURED PLAYER BLOCK STARTS-->
             <?php if (!empty($this->report['featuredPlayer'])):?>
                 <?php $featuredPlayer = $this->report['featuredPlayer'];?>
@@ -54,6 +69,116 @@
                 </div>
             <?php endif;?>
         <!--FEATURED PLAYER BLOCK ENDS-->
+        <!--TOTAL GOALS THIS SEASON STARTS-->
+        <div class="item col1 stacked-bar">
+            <section>
+                <h1>Total goals this season</h1>
+                <figure>
+                    <ol class="clearfix">
+                        <li style="width: 60%;"><span>12</span></li>
+                        <li style="width: 40%;"><span>6</span></li>
+                    </ol>
+                    <figcaption>
+                        <ol class="legend">
+                            <li><?=$this->match['homeName']?></li>
+                            <li><?=$this->match['awayName']?></li>
+                        </ol>
+                    </figcaption>
+                </figure>
+
+            </section>
+        </div>
+        <!--TOTAL GOALS THIS SEASON ENDS-->
+        <!--        <div class="item col1 help-tip">-->
+        <!--            <section>-->
+        <!--                <h1>Did you know...</h1>-->
+        <!--                <p>Of the 11 countries that have appeared in a final, France are the only team never to have conceded a goal</p>-->
+        <!--            </section>-->
+        <!--        </div>-->
+        <!--        <div class="item col1 stacked-bar">-->
+        <!--            <section>-->
+        <!--                <h1>Average goals per game this season</h1>-->
+        <!--                <figure>-->
+        <!--                    <ol class="clearfix">-->
+        <!--                        <li style="width: 60%;"><span>2.12</span></li>-->
+        <!--                        <li style="width: 40%;"><span>1.56</span></li>-->
+        <!--                    </ol>-->
+        <!--                    <figcaption>-->
+        <!--                        <ul class="legend">-->
+        <!--                            <li>FC Barcelona</li>-->
+        <!--                            <li>Chelsea</li>-->
+        <!--                        </ul>-->
+        <!--                    </figcaption>-->
+        <!--                </figure>-->
+        <!---->
+        <!--            </section>-->
+        <!--        </div>-->
+        <!--        <div class="item col1 stacked-bar">-->
+        <!--            <section>-->
+        <!--                <h1>Games since last clean sheet</h1>-->
+        <!--                <figure>-->
+        <!--                    <ol class="clearfix">-->
+        <!--                        <li style="width: 50%;"><span>9</span></li>-->
+        <!--                        <li style="width: 50%;"><span>9</span></li>-->
+        <!--                    </ol>-->
+        <!--                    <figcaption>-->
+        <!--                        <ul class="legend">-->
+        <!--                            <li>FC Barcelona</li>-->
+        <!--                            <li>Chelsea</li>-->
+        <!--                        </ul>-->
+        <!--                    </figcaption>-->
+        <!--                </figure>-->
+        <!---->
+        <!--            </section>-->
+        <!--        </div>-->
+        <!--FEATURED PREDICTION START-->
+        <?php if (!empty($this->report['featuredPrediction']) && !empty($this->report['featuredPrediction']['copy'])):?>
+            <?php $featuredPrediction = $this->report['featuredPrediction'];?>
+        <div class="item col2 blockquote">
+            <section class="">
+                <img src="<?php echo $featuredPrediction['backgroundImage'];?>" alt="Featured Prediction" class="bg">
+                <figure>
+                    <blockquote>
+                        <p><?php echo $featuredPrediction['copy'];?></p>
+                    </blockquote>
+                    <figcaption><?php echo $featuredPrediction['name'];?></figcaption>
+                </figure>
+            </section>
+        </div>
+            <?php endif;?>
+        <!--FEATURED PREDICTION END-->
+        <!--div class="item col1 pie-chart">
+            <section>
+                <figure>
+                    <div id="chart-away-form"></div>
+                    <figcaption>
+                        <h1>Away form</h1>
+                        <p>For FC Barcelona this season</p>
+                        <ol class="legend">
+                            <li>Wins</li>
+                            <li>Losses</li>
+                            <li>Draws</li>
+                        </ol>
+                    </figcaption>
+                </figure>
+            </section>
+        </div>
+        <div class="item col1 pie-chart">
+            <section>
+                <figure>
+                    <div id="chart-home-form"></div>
+                    <figcaption>
+                        <h1>Home form</h1>
+                        <p>For FC Barcelona this season</p>
+                        <ol class="legend">
+                            <li>Wins</li>
+                            <li>Losses</li>
+                            <li>Draws</li>
+                        </ol>
+                    </figcaption>
+                </figure>
+            </section>
+        </div-->
         <!--FEATURED GOALKEEPER BLOCK STARTS-->
         <?php if (!empty($this->report['featuredGoalkeeper'])):?>
             <?php $featuredGoalkeeper = $this->report['featuredGoalkeeper'];?>
@@ -89,61 +214,7 @@
             </div>
         <?php endif;?>
         <!--FEATURED GOALKEEPER BLOCK ENDS-->
-        <div class="item col1 pie-chart head-to-head-results">
-            <section>
-                <figure id="chart-head-to-head-results"></figure>
 
-                <h1>All time head-to-head results</h1>
-                <ol>
-                    <li><?=$this->match['homeName']?></li>
-                    <li><?=$this->match['awayName']?></li>
-                    <li>Draws</li>
-                </ol>
-            </section>
-        </div>
-        <!--TOTAL GOALS THIS SEASON STARTS-->
-        <div class="item col1 stacked-bar season-total-goals">
-            <section>
-                <h1>Total goals this season</h1>
-                <figure>
-                    <ol class="clearfix">
-                        <li style="width: 60%;"><span>12</span></li>
-                        <li style="width: 40%;"><span>6</span></li>
-                    </ol>
-                    <figcaption>
-                        <ul class="legend">
-                            <li><?=$this->match['homeName']?></li>
-                            <li><?=$this->match['awayName']?></li>
-                        </ul>
-                    </figcaption>
-                </figure>
-
-            </section>
-        </div>
-        <!--TOTAL GOALS THIS SEASON ENDS-->
-
-<!--        <div class="item col1 help-tip">-->
-<!--            <section>-->
-<!--                <h1>Did you know...</h1>-->
-<!--                <p>Of the 11 countries that have appeared in a final, France are the only team never to have conceded a goal</p>-->
-<!--            </section>-->
-<!--        </div>-->
-        <!--FEATURED PREDICTION START-->
-        <?php if (!empty($this->report['featuredPrediction']) && !empty($this->report['featuredPrediction']['copy'])):?>
-            <?php $featuredPrediction = $this->report['featuredPrediction'];?>
-            <div class="item col2 blockquote">
-                <section class="">
-                    <img src="<?php echo $featuredPrediction['backgroundImage'];?>" alt="Featured Prediction" class="bg">
-                    <figure>
-                        <blockquote>
-                            <p><?php echo $featuredPrediction['copy'];?></p>
-                        </blockquote>
-                        <figcaption><?php echo $featuredPrediction['name'];?></figcaption>
-                    </figure>
-                </section>
-            </div>
-        <?php endif;?>
-        <!--FEATURED PREDICTION END-->
         <!--TOP SCORERS BLOCK STARTS-->
         <?php if (!empty($this->report['topScorers'])):?>
             <?php $topScorers = $this->report['topScorers'];?>
@@ -175,15 +246,19 @@
         <!--TOP SCORES BLOCK STARTS-->
         <?php if (!empty($this->report['topScores'])):?>
             <?php $topScores = $this->report['topScores'];?>
-            <div class="item col1 top5-predicted-scores">
+            <div class="item col1 pie-chart top5-predicted-scores">
                 <section>
-                    <figure id="chart_top5"></figure>
-                    <h1><?php echo $this->translate('Top 5 predicted scores');?></h1>
-                    <ol>
-                        <?php foreach($topScores as $score => $percentage):?>
-                        <li><?php echo $score;?> (<?php echo $percentage;?>%)</li>
-                        <?php endforeach;?>
-                    </ol>
+                    <figure>
+                        <div id="chart_top5"></div>
+                        <figcaption>
+                            <h1><?php echo $this->translate('Top 5 predicted scores');?></h1>
+                            <ol class="legend">
+                                <?php foreach($topScores as $score => $percentage):?>
+                                <li><?php echo $score;?> (<?php echo $percentage;?>%)</li>
+                                <?php endforeach;?>
+                            </ol>
+                        </figcaption>
+                    </figure>
                 </section>
             </div>
             <script type="text/javascript">
@@ -195,74 +270,14 @@
                     <?php endforeach;?>
                 for (var i = 0; i < colors.length; i++){
                     if (percentage[i] !== undefined){
-                        topScoresData.push({color:colors[i],data:percentage[i]});
+                        topScoresData.push({color:colors[i],data:percentage[i], label :''});
                     }
                 }
             </script>
         <?php endif;?>
         <!--TOP SCORES BLOCK ENDS-->
-<!--        <div class="item col1 stacked-bar average-season-goals ">-->
-<!--            <section>-->
-<!--                <h1>Average goals per game this season</h1>-->
-<!--                <figure>-->
-<!--                    <ol class="clearfix">-->
-<!--                        <li style="width: 60%;"><span>2.12</span></li>-->
-<!--                        <li style="width: 40%;"><span>1.56</span></li>-->
-<!--                    </ol>-->
-<!--                    <figcaption>-->
-<!--                        <ul class="legend">-->
-<!--                            <li>FC Barcelona</li>-->
-<!--                            <li>Chelsea</li>-->
-<!--                        </ul>-->
-<!--                    </figcaption>-->
-<!--                </figure>-->
-<!---->
-<!--            </section>-->
-<!--        </div>-->
-<!--        <div class="item col1 stacked-bar games-since-last-sheet ">-->
-<!--            <section>-->
-<!--                <h1>Games since last clean sheet</h1>-->
-<!--                <figure>-->
-<!--                    <ol class="clearfix">-->
-<!--                        <li style="width: 50%;"><span>9</span></li>-->
-<!--                        <li style="width: 50%;"><span>9</span></li>-->
-<!--                    </ol>-->
-<!--                    <figcaption>-->
-<!--                        <ul class="legend">-->
-<!--                            <li>FC Barcelona</li>-->
-<!--                            <li>Chelsea</li>-->
-<!--                        </ul>-->
-<!--                    </figcaption>-->
-<!--                </figure>-->
-<!---->
-<!--            </section>-->
-<!--        </div>-->
-<!--        <div class="item col1 pie-chart away-form">-->
-<!--            <section>-->
-<!--                <figure id="chart-away-form"></figure>-->
-<!---->
-<!--                <h1>Away form</h1>-->
-<!--                <p>For FC Barcelona this season</p>-->
-<!--                <ol>-->
-<!--                    <li>Wins</li>-->
-<!--                    <li>Losses</li>-->
-<!--                    <li>Draws</li>-->
-<!--                </ol>-->
-<!--            </section>-->
-<!--        </div>-->
-<!--        <div class="item col1 pie-chart home-form">-->
-<!--            <section>-->
-<!--                <figure id="chart-home-form"></figure>-->
-<!---->
-<!--                <h1>Home form</h1>-->
-<!--                <p>For FC Barcelona this season</p>-->
-<!--                <ol>-->
-<!--                    <li>Wins</li>-->
-<!--                    <li>Losses</li>-->
-<!--                    <li>Draws</li>-->
-<!--                </ol>-->
-<!--            </section>-->
-<!--        </div>-->
+
+
         <!--div class="item col1 top-scorers">...</div-->
     </div>
 </section>

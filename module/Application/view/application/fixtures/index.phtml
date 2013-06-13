@@ -1,7 +1,11 @@
+<?php
+    $title = $this->translate('Fixtures');
+    $this->headTitle($title);
+?>
 <div role="main" class="two-column-section clearfix">
     <div class="first-column fixtures">
         <hgroup>
-            <h1><?=$this->translate('Fixtures')?></h1>
+            <h1><?=$title;?></h1>
             <h2><?=$this->seasonRegion != null ? $this->seasonRegion->getDisplayName() : ''?></h2>
         </hgroup>
         <?php if(!empty($this->fixtures)) : ?>

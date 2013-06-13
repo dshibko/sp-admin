@@ -18,80 +18,64 @@
 </section>
 <!--HEADER ENDS-->
 <section class="grid-layout">
-    <!--MOST POPULAR SCORE STARTS-->
-    <?php if (!empty($this->report['topScore']['home_team_score']) && !empty($this->report['topScore']['away_team_score'])):?>
-        <div>
-            <?php echo (int)$this->report['topScore']['home_team_score'];?> - <?php echo (int)$this->report['topScore']['away_team_score'];?>
-            <p><?php echo $this->translate('Was the most popular prediction this match');?></p>
-        </div>
-    <?php endif;?>
-    <!--MOST POPULAR SCORE ENDS-->
-    <!--CORRECT SCORERS BLOCK STARTS-->
-        <?php if (!empty($this->report['correctScorers'])):?>
-        <?php $correctScorers = $this->report['correctScorers'];?>
-        <div class="item col2 top-predicted-scorers">
-            <section class="clearfix">
-                <img src="<?php echo !empty($correctScorers['backgroundImage']) ? $correctScorers['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                <img src="<?php echo !empty($correctScorers['avatarImage']) ? $correctScorers['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Top scorer" class="player"/>
-                <div>
-                    <h1><?php echo $this->translate('Correct scorer predictions');?></h1>
-                    <?php
-                    $classes = array('big', 'middle', 'small');
-                    $index = 0;
-                    ?>
-                    <ol class="clearfix">
-                        <?php foreach($correctScorers['scorers'] as $name => $percentage):?>
-                        <li class="<?php echo (isset($classes[$index]) ? $classes[$index] : 'small');?>">
-                            <strong><?php echo $percentage;?><sup>%</sup></strong>
-                            <span><?php echo $name;?></span>
-                        </li>
-                        <?php $index++;?>
-                        <?php endforeach;?>
-                    </ol>
-                </div>
-            </section>
-        </div>
-        <?php endif;?>
-    <!--CORRECT SCORERS BLOCK ENDS-->
-    <!--CORRECT SCORE BLOCK STARTS-->
-    <?php if (isset($this->report['correctScore'])):?>
-        <strong><?php echo $this->report['correctScore'];?><sup>%</sup></strong>
-        <p><?php echo $this->translate('Community correctly predicted the result');?></p>
-    <?php endif;?>
-    <!--CORRECT SCORE BLOCK ENDS-->
-    <!--REGIONAL LEAGUE MOVEMENT STARTS-->
-    <?php if (!empty($this->report['leaguesMovement'])):?>
-        <?php foreach($this->report['leaguesMovement'] as $movement):?>
-            <div class="league-movement">
-                  <?php
-                        $directionLabel = null;
-                        $iconSource = null;
-                        switch($movement['direction']){
-                            case \Application\Manager\ApplicationManager::USER_LEAGUE_MOVEMENT_SAME : {
-                                $iconSource = $this->getConstant('same_image_source');
-                                $directionLabel = ' stayed the same ';
-                                break;
-                            }
-                            case \Application\Manager\ApplicationManager::USER_LEAGUE_MOVEMENT_UP:{
-                                $iconSource = $this->getConstant('move_up_image_source');
-                                $directionLabel = ' moved up ' . $movement['places'] . ' places ';
-                                break;
-                            }
-                            case \Application\Manager\ApplicationManager::USER_LEAGUE_MOVEMENT_DOWN:{
-                                $iconSource = $this->getConstant('move_down_image_source');
-                                $directionLabel = ' moved down ' . $movement['places'] . ' places ';
-                                break;
-                            }
-                        }
-                  ?>
-                  <?php if (!is_null($directionLabel) && !is_null($iconSource)):?>
-                        <img src="<?php echo $iconSource;?>" alt="movement image"/>
-                        <?php echo $movement['places'];?>&nbsp; <?php echo $this->translate('places');?>
-                        <p><?php echo 'You ' . $directionLabel . ' on the ' . $movement['leagueName'] . ' this match' ?></p>
-                  <?php endif;?>
-
+    <div id="container" class="clearfix masonry centered fluid">
+        <!--MOST POPULAR SCORE STARTS-->
+        <?php if (!empty($this->report['topScore']['home_team_score']) && !empty($this->report['topScore']['away_team_score'])):?>
+            <div class="item col1 summary">
+                <section>
+                    <p>
+                        <strong> <?php echo (int)$this->report['topScore']['home_team_score'];?>-<?php echo (int)$this->report['topScore']['away_team_score'];?></strong>
+                        <?php echo $this->translate('Was the most popular prediction this match');?>
+                    </p>
+                </section>
             </div>
-        <?php endforeach;?>
-    <?php endif;?>
-    <!--REGIONAL LEAGUE MOVEMENT ENDS-->
+        <?php endif;?>
+        <!--MOST POPULAR SCORE ENDS-->
+        <!--CORRECT SCORERS BLOCK STARTS-->
+            <?php if (!empty($this->report['correctScorers'])):?>
+            <?php $correctScorers = $this->report['correctScorers'];?>
+            <div class="item col2 top-predicted-scorers">
+                <section class="clearfix">
+                    <img src="<?php echo !empty($correctScorers['backgroundImage']) ? $correctScorers['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
+                    <img src="<?php echo !empty($correctScorers['avatarImage']) ? $correctScorers['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Top scorer" class="player"/>
+                    <div>
+                        <h1><?php echo $this->translate('Correct scorer predictions');?></h1>
+                        <?php
+                        $classes = array('big', 'middle', 'small');
+                        $index = 0;
+                        ?>
+                        <ol class="clearfix">
+                            <?php foreach($correctScorers['scorers'] as $name => $percentage):?>
+                            <li class="<?php echo (isset($classes[$index]) ? $classes[$index] : 'small');?>">
+                                <strong><?php echo $percentage;?><sup>%</sup></strong>
+                                <span><?php echo $name;?></span>
+                            </li>
+                            <?php $index++;?>
+                            <?php endforeach;?>
+                        </ol>
+                    </div>
+                </section>
+            </div>
+            <?php endif;?>
+        <!--CORRECT SCORERS BLOCK ENDS-->
+        <!--CORRECT SCORE BLOCK STARTS-->
+        <?php if (isset($this->report['correctScore'])):?>
+
+            <strong><?php echo $this->report['correctScore'];?><sup>%</sup></strong>
+            <p><?php echo $this->translate('Community correctly predicted the result');?></p>
+        <?php endif;?>
+        <!--CORRECT SCORE BLOCK ENDS-->
+        <!--REGIONAL LEAGUE MOVEMENT STARTS-->
+        <?php if (!empty($this->report['leaguesMovement'])):?>
+            <?php $leaguesMovement = $this->report['leaguesMovement'];?>
+            <?php if (!empty($leaguesMovement['global'])):?>
+                  <?php echo $this->renderUserLeagueMovement($leaguesMovement['global']);?>
+            <?php endif;?>
+            <?php if (!empty($leaguesMovement['regional'])):?>
+                <?php echo $this->renderUserLeagueMovement($leaguesMovement['regional']);?>
+                <?php endif;?>
+            <?php endif;?>
+        <!--REGIONAL LEAGUE MOVEMENT ENDS-->
+    </div>
 </section>
+<script src="/js/vendor/jquery.masonry.min.js"></script>

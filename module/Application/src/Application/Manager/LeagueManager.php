@@ -17,6 +17,12 @@ use \Neoco\Manager\BasicManager;
 
 class LeagueManager extends BasicManager {
 
+    const GLOBAL_LEAGUE_NAME = 'Global';
+    const REGIONAL_LEAGUE_NAME = 'Regional';
+    const USER_LEAGUE_MOVEMENT_UP = 'up';
+    const USER_LEAGUE_MOVEMENT_DOWN  = 'down';
+    const USER_LEAGUE_MOVEMENT_SAME = 'same';
+
     /**
      * @var LeagueManager
      */

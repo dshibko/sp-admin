@@ -141,4 +141,20 @@ class LeagueUserDAO extends AbstractDAO {
         return $this->getQuery($qb)->getSingleScalarResult();
     }
 
+    /**
+     * @param int $leagueId
+     * @param int $userId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getLeagueUser($leagueId, $userId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('lu')
+            ->from($this->getRepositoryName(), 'lu')
+            ->where($qb->expr()->eq('lu.league', $leagueId))
+            ->andWhere($qb->expr()->eq('lu.user', $userId));
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
 }

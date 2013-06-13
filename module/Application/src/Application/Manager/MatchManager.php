@@ -7,6 +7,7 @@ use \Application\Model\DAOs\MatchDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use \Application\Manager\UserManager;
+use \Application\Manager\LanguageManager;
 use \Application\Manager\PredictionManager;
 use \Application\Model\DAOs\MatchRegionDAO;
 use \Application\Model\Entities\FeaturedPlayer;
@@ -30,6 +31,30 @@ class MatchManager extends BasicManager
      * @var MatchManager
      */
     private static $instance;
+
+    /**
+     * @param array $league
+     * @return array
+     */
+    private function getLeagueUserMovement(array $league)
+    {
+        $movement = array();
+        if (isset($league['previousPlace']) && isset($league['place'])){
+
+            $movementPlaces = $league['previousPlace'] - $league['place'];
+            $direction = LeagueManager::USER_LEAGUE_MOVEMENT_SAME;
+            if ($movementPlaces > 0){
+                $direction = LeagueManager::USER_LEAGUE_MOVEMENT_UP;
+            }elseif ($movementPlaces < 0){
+                $direction = LeagueManager::USER_LEAGUE_MOVEMENT_DOWN;
+            }
+            $movement = array(
+                'places' => abs($movementPlaces),
+                'direction' => $direction
+            );
+        }
+        return $movement;
+    }
 
     /**
      * @static
@@ -576,8 +601,8 @@ class MatchManager extends BasicManager
                             $scorers = array_slice($scorers, 0, self::POST_MATCH_REPORT_CORRECT_SCORERS_NUMBER);
                             $report['correctScorers'] = array(
                                 'scorers' => $scorers,
-                                'backgroundImage' => $correctScorers[0]->getPlayer()->getBackgroundImagePath(), // Get from the first scored in the match
-                                'avatarImage' => $correctScorers[0]->getPlayer()->getImagePath() // Get from the first scored in the match
+                                'backgroundImage' => $scorersCounts[0]['backgroundImagePath'],
+                                'avatarImage' => $scorersCounts[0]['imagePath']
                             );
                         }
                     }
@@ -596,8 +621,35 @@ class MatchManager extends BasicManager
 
         $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
-        $region = $applicationManager->getUserRegion($user);
-        $leagueUsers = $leagueUserDAO->getUserLeaguesByTypes($user, $season, $region, array(League::GLOBAL_TYPE, League::REGIONAL_TYPE));
+        $globalLeague = $applicationManager->getGlobalLeague($season);
+
+        //Global League
+        $globalUserLeague = $leagueUserDAO->getLeagueUser($globalLeague->getId(), $user->getId(), true);
+
+        if (!empty($globalUserLeague)){
+            $movement = $this->getLeagueUserMovement($globalUserLeague);
+            if (!empty($movement)){
+                $movement['name'] = LeagueManager::GLOBAL_LEAGUE_NAME;
+                $report['leaguesMovement']['global'] = $movement;
+            }
+        }
+
+        //Regional League
+        $region = $user->getCountry()->getRegion();
+        if (!is_null($region)) {
+            $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
+            if(!is_null($regionalLeague)){
+                $regionalUserLeague = $leagueUserDAO->getLeagueUser($regionalLeague->getId(), $user->getId(), true);
+                if (!empty($regionalUserLeague)){
+                    $movement = $this->getLeagueUserMovement($regionalUserLeague);
+                    if (!empty($movement)){
+                        $movement['name'] = $region->getDisplayName();
+                        $report['leaguesMovement']['regional'] = $movement;
+                    }
+                }
+            }
+        }
+        /*$leagueUsers = $leagueUserDAO->getUserLeaguesByTypes($user, $season, $region, array(League::GLOBAL_TYPE, League::REGIONAL_TYPE));
         if (!empty($leagueUsers)){
             $report['leaguesMovement'] = array();
             foreach($leagueUsers as $league){
@@ -617,10 +669,10 @@ class MatchManager extends BasicManager
                 }
 
             }
-        }
-
+        }*/
         return $report;
     }
+
 
     public function getMatchCorrectScorers(\Application\Model\Entities\Match $match, $limit = -1, $hydrate = false, $skipCache = false)
     {
