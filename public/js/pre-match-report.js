@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(window).load(function () {
     var count = 0;
     var gridFluid = function (size) {
         if (count != 0){
@@ -6,7 +6,7 @@ $(document).ready(function () {
         }
         $('#container').masonry({
             itemSelector: '.item',
-            isResizable: false,
+           // isResizable: false,
             columnWidth: function (containerWidth) {
                 return containerWidth / size;
             }
@@ -166,4 +166,3 @@ initCharts(false);
 $(window).on('resize', function() {
     initCharts(true);
 });
-
