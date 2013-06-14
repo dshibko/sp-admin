@@ -690,6 +690,23 @@ ALTER TABLE `match_region`  CHANGE COLUMN `title` `pre_match_report_title` VARCH
 ALTER TABLE `match_region`  CHANGE COLUMN `pre_match_report_intro` `pre_match_report_intro` TEXT NULL DEFAULT NULL AFTER `pre_match_report_title`;
 ALTER TABLE `match_region`  ADD COLUMN `post_match_report_title` VARCHAR(255) NULL DEFAULT NULL AFTER `pre_match_report_header_image_path`,  ADD COLUMN `post_match_report_intro` TEXT NULL DEFAULT NULL AFTER `post_match_report_title`,  ADD COLUMN `post_match_report_header_image_path` VARCHAR(255) NULL DEFAULT NULL AFTER `post_match_report_intro`;
 
+-- okh 14.06
+CREATE TABLE `footer_page` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `language_id` INT(11) NOT NULL,
+  `type` ENUM('terms','privacy','contact-us','cookies-policy') NOT NULL,
+  `content` TEXT NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `FK_footer_page_language` (`language_id`),
+  INDEX `type` (`type`),
+  CONSTRAINT `FK_footer_page_language` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+ROW_FORMAT=DEFAULT;
+
+ALTER TABLE `footer_page`  ADD INDEX `type` (`type`);
+
 -- oko 14.06
 
 CREATE TABLE `share_copy` (

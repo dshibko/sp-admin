@@ -104,7 +104,9 @@ class RegionManager extends BasicManager {
         $regions = $this->getAllRegions(true);
         $regionFieldsets = array();
         foreach ($regions as $region){
-            $regionFieldsets[] = new $fieldsetName($region);
+            if (class_exists($fieldsetName)){
+                $regionFieldsets[] = new $fieldsetName($region);
+            }
         }
         return $regionFieldsets;
     }

@@ -224,6 +224,26 @@ return array(
                     ),
                 ),
             ),
+            'admin-content-footer-pages' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/footer-pages',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\FooterPages',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-content-footer-pages-terms' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/footer-pages/terms',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\FooterPages',
+                        'action'     => 'termsPage',
+                    ),
+                ),
+            ),
             'admin-pre-match-share-copy' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -304,7 +324,9 @@ return array(
             'Admin\Controller\League' => 'Admin\Controller\LeagueController',
             'Admin\Controller\Fixtures' => 'Admin\Controller\FixturesController',
             'Admin\Controller\User' => 'Admin\Controller\UserController',
+            'Admin\Controller\FooterPages' => 'Admin\Controller\FooterPagesController',
             'Admin\Controller\PreMatchShareCopy' => 'Admin\Controller\PreMatchShareCopyController',
+            'Admin\Controller\PostMatchShareCopy' => 'Admin\Controller\PostMatchShareCopyController',
         ),
     ),
     'view_manager' => array(
@@ -325,6 +347,7 @@ return array(
             'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml',
             'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
             'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
+            'admin/footer-pages/terms-page' => __DIR__ . '/../view/admin/footer-pages/page.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -546,6 +569,21 @@ return array(
                                         'action' => 'editFooterSocial',
                                     ),
                                 ),
+                            ),
+                            'footer-pages' => array(
+                                'title' => 'Footer Pages',
+                                'label' => 'icon-pencil',
+                                'route' => 'admin-content-footer-pages',
+                                'useRouteMatch' => true,
+                                'sub-menu' => true,
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Terms',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages-terms',
+                                        'action' => 'termsPage'
+                                    )
+                                )
                             ),
                         ),
                     ),

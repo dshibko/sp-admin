@@ -5,42 +5,42 @@ namespace Admin\View\Helpers;
 use Zend\View\Helper\AbstractHelper;
 use \Zend\Mvc\Controller\Plugin\FlashMessenger;
 
-class RegionFieldsetsRenderer extends AbstractHelper
+class FieldsetsRenderer extends AbstractHelper
 {
 
     protected $translator;
 
     /**
-     * @param $regionFieldsets
+     * @param $fieldsets
      * @param bool $add
      * @param string $uniqueName
      * @return string
      */
-    public function __invoke($regionFieldsets, $add = true, $uniqueName = '')
+    public function __invoke($fieldsets, $add = true, $uniqueName = '')
     {
         $html = '<div class="row-fluid form-vertical">
                <div class="span12">
                   <div class="tabbable tabbable-custom boxless">
                      <ul class="nav nav-tabs">';
         $i = 0;
-        foreach ($regionFieldsets as $regionFieldset) {
-            $region = $regionFieldset->getRegion();
-            $html .= '<li' . ($i == 0 ? ' class="active"' : '') . '><a href="#tab_' . $uniqueName . (++$i) . '" data-toggle="tab">' . $region['displayName'] . '</a></li>';
+        foreach ($fieldsets as $fieldset) {
+            $data = $fieldset->getData();
+            $html .= '<li' . ($i == 0 ? ' class="active"' : '') . '><a href="#tab_' . $uniqueName . (++$i) . '" data-toggle="tab">' . $data['displayName'] . '</a></li>';
         }
         $html .= '</ul><div class="tab-content">';
         $i = 0;
-        foreach ($regionFieldsets as $regionFieldset) {
+        foreach ($fieldsets as $fieldset) {
             $html .= '<div class="tab-pane' . ($i == 0 ? ' active' : '') . '" id="tab_' . $uniqueName . (++$i) . '">';
-            $html .= $this->renderRegionFieldset($regionFieldset, $add);
+            $html .= $this->renderFieldset($fieldset, $add);
             $html .= '</div>';
         }
         $html .= '</div></div></div></div>';
-        print $html;
+        return $html;
     }
 
-    private function renderRegionFieldset($regionFieldset, $add = true) {
+    private function renderFieldset($fieldset, $add = true) {
         $html = '';
-        foreach ($regionFieldset->getElements() as $element) {
+        foreach ($fieldset->getElements() as $element) {
             $type = $element->getAttribute('type');
             $hint = $element->getAttribute('hint');
             $maxlength = $element->getAttribute('maxlength');

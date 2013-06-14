@@ -81,18 +81,19 @@ $this->headTitle($this->title);
 <?php if ($this->params['action'] == 'edit'):?>
 <!--REGIONALISED DATA START-->
     <?php if (!empty($this->featuredPlayerForm)):?>
+        <?php $errors  = $this->featuredPlayerForm->getInputFilter()->getMessages();?>
         <!--FEATURED PLAYER STARTS-->
             <div class="portlet box red">
                 <div class="portlet-title">
                     <h4><i class="icon-reorder"></i><?php echo $this->translate('Featured Player');?></h4>
                     <div class="tools">
-                        <a class="expand" href="javascript:;"></a>
+                        <a class="<?php echo !empty($errors) ?  'collapse' : 'expand';?>" href="javascript:;"></a>
                     </div>
                 </div>
-                <div class="portlet-body" style="display:none;">
+                <div class="portlet-body" style="display:<?php echo !empty($errors) ?  'block' : 'none';?>;">
                     <?php
                     $this->featuredPlayerForm->prepare();
-                    $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
+                    $this->featuredPlayerForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
                         echo $this->form()->openTag($this->featuredPlayerForm);
                     ?>
                         <?php echo $this->renderRegionFieldsets($this->featuredPlayerForm->getFieldsets(), $this->params['action'] == 'add', 'player');?>
@@ -107,18 +108,19 @@ $this->headTitle($this->title);
         <!--FEATURED PLAYER ENDS-->
     <?php endif;?>
     <?php if (!empty($this->featuredGoalkeeperForm)):?>
-    <!--FEATURED GOALKEEPER STARTS-->
+        <?php $errors  = $this->featuredGoalkeeperForm->getInputFilter()->getMessages();?>
+        <!--FEATURED GOALKEEPER STARTS-->
         <div class="portlet box green">
             <div class="portlet-title">
                 <h4><i class="icon-reorder"></i><?php echo $this->translate('Featured Goalkeeper');?></h4>
                 <div class="tools">
-                    <a class="expand" href="javascript:;"></a>
+                    <a class="<?php echo !empty($errors) ?  'collapse' : 'expand';?>" href="javascript:;"></a>
                 </div>
             </div>
-            <div class="portlet-body" style="display:none;">
+            <div class="portlet-body" style="display:<?php echo !empty($errors) ?  'block' : 'none';?>;">
                 <?php
                 $this->featuredGoalkeeperForm->prepare();
-                $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
+                $this->featuredGoalkeeperForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
                 echo $this->form()->openTag($this->featuredGoalkeeperForm);
                 ?>
                 <?php echo $this->renderRegionFieldsets($this->featuredGoalkeeperForm->getFieldsets(), $this->params['action'] == 'add', 'goalkeeper');?>
@@ -133,18 +135,19 @@ $this->headTitle($this->title);
     <!--FEATURED GOALKEEPER ENDS-->
     <?php endif;?>
     <?php if (!empty($this->featuredPredictionForm)):?>
+        <?php $errors  = $this->featuredPredictionForm->getInputFilter()->getMessages();?>
         <!--FEATURED PREDICTION STARTS-->
         <div class="portlet box purple">
             <div class="portlet-title">
                 <h4><i class="icon-reorder"></i><?php echo $this->translate('Featured Prediction');?></h4>
                 <div class="tools">
-                    <a class="expand" href="javascript:;"></a>
+                    <a class="<?php echo !empty($errors) ?  'collapse' : 'expand';?>" href="javascript:;"></a>
                 </div>
             </div>
-            <div class="portlet-body" style="display:none;">
+            <div class="portlet-body" style="display:<?php echo !empty($errors) ?  'block' : 'none';?>;">
                 <?php
                 $this->featuredPredictionForm->prepare();
-                $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
+                $this->featuredPredictionForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
                 echo $this->form()->openTag($this->featuredPredictionForm);
                 ?>
                 <?php echo $this->renderRegionFieldsets($this->featuredPredictionForm->getFieldsets(), $this->params['action'] == 'add', 'prediction');?>
@@ -159,18 +162,19 @@ $this->headTitle($this->title);
         <!--FEATURED PREDICTION ENDS-->
     <?php endif;?>
     <?php if (!empty($this->preMatchReportForm)):?>
+        <?php $errors  = $this->preMatchReportForm->getInputFilter()->getMessages();?>
         <!--PRE MATCH REPORT STARTS-->
         <div class="portlet box yellow">
             <div class="portlet-title">
                 <h4><i class="icon-reorder"></i><?php echo $this->translate('Pre Match Report Info');?></h4>
                 <div class="tools">
-                    <a class="expand" href="javascript:;"></a>
+                    <a class="<?php echo !empty($errors) ?  'collapse' : 'expand';?>" href="javascript:;"></a>
                 </div>
             </div>
-            <div class="portlet-body" style="display:none;">
+            <div class="portlet-body" style="display:<?php echo !empty($errors) ?  'block' : 'none';?>;">
                 <?php
                 $this->preMatchReportForm->prepare();
-                $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
+                $this->preMatchReportForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
                 echo $this->form()->openTag($this->preMatchReportForm);
                 ?>
                 <?php echo $this->renderRegionFieldsets($this->preMatchReportForm->getFieldsets(), $this->params['action'] == 'add', 'pre-match-report');?>
@@ -185,18 +189,19 @@ $this->headTitle($this->title);
         <!--PRE MATCH REPORT ENDS-->
     <?php endif;?>
 <?php if (!empty($this->postMatchReportForm)):?>
-    <!--PRE MATCH REPORT STARTS-->
+     <?php $errors  = $this->postMatchReportForm->getInputFilter()->getMessages();?>
+    <!--POST MATCH REPORT STARTS-->
     <div class="portlet box blue">
         <div class="portlet-title">
             <h4><i class="icon-reorder"></i><?php echo $this->translate('Post Match Report Info');?></h4>
             <div class="tools">
-                <a class="expand" href="javascript:;"></a>
+                <a class="<?php echo !empty($errors) ?  'collapse' : 'expand';?>" href="javascript:;"></a>
             </div>
         </div>
-        <div class="portlet-body" style="display:none;">
+        <div class="portlet-body" style="display:<?php echo !empty($errors) ?  'block' : 'none';?>;">
             <?php
             $this->postMatchReportForm->prepare();
-            $form->setAttribute('action', $this->url('admin-fixtures', $this->params));
+            $this->postMatchReportForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
             echo $this->form()->openTag($this->postMatchReportForm);
             ?>
             <?php echo $this->renderRegionFieldsets($this->postMatchReportForm->getFieldsets(), $this->params['action'] == 'add', 'post-match-report');?>

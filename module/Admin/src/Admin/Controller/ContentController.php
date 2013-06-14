@@ -4,8 +4,6 @@ namespace Admin\Controller;
 
 use \Admin\Form\FooterImageForm;
 use \Admin\Form\FooterSocialForm;
-use \Zend\View\Helper\Navigation\Breadcrumbs;
-use \Application\Model\Entities\RegionGameplayContent;
 use \Application\Model\Helpers\MessagesConstants;
 use \Admin\Form\GameplayContentForm;
 use \Application\Manager\ContentManager;

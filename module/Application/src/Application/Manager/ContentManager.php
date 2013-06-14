@@ -13,6 +13,8 @@ use \Application\Model\DAOs\RegionContentDAO;
 use \Application\Model\DAOs\MatchDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
+use \Application\Model\Entities\FooterPage;
+use \Application\Model\DAOs\FooterPageDAO;
 
 class ContentManager extends BasicManager {
 
@@ -250,6 +252,46 @@ class ContentManager extends BasicManager {
         ImageManager::getInstance($this->getServiceLocator())->deleteImage($footerSocial->getIcon());
         ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsToOrder($footerSocial->getRegion(), $footerSocial->getOrder(), $footerSocial->getRegion()->getFooterSocials()->count());
         FooterSocialDAO::getInstance($this->getServiceLocator())->remove($footerSocial);
+    }
+
+    public function getFooterPageLanguageData(array $fieldsets)
+    {
+        $data = array();
+        if (!empty($fieldsets)){
+            foreach($fieldsets as $fieldset){
+                $language = $fieldset->getData();
+                $data[$language['id']] = array(
+                    'content' => $fieldset->get('content')->getValue()
+                );
+            }
+        }
+        return $data;
+    }
+
+    public function getFooterPageByTypeAndLanguage($type, $languageId, $hydrate = false, $skipCache = false)
+    {
+        return FooterPageDAO::getInstance($this->getServiceLocator())->getFooterPageByTypeAndLanguage($type, $languageId, $hydrate, $skipCache);
+    }
+
+    public function saveFooterPage(array $data, $pageType)
+    {
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+        $footerPageDAO = FooterPageDAO::getInstance($this->getServiceLocator());
+        if (!empty($data)){
+            foreach($data as $languageId => $content){
+                $footerPage = $this->getFooterPageByTypeAndLanguage($pageType, $languageId);
+
+                if (is_null($footerPage)){
+                    $footerPage = new FooterPage();
+                }
+                $language = $languageManager->getLanguageById($languageId);
+                $footerPage->setType($pageType)->setContent($content['content'])->setLanguage($language);
+                $footerPageDAO->save($footerPage, false, false);
+            }
+
+            $footerPageDAO->flush();
+            $footerPageDAO->clearCache();
+        }
     }
 
 }
