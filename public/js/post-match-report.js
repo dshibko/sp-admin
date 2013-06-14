@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(window).load(function () {
     var count = 0;
     var gridFluid = function (size) {
         if (count != 0){
