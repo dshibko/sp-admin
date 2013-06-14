@@ -166,4 +166,3 @@ initCharts(false);
 $(window).on('resize', function() {
     initCharts(true);
 });
-
