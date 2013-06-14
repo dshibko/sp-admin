@@ -10,6 +10,7 @@ return array(
         'firewallController' => false,
         'firewalls' => array(
             'ZfcRbac\Firewall\Route' => array(
+                array('route' => 'match', 'roles' => 'Guest'),
                 array('route' => 'dispatch', 'roles' => 'Guest'),
                 array('route' => 'forgot', 'roles' => 'Guest'),
                 array('route' => 'reset', 'roles' => 'Guest'),

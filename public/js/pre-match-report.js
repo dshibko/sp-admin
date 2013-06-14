@@ -50,9 +50,9 @@ if (window.topScoresData !== undefined){
 if ($('#chart-head-to-head-results').size() > 0){
     plots.push($.plot('#chart-head-to-head-results',
         [
-            {color: '#363636', data: 530, label:''},
-            {color: '#144a9b', data: 193, label:''},
-            {color: '#7f7f80', data: 20,label:''}
+            {color: '#363636', data: 7, label:''},
+            {color: '#144a9b', data: 25, label:''},
+            {color: '#7f7f80', data: 10,label:''}
         ],
         {
             series: {

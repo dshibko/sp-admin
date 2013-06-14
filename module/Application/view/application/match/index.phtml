@@ -1,0 +1,142 @@
+<?php $this->headTitle($this->current['homeName'] . ' ' . $this->translate('vs') . ' ' . $this->current['awayName'] . ' - ' . $this->translate('Match Report'));?>
+<div role="main" class="two-column-section clearfix">
+    <div class="first-column <?=$this->isPreMatchReport ? 'predict' : 'results'?>">
+        <section class="carousel-wrap <?=$this->isPreMatchReport ? 'make-prediction' : 'your-results'?>">
+            <header>
+                <time class="game-date">
+                    <?php print $this->localStartTime->format('D d M h.i a');?>
+                    <?php //print strftime('%a %e %b %I.%M %P', $this->current['localStartTime']->getTimestamp()); ?>
+                </time>
+            </header>
+            <?php if (!$this->isPreMatchReport) : ?>
+                <div class="your-results-content clearfix">
+                    <div class="scorers clearfix">
+                        <div class="home-team">
+                            <figure class="clearfix">
+                                <img src="<?=$this->clubLogo($this->current['homeLogo'])?>" alt="<?=$this->current['homeName'];?>">
+                                <figcaption>
+                                    <?=$this->current['homeName'];?>
+                                </figcaption>
+                            </figure>
+
+                            <section>
+                                <strong><?=$this->current['homeTeamFullTimeScore']?></strong>
+                                <ul>
+                                    <?php foreach ($this->current['goals']['homeScorers'] as $scorer) :?>
+                                    <li>
+                                        <?=$scorer['displayName']?>
+                                    </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </section>
+                        </div>
+
+                        <div class="league-block">
+                            <strong>Premier league</strong>
+                            <em>VS</em>
+                            <span class="">Scorers</span>
+                        </div>
+
+                        <div class="away-team">
+                            <figure class="clearfix">
+                                <img src="<?=$this->clubLogo($this->current['awayLogo'])?>" alt="<?=$this->current['awayName'];?>">
+                                <figcaption>
+                                    <?=$this->current['awayName'];?>
+                                </figcaption>
+                            </figure>
+
+                            <section>
+                                <strong><?=$this->current['awayTeamFullTimeScore']?></strong>
+                                <ul>
+                                    <?php foreach ($this->current['goals']['awayScorers'] as $scorer) :?>
+                                    <li>
+                                        <?=$scorer['displayName']?>
+                                    </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            <?php else: ?>
+                <div class="make-prediction-content clearfix">
+                    <div class="home-team">
+                        <fieldset>
+                            <label>
+                                <figure>
+                                    <img src="<?=$this->clubLogo($this->current['homeLogo'])?>" alt="<?=$this->current['homeName'];?>">
+                                    <figcaption>
+                                        <?=$this->current['homeName'];?>
+                                    </figcaption>
+                                </figure>
+                            </label>
+                        </fieldset>
+                        <section>
+                            <?php
+                            if (!empty($this->current['prediction']) && !empty($this->current['prediction']['homeScorers']))
+                                foreach ($this->current['prediction']['homeScorers'] as $order => $scorer)
+                                    print $this->squadSelect('home-team-scorer-' . $order, $this->current['homeSquad'], $this->translate('Select scorer'), '', $scorer['playerId']);
+                            ?>
+                        </section>
+                    </div>
+
+                    <div class="league-logo">
+                        <img src="/img/league-logo.png" alt="">
+                        <em><?=$this->translate('VS')?></em>
+                    </div>
+
+                    <div class="away-team">
+                        <fieldset>
+                            <label>
+                                <figure>
+                                    <img src="<?=$this->clubLogo($this->current['awayLogo'])?>" alt="<?=$this->current['awayName'];?>">
+                                    <figcaption>
+                                        <?=$this->current['awayName'];?>
+                                    </figcaption>
+                                </figure>
+                            </label>
+                        </fieldset>
+                        <section>
+                            <?php
+                            if (!empty($this->current['prediction']) && !empty($this->current['prediction']['awayScorers']))
+                                foreach ($this->current['prediction']['awayScorers'] as $order => $scorer)
+                                    print $this->squadSelect('away-team-scorer-' . $order, $this->current['awaySquad'], $this->translate('Select scorer'), '', $scorer['playerId']);
+                            ?>
+                        </section>
+                    </div>
+
+                    <aside class="competition-countdown" style="display: none">
+                        <h4><?=$this->translate('Time left')?></h4>
+                        <p>
+                            <strong><?=$this->current['startTime']->getTimestamp();?></strong>
+                            <?=$this->translate('days hours mins secs')?>
+                        </p>
+                    </aside>
+                </div>
+                <script type="text/javascript" src="/js/vendor/jquery.countdown.js"></script>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        var countdown = $('aside.competition-countdown');
+                        var untilTime = countdown.find('strong').text();
+                        var startTime = new Date(parseInt(untilTime) * 1000);
+                        countdown.find('strong').countdown({
+                            until: $.countdown.UTCDate(-1 * startTime.getTimezoneOffset(), startTime),
+                            format: "DHMS",
+                            layout: "{dnn} {hnn} {mnn} {snn}",
+                            onExpiry: function() {
+                                window.location.href = liveMatchRedirect;
+                            }
+                        });
+                        countdown.show();
+                    });
+                </script>
+            <?php endif; ?>
+        </section>
+        <!--POST MATCH REPORT START-->
+        <?php echo $this->partial('partials/' . ($this->isPreMatchReport ? 'pre' : 'post') . '-match-report', array('report' => $this->matchReport, 'match' => $this->current, 'code' => $this->matchCode));?>
+        <!--POST MATCH REPORT END-->
+    </div>
+
+    <?php echo $this->partial('partials/right-column'); ?>
+
+</div>
