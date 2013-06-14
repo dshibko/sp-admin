@@ -82,10 +82,21 @@
             <?php endif;?>
         <!--CORRECT SCORERS BLOCK ENDS-->
         <!--CORRECT SCORE BLOCK STARTS-->
-        <?php/* if (isset($this->report['correctScore'])):?>
-            <strong><?php echo $this->report['correctScore'];?><sup>%</sup></strong>
-            <p><?php echo $this->translate('Community correctly predicted the result');?></p>
-        <?php endif*/;?>
+        <?php if (isset($this->report['correctScore'])):?>
+            <div class="item col1 summary left">
+                <section>
+                    <figure class="clearfix">
+                        <div id="community-predicted-results"></div>
+                        <figcaption>Community correctly predicted the results</figcaption>
+                    </figure>
+                </section>
+            </div>
+            <script type="text/javascript">
+                var communityPredictedData = [
+                    {color: '#144a9b', data: <?php echo $this->report['correctScore'];?>}
+                ];
+            </script>
+        <?php endif;?>
         <!--CORRECT SCORE BLOCK ENDS-->
         <!--REGIONAL LEAGUE MOVEMENT STARTS-->
         <?php if (!empty($this->report['leaguesMovement'])):?>
@@ -101,4 +112,6 @@
     </div>
 </section>
 <script src="/js/vendor/jquery.masonry.min.js"></script>
+<script src="/js/vendor/jquery.flot.js"></script>
+<script src="/js/vendor/jquery.flot.pie.js"></script>
 <script src="/js/post-match-report.js"></script>

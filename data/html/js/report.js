@@ -165,32 +165,33 @@ plots.push($.plot('#chart-home-form',
     }
 ));
 
-plots.push($.plot('#community-predicted-results',
-     [
-       {color: '#90b1d4', data: 95},
-       {color: '#144a9b', data: 5}
-     ],
-     {
-         series: {
-             pie: {
-                 innerRadius: 0.8,
-                 stroke: {color: '#e6edf8', width: 0},
-                 show: true,
-                 radius: 1,
-                 label: {
-                     show: true,
-                     radius: 0,
-                     formatter: function(label, series) {
-                         return series.data[0][1] + '%';
-                     }
-                 }
-             }
-         },
-         legend: {
-             show: false
-         }
-     }
-));
+
+// plots.push($.plot('#community-predicted-results', 
+//     [
+//       {color: '#90b1d4', data: 95},
+//       {color: '#144a9b', data: 5}
+//     ], 
+//     {
+//         series: {
+//             pie: {
+//                 innerRadius: 0.8,
+//                 stroke: {color: '#e6edf8', width: 0},
+//                 show: true,
+//                 radius: 1,
+//                 label: {
+//                     show: true,
+//                     radius: 0,
+//                     formatter: function(label, series) { 
+//                         return series.data[0][1] + '%';
+//                     }
+//                 }
+//             }
+//         },
+//         legend: {
+//             show: false
+//         }
+//     }
+// ));
 
 $(window).on('resize', function() {
     for (var i = plots.length - 1; i >= 0; i--) {

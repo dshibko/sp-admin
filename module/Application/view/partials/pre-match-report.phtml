@@ -199,34 +199,34 @@
         <!--TOP SCORES BLOCK STARTS-->
         <?php if (!empty($this->report['topScores'])):?>
             <?php $topScores = $this->report['topScores'];?>
-        <div class="item col1 pie-chart top5-predicted-scores">
-            <section>
-                <figure>
-                    <div id="chart_top5"></div>
-                    <figcaption>
-                        <h1><?php echo $this->translate('Top 5 predicted scores');?></h1>
-                        <ol class="legend">
-                            <?php foreach($topScores as $score => $percentage):?>
-                            <li><?php echo $score;?> (<?php echo $percentage;?>%)</li>
-                            <?php endforeach;?>
-                        </ol>
-                    </figcaption>
-                </figure>
-            </section>
-        </div>
-        <script type="text/javascript">
-            var topScoresData = [];
-            var colors = ['#a01749', '#b2466e','#c47692', '#d6a4b7', '#e7c6d3'];
-            var percentage = [];
-                <?php foreach($topScores as $percentage):?>
-            percentage.push('<?php echo $percentage;?>');
-                <?php endforeach;?>
-            for (var i = 0; i < colors.length; i++){
-                if (percentage[i] !== undefined){
-                    topScoresData.push({color:colors[i],data:percentage[i], label :''});
-                }
-            }
-        </script>
+                <div class="item col1 pie-chart top5-predicted-scores">
+                    <section>
+                        <figure>
+                            <div id="chart_top5"></div>
+                            <figcaption>
+                                <h1><?php echo $this->translate('Top 5 predicted scores');?></h1>
+                                <ol class="legend">
+                                    <?php foreach($topScores as $score => $percentage):?>
+                                    <li><?php echo $score;?> (<?php echo $percentage;?>%)</li>
+                                    <?php endforeach;?>
+                                </ol>
+                            </figcaption>
+                        </figure>
+                    </section>
+                </div>
+                <script type="text/javascript">
+                    var topScoresData = [];
+                    var colors = ['#a01749', '#b2466e','#c47692', '#d6a4b7', '#e7c6d3'];
+                    var percentage = [];
+                        <?php foreach($topScores as $percentage):?>
+                    percentage.push('<?php echo $percentage;?>');
+                        <?php endforeach;?>
+                    for (var i = 0; i < colors.length; i++){
+                        if (percentage[i] !== undefined){
+                            topScoresData.push({color:colors[i],data:percentage[i], label :''});
+                        }
+                    }
+                </script>
             <?php endif;?>
         <!--TOP SCORES BLOCK ENDS-->
         <!--        <div class="item col1 stacked-bar">-->
@@ -301,6 +301,7 @@
         <!--div class="item col1 top-scorers">...</div-->
     </div>
 </section>
+<div id="fake-chart" style="display:none;"></div>
 <script src="/js/vendor/jquery.masonry.min.js"></script>
 <script src="/js/vendor/jquery.flot.js"></script>
 <script src="/js/vendor/jquery.flot.pie.js"></script>
