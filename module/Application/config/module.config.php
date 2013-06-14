@@ -70,6 +70,16 @@ return array(
                     ),
                 ),
             ),
+            'match' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/match/:code',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Match',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'registration' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -311,6 +321,7 @@ return array(
             'Application\Controller\Content' => 'Application\Controller\ContentController',
             'Application\Controller\Tables' => 'Application\Controller\TablesController',
             'Application\Controller\FullTable' => 'Application\Controller\FullTableController',
+            'Application\Controller\Match' => 'Application\Controller\MatchController',
         ),
     ),
     'controller_plugins' => array(

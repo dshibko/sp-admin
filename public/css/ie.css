@@ -47,6 +47,9 @@
   }
 }
 
+/*.lt-ie9 .first-column {
+  border-right: 1px solid #f4f4f4;
+}*/
 
 
 .lt-ie9 .login-area details {
@@ -260,7 +263,7 @@
 }
 .lt-ie8 .your-results .your-results-content .scorers .home-team  {
   float: left;
-  margin: 0 2em 0;
+  margin: 0 2em 0 1em;
   width: 35%!important;
 }
 
@@ -270,7 +273,7 @@
 }
 .lt-ie8 .your-results .your-results-content .scorers .away-team {
   float: right;
-  margin: 0 2em 0;
+  margin: 0 1em 0 2em;
   width: 35%!important;
 }
 
@@ -278,9 +281,26 @@
   margin: 0 0 1em;
 }
 .lt-ie8  .your-results > header .flag-new-prediction {
-  background: #de1012;
+/*  background: #de1012;*/
+position: relative;
   height: 3em;
-  bottom: -3em;
+  bottom: -4.4em;
+  *zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild( document.createElement("small") ).className="before"
+         );
+}
+.lt-ie8  .your-results > header .flag-new-prediction small {
+  position: absolute;
+  top: 0;
+  left:0;
+  z-index: 1;
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 8em solid transparent;
+  border-right: 8em solid transparent;
+  border-top: 4em solid #de1012;
 }
 
 

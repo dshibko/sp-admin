@@ -619,28 +619,30 @@ class MatchManager extends BasicManager
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
         $globalLeague = $applicationManager->getGlobalLeague($season);
 
-        //Global League
-        $globalUserLeague = $leagueUserDAO->getLeagueUser($globalLeague->getId(), $user->getId(), true);
+        if ($user !== null) {
+            //Global League
+            $globalUserLeague = $leagueUserDAO->getLeagueUser($globalLeague->getId(), $user->getId(), true);
 
-        if (!empty($globalUserLeague)){
-            $movement = $this->getLeagueUserMovement($globalUserLeague);
-            if (!empty($movement)){
-                $movement['name'] = LeagueManager::GLOBAL_LEAGUE_NAME;
-                $report['leaguesMovement']['global'] = $movement;
+            if (!empty($globalUserLeague)){
+                $movement = $this->getLeagueUserMovement($globalUserLeague);
+                if (!empty($movement)){
+                    $movement['name'] = LeagueManager::GLOBAL_LEAGUE_NAME;
+                    $report['leaguesMovement']['global'] = $movement;
+                }
             }
-        }
 
-        //Regional League
-        $region = $user->getCountry()->getRegion();
-        if (!is_null($region)) {
-            $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
-            if(!is_null($regionalLeague)){
-                $regionalUserLeague = $leagueUserDAO->getLeagueUser($regionalLeague->getId(), $user->getId(), true);
-                if (!empty($regionalUserLeague)){
-                    $movement = $this->getLeagueUserMovement($regionalUserLeague);
-                    if (!empty($movement)){
-                        $movement['name'] = $region->getDisplayName();
-                        $report['leaguesMovement']['regional'] = $movement;
+            //Regional League
+            $region = $user->getCountry()->getRegion();
+            if (!is_null($region)) {
+                $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
+                if(!is_null($regionalLeague)){
+                    $regionalUserLeague = $leagueUserDAO->getLeagueUser($regionalLeague->getId(), $user->getId(), true);
+                    if (!empty($regionalUserLeague)){
+                        $movement = $this->getLeagueUserMovement($regionalUserLeague);
+                        if (!empty($movement)){
+                            $movement['name'] = $region->getDisplayName();
+                            $report['leaguesMovement']['regional'] = $movement;
+                        }
                     }
                 }
             }
@@ -674,4 +676,36 @@ class MatchManager extends BasicManager
     {
         return MatchGoalDAO::getInstance($this->getServiceLocator())->getMatchScorers($match->getId(), $limit, $hydrate, $skipCache);
     }
+
+    /**
+     * @param \DateTime $matchStartTime
+     * @param \Application\Model\Entities\Season $season
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getUpcomingMatchNumber($matchStartTime, $season, $skipCache = false) {
+        return MatchDAO::getInstance($this->getServiceLocator())->getUpcomingMatchNumber(new \DateTime(), $matchStartTime, $season, $skipCache);
+    }
+
+    /**
+     * @param \Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
+     * @param \DateTime $matchStartTime
+     * @param bool $skipCache
+     * @return integer
+     */
+    public function getFinishedMatchNumber($user, $matchStartTime, $season, $skipCache = false) {
+        return MatchDAO::getInstance($this->getServiceLocator())->getFinishedMatchNumber($user, $season, $matchStartTime, $skipCache);
+    }
+
+    public function getMatchInfo($matchId, $hydrate = false, $skipCache = false) {
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+        return $matchDAO->getMatchInfo($matchId, $hydrate, $skipCache);
+    }
+
+    public function getMatchGoals($matchId, $hydrate = false, $skipCache = false) {
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+        return $matchDAO->getMatchGoals($matchId, $hydrate, $skipCache);
+    }
+
 }

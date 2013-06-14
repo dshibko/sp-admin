@@ -292,4 +292,52 @@ class MatchDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    /**
+     * @param \DateTime $fromTime
+     * @param \DateTime $tillTime
+     * @param \Application\Model\Entities\Season $season
+     * @param bool $skipCache
+     * @return integer
+     */
+    function getUpcomingMatchNumber(\DateTime $fromTime, \DateTime $tillTime, Season $season, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('m.id'))
+            ->from($this->getRepositoryName(), 'm')
+            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->join('m.homeTeam', 'h')
+            ->where($qb->expr()->gt('m.startTime', ":fromTime"))
+            ->andWhere($qb->expr()->lte('m.startTime', ":tillTime"))
+            ->andWhere($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
+            ->orderBy('m.startTime', 'ASC')
+            ->addOrderBy('h.displayName', 'ASC')
+            ->setParameter("fromTime", $fromTime)
+            ->setParameter("tillTime", $tillTime)
+            ->setParameter("status1", Match::PRE_MATCH_STATUS)
+            ->setParameter("status2", Match::LIVE_STATUS);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @param \Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
+     * @param \DateTime $fromTime
+     * @param bool $skipCache
+     * @return integer
+     */
+    function getFinishedMatchNumber(User $user, Season $season, \DateTime $fromTime, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('m.id'))
+            ->from($this->getRepositoryName(), 'm')
+            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->innerJoin('m.predictions', 'p', Expr\Join::WITH, 'p.user = ' . $user->getId())
+            ->join('m.homeTeam', 'h')
+            ->where($qb->expr()->eq('m.status', ':status'))
+            ->andWhere($qb->expr()->gte('m.startTime', ":fromTime"))
+            ->orderBy('m.startTime', 'DESC')
+            ->addOrderBy('h.displayName', 'DESC')
+            ->setParameter("status", Match::FULL_TIME_STATUS)
+            ->setParameter("fromTime", $fromTime);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
 }

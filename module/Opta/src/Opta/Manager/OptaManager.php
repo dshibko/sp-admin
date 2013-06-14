@@ -153,16 +153,22 @@ class OptaManager extends BasicManager {
 
     }
 
+    private function getXMLContent($filePath) {
+        $fileContents = file_get_contents($filePath);
+        $json = json_decode($fileContents);
+        return simplexml_load_string($json->content);
+    }
+
     /**
-     * @param \SimpleXMLElement $xml
+     * @param $filePath
      * @param \Zend\Console\Adapter\AdapterInterface $console
      */
-    public function parseF1Feed($xml, $console) {
+    public function parseF1Feed($filePath, $console) {
+
+        $xml = $this->getXMLContent($filePath);
 
         try {
             $this->startProgress($console, true, 'F1');
-
-//            $nonCalculatedMatches = array();
 
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $edition = $applicationManager->getAppEdition();
@@ -207,17 +213,14 @@ class OptaManager extends BasicManager {
                                     $match->setFeederId($matchFeederId);
                                 }
 
-                                $match->setCompetition($competition);
-                                $match->setWeek($this->getXmlAttribute($matchXml->MatchInfo, 'MatchDay'));
-                                $status = $this->getXmlAttribute($matchXml->MatchInfo, 'Period');
-                                if (!in_array($status, Match::getAvailableStatuses()))
-                                    $status = Match::LIVE_STATUS;
-
-    //                            $isJustFinishedMatch = $status == Match::FULL_TIME_STATUS && $match->getStatus() != Match::FULL_TIME_STATUS;
-    //                            $isNonCalculatedMatch = $isJustFinishedMatch && !$match->getPredictions()->isEmpty();
-
-                                $match->setStatus($status);
                                 if (!$match->getIsBlocked()) {
+                                    $match->setCompetition($competition);
+                                    $match->setWeek($this->getXmlAttribute($matchXml->MatchInfo, 'MatchDay'));
+                                    $status = $this->getXmlAttribute($matchXml->MatchInfo, 'Period');
+                                    if (!in_array($status, Match::getAvailableStatuses()))
+                                        $status = Match::LIVE_STATUS;
+
+                                    $match->setStatus($status);
                                     $timezoneAbbr = $this->getNodeValue($matchXml->MatchInfo, 'TZ');
                                     $match->setTimezone($timezoneAbbr);
                                     $timezone = !empty($timezoneAbbr) ? new \DateTimeZone(timezone_name_from_abbr($timezoneAbbr)) : null;
@@ -242,25 +245,19 @@ class OptaManager extends BasicManager {
 
                                     $match->setHomeTeam($teamDAO->getRepository()->findOneByFeederId($homeTeamFeederId));
                                     $match->setAwayTeam($teamDAO->getRepository()->findOneByFeederId($awayTeamFeederId));
+
+                                    if ($match->getHomeTeam() == null || $match->getAwayTeam() == null) {
+                                        $missedFeederId = $match->getHomeTeam() == null ? $homeTeamFeederId : $awayTeamFeederId;
+                                        LogManager::getInstance($this->getServiceLocator())->logOptaWarning(sprintf(MessagesConstants::WARNING_TEAM_MISSED, $missedFeederId));
+                                    }
+
+                                    $match->setStadiumName($this->getNodeValue($matchXml->Stat, 0));
+                                    $match->setCityName($this->getNodeValue($matchXml->Stat, 1));
+
+                                    if ($match->getHomeTeam() !== null && $match->getAwayTeam() !== null)
+                                        $matchDAO->save($match);
+
                                 }
-
-                                $match->setStadiumName($this->getNodeValue($matchXml->Stat, 0));
-                                $match->setCityName($this->getNodeValue($matchXml->Stat, 1));
-
-                                if ($match->getHomeTeam() == null || $match->getAwayTeam() == null) {
-                                    $missedFeederId = $match->getHomeTeam() == null ? $homeTeamFeederId : $awayTeamFeederId;
-                                    LogManager::getInstance($this->getServiceLocator())->logOptaWarning(sprintf(MessagesConstants::WARNING_TEAM_MISSED, $missedFeederId));
-                                } else {
-    //                                if ($isJustFinishedMatch) {
-    //
-    //                                }
-                                    $matchDAO->save($match);
-                                }
-
-    //                            if (!$isNonCalculatedMatch)
-//                                    $matchDAO->detach($match);
-    //                            else
-    //                                $nonCalculatedMatches[] = $match;
 
                             } catch (\Exception $e) {
                                 ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
@@ -274,18 +271,6 @@ class OptaManager extends BasicManager {
             }
 
             $this->finishProgress($console, true, 'F1');
-
-//            if (!empty($nonCalculatedMatch)) {
-//                $this->startProgress($console, false);
-//                $scoringManager = ScoringManager::getInstance($this->getServiceLocator());
-//                $this->setProgressLength(count($nonCalculatedMatches));
-//                foreach($nonCalculatedMatches as $nonCalculatedMatch) {
-//                    $scoringManager->calculateMatchScores($nonCalculatedMatch);
-//                    $matchDAO->detach($nonCalculatedMatch);
-//                    $this->doProgress($console);
-//                }
-//                $this->finishProgress($console, false);
-//            }
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
@@ -400,6 +385,7 @@ class OptaManager extends BasicManager {
                 }
 
                 $match->setStatus(Match::FULL_TIME_STATUS);
+                $match->setIsBlocked(true);
 
                 $matchDAO->save($match);
 
