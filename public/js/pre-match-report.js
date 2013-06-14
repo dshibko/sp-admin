@@ -56,9 +56,9 @@ function initCharts(doResize){
     if ($('#chart-head-to-head-results').size() > 0){
         var headToHeadChart = $.plot($('#chart-head-to-head-results'),
             [
-                {color: '#363636', data: 530},
-                {color: '#144a9b', data: 193},
-                {color: '#7f7f80', data: 20}
+                {color: '#363636', data: 7, label:''},
+                {color: '#144a9b', data: 25, label:''},
+                {color: '#7f7f80', data: 10,label:''}
             ],
             {
                 series: {

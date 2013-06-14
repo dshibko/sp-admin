@@ -72,11 +72,8 @@ class ApplicationManager extends BasicManager {
      */
     public function getCurrentSeason()
     {
-        if ($this->currentSeason === null) {
+        if ($this->currentSeason === null)
             $this->currentSeason = SeasonDAO::getInstance($this->getServiceLocator())->getCurrentSeason();
-            if ($this->currentSeason === null)
-                throw new \Exception(MessagesConstants::INFO_OUT_OF_SEASON);
-        }
         return $this->currentSeason;
     }
 
