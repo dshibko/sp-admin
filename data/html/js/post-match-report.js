@@ -26,38 +26,41 @@ $(document).ready(function () {
         }
     });
 });
-var plots = [];
-if (window.communityPredictedData !== undefined){
-    plots.push($.plot('#community-predicted-results',
-        window.communityPredictedData,
-        {
-            series: {
-                pie: {
-                    innerRadius: 0.8,
-                    stroke: {color: '#e6edf8', width: 0},
-                    show: true,
-                    radius: 1,
-                    label: {
+function initCharts(doResize){
+    if (window.communityPredictedData !== undefined){
+        var communityPredictedChart = $.plot($('#community-predicted-results'),
+            window.communityPredictedData,
+            {
+                series: {
+                    pie: {
+                        innerRadius: 0.8,
+                        stroke: {color: '#e6edf8', width: 0},
                         show: true,
-                        radius: 0,
-                        formatter: function(label, series) {
-                            return series.data[0][1] + '%';
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 0,
+                            formatter: function(label, series) {
+                                return series.data[0][1] + '%';
+                            }
                         }
                     }
+                },
+                legend: {
+                    show: false
                 }
-            },
-            legend: {
-                show: false
             }
+        );
+
+        if (doResize === true){
+            communityPredictedChart.resize();
+            communityPredictedChart.setupGrid();
+            communityPredictedChart.draw();
         }
-    ));
+    }
 }
 
-
+initCharts(false);
 $(window).on('resize', function() {
-    for (var i = plots.length - 1; i >= 0; i--) {
-        plots[i].resize();
-        plots[i].setupGrid();
-        plots[i].draw();
-    };
+      initCharts(true);
 });
