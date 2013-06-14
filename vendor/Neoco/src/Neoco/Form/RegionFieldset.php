@@ -2,8 +2,6 @@
 
 namespace Neoco\Form;
 
-use \Zend\Form\Fieldset;
-
 abstract class RegionFieldset extends UploadableFieldset {
 
     private $region;
@@ -17,6 +15,7 @@ abstract class RegionFieldset extends UploadableFieldset {
     }
 
     /**
+     * @param array $inputSpec
      * @return array
      */
     public function getInputFilterSpecification($inputSpec = array())

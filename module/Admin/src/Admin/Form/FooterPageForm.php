@@ -2,10 +2,10 @@
 
 namespace Admin\Form;
 
-use \Neoco\Form\RegionalisedForm;
+use \Neoco\Form\FieldsetsForm;
 
-
-class FeaturedPlayerForm extends RegionalisedForm {
+class FooterPageForm extends FieldsetsForm
+{
 
     protected $type;
 
@@ -25,11 +25,10 @@ class FeaturedPlayerForm extends RegionalisedForm {
         return $this->type;
     }
 
-    public function __construct($regionFieldsets, $type = 'featured_player') {
+    public function __construct($regionFieldsets, $type = 'form-type') {
 
-        parent::__construct($regionFieldsets, 'featured-player');
+        parent::__construct($regionFieldsets);
         $this->setAttribute('method', 'post');
-        $this->setAttribute('enctype', 'multipart/form-data');
         $this->setType($type);
 
         $this->add(array(
@@ -48,12 +47,7 @@ class FeaturedPlayerForm extends RegionalisedForm {
                 'id' => 'submitbutton',
             ),
         ));
-
-
     }
 
-    /**
-     * @param \Application\Model\Entities\Match $match
-     */
-    protected function initFormByObject($match) {}
+    protected function initFormByObject($dataObject){}
 }

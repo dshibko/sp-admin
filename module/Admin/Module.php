@@ -10,10 +10,7 @@
 namespace Admin;
 
 use \Admin\View\Helpers\RegionFieldsetsRenderer;
-use \Zend\ModuleManager\ModuleManager;
-use \Zend\I18n\View\Helper\Translate;
-use \DoctrineModule\Authentication\Adapter\ObjectRepository;
-use \Zend\Authentication\AuthenticationService;
+use \Admin\View\Helpers\FieldsetsRenderer;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -82,6 +79,12 @@ class Module
                 'renderRegionFieldsets' => function($sm) {
                     $translator = $sm->getServiceLocator()->get('translator');
                     $h = new RegionFieldsetsRenderer();
+                    $h->setTranslator($translator);
+                    return $h;
+                },
+                'renderFieldsets' => function($sm) {
+                    $translator = $sm->getServiceLocator()->get('translator');
+                    $h = new FieldsetsRenderer();
                     $h->setTranslator($translator);
                     return $h;
                 }

@@ -111,12 +111,12 @@ class FixturesController extends AbstractActionController
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         $regionManager = RegionManager::getInstance($this->getServiceLocator());
 
-        $form = new FixtureForm(array(), self::FIXTURE_FORM_TYPE);
-        $featuredPlayerForm = new FeaturedPlayerForm(array(), self::FEATURED_PLAYER_FORM_TYPE);
-        $featuredGoalkeeperForm = new FeaturedGoalkeeperForm(array(),self::FEATURED_GOALKEEPER_FORM_TYPE);
-        $featuredPredictionForm = new FeaturedPredictionForm(array(), self::FEATURED_PREDICTION_FORM_TYPE);
-        $preMatchReportForm = new PreMatchReportForm(array(),self::PRE_MATCH_REPORT_FORM_TYPE);
-        $postMatchReportForm = new PostMatchReportForm(array(), self::POST_MATCH_REPORT_FORM_TYPE);
+        $form = null;
+        $featuredPlayerForm = null;
+        $featuredGoalkeeperForm = null;
+        $featuredPredictionForm = null;
+        $preMatchReportForm = null;
+        $postMatchReportForm = null;
         try {
             $fixture = $matchManager->getMatchById($fixtureId);
             if (is_null($fixture)) {

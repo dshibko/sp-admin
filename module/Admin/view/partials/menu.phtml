@@ -37,7 +37,7 @@ $first = true;
                 <span class="selected"></span>
             <?php endif;?>
             <?php if ($showSubMenu) : ?>
-                <span class="arrow "></span>
+                <span class="arrow <?php echo $page->isActive(true) ? 'open' : ''?>"></span>
             <?php endif;?>
         </a>
         <?php if ($showSubMenu) : ?>
@@ -45,6 +45,8 @@ $first = true;
                 <?php foreach($page as $subPage):
                     $use = $subPage->useRouteMatch();
                     $subPage->setUseRouteMatch(false);
+                    $subProps = $subPage->getCustomProperties();
+                    $show3LevelMenu = array_key_exists('sub-menu', $subProps) ? $subProps['sub-menu'] : false;
                     ?>
                     <li <?=$subPage->isActive(true) ? 'class="active"' : ''?>>
                         <a href="<?=$subPage->getHref()?>">
@@ -52,7 +54,30 @@ $first = true;
                                 <i class="<?=$subPage->getLabel()?>"></i>
                             <?php endif; ?>
                             <?=$this->translate($subPage->getTitle())?>
+                            <?php if ($show3LevelMenu) : ?>
+                                <span class="arrow <?php echo $subPage->isActive(true) ? 'open' : ''?>"></span>
+                            <?php endif;?>
                         </a>
+                        <?php if ($show3LevelMenu):?>
+                            <ul class="sub-menu">
+                                <?php foreach($subPage as $level3Page):
+                                    $use3level = $level3Page->useRouteMatch();
+                                    $level3Page->setUseRouteMatch(false);
+
+                                    ?>
+                                    <li <?=$level3Page->isActive(true) ? 'class="active"' : ''?>>
+                                        <a href="<?=$level3Page->getHref()?>">
+                                            <?php if ($level3Page->getLabel() != null): ?>
+                                                <i class="<?=$level3Page->getLabel()?>"></i>
+                                            <?php endif; ?>
+                                            <?=$this->translate($level3Page->getTitle())?>
+                                        </a>
+                                    </li>
+                                    <?php
+                                    $level3Page->setUseRouteMatch($use3level);
+                                endforeach; ?>
+                            </ul>
+                        <?php endif;?>
                     </li>
                 <?php
                     $subPage->setUseRouteMatch($use);
