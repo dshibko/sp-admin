@@ -1,7 +1,7 @@
 <?php $this->headTitle($this->current['homeName'] . ' ' . $this->translate('vs') . ' ' . $this->current['awayName'] . ' - ' . $this->translate('Match Report'));?>
 <div role="main" class="two-column-section clearfix">
-    <div class="first-column <?=$this->isPreMatchReport ? 'predict' : 'results'?>">
-        <section class="carousel-wrap <?=$this->isPreMatchReport ? 'make-prediction' : 'your-results'?>">
+    <div class="first-column results">
+        <section class="carousel-wrap your-results">
             <header>
                 <time class="game-date">
                     <?php print $this->localStartTime->format('D d M h.i a');?>
@@ -9,7 +9,8 @@
                 </time>
             </header>
             <?php if (!$this->isPreMatchReport) : ?>
-                <div class="your-results-content clearfix">
+                <div class="your-results-content match-in-progress clearfix">
+                    <h1><?=$this->translate('Public Report')?></h1>
                     <div class="scorers clearfix">
                         <div class="home-team">
                             <figure class="clearfix">
@@ -32,9 +33,9 @@
                         </div>
 
                         <div class="league-block">
-                            <strong>Premier league</strong>
-                            <em>VS</em>
-                            <span class="">Scorers</span>
+                            <strong><?=$this->current['competitionName'];?></strong>
+                            <em><?=$this->translate('VS')?></em>
+                            <span><?=$this->translate('Scorers')?></span>
                         </div>
 
                         <div class="away-team">
@@ -59,50 +60,31 @@
                     </div>
                 </div>
             <?php else: ?>
-                <div class="make-prediction-content clearfix">
-                    <div class="home-team">
-                        <fieldset>
-                            <label>
-                                <figure>
-                                    <img src="<?=$this->clubLogo($this->current['homeLogo'])?>" alt="<?=$this->current['homeName'];?>">
-                                    <figcaption>
-                                        <?=$this->current['homeName'];?>
-                                    </figcaption>
-                                </figure>
-                            </label>
-                        </fieldset>
-                        <section>
-                            <?php
-                            if (!empty($this->current['prediction']) && !empty($this->current['prediction']['homeScorers']))
-                                foreach ($this->current['prediction']['homeScorers'] as $order => $scorer)
-                                    print $this->squadSelect('home-team-scorer-' . $order, $this->current['homeSquad'], $this->translate('Select scorer'), '', $scorer['playerId']);
-                            ?>
-                        </section>
-                    </div>
+                <div class="your-results-content match-in-progress clearfix">
+                    <h1><?=$this->translate('Public Report')?></h1>
+                    <div class="scorers clearfix">
+                        <div class="home-team">
+                            <figure>
+                                <img src="<?=$this->clubLogo($this->current['homeLogo'])?>" alt="<?=$this->current['homeName'];?>">
+                                <figcaption>
+                                    <?=$this->current['homeName'];?>
+                                </figcaption>
+                            </figure>
+                        </div>
 
-                    <div class="league-logo">
-                        <img src="/img/league-logo.png" alt="">
-                        <em><?=$this->translate('VS')?></em>
-                    </div>
+                        <div class="league-block">
+                            <strong><?=$this->current['competitionName'];?></strong>
+                            <em><?=$this->translate('VS')?></em>
+                        </div>
 
-                    <div class="away-team">
-                        <fieldset>
-                            <label>
-                                <figure>
-                                    <img src="<?=$this->clubLogo($this->current['awayLogo'])?>" alt="<?=$this->current['awayName'];?>">
-                                    <figcaption>
-                                        <?=$this->current['awayName'];?>
-                                    </figcaption>
-                                </figure>
-                            </label>
-                        </fieldset>
-                        <section>
-                            <?php
-                            if (!empty($this->current['prediction']) && !empty($this->current['prediction']['awayScorers']))
-                                foreach ($this->current['prediction']['awayScorers'] as $order => $scorer)
-                                    print $this->squadSelect('away-team-scorer-' . $order, $this->current['awaySquad'], $this->translate('Select scorer'), '', $scorer['playerId']);
-                            ?>
-                        </section>
+                        <div class="away-team">
+                            <figure>
+                                <img src="<?=$this->clubLogo($this->current['awayLogo'])?>" alt="<?=$this->current['awayName'];?>">
+                                <figcaption>
+                                    <?=$this->current['awayName'];?>
+                                </figcaption>
+                            </figure>
+                        </div>
                     </div>
 
                     <aside class="competition-countdown" style="display: none">

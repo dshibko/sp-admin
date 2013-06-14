@@ -156,6 +156,11 @@ class Module
                     $h->setServiceLocator($sm->getServiceLocator());
                     return $h;
                 },
+                'getContent' => function($sm) {
+                    $h = new \Neoco\View\Helper\GetContent();
+                    $h->setServiceLocator($sm->getServiceLocator());
+                    return $h;
+                },
                 'renderMessages' => function($sm) {
                     $h = new \Neoco\View\Helper\RenderMessages();
                     $translator = $sm->getServiceLocator()->get('translator');

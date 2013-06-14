@@ -705,3 +705,48 @@ CREATE TABLE `footer_page` (
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ROW_FORMAT=DEFAULT;
+
+-- oko 14.06
+
+CREATE TABLE `share_copy` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`engine` ENUM('Facebook', 'Twitter'),
+	`target` ENUM('PreMatchReport', 'PostMatchReport'),
+	`copy` TEXT NOT NULL,
+	`weight` INT NOT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+INSERT INTO `share_copy` (
+`engine` ,
+`target` ,
+`copy` ,
+`weight`
+)
+VALUES (
+'Facebook',  'PreMatchReport',  'I''ve made first prediction! Join me my friends!',  '1'
+), (
+'Twitter',  'PreMatchReport',  'I''ve made first prediction! Join me my followers!',  '1'
+), (
+'Facebook',  'PreMatchReport',  'I''ve made a prediction! Join me my friends!',  '3'
+), (
+'Twitter',  'PreMatchReport',  'I''ve made a prediction! Join me my followers!',  '3'
+), (
+'Facebook',  'PreMatchReport',  '',  '3'
+), (
+'Twitter',  'PreMatchReport',  '',  '3'
+), (
+'Facebook',  'PreMatchReport',  '',  '3'
+), (
+'Twitter',  'PreMatchReport',  '',  '3'
+), (
+'Facebook',  'PreMatchReport',  '',  '3'
+), (
+'Twitter',  'PreMatchReport',  '',  '3'
+), (
+'Facebook',  'PreMatchReport',  '',  '3'
+), (
+'Twitter',  'PreMatchReport',  '',  '3'
+);

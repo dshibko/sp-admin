@@ -62,9 +62,6 @@ figure {
   text-align: center;
 }
 
- .fb_iframe_widget_lift { z-index: 5; }
-
-
 /* ==========================================================================
    Helper classes
    ========================================================================== */
@@ -205,7 +202,7 @@ a.show-more {
   padding: 0 1.2em 0 3em;
   margin: 0 0 0.5em;
 
-  div {
+  > div {
     border-bottom: 1px solid #a1adbb;
   }
 
@@ -246,6 +243,24 @@ a.show-more {
   }
 }
 
+/***facebook***/
+a.like {
+  display: block;
+  overflow: hidden;
+  width: 49px;
+  height: 20px;
+  background: url(../img/like.png) no-repeat left top;
+  color: #3b5998;
+  text-decoration: none;
+  text-indent: 22px;
+  font-size: 11px;
+  font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+  line-height: 1.9;
+
+  &:hover {
+    background: url(../img/like.png) no-repeat left bottom;
+  }
+}
 
 
 @media only screen and (min-width: 320px) and (max-width:  767px) {
@@ -275,9 +290,6 @@ a.show-more {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4c9e0', endColorstr='#ffffff',GradientType=0 );
     
     padding: 0 1.5em 0 1.5em;
-    div {
-      border-bottom: 1px solid #a1adbb;
-    }
 
     img {
       display: none;
