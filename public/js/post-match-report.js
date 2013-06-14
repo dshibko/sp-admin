@@ -27,6 +27,7 @@ $(document).ready(function () {
     });
 });
 function initCharts(doResize){
+
     if (window.communityPredictedData !== undefined){
         var communityPredictedChart = $.plot($('#community-predicted-results'),
             window.communityPredictedData,
@@ -41,7 +42,7 @@ function initCharts(doResize){
                             show: true,
                             radius: 0,
                             formatter: function(label, series) {
-                                return series.data[0][1] + '%';
+                                return label;
                             }
                         }
                     }

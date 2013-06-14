@@ -26,7 +26,6 @@ $(document).ready(function () {
         }
     });
 });
-var plots = [];
 if (window.communityPredictedData !== undefined){
     plots.push($.plot('#community-predicted-results',
         window.communityPredictedData,
@@ -52,8 +51,6 @@ if (window.communityPredictedData !== undefined){
         }
     ));
 }
-
-
 $(window).on('resize', function() {
     for (var i = plots.length - 1; i >= 0; i--) {
         plots[i].resize();
