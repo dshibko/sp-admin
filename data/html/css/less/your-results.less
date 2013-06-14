@@ -1,5 +1,6 @@
 .your-results-content {
   position: relative;
+  margin: 0 0 40px;
   padding: 4em 2em 2.5em;
   text-align: center;
 
@@ -225,7 +226,35 @@
         }
       }
     }
-    
+  }
+
+  .scorers + p {
+    font: normal 1.6em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+
+    a {
+      color: @dark-gray;
+      text-decoration: underline;
+      font-family: "ProximaNova-Bold", Helvetica, Arial;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  &.match-in-progress {
+    padding: 2em 3em 3.5em;
+    .scorers {
+      margin: 0 0 2.3em;
+      padding: 2em 0 1.5em;
+      background: #cedceb;
+      border-radius: 5px;
+
+      h2 {
+        margin: 0 0 0.5em;
+        color: @blue;
+        font: normal 2em/1 "ProximaNova-Bold", Helvetica, Arial;
+      }
+    }
   }
 
 }
@@ -341,7 +370,18 @@
             }
           }
         }
-      
+      }
+
+      .scorers + p {
+        font: normal 2.3em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+      }
+
+      &.match-in-progress {
+        .scorers {
+          h2 {
+            font: normal 3em/1 "ProximaNova-Bold", Helvetica, Arial;
+          }
+        }
       }
 
     }
