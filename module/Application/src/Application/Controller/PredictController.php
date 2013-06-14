@@ -38,6 +38,8 @@ class PredictController extends AbstractActionController {
 
             $user = $applicationManager->getCurrentUser();
             $season = $applicationManager->getCurrentSeason();
+            if ($season == null)
+                throw new \Exception(MessagesConstants::INFO_OUT_OF_SEASON);
 
             //Get setup form
             if (!$user->getIsActive()){
@@ -48,8 +50,6 @@ class PredictController extends AbstractActionController {
                 $setUpForm ->get('region')->setValue($country->getId());
                 $setUpForm ->get('language')->setValue($language->getId());
             }
-            if ($season == null)
-                throw new \Exception(MessagesConstants::INFO_OUT_OF_SEASON);
 
             $matchesLeft = $matchManager->getMatchesLeftInTheSeasonNumber(new \DateTime(), $season);
 
