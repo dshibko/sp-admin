@@ -689,3 +689,48 @@ ALTER TABLE `match_region`  ADD COLUMN `display_featured_player` TINYINT(1) NULL
 ALTER TABLE `match_region`  CHANGE COLUMN `title` `pre_match_report_title` VARCHAR(255) NULL DEFAULT NULL AFTER `featured_prediction_id`,  CHANGE COLUMN `intro` `pre_match_report_intro` TEXT NULL AFTER `pre_match_report_title`,  CHANGE COLUMN `header_image_path` `pre_match_report_header_image_path` VARCHAR(255) NULL DEFAULT NULL AFTER `pre_match_report_intro`;
 ALTER TABLE `match_region`  CHANGE COLUMN `pre_match_report_intro` `pre_match_report_intro` TEXT NULL DEFAULT NULL AFTER `pre_match_report_title`;
 ALTER TABLE `match_region`  ADD COLUMN `post_match_report_title` VARCHAR(255) NULL DEFAULT NULL AFTER `pre_match_report_header_image_path`,  ADD COLUMN `post_match_report_intro` TEXT NULL DEFAULT NULL AFTER `post_match_report_title`,  ADD COLUMN `post_match_report_header_image_path` VARCHAR(255) NULL DEFAULT NULL AFTER `post_match_report_intro`;
+
+-- oko 14.06
+
+CREATE TABLE `share_copy` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`engine` ENUM('Facebook', 'Twitter'),
+	`target` ENUM('PreMatchReport', 'PostMatchReport'),
+	`copy` TEXT NOT NULL,
+	`weight` INT NOT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+INSERT INTO `share_copy` (
+`engine` ,
+`target` ,
+`copy` ,
+`weight`
+)
+VALUES (
+'Facebook',  'PreMatchReport',  'I''ve made first prediction! Join me my friends!',  '1'
+), (
+'Twitter',  'PreMatchReport',  'I''ve made first prediction! Join me my followers!',  '1'
+), (
+'Facebook',  'PreMatchReport',  'I''ve made a prediction! Join me my friends!',  '3'
+), (
+'Twitter',  'PreMatchReport',  'I''ve made a prediction! Join me my followers!',  '3'
+), (
+'Facebook',  'PreMatchReport',  '',  '3'
+), (
+'Twitter',  'PreMatchReport',  '',  '3'
+), (
+'Facebook',  'PreMatchReport',  '',  '3'
+), (
+'Twitter',  'PreMatchReport',  '',  '3'
+), (
+'Facebook',  'PreMatchReport',  '',  '3'
+), (
+'Twitter',  'PreMatchReport',  '',  '3'
+), (
+'Facebook',  'PreMatchReport',  '',  '3'
+), (
+'Twitter',  'PreMatchReport',  '',  '3'
+);

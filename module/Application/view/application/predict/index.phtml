@@ -162,7 +162,8 @@
                 <?php endif; ?>
             </section>
             <!--MATCH REPORT START-->
-                <?php echo $this->partial('partials/pre-match-report', array('report' => $this->matchReport, 'match' => $this->current, 'code' => $this->matchCode));?>
+                <?php echo $this->partial('partials/pre-match-report', array('report' => $this->matchReport, 'match' => $this->current,
+                    'code' => $this->matchCode, 'facebookShareCopy' => $this->facebookShareCopy, 'twitterShareCopy' => $this->twitterShareCopy));?>
             <!--MATCH REPORT END-->
         </div>
 

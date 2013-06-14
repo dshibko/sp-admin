@@ -224,6 +224,26 @@ return array(
                     ),
                 ),
             ),
+            'admin-pre-match-share-copy' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/pre-match-share-copy/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\PreMatchShareCopy',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-post-match-share-copy' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/post-match-share-copy/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\PostMatchShareCopy',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'admin-content-footer-images' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -284,6 +304,7 @@ return array(
             'Admin\Controller\League' => 'Admin\Controller\LeagueController',
             'Admin\Controller\Fixtures' => 'Admin\Controller\FixturesController',
             'Admin\Controller\User' => 'Admin\Controller\UserController',
+            'Admin\Controller\PreMatchShareCopy' => 'Admin\Controller\PreMatchShareCopyController',
         ),
     ),
     'view_manager' => array(
@@ -477,11 +498,6 @@ return array(
                                     ),
                                 ),
                             ),
-                            'reports' => array(
-                                'title' => 'Match Reports',
-                                'label' => 'icon-bar-chart',
-                                'route' => 'admin-content-reports',
-                            ),
                             'languages' => array(
                                 'title' => 'Languages',
                                 'label' => 'icon-refresh',
@@ -500,6 +516,11 @@ return array(
                                         'action' => 'edit',
                                     ),
                                 ),
+                            ),
+                            'share-copy' => array(
+                                'title' => 'Reports Share Copy',
+                                'label' => 'icon-bar-chart',
+                                'route' => 'admin-share-copy',
                             ),
                             'footer-images' => array(
                                 'title' => 'Footer Images',

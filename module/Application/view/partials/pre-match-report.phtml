@@ -7,26 +7,14 @@
                 <p><?php echo (!empty($this->report['intro']) ? $this->report['intro'] : $this->getConstant('default_pre_match_report_intro'));?></p>
                 <footer class="clearfix">
                     <h3><?php echo $this->translate('Share this');?></h3>
-                    <style>
-                        .fb_iframe_widget_lift { z-index: 5 }
-                    </style>
                     <ul class="social-links">
                         <li>
-                            <div style="border-width: 0" id="fb-root"></div>
-                            <script>(function(d, s, id) {
-                                var js, fjs = d.getElementsByTagName(s)[0];
-                                if (d.getElementById(id)) return;
-                                js = d.createElement(s); js.id = id;
-                                js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=<?php echo $this->getConstant('facebook_api_key');?>";
-                                fjs.parentNode.insertBefore(js, fjs);
-                            }(document, 'script', 'facebook-jssdk'));</script>
-                            <div style="border-width: 0" class="fb-like" data-href="" data-send="false" data-layout="button_count" data-show-faces="true"></div>
-<!--                            <a href="--><?//=$this->url('match', array('code' => $this->code))?><!--">Facebook</a>-->
+                            <script type="text/javascript" src="/js/facebook.js"></script>
+                            <a summary="<?=$this->facebookShareCopy?>" href="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" class="like">Like</a>
                         </li>
                         <li>
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="Match Report" data-url="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" data-count="none">Tweet</a>
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="<?=$this->twitterShareCopy?>" data-url="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" data-count="none">Tweet</a>
                             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-<!--                            <a href="--><?//=$this->url('match', array('code' => $this->code))?><!--">Twitter</a>-->
                         </li>
 <!--                        <li><a href="">Pin it</a></li>-->
                     </ul>
