@@ -58,6 +58,7 @@ return array(
                               user_education_history,
                               user_work_history,
                               publish_actions',
+    'favicon_path' => '/img/fav.ico',
     'default_club_logo' => '/img/club-logo.png',
     'default_pre_match_report_title' => 'Match Report',
     'default_pre_match_report_intro' => 'This is default match report intro',

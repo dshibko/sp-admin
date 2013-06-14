@@ -163,11 +163,12 @@ class ResultsController extends AbstractActionController {
             'maxBack' => $playedMatches - 1,
             'breakpoints' => $breakpoints,
             'firstResultView' => $firstView,
+            'matchCode' => $this->encodeInt($currentMatch['id']),
         );
 
     }
 
-    private function getScorers(array $data, $currentMatch) {
+    public function getScorers(array $data, $currentMatch) {
         $homeScorers = array();
         $awayScorers = array();
         foreach ($data as $player)

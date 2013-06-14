@@ -1,4 +1,10 @@
 <!--HEADER STARTS-->
+<style type="text/css">
+    .grid-layout .item.featured-player section .player,
+    .grid-layout .item.top-predicted-scorers section .player {
+        width: auto;
+    }
+</style>
     <section class="match-banner">
         <div class="clearfix">
             <img src="<?php echo (!empty($this->report['headerImage']) ? $this->report['headerImage'] : $this->getConstant('default_pre_match_report_header_image'));?>" alt="">
@@ -7,10 +13,28 @@
                 <p><?php echo (!empty($this->report['intro']) ? $this->report['intro'] : $this->getConstant('default_pre_match_report_intro'));?></p>
                 <footer class="clearfix">
                     <h3><?php echo $this->translate('Share this');?></h3>
+                    <style>
+                        .fb_iframe_widget_lift { z-index: 5 }
+                    </style>
                     <ul class="social-links">
-                        <li><a href="">like</a></li>
-                        <li><a href="">tweet</a></li>
-                        <li><a href="">Pin it</a></li>
+                        <li>
+                            <div style="border-width: 0" id="fb-root"></div>
+                            <script>(function(d, s, id) {
+                                var js, fjs = d.getElementsByTagName(s)[0];
+                                if (d.getElementById(id)) return;
+                                js = d.createElement(s); js.id = id;
+                                js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=<?php echo $this->getConstant('facebook_api_key');?>";
+                                fjs.parentNode.insertBefore(js, fjs);
+                            }(document, 'script', 'facebook-jssdk'));</script>
+                            <div style="border-width: 0" class="fb-like" data-href="" data-send="false" data-layout="button_count" data-show-faces="true"></div>
+<!--                            <a href="--><?//=$this->url('match', array('code' => $this->code))?><!--">Facebook</a>-->
+                        </li>
+                        <li>
+                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="Match Report" data-url="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" data-count="none">Tweet</a>
+                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<!--                            <a href="--><?//=$this->url('match', array('code' => $this->code))?><!--">Twitter</a>-->
+                        </li>
+<!--                        <li><a href="">Pin it</a></li>-->
                     </ul>
                 </footer>
             </article>
@@ -98,6 +122,7 @@
                         <ol class="legend">
                             <li><?=$this->match['homeName']?></li>
                             <li><?=$this->match['awayName']?></li>
+                            <li><?=$this->translate('Draw')?></li>
                         </ol>
                     </figcaption>
                 </figure>
@@ -109,8 +134,8 @@
                 <h1>Total goals this season</h1>
                 <figure>
                     <ol class="clearfix">
-                        <li style="width: 60%;"><span>12</span></li>
-                        <li style="width: 40%;"><span>6</span></li>
+                        <li style="width: 60%;"><span>60</span></li>
+                        <li style="width: 40%;"><span>40</span></li>
                     </ol>
                     <figcaption>
                         <ol class="legend">

@@ -165,7 +165,8 @@ class PredictController extends AbstractActionController {
             'maxAhead' => $maxAhead,
             'liveMatches' => $liveMatches,
             'securityKey' => $securityKey,
-            'matchReport' => $matchReport
+            'matchReport' => $matchReport,
+            'matchCode' => $this->encodeInt($currentMatch['id']),
         );
         if (!empty($setUpForm)){
             $params['setUpForm'] = $setUpForm;

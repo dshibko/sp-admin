@@ -1,4 +1,4 @@
-<?php $this->headTitle($this->translate('Results'));?>
+<?php $this->headTitle($this->translate('Your Results of') . ' ' . $this->current['homeName'] . ' ' . $this->translate('vs') . ' ' . $this->current['awayName']);?>
 <?php $this->getUnreadItems()->setIsFirstResultView($this->firstResultView); ?>
 <div role="main" class="two-column-section clearfix">
     <div class="first-column results">
@@ -75,7 +75,8 @@
                             </section>
                         </div>
                     </div>
-                    <div class="points">
+
+                    <div class="points full">
                         <table>
                             <tbody>
                                 <?php foreach ($this->breakpoints as $breakpointText => $points) : ?>
@@ -112,7 +113,7 @@
                 </div>
             </section>
             <!--POST MATCH REPORT START-->
-            <?php echo $this->partial('partials/post-match-report', array('report' => $this->matchReport));?>
+            <?php echo $this->partial('partials/post-match-report', array('report' => $this->matchReport, 'code' => $this->matchCode));?>
             <!--POST MATCH REPORT END-->
         <?php else: ?>
             <?= $this->renderMessages(); ?>

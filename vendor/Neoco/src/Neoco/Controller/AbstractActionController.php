@@ -57,4 +57,13 @@ class AbstractActionController extends \Zend\Mvc\Controller\AbstractActionContro
         return true;
     }
 
+    public function encodeInt($int) {
+        return pow($int + 5, 4) + 3;
+    }
+
+    public function decodeInt($int) {
+        $int = sqrt(sqrt($int - 3));
+        return $int - 5;
+    }
+
 }
