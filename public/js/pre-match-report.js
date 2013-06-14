@@ -6,7 +6,7 @@ $(document).ready(function () {
         }
         $('#container').masonry({
             itemSelector: '.item',
-            isResizable: false,
+           // isResizable: false,
             columnWidth: function (containerWidth) {
                 return containerWidth / size;
             }
