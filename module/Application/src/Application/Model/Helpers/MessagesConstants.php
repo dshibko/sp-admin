@@ -30,6 +30,7 @@ class MessagesConstants
     const SUCCESS_PLAYER_SAVED = 'Player was successfully saved';
     const SUCCESS_FIXTURE_SAVED = 'Fixture was successfully saved';
     const SUCCESS_ACCOUNT_SAVED = 'Account was successfully saved';
+    const SUCCESS_FOOTER_PAGE_SAVED = 'Footer Page successfully saved';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -53,6 +54,7 @@ class MessagesConstants
     const ERROR_INVALID_USER_ID = 'Invalid user id';
     const ERROR_CANNOT_FIND_USER = 'Cannot find user';
     const ERROR_INVALID_FORM_TYPE = 'Invalid form type';
+
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";

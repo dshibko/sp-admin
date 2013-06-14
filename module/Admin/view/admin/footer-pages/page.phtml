@@ -2,10 +2,10 @@
 <?php if (!is_null($this->form) && $this->form instanceof \Zend\Form\Form ):?>
             <?php
             $this->form->prepare();
-            $this->form->setAttribute('action', $this->url('admin-content-footer-pages-terms'));
+            $this->form->setAttribute('action', $this->url($this->params['route']));
             echo $this->form()->openTag($this->form);
             ?>
-            <?php echo $this->renderFieldsets($this->form->getFieldsets(), false, 'terms-page');?>
+            <?php echo $this->renderFieldsets($this->form->getFieldsets(), false);?>
             <div class="form-actions">
                 <button type="submit" class="btn blue"><?=$this->translate($this->form->get('submit')->getValue());?></button>
                 <button type="button" class="btn reset"><?php echo $this->translate('Cancel');?></button>

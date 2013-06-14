@@ -43,4 +43,15 @@ class FooterPageDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
 
+    public function getFooterPageByType($type,$hydrate = false, $skipCache = false)
+    {
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('fp, l')
+            ->from($this->getRepositoryName(), 'fp')
+            ->join('fp.language', 'l')
+            ->where($qb->expr()->eq('fp.type',':type'))->setParameter('type', $type);
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
+    }
+
 }
