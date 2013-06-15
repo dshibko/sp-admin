@@ -12,6 +12,8 @@ class SettingsManager extends BasicManager {
     const SITE_FOOTER_COLOR_KEY = 'site-footer-colour';
     const AHEAD_PREDICTIONS_DAYS = 'ahead-predictions-days';
     const BAD_WORDS = 'bad-words';
+    const HELP_AND_SUPPORT_EMAIL = 'help-and-support-email';
+    const MAIN_SITE_LINK = 'main-site-link';
 
     /**
      * @var SettingsManager
@@ -43,7 +45,7 @@ class SettingsManager extends BasicManager {
         return $settingsArray;
     }
 
-    public function saveSettings(array $settings) {
+    public function saveSettings(array $settings){
         $settingsDAO = SettingsDAO::getInstance($this->getServiceLocator());
         foreach ($settings as $k => $v) {
             $settingObj = $settingsDAO->findOneByKey($k);

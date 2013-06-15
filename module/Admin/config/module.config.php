@@ -227,14 +227,19 @@ return array(
             'admin-content-footer-pages' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/content/footer-pages',
+                    'route'    => '/admin/content/footer-pages[/:action][/:pageType]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'pageType' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                    ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\FooterPages',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'admin-content-footer-pages-terms' => array(
+
+            /*'admin-content-footer-pages-terms' => array(
                 'type' => 'segment',
                 'options' => array(
                     'route'    => '/admin/content/footer-pages/terms',
@@ -243,7 +248,7 @@ return array(
                         'action'     => 'termsPage',
                     ),
                 ),
-            ),
+            ),*/
             'admin-pre-match-share-copy' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -347,7 +352,7 @@ return array(
             'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml',
             'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
             'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
-            'admin/footer-pages/terms-page' => __DIR__ . '/../view/admin/footer-pages/page.phtml',
+            'admin/footer-pages/index' => __DIR__ . '/../view/admin/footer-pages/page.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -543,7 +548,7 @@ return array(
                             'share-copy' => array(
                                 'title' => 'Reports Share Copy',
                                 'label' => 'icon-bar-chart',
-                                'route' => 'admin-share-copy',
+                                'route' => 'admin-pre-match-share-copy',//TODO CHANGED !!!!!!!!!!!!!!!
                             ),
                             'footer-images' => array(
                                 'title' => 'Footer Images',
@@ -574,14 +579,43 @@ return array(
                                 'title' => 'Footer Pages',
                                 'label' => 'icon-pencil',
                                 'route' => 'admin-content-footer-pages',
-                                'useRouteMatch' => true,
                                 'sub-menu' => true,
                                 'pages' => array(
                                     array(
                                         'title' => 'Terms',
                                         'label' => 'icon-plus',
-                                        'route' => 'admin-content-footer-pages-terms',
-                                        'action' => 'termsPage'
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::TERMS_PAGE
+                                        )
+                                    ),
+                                    array(
+                                        'title' => 'Privacy',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::PRIVACY_PAGE
+                                        )
+                                    ),
+                                    array(
+                                        'title' => 'Contact Us',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::CONTACT_US_PAGE
+                                        )
+                                    ),
+                                    array(
+                                        'title' => 'Cookies Policy',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::COOKIES_PAGE
+                                        )
                                     )
                                 )
                             ),

@@ -54,6 +54,7 @@ class MessagesConstants
     const ERROR_INVALID_USER_ID = 'Invalid user id';
     const ERROR_CANNOT_FIND_USER = 'Cannot find user';
     const ERROR_INVALID_FORM_TYPE = 'Invalid form type';
+    const ERROR_UNDEFINED_FOOTER_PAGE_TYPE = 'Undefined footer page type';
 
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";

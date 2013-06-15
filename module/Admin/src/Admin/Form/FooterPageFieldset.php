@@ -15,7 +15,10 @@ class FooterPageFieldset extends LanguageFieldset
             'name' => 'content',
             'type' => 'textarea',
             'attributes' => array(
-                'required' => true
+                'required' => true,
+                'editor'=> array(
+                    'type' => 'ckeditor'
+                )
             ),
             'options' => array(
                 'label' => 'Content',
