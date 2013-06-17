@@ -9,11 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <?php $this->headTitle(' - Score Predictor 2.0');?>
     <?php echo $this->headTitle() ?>
-    <meta property="og:description" content="Share!">
     <meta property="og:title" content="<?php echo $this->headTitle()->renderTitle() ?>">
-<!--    og:image-->
-    <meta property="og:url" content="http://google.com/">
-    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . $this->getConstant('favicon_path')))?>
+    <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . $this->getConstant('favicon_path') . "?" . rand(0, 1)))?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <link rel="stylesheet" href="/css/normalize.min.css">
@@ -48,7 +45,7 @@
         ->setPartial('partials/menu', array('attributes' => $this->attributes)); ?>
         <div  class="banner">
             <a href="/" class="logo">
-                <img src="/img/fcbarcelona-355.png" alt="FCBARCELONA Score Predictor">
+                <img src="/img/del-tf-logo.png" alt="Truefan Score Predictor">
             </a>
             <figure>
                 <div data-alt="FCBARCELONA Score Predictor Banner" data-picture="">

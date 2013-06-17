@@ -119,7 +119,7 @@ if (empty($this->twitterShareCopy))
                         <div class="league-logo">
                             <img src="/img/league-logo.png" alt="">
                             <em><?=$this->translate('VS')?></em>
-                            <span <?=($this->current['prediction'] || (empty($this->current['prediction']['homeScorers']) && empty($this->current['prediction']['awayScorers']))) ? 'style="display:none"': ''?>><?=$this->translate('Scorers')?></span>
+                            <span <?=(empty($this->current['prediction']) || (empty($this->current['prediction']['homeScorers']) && empty($this->current['prediction']['awayScorers']))) ? 'style="display:none"': ''?>><?=$this->translate('Scorers')?></span>
                         </div>
 
                         <div class="away-team">
@@ -136,7 +136,7 @@ if (empty($this->twitterShareCopy))
                             </fieldset>
                             <section>
                                 <?php
-                                if (!$this->current['prediction'] && !empty($this->current['prediction']['awayScorers']))
+                                if (!empty($this->current['prediction']) && !empty($this->current['prediction']['awayScorers']))
                                     foreach ($this->current['prediction']['awayScorers'] as $order => $scorer)
                                         print $this->squadSelect('away-team-scorer-' . $order, $this->current['awaySquad'], $this->translate('Select scorer'), '', $scorer['playerId']);
                                 ?>
