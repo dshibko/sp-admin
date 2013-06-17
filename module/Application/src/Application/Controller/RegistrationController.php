@@ -7,10 +7,8 @@ use Zend\View\Model\ViewModel;
 use Application\Manager\ExceptionManager;
 use Application\Manager\RegistrationManager;
 use Application\Manager\ApplicationManager;
-use Application\Form\SetUpForm;
 use Application\Manager\FacebookManager;
 use \Application\Manager\AuthenticationManager;
-use \Zend\Authentication\Result;
 use Application\Model\Helpers\MessagesConstants;
 use Application\Manager\UserManager;
 
@@ -23,12 +21,12 @@ class RegistrationController extends AbstractActionController
     const PREDICT_PAGE_ROUTE = 'predict';
     const REGISTRATION_PAGE_ROUTE = 'registration';
 
-    //TODO set permission only for guests
     public function indexAction()
     {
         try {
             $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            $registrationManager = RegistrationManager::getInstance($this->getServiceLocator());
             //if member - redirect to dashboard
             if (!empty($user)) {
                 return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
@@ -47,10 +45,9 @@ class RegistrationController extends AbstractActionController
                     $data['avatar'] = UserManager::getInstance($this->getServiceLocator())->getUserAvatar($form, $defaultAvatarId);
 
                     if (!empty($data['avatar'])){
-                        RegistrationManager::getInstance($this->getServiceLocator())->register($data);
+                        $registrationManager->register($data);
                         //Login registered user
                         AuthenticationManager::getInstance($this->getServiceLocator())->signIn($data['email']);
-                        //TODO send welcome email
                         return $this->redirect()->toRoute(self::SETUP_PAGE_ROUTE);
                     }
                 }else{
@@ -156,10 +153,7 @@ class RegistrationController extends AbstractActionController
                 $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT);
             }
             return $this->redirect()->toRoute($route);
-        } /*catch(\FacebookApiException $e){
-            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
-        }*/ catch (\Exception $e) {
+        } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
             return $this->redirect()->toRoute(self::REGISTRATION_PAGE_ROUTE);
         }

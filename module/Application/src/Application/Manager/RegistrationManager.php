@@ -46,7 +46,7 @@ class RegistrationManager extends BasicManager
      *  Register new user
      *
      * @param array $data
-     * @return Application\Model\Entities\User
+     * @return \Application\Model\Entities\User
      */
 
     public function register(array $data)
@@ -62,14 +62,24 @@ class RegistrationManager extends BasicManager
 
         $user->populate($data);
         UserDAO::getInstance($this->getServiceLocator())->save($user);
+        $this->sendWelcomeEmail($user->getEmail(), $user->getDisplayName());
         return $user;
 
     }
 
+    public function sendWelcomeEmail($email, $name)
+    {
+        $sendWelcomeEmail = SettingsManager::getInstance($this->getServiceLocator())->getSetting(SettingsManager::SEND_WELCOME_EMAIL);
+        if ($sendWelcomeEmail){
+            MailManager::getInstance($this->getServiceLocator())->sendWelcomeEmail($email, $name);
+        }
+        return true;
+    }
     /**
      *   Set up region and language of user
      *
      * @param array $data
+     * @throws \Exception
      * @return bool
      */
     public function setUp(array $data)

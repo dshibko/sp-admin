@@ -15,6 +15,8 @@ class MailManager extends BasicManager {
 
     const PASSWORD_RECOVERY_TEMPLATE = 'recovery';
     const PASSWORD_RECOVERY_EMAIL_SUBJECT = 'Password reset request for %s';
+    const WELCOME_EMAIL_SUBJECT = 'Welcome to %s';
+    const WELCOME_EMAIL_TEMPLATE = 'welcome';
 
     /**
      * @var MailManager
@@ -41,11 +43,19 @@ class MailManager extends BasicManager {
         return $this->sendEmail($email, sprintf(self::PASSWORD_RECOVERY_EMAIL_SUBJECT, $this->getAppName()), self::PASSWORD_RECOVERY_TEMPLATE, array('url' => $url));
     }
 
+    public function sendWelcomeEmail($email, $userName)
+    {
+        return $this->sendEmail($email, sprintf(self::WELCOME_EMAIL_SUBJECT, $this->getAppName()), self::WELCOME_EMAIL_TEMPLATE, array(
+            'appName' => $this->getAppName(),
+            'userName' => $userName
+        ));
+    }
     private function sendEmail($to, $subject, $template, $params = array()) {
         $content = $this->prepareContent($template, $params);
         $message = $this->prepareMessage($to, $subject, $content);
         $transport = $this->prepareTransport();
         $transport->send($message);
+        return true;
     }
 
     private function prepareTransport() {
