@@ -1,7 +1,25 @@
 <?php $this->headTitle($this->translate('Prizes')); ?>
 <div role="main" class="two-column-section clearfix">
-    <div class="first-column">
-        <?php echo $this->grandPrize->getPrizeTitle();?>
+    <div class="first-column prizes">
+        <h1>Prizes</h1>
+        <figure class="prizes-banner">
+            <img src="/img/prizes/prizes-banner.png" alt="">
+            <figcaption>
+                <article>
+                    <hgroup>
+                        <h1><?php echo $this->grandPrize->getPrizeTitle();?></h1>
+                    </hgroup>
+                    <p>
+                        <?php echo $this->grandPrize->getPrizeDescription();?>
+                    </p>
+<!--                    <h2>Visit Chelsea’s training ground</h2>-->
+<!--                    <p>Win the chance to visit Chelsea’s exclusive Training Ground in Cobham to see the players in a training session, an amazing prize for any Chelsea fan, as well as a bounty of CFC merchandise and products from our sponsors.</p>-->
+<!--                    <footer>-->
+<!--                        <p>Winners announced <time>19 May 2013</time></p>-->
+<!--                    </footer>-->
+                </article>
+            </figcaption>
+        </figure>
     </div>
     <?php echo $this->partial('partials/right-column'); ?>
 </div>

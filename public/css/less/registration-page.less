@@ -4,6 +4,10 @@
         margin: 3em 2.4em 1em 3em;
         padding: 0 1em 1.6em;
         border-bottom: 1px solid #d5d5d5;
+
+        &.bn {
+            border-bottom: none;
+        }
     }
     .ideal-wrap {
         left: 50%;
@@ -37,6 +41,50 @@
         }
     }
 
+    .field {
+        position: relative;
+        left: 50%;
+        float: left;
+        clear: both;
+        margin-bottom: 2em;
+        margin-left: -225px;
+
+        label {
+            float: left;
+            margin: 0 1.5em 0 0;
+        }
+        p {
+            float: left;
+            width: 370px;
+            font: normal 1.6em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+
+            strong {
+                display: block;
+                font: normal 1em/1 "ProximaNova-BOld", Helvetica, Arial;
+            }
+        }
+    }
+    .stack {
+        .field {
+            width: 300px;
+            margin-left: -135px;
+            label {
+                float: none;
+            }
+            p {
+                width: 280px;
+            }
+        }
+    }
+    
+    .change-avatar {
+        img {
+            float: left;
+            margin: 0 9em 1em 0;
+        }
+        .ideal-field {
+        }
+    }
     .avatar {
         .ideal-radiocheck {
             margin-left: 1em;
@@ -81,8 +129,10 @@
 
     .buttons-block {
         border: none;
-        div {
-            width: 100%;
+
+        div.ideal-wrap {
+            float: right;
+            width: auto;
             text-align: center;
 
             .ideal-button {
@@ -114,6 +164,20 @@
         }
         
     }
+
+    .buttons {
+        left: 0;
+        margin-top: 2em;
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+
+        .ideal-button {
+            float: right;
+            margin: 0 0 0 1em;
+        }
+    }
+
 }
 
 .form-errors {
@@ -230,14 +294,30 @@ aside.connect-facebook {
         .ideal-form.stack .buttons-block {
             div {
                 width: 100%!important;
-                float: none;
+                float: left;
                 margin: 0 auto;
+                button {
+                    float: left;
+                    margin: 0 1em 0 0;
+                }
             }
             &.signIn-buttons-block {
                 div {
                     width: auto!important;
                     float: right;
                 }
+            }
+        }
+        .buttons {
+            left: 0;
+            margin-top: 2em;
+            margin-left: 0;
+            width: 100%;
+            text-align: center;
+
+            .ideal-button {
+                float: left;
+                margin: 0 1em 0 0;
             }
         }
     }
@@ -282,6 +362,11 @@ aside.connect-facebook {
     }
     .ideal-form {
         .buttons-block {
+            button[type="submit"] {
+                font: normal 1.7em/1 "ProximaNova-Bold", Helvetica, Arial;
+            }
+        }
+        .buttons {
             button[type="submit"] {
                 font: normal 1.7em/1 "ProximaNova-Bold", Helvetica, Arial;
             }
