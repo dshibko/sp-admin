@@ -23,7 +23,7 @@
                     <a href="<?php echo $this->url('help');?>"><?=$this->translate('Help & Support')?></a>
                 </li>
                 <li>
-                    <a href="#"><?=$this->translate('Visit our main site')?></a>
+                    <a href="<?php echo $this->settingsHelper()->get('main-site-link')?>"><?=$this->translate('Visit our main site')?></a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cookies');?>"><?=$this->translate('Cookies policy')?></a>

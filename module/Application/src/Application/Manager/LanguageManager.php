@@ -194,5 +194,17 @@ class LanguageManager extends BasicManager {
         return true;
     }
 
+    public function getLanguagesFieldsets($fieldsetClassName)
+    {
+        $languages = $this->getAllLanguages(true);
+        $fieldsets = array();
+        foreach ($languages as $language){
+            if (class_exists($fieldsetClassName)){
+                $fieldsets[] = new $fieldsetClassName($language);
+            }
+        }
+        return $fieldsets;
+    }
+
 
 }

@@ -224,6 +224,51 @@ return array(
                     ),
                 ),
             ),
+            'admin-content-footer-pages' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/footer-pages[/:action][/:pageType]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'pageType' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\FooterPages',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+
+            /*'admin-content-footer-pages-terms' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/footer-pages/terms',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\FooterPages',
+                        'action'     => 'termsPage',
+                    ),
+                ),
+            ),*/
+            'admin-pre-match-share-copy' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/pre-match-share-copy/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\PreMatchShareCopy',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-post-match-share-copy' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/admin/post-match-share-copy/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\PostMatchShareCopy',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'admin-content-footer-images' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -284,6 +329,9 @@ return array(
             'Admin\Controller\League' => 'Admin\Controller\LeagueController',
             'Admin\Controller\Fixtures' => 'Admin\Controller\FixturesController',
             'Admin\Controller\User' => 'Admin\Controller\UserController',
+            'Admin\Controller\FooterPages' => 'Admin\Controller\FooterPagesController',
+            'Admin\Controller\PreMatchShareCopy' => 'Admin\Controller\PreMatchShareCopyController',
+            'Admin\Controller\PostMatchShareCopy' => 'Admin\Controller\PostMatchShareCopyController',
         ),
     ),
     'view_manager' => array(
@@ -303,7 +351,7 @@ return array(
             'admin/partials/select' => __DIR__ . '/../view/partials/select.phtml',
             'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml',
             'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
-            'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
+            'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml'
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -477,11 +525,6 @@ return array(
                                     ),
                                 ),
                             ),
-                            'reports' => array(
-                                'title' => 'Match Reports',
-                                'label' => 'icon-bar-chart',
-                                'route' => 'admin-content-reports',
-                            ),
                             'languages' => array(
                                 'title' => 'Languages',
                                 'label' => 'icon-refresh',
@@ -500,6 +543,11 @@ return array(
                                         'action' => 'edit',
                                     ),
                                 ),
+                            ),
+                            'share-copy' => array(
+                                'title' => 'Reports Share Copy',
+                                'label' => 'icon-bar-chart',
+                                'route' => 'admin-pre-match-share-copy',//TODO CHANGED !!!!!!!!!!!!!!!
                             ),
                             'footer-images' => array(
                                 'title' => 'Footer Images',
@@ -525,6 +573,50 @@ return array(
                                         'action' => 'editFooterSocial',
                                     ),
                                 ),
+                            ),
+                            'footer-pages' => array(
+                                'title' => 'Footer Pages',
+                                'label' => 'icon-pencil',
+                                'route' => 'admin-content-footer-pages',
+                                'sub-menu' => true,
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Terms',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::TERMS_PAGE
+                                        )
+                                    ),
+                                    array(
+                                        'title' => 'Privacy',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::PRIVACY_PAGE
+                                        )
+                                    ),
+                                    array(
+                                        'title' => 'Contact Us',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::CONTACT_US_PAGE
+                                        )
+                                    ),
+                                    array(
+                                        'title' => 'Cookies Policy',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::COOKIES_PAGE
+                                        )
+                                    )
+                                )
                             ),
                         ),
                     ),

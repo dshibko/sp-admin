@@ -36,6 +36,7 @@ class SettingsController extends AbstractActionController {
                     $settings = array();
                     foreach ($form->getElements() as $element)
                         $settings[$element->getName()] = $element->getValue();
+
                     $settingsManager->saveSettings($settings);
                     $regionValue = $form->get('region')->getValue();
                     $newRegion = $regionManager->getRegionById($regionValue);

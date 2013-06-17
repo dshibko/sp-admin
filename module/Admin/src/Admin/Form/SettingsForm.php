@@ -3,6 +3,7 @@
 namespace Admin\Form;
 
 use Zend\Form\Form;
+use Admin\Form\Filter\SettingsFormFilter;
 
 class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProviderInterface {
 
@@ -12,6 +13,7 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
         $this->setAttribute('method', 'post');
         $this->setAttribute('class', 'form-vertical');
         $this->setAttribute('novalidate', true);
+        $this->setInputFilter(new SettingsFormFilter());
 
         $this->add(array(
             'name' => 'site-background-colour',
@@ -88,6 +90,30 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
                 'required' => true,
                 'hint' => 'Number of matches/game weeks ahead a user can predicted',
                 'class' => 'span1',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'help-and-support-email',
+            'type'  => 'text',
+            'options' => array(
+                'label' => 'Help and Support Email',
+            ),
+            'attributes' => array(
+                'required' => true,
+                'hint' => 'Email address for mail from Help And Support form',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'main-site-link',
+            'type'  => 'Zend\Form\Element\Url',
+            'options' => array(
+                'label' => 'Main site link',
+            ),
+            'attributes' => array(
+                'required' => true,
+                'hint' => 'Source for "Visit our main site" link',
             ),
         ));
 

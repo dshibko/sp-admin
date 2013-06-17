@@ -28,8 +28,9 @@ class PredictController extends AbstractActionController {
 
         $currentMatch = array();
         $ahead = $maxAhead = $liveMatches = 0;
-        $securityKey = '';
+        $securityKey = $facebookShareCopy = $twitterShareCopy = '';
         $matchReport = array();
+
         try {
 
             $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
@@ -59,10 +60,12 @@ class PredictController extends AbstractActionController {
             $liveMatches = $matchManager->getLiveMatchesNumber(new \DateTime(), $season);
 
             if ($ahead > $maxAhead + $liveMatches - 1)
-                throw new \Exception(sprintf(MessagesConstants::ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED, $maxAhead));
+                return $this->notFoundAction();
+//                throw new \Exception(sprintf(MessagesConstants::ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED, $maxAhead));
 
             if ($ahead > $matchesLeft + $liveMatches - 1)
-                throw new \Exception(MessagesConstants::ERROR_MATCH_NOT_FOUND);
+                return $this->notFoundAction();
+//                throw new \Exception(MessagesConstants::ERROR_MATCH_NOT_FOUND);
 
             $currentMatch = $predictionManager->getNearestMatchWithPrediction(new \DateTime(), $ahead, $user, $season);
 
@@ -156,9 +159,13 @@ class PredictController extends AbstractActionController {
             if ($maxAhead > $matchesLeft)
                 $maxAhead = $matchesLeft;
 
+            $facebookShareCopy = 'Facebook';
+            $twitterShareCopy = 'Twitter';
+
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
+
         $params = array(
             'current' => $currentMatch,
             'ahead' => $ahead,
@@ -167,6 +174,8 @@ class PredictController extends AbstractActionController {
             'securityKey' => $securityKey,
             'matchReport' => $matchReport,
             'matchCode' => $this->encodeInt($currentMatch['id']),
+            'facebookShareCopy' => $facebookShareCopy,
+            'twitterShareCopy' => $twitterShareCopy,
         );
         if (!empty($setUpForm)){
             $params['setUpForm'] = $setUpForm;

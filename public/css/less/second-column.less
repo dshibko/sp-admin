@@ -140,7 +140,37 @@
         }
       }
     }
+  }
 
+  .login {
+    padding: 3.4em 3.3em 1em 3.3em;
+    background: #fff;
+    
+    section {
+      margin: 0 0 1.1em;
+      padding: 0 0 2.3em;
+      border-bottom: 1px solid #CCCCCC;
+
+      p {
+        font: normal 1.6em/1.2 "ProximaNova-Reg", Helvetica, Arial; 
+      }
+      .cta {
+        display: block;
+        margin: 1em auto 0;
+        width: 100%;
+        height: 2.6em;
+        border: 1px solid #9c1f4b;
+        color: #fff;
+        text-decoration: none;
+        text-shadow: none;
+        text-align: center;
+        font: normal 1.8em/2.4 "ProximaNova-Bold", Helvetica, Arial;
+        box-shadow: 0px 1px 5px #666;
+
+        .vertical-gradient(#af496e, #9c1f4b);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#af496e', endColorstr='#9c1f4b',GradientType=0 );
+      }
+    }
   }
 
   .facebook-invite {
@@ -187,8 +217,29 @@
       display: none;
     }
 
+    .login {
+      padding: 4em 4em 1.5em;
+      background: #000;
+      
+      section {
+        margin: 0 0 0em;
+        padding: 0 0 3em;
+        border-bottom: 1px solid #666;
+
+        p {
+          color: #fff;
+          font: normal 1.6em/1.2 "ProximaNova-Reg", Helvetica, Arial; 
+        }
+        .cta {
+          margin: 1em auto 0;
+          max-width: 18em;
+          font: normal 1.8em/2.4 "ProximaNova-Bold", Helvetica, Arial;
+        }
+      }
+    }
+
     .facebook-invite {
-      padding: 2em 2em 2em;
+      padding: 3em 4em 3em;
       background: #000;
 
        h1 {
@@ -201,11 +252,44 @@
         display: block;
         margin: 0 0 1em;
         color: #fff;
-        font: normal 1.4em/1.3 "ProximaNova-Reg", Helvetica, Arial;
+        font: normal 1.6em/1.3 "ProximaNova-Reg", Helvetica, Arial;
       }
       a.facebook {
         margin: 0 auto;
-        max-width: 20em;
+        max-width: 18em;
+        font: normal 1.8em/1 "ProximaNova-Reg", Helvetica, Arial;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width:  767px) {
+  .inner-page div[role="main"] .second-column {
+    .login {
+      padding: 2em 1.5em 1em;
+      
+      section {
+        p {
+          font: normal 1.5em/1.2 "ProximaNova-Reg", Helvetica, Arial; 
+        }
+        .cta {
+          max-width: 14em;
+          font: normal 1.7em/2.4 "ProximaNova-Bold", Helvetica, Arial;
+        }
+      }
+    }
+    .facebook-invite {
+      padding: 2em 1.5em 2em;
+      h1 {
+        font: normal 1.8em/1 "ProximaNova-Bold", Helvetica, Arial;
+      }
+      p {
+        margin: 0 0 1em;
+        font: normal 1.5em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+      }
+      a.facebook {
+        max-width: 14em;
+        font: normal 1.6em/1 "ProximaNova-Reg", Helvetica, Arial;
       }
     }
   }
@@ -214,15 +298,24 @@
 @media screen and (min-width: 768px) and (orientation: portrait) {
   .inner-page div[role="main"] .second-column {
 
-    .facebook-invite {
-      padding: 3em 4em 3em;
+    .login {
+      section {
+        p {
+          font: normal 2em/1.2 "ProximaNova-Reg", Helvetica, Arial; 
+        }
+        .cta {
+          font: normal 2em/2.4 "ProximaNova-Bold", Helvetica, Arial;
+        }
+      }
+    }
 
+    .facebook-invite {
        h1 {
         padding: 0 0 0.4em;
         font: normal 2.3em/1 "ProximaNova-Bold", Helvetica, Arial;
       }
       p {
-        font: normal 1.7em/1.3 "ProximaNova-Reg", Helvetica, Arial;
+        font: normal 2em/1.3 "ProximaNova-Reg", Helvetica, Arial;
       }
       a.facebook {
         margin: 0 auto;

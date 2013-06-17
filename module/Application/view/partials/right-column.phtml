@@ -6,8 +6,8 @@
 <!--        <li><a href="">Twitter</a></li>-->
     </ul>
 
-    <div class="wrap">
-        <?php if ($this->getCurrentUser() != null) : ?>
+    <?php if ($this->getCurrentUser() != null) : ?>
+        <div class="wrap">
 
             <section class="user-profile clearfix" itemtype="http://schema.org/Person" itemscope="">
                 <img src="<?=$this->getUserAvatar($this->getCurrentUser()->getAvatar()->getMediumImagePath(), $this->getCurrentUser()->getFacebookId())?>" itemprop="photo" title="<?=$this->getCurrentUser()->getDisplayName()?>" alt="<?=$this->getCurrentUser()->getDisplayName()?>" >
@@ -89,9 +89,18 @@
             <?php endif; ?>
 
             <p class="full"><a href="<?=$this->url('tables')?>">View full league tables</a></p>
-        <?php endif; ?>
-    </div>
+        </div>
+    <?php endif; ?>
 
+    <?php if ($this->getCurrentUser() == null) : ?>
+        <div class="login">
+            <section>
+                <?php $content = $this->getContent(); ?>
+                <p><?=$content['headlineCopy']?></p>
+                <a href="<?=$this->url("registration")?>" class="cta"><?=$content['registerButtonCopy']?></a>
+            </section>
+        </div>
+    <?php endif; ?>
 
     <div class="facebook-invite">
         <h1>Play against your mates</h1>
