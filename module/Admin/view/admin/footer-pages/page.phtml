@@ -1,43 +1,26 @@
-<?php $this->headTitle($this->title);?>
+<?php $this->headTitle($this->translate($this->title));?>
 <?php if (!is_null($this->form) && $this->form instanceof \Zend\Form\Form ):?>
             <?php
             $this->form->prepare();
-            $this->form->setAttribute('action', $this->url('admin-content-footer-pages-terms'));
+            $this->form->setAttribute('action', $this->url('admin-content-footer-pages', $this->params));
             echo $this->form()->openTag($this->form);
             ?>
-            <?php echo $this->renderFieldsets($this->form->getFieldsets(), false, 'terms-page');?>
+            <?php echo $this->renderFieldsets($this->form->getFieldsets(), false);?>
             <div class="form-actions">
                 <button type="submit" class="btn blue"><?=$this->translate($this->form->get('submit')->getValue());?></button>
-                <button type="button" class="btn reset"><?php echo $this->translate('Cancel');?></button>
             </div>
             <?php echo $this->form()->closeTag();?>
     <!--TERMS PAGE ENDS-->
 <?php endif;?>
 <!-- BEGIN PAGE LEVEL STYLES -->
-<link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" />
 <!-- END PAGE LEVEL STYLES -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
-<script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
-<script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/app.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/ckeditor/ckeditor.js"></script>  <script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/app.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 
 <script type="text/javascript">
-    if (jQuery().wysihtml5) {
-        if ($('.wysihtml5').size() > 0) {
-            $('.wysihtml5').each(function(i, el) {
-                $(el).wysihtml5('bypassDefaults', {
-                    "stylesheets": ["<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
-                });
-            });
-        }
-    }
     jQuery(document).ready(function() {
-        $('button.reset').click(function(e){
-            e.preventDefault();
-            this.form.reset();
-        });
         App.init(); // initlayout and core plugins
     });
 </script>

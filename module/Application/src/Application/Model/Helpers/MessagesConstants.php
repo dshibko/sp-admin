@@ -34,6 +34,7 @@ class MessagesConstants
     const SUCCESS_POST_MATCH_SHARE_COPY_UPDATED = "Post match share copy was updated successfully.";
     const SUCCESS_MINI_LEAGUE_DELETE = 'A mini league was deleted successfully';
     const SUCCESS_SEASON_DELETE = 'A season was deleted successfully';
+    const SUCCESS_FOOTER_PAGE_SAVED = 'Footer Page successfully saved';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -57,6 +58,7 @@ class MessagesConstants
     const ERROR_INVALID_USER_ID = 'Invalid user id';
     const ERROR_CANNOT_FIND_USER = 'Cannot find user';
     const ERROR_INVALID_FORM_TYPE = 'Invalid form type';
+    const ERROR_UNDEFINED_FOOTER_PAGE_TYPE = 'Undefined footer page type';
 
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";

@@ -89,6 +89,10 @@ class UserManager extends BasicManager {
         return $language;
     }
 
+    /**
+     * @param \Application\Model\Entities\Avatar $avatar
+     * @return bool
+     */
     private function deleteAvatarImages(\Application\Model\Entities\Avatar $avatar)
     {
         //TODO change web separator to directory separator
@@ -112,31 +116,66 @@ class UserManager extends BasicManager {
         return true;
     }
 
+    /**
+     * @return int
+     */
     public function getRegisteredUsersNumber() {
         return UserDAO::getInstance($this->getServiceLocator())->count();
     }
 
+    /**
+     * @param $days
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
     public function getUsersRegisteredInPastDays($days, $hydrate = false, $skipCache = false) {
         return UserDAO::getInstance($this->getServiceLocator())->getUsersRegisteredInPastDays($days, $hydrate, $skipCache);
     }
 
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
     public function getAllUsers($hydrate = false, $skipCache = false) {
         return UserDAO::getInstance($this->getServiceLocator())->getAllUsers($hydrate, $skipCache);
     }
 
+    /**
+     * @param $identity
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\User
+     */
     public function getUserByIdentity($identity, $hydrate = false, $skipCache = false) {
         return UserDAO::getInstance($this->getServiceLocator())->findOneByIdentity($identity, $hydrate, $skipCache);
     }
 
+    /**
+     * @param $id
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\User
+     */
     public function getUserById($id, $hydrate = false, $skipCache = false) {
         return UserDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
     }
 
+    /**
+     * @param $facebook_id
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\User
+     */
     public function getUserByFacebookId($facebook_id, $hydrate = false, $skipCache = false)
     {
         return UserDAO::getInstance($this->getServiceLocator())->getUserByFacebookId($facebook_id, $hydrate, $skipCache);
     }
 
+    /**
+     * @return string
+     */
     public function getUsersExportContent() {
         $users = UserDAO::getInstance($this->getServiceLocator())->getExportUsers(true);
 
@@ -332,12 +371,22 @@ class UserManager extends BasicManager {
         return true;
     }
 
+    /**
+     * @param $season
+     * @return int
+     */
     public function getActiveUsersNumber($season) {
         return UserDAO::getInstance($this->getServiceLocator())->getActiveUsersNumber($season);
     }
 
+    /**
+     * @var int
+     */
     private $isGeoIpBlocked = -1;
 
+    /**
+     * @return int
+     */
     private function getIsGeoIpBlocked() {
         if ($this->isGeoIpBlocked === -1) {
             $config = $this->getServiceLocator()->get('config');
@@ -360,9 +409,27 @@ class UserManager extends BasicManager {
         return $this->userGeoIpIsoCode;
     }
 
+    /**
+     * @param \Application\Model\Entities\User $user
+     */
     public function save(\Application\Model\Entities\User $user)
     {
         UserDAO::getInstance($this->getServiceLocator())->save($user);
+    }
+
+    /**
+     * @return \Application\Model\Entities\Language
+     */
+    public function getCurrentUserLanguage()
+    {
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        if (!is_null($user)){
+            $language = $user->getLanguage();
+        }else{
+            $language = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+        }
+
+        return $language;
     }
 
 }

@@ -227,20 +227,14 @@ return array(
             'admin-content-footer-pages' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/content/footer-pages',
+                    'route'    => '/admin/content/footer-pages[/:action][/:pageType]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'pageType' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                    ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\FooterPages',
                         'action'     => 'index',
-                    ),
-                ),
-            ),
-            'admin-content-footer-pages-terms' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route'    => '/admin/content/footer-pages/terms',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\FooterPages',
-                        'action'     => 'termsPage',
                     ),
                 ),
             ),
@@ -346,8 +340,7 @@ return array(
             'admin/partials/select' => __DIR__ . '/../view/partials/select.phtml',
             'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml',
             'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
-            'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
-            'admin/footer-pages/terms-page' => __DIR__ . '/../view/admin/footer-pages/page.phtml',
+            'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml'
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -593,14 +586,43 @@ return array(
                                 'title' => 'Footer Pages',
                                 'label' => 'icon-pencil',
                                 'route' => 'admin-content-footer-pages',
-                                'useRouteMatch' => true,
                                 'sub-menu' => true,
                                 'pages' => array(
                                     array(
                                         'title' => 'Terms',
                                         'label' => 'icon-plus',
-                                        'route' => 'admin-content-footer-pages-terms',
-                                        'action' => 'termsPage'
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::TERMS_PAGE
+                                        )
+                                    ),
+                                    array(
+                                        'title' => 'Privacy',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::PRIVACY_PAGE
+                                        )
+                                    ),
+                                    array(
+                                        'title' => 'Contact Us',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::CONTACT_US_PAGE
+                                        )
+                                    ),
+                                    array(
+                                        'title' => 'Cookies Policy',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::COOKIES_PAGE
+                                        )
                                     )
                                 )
                             ),

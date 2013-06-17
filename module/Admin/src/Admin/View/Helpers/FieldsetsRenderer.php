@@ -49,7 +49,13 @@ class FieldsetsRenderer extends AbstractHelper
     <div class="controls">';
             switch($type) {
                 case 'textarea':
-                    $html .= '<div class="input-prepend"><textarea class="span12 wysihtml5 m-wrap" rows="6" name="' . $element->getAttribute('name') . '" '.(!empty($maxlength) ? 'maxlength="'.$maxlength.'"' : '').'>' . $element->getValue() . '</textarea></div>';
+                    $editorType = $element->getAttribute('editor');
+                    if (!empty($editorType) && $editorType['type'] == 'ckeditor'){
+                        $html .=  '<textarea class="span12 ckeditor m-wrap" name="' . $element->getAttribute('name') . '" rows="10">' . $element->getValue() . '</textarea>';
+                    }else{
+                        $html .= '<div class="input-prepend"><textarea class="span12 wysihtml5 m-wrap" rows="6" name="' . $element->getAttribute('name') . '" '.(!empty($maxlength) ? 'maxlength="'.$maxlength.'"' : '').'>' . $element->getValue() . '</textarea></div>';
+                    }
+
                     break;
                 case 'file':
                     $image = $add ? '': (is_string($element->getValue()) ? $element->getValue() : '');

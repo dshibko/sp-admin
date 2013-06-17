@@ -169,6 +169,10 @@ class ContentManager extends BasicManager {
         FooterImageDAO::getInstance($this->getServiceLocator())->save($footerImage);
     }
 
+    /**
+     * @param $footerImageId
+     * @return bool
+     */
     public function deleteFooterImage($footerImageId) {
         $footerImageDAO = FooterImageDAO::getInstance($this->getServiceLocator());
         $footerImage = $footerImageDAO->findOneById($footerImageId);
@@ -254,6 +258,10 @@ class ContentManager extends BasicManager {
         FooterSocialDAO::getInstance($this->getServiceLocator())->remove($footerSocial);
     }
 
+    /**
+     * @param array $fieldsets
+     * @return array
+     */
     public function getFooterPageLanguageData(array $fieldsets)
     {
         $data = array();
@@ -268,11 +276,22 @@ class ContentManager extends BasicManager {
         return $data;
     }
 
+    /**
+     * @param $type
+     * @param $languageId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\FooterPage
+     */
     public function getFooterPageByTypeAndLanguage($type, $languageId, $hydrate = false, $skipCache = false)
     {
         return FooterPageDAO::getInstance($this->getServiceLocator())->getFooterPageByTypeAndLanguage($type, $languageId, $hydrate, $skipCache);
     }
 
+    /**
+     * @param array $data
+     * @param $pageType
+     */
     public function saveFooterPage(array $data, $pageType)
     {
         $languageManager = LanguageManager::getInstance($this->getServiceLocator());
@@ -292,6 +311,31 @@ class ContentManager extends BasicManager {
             $footerPageDAO->flush();
             $footerPageDAO->clearCache();
         }
+    }
+
+    /**
+     * @param $type
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getFooterPageByType($type, $hydrate = false, $skipCache = false)
+    {
+        return FooterPageDAO::getInstance($this->getServiceLocator())->getFooterPageByType($type, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param $pageType
+     * @return string
+     */
+    public function getFooterPageContent($pageType)
+    {
+        $userManager = UserManager::getInstance($this->getServiceLocator());
+        $contentManager = ContentManager::getInstance($this->getServiceLocator());
+        $language = $userManager->getCurrentUserLanguage();
+        $footerPage = $contentManager->getFooterPageByTypeAndLanguage($pageType, $language->getId());
+        return $footerPage->getContent();
+
     }
 
 }

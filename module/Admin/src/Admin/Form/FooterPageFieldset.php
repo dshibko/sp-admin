@@ -15,12 +15,22 @@ class FooterPageFieldset extends LanguageFieldset
             'name' => 'content',
             'type' => 'textarea',
             'attributes' => array(
-                'required' => true
+                'required' => true,
+                'editor'=> array(
+                    'type' => 'ckeditor'
+                )
             ),
             'options' => array(
                 'label' => 'Content',
             ),
         ));
     }
-    public function initFieldsetByObject($dataObject){}
+    public function initFieldsetByObject($pageData){
+        $data = $this->getData();
+        foreach ($pageData as $page) {
+            if ($page->getLanguage()->getId() == $data['id']){
+                $this->get('content')->setValue($page->getContent());
+            }
+        }
+    }
 }

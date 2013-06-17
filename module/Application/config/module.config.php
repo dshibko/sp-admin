@@ -371,6 +371,10 @@ return array(
             'partials/menu'           => __DIR__ . '/../view/partials/menu.phtml',
             'partials/invite-friends' => __DIR__ . '/../view/partials/invite-friends.phtml',
             'partials/right-column'   => __DIR__ . '/../view/partials/right-column.phtml',
+            'application/content/terms' => __DIR__ . '/../view/application/content/footer-page.phtml',
+            'application/content/privacy' => __DIR__ . '/../view/application/content/footer-page.phtml',
+            'application/content/cookies' => __DIR__ . '/../view/application/content/footer-page.phtml',
+            'application/content/contact' => __DIR__ . '/../view/application/content/footer-page.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',

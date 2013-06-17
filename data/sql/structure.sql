@@ -705,8 +705,6 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ROW_FORMAT=DEFAULT;
 
-ALTER TABLE `footer_page`  ADD INDEX `type` (`type`);
-
 -- oko 14.06
 
 CREATE TABLE `share_copy` (
@@ -809,3 +807,7 @@ CREATE TABLE `league_user_place` (
 ) ENGINE=InnoDB;
 ALTER TABLE `league_user_place` ADD FOREIGN KEY (league_user_id) REFERENCES `league_user`(id);
 ALTER TABLE `league_user_place` ADD FOREIGN KEY (match_id) REFERENCES `match`(id);
+
+-- okh 17.06
+
+INSERT INTO `settings` VALUES (null, 'help-and-support-email',''),(null, 'main-site-link','');
