@@ -26,13 +26,13 @@ class RegistrationController extends AbstractActionController
     //TODO set permission only for guests
     public function indexAction()
     {
-        $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
-        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-        //if member - redirect to dashboard
-        if (!empty($user)) {
-            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
-        }
         try {
+            $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            //if member - redirect to dashboard
+            if (!empty($user)) {
+                return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+            }
             $form->get('submit')->setValue('Register');
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -59,35 +59,36 @@ class RegistrationController extends AbstractActionController
                     }
                 }
             }
+            $viewModel = new ViewModel(array(
+                'form' => $form,
+                'default_avatar' => $this->getRequest()->getPost('default_avatar', null)
+            ));
+
+            $viewModel->setTerminal(true);
+            return $viewModel;
+
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
-
-        $viewModel = new ViewModel(array(
-            'form' => $form,
-            'default_avatar' => $this->getRequest()->getPost('default_avatar', null)
-        ));
-
-        $viewModel->setTerminal(true);
-        return $viewModel;
 
     }
 
     public function setUpAction()
     {
 
-        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-
-        //if guest - redirect to login page
-        if (empty($user)) {
-            return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
-        }
-        //if active user - redirect to dashboard
-        if ($user->getIsActive()) {
-            return $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
-        }
-        $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
         try {
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+
+            //if guest - redirect to login page
+            if (empty($user)) {
+                return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
+            }
+            //if active user - redirect to dashboard
+            if ($user->getIsActive()) {
+                return $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
+            }
+            $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
             $userManager = UserManager::getInstance($this->getServiceLocator());
             $country = $userManager->getUserGeoIpCountry();
             $language = $userManager->getUserLanguage();
@@ -107,16 +108,18 @@ class RegistrationController extends AbstractActionController
                 }
             }
 
+            $viewModel = new ViewModel(array(
+                'form' => $form
+            ));
+
+            $viewModel->setTerminal(true);
+            return $viewModel;
+
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
 
-        $viewModel = new ViewModel(array(
-            'form' => $form
-        ));
-
-        $viewModel->setTerminal(true);
-        return $viewModel;
     }
 
     //TODO move to auth controller

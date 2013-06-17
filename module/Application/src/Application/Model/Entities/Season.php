@@ -273,6 +273,10 @@ class Season extends BasicObject {
 
     private $regionalLeagueByRegion = array();
 
+    /**
+     * @param $id
+     * @return \Application\Model\Entities\League
+     */
     public function getRegionalLeagueByRegionId($id)
     {
         if (!array_key_exists($id, $this->regionalLeagueByRegion))

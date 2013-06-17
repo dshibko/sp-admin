@@ -62,7 +62,7 @@ class MiniLeagueForm extends RegionalisedForm {
             'name' => 'submit',
             'type'  => 'submit',
             'attributes' => array(
-                'value' => 'Create',
+                'value' => 'Save',
                 'id' => 'submitbutton',
             ),
         ));

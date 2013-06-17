@@ -94,7 +94,7 @@ class ScoringManager extends BasicManager {
                 $predictionDAO->save($prediction);
             }
 
-            \Application\Manager\LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables();
+            \Application\Manager\LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables($match);
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);

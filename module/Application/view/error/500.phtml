@@ -1,0 +1,23 @@
+<?php $this->headTitle($this->translate('Server Error'));?>
+<div role="main">
+    <div class="one-column errors-page">
+        <h1><?php echo $this->translate('Server Error') ?></h1>
+        <div class="clearfix">
+            <article class="error">
+                <h2><?=$this->translate('Message')?>:</h2>
+                <p><?=$this->translate("Sorry, you can't see the page. We are aware of it and doing all our best to fix the problem.")?></p>
+                <figure>
+                    <div>5<img src="/img/ball.png" alt=""><img src="/img/ball.png" alt=""></div>
+                </figure>
+            </article>
+            <?php if ($this->getConstant('show_error_messages')) : ?>
+                <article class="user-content">
+                    <h2><?=$this->translate('Additional information')?></h2>
+                    <?= $this->renderMessages(); ?>
+                </article>
+            <?php else: ?>
+                <?php $this->renderMessages(); ?>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>

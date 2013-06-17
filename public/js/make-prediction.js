@@ -108,6 +108,7 @@ $(document).ready(function () {
             }
         } else
             $(this).val('');
+        renderScorersLabel();
     });
 
     $(".home-team, .away-team").on("change", "select", function() {
@@ -173,4 +174,11 @@ function unbindUnload() {
 
 function pageUnload() {
     return pageUnloadCopy;
+}
+
+function renderScorersLabel() {
+    if ($("select[id*='home-team-scorer-']").size() > 0 || $("select[id*='away-team-scorer-']").size() > 0)
+        $("div.league-logo span").show();
+    else
+        $("div.league-logo span").hide();
 }

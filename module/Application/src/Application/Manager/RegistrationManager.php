@@ -109,7 +109,6 @@ class RegistrationManager extends BasicManager
                 $leagueDAO->save($globalLeague, false, false);
             }
         }
-
         $region = $user->getCountry()->getRegion();
         if ($region != null) {
             $regionalLeagues = $leagueDAO->getRegionalLeagues($region);
@@ -121,6 +120,16 @@ class RegistrationManager extends BasicManager
                     $leagueUser->setLeague($regionalLeague);
                     $regionalLeague->addLeagueUser($leagueUser);
                     $leagueDAO->save($regionalLeague, false, false);
+                }
+            $temporalLeagues = $leagueDAO->getTemporalLeagues($region);
+            foreach ($temporalLeagues as $temporalLeague)
+                if (!$leagueDAO->getIsUserInLeague($temporalLeague, $user)) {
+                    $leagueUser = new LeagueUser();
+                    $leagueUser->setUser($user);
+                    $leagueUser->setJoinDate(new \DateTime());
+                    $leagueUser->setLeague($temporalLeague);
+                    $temporalLeague->addLeagueUser($leagueUser);
+                    $leagueDAO->save($temporalLeague, false, false);
                 }
         }
         $leagueDAO->flush();

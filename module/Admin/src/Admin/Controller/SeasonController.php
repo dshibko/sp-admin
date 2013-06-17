@@ -87,7 +87,8 @@ class SeasonController extends AbstractActionController {
 
             return array(
                 'form' => $form,
-                'action' => 'add'
+                'action' => 'add',
+                'editableDates' => true,
             );
 
         } catch (\Exception $e) {
@@ -110,6 +111,10 @@ class SeasonController extends AbstractActionController {
             if ($season == null)
                 return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE);
 
+            $today = new \DateTime();
+            $today->setTime(0, 0, 0);
+            $editableDates = $today < $season->getStartDate();
+
             $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
 
             $regionFieldsets = array();
@@ -128,18 +133,23 @@ class SeasonController extends AbstractActionController {
                     $request->getFiles()->toArray()
                 );
                 $form->setData($post);
+                if (!$editableDates)
+                    $form->getInputFilter()->get('dates')->setRequired(false);
                 if ($form->isValid()) {
                     try {
 
-                        $dates = $form->get('dates')->getValue();
-                        $startDate = array_shift(explode(" - ", $dates));
-                        $startDate = \DateTime::createFromFormat('d/m/Y', $startDate);
-                        $endDate = array_pop(explode(" - ", $dates));
-                        $endDate = \DateTime::createFromFormat('d/m/Y', $endDate);
-
                         $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
-                        if (!$seasonManager->checkDates($startDate, $endDate, $id))
-                            throw new \Exception(MessagesConstants::ERROR_SEASON_DATES_ARE_NOT_AVAILABLE);
+                        if ($editableDates) {
+                            $dates = $form->get('dates')->getValue();
+                            $startDate = array_shift(explode(" - ", $dates));
+                            $startDate = \DateTime::createFromFormat('d/m/Y', $startDate);
+                            $endDate = array_pop(explode(" - ", $dates));
+                            $endDate = \DateTime::createFromFormat('d/m/Y', $endDate);
+
+                            if (!$seasonManager->checkDates($startDate, $endDate, $id))
+                                throw new \Exception(MessagesConstants::ERROR_SEASON_DATES_ARE_NOT_AVAILABLE);
+                        } else
+                            $startDate = $endDate = null;
 
                         $imageManager = ImageManager::getInstance($this->getServiceLocator());
 
@@ -163,7 +173,8 @@ class SeasonController extends AbstractActionController {
             return array(
                 'id' => $id,
                 'form' => $form,
-                'action' => 'edit'
+                'action' => 'edit',
+                'editableDates' => $editableDates,
             );
 
         } catch (\Exception $e) {
@@ -174,34 +185,40 @@ class SeasonController extends AbstractActionController {
 
     public function deleteAction() {
 
-        $id = (int) $this->params()->fromRoute('id', 0);
-        if ($id === 0)
-            return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE);
+        try {
+            $id = (int) $this->params()->fromRoute('id', 0);
+            if ($id === 0)
+                return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE);
 
-        $request = $this->getRequest();
+            $request = $this->getRequest();
 
-        if ($request->isPost()) {
-            try {
-                $del = $request->getPost('del', 'No');
+            if ($request->isPost()) {
+                try {
+                    $del = $request->getPost('del', 'No');
 
-                if ($del == 'Yes') {
-                    $id = (int) $request->getPost('id');
-                    SeasonManager::getInstance($this->getServiceLocator())->deleteSeason($id);
+                    if ($del == 'Yes') {
+                        $id = (int) $request->getPost('id');
+                        SeasonManager::getInstance($this->getServiceLocator())->deleteSeason($id);
+                        $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_SEASON_DELETE);
+                    }
+                } catch (\Exception $e) {
+                    ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
                 }
-            } catch (\Exception $e) {
-                ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+                return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE);
             }
+
+            $season = SeasonManager::getInstance($this->getServiceLocator())->getSeasonById($id, true);
+            if (empty($season))
+                return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE);
+
+            return array(
+                'id'    => $id,
+                'season' => $season
+            );
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
             return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE);
         }
-
-        $season = SeasonManager::getInstance($this->getServiceLocator())->getSeasonById($id, true);
-        if (empty($season))
-            return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE);
-
-        return array(
-            'id'    => $id,
-            'season' => $season
-        );
     }
 
     private function prepareUpdateData($form, $regionFieldsets, $imageManager) {

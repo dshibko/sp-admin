@@ -10,12 +10,10 @@
                 <ul class="social-links">
                     <li>
                         <script type="text/javascript" src="/js/facebook.js"></script>
-                        <div class="fb-like-wrapper">
-                            <div class="fb-like" data-href="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" data-send="false" data-layout="button_count" data-show-faces="true"></div>
-                        </div>
+                        <a summary="<?=$this->facebookShareCopy?>" href="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" class="like">Like</a>
                     </li>
                     <li>
-                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="Match Report" data-url="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" data-count="none">Tweet</a>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="<?=$this->twitterShareCopy?>" data-url="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" data-count="none">Tweet</a>
                         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
                     </li>
                     <!--                        <li><a href="">Pin it</a></li>-->

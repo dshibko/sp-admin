@@ -2,6 +2,9 @@
 
 namespace Application\Controller;
 
+use \Neoco\Exception\InfoException;
+use \Neoco\Exception\OutOfSeasonException;
+use \Application\Manager\ShareManager;
 use \Application\Manager\MatchManager;
 use \Application\Model\Entities\Match;
 use \Application\Model\Helpers\MessagesConstants;
@@ -13,7 +16,7 @@ use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ApplicationManager;
 use \Application\Manager\ContentManager;
 use \Application\Manager\RegionManager;
-use Application\Manager\UserManager;
+use \Application\Manager\UserManager;
 
 class PredictController extends AbstractActionController {
 
@@ -21,17 +24,12 @@ class PredictController extends AbstractActionController {
 
     public function indexAction() {
 
-        $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
-        $matchManager = MatchManager::getInstance($this->getServiceLocator());
-        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
-        $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
-
-        $currentMatch = array();
-        $ahead = $maxAhead = $liveMatches = 0;
-        $securityKey = $facebookShareCopy = $twitterShareCopy = '';
-        $matchReport = array();
-
         try {
+
+            $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
+            $matchManager = MatchManager::getInstance($this->getServiceLocator());
+            $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+            $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
 
             $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
 
@@ -40,7 +38,9 @@ class PredictController extends AbstractActionController {
             $user = $applicationManager->getCurrentUser();
             $season = $applicationManager->getCurrentSeason();
             if ($season == null)
-                throw new \Exception(MessagesConstants::INFO_OUT_OF_SEASON);
+                throw new OutOfSeasonException();
+
+            $facebookShareCopy = $twitterShareCopy = $securityKey = '';
 
             //Get setup form
             if (!$user->getIsActive()){
@@ -55,22 +55,20 @@ class PredictController extends AbstractActionController {
             $matchesLeft = $matchManager->getMatchesLeftInTheSeasonNumber(new \DateTime(), $season);
 
             if ($matchesLeft == 0)
-                throw new \Exception(MessagesConstants::ERROR_NO_MORE_MATCHES_IN_THE_SEASON);
+                throw new InfoException(MessagesConstants::ERROR_NO_MORE_MATCHES_IN_THE_SEASON);
 
             $liveMatches = $matchManager->getLiveMatchesNumber(new \DateTime(), $season);
 
             if ($ahead > $maxAhead + $liveMatches - 1)
-                return $this->notFoundAction();
-//                throw new \Exception(sprintf(MessagesConstants::ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED, $maxAhead));
+                throw new InfoException(sprintf(MessagesConstants::ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED, $maxAhead));
 
             if ($ahead > $matchesLeft + $liveMatches - 1)
                 return $this->notFoundAction();
-//                throw new \Exception(MessagesConstants::ERROR_MATCH_NOT_FOUND);
 
             $currentMatch = $predictionManager->getNearestMatchWithPrediction(new \DateTime(), $ahead, $user, $season);
 
             if ($currentMatch == null)
-                throw new \Exception(MessagesConstants::ERROR_MATCH_NOT_FOUND);
+                return $this->notFoundAction();
 
             //Match report
             $region = $applicationManager->getUserRegion($user);
@@ -154,33 +152,41 @@ class PredictController extends AbstractActionController {
                 $currentMatch['prediction']['homeScorers'] = $homeScorers;
                 $currentMatch['prediction']['awayScorers'] = $awayScorers;
                 unset($currentMatch['prediction']['predictionPlayers']);
+
+                // settings of share copy
+                $numberOfPredictions = $predictionManager->getUserPredictionsNumber($season, $user);
+                $shareManager = ShareManager::getInstance($this->getServiceLocator());
+                if ($numberOfPredictions == 1)
+                    list($facebookShareCopy, $twitterShareCopy) = $shareManager->getFirstPredictionCopy();
+                else
+                    list($facebookShareCopy, $twitterShareCopy) = $shareManager->getRandomEveryPredictionCopy();
             }
 
             if ($maxAhead > $matchesLeft)
                 $maxAhead = $matchesLeft;
 
-            $facebookShareCopy = 'Facebook';
-            $twitterShareCopy = 'Twitter';
+            $params = array(
+                'current' => $currentMatch,
+                'ahead' => $ahead,
+                'maxAhead' => $maxAhead,
+                'liveMatches' => $liveMatches,
+                'securityKey' => $securityKey,
+                'matchReport' => $matchReport,
+                'matchCode' => $this->encodeInt($currentMatch['id']),
+                'facebookShareCopy' => $facebookShareCopy,
+                'twitterShareCopy' => $twitterShareCopy,
+            );
+            if (!empty($setUpForm)){
+                $params['setUpForm'] = $setUpForm;
+            }
+            return $params;
 
+        } catch (InfoException $e) {
+            return $this->infoAction($e);
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
-
-        $params = array(
-            'current' => $currentMatch,
-            'ahead' => $ahead,
-            'maxAhead' => $maxAhead,
-            'liveMatches' => $liveMatches,
-            'securityKey' => $securityKey,
-            'matchReport' => $matchReport,
-            'matchCode' => $this->encodeInt($currentMatch['id']),
-            'facebookShareCopy' => $facebookShareCopy,
-            'twitterShareCopy' => $twitterShareCopy,
-        );
-        if (!empty($setUpForm)){
-            $params['setUpForm'] = $setUpForm;
-        }
-        return $params;
 
     }
 

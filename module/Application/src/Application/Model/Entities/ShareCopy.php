@@ -57,6 +57,16 @@ class ShareCopy extends BasicObject {
     protected $id;
 
     /**
+     * @var AchievementBlock
+     *
+     * @ORM\ManyToOne(targetEntity="AchievementBlock")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="achievement_block_id", referencedColumnName="id")
+     * })
+     */
+    private $achievementBlock;
+
+    /**
      * @param string $copy
      */
     public function setCopy($copy)
@@ -134,6 +144,22 @@ class ShareCopy extends BasicObject {
     public function getWeight()
     {
         return $this->weight;
+    }
+
+    /**
+     * @param \Application\Model\Entities\AchievementBlock $achievementBlock
+     */
+    public function setAchievementBlock($achievementBlock)
+    {
+        $this->achievementBlock = $achievementBlock;
+    }
+
+    /**
+     * @return \Application\Model\Entities\AchievementBlock
+     */
+    public function getAchievementBlock()
+    {
+        return $this->achievementBlock;
     }
 
 }

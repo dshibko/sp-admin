@@ -57,7 +57,7 @@ class ApplicationManager extends BasicManager {
                 if ($identity instanceof User)
                     $this->currentUser = $identity;
                 else if (is_string($identity))
-                    $this->currentUser = UserDAO::getInstance($this->getServiceLocator())->findOneByIdentity($identity);
+                    $this->currentUser = UserDAO::getInstance($this->getServiceLocator())->findOneByIdentity($identity, false, true);
         }
         return $this->currentUser;
     }

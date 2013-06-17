@@ -30,6 +30,10 @@ class MessagesConstants
     const SUCCESS_PLAYER_SAVED = 'Player was successfully saved';
     const SUCCESS_FIXTURE_SAVED = 'Fixture was successfully saved';
     const SUCCESS_ACCOUNT_SAVED = 'Account was successfully saved';
+    const SUCCESS_PRE_MATCH_SHARE_COPY_UPDATED = "Pre match share copy was updated successfully.";
+    const SUCCESS_POST_MATCH_SHARE_COPY_UPDATED = "Post match share copy was updated successfully.";
+    const SUCCESS_MINI_LEAGUE_DELETE = 'A mini league was deleted successfully';
+    const SUCCESS_SEASON_DELETE = 'A season was deleted successfully';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -53,6 +57,7 @@ class MessagesConstants
     const ERROR_INVALID_USER_ID = 'Invalid user id';
     const ERROR_CANNOT_FIND_USER = 'Cannot find user';
     const ERROR_INVALID_FORM_TYPE = 'Invalid form type';
+
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
@@ -72,7 +77,7 @@ class MessagesConstants
     const ERROR_APP_OPTA_CONFIG_NOT_FOUND = 'Application opta config was not found.';
     const ERROR_APP_UNKNOWN_EDITION = 'Unknown application edition configured.';
     const ERROR_APP_WRONG_OPTA_CONFIG = 'Wrong opta id configured. Must be an integer.';
-    const ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED = 'You can\'t predict on this match result. You can predict just on %s matches in the future.';
+    const ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED = 'You can\'t predict on this match. You can predict just on %s matches in the future.';
     const ERROR_NO_MORE_MATCHES_IN_THE_SEASON = 'No more matches will be played in this season. Please join us when next season starts.';
     const ERROR_NO_FINISHED_MATCHES_IN_THE_SEASON = 'No matches were played in this season.';
     const ERROR_SECURITY_CHECK_FAILED = 'Bad request. Security check failed.';
@@ -95,7 +100,8 @@ class MessagesConstants
     const SUCCESS_DELETE_ACCOUNT = 'You successfully delete your account';
 
     const INFO_LOGGED_OUT = "You've been logged out.";
-    const INFO_OUT_OF_SEASON = "There is no season in play.";
+    const INFO_OUT_OF_SEASON = "There is no season in play";
+    const INFO_OUT_OF_SEASON_DESCRIPTION = "The next one will start soon. You can visit our website later and start playing.";
     const INFO_YOU_PREDICTED_THE_DRAW = "You predicted the draw";
     const INFO_YOU_PREDICTED_THE_WINNER = "You predicted the winner would be %s";
     const INFO_YOU_PREDICTED_THE_SCORE = "You predicted the score would be %s";

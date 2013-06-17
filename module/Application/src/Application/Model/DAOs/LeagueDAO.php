@@ -43,7 +43,9 @@ class LeagueDAO extends AbstractDAO {
     public function getLeagueUsersScores($league) {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('place', 'place');
         $rsm->addScalarResult('date', 'date');
+        $rsm->addScalarResult('user_id', 'user_id');
         $rsm->addScalarResult('predictions_count', 'predictions_count');
         $rsm->addScalarResult('predictions_players_count', 'predictions_players_count');
         $rsm->addScalarResult('points', 'points');
@@ -53,7 +55,7 @@ class LeagueDAO extends AbstractDAO {
         $rsm->addScalarResult('correct_scorers_order', 'correct_scorers_order');
         $query = $this->getEntityManager()
             ->createNativeQuery('
-                SELECT lu.id, u.date,
+                SELECT lu.id, lu.place, u.date, u.id as user_id,
                 COUNT(p.id) as predictions_count,
                 IFNULL(SUM(pp.players), 0) as predictions_players_count,
                 SUM(p.points) as points,
@@ -159,7 +161,7 @@ class LeagueDAO extends AbstractDAO {
      */
     public function getTemporalLeagues($region, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('l.id, lr.displayName')
+        $qb->select('l, lr')
             ->from($this->getRepositoryName(), 'l')
             ->join('l.leagueRegions','lr', Expr\Join::WITH, 'lr.region = ' . $region->getId())
             ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::MINI_TYPE)

@@ -313,4 +313,28 @@ class PredictionManager extends BasicManager {
         return PredictionDAO::getInstance($this->getServiceLocator())->getCorrectScorersPredictionsCount($predictionIds, $scorersIds,$hydrate ,$skipCache);
     }
 
+    public function getUserPredictionsNumber($season, $user) {
+        return PredictionDAO::getInstance($this->getServiceLocator())->getUserPredictionsNumber($season, $user);
+    }
+
+    public function getUserCorrectScorerPredictionsNumber($season, $user, $beforeTime) {
+        $number = PredictionDAO::getInstance($this->getServiceLocator())->getUserCorrectScorerPredictionsNumber($season, $user, $beforeTime);
+        return $number == null ? 0 : $number;
+    }
+
+    public function hasUserCorrectResults($season, $user, $beforeTime) {
+        $number = PredictionDAO::getInstance($this->getServiceLocator())->hasUserCorrectResults($season, $user, $beforeTime);
+        return $number == null ? false : true;
+    }
+
+    public function getUserPrediction($matchId, $userId, $hydrate = false, $skipCache = false) {
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        return $predictionDAO->getUserPrediction($matchId, $userId, $hydrate, $skipCache);
+    }
+
+    public function getMatchPredictorsIds($matchId, $hydrate = false, $skipCache = false) {
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        return $predictionDAO->getMatchPredictorsIds($matchId, $hydrate, $skipCache);
+    }
+
 }

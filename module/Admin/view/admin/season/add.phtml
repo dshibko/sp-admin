@@ -22,7 +22,16 @@ $inputs = array($elements['displayName'], $elements['dates'], $elements['feederI
     <div class="controls">
         <div class="input-prepend">
             <?php if ($name == 'dates') : ?>
-                <span class="add-on"><i class="icon-calendar"></i></span><input type="text" class="m-wrap m-ctrl-medium date-range" name="<?=$name?>" value="<?=$input->getValue()?>"/>
+                <?php if ($this->editableDates) : ?>
+                    <div id="form-date-range" class="date-range btn">
+                        <i class="icon-calendar"></i>
+                        &nbsp;<span></span>
+                        <b class="caret"></b>
+                    </div>
+                    <input id="form-date-range-value" type="hidden" name="<?=$name?>" value="<?=$input->getValue()?>"/>
+                <?php else : ?>
+                    <span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium" disabled="disabled" type="text" value="<?=$input->getValue()?>"/>
+                <?php endif; ?>
             <?php else: ?>
                 <span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium" type="<?=$type?>" name="<?=$name?>" value="<?=$input->getValue()?>"/>
             <?php endif; ?>
@@ -56,20 +65,22 @@ $inputs = array($elements['displayName'], $elements['dates'], $elements['feederI
 <!-- END PAGE LEVEL SCRIPTS -->
 <script type="text/javascript">
     jQuery(document).ready(function() {
+        initDatePicker();
         App.init(); // initlayout and core plugins
-        var dates = $('input[name="dates"]');
-        var currentDates = dates.val();
-        var datePickerOptions = {format: 'dd/MM/yyyy'};
-        if (currentDates == '')
-            datePickerOptions.endDate = Date.today().add({days: 365});
-        else {
-            var startDate = $.trim(currentDates.split("-")[0]);
-            var endDate = $.trim(currentDates.split("-")[1]);
-            datePickerOptions.startDate = parseDate(startDate);
-            datePickerOptions.endDate = parseDate(endDate);
-        }
-        if (jQuery().daterangepicker)
-            $('.date-range').daterangepicker(datePickerOptions);
+//        var dates = $('input[name="dates"]');
+//        var currentDates = dates.val();
+//        var datePickerOptions = {format: 'dd/MM/yyyy'};
+//        if (currentDates == '')
+//            datePickerOptions.endDate = Date.today().add({days: 365});
+//        else {
+//            var startDate = $.trim(currentDates.split("-")[0]);
+//            var endDate = $.trim(currentDates.split("-")[1]);
+//            datePickerOptions.startDate = parseDate(startDate);
+//            datePickerOptions.endDate = parseDate(endDate);
+//        }
+//        if (jQuery().daterangepicker)
+//            $('.date-range').daterangepicker(datePickerOptions);
+
         $('.form-actions button[type=button]').click(function(e) {
             e.preventDefault();
             this.form.reset();
@@ -87,6 +98,71 @@ $inputs = array($elements['displayName'], $elements['dates'], $elements['feederI
     function parseDate(date) {
         var dateParts = date.split("/");
         return new Date(dateParts[2], (dateParts[1] - 1), dateParts[0]);
+    }
+
+    function initDatePicker() {
+        var dates = $('input[name="dates"]');
+        if (dates.size() > 0) {
+            var currentDates = dates.val();
+            var datePickerOptions = {format: 'dd/MM/yyyy'};
+            if (currentDates == '') {
+                var fromDate = Date.today().add({days: 1});
+                var toDate = Date.today().add({days: 31});
+            } else {
+                var fromDate = parseDate($.trim(currentDates.split("-")[0]));
+                var toDate = parseDate($.trim(currentDates.split("-")[1]));
+            }
+
+            var tomorrow = Date.today().add({days: 1});
+
+            $('.date-range').daterangepicker({
+                    ranges: {
+                        'Tomorrow': ['tomorrow', 'tomorrow'],
+                        'Next 7 Days': ['tomorrow', Date.today().add({
+                            days: 7
+                        })],
+                        'Next 30 Days': ['tomorrow', Date.today().add({
+                            days: 30
+                        })],
+                        'This Month': [tomorrow.clone().moveToFirstDayOfMonth(), tomorrow.clone().moveToLastDayOfMonth()],
+                        'Next Month': [tomorrow.clone().moveToFirstDayOfMonth().add({
+                            months: 1
+                        }).moveToFirstDayOfMonth(), Date.today().moveToFirstDayOfMonth().add({
+                            months: 1
+                        }).moveToLastDayOfMonth()]
+                    },
+                    opens: 'right',
+                    format: 'dd/MM/yyyy',
+                    separator: ' - ',
+                    startDate: fromDate,
+                    endDate: toDate,
+                    minDate: tomorrow.clone(),
+                    maxDate: tomorrow.clone().add({years: 2}),
+                    locale: {
+                        applyLabel: 'Submit',
+                        fromLabel: 'From',
+                        toLabel: 'To',
+                        customRangeLabel: 'Custom Range',
+                        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                        monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                        firstDay: 1
+                    },
+                    showWeekNumbers: true,
+                    buttonClasses: ['btn-danger']
+                },
+
+                function (start, end) {
+                    $('#form-date-range span').text(start.toString('dd MMMM, yyyy') + ' - ' + end.toString('dd MMMM, yyyy'));
+                    $('#form-date-range-value').val(start.toString('dd/MM/yyyy') + ' - ' + end.toString('dd/MM/yyyy'));
+                });
+
+            $('#form-date-range span').html(fromDate.toString('dd MMMM, yyyy') + " - " + toDate.toString('dd MMMM, yyyy'));
+            $('#form-date-range-value').val(fromDate.toString('dd/MM/yyyy') + ' - ' + toDate.toString('dd/MM/yyyy'));
+
+            if (!jQuery().datepicker || !jQuery().timepicker) {
+                return;
+            }
+        }
     }
 </script>
 <!-- END JAVASCRIPTS -->

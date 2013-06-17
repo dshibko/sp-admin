@@ -39,27 +39,27 @@ class UserController extends AbstractActionController
     }
     public function settingsAction()
     {
-        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-        if (!$user) {
-            $this->flashMessenger()->addErrorMessage(MessagesConstants::ACCESS_DENIED_NEED_LOGIN);
-            return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
-        }
-        //Change password
-        $passwordForm = new SettingsPasswordForm(self::FORM_TYPE_CHANGE_PASSWORD);
-        //Change email
-        $emailForm = new SettingsEmailForm(self::FORM_TYPE_CHANGE_EMAIL);
-        $emailForm->setInputFilter(new SettingsEmailFilter($this->getServiceLocator()));
-        //Display Name form
-        $displayNameForm = new SettingsDisplayNameForm(self::FORM_TYPE_CHANGE_DISPLAY_NAME, $this->getServiceLocator());
-        //Avatar form
-        $avatarForm = new SettingsAvatarForm(self::FORM_TYPE_CHANGE_AVATAR);
-        //Language Form
-        $languageForm = new SettingsLanguageForm(self::FORM_TYPE_CHANGE_LANGUAGE,$this->getServiceLocator());
-        //Email Settings
-        $emailSettingsForm = new SettingsEmailSettingsForm(self::FORM_TYPE_CHANGE_EMAIL_SETTINGS, $this->getServiceLocator());
-        //Public Profile
-        $publicProfileForm = new SettingsPublicProfileForm(self::FORM_TYPE_CHANGE_PUBLIC_PROFILE_OPTION, $this->getServiceLocator());
         try {
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            if (!$user) {
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ACCESS_DENIED_NEED_LOGIN);
+                return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
+            }
+            //Change password
+            $passwordForm = new SettingsPasswordForm(self::FORM_TYPE_CHANGE_PASSWORD);
+            //Change email
+            $emailForm = new SettingsEmailForm(self::FORM_TYPE_CHANGE_EMAIL);
+            $emailForm->setInputFilter(new SettingsEmailFilter($this->getServiceLocator()));
+            //Display Name form
+            $displayNameForm = new SettingsDisplayNameForm(self::FORM_TYPE_CHANGE_DISPLAY_NAME, $this->getServiceLocator());
+            //Avatar form
+            $avatarForm = new SettingsAvatarForm(self::FORM_TYPE_CHANGE_AVATAR);
+            //Language Form
+            $languageForm = new SettingsLanguageForm(self::FORM_TYPE_CHANGE_LANGUAGE,$this->getServiceLocator());
+            //Email Settings
+            $emailSettingsForm = new SettingsEmailSettingsForm(self::FORM_TYPE_CHANGE_EMAIL_SETTINGS, $this->getServiceLocator());
+            //Public Profile
+            $publicProfileForm = new SettingsPublicProfileForm(self::FORM_TYPE_CHANGE_PUBLIC_PROFILE_OPTION, $this->getServiceLocator());
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $type = $request->getPost('type');
@@ -157,31 +157,33 @@ class UserController extends AbstractActionController
                 }
             }
 
+            return array(
+                'user' => $user,
+                'passwordForm' => $passwordForm,
+                'emailForm' => $emailForm,
+                'displayNameForm' => $displayNameForm,
+                'avatarForm' => $avatarForm,
+                'languageForm' => $languageForm,
+                'emailSettingsForm' => $emailSettingsForm,
+                'publicProfileForm' => $publicProfileForm
+            );
+
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
 
-        return array(
-            'user' => $user,
-            'passwordForm' => $passwordForm,
-            'emailForm' => $emailForm,
-            'displayNameForm' => $displayNameForm,
-            'avatarForm' => $avatarForm,
-            'languageForm' => $languageForm,
-            'emailSettingsForm' => $emailSettingsForm,
-            'publicProfileForm' => $publicProfileForm
-        );
     }
 
     public function deleteAction()
     {
-        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-        if (!$user) {
-            $this->flashMessenger()->addErrorMessage(MessagesConstants::ACCESS_DENIED_NEED_LOGIN);
-            return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
-        }
-        $request = $this->getRequest();
         try {
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            if (!$user) {
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ACCESS_DENIED_NEED_LOGIN);
+                return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
+            }
+            $request = $this->getRequest();
             if ($request->isPost()) {
                 $user_id = (int)base64_decode($request->getPost('user_id'));
                 if ($user_id !== $user->getId()){
@@ -193,16 +195,16 @@ class UserController extends AbstractActionController
                     return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
                 }
             }
+            return array(
+                'user' => $user
+            );
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute(self::USER_SETTINGS_PAGE_ROUTE);
+            return $this->errorAction($e);
         }
 
-        return array(
-            'user' => $user
-        );
     }
-    //TODO check callback on live server
+
     public function deAuthoriseFacebookAppAction()
     {
         $response = $this->getResponse();
@@ -220,11 +222,13 @@ class UserController extends AbstractActionController
             UserManager::getInstance($this->getServiceLocator())->deleteAccount($user, false);
 
             $response->setContent('ok');
+            return $response;
         } catch (\FacebookApiException $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
-        return $response;
     }
 }

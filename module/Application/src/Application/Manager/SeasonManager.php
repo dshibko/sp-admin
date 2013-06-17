@@ -65,7 +65,7 @@ class SeasonManager extends BasicManager {
      * @param $id
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return mixed
+     * @return Season
      */
     public function getSeasonById($id, $hydrate = false, $skipCache = false) {
         return SeasonDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
@@ -163,8 +163,10 @@ class SeasonManager extends BasicManager {
         $seasonDAO = SeasonDAO::getInstance($this->getServiceLocator());
         $season = $seasonDAO->findOneById($id);
         $season->setDisplayName($displayName);
-        $season->setStartDate($startDate);
-        $season->setEndDate($endDate);
+        if ($startDate != null && $endDate != null) {
+            $season->setStartDate($startDate);
+            $season->setEndDate($endDate);
+        }
         $season->setFeederId($feederId);
 
         $seasonDAO->save($season, false, false);

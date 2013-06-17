@@ -15,6 +15,7 @@ class ImageManager extends BasicManager {
     const IMAGE_TYPE_AVATAR = 'avatar';
     const IMAGE_TYPE_LEAGUE = 'league';
     const IMAGE_TYPE_CONTENT = 'content';
+    const IMAGE_TYPE_AWARD = 'award';
     const IMAGE_TYPE_OTHER = 'other';
     const IMAGE_TYPE_CLUB = 'club';
     const IMAGE_TYPE_REPORT = 'report';
@@ -34,6 +35,9 @@ class ImageManager extends BasicManager {
 
     const PLAYER_FOREGROUND_WIDTH = 400;
     const PLAYER_FOREGROUND_HEIGHT = 250;
+
+    const ACHIEVEMENT_ICON_WIDTH = 199;
+    const ACHIEVEMENT_ICON_HEIGHT = 200;
 
     /**
      * @var ImageManager

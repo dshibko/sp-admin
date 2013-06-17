@@ -44,8 +44,8 @@ class PreMatchShareCopyController extends AbstractActionController {
                         }
                     }
                     $shareManager->flushAndClearCache();
+                    $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_PRE_MATCH_SHARE_COPY_UPDATED);
                     return $this->redirect()->toRoute(self::ADMIN_PRE_MATCH_SHARE_COPY_ROUTE);
-
                 } else
                     foreach ($preMatchReportCopyForm->getMessages() as $el => $messages)
                         $this->flashMessenger()->addErrorMessage($preMatchReportCopyForm->get($el)->getLabel() . ": " .

@@ -228,7 +228,7 @@ class MatchDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('m.id, m.status, m.startTime, m.timezone, m.isDoublePoints, m.hasLineUp, h.id as homeId, h.displayName as homeName,
             h.logoPath as homeLogo, a.id as awayId, a.displayName as awayName, a.logoPath as awayLogo,
-            c.displayName as competitionName, m.homeTeamFullTimeScore, m.awayTeamFullTimeScore')
+            c.displayName as competitionName, c.id as competitionId, m.homeTeamFullTimeScore, m.awayTeamFullTimeScore')
             ->from($this->getRepositoryName(), 'm')
             ->join('m.homeTeam', 'h')
             ->join('m.awayTeam', 'a')

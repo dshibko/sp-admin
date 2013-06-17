@@ -149,43 +149,53 @@ class FacebookManager extends BasicManager
         }
     }
 
-    public function getFacebookUserInfo(User $user)
+    public function getFacebookUserInfo($facebookAccessToken, $facebookId)
     { //TODO handle change password, de-authorize app, logs out facebook when getting data with access token
-        $this->getFacebookAPI()->setAccessToken($user->getFacebookAccessToken());
-        $info = $this->getFacebookAPI()->api('/' . $user->getFacebookId());
-        //Get user friends count
-        $userFriendsCountQuery = 'SELECT friend_count FROM user WHERE uid = ' . $user->getFacebookId();
-        $userFriendsCount = $this->getFacebookAPI()->api(array(
-            'method' => 'fql.query',
-            'query' => $userFriendsCountQuery
-        ));
-        // Get link to avatar
-        //TODO create method to get url by user
-        $avatarLink = self::GRAPH_API_URL . $user->getFacebookId() .'/picture?type=large';
-        //Get user likes
-        $userLikesQuery = 'SELECT name FROM page WHERE page_id IN (SELECT page_id FROM page_fan WHERE uid = '.$user->getFacebookId().')';
+        $data = array();
+        try {
+            $this->getFacebookAPI()->setAccessToken($facebookAccessToken);
+            $info = $this->getFacebookAPI()->api('/' . $facebookId);
+            //Get user friends count
+            $userFriendsCountQuery = 'SELECT friend_count FROM user WHERE uid = ' . $facebookId;
+            $userFriendsCount = $this->getFacebookAPI()->api(array(
+                'method' => 'fql.query',
+                'query' => $userFriendsCountQuery
+            ));
+            // Get link to avatar
+            //TODO create method to get url by user
+            $avatarLink = self::GRAPH_API_URL . $facebookId .'/picture?type=large';
+            //Get user likes
+            $userLikesQuery = 'SELECT name FROM page WHERE page_id IN (SELECT page_id FROM page_fan WHERE uid = '.$facebookId.')';
 
-        $userLikes = $this->getFacebookAPI()->api(array(
-            'method' => 'fql.query',
-            'query' => $userLikesQuery
-        ));
-        //$userCheckInsQuery = 'SELECT message FROM checkin WHERE author_uid = '.$user->getFacebookId();
+            $userLikesArr = $this->getFacebookAPI()->api(array(
+                'method' => 'fql.query',
+                'query' => $userLikesQuery
+            ));
+            $userLikes = array();
+            foreach ($userLikesArr as $userLike)
+                $userLikes []= $userLike['name'];
 
-        $checkIns = $likes = $this->getFacebookAPI()->api('/'.$user->getFacebookId().'/checkins');
-        $data = array(
-            'id' => isset($info['id']) ? $info['id'] : null,
-            'first_name' => isset($info['first_name']) ? $info['first_name'] : null,
-            'last_name' =>  isset($info['last_name']) ? $info['last_name'] : null,
-            'username' => isset($info['username']) ? $info['username'] : null,
-            'email' =>  isset($info['email']) ? $info['email'] : null,
-            'avatar_link' => $avatarLink,
-            'gender' => isset($info['gender']) ? $info['gender'] : null,
-            'date_of_birth' => isset($info['birthday']) ? $info['birthday'] : null,
-            'locale' => isset($info['locale']) ? $info['locale'] : null,
-            'number_of_friends' => !empty($userFriendsCount[0]['friend_count']) ? $userFriendsCount[0]['friend_count'] : 0,
-            'user_likes' =>  $userLikes,
-            'user_checkins' => $checkIns
-        );
+            $checkInsArr = $this->getFacebookAPI()->api('/'.$facebookId.'/checkins');
+            $checkIns = array();
+            foreach ($checkInsArr['data'] as $checkIn)
+                $checkIns []= $checkIn['id'];
+
+            $keysPrefix = 'facebook_';
+            $data = array(
+                $keysPrefix . 'id' => isset($info['id']) ? $info['id'] : null,
+                $keysPrefix . 'first_name' => isset($info['first_name']) ? $info['first_name'] : null,
+                $keysPrefix . 'last_name' =>  isset($info['last_name']) ? $info['last_name'] : null,
+                $keysPrefix . 'username' => isset($info['username']) ? $info['username'] : null,
+                $keysPrefix . 'email' =>  isset($info['email']) ? $info['email'] : null,
+                $keysPrefix . 'avatar_link' => $avatarLink,
+                $keysPrefix . 'gender' => isset($info['gender']) ? $info['gender'] : null,
+                $keysPrefix . 'date_of_birth' => isset($info['birthday']) ? $info['birthday'] : null,
+                $keysPrefix . 'locale' => isset($info['locale']) ? $info['locale'] : null,
+                $keysPrefix . 'number_of_friends' => !empty($userFriendsCount[0]['friend_count']) ? $userFriendsCount[0]['friend_count'] : 0,
+                $keysPrefix . 'user_likes' =>  $userLikes,
+                $keysPrefix . 'user_checkins' => $checkIns,
+            );
+        } catch (\Exception $e) {}
         return $data;
     }
 

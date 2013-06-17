@@ -751,3 +751,61 @@ VALUES (
 ), (
 'Twitter',  'PreMatchReport',  '',  '3'
 );
+
+CREATE TABLE `achievement_block` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`type` ENUM('First Correct Result', 'First Correct Scorer'),
+	`title` VARCHAR(255) NOT NULL,
+	`description` TEXT NOT NULL,
+	`icon_path` VARCHAR(255) NOT NULL,
+	`weight` INT NOT NULL,
+	PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB;
+
+INSERT INTO  `achievement_block` (
+`type` ,
+`title` ,
+`description` ,
+`icon_path` ,
+`weight`
+)
+VALUES (
+'First Correct Result',  'Well done!',  'You predicted correct result first time at the season!',  '/img/award/51a6086f44013.png',  '1'
+), (
+'First Correct Scorer',  'Well done!',  'You predicted correct scorer first time at the season!',  '/img/award/51a6086f44012.png',  '1'
+);
+
+ALTER TABLE  `share_copy` ADD  `achievement_block_id` INT NULL AFTER  `weight`;
+ALTER TABLE `share_copy` ADD FOREIGN KEY (achievement_block_id) REFERENCES `achievement_block`(id);
+
+INSERT INTO  `share_copy` (
+`engine` ,
+`target` ,
+`copy` ,
+`weight` ,
+`achievement_block_id`
+)
+VALUES (
+'Facebook',  'PostMatchReport',  'You predicted correct result first time at the season!',  '0',  '1'
+), (
+'Twitter',  'PostMatchReport',  'You predicted correct result first time at the season!',  '0',  '1'
+), (
+ 'Facebook',  'PostMatchReport',  'You predicted correct scorer first time at the season!',  '0',  '2'
+), (
+ 'Twitter',  'PostMatchReport',  'You predicted correct scorer first time at the season!',  '0',  '2'
+);
+
+-- oko 17.06
+
+CREATE TABLE `league_user_place` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`league_user_id` INT NOT NULL,
+	`match_id` INT NOT NULL,
+	`place` INT NOT NULL,
+	`previous_place` INT,
+	PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+ALTER TABLE `league_user_place` ADD FOREIGN KEY (league_user_id) REFERENCES `league_user`(id);
+ALTER TABLE `league_user_place` ADD FOREIGN KEY (match_id) REFERENCES `match`(id);

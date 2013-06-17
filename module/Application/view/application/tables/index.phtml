@@ -1,6 +1,6 @@
 <?php
     $title = $this->translate('League Tables');
-    $this->headTitle($title);
+    $this->headTitle($title . ' - ' . $this->seasonRegion->getDisplayName());
 ?>
 <div role="main" class="two-column-section clearfix">
     <div class="first-column league-tables">
@@ -109,40 +109,42 @@
                 </section>
             <?php endif; ?>
             <?php foreach($this->temporalLeagues as $temporalLeague) : ?>
-            <header class="clearfix">
-                <h2><?=$temporalLeague['displayName']?></h2>
-            </header>
-                <section>
-                    <div class="block">
-                        <table>
-                            <tr>
-                                <th colspan="3">
-                                    <h3><?=$this->translate('Top 4')?></h3>
-                                </th>
-                                <th><abbr title="Points"><?=$this->translate('pts')?></abbr></th>
-                            </tr>
-                            <?php foreach ($temporalLeague['leagueUsers'] as $user) : $isActive = $user['userId'] == $this->getCurrentUser()->getId(); ?>
-                            <tr<?=$isActive ? ' class="your-table-position"' : ''?>>
-                                <td class="position">
-                                    <?php if ($isActive) : ?><span><?php endif;?>
-                                    <?=$user['place'] !== null ? $user['place'] : '&ndash;'?>
-                                    <?php if ($isActive) : ?></span><?php endif;?>
-                                </td>
-                                <td class="player"><?=$user['displayName']?></td>
-                                <td class="nationality"><img src="<?=$user['flagImage']?>" itemprop="nationality" alt="<?=$user['country']?>"></td>
-                                <td class="points">
-                                    <?php if ($isActive) : ?><span><?php endif;?>
-                                    <?=$user['points'] !== null ? $user['points'] : '-'?>
-                                    <?php if ($isActive) : ?></span><?php endif;?>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </table>
-                    </div>
-                    <footer class="clearfix">
-                        <a href="<?=$this->url('full-table', array('table' => $temporalLeague['id']))?>" class="more-info"><?=$this->translate('View full table')?></a>
-                    </footer>
-                </section>
+                <?php if (!empty($temporalLeague['leagueUsers'])) : ?>
+                    <header class="clearfix">
+                        <h2><?=$temporalLeague['displayName']?></h2>
+                    </header>
+                    <section>
+                        <div class="block">
+                            <table>
+                                <tr>
+                                    <th colspan="3">
+                                        <h3><?=$this->translate('Top 4')?></h3>
+                                    </th>
+                                    <th><abbr title="Points"><?=$this->translate('pts')?></abbr></th>
+                                </tr>
+                                <?php foreach ($temporalLeague['leagueUsers'] as $user) : $isActive = $user['userId'] == $this->getCurrentUser()->getId(); ?>
+                                <tr<?=$isActive ? ' class="your-table-position"' : ''?>>
+                                    <td class="position">
+                                        <?php if ($isActive) : ?><span><?php endif;?>
+                                        <?=$user['place'] !== null ? $user['place'] : '&ndash;'?>
+                                        <?php if ($isActive) : ?></span><?php endif;?>
+                                    </td>
+                                    <td class="player"><?=$user['displayName']?></td>
+                                    <td class="nationality"><img src="<?=$user['flagImage']?>" itemprop="nationality" alt="<?=$user['country']?>"></td>
+                                    <td class="points">
+                                        <?php if ($isActive) : ?><span><?php endif;?>
+                                        <?=$user['points'] !== null ? $user['points'] : '-'?>
+                                        <?php if ($isActive) : ?></span><?php endif;?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <footer class="clearfix">
+                            <a href="<?=$this->url('full-table', array('table' => $temporalLeague['id']))?>" class="more-info"><?=$this->translate('View full table')?></a>
+                        </footer>
+                    </section>
+                <?php endif; ?>
             <?php endforeach;?>
         </div>
     </div>

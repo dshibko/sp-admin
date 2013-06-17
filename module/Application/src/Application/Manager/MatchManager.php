@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use \Application\Model\DAOs\LeagueUserPlaceDAO;
 use \Application\Model\Entities\Match;
 use \Application\Model\DAOs\MatchDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -33,15 +34,18 @@ class MatchManager extends BasicManager
     private static $instance;
 
     /**
-     * @param array $league
+     * @param array $leagueUser
+     * @param int $matchId
      * @return array
      */
-    private function getLeagueUserMovement(array $league)
+    private function getLeagueUserMovement(array $leagueUser, $matchId)
     {
+        $leagueUserPlaceDAO = LeagueUserPlaceDAO::getInstance($this->getServiceLocator());
+        $leagueUserPlace = $leagueUserPlaceDAO->getLeagueUserPlace($leagueUser['id'], $matchId, true);
         $movement = array();
-        if (isset($league['previousPlace']) && isset($league['place'])){
+        if (isset($leagueUserPlace['previousPlace']) && isset($leagueUserPlace['place'])){
 
-            $movementPlaces = $league['previousPlace'] - $league['place'];
+            $movementPlaces = $leagueUserPlace['previousPlace'] - $leagueUserPlace['place'];
             $direction = LeagueManager::USER_LEAGUE_MOVEMENT_SAME;
             if ($movementPlaces > 0){
                 $direction = LeagueManager::USER_LEAGUE_MOVEMENT_UP;
@@ -624,7 +628,7 @@ class MatchManager extends BasicManager
             $globalUserLeague = $leagueUserDAO->getLeagueUser($globalLeague->getId(), $user->getId(), true);
 
             if (!empty($globalUserLeague)){
-                $movement = $this->getLeagueUserMovement($globalUserLeague);
+                $movement = $this->getLeagueUserMovement($globalUserLeague, $matchId);
                 if (!empty($movement)){
                     $movement['name'] = LeagueManager::GLOBAL_LEAGUE_NAME;
                     $report['leaguesMovement']['global'] = $movement;
@@ -638,7 +642,7 @@ class MatchManager extends BasicManager
                 if(!is_null($regionalLeague)){
                     $regionalUserLeague = $leagueUserDAO->getLeagueUser($regionalLeague->getId(), $user->getId(), true);
                     if (!empty($regionalUserLeague)){
-                        $movement = $this->getLeagueUserMovement($regionalUserLeague);
+                        $movement = $this->getLeagueUserMovement($regionalUserLeague, $matchId);
                         if (!empty($movement)){
                             $movement['name'] = $region->getDisplayName();
                             $report['leaguesMovement']['regional'] = $movement;

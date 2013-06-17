@@ -2,6 +2,10 @@
 
 namespace Application\Controller;
 
+use \Neoco\Exception\OutOfSeasonException;
+use \Neoco\Exception\InfoException;
+use \Application\Model\Entities\AchievementBlock;
+use \Application\Manager\ShareManager;
 use \Application\Model\Entities\MatchGoal;
 use \Opta\Manager\ScoringManager;
 use \Application\Manager\MatchManager;
@@ -23,36 +27,36 @@ class ResultsController extends AbstractActionController {
 
     public function indexAction() {
 
-        $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
-        $matchManager = MatchManager::getInstance($this->getServiceLocator());
-        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
-        $translator = $this->getServiceLocator()->get('translator');
-        $matchReport = array();
-        $currentMatch = $breakpoints = array();
-        $back = $playedMatches = 0;
-        $firstView = false;
-
         try {
+            $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
+            $matchManager = MatchManager::getInstance($this->getServiceLocator());
+            $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+            $translator = $this->getServiceLocator()->get('translator');
+
+            $firstView = false;
+            $facebookShareCopy = $twitterShareCopy = '';
+            $achievementBlock = null;
+
             $back = (int) $this->params()->fromRoute('back', 0);
 
             $user = $applicationManager->getCurrentUser();
             $season = $applicationManager->getCurrentSeason();
 
             if ($season == null)
-                throw new \Exception($translator->translate(MessagesConstants::INFO_OUT_OF_SEASON));
+                throw new OutOfSeasonException();
 
             $playedMatches = $matchManager->getFinishedMatchesInTheSeasonNumber($user, $season);
 
             if ($playedMatches == 0)
-                throw new \Exception($translator->translate(MessagesConstants::ERROR_NO_FINISHED_MATCHES_IN_THE_SEASON));
+                throw new InfoException(MessagesConstants::ERROR_NO_FINISHED_MATCHES_IN_THE_SEASON);
 
             if ($back > $playedMatches - 1)
-                throw new \Exception($translator->translate(MessagesConstants::ERROR_MATCH_NOT_FOUND));
+                return $this->notFoundAction();
 
             $currentMatch = $predictionManager->getLastMatchWithPrediction($back, $user, $season);
 
             if ($currentMatch == null)
-                throw new \Exception($translator->translate(MessagesConstants::ERROR_MATCH_NOT_FOUND));
+                return $this->notFoundAction();
 
             //Match report
             $region = $applicationManager->getUserRegion($user);
@@ -152,19 +156,46 @@ class ResultsController extends AbstractActionController {
             $accuracyKey = sprintf($translator->translate(MessagesConstants::INFO_YOUR_ACCURACY), '<b>' . $accuracy . '%</b>');
             $breakpoints[$accuracyKey] = '';
 
+            $correctScorerPredictionsBeforeThisMatch = $predictionManager->getUserCorrectScorerPredictionsNumber($season, $user, $currentMatch['startTime']);
+            $firstCorrectScorer = ($correctScorerPredictionsBeforeThisMatch == 0 && $currentMatch['prediction']['correctScorers'] > 0);
+            $hasUserCorrectResultsBeforeThisMatch = $predictionManager->hasUserCorrectResults($season, $user, $currentMatch['startTime']);
+            $firstCorrectResult = ($hasUserCorrectResultsBeforeThisMatch === false && $currentMatch['prediction']['isCorrectResult']);
+
+            if ($firstCorrectResult && $firstCorrectScorer) {
+                $bool = rand(0, 1) == 1;
+                $firstCorrectResult = $bool;
+                $firstCorrectScorer = !$bool;
+            }
+
+            if ($firstCorrectResult || $firstCorrectScorer) {
+                $shareManager = ShareManager::getInstance($this->getServiceLocator());
+                if ($firstCorrectResult)
+                    $achievementBlock = $shareManager->getAchievementBlockByType(AchievementBlock::CORRECT_RESULT_TYPE);
+                if ($firstCorrectScorer)
+                    $achievementBlock = $shareManager->getAchievementBlockByType(AchievementBlock::CORRECT_SCORER_TYPE);
+                $facebookShareCopy = $achievementBlock->getFacebookShareCopy()->getCopy();
+                $twitterShareCopy = $achievementBlock->getTwitterShareCopy()->getCopy();
+            }
+
+            return array(
+                'current' => $currentMatch,
+                'back' => $back,
+                'matchReport' => $matchReport,
+                'maxBack' => $playedMatches - 1,
+                'breakpoints' => $breakpoints,
+                'firstResultView' => $firstView,
+                'matchCode' => $this->encodeInt($currentMatch['id']),
+                'achievementBlock' => $achievementBlock,
+                'facebookShareCopy' => $facebookShareCopy,
+                'twitterShareCopy' => $twitterShareCopy,
+            );
+
+        } catch (InfoException $e) {
+            return $this->infoAction($e);
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
-
-        return array(
-            'current' => $currentMatch,
-            'back' => $back,
-            'matchReport' => $matchReport,
-            'maxBack' => $playedMatches - 1,
-            'breakpoints' => $breakpoints,
-            'firstResultView' => $firstView,
-            'matchCode' => $this->encodeInt($currentMatch['id']),
-        );
 
     }
 
