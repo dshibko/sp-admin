@@ -24,7 +24,8 @@ class ContentController extends AbstractActionController
         }
 
         return array(
-            'content' => $content
+            'content' => $content,
+            'title' => 'Privacy'
         );
     }
 
@@ -39,7 +40,8 @@ class ContentController extends AbstractActionController
         }
 
         return array(
-            'content' => $content
+            'content' => $content,
+            'title' => 'Terms'
         );
     }
 
@@ -54,7 +56,8 @@ class ContentController extends AbstractActionController
         }
 
         return array(
-            'content' => $content
+            'content' => $content,
+            'title' =>'Cookies Privacy'
         );
     }
 
@@ -69,7 +72,8 @@ class ContentController extends AbstractActionController
         }
 
         return array(
-            'content' => $content
+            'content' => $content,
+            'title' => 'Contact Us'
         );
     }
     public function helpAction()
