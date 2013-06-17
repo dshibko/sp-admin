@@ -811,3 +811,6 @@ ALTER TABLE `league_user_place` ADD FOREIGN KEY (match_id) REFERENCES `match`(id
 -- okh 17.06
 
 INSERT INTO `settings` VALUES (null, 'help-and-support-email',''),(null, 'main-site-link','');
+INSERT INTO `settings` (`id`, `setting_key`, `setting_value`) VALUES (null, 'send-welcome-email', '0');
+
+

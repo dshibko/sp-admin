@@ -116,7 +116,16 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
                 'hint' => 'Source for "Visit our main site" link',
             ),
         ));
-
+        $this->add(array(
+            'name' => 'send-welcome-email',
+            'type'  => 'Zend\Form\Element\Checkbox',
+            'options' => array(
+                'label' => 'Send Welcome Email',
+            ),
+            'attributes' => array(
+                'required' => true,
+            ),
+        ));
         $this->add(array(
             'name' => 'submit',
             'type'  => 'submit',

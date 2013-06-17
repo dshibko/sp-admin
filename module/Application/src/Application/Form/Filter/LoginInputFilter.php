@@ -19,6 +19,14 @@ class LoginInputFilter extends InputFilter
             ),
             'validators' => array(
                 array(
+                    'name' => 'NotEmpty',
+                    'options' => array(
+                        'messages' => array(
+                            \Zend\Validator\NotEmpty::IS_EMPTY => 'Email cannot be empty',
+                        ),
+                    ),
+                ),
+                array(
                     'name'    => 'EmailAddress',
                     'options' => array(),
                 ),
@@ -28,6 +36,16 @@ class LoginInputFilter extends InputFilter
         $this->add($factory->createInput(array(
             'name'     => 'password',
             'required' => true,
+            'validators' => array(
+                array(
+                    'name' => 'NotEmpty',
+                    'options' => array(
+                        'messages' => array(
+                            \Zend\Validator\NotEmpty::IS_EMPTY => 'Password cannot be empty',
+                        ),
+                    ),
+                ),
+            )
         )));
 
         $this->add($factory->createInput(array(
