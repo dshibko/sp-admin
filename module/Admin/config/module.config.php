@@ -351,8 +351,7 @@ return array(
             'admin/partials/select' => __DIR__ . '/../view/partials/select.phtml',
             'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml',
             'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
-            'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
-            'admin/footer-pages/index' => __DIR__ . '/../view/admin/footer-pages/page.phtml',
+            'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml'
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',

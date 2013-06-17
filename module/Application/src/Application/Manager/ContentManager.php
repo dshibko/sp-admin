@@ -281,7 +281,7 @@ class ContentManager extends BasicManager {
      * @param $languageId
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return mixed
+     * @return \Application\Model\Entities\FooterPage
      */
     public function getFooterPageByTypeAndLanguage($type, $languageId, $hydrate = false, $skipCache = false)
     {
@@ -313,9 +313,29 @@ class ContentManager extends BasicManager {
         }
     }
 
+    /**
+     * @param $type
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
     public function getFooterPageByType($type, $hydrate = false, $skipCache = false)
     {
         return FooterPageDAO::getInstance($this->getServiceLocator())->getFooterPageByType($type, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param $pageType
+     * @return string
+     */
+    public function getFooterPageContent($pageType)
+    {
+        $userManager = UserManager::getInstance($this->getServiceLocator());
+        $contentManager = ContentManager::getInstance($this->getServiceLocator());
+        $language = $userManager->getCurrentUserLanguage();
+        $footerPage = $contentManager->getFooterPageByTypeAndLanguage($pageType, $language->getId());
+        return $footerPage->getContent();
+
     }
 
 }

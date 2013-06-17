@@ -750,3 +750,7 @@ VALUES (
 ), (
 'Twitter',  'PreMatchReport',  '',  '3'
 );
+
+-- okh 17.06
+
+INSERT INTO `settings` VALUES (null, 'help-and-support-email',''),(null, 'main-site-link','');

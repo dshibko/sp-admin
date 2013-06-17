@@ -5,30 +5,72 @@ namespace Application\Controller;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ExceptionManager;
 use \Application\Manager\ApplicationManager;
-use \Application\Model\Helpers\MessagesConstants;
 use \Application\Form\FeedbackForm;
 use Zend\View\Model\ViewModel;
+use \Application\Manager\UserManager;
+use \Application\Manager\ContentManager;
+use \Application\Model\Entities\FooterPage;
 
 class ContentController extends AbstractActionController
 {
     public function privacyAction()
     {
-        return array();
+        $content = '';
+        $contentManager = ContentManager::getInstance($this->getServiceLocator());
+        try{
+            $content = $contentManager->getFooterPageContent(FooterPage::PRIVACY_PAGE);
+        }catch(\Exception $e){
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e,$this);
+        }
+
+        return array(
+            'content' => $content
+        );
     }
 
     public function termsAction()
     {
-        return array();
+        $content = '';
+        $contentManager = ContentManager::getInstance($this->getServiceLocator());
+        try{
+            $content = $contentManager->getFooterPageContent(FooterPage::TERMS_PAGE);
+        }catch(\Exception $e){
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e,$this);
+        }
+
+        return array(
+            'content' => $content
+        );
     }
 
     public function cookiesAction()
     {
-        return array();
+        $content = '';
+        $contentManager = ContentManager::getInstance($this->getServiceLocator());
+        try{
+            $content = $contentManager->getFooterPageContent(FooterPage::COOKIES_PAGE);
+        }catch(\Exception $e){
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e,$this);
+        }
+
+        return array(
+            'content' => $content
+        );
     }
 
     public function contactAction()
     {
-        return array();
+        $content = '';
+        $contentManager = ContentManager::getInstance($this->getServiceLocator());
+        try{
+            $content = $contentManager->getFooterPageContent(FooterPage::CONTACT_US_PAGE);
+        }catch(\Exception $e){
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e,$this);
+        }
+
+        return array(
+            'content' => $content
+        );
     }
     public function helpAction()
     {
