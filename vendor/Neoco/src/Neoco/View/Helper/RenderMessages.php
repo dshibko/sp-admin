@@ -29,7 +29,8 @@ class RenderMessages extends AbstractHelper
      */
     public function __invoke($admin = false, $current = false)
     {
-        $html = $this->getHTMLPrefix($admin);
+        $prefix = $this->getHTMLPrefix($admin);
+        $html = '';
         $flashMessenger = new FlashMessenger();
         foreach ($current ? $flashMessenger->getCurrentErrorMessages() : $flashMessenger->getErrorMessages() as $message)
             $html .= $admin ? $this->renderAdminMessage($message, 'alert-error') : $this->renderAppMessage($message);
@@ -37,7 +38,8 @@ class RenderMessages extends AbstractHelper
             $html .= $admin ? $this->renderAdminMessage($message, 'alert-success') : $this->renderAppMessage($message);
         foreach ($current ? $flashMessenger->getCurrentMessages() : $flashMessenger->getMessages() as $message)
             $html .= $admin ? $this->renderAdminMessage($message, 'alert-info') : $this->renderAppMessage($message);
-        return $html . $this->getHTMLPostfix($admin);
+        $postfix = $this->getHTMLPostfix($admin);
+        return !empty($html) ? ($prefix . $html . $postfix) : '';
     }
 
     private function renderAdminMessage($message, $class) {

@@ -5,14 +5,6 @@ $this->headTitle($title);
 <div role="main" class="two-column-section clearfix">
     <div class="first-column registration">
     <h1><?php echo $this->escapeHtml($title);?></h1>
-    <?php
-        $errors = $this->renderMessages();
-    ?>
-    <?php if (!empty($errors)):?>
-        <div class="form-errors">
-            <p><?php echo $errors;?></p>
-        </div>
-    <?php endif;?>
     <?php if (!$this->user->getFacebookId()):?>
     <aside class="connect-facebook clearfix">
         <div>
@@ -21,6 +13,14 @@ $this->headTitle($title);
         </div>
         <?php echo $this->renderFacebookButton($this->translate('Connect with Facebook'));?>
     </aside>
+    <?php
+        $errors = $this->renderMessages();
+    ?>
+    <?php if (!empty($errors)):?>
+        <div class="form-errors">
+            <p><?php echo $errors;?></p>
+        </div>
+    <?php endif;?>
     <!--PASSWORD FORM START-->
         <?php
             $this->passwordForm->prepare();
