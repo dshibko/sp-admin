@@ -1,0 +1,51 @@
+.privacy {
+  .privacy-content {
+    padding: 0 4em 4em;
+    word-wrap: break-word;
+
+    p {
+      margin: 0 0 1.2em;
+      font: normal 1.6em/1.3 "ProximaNova-Reg", Helvetica, Arial;
+    }
+
+    li {
+      margin: 0;
+      list-style: none;
+      h2 {
+        margin: 1.4em 0 0.3em;
+        font: normal 1.4em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+      }
+      p {
+        font: normal 1em/1.2 "ProximaNova-Reg", Helvetica, Arial;
+      }
+      ul {
+        li {
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 320px) and (max-width:  767px) {
+  .privacy {
+    .privacy-content{
+        padding: 0em 2em 3em;
+    }
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+.privacy {
+    .privacy-content.user-content {
+        p {
+          font: normal 1.9em/1.4 "ProximaNova-Reg", Helvetica, Arial;
+        }
+
+        li {
+          p {
+            font: normal 1.1em/1.4 "ProximaNova-Reg", Helvetica, Arial;
+          }
+      }
+    }
+  }
+}
