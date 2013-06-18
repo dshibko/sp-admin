@@ -100,6 +100,7 @@ class MessagesConstants
     const SUCCESS_NEW_EMAIL_SETTINGS_SAVED = 'New email settings successfully saved';
     const SUCCESS_PUBLIC_PROFILE_OPTION_SAVED = 'Public profile option successfully saved';
     const SUCCESS_DELETE_ACCOUNT = 'You successfully delete your account';
+    const SUCCESS_HELP_AND_SUPPORT_MESSAGE_SENT = 'Your message successfully sent';
 
     const INFO_LOGGED_OUT = "You've been logged out.";
     const INFO_OUT_OF_SEASON = "There is no season in play";

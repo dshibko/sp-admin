@@ -62,7 +62,7 @@ class SettingsEmailFilter extends InputFilter
                         'table' => 'users',
                         'fields' => array('email'),
                         'messages' => array(
-                            'objectFound' => 'Email already taken'
+                            'objectFound' => 'Already taken'
                         )
                     )
                 ),

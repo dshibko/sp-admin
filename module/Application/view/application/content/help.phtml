@@ -1,23 +1,83 @@
-<?php $this->headTitle($this->translate('Help & Support'));?>
+
 <?php
-$form = $this->form;
-$form->prepare();
-$form->setAttribute('action', $this->url('help'));
+$title = $this->translate($this->title);
+$this->headTitle($title );
 ?>
-<?php $errors = $this->renderMessages();?>
-<?php if ($errors):?>
-<div class="form-errors">
-    <?php if (!empty($errors)):?>
-    <p><?php echo $errors;?></p>
+<div role="main" class="<?php echo ((!$this->getCurrentUser()) ? 'one-column-section' : 'two-column-section')?> clearfix">
+    <div class="first-column registration privacy">
+        <h1><?php echo $title;?></h1>
+        <div class="user-content privacy-content">
+            <?php echo $this->content;?>
+        </div>
+        <p class="intro"><?php echo $this->translate('We would like to hear from you - any comments or suggestions or any questions you may have. Just use the form below.');?></p>
+        <?php
+        $form = $this->form;
+        $form->prepare();
+        $form->setAttribute('action', $this->url('help'));
+        ?>
+        <?php $errors = $this->renderMessages();?>
+        <?php if (!empty($errors)):?>
+            <div class="form-errors">
+                <?php if (!empty($errors)):?>
+                    <p><?php echo $errors;?></p>
+                <?php endif;?>
+            </div>
+        <?php endif;?>
+        <?php echo $this->form()->openTag($form);?>
+        <section>
+            <div>
+                <h2><?php echo $this->translate('Enter Your Contact Info and Message');?></h2>
+            </div>
+            <div>
+                <?php echo $this->formLabel($form->get('name'));?>
+                <?php echo $this->formElement($form->get('name'));?>
+            </div>
+            <div>
+                <?php echo $this->formLabel($form->get('email'));?>
+                <?php echo $this->formElement($form->get('email'));?>
+            </div>
+            <div>
+                <?php echo $this->formLabel($form->get('query'));?>
+                <?php echo $this->formElement($form->get('query'));?>
+            </div>
+        </section>
+        <section class="buttons-block clearfix">
+            <div>
+                <button type="submit" name="submit"><?php echo $this->translate('Send');?></button>
+                <button id="reset" type="button"><?php echo $this->translate('Reset');?></button>
+            </div>
+        </section>
+        <?php echo $this->form()->closeTag();?>
+    </div>
+    <?php if ($this->getCurrentUser()):?>
+        <?php echo $this->partial('partials/right-column');?>
     <?php endif;?>
 </div>
-<?php endif;?>
-<?php echo $this->form()->openTag($form);?>
-<?php echo $this->formLabel($form->get('name'));?>
-<?php echo $this->formElement($form->get('name'));?>
-<?php echo $this->formLabel($form->get('email'));?>
-<?php echo $this->formElement($form->get('email'));?>
-<?php echo $this->formLabel($form->get('query'));?>
-<?php echo $this->formElement($form->get('query'));?>
-<?php echo $this->formElement($form->get('submit'));?>
-<?php echo $this->form()->closeTag();?>
+<script type="text/javascript">
+   var turnOffCustomStylePoint = 767;
+
+    var supportOptions = {
+
+        responsiveAt: turnOffCustomStylePoint,
+
+        onFail: function() {},
+        onSuccess: function(){},
+        inputs: {
+            'name': {
+                filters: 'required'
+            },
+            'email': {
+                filters: 'required email max',
+                data: { max: 50 }
+            },
+            'query': {
+                filters: 'required'
+            }
+
+        }
+    };
+
+
+    var $support = $('#feedback').idealforms(supportOptions).data('idealforms');
+    $('#reset').click(function(){ $support.reset().fresh().focusFirst() });
+</script>

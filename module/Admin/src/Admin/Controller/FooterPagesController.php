@@ -14,26 +14,15 @@ class FooterPagesController extends AbstractActionController
 {
     const ADMIN_FOOTER_PAGES_ROUTE = 'admin-content-footer-pages';
 
-    private $allowedPageTypes = array(FooterPage::TERMS_PAGE, FooterPage::CONTACT_US_PAGE, FooterPage::COOKIES_PAGE, FooterPage::PRIVACY_PAGE);
+    private $footerPages = array(
+        FooterPage::TERMS_PAGE => 'Terms Page',
+        FooterPage::CONTACT_US_PAGE => 'Contact Us Page',
+        FooterPage::COOKIES_PAGE => 'Cookies Privacy Page',
+        FooterPage::PRIVACY_PAGE => 'Privacy Page',
+        FooterPage::HELP_AND_SUPPORT => 'Help & Support Page'
+    );
+
     private $defaultRouteParams = array('pageType'=> FooterPage::TERMS_PAGE, 'action'=>'page');
-
-    /**
-     * @param array $allowedPageTypes
-     * @return $this
-     */
-    public function setAllowedPageTypes($allowedPageTypes)
-    {
-        $this->allowedPageTypes = $allowedPageTypes;
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getAllowedPageTypes()
-    {
-        return $this->allowedPageTypes;
-    }
 
     public function indexAction()
     {
@@ -46,7 +35,7 @@ class FooterPagesController extends AbstractActionController
         if (empty($pageType)){
             return $this->redirect()->toUrl($this->url()->fromRoute(self::ADMIN_FOOTER_PAGES_ROUTE, $this->defaultRouteParams));
         }
-        if (!in_array($pageType, $this->getAllowedPageTypes())){
+        if (!isset($this->footerPages[$pageType])){
             $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_UNDEFINED_FOOTER_PAGE_TYPE);
             return $this->redirect()->toUrl($this->url()->fromRoute(self::ADMIN_FOOTER_PAGES_ROUTE, $this->defaultRouteParams));
         }
@@ -57,25 +46,8 @@ class FooterPagesController extends AbstractActionController
             'pageType' => $pageType,
             'action' => 'page'
         );
-        $pageTitle = '';
-        switch ($pageType){
-            case FooterPage::TERMS_PAGE : {
-                $pageTitle = 'Terms Page';
-                break;
-            }
-            case FooterPage::PRIVACY_PAGE : {
-                $pageTitle = 'Privacy Page';
-                break;
-            }
-            case FooterPage::CONTACT_US_PAGE : {
-                $pageTitle = 'Contact Us Page';
-                break;
-            }
-            case FooterPage::COOKIES_PAGE : {
-                $pageTitle = 'Cookies policy page';
-                break;
-            }
-        }
+        $pageTitle = $this->footerPages[$pageType];
+
         try {
             $footerPageLanguageFieldsets = $lanaguageManager->getLanguagesFieldsets('\Admin\Form\FooterPageFieldset');
             $form = new FooterPageForm($footerPageLanguageFieldsets);

@@ -211,18 +211,15 @@ class UserManager extends BasicManager {
     }
 
     /**
-     *   Proccess change password form on settings page
-     *   @param  \Application\Form\SettingsPasswordForm $form
-     *   @return bool
-    */
+     * Process change password form on settings page
+     * @param \Application\Form\SettingsPasswordForm $form
+     * @return bool
+     */
     public function processChangePasswordForm(\Application\Form\SettingsPasswordForm $form)
     {
         if ($form->isValid()){
             $data = $form->getData();
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-            if ($user->getPassword() !== md5($data['password'])){
-                throw new \Exception(MessagesConstants::ERROR_INVALID_OLD_PASSWORD);
-            }
             $user->setPassword(md5($data['new_password']));
             UserDAO::getInstance($this->getServiceLocator())->save($user);
             return true;

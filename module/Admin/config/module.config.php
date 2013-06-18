@@ -623,6 +623,15 @@ return array(
                                         'params' => array(
                                             'pageType' => \Application\Model\Entities\FooterPage::COOKIES_PAGE
                                         )
+                                    ),
+                                    array(
+                                        'title' => 'Help and Support',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-footer-pages',
+                                        'action' => 'page',
+                                        'params' => array(
+                                            'pageType' => \Application\Model\Entities\FooterPage::HELP_AND_SUPPORT
+                                        )
                                     )
                                 )
                             ),

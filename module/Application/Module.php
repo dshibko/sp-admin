@@ -276,6 +276,15 @@ class Module
                     $badWordValidator = new \Neoco\Validator\BadWordValidator();
                     $badWordValidator->setServiceLocator($sm);
                     return $badWordValidator;
+                },
+                'confirmPasswordValidator' => function($sm){
+                    $confirmPasswordValidator = new \Neoco\Validator\ConfirmPasswordValidator();
+                    $user = ApplicationManager::getInstance($sm)->getCurrentUser();
+                    if (!is_null($user)){
+                        $confirmPasswordValidator->setPassword($user->getPassword());
+                        return $confirmPasswordValidator;
+                    }
+                    return $confirmPasswordValidator;
                 }
             ),
         );

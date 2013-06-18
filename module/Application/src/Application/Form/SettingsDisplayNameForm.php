@@ -4,7 +4,6 @@ namespace Application\Form;
 use Zend\Form\Form;
 use \Application\Form\Filter\SettingsDisplayNameFilter;
 use Application\Form\Filter\RegistrationFilter;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Manager\ApplicationManager;
 

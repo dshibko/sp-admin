@@ -46,7 +46,7 @@ class UserController extends AbstractActionController
                 return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
             }
             //Change password
-            $passwordForm = new SettingsPasswordForm(self::FORM_TYPE_CHANGE_PASSWORD);
+            $passwordForm = new SettingsPasswordForm(self::FORM_TYPE_CHANGE_PASSWORD, $this->getServiceLocator());
             //Change email
             $emailForm = new SettingsEmailForm(self::FORM_TYPE_CHANGE_EMAIL);
             $emailForm->setInputFilter(new SettingsEmailFilter($this->getServiceLocator()));

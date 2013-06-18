@@ -4,9 +4,22 @@ namespace Application\Form;
 use Zend\Form\Form;
 use \Application\Form\Filter\SettingsPasswordFilter;
 use Application\Form\Filter\RegistrationFilter;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class SettingsPasswordForm extends Form {
     protected $type;
+    protected $serviceLocator;
+
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+    public function setServiceLocator (ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+        return $this;
+    }
 
     public function setType($type)
     {
@@ -18,10 +31,10 @@ class SettingsPasswordForm extends Form {
     {
         return $this->type;
     }
-    public function __construct($type = 'change_password') {
+    public function __construct($type = 'change_password', ServiceLocatorInterface $serviceLocator) {
         parent::__construct('reset');
 
-        $this->setInputFilter(new SettingsPasswordFilter());
+        $this->setInputFilter(new SettingsPasswordFilter($serviceLocator));
         $this->setAttribute('method', 'post')->setAttribute('id', 'settings-change-password');
         $this->setType($type);
 
