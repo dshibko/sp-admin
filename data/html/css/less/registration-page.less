@@ -275,7 +275,19 @@ aside.connect-facebook {
         .avatar span:first-child, .avatar label {
 
         }
-        .block-input-file, .avatar span.desktopLabel {
+        .block-input-file {
+            display: none;
+
+            &.change-avatar {
+                display: block;
+                left: 0;
+                margin-left: 3.5em;
+                label, .ideal-field {
+                    display: none;
+                }
+            }
+        }
+        .avatar span.desktopLabel {
             display: none;
         }
         .avatar .ideal-radio {
@@ -380,12 +392,26 @@ aside.connect-facebook {
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-    aside.connect-facebook {
-        div {
-            max-width: 60em;
+    .registration {
+        aside.connect-facebook {
+            div {
+                max-width: 60em;
+            }
         }
-    }
-    .block-input-file, .avatar span.desktopLabel {
-        display: none;
+        .block-input-file {
+            display: none;
+
+            &.change-avatar {
+                display: block;
+                left: 0;
+                margin-left: 3.5em;
+                label, .ideal-field {
+                    display: none;
+                }
+            }
+        }
+        .avatar span.desktopLabel {
+            display: none;
+        }
     }
 }
