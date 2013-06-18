@@ -48,6 +48,8 @@ class AuthController extends AbstractActionController
                     if ($result->isValid()) {
                         $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
                     }
+                }else{
+                    $this->formErrors($form, $this);
                 }
             }
             $viewModel = new ViewModel(array(
@@ -83,14 +85,16 @@ class AuthController extends AbstractActionController
                         //Check for facebook user
                         if (!$user->getFacebookId()) {
                             AuthenticationManager::getInstance($this->getServiceLocator())->sendPasswordResetEmail($user, true);
-                            $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_USER_RECOVERY_LINK_SENT);
+                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_USER_RECOVERY_LINK_SENT);
                         } else {
                             $this->flashMessenger()->addErrorMessage(MessagesConstants::FACEBOOK_USER_PASSWORD_RECOVERY);
                         }
                         return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
                     } else {
-                        $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_EMAIL_NOT_REGISTERED);
+                        $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_EMAIL_NOT_REGISTERED);
                     }
+                }else{
+                    $this->formErrors($form, $this);
                 }
             }
 
@@ -151,19 +155,21 @@ class AuthController extends AbstractActionController
                         if ($form->isValid()){
                             $data = $form->getData();
                             AuthenticationManager::getInstance($this->getServiceLocator())->saveNewPassword($recovery, $data['password']);
-                            $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_PASSWORD_CHANGED);
+                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_PASSWORD_CHANGED);
                             return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
+                        }else{
+                            $this->formErrors($form, $this);
                         }
                     } else {
-                        $this->flashmessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CAN_CHANGE_PASSWORD);
+                        $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CAN_CHANGE_PASSWORD);
                     }
                 }else{//Recovery hash expired
                     $displayLinkToResetPage = true;
-                    $this->flashmessenger()->addErrorMessage(MessagesConstants::EXPIRED_RECOVERY_PASSWORD_HASH);
+                    $this->flashMessenger()->addErrorMessage(MessagesConstants::EXPIRED_RECOVERY_PASSWORD_HASH);
                 }
 
             } else {
-                $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_RECOVERY_LINK_INVALID);
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_RECOVERY_LINK_INVALID);
             }
 
             $viewModel = new ViewModel(array(

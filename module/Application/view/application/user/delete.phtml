@@ -7,12 +7,7 @@ $this->headTitle($title);
         <h1><?php echo $title;?></h1>
         <article class="user-content">
             <form action="<?php echo $this->url('delete-account');?>" method="post" id="delete-account">
-                <?php $errors = $this->renderMessages();?>
-                <?php if (!empty($errors)):?>
-                    <div class="form-errors">
-                        <p><?php echo $errors;?></p>
-                    </div>
-                <?php endif;?>
+               <?php echo $this->partial('partials/flash-messages');?>
                 <p><?php echo $this->translate('Are you sure you want to delete your account?');?></p>
                 <p class="note"><?php echo $this->translate('<strong>Note:</strong> all data associated with your account will be lost and non-recoverable.');?></p>
                 <p class="buttons-block">

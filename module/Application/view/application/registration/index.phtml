@@ -20,14 +20,7 @@ $this->headTitle($title);
         $form->prepare();
         $form->setAttribute('action', $this->url('registration', array('action' => 'index')));
         echo $this->form()->openTag($form);?>
-        <?php $errors = $this->renderMessages();?>
-        <?php if ($form->getInputFilter()->getMessages() || $errors):?>
-            <div class="form-errors">
-                <?php if (!empty($errors)):?>
-                    <p><?php echo $errors;?></p>
-                <?php endif;?>
-            </div>
-        <?php endif;?>
+        <?php echo $this->partial('partials/flash-messages');?>
         <section>
             <div>
                 <h2><?php echo $this->translate('Enter Personal Info');?></h2>

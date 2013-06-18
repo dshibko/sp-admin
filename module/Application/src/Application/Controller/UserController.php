@@ -30,13 +30,6 @@ class UserController extends AbstractActionController
     const USER_SETTINGS_PAGE_ROUTE = 'user-settings';
     const LOGIN_PAGE_ROUTE = 'login';
 
-    //TODO Move to AbstractActionController
-    private function addErrors(\Zend\Form\Form $form)
-    {
-        foreach ($form->getMessages() as $el => $messages) {
-            $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages) . "<br />");
-        }
-    }
     public function settingsAction()
     {
         try {
@@ -72,7 +65,7 @@ class UserController extends AbstractActionController
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_PASSWORD_SAVED);
                             $success = true;
                         }else{
-                             $this->addErrors($passwordForm);
+                             $this->formErrors($passwordForm, $this);
                         }
                         break;
                     }
@@ -83,7 +76,7 @@ class UserController extends AbstractActionController
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_EMAIL_SAVED);
                             $success = true;
                         }else{
-                            $this->addErrors($emailForm);
+                            $this->formErrors($emailForm, $this);
                         }
                         break;
                     }
@@ -94,7 +87,7 @@ class UserController extends AbstractActionController
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_DISPLAY_NAME_SAVED);
                             $success = true;
                         }else{
-                            $this->addErrors($displayNameForm);
+                            $this->formErrors($displayNameForm, $this);
                         }
                         break;
                     }
@@ -112,7 +105,7 @@ class UserController extends AbstractActionController
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_AVATAR_SAVED);
                             $success = true;
                         }else{
-                            $this->addErrors($avatarForm);
+                            $this->formErrors($avatarForm, $this);
                         }
                         break;
                     }
@@ -124,7 +117,7 @@ class UserController extends AbstractActionController
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_LANGUAGE_SAVED);
                             $success = true;
                         }else{
-                            $this->addErrors($languageForm);
+                            $this->formErrors($languageForm, $this);
                         }
                         break;
                     }
@@ -144,7 +137,7 @@ class UserController extends AbstractActionController
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_PUBLIC_PROFILE_OPTION_SAVED);
                             $success = true;
                         }else{
-                            $this->addErrors($publicProfileForm);
+                            $this->formErrors($publicProfileForm, $this);
                         }
                         break;
                     }
