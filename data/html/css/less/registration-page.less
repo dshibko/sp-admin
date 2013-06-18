@@ -16,8 +16,13 @@
     .ideal-wrap.ideal-full-width, .buttons-block .ideal-wrap {
         left: 0;
         margin-left: 0;
+        max-width: 100%;
     }
     .ideal-form h2 {
+        position: relative;
+        float: left;
+        left: 50%;
+        margin-left: -225px;
         margin-bottom: 0.5em;
         padding: 0;
         color: @blue;
@@ -244,6 +249,13 @@ aside.connect-facebook {
     }
 }
 
+p.intro {
+     padding: 2em 3.0em 2em 2.6em;
+     font: normal 1.5em/1.4 "ProximaNova-Reg", Helvetica, Arial;
+
+    .vertical-gradient(#ebf0f7, #d6e0ef);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf0f7', endColorstr='#d6e0ef',GradientType=0 );
+}
 
 
 
@@ -259,6 +271,11 @@ aside.connect-facebook {
             // left: 0;
             // float: none;
             // margin: 1.3em auto 0;
+        }
+        .ideal-form h2 {
+            float: none;
+            left: 0;
+            margin-left: 0;
         }
         .keeplogin {
             > label:first-child {
@@ -311,6 +328,7 @@ aside.connect-facebook {
                 button {
                     float: left;
                     margin: 0 1em 0 0;
+                    font-size: 1.7em;
                 }
             }
             &.signIn-buttons-block {
@@ -356,6 +374,9 @@ aside.connect-facebook {
             }
         }
     }
+    p.intro {
+        padding: 1em;
+    }
     
 }
 @media screen and (min-width: 768px) and (orientation: portrait) {
@@ -396,6 +417,17 @@ aside.connect-facebook {
         aside.connect-facebook {
             div {
                 max-width: 60em;
+            }
+        }
+        p.intro {
+             padding: 2em 2em 2em 2em;
+             font: normal 1.8em/1.4 "ProximaNova-Reg", Helvetica, Arial;
+        }
+        .buttons-block {
+            div {
+                button {
+                    font: normal 1.7em/1 "ProximaNova-Reg", Helvetica, Arial;
+                }
             }
         }
         .block-input-file {
