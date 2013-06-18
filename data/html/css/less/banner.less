@@ -63,6 +63,46 @@
 
 
 
+// @media only screen and (min-width: 320px) and (max-width:  767px) {
+//     .banner {
+//         position: relative;
+
+//         figcaption {
+//             top: 9.5em;
+//             right: 0;
+//             left: 0;
+//             max-width: 100%;
+//             width: 92%;
+//             margin: 0 4%;
+//             font: normal 2.2em/1.2 "ProximaNova-Bold", Helvetica, Arial;
+
+//             .cta {
+//                 width: 95%;
+//                 height: 2.8em;
+//                 font: normal 0.9em/2.6 "ProximaNova-Bold", Helvetica, Arial;
+//             }
+//         }
+//         .banner-image-top {
+//             margin: 0 3%;
+//             width: 96%;
+//             height: auto;
+//         }
+//         aside.find-out-more {
+//             display: none;
+//         }
+
+//         .logo {
+//             top: 1.2em;
+
+//             img {
+//                 width: 25em;
+//                 height: auto;
+//             }
+//         }
+//     }
+// }
+
+
 @media only screen and (min-width: 320px) and (max-width:  767px) {
     .banner {
         position: relative;
@@ -82,11 +122,6 @@
                 font: normal 0.9em/2.6 "ProximaNova-Bold", Helvetica, Arial;
             }
         }
-        .banner-image-top {
-            margin: 0 3%;
-            width: 96%;
-            height: auto;
-        }
         aside.find-out-more {
             display: none;
         }
@@ -99,8 +134,33 @@
                 height: auto;
             }
         }
+
+        img {
+            position: absolute;
+            width: 100%;
+            top:0;
+        }
+        figure {
+            position: relative;
+            .banner-image-top {
+                position: relative;
+                margin: 0 auto;
+                height: auto;
+                width: auto;
+                
+                img {
+                    position: relative;
+                    top: auto;
+                    margin: 34em 3% 0;
+                    width: 96%;
+                    height: auto;
+                }
+            }
+        }
+        
     }
 }
+
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
     .banner {
