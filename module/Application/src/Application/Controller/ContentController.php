@@ -78,8 +78,8 @@ class ContentController extends AbstractActionController
     }
     public function helpAction()
     {
-        $form = new FeedbackForm();
         try{
+            $form = new FeedbackForm();
             $request = $this->getRequest();
             if ($request->isPost()){
                 $form->setData($request->getPost());
@@ -89,12 +89,13 @@ class ContentController extends AbstractActionController
                     $this->formErrors($form, $this);
                 }
             }
+            return array(
+                'form' => $form
+            );
         }catch(\Exception $e){
-           ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
-        return array(
-            'form' => $form
-        );
     }
 
     public function facebookCanvasAction()

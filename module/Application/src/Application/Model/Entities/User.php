@@ -83,7 +83,7 @@ class User extends BasicObject {
     protected $displayName;
 
     /**
-     * @var \Avatar
+     * @var Avatar
      *
      * @ORM\OneToOne(targetEntity="Avatar", cascade={"persist"})
      * @ORM\JoinColumns({

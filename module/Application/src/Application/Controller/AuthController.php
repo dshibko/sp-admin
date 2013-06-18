@@ -25,14 +25,14 @@ class AuthController extends AbstractActionController
 
     public function loginAction()
     {
-        //TODO check only guests
-        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-        if ($user){
-            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
-        }
-        $request = $this->getRequest();
-        $form = $this->getLoginForm();
+
         try {
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            if ($user){
+                return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+            }
+            $request = $this->getRequest();
+            $form = $this->getLoginForm();
 
             if ($request->isPost()) {
                 $form->setData($request->getPost());
@@ -50,27 +50,29 @@ class AuthController extends AbstractActionController
                     }
                 }
             }
+            $viewModel = new ViewModel(array(
+                'form' => $form,
+            ));
+
+            $viewModel->setTerminal(true);
+            return $viewModel;
+
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
 
-        $viewModel = new ViewModel(array(
-            'form' => $form,
-        ));
-
-        $viewModel->setTerminal(true);
-        return $viewModel;
     }
 
     public function forgotAction()
     {
-        $request = $this->getRequest();
-        $form = new ForgotPasswordForm();
-        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-        if (!empty($user)){
-            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
-        }
         try {
+            $request = $this->getRequest();
+            $form = new ForgotPasswordForm();
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            if (!empty($user)){
+                return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+            }
             if ($request->isPost()) {
                 $form->setData($request->getPost());
                 if ($form->isValid()) {
@@ -91,16 +93,18 @@ class AuthController extends AbstractActionController
                     }
                 }
             }
+
+            $viewModel = new ViewModel(array(
+                'form' => $form,
+            ));
+
+            $viewModel->setTerminal(true);
+            return $viewModel;
+
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
-
-        $viewModel = new ViewModel(array(
-            'form' => $form,
-        ));
-
-        $viewModel->setTerminal(true);
-        return $viewModel;
 
     }
 
@@ -110,29 +114,28 @@ class AuthController extends AbstractActionController
         try {
 
             AuthenticationManager::getInstance($this->getServiceLocator())->logout();
-//            $this->flashmessenger()->addMessage(MessagesConstants::INFO_LOGGED_OUT);
+            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
-
-        return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
 
     }
 
 
     public function resetAction()
     {
-        $isValid = false;
-        $displayLinkToResetPage = false;
-        $form = new ResetPasswordForm();
-        //Redirect if user logged in
-        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-        if (!empty($user)){
-            return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
-        }
-
         try {
+
+            $isValid = false;
+            $displayLinkToResetPage = false;
+            $form = new ResetPasswordForm();
+            //Redirect if user logged in
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+            if (!empty($user)){
+                return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+            }
 
             $hash = (string)$this->params()->fromRoute('hash', '');
             $recovery = AuthenticationManager::getInstance($this->getServiceLocator())->checkUserHash($hash);
@@ -163,18 +166,20 @@ class AuthController extends AbstractActionController
                 $this->flashmessenger()->addErrorMessage(MessagesConstants::ERROR_RECOVERY_LINK_INVALID);
             }
 
+            $viewModel = new ViewModel(array(
+                'form' => $form,
+                'isValid' => $isValid,
+                'displayLinkToResetPage' => $displayLinkToResetPage
+            ));
+
+            $viewModel->setTerminal(true);
+            return $viewModel;
+
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
 
-        $viewModel = new ViewModel(array(
-            'form' => $form,
-            'isValid' => $isValid,
-            'displayLinkToResetPage' => $displayLinkToResetPage
-        ));
-
-        $viewModel->setTerminal(true);
-        return $viewModel;
     }
 
     /**

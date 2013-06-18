@@ -334,7 +334,10 @@ class ContentManager extends BasicManager {
         $contentManager = ContentManager::getInstance($this->getServiceLocator());
         $language = $userManager->getCurrentUserLanguage();
         $footerPage = $contentManager->getFooterPageByTypeAndLanguage($pageType, $language->getId());
-        return $footerPage->getContent();
+        if (!is_null($footerPage)){
+            return $footerPage->getContent();
+        }
+        return '';
 
     }
 

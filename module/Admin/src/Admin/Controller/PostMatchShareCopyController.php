@@ -2,6 +2,8 @@
 
 namespace Admin\Controller;
 
+use \Application\Manager\ImageManager;
+use \Admin\Form\PostMatchReportCopyForm;
 use \Application\Model\Entities\ShareCopy;
 use \Admin\Form\PreMatchReportCopyForm;
 use \Application\Manager\ShareManager;
@@ -16,40 +18,54 @@ class PostMatchShareCopyController extends AbstractActionController {
 
     public function indexAction() {
 
-        $preMatchReportCopyForm = new PreMatchReportCopyForm();
+        $forms = array();
 
         try {
 
             $shareManager = ShareManager::getInstance($this->getServiceLocator());
-            $preMatchCopy = $shareManager->getCopyByTarget(ShareCopy::PRE_MATCH_REPORT, true);
-            $weightLabels = array(
-                1 => 'First Prediction',
-                3 => 'Every Prediction',
-            );
-            foreach ($preMatchCopy as $aPreMatchCopy) {
-                $label = $aPreMatchCopy['engine'] . '<br/>' . $weightLabels[$aPreMatchCopy['weight']];
-                $preMatchReportCopyForm->addSocialField($aPreMatchCopy, $label);
+            $achievementBlocks = $shareManager->getAchievementBlocks();
+            foreach ($achievementBlocks as $achievementBlock) {
+                $form = new PostMatchReportCopyForm();
+                $achievementArr = $achievementBlock->getArrayCopy();
+                $achievementArr['facebook'] = $achievementBlock->getFacebookShareCopy()->getCopy();
+                $achievementArr['twitter'] = $achievementBlock->getTwitterShareCopy()->getCopy();
+                $form->populateValues($achievementArr);
+                $forms [$achievementBlock->getId()] = $form;
             }
 
             $request = $this->getRequest();
             if ($request->isPost()) {
-                $preMatchReportCopyForm->setData($request->getPost());
-                if ($preMatchReportCopyForm->isValid()) {
-                    foreach ($preMatchReportCopyForm->getElements() as $element) {
-                        $name = $element->getAttribute('name');
-                        if (preg_match("/share-copy-([\\d]*)/", $name) > 0) {
-                            preg_match("/share-copy-([\\d]*)/", $name, $id);
-                            $id = $id[1];
-                            $shareManager->saveShareCopy($id, $element->getValue(), false, false);
-                        }
-                    }
-                    $shareManager->flushAndClearCache();
-                    return $this->redirect()->toRoute(self::ADMIN_POST_MATCH_SHARE_COPY_ROUTE);
-
-                } else
-                    foreach ($preMatchReportCopyForm->getMessages() as $el => $messages)
-                        $this->flashMessenger()->addErrorMessage($preMatchReportCopyForm->get($el)->getLabel() . ": " .
-                            (is_array($messages) ? implode(", ", $messages): $messages));
+                $id = $request->getPost('id', 0);
+                if (array_key_exists($id, $forms)) {
+                    $form = $forms[$id];
+                    $post = array_merge_recursive(
+                        $request->getPost()->toArray(),
+                        $request->getFiles()->toArray()
+                    );
+                    $form->setData($post);
+                    if ($form->isValid()) {
+                        $achievementBlock = $shareManager->getAchievementBlockById($id);
+                        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+                        $iconPathValue = $form->get('iconPath')->getValue();
+                        $data = $form->getData();
+                        if (!array_key_exists('stored', $iconPathValue) || $iconPathValue['stored'] == 0) {
+                            $iconPath = $imageManager->saveUploadedImage($form->get('iconPath'), ImageManager::IMAGE_TYPE_AWARD);
+                            $imageManager->resizeImage($iconPath, ImageManager::ACHIEVEMENT_ICON_WIDTH, ImageManager::ACHIEVEMENT_ICON_HEIGHT);
+                            $imageManager->deleteImage($achievementBlock->getIconPath());
+                            $data['iconPath'] = $iconPath;
+                        } else
+                            $data['iconPath'] = null;
+                        $achievementBlock->populate($data);
+                        $achievementBlock->getFacebookShareCopy()->setCopy($data['facebook']);
+                        $achievementBlock->getTwitterShareCopy()->setCopy($data['twitter']);
+                        $shareManager->saveAchievementBlock($achievementBlock);
+                        $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_POST_MATCH_SHARE_COPY_UPDATED);
+                        return $this->redirect()->toRoute(self::ADMIN_POST_MATCH_SHARE_COPY_ROUTE);
+                    } else
+                        foreach ($form->getMessages() as $el => $messages)
+                            $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " .
+                                (is_array($messages) ? implode(", ", $messages): $messages));
+                }
             }
 
         } catch(\Exception $e) {
@@ -57,7 +73,7 @@ class PostMatchShareCopyController extends AbstractActionController {
         }
 
         return array(
-            'preMatchReportCopyForm' => $preMatchReportCopyForm,
+            'forms' => $forms,
         );
 
     }

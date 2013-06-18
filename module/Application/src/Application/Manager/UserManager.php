@@ -177,13 +177,36 @@ class UserManager extends BasicManager {
      * @return string
      */
     public function getUsersExportContent() {
-        $users = UserDAO::getInstance($this->getServiceLocator())->getAllUsers(true, true);
-        $exportConfig = array('id' => 'number',
+        $users = UserDAO::getInstance($this->getServiceLocator())->getExportUsers(true);
+
+        $facebookManager = FacebookManager::getInstance($this->getServiceLocator());
+        foreach ($users as &$user) {
+            if (!empty($user['facebookId'])) {
+                $facebookData = $facebookManager->getFacebookUserInfo($user['facebookAccessToken'], $user['facebookId']);
+                $user = array_merge($user, $facebookData);
+            }
+        }
+
+        $exportConfig = array(
+            'id' => 'number',
             'displayName' => 'string',
             'email' => 'string',
-            'birthday' => array('date' => 'j F Y'),
-            'role' => array('array' => 'name'),
-            'date' => array('date' => 'j F Y'));
+            'role' => 'string',
+            'date' => array('date' => 'j F Y'),
+            'predictions' => 'number',
+            'facebook_id' => 'number',
+            'facebook_first_name' => 'string',
+            'facebook_last_name' => 'string',
+            'facebook_username' => 'string',
+            'facebook_email' => 'string',
+            'facebook_avatar_link' => 'string',
+            'facebook_gender' => 'string',
+            'facebook_date_of_birth' => 'string',
+            'facebook_locale' => 'string',
+            'facebook_number_of_friends' => 'string',
+            'facebook_user_likes' => 'array',
+            'facebook_user_checkins' => 'array',
+        );
         return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($users, $exportConfig);
     }
 

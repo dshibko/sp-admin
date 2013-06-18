@@ -42,6 +42,7 @@ return array(
     'admin_assets_path_prefix' => '/admin-',
     'skip-cache-uri-patterns' => array('/admin/*'),
     'is_geo_ip_blocked' => false,
+    'show_error_messages' => false,
     'facebook_api_key' => '639647056062341',
     'facebook_secret_key' => '73bc16bfe1d05f4c213a34a6c2d2ebfa',
     'facebook_permissions' => 'email,
@@ -69,5 +70,5 @@ return array(
     'default_player_background' => '/img/default-player-bg.png',
     'default_player_avatar' => '/img/default_player.png',
     'move_up_image_source' => '/img/up-place.png',
-    'move_down_image_source'  => '/img/down-place.png'
+    'move_down_image_source'  => '/img/down-place.png',
 );

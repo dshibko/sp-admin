@@ -50,6 +50,16 @@ return array(
                     ),
                 ),
             ),
+            'prizes' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/prizes/',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Prize',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'fixtures' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -322,6 +332,7 @@ return array(
             'Application\Controller\Tables' => 'Application\Controller\TablesController',
             'Application\Controller\FullTable' => 'Application\Controller\FullTableController',
             'Application\Controller\Match' => 'Application\Controller\MatchController',
+            'Application\Controller\Prize' => 'Application\Controller\PrizeController',
         ),
     ),
     'controller_plugins' => array(
@@ -390,8 +401,12 @@ return array(
                     'full-table' => array(
                         'title' => 'Full Table',
                         'route' => 'full-table',
-                    )
+                    ),
                 ),
+            ),
+            'prize' => array(
+                'title' => 'Prizes',
+                'route' => 'prizes',
             ),
         ),
     ),

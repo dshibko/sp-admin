@@ -156,7 +156,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                             'table' => 'users',
                             'fields' => array('email'),
                             'messages' => array(
-                                'objectFound' => 'Email already taken'
+                                'objectFound' => 'Already taken'
                             )
                         )
                     ),

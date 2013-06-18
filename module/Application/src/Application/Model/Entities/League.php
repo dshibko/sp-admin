@@ -96,7 +96,7 @@ class League extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Region", inversedBy="leagues", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="Region", inversedBy="leagues")
      * @ORM\JoinTable(name="league_region",
      *   joinColumns={
      *     @ORM\JoinColumn(name="league_id", referencedColumnName="id")
@@ -118,7 +118,7 @@ class League extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="leagues", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="leagues")
      * @ORM\JoinTable(name="league_user",
      *   joinColumns={
      *     @ORM\JoinColumn(name="league_id", referencedColumnName="id")
@@ -248,7 +248,7 @@ class League extends BasicObject {
      */
     public function getEndDate()
     {
-        return $this->endDate->setTime(0, 0, 0)->add(new \DateInterval('P1D'));
+        return $this->endDate->setTime(23, 59, 59);
     }
 
     /**
@@ -415,7 +415,7 @@ class League extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="LeagueUser", mappedBy="league", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="LeagueUser", mappedBy="league", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $leagueUsers;
 
@@ -564,6 +564,19 @@ class League extends BasicObject {
         return $this->leagueRegions;
     }
 
+    private $leagueRegionsByRegion = array();
+
+    public function getLeagueRegionByRegionId($id)
+    {
+        if (!array_key_exists($id, $this->leagueRegionsByRegion))
+            foreach ($this->getLeagueRegions() as $leagueRegion)
+                if ($leagueRegion->getRegion()->getId() == $id) {
+                    $this->leagueRegionsByRegion[$id] = $leagueRegion;
+                    break;
+                }
+        return $this->leagueRegionsByRegion[$id];
+    }
+
     /**
      * Add leagueRegion
      *
@@ -610,7 +623,7 @@ class League extends BasicObject {
     public function getIsActive($dateTime) {
         $startDate = $this->getStartDate();
         $endDate = $this->getEndDate();
-        return $dateTime > $startDate && $dateTime < $endDate;
+        return $dateTime >= $startDate && $dateTime <= $endDate;
     }
 
 }

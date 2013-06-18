@@ -14,6 +14,7 @@ class SettingsManager extends BasicManager {
     const BAD_WORDS = 'bad-words';
     const HELP_AND_SUPPORT_EMAIL = 'help-and-support-email';
     const MAIN_SITE_LINK = 'main-site-link';
+    const SEND_WELCOME_EMAIL = 'send-welcome-email';
 
     /**
      * @var SettingsManager

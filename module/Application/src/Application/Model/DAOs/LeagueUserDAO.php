@@ -111,7 +111,7 @@ class LeagueUserDAO extends AbstractDAO {
                '.$this->getRepositoryName().' as lu
             INNER JOIN lu.user u
             INNER JOIN u.country c
-            WHERE lu.league = ' . $leagueId . ($facebookIds !== null ? ' AND u.facebookId IN (' . implode(",", $facebookIds) . ')' : '') . '
+            WHERE lu.league = ' . $leagueId . ' AND lu.place is not null' . ($facebookIds !== null ? ' AND u.facebookId IN (' . implode(",", $facebookIds) . ')' : '') . '
             ORDER BY lu.place ASC
         ');
         if ($top > 0)

@@ -238,17 +238,6 @@ return array(
                     ),
                 ),
             ),
-
-            /*'admin-content-footer-pages-terms' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route'    => '/admin/content/footer-pages/terms',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\FooterPages',
-                        'action'     => 'termsPage',
-                    ),
-                ),
-            ),*/
             'admin-pre-match-share-copy' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -432,8 +421,14 @@ return array(
                                 'action' => 'editMiniLeague',
                             ),
                             array(
-                                'title' => 'Edit League',
+                                'title' => 'View League Table',
                                 'label' => 'icon-edit',
+                                'route' => 'admin-leagues',
+                                'action' => 'viewTable',
+                            ),
+                            array(
+                                'title' => 'Edit League',
+                                'label' => 'icon-eye-open',
                                 'route' => 'admin-leagues',
                                 'action' => 'edit',
                             ),
@@ -547,7 +542,20 @@ return array(
                             'share-copy' => array(
                                 'title' => 'Reports Share Copy',
                                 'label' => 'icon-bar-chart',
-                                'route' => 'admin-pre-match-share-copy',//TODO CHANGED !!!!!!!!!!!!!!!
+                                'route' => 'admin-pre-match-share-copy',
+                                'sub-menu' => true,
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Pre Match',
+                                        'label' => 'icon-chevron-left',
+                                        'route' => 'admin-pre-match-share-copy',
+                                    ),
+                                    array(
+                                        'title' => 'Post Match',
+                                        'label' => 'icon-chevron-right',
+                                        'route' => 'admin-post-match-share-copy',
+                                    ),
+                                )
                             ),
                             'footer-images' => array(
                                 'title' => 'Footer Images',

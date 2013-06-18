@@ -2,6 +2,9 @@
 
 namespace Application\Manager;
 
+use \Application\Model\Entities\AchievementBlock;
+use \Application\Model\Entities\ShareCopy;
+use \Application\Model\DAOs\AchievementBlockDAO;
 use \Application\Model\DAOs\ShareCopyDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
@@ -29,6 +32,70 @@ class ShareManager extends BasicManager
     }
 
     /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getAchievementBlocks($hydrate = false, $skipCache = false)
+    {
+        return AchievementBlockDAO::getInstance($this->getServiceLocator())->getAchievementBlocks($hydrate, $skipCache);
+    }
+
+    /**
+     * @param int $id
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getAchievementBlockById($id, $hydrate = false, $skipCache = false)
+    {
+        return AchievementBlockDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param $type
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getAchievementBlockByType($type, $hydrate = false, $skipCache = false)
+    {
+        $achievementBlockDAO = AchievementBlockDAO::getInstance($this->getServiceLocator());
+        return $achievementBlockDAO->getAchievementBlockByType($type, $hydrate, $skipCache);
+    }
+
+    public function saveAchievementBlock($achievementBlock, $flush = true, $clearCache = true) {
+        $achievementBlockDAO = AchievementBlockDAO::getInstance($this->getServiceLocator());
+        $achievementBlockDAO->save($achievementBlock, $flush, $clearCache);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFirstPredictionCopy()
+    {
+        $facebookCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getFirstPredictionCopy(ShareCopy::FACEBOOK_ENGINE);
+        $twitterCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getFirstPredictionCopy(ShareCopy::TWITTER_ENGINE);
+        return array($facebookCopy, $twitterCopy);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRandomEveryPredictionCopy()
+    {
+        $copies = ShareCopyDAO::getInstance($this->getServiceLocator())->getEveryPredictionNonEmptyCopies(ShareCopy::FACEBOOK_ENGINE, true);
+        $copiesIndex = rand(1, count($copies));
+        $copy = $copies[$copiesIndex - 1];
+        $facebookCopy = $copy['copy'];
+        $copies = ShareCopyDAO::getInstance($this->getServiceLocator())->getEveryPredictionNonEmptyCopies(ShareCopy::TWITTER_ENGINE, true);
+        $copiesIndex = rand(1, count($copies));
+        $copy = $copies[$copiesIndex - 1];
+        $twitterCopy = $copy['copy'];
+        return array($facebookCopy, $twitterCopy);
+    }
+
+    /**
      * @param string $target
      * @param bool $hydrate
      * @param bool $skipCache
@@ -53,28 +120,5 @@ class ShareManager extends BasicManager
         $shareCopyDAO->flush();
         $shareCopyDAO->clearCache();
     }
-
-//    /**
-//     * @param array $fields
-//     * @param bool $hydrate
-//     * @param bool $skipCache
-//     * @return array
-//     */
-//    public function getAllCompetitionsByFields(array $fields, $hydrate = false, $skipCache = false)
-//    {
-//        return CompetitionDAO::getInstance($this->getServiceLocator())->getAllCompetitionsByFields($fields, $hydrate, $skipCache);
-//    }
-//
-//    /**
-//     * @param $id
-//     * @param bool $hydrate
-//     * @param bool $skipCache
-//     * @return mixed
-//     */
-//    public function getCompetitionById($id, $hydrate = false, $skipCache = false)
-//    {
-//        return CompetitionDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
-//    }
-//
 
 }

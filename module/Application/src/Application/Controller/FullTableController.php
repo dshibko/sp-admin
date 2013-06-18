@@ -2,6 +2,7 @@
 
 namespace Application\Controller;
 
+use \Application\Manager\SeasonManager;
 use \Application\Manager\FacebookManager;
 use \Application\Manager\SettingsManager;
 use \Application\Model\Entities\League;
@@ -22,21 +23,21 @@ class FullTableController extends AbstractActionController {
 
     public function indexAction() {
 
-        $leagueId = (int) $this->params()->fromRoute('table', 0);
-        if ($leagueId <= 0)
-            return $this->notFoundAction();
-
-        $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
-        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
-        $regionManager = RegionManager::getInstance($this->getServiceLocator());
-        $facebookManager = FacebookManager::getInstance($this->getServiceLocator());
-        $translator = $this->getServiceLocator()->get('translator');
-
-        $leagueUsers = array();
-        $leagueUsersCount = 0;
-        $seasonName = $leagueName = '';
-
         try {
+
+            $leagueId = (int) $this->params()->fromRoute('table', 0);
+            if ($leagueId <= 0)
+                return $this->notFoundAction();
+
+            $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
+            $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+            $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
+            $regionManager = RegionManager::getInstance($this->getServiceLocator());
+            $facebookManager = FacebookManager::getInstance($this->getServiceLocator());
+            $translator = $this->getServiceLocator()->get('translator');
+
+            $leagueUsers = array();
+            $leagueName = '';
 
             $user = $applicationManager->getCurrentUser();
 
@@ -64,7 +65,8 @@ class FullTableController extends AbstractActionController {
                     break;
             }
 
-            $seasonName = $league['season']['displayName'];
+            $season = $seasonManager->getSeasonById($league['season']['id']);
+            $seasonName = $season->getSeasonRegionByRegionId($applicationManager->getUserRegion($user)->getId())->getDisplayName();
 
             $offset = (int) $this->params()->fromQuery('offset', 0);
             $leagueUsersCount = $leagueManager->getLeagueUsersCount($league['id']);
@@ -93,21 +95,22 @@ class FullTableController extends AbstractActionController {
                     $leagueUsers = $leagueManager->getLeagueTop($league['id'], self::PER_PAGE_PLAYERS_COUNT, $offset);
             }
 
+            $onlyRows = (boolean) $this->params()->fromQuery('onlyRows', false);
+            $viewModel = new ViewModel();
+            $viewModel->setTerminal($onlyRows);
+            return $viewModel->setVariables(array(
+                'seasonName' => $seasonName,
+                'leagueName' => $leagueName,
+                'leagueUsers' => $leagueUsers,
+                'leagueUsersCount' => $leagueUsersCount,
+                'onlyRows' => $onlyRows,
+                'perPage' => self::PER_PAGE_PLAYERS_COUNT,
+            ));
+
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
-
-        $onlyRows = (boolean) $this->params()->fromQuery('onlyRows', false);
-        $viewModel = new ViewModel();
-        $viewModel->setTerminal($onlyRows);
-        return $viewModel->setVariables(array(
-            'seasonName' => $seasonName,
-            'leagueName' => $leagueName,
-            'leagueUsers' => $leagueUsers,
-            'leagueUsersCount' => $leagueUsersCount,
-            'onlyRows' => $onlyRows,
-            'perPage' => self::PER_PAGE_PLAYERS_COUNT,
-        ));
 
     }
 

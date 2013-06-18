@@ -2,6 +2,7 @@
 
 namespace Neoco\Controller;
 
+use \Neoco\Exception\InfoException;
 use \Application\Model\Helpers\MessagesConstants;
 use \Zend\View\Helper\Navigation\Breadcrumbs;
 use Zend\Session\Container;
@@ -64,6 +65,34 @@ class AbstractActionController extends \Zend\Mvc\Controller\AbstractActionContro
     public function decodeInt($int) {
         $int = sqrt(sqrt($int - 3));
         return $int - 5;
+    }
+
+    public function infoAction(InfoException $e)
+    {
+        $title = $e->getTitle();
+        $content = $e->getContent();
+        $view = new ViewModel(array('title' => $title, 'content' => $content));
+        $view->setTemplate('error/info.phtml');
+        return $view;
+    }
+
+    public function errorAction(\Exception $e)
+    {
+        $response = $this->response;
+        $response->setStatusCode(500);
+        $view = new ViewModel(array('exception' => $e));
+        $view->setTemplate('error/500.phtml');
+        return $view;
+    }
+
+    private $getConstantHelper;
+
+    public function getConstant($key) {
+        if ($this->getConstantHelper === null) {
+            $this->getConstantHelper = new \Neoco\View\Helper\GetConstant();
+            $this->getConstantHelper->setConfig($this->getServiceLocator()->get('config'));
+        }
+        return $this->getConstantHelper->__invoke($key);
     }
 
 }

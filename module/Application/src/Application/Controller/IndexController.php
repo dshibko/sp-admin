@@ -16,7 +16,6 @@ class IndexController extends AbstractActionController {
 
     public function indexAction() {
 
-        $content = $gameplayBlocks = array();
 
         try {
 
@@ -34,17 +33,18 @@ class IndexController extends AbstractActionController {
             $content = $contentManager->getRegionContent($region, true);
             $gameplayBlocks = $contentManager->getGameplayBlocks($region, true);
 
+            $viewModel = new ViewModel(array(
+                'content' => $content,
+                'blocks' => $gameplayBlocks,
+            ));
+
+            $viewModel->setTerminal(true);
+            return $viewModel;
+
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
         }
-
-        $viewModel = new ViewModel(array(
-            'content' => $content,
-            'blocks' => $gameplayBlocks,
-        ));
-
-        $viewModel->setTerminal(true);
-        return $viewModel;
 
     }
 

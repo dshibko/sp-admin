@@ -1,4 +1,10 @@
 <?php $this->headTitle($this->translate('Your Results of') . ' ' . $this->current['homeName'] . ' ' . $this->translate('vs') . ' ' . $this->current['awayName']);?>
+<?php
+if (empty($this->facebookShareCopy))
+    $this->facebookShareCopy = $this->translate('Match Report') . ': ' . $this->current['homeName'] . ' ' . $this->translate('vs') . ' ' . $this->current['awayName'];
+if (empty($this->twitterShareCopy))
+    $this->twitterShareCopy = $this->translate('Match Report') . ': ' . $this->current['homeName'] . ' ' . $this->translate('vs') . ' ' . $this->current['awayName'];
+?>
 <?php $this->getUnreadItems()->setIsFirstResultView($this->firstResultView); ?>
 <div role="main" class="two-column-section clearfix">
     <div class="first-column results">
@@ -76,7 +82,7 @@
                         </div>
                     </div>
 
-                    <div class="points full">
+                    <div class="points<?=empty($this->achievementBlock) ? ' full' : '' ?>">
                         <table>
                             <tbody>
                                 <?php foreach ($this->breakpoints as $breakpointText => $points) : ?>
@@ -96,24 +102,32 @@
                             </tfoot>
                         </table>
                     </div>
-<!--                    <div class="award">-->
-<!--                        <article class="king clearfix">-->
-<!--                            <img src="/img/award/crown.png" alt="">-->
-<!--                            <h2>Bow to the king</h2>-->
-<!--                            <p>You are top of your social league</p>-->
-<!--                        </article>-->
-<!--                        <footer class="clearfix">-->
-<!--                            <h3>Share this</h3>-->
-<!--                            <ul class="social-links">-->
-<!--                                <li><a href="">tweet</a></li>-->
-<!--                                <li><a href="">like</a></li>-->
-<!--                            </ul>-->
-<!--                        </aside>-->
-<!--                    </div>-->
+                    <?php if (!empty($this->achievementBlock)) : ?>
+                        <div class="award">
+                            <article class="king clearfix">
+                                <img src="<?=$this->achievementBlock->getIconPath()?>" alt="">
+                                <h2><?=$this->achievementBlock->getTitle()?></h2>
+                                <p><?=$this->achievementBlock->getDescription()?></p>
+                                <footer class="clearfix">
+                                    <h3>Share this</h3>
+                                    <ul class="social-links">
+                                        <li>
+                                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="<?=$this->twitterShareCopy?>" data-url="<?=$this->url('match', array('code' => $this->matchCode), array('force_canonical' => true))?>" data-count="none">Tweet</a>
+                                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                                        </li>
+                                        <li>
+                                            <script type="text/javascript" src="/js/facebook.js"></script>
+                                            <a summary="<?=$this->facebookShareCopy?>" href="<?=$this->url('match', array('code' => $this->matchCode), array('force_canonical' => true))?>" class="like">Like</a>
+                                        </li>
+                                    </ul>
+                                </footer>
+                            </article>
+                        </div>
+                    <?php endif;?>
                 </div>
             </section>
             <!--POST MATCH REPORT START-->
-            <?php echo $this->partial('partials/post-match-report', array('report' => $this->matchReport, 'code' => $this->matchCode));?>
+            <?php echo $this->partial('partials/post-match-report', array('report' => $this->matchReport, 'code' => $this->matchCode, 'facebookShareCopy' => $this->facebookShareCopy, 'twitterShareCopy' => $this->twitterShareCopy));?>
             <!--POST MATCH REPORT END-->
         <?php else: ?>
             <?= $this->renderMessages(); ?>

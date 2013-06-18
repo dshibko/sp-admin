@@ -2,15 +2,9 @@
 $title = $this->translate('Settings');
 $this->headTitle($title);
 ?>
-<div role="main">
-    <div class="one-column registration">
+<div role="main" class="two-column-section clearfix">
+    <div class="first-column registration">
     <h1><?php echo $this->escapeHtml($title);?></h1>
-    <?php $errors = $this->renderMessages();?>
-    <?php if (!empty($errors)):?>
-        <div class="form-errors">
-            <p><?php echo $errors;?></p>
-        </div>
-    <?php endif;?>
     <?php if (!$this->user->getFacebookId()):?>
     <aside class="connect-facebook clearfix">
         <div>
@@ -19,6 +13,14 @@ $this->headTitle($title);
         </div>
         <?php echo $this->renderFacebookButton($this->translate('Connect with Facebook'));?>
     </aside>
+    <?php
+        $errors = $this->renderMessages();
+    ?>
+    <?php if (!empty($errors)):?>
+        <div class="form-errors">
+            <p><?php echo $errors;?></p>
+        </div>
+    <?php endif;?>
     <!--PASSWORD FORM START-->
         <?php
             $this->passwordForm->prepare();
@@ -41,9 +43,7 @@ $this->headTitle($title);
                 <?php echo $this->formLabel($this->passwordForm->get('confirm_new_password')); ?>
                 <?php  echo $this->formElement($this->passwordForm->get('confirm_new_password')); ?>
             </div>
-        </section>
-        <section class="buttons-block clearfix">
-            <div>
+            <div class="buttons">
                 <button type="submit"><?php echo $this->translate('Save changes');?></button>
             </div>
         </section>
@@ -62,7 +62,7 @@ $this->headTitle($title);
 
         <section>
             <div>
-                <h2><?php echo $this->translate('Change your email addresses');?></h2>
+                <h2><?php echo $this->translate('Change Your Email Addresses');?></h2>
             </div>
             <div>
                 <?php echo $this->formLabel($this->emailForm->get('email')); ?>
@@ -72,9 +72,7 @@ $this->headTitle($title);
                 <?php echo $this->formLabel($this->emailForm->get('confirm_email')); ?>
                 <?php  echo $this->formElement($this->emailForm->get('confirm_email')); ?>
             </div>
-        </section>
-        <section class="buttons-block clearfix">
-            <div>
+            <div class="buttons">
                 <button type="submit"><?php echo $this->translate('Save changes');?></button>
             </div>
         </section>
@@ -93,15 +91,13 @@ $this->headTitle($title);
 
     <section>
         <div>
-            <h2><?php echo $this->translate('Change your display name');?></h2>
+            <h2><?php echo $this->translate('Change Your Display Name');?></h2>
         </div>
         <div>
             <?php echo $this->formLabel($this->displayNameForm->get('display_name')); ?>
             <?php  echo $this->formElement($this->displayNameForm->get('display_name')); ?>
         </div>
-    </section>
-    <section class="buttons-block clearfix">
-        <div>
+        <div class="buttons">
             <button type="submit"><?php echo $this->translate('Save changes');?></button>
         </div>
     </section>
@@ -120,7 +116,7 @@ $this->headTitle($title);
 
     <section>
         <div>
-            <h2><?php echo $this->translate('Change your display name');?></h2>
+            <h2><?php echo $this->translate('Change Your Avatar');?></h2>
         </div>
         <img src="<?php echo $this->user->getAvatar()->getSmallImagePath();?>" alt="<?php echo $this->translate('User avatar');?>"/>
         <div class="block-input-file">
@@ -131,9 +127,7 @@ $this->headTitle($title);
             <span class="desktopLabel"><?php echo $this->translate('Or choose from selection');?></span>
             <?php echo $this->renderDefaultAvatars();?>
         </div>
-    </section>
-    <section class="buttons-block clearfix">
-        <div>
+        <div class="buttons">
             <button type="submit"><?php echo $this->translate('Save changes');?></button>
         </div>
     </section>
@@ -142,12 +136,6 @@ $this->headTitle($title);
         echo $this->form()->closeTag();
         ?>
     <!--AVATAR FORM END-->
-    <?php endif;?>
-    <?php //TODO move to view helper?>
-    <?php if ($this->user->getFacebookId()):?>
-        <section>
-            <img src="http://graph.facebook.com/<?php echo $this->user->getFacebookId();?>/picture?width=72&height=72" />
-        </section>
     <?php endif;?>
     <!--REGIONAL SETTINGS FORM START-->
     <?php
@@ -160,21 +148,18 @@ $this->headTitle($title);
             <div>
                 <h2><?php echo $this->translate('Regional Settings');?></h2>
             </div>
-            <div class="country">
-                <?php echo $this->translate('Your country');?>
-                <?php echo $this->user->getCountry()->getName();?>
+            <div class="field">
+                <label><?php echo $this->translate('Your country');?></label>
                 <p>
-                    <?php echo $this->translate('You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league.');?>
+                    <strong><?php echo $this->user->getCountry()->getName();?></strong>
+                    <small><?php echo $this->translate('You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league.');?></small>
                 </p>
             </div>
             <div>
                 <?php echo $this->formLabel($this->languageForm->get('language')); ?>
                 <?php  echo $this->formElement($this->languageForm->get('language')); ?>
             </div>
-
-        </section>
-        <section class="buttons-block clearfix">
-            <div>
+            <div class="buttons">
                 <button type="submit"><?php echo $this->translate('Save changes');?></button>
             </div>
         </section>
@@ -205,9 +190,7 @@ $this->headTitle($title);
                     <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</span>
                 </label>
             </div>
-        </section>
-        <section class="buttons-block clearfix">
-            <div>
+            <div class="buttons">
                 <button type="submit"><?php echo $this->translate('Save changes');?></button>
             </div>
         </section>
@@ -232,23 +215,25 @@ $this->headTitle($title);
                 <?php echo $this->formLabel($this->publicProfileForm->get('is_public')); ?>
                 <?php  echo $this->formElement($this->publicProfileForm->get('is_public')); ?>
             </div>
-        </section>
-        <section class="buttons-block clearfix">
-            <div>
+            <div class="buttons">
                 <button type="submit"><?php echo $this->translate('Save changes');?></button>
             </div>
         </section>
-        <?php
-        echo $this->formHidden($this->publicProfileForm->get('type'));
-        echo $this->form()->closeTag();
-        ?>
     <!--PUBLIC PROFILE FORM END-->
-    <section>
-        <div class="delete-account">
+    <section class="bn">
+        <div>
+            <h2>Delete Account</h2>
+        </div>
+        <div class="buttons">
             <a href="<?php echo $this->url('delete-account');?>"><?php echo $this->translate('Delete Account');?></a>
         </div>
     </section>
-    </div>
+    <?php
+    echo $this->formHidden($this->publicProfileForm->get('type'));
+    echo $this->form()->closeTag();
+    ?>
+   </div>
+    <?php echo $this->partial('partials/right-column');?>
 </div>
 <script type="text/javascript">
     var turnOffCustomStylePoint = 767;

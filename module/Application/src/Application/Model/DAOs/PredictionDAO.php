@@ -372,4 +372,72 @@ class PredictionDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    /**
+     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
+     * @return integer
+     */
+    public function getUserPredictionsNumber($season, $user) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT COUNT(p.id)
+             FROM ' . $this->getRepositoryName() . ' p
+             JOIN p.match m
+             JOIN m.competition c
+             JOIN c.season s WITH s.id = ' . $season->getId() . '
+             WHERE p.user = ' . $user->getId()
+             );
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
+     * @param \DateTime $beforeTime
+     * @return integer
+     */
+    public function getUserCorrectScorerPredictionsNumber($season, $user, $beforeTime) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT SUM(p.correctScorers)
+             FROM ' . $this->getRepositoryName() . ' p
+             JOIN p.match m
+             JOIN m.competition c
+             JOIN c.season s WITH s.id = ' . $season->getId() . '
+             WHERE p.user = ' . $user->getId() . ' AND m.startTime < :beforeTime'
+             )->setParameter('beforeTime', $beforeTime);
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
+     * @param \DateTime $beforeTime
+     * @return integer
+     */
+    public function hasUserCorrectResults($season, $user, $beforeTime) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT 1
+             FROM ' . $this->getRepositoryName() . ' p
+             JOIN p.match m
+             JOIN m.competition c
+             JOIN c.season s WITH s.id = ' . $season->getId() . '
+             WHERE p.user = ' . $user->getId() . ' AND m.startTime < :beforeTime AND p.isCorrectResult = 1'
+             )->setParameter('beforeTime', $beforeTime);
+        return $query->getOneOrNullResult();
+    }
+
+    /**
+     * @param $matchId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    function getMatchPredictorsIds($matchId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('u.id')
+            ->from($this->getRepositoryName(), 'p')
+            ->join('p.match', 'm', Expr\Join::WITH, 'm.id = ' . $matchId)
+            ->join('p.user', 'u');
+        return $this->getQuery($qb, $skipCache)->getScalarResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
 }

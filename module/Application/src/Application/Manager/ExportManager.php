@@ -35,27 +35,31 @@ class ExportManager extends BasicManager {
             $cols = array();
             foreach ($config as $columnName => $columnType) {
                 $value = "";
-                if (is_array($columnType)) {
-                    $type = array_shift(array_keys($columnType));
-                    $typeConfig = $columnType[$type];
-                    switch ($type) {
-                        case 'date':
-                            $value = "\"" . $dataRow[$columnName]->format($typeConfig) . "\"";
-                            break;
-                        case 'array':
-                            $value = "\"" . $dataRow[$columnName][$typeConfig] . "\"";
-                            break;
+                if (!empty($dataRow[$columnName]))
+                    if (is_array($columnType)) {
+                        $type = array_shift(array_keys($columnType));
+                        $typeConfig = $columnType[$type];
+                        switch ($type) {
+                            case 'date':
+                                $value = "\"" . str_replace("\"", "\"\"", $dataRow[$columnName]->format($typeConfig)) . "\"";
+                                break;
+                            case 'array':
+                                $value = "\"" . str_replace("\"", "\"\"", $dataRow[$columnName][$typeConfig]) . "\"";
+                                break;
+                        }
+                    } else {
+                        switch ($columnType) {
+                            case 'string':
+                                $value = "\"" . str_replace("\"", "\"\"", $dataRow[$columnName]) . "\"";
+                                break;
+                            case 'number':
+                                $value = $dataRow[$columnName];
+                                break;
+                            case 'array':
+                                $value = "\"" . str_replace("\"", "\"\"", implode(",", $dataRow[$columnName])) . "\"";
+                                break;
+                        }
                     }
-                } else {
-                    switch ($columnType) {
-                        case 'string':
-                            $value = "\"" . $dataRow[$columnName] . "\"";
-                            break;
-                        case 'number':
-                            $value = $dataRow[$columnName];
-                            break;
-                    }
-                }
                 $cols [] = $value;
             }
             $rows [] = implode(",", $cols);
