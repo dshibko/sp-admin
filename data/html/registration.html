@@ -100,11 +100,14 @@
                            </div>
                            <div>
                                <label>Gender</label>
-                               <select class="valid" name="gender">
-                                   <option value="default">&ndash; Please select &ndash;</option>
-                                   <option value="male">Male</option>
-                                   <option value="female">Female</option>
-                               </select>
+                               <label class="male">
+                                   <input type="radio" name="male" checked="checked" value="1">
+                                   Male
+                               </label>
+                               <label class="female">
+                                   <input type="radio" name="female" value="1">
+                                   Female
+                               </label>
                            </div>
                            <div class="date-birth">
                                <label>Date of Birth</label>
@@ -179,8 +182,8 @@
                                <label>Avatar</label>
                                <input type="file" name="avatar">
                            </div>
-                           <div class="avatar ideal-full-width claerfix">
-                               <span class="desktopLabel">Or choose from selection</span>
+                           <div class="avatar ideal-full-width clearfix">
+                               <label class="desktopLabel">Or choose from selection</label>
                                <label>
                                    <input type="radio" name="default_avatar" checked="checked" value="1">
                                    <img alt="Default avatar #1" src="img/avatar/user_default_1.jpg">
