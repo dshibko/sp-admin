@@ -51,9 +51,7 @@ class RegistrationController extends AbstractActionController
                         return $this->redirect()->toRoute(self::SETUP_PAGE_ROUTE);
                     }
                 }else{
-                    foreach ($form->getMessages() as $el => $messages) {
-                        $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages) . "<br />");
-                    }
+                    $this->formErrors($form, $this);
                 }
             }
             $viewModel = new ViewModel(array(
@@ -99,9 +97,7 @@ class RegistrationController extends AbstractActionController
                     RegistrationManager::getInstance($this->getServiceLocator())->setUp($data);
                     return $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
                 }else{
-                    foreach ($form->getMessages() as $el => $messages) {
-                        $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages) . "<br />");
-                    }
+                    $this->formErrors($form, $this);
                 }
             }
 

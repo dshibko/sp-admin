@@ -11,15 +11,7 @@ $this->headTitle($title);
         $form->prepare();
         $form->setAttribute('action', $this->url('forgot'));
         echo $this->form()->openTag($form);?>
-        <?php $errors = $this->renderMessages();?>
-        <?php if ($form->getInputFilter()->getMessages() || $errors):?>
-            <div class="form-errors">
-                <?php if (!empty($errors)):?>
-                    <p><?php echo $errors;?></p>
-                <?php endif;?>
-                <?php echo $this->formElementerrors($form->get('email'));?>
-            </div>
-        <?php endif;?>
+        <?php echo $this->partial('partials/flash-messages');?>
         <section>
             <div>
                 <?php  echo $this->formLabel($form->get('email'));?>
@@ -33,7 +25,7 @@ $this->headTitle($title);
             </div>
         </section>
       <?php
-        echo $this->formHidden($form->get('csrf'));
+       /* echo $this->formHidden($form->get('csrf'));*/
         echo $this->form()->closeTag();
     ?>
     <div>

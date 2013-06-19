@@ -44,10 +44,11 @@ class FeedbackForm extends Form {
             'type'  => 'Zend\Form\Element\Textarea',
             'attributes' => array(
                 'class' => 'required',
-                'maxlength' => FeedbackFormFilter::QUERY_MAX_LENGTH
+                'maxlength' => FeedbackFormFilter::QUERY_MAX_LENGTH,
+                'style'=> 'height:150px'
             ),
             'options' => array(
-                'label' => 'Query',
+                'label' => 'Message',
             ),
         ));
 

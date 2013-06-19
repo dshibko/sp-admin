@@ -22,7 +22,7 @@ class LoginInputFilter extends InputFilter
                     'name' => 'NotEmpty',
                     'options' => array(
                         'messages' => array(
-                            \Zend\Validator\NotEmpty::IS_EMPTY => 'Email cannot be empty',
+                            \Zend\Validator\NotEmpty::IS_EMPTY => 'Input cannot be empty',
                         ),
                     ),
                 ),
@@ -41,7 +41,7 @@ class LoginInputFilter extends InputFilter
                     'name' => 'NotEmpty',
                     'options' => array(
                         'messages' => array(
-                            \Zend\Validator\NotEmpty::IS_EMPTY => 'Password cannot be empty',
+                            \Zend\Validator\NotEmpty::IS_EMPTY => 'Input cannot be empty',
                         ),
                     ),
                 ),

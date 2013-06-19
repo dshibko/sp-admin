@@ -19,16 +19,7 @@ $this->headTitle($title);
         $form->prepare();
         $form->setAttribute('action', $this->url('login', array('action' => 'authenticate'))); ?>
         <?php    echo $this->form()->openTag($form);?>
-            <?php $errors = $this->renderMessages();?>
-            <?php if ($form->getInputFilter()->getMessages() || $errors):?>
-                <div class="form-errors">
-                    <?php if (!empty($errors)):?>
-                         <p><?php echo $errors;?></p>
-                    <?php endif;?>
-                    <?php echo $this->formElementerrors($form->get('email'));?>
-                    <?php echo $this->formElementerrors($form->get('password')); ?>
-                </div>
-            <?php endif;?>
+        <?php echo $this->partial('partials/flash-messages');?>
         <section>
             <div>
                 <h2><?php echo $this->translate('Enter Your Credentials');?></h2>

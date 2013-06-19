@@ -813,4 +813,5 @@ ALTER TABLE `league_user_place` ADD FOREIGN KEY (match_id) REFERENCES `match`(id
 INSERT INTO `settings` VALUES (null, 'help-and-support-email',''),(null, 'main-site-link','');
 INSERT INTO `settings` (`id`, `setting_key`, `setting_value`) VALUES (null, 'send-welcome-email', '0');
 
-
+-- okh 18.06
+ALTER TABLE `footer_page`  CHANGE COLUMN `type` `type` ENUM('terms','privacy','contact-us','cookies-policy','help-and-support') NOT NULL AFTER `language_id`;

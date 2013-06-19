@@ -2,42 +2,20 @@
 $title = $this->translate('Delete Account');
 $this->headTitle($title);
 ?>
-<div role="main" class="registration-section">
-    <h1><?php echo $this->escapeHtml($title);?></h1>
-    <?php $errors = $this->renderMessages();?>
-    <?php if (!empty($errors)):?>
-    <div class="form-errors">
-        <p><?php echo $errors;?></p>
+<div role="main">
+    <div class="one-column message information delete-account">
+        <h1><?php echo $title;?></h1>
+        <article class="user-content">
+            <form action="<?php echo $this->url('delete-account');?>" method="post" id="delete-account">
+               <?php echo $this->partial('partials/flash-messages');?>
+                <p><?php echo $this->translate('Are you sure you want to delete your account?');?></p>
+                <p class="note"><?php echo $this->translate('<strong>Note:</strong> all data associated with your account will be lost and non-recoverable.');?></p>
+                <p class="buttons-block">
+                    <button type="submit" class="pink" autocomplete="off"><?php echo $this->translate('Confirm and delete account');?></button>
+                </p>
+                <input type="hidden" value="<?php echo base64_encode($this->user->getId());?>" name="user_id"/>
+            </form>
+        </article>
+
     </div>
-    <?php endif;?>
-    <section>
-        <p><?php echo $this->translate('Are you sure?');?></p>
-        <form action="<?php echo $this->url('delete-account');?>" method="post" id="delete-account">
-            <input type="hidden" value="<?php echo base64_encode($this->user->getId());?>" name="user_id"/>
-            <section class="buttons-block clearfix">
-                <div>
-                    <button type="submit" name="delete_account"><?php echo $this->translate('Yes');?></button>
-                </div>
-                <div>
-                    <a href="<?php echo $this->url('user-settings');?>"><?php echo $this->translate('No');?></a>
-                </div>
-            </section>
-        </form>
-    </section>
 </div>
-<script type="text/javascript">
-    var turnOffCustomStylePoint = 767;
-
-    //Public profile Form
-    var options = {
-        responsiveAt: turnOffCustomStylePoint,
-        onFail: function(){},
-        onSuccess: function(){}
-    };
-    if ($(document).width() <  turnOffCustomStylePoint){
-        options.disableCustom = 'select';
-    }
-
-    //settings-change-public-profile
-    $('#delete-account').idealforms(options).data('idealforms');
-</script>

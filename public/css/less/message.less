@@ -1,26 +1,6 @@
 .message {
   padding: 0 0 15em;
 
-  // article {
-  //   background: #e7eef9;
-  //   border-radius: 5px;
-  //   margin: 2em 4em 0;
-
-  //   padding: 3em 4em 4em;
-
-  //   h2 {
-  //     margin: 0 0 1em;
-  //     color: @blue;
-  //     font: normal 2.3em/1 "ProximaNova-Bold", Helvetica, Arial;
-  //   }
-  //   p {
-  //     margin: 0 0 1em;
-  //   }
-  //   a {
-  //     color: @dark-gray;
-  //   }
-  // }
-
   article {
     .vertical-gradient(#e7eef9, #fefefe);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e7eef9', endColorstr='#fefefe',GradientType=0 );
@@ -34,10 +14,28 @@
     }
     p {
       margin: 0 0 1em;
+
+      &.note {
+        font-family: "ProximaNova-Bold", Helvetica, Arial;
+      }
+      &.buttons-block {
+        margin: 3em 0 1em;
+
+        .pink {
+          display: block;
+          margin: 0 auto;
+          width: 16em;
+          font-size: 1.3em;
+        }
+      }
     }
     a {
       color: @dark-gray;
     }
+  }
+
+  &.delete-account article {
+    text-align: center;
   }
 
   &.error {
@@ -46,7 +44,7 @@
     }
     article {
       .vertical-gradient(#f2e1e7, #fefefe);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2e1e7', endColorstr='#fefefe',GradientType=0 );
+      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2e1e7', endColorstr='#fefefe',GradientType=0 );
     }
   }
 }
@@ -56,6 +54,21 @@
     padding: 0 0 2em;
     article {
       padding: 2em 2em 3em;
+      p {
+        &.buttons-block {
+
+          .pink {
+            margin: 0 auto;
+            width: 15.5em;
+            height: 2.7em;
+            font-size: 1.1em;
+          }
+        }
+      }
+    }
+
+    &.delete-account article {
+      text-align: left;
     }
   }
 }
