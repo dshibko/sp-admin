@@ -199,10 +199,19 @@
     text-align: left;
     font: normal 1.2em/2 "ProximaNova-Reg", Helvetica, Arial;
 }
-.lt-ie8 .registration .buttons-block.signIn-buttons-block {
-  max-width: 585px;
+.lt-ie8 .registration.sign-in form div {
+  width: 430px;
 }
-.lt-ie8 .registration .buttons-block.signIn-buttons-block div, .lt-ie8 .registration form .buttons-block div {
+.lt-ie8 .registration.sign-in .ideal-form h2 {
+  margin:  0 0 15px -215px;
+}
+.lt-ie8 .registration.sign-in label {
+  width: 140px;
+}
+.lt-ie8 .registration.sign-in .buttons-block {
+  max-width: 460px;
+}
+.lt-ie8 .registration.sign-in .buttons-block div, .lt-ie8 .registration form .buttons-block div {
   float: right;
   width: auto;
 }

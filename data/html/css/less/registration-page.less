@@ -161,29 +161,6 @@
                 margin: 0 0 0 1em;
             }
         }
-
-        &.signIn-buttons-block {
-            max-width: 460px;
-            width: 100%;
-            margin: 0 auto 3em;
-            div.ideal-wrap {
-                float: right;
-                width: auto;
-            }
-            p {
-                color: @gray;
-                font: normal 1.5em/1.55 "ProximaNova-Reg", Helvetica, Arial;
-                a {
-                    color: @blue;
-                    text-decoration: underline;
-                    font-family: "ProximaNova-Bold", Helvetica, Arial;
-                    
-                    &:hover {
-                        text-decoration: none;
-                    }
-                }
-            }
-        }
     }
 
     .buttons {
@@ -210,6 +187,50 @@
             .vertical-gradient(#667cbd, #2547a0);
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#667cbd', endColorstr='#2547a0',GradientType=0 );
         }
+    }
+
+
+    &.sign-in {
+        .ideal-form {
+            .ideal-wrap {
+                margin-left: -200px;
+            }
+            .ideal-full-width {
+                margin-left: 0;
+            }
+            h2 {
+               margin-left: -200px; 
+            }
+        }
+        .buttons-block {
+            margin: 0 auto 3em;
+            max-width: 460px;
+            width: 100%;
+            border: none;
+
+            div.ideal-wrap {
+                float: right;
+                width: auto;
+                text-align: center;
+
+                .ideal-button {
+                    margin: 0 0 0 1em;
+                }
+            }
+            p {
+                color: @gray;
+                font: normal 1.5em/1.55 "ProximaNova-Reg", Helvetica, Arial;
+                a {
+                    color: @blue;
+                    text-decoration: underline;
+                    font-family: "ProximaNova-Bold", Helvetica, Arial;
+                    
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        } 
     }
 
 }
