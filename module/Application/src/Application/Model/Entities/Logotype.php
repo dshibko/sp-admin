@@ -6,18 +6,13 @@ use \Neoco\Model\BasicObject;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * FooterPage
+ * Logotype
  *
- * @ORM\Table(name="footer_page")
+ * @ORM\Table(name="logotype")
  * @ORM\Entity
  */
-class FooterPage extends BasicObject {
+class Logotype extends BasicObject {
 
-    const TERMS_PAGE = 'terms';
-    const PRIVACY_PAGE = 'privacy';
-    const CONTACT_US_PAGE = 'contact-us';
-    const COOKIES_PAGE = 'cookies-policy';
-    const HELP_AND_SUPPORT = 'help-and-support';
     /**
      * @var integer
      *
@@ -30,7 +25,7 @@ class FooterPage extends BasicObject {
     /**
      * @var Language
      *
-     * @ORM\ManyToOne(targetEntity="Language")
+     * @ORM\OneToOne(targetEntity="Language")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
     protected $language;
@@ -38,33 +33,33 @@ class FooterPage extends BasicObject {
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", columnDefinition="ENUM('terms', 'privacy', 'contact-us', 'cookies-policy', 'help-and-support')")
+     * @ORM\Column(name="emblem_image_path", type="string", length=255, nullable=false)
      */
-    protected $type;
+    protected $emblem;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="content", type="text")
+     * @ORM\Column(name="logotype_image_path", type="string", length=255, nullable=false)
      */
-    protected $content;
+    protected $logotype;
 
     /**
-     * @param string $content
+     * @param string $emblem
      * @return $this
      */
-    public function setContent($content)
+    public function setEmblem($emblem)
     {
-        $this->content = $content;
+        $this->emblem = $emblem;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getContent()
+    public function getEmblem()
     {
-        return $this->content;
+        return $this->emblem;
     }
 
     /**
@@ -104,21 +99,21 @@ class FooterPage extends BasicObject {
     }
 
     /**
-     * @param string $type
+     * @param string $logotype
      * @return $this
      */
-    public function setType($type)
+    public function setLogotype($logotype)
     {
-        $this->type = $type;
+        $this->logotype = $logotype;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getType()
+    public function getLogotype()
     {
-        return $this->type;
+        return $this->logotype;
     }
 
 }

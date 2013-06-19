@@ -222,6 +222,11 @@ class Module
                     $userLeagueMovement = new \Neoco\View\Helper\UserLeagueMovement();
                     $userLeagueMovement->setServiceLocator($sm->getServiceLocator());
                     return $userLeagueMovement;
+                },
+                'renderLogotype' => function($sm){
+                    $logotype = new \Neoco\View\Helper\Logotype();
+                    $logotype->setServiceLocator($sm->getServiceLocator());
+                    return $logotype;
                 }
             )
         );

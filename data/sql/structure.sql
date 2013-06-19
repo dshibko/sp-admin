@@ -816,3 +816,33 @@ INSERT INTO `settings` (`id`, `setting_key`, `setting_value`) VALUES (null, 'sen
 -- okh 18.06
 ALTER TABLE `footer_page`  CHANGE COLUMN `type` `type` ENUM('terms','privacy','contact-us','cookies-policy','help-and-support') NOT NULL AFTER `language_id`;
 
+-- okh 19.06
+ALTER TABLE `user`  CHANGE COLUMN `gender` `gender` VARCHAR(10) NULL AFTER `birthday`;
+
+CREATE TABLE `logotype` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `language_id` INT(11) NOT NULL,
+  `emblem_image_path` VARCHAR(255) NOT NULL,
+  `logotype_image_path` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FK_logotype_language` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+ROW_FORMAT=DEFAULT;
+
+ALTER TABLE `logotype`  ADD UNIQUE INDEX `language_id` (`language_id`);
+
+CREATE TABLE `term` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `language_id` INT(11) NOT NULL,
+  `copy` TEXT NOT NULL,
+  `is_required` TINYINT(1) NOT NULL DEFAULT '0',
+  `is_checked` TINYINT(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  INDEX `language_id` (`language_id`),
+  CONSTRAINT `FK_term_language` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+ROW_FORMAT=DEFAULT;

@@ -26,10 +26,7 @@
 <div id="wrapper">
     <header role="banner">
         <div  class="banner">
-            <a href="/" class="logo">
-                <img src="/img/del-tf-logo.png" alt="Truefan Score Predictor">
-            </a>
-
+            <?php echo $this->renderLogotype();?>
             <div data-alt="FCBARCELONA Score Predictor Banner" data-picture="">
                 <div data-src="<?=$this->content['heroBackgroundImage']['width480']?>"></div>
                 <div data-media="(min-width: 480px)" data-src="<?=$this->content['heroBackgroundImage']['width480']?>"></div>
@@ -77,11 +74,11 @@
                     <form action="<?php echo $this->url('login');?>" method="post" novalidate="true">
                         <p class="field">
                             <label for="email"><?php echo $this->translate('Email');?></label>
-                            <input id="email" name="email" required="required" type="text" placeholder="Email">
+                            <input id="email" name="email" required="required" type="text">
                         </p>
                         <p class="field">
                             <label for="password"><?php echo $this->translate('Password');?></label>
-                            <input id="password" name="password" required="required" type="password" placeholder="*****">
+                            <input id="password" name="password" required="required" type="password">
                         </p>
                         <p class="keeplogin">
                             <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping">
