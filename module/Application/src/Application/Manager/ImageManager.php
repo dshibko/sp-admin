@@ -14,6 +14,7 @@ class ImageManager extends BasicManager {
 
     const IMAGE_TYPE_AVATAR = 'avatar';
     const IMAGE_TYPE_LEAGUE = 'league';
+    const IMAGE_TYPE_PRIZES = 'prizes';
     const IMAGE_TYPE_CONTENT = 'content';
     const IMAGE_TYPE_AWARD = 'award';
     const IMAGE_TYPE_OTHER = 'other';

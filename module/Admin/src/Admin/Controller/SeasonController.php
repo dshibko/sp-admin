@@ -231,13 +231,13 @@ class SeasonController extends AbstractActionController {
 
             $regionData['displayName'] = $regionFieldset->get('displayName')->getValue();
             $prizeImage = $regionFieldset->get('prizeImage');
-            $prizeImagePath = $imageManager->saveUploadedImage($prizeImage, ImageManager::IMAGE_TYPE_LEAGUE);
+            $prizeImagePath = $imageManager->saveUploadedImage($prizeImage, ImageManager::IMAGE_TYPE_PRIZES);
             $regionData['prizeImagePath'] = $prizeImagePath;
             $regionData['prizeTitle'] = $regionFieldset->get('prizeTitle')->getValue();
             $regionData['prizeDescription'] = $regionFieldset->get('prizeDescription')->getValue();
 
             $postWinImage = $regionFieldset->get('postWinImage');
-            $postWinImagePath = $imageManager->saveUploadedImage($postWinImage, ImageManager::IMAGE_TYPE_LEAGUE);
+            $postWinImagePath = $imageManager->saveUploadedImage($postWinImage, ImageManager::IMAGE_TYPE_PRIZES);
             $regionData['postWinImagePath'] = $postWinImagePath;
             $regionData['postWinTitle'] = $regionFieldset->get('postWinTitle')->getValue();
             $regionData['postWinDescription'] = $regionFieldset->get('postWinDescription')->getValue();
