@@ -1,7 +1,7 @@
 .registration {
 
     section {
-        margin: 3em 2.4em 1em 3em;
+        margin: 3em 3em 1em 3em;
         padding: 0 1em 1.6em;
         border-bottom: 1px solid #d5d5d5;
 
@@ -11,13 +11,18 @@
     }
     .ideal-wrap {
         left: 50%;
-        margin-left: -225px;
+        margin-left: -250px;
     }
     .ideal-wrap.ideal-full-width, .buttons-block .ideal-wrap {
         left: 0;
         margin-left: 0;
+        max-width: 100%;
     }
     .ideal-form h2 {
+        position: relative;
+        float: left;
+        left: 50%;
+        margin-left: -250px;
         margin-bottom: 0.5em;
         padding: 0;
         color: @blue;
@@ -47,7 +52,7 @@
         float: left;
         clear: both;
         margin-bottom: 2em;
-        margin-left: -225px;
+        margin-left: -250px;
 
         label {
             float: left;
@@ -55,7 +60,7 @@
         }
         p {
             float: left;
-            width: 370px;
+            width: 290px;
             font: normal 1.6em/1.2 "ProximaNova-Reg", Helvetica, Arial;
 
             strong {
@@ -64,10 +69,11 @@
             }
         }
     }
+
     .stack {
         .field {
             width: 300px;
-            margin-left: -135px;
+            margin-left: -145px;
             label {
                 float: none;
             }
@@ -78,22 +84,26 @@
     }
     
     .change-avatar {
+        max-width: 500px;
         img {
             float: left;
-            margin: 0 9em 1em 0;
+            margin: 0 12em 1em 0;
         }
-        .ideal-field {
+        label {
+            float: left;
         }
     }
+
     .avatar {
         .ideal-radiocheck {
-            margin-left: 1em;
-            max-width: 630px;
+            padding: 1.6em 0;
+            max-width: 670px;
         }
         span:first-child, label {
-            float: left;
+            position: relative;
+            float: right;
             clear: none;
-            margin: 0 10px;
+            margin: 0 0 0 20px;
         }
         span:first-child {
             margin-top: 58px;
@@ -101,10 +111,21 @@
         .ideal-radio {
             top: 40%;
         }
+        .ideal-radiocheck {
+            margin: 0 auto;
+            float: none;
+            display: block;
+            clear: both;
+        }
         .desktopLabel {
+            position: relative;
+            float: left;
+            left: 50%;
+            margin: 0 0 0 -250px;
             font: normal 1.7em/1.6 "ProximaNova-Reg", Helvetica, Arial;
         }
     }
+
     .email-settings {
         label {
             width: 470px;
@@ -121,6 +142,7 @@
             }
         }
     }
+
     .keeplogin {
         .ideal-radiocheck {
             padding: 0;
@@ -162,7 +184,6 @@
                 }
             }
         }
-        
     }
 
     .buttons {
@@ -175,6 +196,19 @@
         .ideal-button {
             float: right;
             margin: 0 0 0 1em;
+        }
+        a {
+            float: right;
+            margin: 0 0 0 1em;
+            padding: 0 1.2em;
+            height: 33px;
+            border: 1px solid @blue;
+            color: #fff;
+            font: normal 1.5em/2 "ProximaNova-Bold", Helvetica, Arial;
+            box-shadow: 0 1px 5px #666;
+
+            .vertical-gradient(#667cbd, #2547a0);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#667cbd', endColorstr='#2547a0',GradientType=0 );
         }
     }
 
@@ -244,6 +278,13 @@ aside.connect-facebook {
     }
 }
 
+p.intro {
+     padding: 2em 3.0em 2em 2.6em;
+     font: normal 1.5em/1.4 "ProximaNova-Reg", Helvetica, Arial;
+
+    .vertical-gradient(#ebf0f7, #d6e0ef);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf0f7', endColorstr='#d6e0ef',GradientType=0 );
+}
 
 
 
@@ -260,6 +301,15 @@ aside.connect-facebook {
             // float: none;
             // margin: 1.3em auto 0;
         }
+        .ideal-form.stack .ideal-heading {
+            width: 100%!important;
+        }
+        .ideal-form h2 {
+            float: none;
+            left: 0;
+            width: 270px;
+            margin: 0 auto;
+        }
         .keeplogin {
             > label:first-child {
                 display: none;
@@ -269,27 +319,52 @@ aside.connect-facebook {
             margin-bottom: 0.6em;
         }
         .avatar .ideal-radiocheck, .ideal-wrap.avatar {
-            max-width: 100%;
-            width: 100%;
+            // max-width: 100%;
+            // width: 100%;
         }
-        .avatar span:first-child, .avatar label {
+        .avatar.ideal-wrap {
+            left: 50%;
+            margin-left: -155px;
+            max-width: 338px;
 
+            .desktopLabel {
+                display: none;
+            }
+            span:first-child, label {
+                float: left;
+                margin: 0 0 1em 20px;
+            }
         }
-        .block-input-file, .avatar span.desktopLabel {
+        .avatar span.desktopLabel {
             display: none;
         }
         .avatar .ideal-radio {
             top: auto;
             margin-top: 45px;
         }
+        .block-input-file {
+            display: none;
+
+            &.change-avatar {
+                display: block;
+                // left: 0;
+                margin-left: -100px;
+                label, .ideal-field {
+                    display: none;
+                }
+            }
+        }
         .email-settings .ideal-wrap {
-            left: 0;
-            margin-left: 0;
+            // left: 0;
+            // margin-left: 0;
             width: 100%;
-            max-width: 100%;
+            // max-width: 100%;
         }
         .email-settings label {
             width: 100%;
+        }
+        .stack .field {
+            margin-left: -135px;
         }
         .ideal-form.stack .buttons-block {
             div {
@@ -297,8 +372,12 @@ aside.connect-facebook {
                 float: left;
                 margin: 0 auto;
                 button {
-                    float: left;
-                    margin: 0 1em 0 0;
+                    // float: left;
+                    margin: 0; 
+                    font-size: 1.7em;
+                    &:first-child {
+                       margin: 0 1em 0 0; 
+                    }
                 }
             }
             &.signIn-buttons-block {
@@ -309,15 +388,17 @@ aside.connect-facebook {
             }
         }
         .buttons {
-            left: 0;
-            margin-top: 2em;
-            margin-left: 0;
-            width: 100%;
-            text-align: center;
-
-            .ideal-button {
+            &.ideal-wrap {
+                .ideal-button {
+                    float: left;
+                    margin: 0 1em 0 0;
+                }
+            }
+            a {
+                position: relative;
+                left: 50%;
                 float: left;
-                margin: 0 1em 0 0;
+                margin: 0.5em 1em 0 -9em;
             }
         }
     }
@@ -343,6 +424,9 @@ aside.connect-facebook {
                 padding: 0 1.4em 0 3.2em;
             }
         }
+    }
+    p.intro {
+        padding: 1em;
     }
     
 }
@@ -370,6 +454,9 @@ aside.connect-facebook {
             button[type="submit"] {
                 font: normal 1.7em/1 "ProximaNova-Bold", Helvetica, Arial;
             }
+            a {
+                font: normal 1.7em/2.4 "ProximaNova-Bold", Helvetica, Arial;
+            }
         }
     }
     aside.connect-facebook {
@@ -380,12 +467,48 @@ aside.connect-facebook {
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-    aside.connect-facebook {
-        div {
-            max-width: 60em;
+    .registration {
+        aside.connect-facebook {
+            div {
+                max-width: 60em;
+            }
         }
-    }
-    .block-input-file, .avatar span.desktopLabel {
-        display: none;
+        p.intro {
+             padding: 2em 2em 2em 2em;
+             font: normal 1.8em/1.4 "ProximaNova-Reg", Helvetica, Arial;
+        }
+        .ideal-form h2 {
+            font: normal 2.6em/1 "ProximaNova-Bold", Helvetica, Arial;
+        }
+        .avatar {
+            .desktopLabel {
+                display: none;
+            }
+            .ideal-radiocheck {
+                max-width: 650px;
+            }
+        }
+        .buttons-block {
+            div {
+                button {
+                    font: normal 1.7em/1 "ProximaNova-Reg", Helvetica, Arial;
+                }
+            }
+        }
+        .block-input-file {
+            display: none;
+
+            &.change-avatar {
+                display: block;
+                // left: 0;
+                margin-left: -220px;
+                label, .ideal-field {
+                    display: none;
+                }
+            }
+        }
+        .avatar span.desktopLabel {
+            display: none;
+        }
     }
 }

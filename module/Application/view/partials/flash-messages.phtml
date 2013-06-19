@@ -1,0 +1,29 @@
+<?php
+    if ($this->flashMessenger()->getPluginFlashMessenger()->hasErrorMessages() || $this->flashMessenger()->getPluginFlashMessenger()->hasCurrentErrorMessages()){
+        $errorMessages = array_merge(
+            $this->flashMessenger()->getPluginFlashMessenger()->getErrorMessages(),  $this->flashMessenger()->getPluginFlashMessenger()->getCurrentErrorMessages()
+        );
+    }
+?>
+<?php if (!empty($errorMessages)):?>
+    <div class="form-errors">
+        <ul>
+            <?php foreach($errorMessages as $message):?>
+                <li><?php echo $message;?></li>
+            <?php endforeach;?>
+        </ul>
+    </div>
+    <?php
+        $this->flashMessenger()->setNamespace(\Zend\Mvc\Controller\Plugin\FlashMessenger::NAMESPACE_ERROR);
+        $this->flashMessenger()->getPluginFlashMessenger()->clearMessages();
+        $this->flashMessenger()->getPluginFlashMessenger()->clearCurrentMessages();
+    ?>
+<?php endif;?>
+
+<?php if ($this->flashMessenger()->getPluginFlashMessenger()->hasSuccessMessages()):?>
+    <?php
+        $this->flashMessenger()->setMessageOpenFormat('<div%s><ul><li>');
+        $this->flashMessenger()->setMessageCloseString('</li></ul></div>');
+    ?>
+    <?php echo $this->flashMessenger()->render(\Zend\Mvc\Controller\Plugin\FlashMessenger::NAMESPACE_SUCCESS, array('message-success'));?>
+<?php endif;?>

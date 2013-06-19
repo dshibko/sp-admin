@@ -15,6 +15,10 @@ class MailManager extends BasicManager {
 
     const PASSWORD_RECOVERY_TEMPLATE = 'recovery';
     const PASSWORD_RECOVERY_EMAIL_SUBJECT = 'Password reset request for %s';
+    const WELCOME_EMAIL_SUBJECT = 'Welcome to %s';
+    const WELCOME_EMAIL_TEMPLATE = 'welcome';
+    const HELP_AND_SUPPORT_EMAIL_TEMPLATE = 'help_and_support';
+    const HELP_AND_SUPPORT_EMAIL_SUBJECT = 'Support Email';
 
     /**
      * @var MailManager
@@ -41,26 +45,49 @@ class MailManager extends BasicManager {
         return $this->sendEmail($email, sprintf(self::PASSWORD_RECOVERY_EMAIL_SUBJECT, $this->getAppName()), self::PASSWORD_RECOVERY_TEMPLATE, array('url' => $url));
     }
 
+    public function sendWelcomeEmail($email, $userName)
+    {
+        return $this->sendEmail($email, sprintf(self::WELCOME_EMAIL_SUBJECT, $this->getAppName()), self::WELCOME_EMAIL_TEMPLATE, array(
+            'appName' => $this->getAppName(),
+            'userName' => $userName
+        ));
+    }
+
+    public function sendHelpAndSupportEmail($userEmail, $userName,$userMessage)
+    {
+        $helpAndSupportEmailAddress = $this->getHelpAndSupportEmailAddress();
+        if (!empty($helpAndSupportEmailAddress)){
+           $this->sendEmail($helpAndSupportEmailAddress,self::HELP_AND_SUPPORT_EMAIL_SUBJECT, self::HELP_AND_SUPPORT_EMAIL_TEMPLATE, array(
+                'userMessage' => $userMessage,
+                'userName'    => $userName,
+                'userEmail'   => $userEmail
+            ));
+        }
+        return true;
+
+    }
     private function sendEmail($to, $subject, $template, $params = array()) {
         $content = $this->prepareContent($template, $params);
         $message = $this->prepareMessage($to, $subject, $content);
         $transport = $this->prepareTransport();
         $transport->send($message);
+        return true;
     }
 
     private function prepareTransport() {
-//        $transport = new Smtp();
-//        $options   = new SmtpOptions(array(
-//            'name'              => 'localhost.localdomain',
-//            'host'              => '127.0.0.1',
-//            'connection_class'  => 'login',
-//            'connection_config' => array(
-//                'username' => 'user',
-//                'password' => 'pass',
-//            ),
-//        ));
-//        $transport->setOptions($options);
-//        return $transport;
+       // $transport = new Smtp();
+        //$options   = new SmtpOptions();
+        /*$options->setHost('smtp.gmail.com')
+            ->setConnectionClass('login')
+            ->setName('smtp.gmail.com')
+            ->setPort(587)
+            ->setConnectionConfig(array(
+                'username' => '*******',
+                'password' => '*******',
+                'ssl' => 'tls',
+            ));
+        //$transport->setOptions($options);
+        //return $transport;*/
         return new Sendmail();
     }
 
@@ -137,6 +164,11 @@ class MailManager extends BasicManager {
             $this->emailConfig = array_key_exists('email', $config) ? $config['email'] : array();
         }
         return $this->emailConfig;
+    }
+
+    private function getHelpAndSupportEmailAddress()
+    {
+        return SettingsManager::getInstance($this->getServiceLocator())->getSetting(SettingsManager::HELP_AND_SUPPORT_EMAIL);
     }
 
 }

@@ -17,7 +17,7 @@ class FooterPage extends BasicObject {
     const PRIVACY_PAGE = 'privacy';
     const CONTACT_US_PAGE = 'contact-us';
     const COOKIES_PAGE = 'cookies-policy';
-
+    const HELP_AND_SUPPORT = 'help-and-support';
     /**
      * @var integer
      *
@@ -38,7 +38,7 @@ class FooterPage extends BasicObject {
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", columnDefinition="ENUM('terms', 'privacy', 'contact-us', 'cookies-policy')")
+     * @ORM\Column(name="type", type="string", columnDefinition="ENUM('terms', 'privacy', 'contact-us', 'cookies-policy', 'help-and-support')")
      */
     protected $type;
 

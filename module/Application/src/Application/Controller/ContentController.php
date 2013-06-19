@@ -2,6 +2,8 @@
 
 namespace Application\Controller;
 
+use Application\Manager\MailManager;
+use Application\Model\Helpers\MessagesConstants;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ExceptionManager;
 use \Application\Manager\ApplicationManager;
@@ -13,6 +15,8 @@ use \Application\Model\Entities\FooterPage;
 
 class ContentController extends AbstractActionController
 {
+    const HELP_AND_SUPPORT_PAGE_ROUTE = 'help';
+
     public function privacyAction()
     {
         $content = '';
@@ -80,17 +84,26 @@ class ContentController extends AbstractActionController
     {
         try{
             $form = new FeedbackForm();
+            $contentManager = ContentManager::getInstance($this->getServiceLocator());
+            $mailManager = MailManager::getInstance($this->getServiceLocator());
+
+            $content = $contentManager->getFooterPageContent(FooterPage::HELP_AND_SUPPORT);
             $request = $this->getRequest();
             if ($request->isPost()){
                 $form->setData($request->getPost());
                 if ($form->isValid()){
-                   //TODO send email to admin
+                    $data = $form->getData();
+                    $mailManager->sendHelpAndSupportEmail($data['email'], $data['name'], $data['query']);
+                    $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_HELP_AND_SUPPORT_MESSAGE_SENT);
+                    return $this->redirect()->toRoute(self::HELP_AND_SUPPORT_PAGE_ROUTE);
                 }else{
                     $this->formErrors($form, $this);
                 }
             }
             return array(
-                'form' => $form
+                'form' => $form,
+                'content' => $content,
+                'title' => 'Help & Support'
             );
         }catch(\Exception $e){
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);

@@ -13,14 +13,7 @@ $this->headTitle($title);
         </div>
         <?php echo $this->renderFacebookButton($this->translate('Connect with Facebook'));?>
     </aside>
-    <?php
-        $errors = $this->renderMessages();
-    ?>
-    <?php if (!empty($errors)):?>
-        <div class="form-errors">
-            <p><?php echo $errors;?></p>
-        </div>
-    <?php endif;?>
+    <?php echo $this->partial('partials/flash-messages');?>
     <!--PASSWORD FORM START-->
         <?php
             $this->passwordForm->prepare();

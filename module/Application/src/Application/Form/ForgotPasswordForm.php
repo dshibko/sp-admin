@@ -24,7 +24,7 @@ class ForgotPasswordForm extends Form {
         ));
 
         //CSRF
-        $this->add(array(
+        /*$this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
             'name' => 'csrf',
             'options' => array(
@@ -32,7 +32,7 @@ class ForgotPasswordForm extends Form {
                     'timeout' => 600
                 )
             )
-        ));
+        ));*/
 
         $this->add(array(
             'name' => 'submit',
