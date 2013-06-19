@@ -26,7 +26,6 @@ msgstr "Submit"
 
 #: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:2
 #: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:50
-#, fuzzy
 msgid "Sign In"
 msgstr "Sign in"
 
@@ -58,7 +57,7 @@ msgstr "Already a member?"
 #: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:97
 #: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:191
 msgid "Register"
-msgstr "Registration"
+msgstr "Register"
 
 #: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/reset.phtml:2
 msgid "Reset Password"
@@ -252,12 +251,7 @@ msgid "Your country"
 msgstr "Your country"
 
 #: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:98
-msgid ""
-"You cannot change your country in the middle of a league. We will prompt you "
-"to re-confirm your details at the start of the the league."
-msgstr ""
-"You cannot change your country in the middle of a league. We will prompt you "
-"to re-confirm your details at the start of the the league."
+msgid msgstr "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league."
 
 #: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:131
 msgid "Profile Type"
@@ -272,10 +266,7 @@ msgid "The requested controller was unable to dispatch the request."
 msgstr "The requested controller was unable to dispatch the request."
 
 #: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:13
-msgid ""
-"The requested controller could not be mapped to an existing controller class."
-msgstr ""
-"The requested controller could not be mapped to an existing controller class."
+msgid msgstr "The requested controller could not be mapped to an existing controller class."
 
 #: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:16
 msgid "The requested controller was not dispatchable."
@@ -369,3 +360,4 @@ msgstr "Visit our main site"
 #: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:26
 msgid "Cookies policy"
 msgstr "Cookies policy"
+

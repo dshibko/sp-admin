@@ -815,3 +815,4 @@ INSERT INTO `settings` (`id`, `setting_key`, `setting_value`) VALUES (null, 'sen
 
 -- okh 18.06
 ALTER TABLE `footer_page`  CHANGE COLUMN `type` `type` ENUM('terms','privacy','contact-us','cookies-policy','help-and-support') NOT NULL AFTER `language_id`;
+

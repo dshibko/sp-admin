@@ -68,34 +68,24 @@
 <link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-fileupload/bootstrap-fileupload.css" />
 <link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-daterangepicker/daterangepicker.css" />
 <link href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/chosen-bootstrap/chosen/chosen.css" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" />
 <!-- END PAGE LEVEL STYLES -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-fileupload/bootstrap-fileupload.js"></script>
 <script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-daterangepicker/date.js"></script>
 <script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/chosen-bootstrap/chosen/chosen.jquery.min.js"></script>
-<script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
-<script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+<script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/ckeditor/ckeditor.js"></script>
 <script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/app.js" type="text/javascript"></script>
 
 <!-- END PAGE LEVEL SCRIPTS -->
 <script type="text/javascript">
+    CKEDITOR.config.language = 'en';
     jQuery(document).ready(function() {
         initDatePicker();
         $('.form-actions button[type=button]').click(function(e) {
             e.preventDefault();
             this.form.reset();
         });
-        if (jQuery().wysihtml5) {
-            if ($('.wysihtml5').size() > 0) {
-                $('.wysihtml5').each(function(i, el) {
-                    $(el).wysihtml5('bypassDefaults', {
-                        "stylesheets": ["<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
-                    });
-                });
-            }
-        }
         $('div.form').children('div.row-fluid:last').find('ul.nav-tabs li').hide();
         $('div.form').children('div.row-fluid:last').find('div.tab-pane').addClass('hidden');
         $("input[type='checkbox']").change(function() {

@@ -49,7 +49,7 @@ class RegionFieldsetsRenderer extends AbstractHelper
     <div class="controls">';
             switch($type) {
                 case 'textarea':
-                    $html .= '<div class="input-prepend"><textarea class="span12 wysihtml5 m-wrap" rows="6" name="' . $element->getAttribute('name') . '" '.(!empty($maxlength) ? 'maxlength="'.$maxlength.'"' : '').'>' . $element->getValue() . '</textarea></div>';
+                    $html .=  '<textarea class="span12 ckeditor m-wrap" name="' . $element->getAttribute('name') . '" rows="10">' . $element->getValue() . '</textarea>';
                     break;
                 case 'file':
                     $image = $add ? '': (is_string($element->getValue()) ? $element->getValue() : '');
