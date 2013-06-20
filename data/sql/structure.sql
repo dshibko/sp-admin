@@ -835,13 +835,26 @@ ALTER TABLE `logotype`  ADD UNIQUE INDEX `language_id` (`language_id`);
 
 CREATE TABLE `term` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
-  `language_id` INT(11) NOT NULL,
-  `copy` TEXT NOT NULL,
   `is_required` TINYINT(1) NOT NULL DEFAULT '0',
   `is_checked` TINYINT(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+)
+COLLATE='utf8_general_ci'
+ENGINE=InnoDB
+ROW_FORMAT=DEFAULT;
+
+-- okh 20.06
+
+CREATE TABLE `term_copy` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `term_id` INT(11) NOT NULL,
+  `language_id` INT(11) NOT NULL,
+  `copy` TEXT NOT NULL,
   PRIMARY KEY (`id`),
+  INDEX `term_id` (`term_id`),
   INDEX `language_id` (`language_id`),
-  CONSTRAINT `FK_term_language` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`)
+  CONSTRAINT `FK_term_copy_term` FOREIGN KEY (`term_id`) REFERENCES `term` (`id`),
+  CONSTRAINT `FK_term_copy_language` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`)
 )
 COLLATE='utf8_general_ci'
 ENGINE=InnoDB

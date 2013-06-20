@@ -13,6 +13,49 @@ $this->headTitle($title);
             </div>
             <div class="portlet-body">
                 <?php if (!empty($this->terms)) : ?>
+                    <table class="table table-striped table-bordered table-hover" id="terms-table">
+                        <thead>
+                        <tr>
+                            <th><?=$this->translate('Copy');?></th>
+                            <th style="width:100px;"><?=$this->translate('Required');?></th>
+                            <th style="width:100px;"><?=$this->translate('Checked');?></th>
+                            <th style="width:125px;"><?=$this->translate('Action');?></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <?php foreach ($this->terms as $term) : ?>
+                            <tr class="odd gradeX">
+                                <td><?=$term['copy'];?></td>
+                                <td><?=(!empty($term['required']) ? $this->translate('Yes') : $this->translate('No'));?></td>
+                                <td><?=(!empty($term['checked']) ? $this->translate('Yes') : $this->translate('No'));?></td>
+                                <td>
+                                    <a href="<?=$this->url('admin-content-terms', array('action' => 'edit', 'id' => $term['id'] ));?>" class="btn mini blue">
+                                        <i class="icon-edit"></i>
+                                        <?=$this->translate('Edit')?>
+                                    </a>
+                                    <a href="#deleteModal<?=$term['id'];?>" role="button" class="btn btn-warning mini red" data-toggle="modal">
+                                        <i class="icon-trash"></i>
+                                        <?=$this->translate('Delete')?>
+                                    </a>
+                                    <div id="deleteModal<?=$term['id'];?>" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                            <h3 id="myModalLabel3">Please Confirm</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to delete this term?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+                                            <button data-dismiss="modal" class="btn blue"
+                                                    onclick="window.location.href = '<?=$this->url('admin-content-terms', array('action' => 'delete', 'id' => $term['id']))?>';">Confirm</button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 <?php else: ?>
                     <?=$this->translate('There is no terms')?>
                 <?php endif; ?>

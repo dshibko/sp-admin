@@ -35,7 +35,9 @@ class MessagesConstants
     const SUCCESS_MINI_LEAGUE_DELETE = 'A mini league was deleted successfully';
     const SUCCESS_SEASON_DELETE = 'A season was deleted successfully';
     const SUCCESS_FOOTER_PAGE_SAVED = 'Footer Page successfully saved';
-    const SUCCESS_LOGOTYPE_SAVED = 'Logotype saved successfully';
+    const SUCCESS_LOGOTYPE_SAVED = 'Logotype was saved successfully';
+    const SUCCESS_TERM_SAVED = 'Term was saved successfully';
+    const SUCCESS_TERM_DELETED = 'Term was deleted successfully';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -60,7 +62,8 @@ class MessagesConstants
     const ERROR_CANNOT_FIND_USER = 'Cannot find user';
     const ERROR_INVALID_FORM_TYPE = 'Invalid form type';
     const ERROR_UNDEFINED_FOOTER_PAGE_TYPE = 'Undefined footer page type';
-
+    const ERROR_INVALID_TERM_ID = 'Invalid term id';
+    const ERROR_CANNOT_FIND_TERM = 'Cannot find term';
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
