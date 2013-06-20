@@ -459,3 +459,47 @@ position: relative;
 }
 
 
+/***faqs***/
+.lt-ie8 .support .faqs dt {
+  *zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild(newSmall=document.createElement("small") ).className="before",
+          newSmall.innerHTML="Q"
+         );
+}
+.lt-ie8 .support .faqs dd {
+  *zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild(newSmall=document.createElement("small") ).className="before",
+          newSmall.innerHTML="A"
+         );
+}
+.lt-ie8 .support .faqs dt small {
+  display: inline-block;
+  position: absolute;
+  top: -0.1em;
+  left: 0;
+  margin-right: 0.5em;
+  padding: 0.25em 0.38em;
+  background-color: #144a9b;
+  color: #fff;
+  font: normal 0.8em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
+.lt-ie8 .support .faqs dd small {
+  display: inline-block;
+  position: absolute;
+  top: -0.15em;
+  left: 0;
+  margin-right: 0.5em;
+  padding: 0.35em 0.53em;
+  background-color: #7f7f80;
+  color: #fff;
+  font: normal 1em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
+
+.ie8 .support .faqs dt:before {
+  font: normal 1.8em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
+.ie8 .support .faqs dd:before {
+  font: normal 1.6em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
