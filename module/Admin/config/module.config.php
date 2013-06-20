@@ -288,6 +288,16 @@ return array(
                     ),
                 ),
             ),
+            'admin-opta-uploader' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/opta/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Opta',
+                        'action'     => 'upload'
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -321,6 +331,7 @@ return array(
             'Admin\Controller\FooterPages' => 'Admin\Controller\FooterPagesController',
             'Admin\Controller\PreMatchShareCopy' => 'Admin\Controller\PreMatchShareCopyController',
             'Admin\Controller\PostMatchShareCopy' => 'Admin\Controller\PostMatchShareCopyController',
+            'Admin\Controller\Opta' => 'Admin\Controller\OptaController',
         ),
     ),
     'view_manager' => array(
@@ -637,12 +648,16 @@ return array(
                             ),
                         ),
                     ),
+                    'opta' => array(
+                        'title' => 'Opta',
+                        'label' => 'icon-bar-chart',
+                        'route' => 'admin-opta-uploader',
+                    ),
                     'settings' => array(
                         'title' => 'Settings',
                         'label' => 'icon-cogs',
                         'route' => 'admin-settings',
                     ),
-
                 ),
             ),
         ),

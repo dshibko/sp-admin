@@ -13,7 +13,7 @@
                 <img src="<?=$this->getUserAvatar($this->getCurrentUser()->getAvatar()->getMediumImagePath(), $this->getCurrentUser()->getFacebookId())?>" itemprop="photo" title="<?=$this->getCurrentUser()->getDisplayName()?>" alt="<?=$this->getCurrentUser()->getDisplayName()?>" >
                 <img src="<?=$this->getCurrentUser()->getCountry()->getFlagImage()?>" itemprop="nationality" alt="<?=$this->getCurrentUser()->getCountry()->getName()?>" >
                 <h1 itemprop="name"><?=$this->getCurrentUser()->getDisplayName()?></h1>
-                <a href="#">View full profile</a>
+<!--                <a href="#">View full profile</a>-->
             </section>
 
             <?php if ($this->getCurrentUser()->getIsActive()) : ?>

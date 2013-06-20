@@ -90,7 +90,8 @@ class Competition extends BasicObject {
      */
     public function setDisplayName($displayName)
     {
-        $this->displayName = $displayName;
+        if (!empty($displayName))
+            $this->displayName = $displayName;
     
         return $this;
     }

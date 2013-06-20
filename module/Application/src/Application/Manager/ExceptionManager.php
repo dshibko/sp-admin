@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use \Zend\Log\Logger;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 
@@ -38,11 +39,19 @@ class ExceptionManager extends BasicManager {
 
     /**
      * @param \Exception $e
-     * @param \Zend\Mvc\Controller\AbstractActionController $controller
+     * @param int $priority
+     * @param \Zend\Console\Adapter\AdapterInterface $console
      */
-    public function handleOptaException(\Exception $e, \Zend\Mvc\Controller\AbstractActionController $controller = null) {
-        LogManager::getInstance($this->getServiceLocator())->logOptaException($e);
-        var_dump($e->getMessage());
+    public function handleOptaException(\Exception $e, $priority = Logger::ERR, $console = null) {
+        LogManager::getInstance($this->getServiceLocator())->logOptaException($e, $priority);
+        if ($console != null) {
+            $console->writeLine("");
+            $console->writeLine($e->getMessage());
+        } else {
+            $flashMessenger = $this->getServiceLocator()->get('ControllerPluginManager')->get('FlashMessenger');
+            $flashMessenger->addErrorMessage($e->getMessage());
+            $flashMessenger->addErrorMessage($e->getTraceAsString());
+        }
     }
 
 }

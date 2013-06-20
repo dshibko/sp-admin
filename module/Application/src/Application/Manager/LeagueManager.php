@@ -44,6 +44,7 @@ class LeagueManager extends BasicManager {
     }
 
     public function recalculateLeaguesTables(\Application\Model\Entities\Match $match) {
+
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
 
         if ($season != null) {

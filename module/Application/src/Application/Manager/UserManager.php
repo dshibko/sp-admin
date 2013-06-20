@@ -278,13 +278,15 @@ class UserManager extends BasicManager {
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
             $oldAvatar = $user->getAvatar();
             $user->setAvatar($newAvatar);
-            UserDAO::getInstance($this->getServiceLocator())->save($user, false);
+            UserDAO::getInstance($this->getServiceLocator())->save($user, false, false);
             if (!$oldAvatar->getIsDefault()){
                 //TODO move these lines to method
                 $this->deleteAvatarImages($oldAvatar);
-                AvatarDAO::getInstance($this->getServiceLocator())->remove($oldAvatar, false);
+                AvatarDAO::getInstance($this->getServiceLocator())->remove($oldAvatar, false, false);
             }
             UserDAO::getInstance($this->getServiceLocator())->flush();
+            UserDAO::getInstance($this->getServiceLocator())->clearCache();
+            AvatarDAO::getInstance($this->getServiceLocator())->clearCache();
             return true;
         }
         return false;

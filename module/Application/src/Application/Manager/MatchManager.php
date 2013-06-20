@@ -489,7 +489,7 @@ class MatchManager extends BasicManager
         if (!empty($predictionIds)){
             $totalNumberOfPredictions = count($predictionIds);
             //Match report top predicted scorers
-            $topScorers = $predictionManager->getTopScorers($predictionIds, self::MATCH_REPORT_TOP_SCORERS_NUMBER,true);
+            $topScorers = $predictionManager->getTopScorers($predictionIds, self::MATCH_REPORT_TOP_SCORERS_NUMBER, true);
             $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
             if (!empty($topScorers) && $matchPredictionPlayersCount){
                 $scorers = array();

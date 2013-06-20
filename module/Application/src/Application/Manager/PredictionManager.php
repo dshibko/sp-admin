@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use \Application\Model\DAOs\PredictionPlayerDAO;
 use \Application\Model\Entities\Match;
 use \Application\Model\DAOs\TeamDAO;
 use \Application\Model\DAOs\PlayerDAO;
@@ -89,6 +90,7 @@ class PredictionManager extends BasicManager {
             }
 
             $predictionDAO->save($prediction);
+            PredictionPlayerDAO::getInstance($this->getServiceLocator())->clearCache();
 
         } else
             throw new \Exception(MessagesConstants::ERROR_MATCH_NOT_FOUND);

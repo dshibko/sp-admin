@@ -35,6 +35,7 @@ class MessagesConstants
     const SUCCESS_MINI_LEAGUE_DELETE = 'A mini league was deleted successfully';
     const SUCCESS_SEASON_DELETE = 'A season was deleted successfully';
     const SUCCESS_FOOTER_PAGE_SAVED = 'Footer Page successfully saved';
+    const SUCCESS_OPTA_FEED_PARSED = 'Opta feed was parsed successfully';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -59,6 +60,7 @@ class MessagesConstants
     const ERROR_CANNOT_FIND_USER = 'Cannot find user';
     const ERROR_INVALID_FORM_TYPE = 'Invalid form type';
     const ERROR_UNDEFINED_FOOTER_PAGE_TYPE = 'Undefined footer page type';
+    const ERROR_OPTA_FEED_PARSER_CRASHED = 'Opta feed parsing was crashed';
 
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";
@@ -124,6 +126,16 @@ class MessagesConstants
 
 
     // Opta
-    const WARNING_TEAM_MISSED = 'A team was missed.';
+    const MESSAGE_PREFIX = 'Message: ';
+    const INFO_NOT_CURRENT_SEASON = 'Feed season is not current application season';
+    const INFO_WRONG_COMPETITION = 'Feed competition is not an application competition';
+    const INFO_ENTITY_NOT_FOUND = '"%s" was not found';
+    const WARNING_TEAM_NOT_FOUND = 'A team was with team_id = "%s" was not found';
+    const ERROR_FIELD_IS_EMPTY = 'The field "%s" is empty';
+    const ERROR_CANNOT_BE_PARSED = 'The feed file contents cannot be parsed to xml';
+
+    const LOG_FEED_IMPORT_STARTED = 'Opta Feed %s Import Started (%s)';
+    const LOG_FEED_IMPORT_FINISHED = 'Opta Feed %s Import Finished (%s)';
+
 
 }

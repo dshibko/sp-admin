@@ -137,7 +137,6 @@ $this->headTitle($title);
                                 <tr>
                                     <th><?=$this->translate('Name')?></th>
                                     <th class="hidden-480"><?=$this->translate('Email')?></th>
-                                    <th><?=$this->translate('Gender')?></th>
                                     <th><?=$this->translate('Facebook')?></th>
                                     <th class="hidden-480"><?=$this->translate('Joined')?></th>
                                 </tr>
@@ -147,9 +146,6 @@ $this->headTitle($title);
                                     <tr class="odd gradeX">
                                         <td><?=$user['displayName']?></td>
                                         <td class="hidden-480"><a href="mailto:<?=$user['email']?>"><?=$user['email']?></a></td>
-                                        <td>
-                                            <div class="glyphicons no-js <?=strtolower($user['gender']) == 'male' ? 'user' : 'girl'?>"><i></i></div>
-                                        </td>
                                         <td>
                                             <?=empty($user['facebookId']) ? 'NO' : 'YES'?>
                                         </td>

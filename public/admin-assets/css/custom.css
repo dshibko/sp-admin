@@ -70,44 +70,44 @@ div.row-fluid div.tab-pane.hidden {
     width: 247px;
 }
 
-body {
-    background-color:#24499a !important;
-}
+/*body {*/
+    /*background-color:#24499a !important;*/
+/*}*/
 
-.header .navbar-inner {
-    background: #203668 !important;
-}
+/*.header .navbar-inner {*/
+    /*background: #203668 !important;*/
+/*}*/
 
-.page-sidebar > ul > li > a {
-    border-top: 1px solid #546c99 !important;
-}
+/*.page-sidebar > ul > li > a {*/
+    /*border-top: 1px solid #546c99 !important;*/
+/*}*/
 
-.page-sidebar > ul > li.open > a, .page-sidebar > ul > li >a:hover, .page-sidebar > ul > li:hover >a {
-    background: #203668 !important;
-}
+/*.page-sidebar > ul > li.open > a, .page-sidebar > ul > li >a:hover, .page-sidebar > ul > li:hover >a {*/
+    /*background: #203668 !important;*/
+/*}*/
 
-.page-sidebar > ul > li > ul.sub-menu > li > a:hover {
-    background: #203668 !important;
-}
+/*.page-sidebar > ul > li > ul.sub-menu > li > a:hover {*/
+    /*background: #203668 !important;*/
+/*}*/
 
-.page-sidebar > ul > li > ul.sub-menu li > ul.sub-menu > li.active > a, .page-sidebar > ul > li > ul.sub-menu li > ul.sub-menu > li > a:hover, .page-sidebar > ul > li > ul.sub-menu li.open > a {
-    background: #203668 !important;
-}
+/*.page-sidebar > ul > li > ul.sub-menu li > ul.sub-menu > li.active > a, .page-sidebar > ul > li > ul.sub-menu li > ul.sub-menu > li > a:hover, .page-sidebar > ul > li > ul.sub-menu li.open > a {*/
+    /*background: #203668 !important;*/
+/*}*/
 
-.page-sidebar > ul > li a i {
-    color: #fff;
-}
+/*.page-sidebar > ul > li a i {*/
+    /*color: #fff;*/
+/*}*/
 
-.page-title {
+/*.page-title {*/
     /*font-family: League Gothic,*/
-    color: #203668;
-    text-transform: uppercase;
-}
+    /*color: #203668;*/
+    /*text-transform: uppercase;*/
+/*}*/
 
-.portlet.box .portlet-title {
-    background: #24499a !important;
-}
+/*.portlet.box .portlet-title {*/
+    /*background: #24499a !important;*/
+/*}*/
 
-.portlet.box {
-    border: 1px solid #24499a !important;
-}
+/*.portlet.box {*/
+    /*border: 1px solid #24499a !important;*/
+/*}*/
