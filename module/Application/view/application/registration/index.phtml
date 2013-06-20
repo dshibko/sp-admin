@@ -53,8 +53,15 @@ $this->headTitle($title);
                 <?php echo $this->formElement($form->get('last_name'));?>
             </div>
             <div>
-                <?php echo $this->formLabel($form->get('gender'));?>
-                <?php echo $this->formElement($form->get('gender'));?>
+                <label><?php echo $this->translate('Gender');?></label>
+                <label class="male">
+                    <input type="radio" name="gender" value="<?php echo \Application\Form\RegistrationForm::MALE;?>">
+                    <?php echo $this->translate('Male');?>
+                </label>
+                <label class="female">
+                    <input type="radio" name="gender" value="<?php echo \Application\Form\RegistrationForm::FEMALE;?>">
+                    <?php echo $this->translate('Female');?>
+                </label>
             </div>
             <div class="date-birth">
                 <?php //TODO doesn't render?>
@@ -146,14 +153,14 @@ $this->headTitle($title);
                 ?>
                 <?php echo $this->formElement($form->get('avatar'));?>
             </div>
-            <div class="avatar ideal-full-width claerfix">
-                <span class="desktopLabel"><?php echo $this->translate('Or choose from selection');?></span>
+            <div class="avatar ideal-full-width clearfix">
+                <label class="desktopLabel"><?php echo $this->translate('Or choose from selection');?></label>
                 <?php echo $this->renderDefaultAvatars($this->default_avatar);?>
             </div>
         </section>
         <section class="email-settings">
             <div>
-                <h2><?php echo $this->translate('Email Settings');?></h2>
+                <h2><?php echo $this->translate('Terms');?></h2>
             </div>
             <div>
                 <label>

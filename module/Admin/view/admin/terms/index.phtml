@@ -1,0 +1,35 @@
+<?php
+$title = $this->translate('Terms');
+$this->headTitle($title);
+?>
+<div class="row-fluid form-vertical landing">
+    <div class="span12">
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <h4><?=$title;?></h4>
+                <div class="actions">
+                    <a href="<?=$this->url('admin-content-terms', array('action' => 'add'))?>" class="btn green"><i class="icon-plus"></i> <?=$this->translate('Add')?></a>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <?php if (!empty($this->terms)) : ?>
+                <?php else: ?>
+                    <?=$this->translate('There is no terms')?>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- BEGIN PAGE LEVEL STYLES -->
+<!-- END PAGE LEVEL STYLES -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/app.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<script type="text/javascript">
+
+    //Date sorting
+    jQuery(document).ready(function() {
+        App.init(); // initlayout and core plugins
+    });
+</script>
+<!-- END JAVASCRIPTS -->

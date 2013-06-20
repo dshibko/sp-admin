@@ -4,7 +4,7 @@ namespace Neoco\Form;
 
 use Zend\Form\Form;
 
-abstract class FieldsetsForm extends Form {
+abstract class FieldsetsForm extends UploadableForm {
 
     public function __construct(array $fieldsets, $name = null) {
         parent::__construct($name);

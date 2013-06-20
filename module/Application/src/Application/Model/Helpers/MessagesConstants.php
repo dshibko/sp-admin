@@ -35,6 +35,7 @@ class MessagesConstants
     const SUCCESS_MINI_LEAGUE_DELETE = 'A mini league was deleted successfully';
     const SUCCESS_SEASON_DELETE = 'A season was deleted successfully';
     const SUCCESS_FOOTER_PAGE_SAVED = 'Footer Page successfully saved';
+    const SUCCESS_LOGOTYPE_SAVED = 'Logotype saved successfully';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";

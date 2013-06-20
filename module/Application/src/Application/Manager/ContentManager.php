@@ -2,10 +2,12 @@
 
 namespace Application\Manager;
 
+use Application\Model\DAOs\LogotypeDAO;
 use \Application\Model\Entities\FooterSocial;
 use \Application\Model\DAOs\FooterSocialDAO;
 use \Application\Model\Entities\FooterImage;
 use \Application\Model\DAOs\FooterImageDAO;
+use Application\Model\Entities\Logotype;
 use \Application\Model\Entities\RegionGameplayContent;
 use \Application\Model\DAOs\RegionGameplayContentDAO;
 use \Application\Model\Entities\RegionContent;
@@ -277,6 +279,66 @@ class ContentManager extends BasicManager {
     }
 
     /**
+     * @param \Zend\Form\Form $form
+     * @return array
+     */
+    public function getLogotypeLanguageData(\Zend\Form\Form $form)
+    {
+        $data = array();
+        if (!empty($form)){
+            $imageManager = ImageManager::getInstance($this->getServiceLocator());
+            $emblem = $imageManager->saveUploadedImage($form->get('emblem'), ImageManager::IMAGE_TYPE_LOGOTYPE);
+            $data['emblem'] = $emblem;
+            foreach($form->getFieldsets() as $fieldset){
+                $language = $fieldset->getData();
+                $data['languages'][$language['id']] = array(
+                    'logotype' => $imageManager->saveUploadedImage($fieldset->get('logotype'), ImageManager::IMAGE_TYPE_LOGOTYPE)
+                );
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function saveLogotype(array $data)
+    {
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+        $logotypeDAO = LogotypeDAO::getInstance($this->getServiceLocator());
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        if (!empty($data)){
+            $emblem = $data['emblem'];
+            foreach($data['languages'] as $id => $languageData){
+                $logotype = $this->getLogotypeByLanguage($id);
+                if (is_null($logotype)){
+                    $logotype = new Logotype();
+                }
+                $language = $languageManager->getLanguageById($id);
+                $logotype->setLanguage($language);
+
+                if (!empty($emblem)){
+                    $oldEmblem = $logotype->getEmblem();
+                    if (!empty($oldEmblem)){
+                        $imageManager->deleteImage($oldEmblem);
+                    }
+                    $logotype->setEmblem($emblem);
+                }
+                if (!empty($languageData['logotype'])){
+                    $oldLogotype = $logotype->getLogotype();
+                    if (!empty($oldLogotype)){
+                        $imageManager->deleteImage($oldLogotype);
+                    }
+                    $logotype->setLogotype($languageData['logotype']);
+                }
+                $logotypeDAO->save($logotype, false, false);
+            }
+
+            $logotypeDAO->flush();
+            $logotypeDAO->clearCache();
+        }
+    }
+    /**
      * @param $type
      * @param $languageId
      * @param bool $hydrate
@@ -288,6 +350,16 @@ class ContentManager extends BasicManager {
         return FooterPageDAO::getInstance($this->getServiceLocator())->getFooterPageByTypeAndLanguage($type, $languageId, $hydrate, $skipCache);
     }
 
+    /**
+     * @param $languageId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\Logotype
+     */
+    public function getLogotypeByLanguage($languageId, $hydrate = false, $skipCache = false)
+    {
+        return LogotypeDAO::getInstance($this->getServiceLocator())->getLogotypeByLanguage($languageId, $hydrate, $skipCache);
+    }
     /**
      * @param array $data
      * @param $pageType
@@ -325,6 +397,15 @@ class ContentManager extends BasicManager {
     }
 
     /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getLogotypes($hydrate = false, $skipCache = false)
+    {
+        return LogotypeDAO::getInstance($this->getServiceLocator())->findAll($hydrate, $skipCache);
+    }
+    /**
      * @param $pageType
      * @return string
      */
@@ -337,7 +418,7 @@ class ContentManager extends BasicManager {
         if (!is_null($footerPage)){
             return $footerPage->getContent();
         }
-        return '';
+        return false;
 
     }
 

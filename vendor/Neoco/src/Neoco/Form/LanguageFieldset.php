@@ -1,11 +1,10 @@
 <?php
 
 namespace Neoco\Form;
-use \Zend\Form\Fieldset;
-use \Zend\InputFilter\InputFilterProviderInterface;
+
 use \Neoco\Form\FieldsetObjectInterface;
 
-abstract class LanguageFieldset extends Fieldset implements InputFilterProviderInterface, FieldsetObjectInterface{
+abstract class LanguageFieldset extends UploadableFieldset implements  FieldsetObjectInterface{
 
     protected $data;
 
@@ -44,7 +43,7 @@ abstract class LanguageFieldset extends Fieldset implements InputFilterProviderI
             $validators = array('required' => $required);
             $inputSpec[$element->getName()] = $validators;
         }
-        return $inputSpec;
+        return parent::getInputFilterSpecification($inputSpec);
     }
 
     public function initFieldsetByObject($dataObject){}

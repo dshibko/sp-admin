@@ -3,7 +3,7 @@ $title = $this->translate('Settings');
 $this->headTitle($title);
 ?>
 <div role="main" class="two-column-section clearfix">
-    <div class="first-column registration">
+    <div class="first-column registration settings">
     <h1><?php echo $this->escapeHtml($title);?></h1>
     <?php if (!$this->user->getFacebookId()):?>
     <aside class="connect-facebook clearfix">
@@ -111,13 +111,13 @@ $this->headTitle($title);
         <div>
             <h2><?php echo $this->translate('Change Your Avatar');?></h2>
         </div>
-        <img src="<?php echo $this->user->getAvatar()->getSmallImagePath();?>" alt="<?php echo $this->translate('User avatar');?>"/>
-        <div class="block-input-file">
+        <div class="block-input-file change-avatar">
+            <img src="<?php echo $this->user->getAvatar()->getSmallImagePath();?>" alt="<?php echo $this->translate('User avatar');?>"/>
             <?php echo $this->formLabel($this->avatarForm->get('avatar')); ?>
             <?php  echo $this->formElement($this->avatarForm->get('avatar')); ?>
         </div>
         <div class="avatar ideal-full-width claerfix">
-            <span class="desktopLabel"><?php echo $this->translate('Or choose from selection');?></span>
+            <label class="desktopLabel"><?php echo $this->translate('Or choose from selection');?></label>
             <?php echo $this->renderDefaultAvatars();?>
         </div>
         <div class="buttons">
@@ -163,7 +163,7 @@ $this->headTitle($title);
     <!--REGIONAL SETTINGS FORM END-->
 
     <!--EMAIL SETTINGS FORM START-->
-        <?php
+        <?php/*
         $this->emailSettingsForm->prepare();
         $this->emailSettingsForm->setAttribute('action', $this->url('user-settings'));
         echo $this->form()->openTag($this->emailSettingsForm);
@@ -189,7 +189,7 @@ $this->headTitle($title);
         </section>
         <?php
         echo $this->formHidden($this->emailSettingsForm->get('type'));
-        echo $this->form()->closeTag();
+        echo $this->form()->closeTag()*/;
         ?>
     <!--EMAIL SETTINGS FORM END-->
 
@@ -341,4 +341,5 @@ $this->headTitle($title);
     $('#settings-change-language').idealforms(languageOptions).data('idealforms');
     $('#settings-change-email-settings').idealforms(emailSettingsOptions).data('idealforms');
     $('#settings-change-public-profile').idealforms(publicProfileOptions).data('idealforms');
+
 </script>
