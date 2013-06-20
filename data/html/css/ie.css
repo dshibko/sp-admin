@@ -66,6 +66,8 @@
   height: 65px;
 }
 
+
+/***article-image***/
 .lt-ie8 .article-image.article-image-left figure {
     float: none;
     display: block;
@@ -87,11 +89,24 @@
     padding-bottom: 3em;
     width: 40em;
 }
+.lt-ie8 .inner-page .article-image.article-image-left > div, .lt-ie8 .inner-page .article-image.article-image-right > div  {
+    margin: 4.6em 3em 3em 3.6em; 
+    width: 40%;
+}
 .lt-ie8 .article-image.article-image-left > div {
   float: right;
-   margin: 11.6em 8em 3em 3em;
-   padding: 0;
-   padding-bottom: 3em;
+  margin: 11.6em 8em 3em 3em;
+  padding: 0;
+  padding-bottom: 3em;
+}
+.lt-ie8 .inner-page .article-image.article-image-left > div {
+  margin: 4.6em 3.6em 3em 3em; 
+}
+.lt-ie8 .inner-page .article-image figure {
+  width: 50%;
+}
+.lt-ie8 .inner-page .article-image.article-image-left figure {
+  margin-right: 0;
 }
 
 .lt-ie9.ie8 .ideal-file-upload {
