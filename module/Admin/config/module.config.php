@@ -312,6 +312,16 @@ return array(
                     ),
                 ),
             ),
+            'admin-opta-uploader' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/opta/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Opta',
+                        'action'     => 'upload'
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
