@@ -102,6 +102,9 @@
 .lt-ie8 .inner-page .article-image.article-image-left > div {
   margin: 4.6em 3.6em 3em 3em; 
 }
+.lt-ie8 .inner-page .article-image figure {
+  width: 50%;
+}
 .lt-ie8 .inner-page .article-image.article-image-left figure {
   margin-right: 0;
 }
