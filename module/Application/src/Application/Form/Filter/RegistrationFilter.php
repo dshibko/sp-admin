@@ -338,6 +338,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                 'required' => true,
                 'inarrayvalidator' => false
             )));
+
             $this->inputFilter = $inputFilter;
         }
 

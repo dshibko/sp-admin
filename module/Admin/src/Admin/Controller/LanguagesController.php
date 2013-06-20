@@ -153,7 +153,7 @@ class LanguagesController extends AbstractActionController
                         throw new \Exception(MessagesConstants::ERROR_UPDATE_LANGUAGE_COUNTRIES_FAILED);
                     }
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_LANGUAGE_UPDATED);
-                    return $this->redirect()->toRoute(self::LANGUAGE_LIST_PAGE_ROUTE);
+                    return $this->redirect()->toUrl($this->url()->fromRoute(self::LANGUAGE_LIST_PAGE_ROUTE, $params));
                 } else {
                     //TODO move this to separate method
                     foreach ($languageForm->getMessages() as $el => $messages) {

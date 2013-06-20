@@ -20,6 +20,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
     const DEFAULT_YEAR = 1985;
     const MALE = 'male';
     const FEMALE = 'female';
+    const TERMS_FIELDSET_NAME = 'terms';
 
     protected $serviceLocator;
     protected $terms = array();
@@ -296,9 +297,10 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
         $terms = $this->getTerms();
 
         if (!empty($terms)){
-            $fieldset = new Fieldset('terms');
-            $inputFilter = new InputFilter();
+            $fieldset = new Fieldset(self::TERMS_FIELDSET_NAME);
             $factory = new InputFactory();
+            $inputFilter = $this->getInputFilter();
+            $termsInputFilter = new InputFilter();
             foreach($terms as $term){
                 $name = 'term'.$term['id'];
                 $termData = array(
@@ -316,15 +318,18 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                       'checked' => 'checked'
                     );
                 }
-                $inputFilter->add($factory->createInput(array(
-                    'name' => $name,
-                    'required' => $term['isRequired']
+                $termsInputFilter->add($factory->createInput(array(
+                    'name'     => $name,
+                    'required' => (bool)$term['isRequired']
+
                 )));
                 $fieldset->add($termData);
             }
-            //$fieldset->setInputFilter($inputFilter);
+            $inputFilter->add($termsInputFilter, self::TERMS_FIELDSET_NAME);
+            $this->setInputFilter($inputFilter);
             $this->add($fieldset);
         }
+
         //CSRF
         $this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
@@ -347,14 +352,15 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             ),
         ));
     }
-    public function __construct(ServiceLocatorInterface $serviceLocator = null)
+    public function __construct(ServiceLocatorInterface $serviceLocator = null, $terms = array())
     {
         parent::__construct('register');
 
         $this->setAttribute('method', 'post')
             ->setAttribute('enctype', 'multipart/form-data')
             ->setAttribute('autocomplete', 'off')
-            ->setServiceLocator($serviceLocator);
+            ->setServiceLocator($serviceLocator)
+            ->setTerms($terms);
 
         $inputFilter = $this->getServiceLocator()->get('Application\Form\Filter\RegistrationFilter');
         $this->setInputFilter($inputFilter->getInputFilter());
