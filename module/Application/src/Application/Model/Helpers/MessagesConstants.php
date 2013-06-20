@@ -38,6 +38,7 @@ class MessagesConstants
     const SUCCESS_LOGOTYPE_SAVED = 'Logotype was saved successfully';
     const SUCCESS_TERM_SAVED = 'Term was saved successfully';
     const SUCCESS_TERM_DELETED = 'Term was deleted successfully';
+    const SUCCESS_OPTA_FEED_PARSED = 'Opta feed was parsed successfully';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -130,6 +131,16 @@ class MessagesConstants
 
 
     // Opta
-    const WARNING_TEAM_MISSED = 'A team was missed.';
+    const MESSAGE_PREFIX = 'Message: ';
+    const INFO_NOT_CURRENT_SEASON = 'Feed season is not current application season';
+    const INFO_WRONG_COMPETITION = 'Feed competition is not an application competition';
+    const INFO_ENTITY_NOT_FOUND = '"%s" was not found';
+    const WARNING_TEAM_NOT_FOUND = 'A team was with team_id = "%s" was not found';
+    const ERROR_FIELD_IS_EMPTY = 'The field "%s" is empty';
+    const ERROR_CANNOT_BE_PARSED = 'The feed file contents cannot be parsed to xml';
+
+    const LOG_FEED_IMPORT_STARTED = 'Opta Feed %s Import Started (%s)';
+    const LOG_FEED_IMPORT_FINISHED = 'Opta Feed %s Import Finished (%s)';
+
 
 }

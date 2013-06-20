@@ -57,8 +57,9 @@ abstract class UploadableForm extends Form implements \Zend\InputFilter\InputFil
                     'name' => 'Zend\Validator\Digits',
                 );
             }
+            if ($element->getAttribute('ext'))
+                $inputSpec[$element->getName()]['validators'][] = array('name' => 'fileextension', 'options' => array('extension' => $element->getAttribute('ext')));
         }
-
         return $inputSpec;
     }
 

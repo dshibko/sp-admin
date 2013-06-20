@@ -312,6 +312,16 @@ return array(
                     ),
                 ),
             ),
+            'admin-opta-uploader' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/opta/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Opta',
+                        'action'     => 'upload'
+                    ),
+                ),
+            ),
         ),
     ),
     'service_manager' => array(
@@ -345,6 +355,7 @@ return array(
             'Admin\Controller\FooterPages' => 'Admin\Controller\FooterPagesController',
             'Admin\Controller\PreMatchShareCopy' => 'Admin\Controller\PreMatchShareCopyController',
             'Admin\Controller\PostMatchShareCopy' => 'Admin\Controller\PostMatchShareCopyController',
+            'Admin\Controller\Opta' => 'Admin\Controller\OptaController',
             'Admin\Controller\Logotype' => 'Admin\Controller\LogotypeController',
             'Admin\Controller\Terms' => 'Admin\Controller\TermsController',
         ),
@@ -367,7 +378,7 @@ return array(
             'admin/languages/edit' => __DIR__ . '/../view/admin/languages/add.phtml',
             'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
             'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
-            'admin/terms/add' => __DIR__ . '/../view/admin/terms/edit.phtml'
+            'admin/terms/add' => __DIR__ . '/../view/admin/terms/edit.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -688,6 +699,11 @@ return array(
                                 )
                             ),
                         ),
+                    ),
+                    'opta' => array(
+                        'title' => 'Opta',
+                        'label' => 'icon-bar-chart',
+                        'route' => 'admin-opta-uploader',
                     ),
                     'settings' => array(
                         'title' => 'Settings',

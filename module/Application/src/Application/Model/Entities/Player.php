@@ -172,7 +172,8 @@ class Player extends BasicObject {
      */
     public function setName($name)
     {
-        $this->name = $name;
+        if (!empty($name))
+            $this->name = $name;
     
         return $this;
     }
@@ -195,7 +196,8 @@ class Player extends BasicObject {
      */
     public function setSurname($surname)
     {
-        $this->surname = $surname;
+        if (!empty($surname))
+            $this->surname = $surname;
     
         return $this;
     }
@@ -218,7 +220,8 @@ class Player extends BasicObject {
      */
     public function setDisplayName($displayName)
     {
-        $this->displayName = $displayName;
+        if (!empty($displayName))
+            $this->displayName = $displayName;
     
         return $this;
     }
@@ -241,7 +244,8 @@ class Player extends BasicObject {
      */
     public function setPosition($position)
     {
-        $this->position = $position;
+        if (!empty($position))
+            $this->position = $position;
     
         return $this;
     }
@@ -264,7 +268,7 @@ class Player extends BasicObject {
      */
     public function setShirtNumber($shirtNumber)
     {
-        if ($shirtNumber != null)
+        if ($shirtNumber !== null && $shirtNumber !== '')
             $this->shirtNumber = $shirtNumber;
     
         return $this;
@@ -374,7 +378,7 @@ class Player extends BasicObject {
      */
     public function setCountry($country)
     {
-        if ($country != null)
+        if (!empty($country))
             $this->country = $country;
     }
 
@@ -391,7 +395,7 @@ class Player extends BasicObject {
      */
     public function setHeight($height)
     {
-        if ($height != null)
+        if (!empty($height))
             $this->height = $height;
     }
 
@@ -425,7 +429,7 @@ class Player extends BasicObject {
      */
     public function setRealPosition($realPosition)
     {
-        if ($realPosition != null)
+        if (!empty($realPosition))
             $this->realPosition = $realPosition;
     }
 
@@ -442,7 +446,7 @@ class Player extends BasicObject {
      */
     public function setRealPositionSide($realPositionSide)
     {
-        if ($realPositionSide != null)
+        if (!empty($realPositionSide))
             $this->realPositionSide = $realPositionSide;
     }
 
@@ -459,7 +463,7 @@ class Player extends BasicObject {
      */
     public function setWeight($weight)
     {
-        if ($weight != null)
+        if (!empty($weight))
             $this->weight = $weight;
     }
 
