@@ -487,14 +487,42 @@ class ContentManager extends BasicManager {
         }
     }
 
+    /**
+     * @param $languageId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
     public function getTermsByLanguageId($languageId,$hydrate = false, $skipCache = false)
     {
         return TermDAO::getInstance($this->getServiceLocator())->getTermsByLanguageId($languageId, $hydrate, $skipCache);
     }
 
+    /**
+     * @param Term $term
+     */
     public function deleteTerm(Term $term)
     {
-        return TermDAO::getInstance($this->getServiceLocator())->remove($term);
+       TermDAO::getInstance($this->getServiceLocator())->remove($term);
+    }
+
+    /**
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getTermsCount($skipCache = false)
+    {
+        return TermDAO::getInstance($this->getServiceLocator())->count($skipCache);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegistrationFormTerms()
+    {
+        $language = UserManager::getInstance($this->getServiceLocator())->getCurrentUserLanguage();
+        return $this->getTermsByLanguageId($language->getId(), true);
+
     }
 
 }

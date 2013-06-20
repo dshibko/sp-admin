@@ -64,6 +64,8 @@ class MessagesConstants
     const ERROR_UNDEFINED_FOOTER_PAGE_TYPE = 'Undefined footer page type';
     const ERROR_INVALID_TERM_ID = 'Invalid term id';
     const ERROR_CANNOT_FIND_TERM = 'Cannot find term';
+    const ERROR_MAX_TERMS_COUNT_EXCEEDED = 'Max terms count exceeded';
+
 //    Application Messages Constants
     const ERROR_UNKNOWN = "Unknown server error";
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
