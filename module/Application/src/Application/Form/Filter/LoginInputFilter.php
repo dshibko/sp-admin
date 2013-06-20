@@ -19,6 +19,7 @@ class LoginInputFilter extends InputFilter
             ),
             'validators' => array(
                 array(
+                    'break_chain_on_failure' => true,
                     'name' => 'NotEmpty',
                     'options' => array(
                         'messages' => array(
@@ -38,6 +39,7 @@ class LoginInputFilter extends InputFilter
             'required' => true,
             'validators' => array(
                 array(
+                    'break_chain_on_failure' => true,
                     'name' => 'NotEmpty',
                     'options' => array(
                         'messages' => array(

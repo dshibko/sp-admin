@@ -4,7 +4,7 @@ $this->headTitle($title);
 ?>
 <?php echo $this->partial('partials/header');?>
 <div role="main">
-    <div class="one-column registration">
+    <div class="one-column registration sign-in">
         <h1><?php echo $this->escapeHtml($title);?></h1>
         <aside class="connect-facebook clearfix">
             <div>
@@ -37,7 +37,7 @@ $this->headTitle($title);
                 <label for="loginkeeping"><input id="loginkeeping" type="checkbox" name="rememberme" value="1"><?php echo $this->translate('Remember me');?></label>
             </div>
         </section>
-        <section class="buttons-block signIn-buttons-block clearfix">
+        <section class="buttons-block clearfix">
             <div>
                 <button type="submit"><?php echo $this->translate('Sign In');?></button>
             </div>

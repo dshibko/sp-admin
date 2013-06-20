@@ -44,9 +44,7 @@
         <?php echo $this->navigation('navigation')->menu()
         ->setPartial('partials/menu', array('attributes' => $this->attributes)); ?>
         <div  class="banner">
-            <a href="/" class="logo">
-                <img src="/img/del-tf-logo.png" alt="Truefan Score Predictor">
-            </a>
+            <?php echo $this->renderLogotype();?>
             <figure>
                 <div data-alt="FCBARCELONA Score Predictor Banner" data-picture="">
                     <div data-src="/img/banner-innerpage-480.png"></div>

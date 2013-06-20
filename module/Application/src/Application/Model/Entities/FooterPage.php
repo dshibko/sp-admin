@@ -30,7 +30,7 @@ class FooterPage extends BasicObject {
     /**
      * @var Language
      *
-     * @ORM\OneToOne(targetEntity="Language")
+     * @ORM\ManyToOne(targetEntity="Language")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
     protected $language;

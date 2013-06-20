@@ -2,15 +2,21 @@
 
 namespace Application\Manager;
 
+use Application\Model\DAOs\LogotypeDAO;
+use Application\Model\DAOs\TermCopyDAO;
+use Application\Model\DAOs\TermDAO;
 use \Application\Model\Entities\FooterSocial;
 use \Application\Model\DAOs\FooterSocialDAO;
 use \Application\Model\Entities\FooterImage;
 use \Application\Model\DAOs\FooterImageDAO;
+use Application\Model\Entities\Logotype;
 use \Application\Model\Entities\RegionGameplayContent;
 use \Application\Model\DAOs\RegionGameplayContentDAO;
 use \Application\Model\Entities\RegionContent;
 use \Application\Model\DAOs\RegionContentDAO;
 use \Application\Model\DAOs\MatchDAO;
+use Application\Model\Entities\Term;
+use Application\Model\Entities\TermCopy;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use \Application\Model\Entities\FooterPage;
@@ -277,6 +283,87 @@ class ContentManager extends BasicManager {
     }
 
     /**
+     * @param \Zend\Form\Form $form
+     * @return array
+     */
+    public function getLogotypeLanguageData(\Zend\Form\Form $form)
+    {
+        $data = array();
+        if (!empty($form)){
+            $imageManager = ImageManager::getInstance($this->getServiceLocator());
+            $emblem = $imageManager->saveUploadedImage($form->get('emblem'), ImageManager::IMAGE_TYPE_LOGOTYPE);
+            $data['emblem'] = $emblem;
+            foreach($form->getFieldsets() as $fieldset){
+                $language = $fieldset->getData();
+                $data['languages'][$language['id']] = array(
+                    'logotype' => $imageManager->saveUploadedImage($fieldset->get('logotype'), ImageManager::IMAGE_TYPE_LOGOTYPE)
+                );
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * @param \Zend\Form\Form $form
+     * @return array
+     */
+    public function getTermLanguageData(\Zend\Form\Form $form)
+    {
+        $data = array();
+        if (!empty($form)){
+            $formData = $form->getData();
+            foreach($form->getFieldsets() as $fieldset){
+                $language = $fieldset->getData();
+                $data[$language['id']] = array(
+                    'required' => (bool)$formData['required'],
+                    'checked'  => (bool)$formData['checked'],
+                    'copy'     => $fieldset->get('copy')->getValue()
+                );
+            }
+        }
+        return $data;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function saveLogotype(array $data)
+    {
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+        $logotypeDAO = LogotypeDAO::getInstance($this->getServiceLocator());
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        if (!empty($data)){
+            $emblem = $data['emblem'];
+            foreach($data['languages'] as $id => $languageData){
+                $logotype = $this->getLogotypeByLanguage($id);
+                if (is_null($logotype)){
+                    $logotype = new Logotype();
+                }
+                $language = $languageManager->getLanguageById($id);
+                $logotype->setLanguage($language);
+
+                if (!empty($emblem)){
+                    $oldEmblem = $logotype->getEmblem();
+                    if (!empty($oldEmblem)){
+                        $imageManager->deleteImage($oldEmblem);
+                    }
+                    $logotype->setEmblem($emblem);
+                }
+                if (!empty($languageData['logotype'])){
+                    $oldLogotype = $logotype->getLogotype();
+                    if (!empty($oldLogotype)){
+                        $imageManager->deleteImage($oldLogotype);
+                    }
+                    $logotype->setLogotype($languageData['logotype']);
+                }
+                $logotypeDAO->save($logotype, false, false);
+            }
+
+            $logotypeDAO->flush();
+            $logotypeDAO->clearCache();
+        }
+    }
+    /**
      * @param $type
      * @param $languageId
      * @param bool $hydrate
@@ -288,6 +375,16 @@ class ContentManager extends BasicManager {
         return FooterPageDAO::getInstance($this->getServiceLocator())->getFooterPageByTypeAndLanguage($type, $languageId, $hydrate, $skipCache);
     }
 
+    /**
+     * @param $languageId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\Logotype
+     */
+    public function getLogotypeByLanguage($languageId, $hydrate = false, $skipCache = false)
+    {
+        return LogotypeDAO::getInstance($this->getServiceLocator())->getLogotypeByLanguage($languageId, $hydrate, $skipCache);
+    }
     /**
      * @param array $data
      * @param $pageType
@@ -314,6 +411,16 @@ class ContentManager extends BasicManager {
     }
 
     /**
+     * @param $id
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return mixed
+     */
+    public function getTermById($id, $hydrate = false, $skipCache = false)
+    {
+        return TermDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
+    }
+    /**
      * @param $type
      * @param bool $hydrate
      * @param bool $skipCache
@@ -322,6 +429,16 @@ class ContentManager extends BasicManager {
     public function getFooterPageByType($type, $hydrate = false, $skipCache = false)
     {
         return FooterPageDAO::getInstance($this->getServiceLocator())->getFooterPageByType($type, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getLogotypes($hydrate = false, $skipCache = false)
+    {
+        return LogotypeDAO::getInstance($this->getServiceLocator())->findAll($hydrate, $skipCache);
     }
 
     /**
@@ -337,8 +454,47 @@ class ContentManager extends BasicManager {
         if (!is_null($footerPage)){
             return $footerPage->getContent();
         }
-        return '';
+        return false;
+    }
 
+    /**
+     * @param Term $term
+     * @param $data
+     */
+    public function saveTerm(Term $term, $data)
+    {
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+        $termDAO = TermDAO::getInstance($this->getServiceLocator());
+        $termCopyDAO = TermCopyDAO::getInstance($this->getServiceLocator());
+        if (!empty($data)){
+            foreach($data as $id => $languageData){
+                $termCopy = $term->getTermCopyByLanguage($id);
+                $language = $languageManager->getLanguageById($id);
+                $term->setIsChecked(!empty($languageData['checked']));
+                $term->setIsRequired(!empty($languageData['required']));
+                if (is_null($termCopy)){
+                    $termCopy = new TermCopy();
+                }
+                $termCopy->setLanguage($language);
+                $termCopy->setTerm($term);
+                $termCopy->setCopy($languageData['copy']);
+                $termCopyDAO->save($termCopy, false, false);
+            }
+            $termDAO->save($term, false,false);
+            $termDAO->flush();
+            $termCopyDAO->clearCache();
+            $termDAO->clearCache();
+        }
+    }
+
+    public function getTermsByLanguageId($languageId,$hydrate = false, $skipCache = false)
+    {
+        return TermDAO::getInstance($this->getServiceLocator())->getTermsByLanguageId($languageId, $hydrate, $skipCache);
+    }
+
+    public function deleteTerm(Term $term)
+    {
+        return TermDAO::getInstance($this->getServiceLocator())->remove($term);
     }
 
 }

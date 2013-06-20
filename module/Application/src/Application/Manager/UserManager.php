@@ -421,13 +421,9 @@ class UserManager extends BasicManager {
      */
     public function getCurrentUserLanguage()
     {
+        $userManager = UserManager::getInstance($this->getServiceLocator());
         $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-        if (!is_null($user)){
-            $language = $user->getLanguage();
-        }else{
-            $language = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
-        }
-
+        $language = !is_null($user) ? $user->getLanguage() : $userManager->getUserLanguage();
         return $language;
     }
 

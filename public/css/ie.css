@@ -106,7 +106,7 @@
 /***registration***/
 .lt-ie8  .registration form div {
     display: block;
-    width: 600px;
+    width: 500px;
     margin: 0 auto 0.5em;
 }
 .lt-ie8  .registration form div:first-child, .lt-ie8  .registration form div.ideal-full-width {
@@ -160,12 +160,27 @@
     margin: 0;
     width: 4.3em;
 }
+.lt-ie8 .registration label.female {
+  margin: 0 0  10px 204px;
+
+}
+
 .lt-ie8 .registration .desktopLabel {
-  padding: 0 2em 0 0 ;
+  padding: 0.5em 2em 0.5em 0 ;
+  float: none;
+}
+.lt-ie8 .registration .avatar  {
+  max-width: 600px;
+}
+.lt-ie8 .registration .avatar label {
+  width: auto;
 }
 .lt-ie8 .registration input[type="checkbox"] {
     margin: 0.3em 0 0;
     vertical-align: top;
+}
+.lt-ie8 .registration  .block-input-file input[type="file"] {
+  float: left;
 }
 .lt-ie8 .registration .email-settings label {
   float: none;
@@ -184,20 +199,43 @@
     text-align: left;
     font: normal 1.2em/2 "ProximaNova-Reg", Helvetica, Arial;
 }
-.lt-ie8 .registration .buttons-block.signIn-buttons-block {
-  max-width: 585px;
+.lt-ie8 .registration.sign-in form div {
+  width: 430px;
 }
-.lt-ie8 .registration .buttons-block.signIn-buttons-block div {
+.lt-ie8 .registration.sign-in .ideal-form h2 {
+  margin:  0 0 15px -215px;
+}
+.lt-ie8 .registration.sign-in label {
+  width: 140px;
+}
+.lt-ie8 .registration.sign-in .buttons-block {
+  max-width: 460px;
+}
+.lt-ie8 .registration.sign-in .buttons-block div, .lt-ie8 .registration form .buttons-block div {
   float: right;
   width: auto;
 }
-.lt-ie8 .registration .buttons-block.signIn-buttons-block p {
-/*  text-align: center;*/
+.lt-ie8 .registration form .buttons {
+  margin: 0.5em 0 0;
+  width: auto;
+  text-align: right;
 }
 .lt-ie8 .registration .keeplogin input {
   margin: 0 10px 0 0;
   vertical-align: middle;
 }
+.lt-ie8 .registration .field {
+  left: 0;
+  float: none;
+}
+.lt-ie8 .registration .field label {
+  float: left;
+  width: 190px;
+}
+.lt-ie8 .registration .field p {
+  float: left;
+}
+
 
 /***make-prediction-content***/
 .lt-ie8 .make-prediction > header {
@@ -421,3 +459,47 @@ position: relative;
 }
 
 
+/***faqs***/
+.lt-ie8 .support .faqs dt {
+  *zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild(newSmall=document.createElement("small") ).className="before",
+          newSmall.innerHTML="Q"
+         );
+}
+.lt-ie8 .support .faqs dd {
+  *zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild(newSmall=document.createElement("small") ).className="before",
+          newSmall.innerHTML="A"
+         );
+}
+.lt-ie8 .support .faqs dt small {
+  display: inline-block;
+  position: absolute;
+  top: -0.1em;
+  left: 0;
+  margin-right: 0.5em;
+  padding: 0.25em 0.38em;
+  background-color: #144a9b;
+  color: #fff;
+  font: normal 0.8em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
+.lt-ie8 .support .faqs dd small {
+  display: inline-block;
+  position: absolute;
+  top: -0.15em;
+  left: 0;
+  margin-right: 0.5em;
+  padding: 0.35em 0.53em;
+  background-color: #7f7f80;
+  color: #fff;
+  font: normal 1em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
+
+.ie8 .support .faqs dt:before {
+  font: normal 1.8em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
+.ie8 .support .faqs dd:before {
+  font: normal 1.6em/1 "ProximaNova-Bold", Helvetica, Arial;
+}

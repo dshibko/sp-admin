@@ -72,11 +72,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                 'validators' => array(
                     array(
                         'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY => 'Please select Title'
-                            )
-                        )
+                        'options' => array()
                     )
                 )
             )));
@@ -99,11 +95,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                     ),
                     array(
                         'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY => 'Please enter First Name'
-                            )
-                        )
+                        'options' => array()
                     )
                 ),
             )));
@@ -127,11 +119,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                     ),
                     array(
                         'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY => 'Please enter Last Name'
-                            )
-                        )
+                        'options' => array()
                     )
                 ),
             )));
@@ -170,11 +158,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                     ),
                     array(
                         'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY => 'Please enter Email'
-                            )
-                        )
+                        'options' => array()
                     )
                 ),
             )));
@@ -206,11 +190,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                     ),
                     array(
                         'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY => 'Please enter Confirm Email'
-                            )
-                        )
+                        'options' => array()
                     )
                 ),
             )));
@@ -233,11 +213,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                     ),
                     array(
                         'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY => 'Please enter Password'
-                            )
-                        )
+                        'options' => array()
                     )
                 )
             )));
@@ -264,11 +240,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                     ),
                     array(
                         'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY => 'Please enter Confirm Password'
-                            )
-                        )
+                        'options' => array()
                     )
                 ),
             )));
@@ -284,11 +256,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                 'validators' => array(
                     array(
                         'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY => 'Please select Country'
-                            )
-                        )
+                        'options' => array()
                     )
                 )
 
@@ -309,11 +277,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                     ),
                     array(
                         'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY => 'Please select Date Of Birth'
-                            )
-                        )
+                        'options' => array()
                     )
                 ),
             )));
@@ -341,11 +305,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                     $this->getServiceLocator()->get('badWordValidator'),
                     array(
                         'name' => 'NotEmpty',
-                        'options' => array(
-                            'messages' => array(
-                                NotEmpty::IS_EMPTY => 'Please enter Display Name'
-                            )
-                        )
+                        'options' => array()
                     )
                 ),
             )));

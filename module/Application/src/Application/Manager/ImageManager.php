@@ -23,7 +23,7 @@ class ImageManager extends BasicManager {
     const IMAGE_PLAYER_AVATAR = 'player/avatar';
     const IMAGE_PLAYER_BACKGROUND = 'player/background';
     const IMAGES_DIR_PATH = '/img/';
-
+    const IMAGE_TYPE_LOGOTYPE = 'logotype';
     const WEB_SEPARATOR = '/';
 
     const FOOTER_IMAGE_WIDTH = 182;

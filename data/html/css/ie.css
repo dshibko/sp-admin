@@ -66,6 +66,8 @@
   height: 65px;
 }
 
+
+/***article-image***/
 .lt-ie8 .article-image.article-image-left figure {
     float: none;
     display: block;
@@ -87,11 +89,24 @@
     padding-bottom: 3em;
     width: 40em;
 }
+.lt-ie8 .inner-page .article-image.article-image-left > div, .lt-ie8 .inner-page .article-image.article-image-right > div  {
+    margin: 4.6em 3em 3em 3.6em; 
+    width: 40%;
+}
 .lt-ie8 .article-image.article-image-left > div {
   float: right;
-   margin: 11.6em 8em 3em 3em;
-   padding: 0;
-   padding-bottom: 3em;
+  margin: 11.6em 8em 3em 3em;
+  padding: 0;
+  padding-bottom: 3em;
+}
+.lt-ie8 .inner-page .article-image.article-image-left > div {
+  margin: 4.6em 3.6em 3em 3em; 
+}
+.lt-ie8 .inner-page .article-image figure {
+  width: 50%;
+}
+.lt-ie8 .inner-page .article-image.article-image-left figure {
+  margin-right: 0;
 }
 
 .lt-ie9.ie8 .ideal-file-upload {
@@ -199,10 +214,19 @@
     text-align: left;
     font: normal 1.2em/2 "ProximaNova-Reg", Helvetica, Arial;
 }
-.lt-ie8 .registration .buttons-block.signIn-buttons-block {
-  max-width: 585px;
+.lt-ie8 .registration.sign-in form div {
+  width: 430px;
 }
-.lt-ie8 .registration .buttons-block.signIn-buttons-block div, .lt-ie8 .registration form .buttons-block div {
+.lt-ie8 .registration.sign-in .ideal-form h2 {
+  margin:  0 0 15px -215px;
+}
+.lt-ie8 .registration.sign-in label {
+  width: 140px;
+}
+.lt-ie8 .registration.sign-in .buttons-block {
+  max-width: 460px;
+}
+.lt-ie8 .registration.sign-in .buttons-block div, .lt-ie8 .registration form .buttons-block div {
   float: right;
   width: auto;
 }
@@ -450,3 +474,47 @@ position: relative;
 }
 
 
+/***faqs***/
+.lt-ie8 .support .faqs dt {
+  *zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild(newSmall=document.createElement("small") ).className="before",
+          newSmall.innerHTML="Q"
+         );
+}
+.lt-ie8 .support .faqs dd {
+  *zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild(newSmall=document.createElement("small") ).className="before",
+          newSmall.innerHTML="A"
+         );
+}
+.lt-ie8 .support .faqs dt small {
+  display: inline-block;
+  position: absolute;
+  top: -0.1em;
+  left: 0;
+  margin-right: 0.5em;
+  padding: 0.25em 0.38em;
+  background-color: #144a9b;
+  color: #fff;
+  font: normal 0.8em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
+.lt-ie8 .support .faqs dd small {
+  display: inline-block;
+  position: absolute;
+  top: -0.15em;
+  left: 0;
+  margin-right: 0.5em;
+  padding: 0.35em 0.53em;
+  background-color: #7f7f80;
+  color: #fff;
+  font: normal 1em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
+
+.ie8 .support .faqs dt:before {
+  font: normal 1.8em/1 "ProximaNova-Bold", Helvetica, Arial;
+}
+.ie8 .support .faqs dd:before {
+  font: normal 1.6em/1 "ProximaNova-Bold", Helvetica, Arial;
+}

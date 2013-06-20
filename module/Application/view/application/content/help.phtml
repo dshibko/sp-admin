@@ -4,11 +4,8 @@ $title = $this->translate($this->title);
 $this->headTitle($title );
 ?>
 <div role="main" class="<?php echo ((!$this->getCurrentUser()) ? 'one-column-section' : 'two-column-section')?> clearfix">
-    <div class="first-column registration privacy">
+    <div class="first-column registration support">
         <h1><?php echo $title;?></h1>
-        <div class="user-content privacy-content">
-            <?php echo $this->content;?>
-        </div>
         <p class="intro"><?php echo $this->translate('We would like to hear from you - any comments or suggestions or any questions you may have. Just use the form below.');?></p>
         <?php
         $form = $this->form;
@@ -41,6 +38,10 @@ $this->headTitle($title );
             </div>
         </section>
         <?php echo $this->form()->closeTag();?>
+        <section class="faqs">
+            <h1><?php echo $this->translate('FAQs');?></h1>
+            <?php echo $this->content;?>
+        </section>
     </div>
     <?php if ($this->getCurrentUser()):?>
         <?php echo $this->partial('partials/right-column');?>

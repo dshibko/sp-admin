@@ -44,7 +44,7 @@ class SettingsLanguageForm extends Form {
             'name' => 'language',
             'type' => 'Zend\Form\Element\Select',
             'options' => array(
-                'label' => 'Language',
+                'label' => 'Your Language',
                 'empty_option' => 'Please Select',
                 'value_options' => LanguageManager::getInstance($this->getServiceLocator())->getLanguagesSelectOptions(),
             ),

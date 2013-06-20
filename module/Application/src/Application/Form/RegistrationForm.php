@@ -79,6 +79,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
 
         $this->setAttribute('method', 'post')
             ->setAttribute('enctype', 'multipart/form-data')
+            ->setAttribute('autocomplete', 'off')
             ->setServiceLocator($serviceLocator)
             ->setInputFilter($this->getServiceLocator()->get('Application\Form\Filter\RegistrationFilter')->getInputFilter());
 
@@ -140,6 +141,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'id' => 'registration-email',
                 'maxlength' => RegistrationFilter::EMAIL_MAX_LENGTH,
                 'type' => 'text',
+                'autocomplete' => 'off'
             )
         ));
 
@@ -152,7 +154,8 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             'attributes' => array(
                 'class' => 'required email error',
                 'maxlength' => RegistrationFilter::EMAIL_MAX_LENGTH,
-                'type' => 'text'
+                'type' => 'text',
+                'autocomplete' => 'off'
             )
         ));
 
@@ -167,7 +170,8 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'minlength' => RegistrationFilter::PASSWORD_MIN_LENGTH,
                 'maxlength' => RegistrationFilter::PASSWORD_MAX_LENGTH,
                 'type' => 'password',
-                'id' => 'registration-password'
+                'id' => 'registration-password',
+                'autocomplete' => 'off'
             )
         ));
         //Confirm Password
@@ -182,6 +186,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'equalTo' => '#password',
                 'minlength' => RegistrationFilter::PASSWORD_MIN_LENGTH,
                 'maxlength' => RegistrationFilter::PASSWORD_MAX_LENGTH,
+                'autocomplete' => 'off'
             )
         ));
 
@@ -247,19 +252,16 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
         /******************End Date of Birth***********/
         //Gender
         $this->add(array(
+            'type' => 'Zend\Form\Element\Radio',
             'name' => 'gender',
-            'type' => 'Zend\Form\Element\Select',
             'options' => array(
                 'label' => 'Gender',
-                'empty_option' => 'Please select',
                 'value_options' => array(
-                    self::MALE => 'Male',
-                    self::FEMALE => 'Female'
-
+                    self::MALE  => 'Male',
+                    self::FEMALE => 'Female',
                 ),
             )
         ));
-
         //Display Name
         $this->add(array(
             'name' => 'display_name',

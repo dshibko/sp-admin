@@ -42,7 +42,7 @@ class AvatarDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('a')
             ->from($this->getRepositoryName(), 'a')
-            ->orderBy('a.id', 'ASC')
+            ->orderBy('a.id', 'DESC')
             ->where('a.isDefault = 1');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }

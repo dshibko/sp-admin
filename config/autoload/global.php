@@ -71,4 +71,5 @@ return array(
     'default_player_avatar' => '/img/default_player.png',
     'move_up_image_source' => '/img/up-place.png',
     'move_down_image_source'  => '/img/down-place.png',
+    'default_logotype_image_source' => '/img/del-tf-logo.png'
 );

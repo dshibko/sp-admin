@@ -132,6 +132,15 @@
             margin: 1em 0 0em;
             padding-right: 0;
             font: normal 1.6em/1.6 "ProximaNova-Reg", Helvetica, Arial;
+
+            a {
+                color: @blue;
+                text-decoration: underline;
+                font-family: "ProximaNova-Bold", Helvetica, Arial;
+                &:hover {
+                    text-decoration: none;
+                }
+            }
         }
 
         .ideal-radiocheck {
@@ -159,29 +168,6 @@
 
             .ideal-button {
                 margin: 0 0 0 1em;
-            }
-        }
-
-        &.signIn-buttons-block {
-            max-width: 460px;
-            width: 100%;
-            margin: 0 auto 3em;
-            div.ideal-wrap {
-                float: right;
-                width: auto;
-            }
-            p {
-                color: @gray;
-                font: normal 1.5em/1.55 "ProximaNova-Reg", Helvetica, Arial;
-                a {
-                    color: @blue;
-                    text-decoration: underline;
-                    font-family: "ProximaNova-Bold", Helvetica, Arial;
-                    
-                    &:hover {
-                        text-decoration: none;
-                    }
-                }
             }
         }
     }
@@ -212,9 +198,62 @@
         }
     }
 
+
+    &.sign-in {
+        .ideal-form {
+            .ideal-wrap {
+                margin-left: -200px;
+            }
+            .ideal-full-width {
+                margin-left: 0;
+            }
+            h2 {
+               margin-left: -200px; 
+            }
+        }
+        .buttons-block {
+            margin: 0 auto 3em;
+            max-width: 460px;
+            width: 100%;
+            border: none;
+
+            div.ideal-wrap {
+                float: right;
+                width: auto;
+                text-align: center;
+
+                .ideal-button {
+                    margin: 0 0 0 1em;
+                }
+            }
+            p {
+                color: @gray;
+                font: normal 1.5em/1.55 "ProximaNova-Reg", Helvetica, Arial;
+                a {
+                    color: @blue;
+                    text-decoration: underline;
+                    font-family: "ProximaNova-Bold", Helvetica, Arial;
+                    
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+        } 
+    }
+
+    &.settings {
+        .ideal-form .ideal-label {
+            width: 194px!important;
+        }
+        .ideal-form .email-settings label {
+            width: auto!important;
+        }
+    }
+
 }
 
-.form-errors {
+.form-errors, .success-message {
     margin: 2em 2em 2em 2.6em;
     padding: 1.2em 1.2em 0;
     border: 1px solid #d14848;
@@ -224,15 +263,17 @@
 
     ul {
         margin-bottom: 1em;
-
         li {
-            list-style: disc;
-            margin-left: 2em;
+            list-style: none;
         }
     }
     p {
         margin: 0 0 1em;
     }
+}
+.success-message {
+    border: 1px solid #84ce86;
+    background: #dff0d8;
 }
 
 
@@ -403,7 +444,7 @@ p.intro {
         }
     }
 
-    .form-errors {
+    .form-errors, .success-message {
         margin: 1.1em;
     }
 
@@ -440,7 +481,7 @@ p.intro {
                 font: normal 1.7em/1.6 "ProximaNova-Bold", Helvetica, Arial;
             }
         }
-        .form-errors {
+        .form-errors, .success-message {
             font: normal 1.8em/1.4 "ProximaNova-Reg", Helvetica, Arial;
         }
     }
