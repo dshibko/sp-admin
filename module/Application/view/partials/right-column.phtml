@@ -2,8 +2,6 @@
 <aside role="complementary" class="second-column">
     <ul class="social-links clearfix">
         <li>&nbsp;</li>
-<!--        <li><a href="">Facebook</a></li>-->
-<!--        <li><a href="">Twitter</a></li>-->
     </ul>
 
     <?php if ($this->getCurrentUser() != null) : ?>
@@ -13,17 +11,14 @@
                 <img src="<?=$this->getUserAvatar($this->getCurrentUser()->getAvatar()->getMediumImagePath(), $this->getCurrentUser()->getFacebookId())?>" itemprop="photo" title="<?=$this->getCurrentUser()->getDisplayName()?>" alt="<?=$this->getCurrentUser()->getDisplayName()?>" >
                 <img src="<?=$this->getCurrentUser()->getCountry()->getFlagImage()?>" itemprop="nationality" alt="<?=$this->getCurrentUser()->getCountry()->getName()?>" >
                 <h1 itemprop="name"><?=$this->getCurrentUser()->getDisplayName()?></h1>
-<!--                --><?php //if ($this->getCurrentUser()->getIsActive()) : ?>
-<!--                     <a href="#">View full profile</a>-->
-<!--                --><?php //endif;?>
             </section>
 
             <?php if ($this->getCurrentUser()->getIsActive()) : ?>
                 <section class="block total-points">
                     <table>
                         <thead>
-                        <tr><th class="pts">Total <abbr title="Points">pts</abbr></th>
-                            <th class="acy"><abbr title="Accuracy">Acy</abbr></th>
+                        <tr><th class="pts"><?=$this->translate('Total')?> <abbr title="Points"><?=$this->translate('pts')?></abbr></th>
+                            <th class="acy"><abbr title="Accuracy"><?=$this->translate('Acy')?></abbr></th>
                         </tr></thead>
                         <tbody>
                         <tr>
@@ -39,7 +34,7 @@
                     if (!empty($overallLeagueUsers)) :
                 ?>
                     <section class="league">
-                        <h1>Overall League</h1>
+                        <h1><?=$this->translate('Overall League')?></h1>
                         <div class="block">
                             <table>
                                 <tbody>
@@ -71,7 +66,7 @@
                     if (!empty($temporalLeagueUsers)) :
                 ?>
                     <section class="league">
-                        <h1>Temporal Leagues</h1>
+                        <h1><?=$this->translate('Temporal Leagues')?></h1>
                         <div class="block">
                             <table>
                                 <tbody>
@@ -100,7 +95,7 @@
 
             <?php endif; ?>
             <?php if ($this->getCurrentUser()->getIsActive()) : ?>
-                <p class="full"><a href="<?=$this->url('tables')?>">View full league tables</a></p>
+                <p class="full"><a href="<?=$this->url('tables')?>"><?=$this->translate('View full league tables')?></a></p>
             <?php endif;?>
         </div>
     <?php endif; ?>
@@ -116,8 +111,8 @@
     <?php endif; ?>
 
     <div class="facebook-invite">
-        <h1>Play against your mates</h1>
-        <p>Create your own social league against your Facebook friends to find out who's top of the league</p>
+        <h1><?=$this->translate('Play against your mates')?></h1>
+        <p><?=$this->translate("Create your own social league against your Facebook friends to find out who's top of the league")?></p>
         <a href="javascript:void(0);" onclick="inviteFriends();" class="facebook"><?php echo $this->translate('+ Invite your friends');?></a>
     </div>
 </aside>

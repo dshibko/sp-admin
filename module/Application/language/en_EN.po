@@ -881,3 +881,6 @@ msgstr "Bad request. Security check failed."
 msgid "The next one will start soon. You can visit our website later and start playing."
 msgstr "The next one will start soon. You can visit our website later and start playing."
 
+msgid "Acy"
+msgstr "Acy"
+
