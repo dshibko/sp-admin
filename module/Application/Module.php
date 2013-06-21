@@ -65,14 +65,14 @@ class Module
                 if (!$user->getIsActive()) {
                     if ($detect->isMobile() || $detect->isTablet()){
                         if ($routeName != self::SETUP_PAGE_ROUTE){
-                            return $this->toRedirect(self::SETUP_PAGE_ROUTE, $e);
+                            return $this->redirect(self::SETUP_PAGE_ROUTE, $e);
                         }
                     }else{
                         if ($e->getRequest()->isPost() && $routeName == self::SETUP_PAGE_ROUTE){
                             return true;
                         }
                         if ($routeName != self::PREDICT_PAGE_ROUTE || $e->getRequest()->isPost()){
-                            return $this->toRedirect(self::PREDICT_PAGE_ROUTE, $e);
+                            return $this->redirect(self::PREDICT_PAGE_ROUTE, $e);
                         }
                     }
                 }
@@ -98,10 +98,6 @@ class Module
                     $e->stopPropagation();
                     return false;
                 }
-                // TODO to remove next 3 lines
-                if ($response->getStatusCode() == \Zend\Http\Response::STATUS_CODE_404) {
-                    die;
-                }
             }
         }
         return true;
@@ -112,7 +108,7 @@ class Module
      * @param \Zend\Mvc\MvcEvent $e
      * @return bool
      */
-    private function toRedirect($route, \Zend\Mvc\MvcEvent $e) {
+    private function redirect($route, \Zend\Mvc\MvcEvent $e) {
         $e->getTarget()->plugin('redirect')->toRoute($route);
         $e->stopPropagation();
         return false;
