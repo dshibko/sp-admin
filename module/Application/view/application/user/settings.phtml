@@ -5,6 +5,10 @@ $this->headTitle($title);
 <div role="main" class="two-column-section clearfix">
     <div class="first-column registration settings">
     <h1><?php echo $this->escapeHtml($title);?></h1>
+    <?php if ($this->user->getFacebookId()):?>
+        <?php echo $this->partial('partials/flash-messages');?>
+    <?php endif; ?>
+
     <?php if (!$this->user->getFacebookId()):?>
     <aside class="connect-facebook clearfix">
         <div>
