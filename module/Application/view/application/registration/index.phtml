@@ -9,7 +9,7 @@ $this->headTitle($title);
 
         <aside class="connect-facebook clearfix">
             <div>
-                <h2>Connect your account for a one click login</h2>
+                <h2><?php echo $this->translate('Connect your account for a one click login');?></h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus ligula, facilisis id scelerisque in, eleifend ut elit. Aenean a facilisis augue. </p>
             </div>
             <?php echo $this->renderFacebookButton($this->translate('Connect with Facebook'));?>
@@ -158,21 +158,22 @@ $this->headTitle($title);
                 <?php echo $this->renderDefaultAvatars($this->default_avatar);?>
             </div>
         </section>
-        <section class="email-settings">
-            <div>
-                <h2><?php echo $this->translate('Terms');?></h2>
-            </div>
-            <div>
-                <label>
-                    <?php echo $this->formElement($form->get('term1'));?>
-                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magn</span>
-                </label>
-                <label>
-                    <?php echo $this->formElement($form->get('term2'));?>
-                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magn</span>
-                </label>
-            </div>
-        </section>
+        <?php if (!empty($this->terms)):?>
+            <section class="email-settings">
+                <div>
+                    <h2><?php echo $this->translate('Terms');?></h2>
+                </div>
+                <div>
+                    <?php foreach($this->terms->getElements() as $term):?>
+                        <label>
+                            <?php echo $this->formCheckbox($term);?>
+                            <?php echo $term->getLabel();?>
+                        </label>
+                    <?php endforeach;?>
+                </div>
+            </section>
+        <?php endif;?>
+
         <section class="buttons-block clearfix">
             <div>
                 <button type="submit"><?php echo $this->translate('Register');?></button>

@@ -35,7 +35,7 @@ class UserController extends AbstractActionController
         try {
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
             if (!$user) {
-                $this->flashMessenger()->addErrorMessage(MessagesConstants::ACCESS_DENIED_NEED_LOGIN);
+                $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate(MessagesConstants::ACCESS_DENIED_NEED_LOGIN));
                 return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
             }
             //Change password
@@ -62,7 +62,7 @@ class UserController extends AbstractActionController
                     case self::FORM_TYPE_CHANGE_PASSWORD : {
                         $passwordForm->setData($request->getPost());
                         if (UserManager::getInstance($this->getServiceLocator())->processChangePasswordForm($passwordForm)) {
-                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_PASSWORD_SAVED);
+                            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_NEW_PASSWORD_SAVED));
                             $success = true;
                         }else{
                              $this->formErrors($passwordForm, $this);
@@ -73,7 +73,7 @@ class UserController extends AbstractActionController
                     case self::FORM_TYPE_CHANGE_EMAIL : {
                         $emailForm->setData($request->getPost());
                         if (UserManager::getInstance($this->getServiceLocator())->processChangeEmailForm($emailForm)) {
-                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_EMAIL_SAVED);
+                            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_NEW_EMAIL_SAVED));
                             $success = true;
                         }else{
                             $this->formErrors($emailForm, $this);
@@ -84,7 +84,7 @@ class UserController extends AbstractActionController
                     case self::FORM_TYPE_CHANGE_DISPLAY_NAME : {
                         $displayNameForm->setData($request->getPost());
                         if (UserManager::getInstance($this->getServiceLocator())->processChangeDisplayNameForm($displayNameForm)) {
-                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_DISPLAY_NAME_SAVED);
+                            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_NEW_DISPLAY_NAME_SAVED));
                             $success = true;
                         }else{
                             $this->formErrors($displayNameForm, $this);
@@ -102,7 +102,7 @@ class UserController extends AbstractActionController
                         $defaultAvatarId = !empty($post['default_avatar']) ? $post['default_avatar'] : null;
                         $newAvatar = UserManager::getInstance($this->getServiceLocator())->getUserAvatar($avatarForm, $defaultAvatarId);
                         if (UserManager::getInstance($this->getServiceLocator())->processChangeAvatarForm($newAvatar)) {
-                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_AVATAR_SAVED);
+                            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_NEW_AVATAR_SAVED));
                             $success = true;
                         }else{
                             $this->formErrors($avatarForm, $this);
@@ -114,7 +114,7 @@ class UserController extends AbstractActionController
                     case self::FORM_TYPE_CHANGE_LANGUAGE : {
                         $languageForm->setData($request->getPost());
                         if (UserManager::getInstance($this->getServiceLocator())->processChangeLanguageForm($languageForm)) {
-                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_LANGUAGE_SAVED);
+                            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_NEW_LANGUAGE_SAVED));
                             $success = true;
                         }else{
                             $this->formErrors($languageForm, $this);
@@ -126,7 +126,7 @@ class UserController extends AbstractActionController
                     case self::FORM_TYPE_CHANGE_EMAIL_SETTINGS : {
                         //TODO process email settings
                         $emailSettingsForm->setData($request->getPost());
-                        $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_EMAIL_SETTINGS_SAVED);
+                        $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_NEW_EMAIL_SETTINGS_SAVED));
                         $success = true;
                         break;
                     }
@@ -134,7 +134,7 @@ class UserController extends AbstractActionController
                     case self::FORM_TYPE_CHANGE_PUBLIC_PROFILE_OPTION : {
                         $publicProfileForm->setData($request->getPost());
                         if (UserManager::getInstance($this->getServiceLocator())->processChangePublicProfileForm($publicProfileForm)) {
-                            $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_PUBLIC_PROFILE_OPTION_SAVED);
+                            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_PUBLIC_PROFILE_OPTION_SAVED));
                             $success = true;
                         }else{
                             $this->formErrors($publicProfileForm, $this);
@@ -142,7 +142,7 @@ class UserController extends AbstractActionController
                         break;
                     }
                     default : {
-                        throw new \Exception(MessagesConstants::ERROR_INVALID_SETTING_FORM_TYPE);
+                        throw new \Exception($this->getTranslator()->translate(MessagesConstants::ERROR_INVALID_SETTING_FORM_TYPE));
                     }
                 }
                 if ($success) {
@@ -173,18 +173,18 @@ class UserController extends AbstractActionController
         try {
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
             if (!$user) {
-                $this->flashMessenger()->addErrorMessage(MessagesConstants::ACCESS_DENIED_NEED_LOGIN);
+                $this->flashMessenger()->addErrorMessage($this->getTranslator()->translate(MessagesConstants::ACCESS_DENIED_NEED_LOGIN));
                 return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
             }
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $user_id = (int)base64_decode($request->getPost('user_id'));
                 if ($user_id !== $user->getId()){
-                    throw new \Exception(MessagesConstants::FAILED_TO_DELETE_ACCOUNT_INCORRECT_ID);
+                    throw new \Exception($this->getTranslator()->translate(MessagesConstants::FAILED_TO_DELETE_ACCOUNT_INCORRECT_ID));
                 }
                 if (UserManager::getInstance($this->getServiceLocator())->deleteAccount($user)){
                     AuthenticationManager::getInstance($this->getServiceLocator())->logout();
-                    $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_DELETE_ACCOUNT);
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_DELETE_ACCOUNT));
                     return $this->redirect()->toRoute(self::LOGIN_PAGE_ROUTE);
                 }
             }
@@ -206,11 +206,11 @@ class UserController extends AbstractActionController
             $facebook = $this->getServiceLocator()->get('facebook');
             $signedRequest = $facebook->getSignedRequest();
             if (empty($signedRequest['user_id'])){
-               throw new \Exception(MessagesConstants::ERROR_CANNOT_GET_FACEBOOK_USER_ID_FROM_REQUEST . var_dump($signedRequest, true));
+               throw new \Exception($this->getTranslator()->translate(MessagesConstants::ERROR_CANNOT_GET_FACEBOOK_USER_ID_FROM_REQUEST) . var_dump($signedRequest, true));
             }
             $user = UserManager::getInstance($this->getServiceLocator())->getUserByFacebookId($signedRequest['user_id']);
             if (empty($user)){
-                throw new \Exception(MessagesConstants::ERROR_CANNOT_GET_USER_BY_FACEBOOK_ID . var_dump($signedRequest['user_id'], true));
+                throw new \Exception($this->getTranslator()->translate(MessagesConstants::ERROR_CANNOT_GET_USER_BY_FACEBOOK_ID) . var_dump($signedRequest['user_id'], true));
             }
             UserManager::getInstance($this->getServiceLocator())->deleteAccount($user, false);
 

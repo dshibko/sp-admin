@@ -41,7 +41,7 @@ class TermDAO extends AbstractDAO {
     public function getTermsByLanguageId($languageId, $hydrate = false, $skipCache = false)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('t,tc')
+        $qb->select('t.id,t.isRequired, t.isChecked,tc.copy')
             ->from($this->getRepositoryName(), 't')
             ->join('t.termCopies', 'tc')
             ->where($qb->expr()->eq('tc.language',':languageId'))->setParameter('languageId', $languageId);

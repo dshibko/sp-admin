@@ -23,16 +23,7 @@ class TermsController extends AbstractActionController
         $lanaguageManager = LanguageManager::getInstance($this->getServiceLocator());
         $contentManager = ContentManager::getInstance($this->getServiceLocator());
         try {
-            $data = $contentManager->getTermsByLanguageId($lanaguageManager->getDefaultLanguage()->getId(), true);
-            foreach ($data as $term) {
-                $terms[] = array(
-                    'id' => $term['id'],
-                    'copy'     => !empty($term['termCopies'][0]['copy']) ? $term['termCopies'][0]['copy'] : '',
-                    'required' => !empty($term['isRequired']),
-                    'checked'  => !empty($term['isChecked'])
-                 );
-            }
-
+            $terms = $contentManager->getTermsByLanguageId($lanaguageManager->getDefaultLanguage()->getId(), true);
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
@@ -46,12 +37,17 @@ class TermsController extends AbstractActionController
 
     public function addAction()
     {
-        //TODO check only 2 terms
+
         $form = null;
         $lanaguageManager = LanguageManager::getInstance($this->getServiceLocator());
         $contentManager = ContentManager::getInstance($this->getServiceLocator());
         $params = array();
         try {
+            $termsCount = $contentManager->getTermsCount();
+            if ($termsCount >= self::MAX_TERMS_COUNT){
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_MAX_TERMS_COUNT_EXCEEDED);
+                return $this->redirect()->toRoute(self::ADMIN_CONTENT_TERMS_ROUTE);
+            }
             $termsLanguageFieldsets = $lanaguageManager->getLanguagesFieldsets('\Admin\Form\TermFieldset');
             $form = new TermForm($termsLanguageFieldsets);
             $params = array(

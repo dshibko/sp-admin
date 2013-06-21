@@ -31,7 +31,6 @@ class ResultsController extends AbstractActionController {
             $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
-            $translator = $this->getServiceLocator()->get('translator');
 
             $firstView = false;
             $facebookShareCopy = $twitterShareCopy = '';
@@ -82,12 +81,12 @@ class ResultsController extends AbstractActionController {
             $homeTeamScore = $currentMatch['prediction']['homeTeamScore'];
             $awayTeamScore = $currentMatch['prediction']['awayTeamScore'];
             if ($homeTeamScore == $awayTeamScore)
-                $resultKey = $translator->translate(MessagesConstants::INFO_YOU_PREDICTED_THE_DRAW);
+                $resultKey = $this->getTranslator()->translate(MessagesConstants::INFO_YOU_PREDICTED_THE_DRAW);
             else
-                $resultKey = sprintf($translator->translate(MessagesConstants::INFO_YOU_PREDICTED_THE_WINNER), '<b>' . ($homeTeamScore > $awayTeamScore ? $currentMatch['homeName'] : $currentMatch['awayName']) . '</b>');
+                $resultKey = sprintf($this->getTranslator()->translate(MessagesConstants::INFO_YOU_PREDICTED_THE_WINNER), '<b>' . ($homeTeamScore > $awayTeamScore ? $currentMatch['homeName'] : $currentMatch['awayName']) . '</b>');
             $resultPoints = $currentMatch['prediction']['isCorrectResult'] ? ScoringManager::MATCH_RESULT_POINTS : 0;
             $breakpoints[$resultKey] = '+' . $resultPoints;
-            $scoreKey = sprintf($translator->translate(MessagesConstants::INFO_YOU_PREDICTED_THE_SCORE), '<b>' . $homeTeamScore . '-'. $awayTeamScore . '</b>');
+            $scoreKey = sprintf($this->getTranslator()->translate(MessagesConstants::INFO_YOU_PREDICTED_THE_SCORE), '<b>' . $homeTeamScore . '-'. $awayTeamScore . '</b>');
             $scorePoints = $currentMatch['prediction']['isCorrectScore'] ? ScoringManager::MATCH_SCORE_POINTS : 0;
             $breakpoints[$scoreKey] = '+' . $scorePoints;
             if ($currentMatch['prediction']['correctScorers'] > 0 || $currentMatch['prediction']['correctScorersOrder'] > 0) {
@@ -123,7 +122,7 @@ class ResultsController extends AbstractActionController {
                             $scorerName .= '(' . $v . ')';
                         $scorers [] = $scorerName;
                     }
-                    $scorersKey = sprintf($translator->translate(MessagesConstants::INFO_YOU_PREDICTED_THE_SCORERS), '<b>' . implode(', ', $scorers) . '</b>');
+                    $scorersKey = sprintf($this->getTranslator()->translate(MessagesConstants::INFO_YOU_PREDICTED_THE_SCORERS), '<b>' . implode(', ', $scorers) . '</b>');
                     $scorersPoints = ScoringManager::GOAL_SCORER_POINTS * $currentMatch['prediction']['correctScorers'];
                     $breakpoints[$scorersKey] = '+' . $scorersPoints;
                 }
@@ -133,7 +132,7 @@ class ResultsController extends AbstractActionController {
                         $order = array_shift(explode('-', $k));
                         $teamSide = array_pop(explode('-', $k));
                         $teamName = array_search($teamSide, $sideKeys) == 0 ? $currentMatch['homeName'] : $currentMatch['awayName'];
-                        $scorersKey = sprintf($translator->translate(MessagesConstants::INFO_YOU_PREDICTED_SCORER_ORDER), '<b>' . $scorerName . '</b>', '<b>' . $order . '</b>', '<b>' . $teamName . '</b>');
+                        $scorersKey = sprintf($this->getTranslator()->translate(MessagesConstants::INFO_YOU_PREDICTED_SCORER_ORDER), '<b>' . $scorerName . '</b>', '<b>' . $order . '</b>', '<b>' . $teamName . '</b>');
                         $scorersPoints = ScoringManager::GOAL_SCORER_ORDER_POINTS;
                         $breakpoints[$scorersKey] = '+' . $scorersPoints;
                     }
@@ -141,7 +140,7 @@ class ResultsController extends AbstractActionController {
             }
 
             if ($currentMatch['isDoublePoints']) {
-                $doubleKey = $translator->translate(MessagesConstants::INFO_THIS_IS_DOUBLE_POINTS_MATCH);
+                $doubleKey = $this->getTranslator()->translate(MessagesConstants::INFO_THIS_IS_DOUBLE_POINTS_MATCH);
                 $breakpoints[$doubleKey] = 'X2';
             }
 
@@ -153,7 +152,7 @@ class ResultsController extends AbstractActionController {
             }
             $accuracy /= $divider;
             $accuracy = floor(100 * $accuracy);
-            $accuracyKey = sprintf($translator->translate(MessagesConstants::INFO_YOUR_ACCURACY), '<b>' . $accuracy . '%</b>');
+            $accuracyKey = sprintf($this->getTranslator()->translate(MessagesConstants::INFO_YOUR_ACCURACY), '<b>' . $accuracy . '%</b>');
             $breakpoints[$accuracyKey] = '';
 
             $correctScorerPredictionsBeforeThisMatch = $predictionManager->getUserCorrectScorerPredictionsNumber($season, $user, $currentMatch['startTime']);

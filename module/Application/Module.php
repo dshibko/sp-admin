@@ -9,6 +9,8 @@
 
 namespace Application;
 
+use Application\Form\RegistrationForm;
+use Application\Manager\ContentManager;
 use \Application\Manager\UserManager;
 use \Application\Manager\ApplicationManager;
 use \DoctrineModule\Authentication\Adapter\ObjectRepository;
@@ -250,11 +252,16 @@ class Module
                     $authService = new AuthenticationService();
                     $authService->setAdapter($doctrineAuthAdapter);
                     $authService->setStorage($sm->get('AuthStorage'));
-
                     return $authService;
                 },
                 'Application\Form\RegistrationForm' => function($sm){
-                    return new \Application\Form\RegistrationForm($sm);
+                    $registrationForm = new RegistrationForm($sm);
+                    $terms = ContentManager::getInstance($sm)->getRegistrationFormTerms();
+                    if (!empty($terms)){
+                        $registrationForm->setTerms($terms);
+                    }
+                    $registrationForm->init();
+                    return $registrationForm;
                 },
                 'Application\Form\SetUpForm' => function($sm){
                     return new \Application\Form\SetUpForm($sm);

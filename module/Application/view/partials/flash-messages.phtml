@@ -25,5 +25,11 @@
         $this->flashMessenger()->setMessageOpenFormat('<div%s><ul><li>');
         $this->flashMessenger()->setMessageCloseString('</li></ul></div>');
     ?>
-    <?php echo $this->flashMessenger()->render(\Zend\Mvc\Controller\Plugin\FlashMessenger::NAMESPACE_SUCCESS, array('success-message'));?>
+    <?php
+        echo $this->flashMessenger()->render(\Zend\Mvc\Controller\Plugin\FlashMessenger::NAMESPACE_SUCCESS, array('success-message'));
+        $this->flashMessenger()->setNamespace(\Zend\Mvc\Controller\Plugin\FlashMessenger::NAMESPACE_SUCCESS);
+        $this->flashMessenger()->getPluginFlashMessenger()->clearMessages();
+        $this->flashMessenger()->getPluginFlashMessenger()->clearCurrentMessages();
+    ?>
+
 <?php endif;?>

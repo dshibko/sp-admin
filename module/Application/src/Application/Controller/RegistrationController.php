@@ -24,12 +24,17 @@ class RegistrationController extends AbstractActionController
     public function indexAction()
     {
         try {
+            $terms = null;
             $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
+            $fieldsets = $form->getFieldsets();
+            if(!empty($fieldsets['terms'])){
+               $terms = $fieldsets['terms'];
+            }
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
             $registrationManager = RegistrationManager::getInstance($this->getServiceLocator());
             //if member - redirect to dashboard
             if (!empty($user)) {
-                return $this->redirect()->toRoute(self::HOME_PAGE_ROUTE);
+                return $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
             }
             $form->get('submit')->setValue('Register');
             $request = $this->getRequest();
@@ -56,6 +61,7 @@ class RegistrationController extends AbstractActionController
             }
             $viewModel = new ViewModel(array(
                 'form' => $form,
+                'terms' => $terms,
                 'default_avatar' => $this->getRequest()->getPost('default_avatar', null)
             ));
 
@@ -115,38 +121,37 @@ class RegistrationController extends AbstractActionController
 
     }
 
-    //TODO move to auth controller
     public function facebookLoginAction()
     {
        try {
             $code = $this->getRequest()->getQuery('code');
             if (empty($code)) {
-                throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
+                throw new \Exception($this->getTranslator()->translate(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK));
             }
             $facebook = $this->getServiceLocator()->get('facebook');
             if (!$facebook->getUser()) {
-                throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
+                throw new \Exception($this->getTranslator()->translate(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK));
             }
 
             $user = $facebook->api('/me');
             if (empty($user['id'])) {
-                throw new \Exception(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK);
+                throw new \Exception($this->getTranslator()->translate(MessagesConstants::FAILED_CONNECTION_TO_FACEBOOK));
             }
 
             $facebookUser = FacebookManager::getInstance($this->getServiceLocator())->setFacebookAPI($facebook)->process($user);
 
             if (empty($facebookUser)) {
-                throw new \Exception(MessagesConstants::FAILED_UPDATING_DATA_FROM_FACEBOOK);
+                throw new \Exception($this->getTranslator()->translate(MessagesConstants::FAILED_UPDATING_DATA_FROM_FACEBOOK));
             }
 
             $currentUser = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-            $route = ($facebookUser->getIsActive()) ? self::HOME_PAGE_ROUTE : self::SETUP_PAGE_ROUTE;
+            $route = ($facebookUser->getIsActive()) ? self::PREDICT_PAGE_ROUTE : self::SETUP_PAGE_ROUTE;
             if (empty($currentUser)){
                 //Sign In facebook user
                 AuthenticationManager::getInstance($this->getServiceLocator())->signIn($facebookUser->getEmail());
             }else{ // User connect account to facebook
                 $route = self::USER_SETTINGS_PAGE_ROUTE;
-                $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT);
+                $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT));
             }
             return $this->redirect()->toRoute($route);
         } catch (\Exception $e) {

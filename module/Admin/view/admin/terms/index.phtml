@@ -8,7 +8,9 @@ $this->headTitle($title);
             <div class="portlet-title">
                 <h4><?=$title;?></h4>
                 <div class="actions">
-                    <a href="<?=$this->url('admin-content-terms', array('action' => 'add'))?>" class="btn green"><i class="icon-plus"></i> <?=$this->translate('Add')?></a>
+                    <?php if (count($this->terms) < $this->maxTermsCount):?>
+                        <a href="<?=$this->url('admin-content-terms', array('action' => 'add'))?>" class="btn green"><i class="icon-plus"></i> <?=$this->translate('Add')?></a>
+                    <?php endif;?>
                 </div>
             </div>
             <div class="portlet-body">
@@ -26,8 +28,8 @@ $this->headTitle($title);
                         <?php foreach ($this->terms as $term) : ?>
                             <tr class="odd gradeX">
                                 <td><?=$term['copy'];?></td>
-                                <td><?=(!empty($term['required']) ? $this->translate('Yes') : $this->translate('No'));?></td>
-                                <td><?=(!empty($term['checked']) ? $this->translate('Yes') : $this->translate('No'));?></td>
+                                <td><?=(!empty($term['isRequired']) ? $this->translate('Yes') : $this->translate('No'));?></td>
+                                <td><?=(!empty($term['isChecked']) ? $this->translate('Yes') : $this->translate('No'));?></td>
                                 <td>
                                     <a href="<?=$this->url('admin-content-terms', array('action' => 'edit', 'id' => $term['id'] ));?>" class="btn mini blue">
                                         <i class="icon-edit"></i>

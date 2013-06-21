@@ -222,6 +222,18 @@ return array(
                     ),
                 ),
             ),
+            //How to Play Page
+            'how-to-play' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/how-to-play[/]',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Content',
+                        'action'        => 'howToPlay',
+                    ),
+                ),
+            ),
             //Help Page
             'help' => array(
                 'type'    => 'segment',
