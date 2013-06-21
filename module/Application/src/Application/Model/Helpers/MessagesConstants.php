@@ -68,7 +68,6 @@ class MessagesConstants
     const ERROR_MAX_TERMS_COUNT_EXCEEDED = 'Max terms count exceeded';
 
 //    Application Messages Constants
-    const ERROR_UNKNOWN = "Unknown server error";
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
     const ERROR_EMAIL_NOT_REGISTERED = "The email you input is not registered.";
     const ERROR_RECOVERY_LINK_INVALID = "Recovery link is not valid.";
@@ -77,7 +76,6 @@ class MessagesConstants
     const ERROR_WRONG_DATES_SELECTED = "Wrong start and end dates selected.";
     const ERROR_MATCH_NOT_FOUND = "The match was not found.";
     const ERROR_TEAM_NOT_FOUND = "Team you want to make a prediction was not found.";
-    const ERROR_PLAYER_NOT_FOUND = "Player you want to mark as a scorer was not found.";
     const ERROR_ACTIVE_PAGE_NOT_FOUND = "Active page was not found.";
     const ERROR_CANNOT_GET_FACEBOOK_USER_ID_FROM_REQUEST = 'Cannot get facebook user id from request';
     const ERROR_CANNOT_GET_USER_BY_FACEBOOK_ID = 'Cannot get user by facebook id';
@@ -90,7 +88,6 @@ class MessagesConstants
     const ERROR_NO_MORE_MATCHES_IN_THE_SEASON = 'No more matches will be played in this season. Please join us when next season starts.';
     const ERROR_NO_FINISHED_MATCHES_IN_THE_SEASON = 'No matches were played in this season.';
     const ERROR_SECURITY_CHECK_FAILED = 'Bad request. Security check failed.';
-    const ERROR_MATCH_IS_LIVE = 'Match is being played now. You can\'t predict anymore.';
     const ERROR_INVALID_SETTING_FORM_TYPE = 'Invalid form type';
     const ERROR_INVALID_OLD_PASSWORD = 'Invalid old password';
 
@@ -98,15 +95,15 @@ class MessagesConstants
     const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to yout email. The link is active for 60 minutes';
     const SUCCESS_PASSWORD_CHANGED = "Your password was successfully changed. Now you can login using it.";
     const SUCCESS_CAN_CHANGE_PASSWORD = "Now you can change the password.";
-    const SUCCESS_NEW_PASSWORD_SAVED = 'New password successfully saved.';
-    const SUCCESS_NEW_EMAIL_SAVED = 'New email successfully saved.';
-    const SUCCESS_NEW_DISPLAY_NAME_SAVED = 'New display name successfully saved.';
-    const SUCCESS_NEW_AVATAR_SAVED = 'New avatar successfully saved';
+    const SUCCESS_NEW_PASSWORD_SAVED = 'New password was successfully saved.';
+    const SUCCESS_NEW_EMAIL_SAVED = 'New email was successfully saved.';
+    const SUCCESS_NEW_DISPLAY_NAME_SAVED = 'New display name was successfully saved.';
+    const SUCCESS_NEW_AVATAR_SAVED = 'New avatar was successfully saved.';
     const SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT = 'Your account successfully connected to facebook';
-    const SUCCESS_NEW_LANGUAGE_SAVED  = 'New language successfully saved';
-    const SUCCESS_NEW_EMAIL_SETTINGS_SAVED = 'New email settings successfully saved';
-    const SUCCESS_PUBLIC_PROFILE_OPTION_SAVED = 'Public profile option successfully saved';
-    const SUCCESS_DELETE_ACCOUNT = 'You successfully delete your account';
+    const SUCCESS_NEW_LANGUAGE_SAVED  = 'New language was successfully saved.';
+    const SUCCESS_NEW_EMAIL_SETTINGS_SAVED = 'New email settings were successfully saved.';
+    const SUCCESS_PUBLIC_PROFILE_OPTION_SAVED = 'Public profile option was successfully saved.';
+    const SUCCESS_DELETE_ACCOUNT = 'You have deleted your account successfully.';
     const SUCCESS_HELP_AND_SUPPORT_MESSAGE_SENT = 'Your message successfully sent';
 
     const INFO_LOGGED_OUT = "You've been logged out.";

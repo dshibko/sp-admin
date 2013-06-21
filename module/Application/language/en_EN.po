@@ -79,11 +79,9 @@ msgstr "Reset"
 msgid "FAQs"
 msgstr "FAQs"
 
-#: view/application/content/how-to-play.phtml:2 view/partials/menu.phtml:33
 msgid "How to play"
 msgstr "How to play"
 
-#: view/application/fixtures/index.phtml:2
 msgid "Fixtures"
 msgstr "Fixtures"
 
@@ -99,7 +97,6 @@ msgstr "VS"
 msgid "Predict the score"
 msgstr "Predict the score"
 
-#: view/application/fixtures/index.phtml:60
 msgid "No more matches will be played in this season. Please join us when next season starts."
 msgstr "No more matches will be played in this season. Please join us when next season starts."
 
@@ -262,9 +259,8 @@ msgstr "Edit your prediction"
 msgid "You didn't save the prediction."
 msgstr "You didn't save the prediction."
 
-#: view/application/prize/index.phtml:1
 msgid "Prizes"
-msgstr "You didn't save the prediction."
+msgstr "Prizes"
 
 #: view/application/registration/index.phtml:2
 msgid "Registration"
@@ -279,15 +275,12 @@ msgstr "Connect with Facebook"
 msgid "Enter Personal Info"
 msgstr "Enter Personal Info"
 
-#: view/application/registration/index.phtml:56
 msgid "Gender"
 msgstr "Gender"
 
-#: view/application/registration/index.phtml:59
 msgid "Male"
 msgstr "Male"
 
-#: view/application/registration/index.phtml:63
 msgid "Female"
 msgstr "Female"
 
@@ -357,7 +350,6 @@ msgstr "Total"
 msgid "PTS"
 msgstr "PTS"
 
-#: view/application/tables/index.phtml:2
 msgid "League Tables"
 msgstr "League Tables"
 
@@ -531,13 +523,12 @@ msgstr "Cookies policy"
 msgid "MADE BY"
 msgstr "MADE BY"
 
-#: view/partials/invite-friends.phtml:8
 msgid "Invite friends to Score Predictor"
 msgstr "Invite friends to Score Predictor"
 
 #: view/partials/menu.phtml:21
 msgid "User Navigation"
-msgstr "User Navigation"
+msgstr "User Navigations"
 
 #: view/partials/menu.phtml:36
 msgid "Sign out"
@@ -616,4 +607,277 @@ msgstr "Top 5 predicted scores"
 #: view/partials/right-column.phtml:111
 msgid "+ Invite your friends"
 msgstr "+ Invite your friends"
+
+msgid "Value is required and can't be empty"
+msgstr "Field is required"
+
+msgid "Recovery link was sent to yout email. The link is active for 60 minutes"
+msgstr "Recovery link was sent to yout email. The link is active for 60 minutes"
+
+msgid "Please use Facebook Connect Button to log in."
+msgstr "Please use Facebook Connect Button to log in."
+
+msgid "The email you input is not registered."
+msgstr "The email you input is not registered."
+
+msgid "Input cannot be empty"
+msgstr "Input cannot be empty"
+
+msgid "Connect your account for a one click login"
+msgstr "Connect your account for a one click login"
+
+msgid "Wrong email or password."
+msgstr "Wrong email or password."
+
+msgid "Confirm Password"
+msgstr "Confirm Password"
+
+msgid "Your password was successfully changed. Now you can login using it."
+msgstr "Your password was successfully changed. Now you can login using it."
+
+msgid "The form submitted did not originate from the expected site"
+msgstr "The form submitted did not originate from the expected site"
+
+msgid "Now you can change the password."
+msgstr "Now you can change the password."
+
+msgid "You will be redirected to website..."
+msgstr "You will be redirected to website..."
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Your message successfully sent"
+msgstr "Your message successfully sent"
+
+msgid "Please select"
+msgstr "Please select"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "First Name"
+msgstr "First Name"
+
+msgid "Last Name"
+msgstr "Last Name"
+
+msgid "Date of Birth"
+msgstr "Date of Birth"
+
+msgid "Country"
+msgstr "Country"
+
+msgid "January"
+msgstr "January"
+
+msgid "February"
+msgstr "February"
+
+msgid "March"
+msgstr "March"
+
+msgid "April"
+msgstr "April"
+
+msgid "May"
+msgstr "May"
+
+msgid "June"
+msgstr "June"
+
+msgid "July"
+msgstr "July"
+
+msgid "August"
+msgstr "August"
+
+msgid "September"
+msgstr "September"
+
+msgid "October"
+msgstr "October"
+
+msgid "November"
+msgstr "November"
+
+msgid "December"
+msgstr "December"
+
+msgid "Confirm Email"
+msgstr "Confirm Email"
+
+msgid "Display Name"
+msgstr "Display Name"
+
+msgid "Avatar"
+msgstr "Avatar"
+
+msgid "Error happened while connecting to your facebook account. Please try again later"
+msgstr "Error happened while connecting to your facebook account. Please try again later"
+
+msgid "Error happened while updating data. Please try again later"
+msgstr "Error happened while updating data. Please try again later"
+
+msgid "Your account successfully connected to facebook"
+msgstr "Your account successfully connected to facebook"
+
+msgid "Region"
+msgstr "Region"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "You can't predict on this match. You can predict just on %s matches in the future."
+msgstr "You can't predict on this match. You can predict just on %s matches in the future."
+
+msgid "Predict"
+msgstr "Predict"
+
+msgid "Results"
+msgstr "Results"
+
+msgid "Full Table"
+msgstr "Full Table"
+
+msgid "All time head-to-head results"
+msgstr "All time head-to-head results"
+
+msgid "Total goals this season"
+msgstr "Total goals this season"
+
+msgid "Global"
+msgstr "Global"
+
+msgid "Local"
+msgstr "Local"
+
+msgid "View full league tables"
+msgstr "View full league tables"
+
+msgid "Play against your mates"
+msgstr "Play against your mates"
+
+msgid "Create your own social league against your Facebook friends to find out who's top of the league"
+msgstr "Create your own social league against your Facebook friends to find out who's top of the league"
+
+msgid "Overall League"
+msgstr "Overall League"
+
+msgid "Temporal Leagues"
+msgstr "Temporal Leagues"
+
+msgid "Your results"
+msgstr "Your results"
+
+msgid "No matches were played in this season."
+msgstr "No matches were played in this season."
+
+msgid "You predicted the draw"
+msgstr "You predicted the draw"
+
+msgid "You predicted the winner would be %s"
+msgstr "You predicted the winner would be %s"
+
+msgid "You predicted the score would be %s"
+msgstr "You predicted the score would be %s"
+
+msgid "You predicted the scorer(s) would be %s"
+msgstr "You predicted the scorer(s) would be %s"
+
+msgid "You predicted that %s will score goal number %s of %s"
+msgstr "You predicted that %s will score goal number %s of %s"
+
+msgid "This is double points match"
+msgstr "This is double points match"
+
+msgid "You were %s accurate in your prediction"
+msgstr "You were %s accurate in your prediction"
+
+msgid "Community correctly predicted the results"
+msgstr "Community correctly predicted the results"
+
+msgid "You didn't move on the %s league this match"
+msgstr "You didn't move on the %s league this match"
+
+msgid "You moved up %s place(s) on the %s league this match"
+msgstr "You moved up %s place(s) on the %s league this match"
+
+msgid "You moved down %s place(s) on the %s league this match"
+msgstr "You moved down %s place(s) on the %s league this match"
+
+msgid "Old password"
+msgstr "Old password"
+
+msgid "New password"
+msgstr "New password"
+
+msgid "Retype new password"
+msgstr "Retype new password"
+
+msgid "Upload a new avatar"
+msgstr "Upload a new avatar"
+
+msgid "Please sign in to access this page"
+msgstr "Please sign in to access this page"
+
+msgid "New password was successfully saved."
+msgstr "New password was successfully saved."
+
+msgid "New email was successfully saved."
+msgstr "New email was successfully saved."
+
+msgid "New display name was successfully saved."
+msgstr "New display name was successfully saved."
+
+msgid "New avatar was successfully saved."
+msgstr "New avatar was successfully saved."
+
+msgid "New language was successfully saved."
+msgstr "New language was successfully saved."
+
+msgid "New email settings were successfully saved."
+msgstr "New email settings were successfully saved."
+
+msgid "Public profile option was successfully saved."
+msgstr "Public profile option was successfully saved."
+
+msgid "Invalid form type"
+msgstr "Invalid form type"
+
+msgid "You can delete only yours account"
+msgstr "You can delete only yours account"
+
+msgid "You have deleted your account successfully."
+msgstr "You have deleted your account successfully."
+
+msgid "Cannot get facebook user id from request"
+msgstr "Cannot get facebook user id from request"
+
+msgid "Cannot get user by facebook id"
+msgstr "Cannot get user by facebook id"
+
+msgid "Your Language"
+msgstr "Your Language"
+
+msgid "Recovery link is not valid."
+msgstr "Recovery link is not valid."
+
+msgid "Upload failed due to unknown problems."
+msgstr "Upload failed due to unknown problems."
+
+msgid "The match was not found."
+msgstr "The match was not found."
+
+msgid "Team you want to make a prediction was not found."
+msgstr "Team you want to make a prediction was not found."
+
+msgid "Active page was not found."
+msgstr "Active page was not found."
+
+msgid "Bad request. Security check failed."
+msgstr "Bad request. Security check failed."
+
+msgid "The next one will start soon. You can visit our website later and start playing."
+msgstr "The next one will start soon. You can visit our website later and start playing."
 

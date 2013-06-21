@@ -120,7 +120,6 @@ aside.find-out-more {
 }
 
 
-
 @media only screen and (min-width: 320px) and (max-width:  767px) {
 
     /***home article***/
@@ -157,4 +156,35 @@ aside.find-out-more {
         margin: 0.4em auto;
     }
 
+    .inner-page {
+        .article-image-right figure {
+            right: 0;
+        }
+    }
+
+}
+
+@media only screen and (min-width: 768px) {
+    .inner-page {
+        .article-image > div {
+            width: 49%;
+            padding: 4.6em 3em 3em 3.6em; 
+        }
+        .article-image-right figure {
+            width: 51%;
+        }
+        .article-image-left > div {
+            margin-left: 110%;
+            width: 80%;
+            padding: 4.6em 0 3em 0;
+        }
+        .article-image-left figure {
+            margin: 0 50em 0 -50%;
+            width: 50%;
+        }
+        .article-image-left figure img {
+            display: inline;
+            margin: 4.7em 0 0 -96%;
+        }
+    }
 }

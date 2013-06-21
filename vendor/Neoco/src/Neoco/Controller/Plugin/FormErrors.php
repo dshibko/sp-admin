@@ -7,9 +7,11 @@ class FormErrors extends AbstractPlugin
 {
     public function __invoke(\Zend\Form\Form $form, \Zend\Mvc\Controller\AbstractActionController $controller)
     {
+        $translator = $controller->getServiceLocator()->get('translator');
         //TODO need refactoring
         foreach ($form->getMessages() as $el => $messages) {
-            $label = $form->get($el)->getLabel();
+            $label = $translator->translate($form->get($el)->getLabel());
+
             $error = '';
             if(is_array($messages)){
                 foreach($messages as $message){
@@ -32,7 +34,7 @@ class FormErrors extends AbstractPlugin
             }else{
                 $error = $messages;
             }
-            $controller->flashMessenger()->addErrorMessage( (!empty($label) ? $label . ": " : '' ) . $error);
+            $controller->flashMessenger()->addErrorMessage( (!empty($label) ? $label . ": " : '' ) . $translator->translate($error));
         }
 
     }
