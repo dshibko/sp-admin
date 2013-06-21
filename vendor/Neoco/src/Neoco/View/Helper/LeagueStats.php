@@ -45,16 +45,17 @@ class LeagueStats extends AbstractHelper
             $region = $user->getCountry()->getRegion();
             $leagueUsers = $leagueUserDAO->getUserLeagues($user, $season, $region, true);
             $this->overallLeagueUsers = $this->temporalLeagueUsers = array();
-            foreach ($leagueUsers as $leagueUser) {
-                if ($leagueUser['type'] == \Application\Model\Entities\League::MINI_TYPE)
-                    $this->temporalLeagueUsers [] = $leagueUser;
-                else if ($leagueUser['type'] == \Application\Model\Entities\League::GLOBAL_TYPE) {
-                    array_unshift($this->overallLeagueUsers, $leagueUser);
-                    $this->globalPoints = $leagueUser['points'];
-                    $this->globalAccuracy = $leagueUser['accuracy'];
-                } else if ($leagueUser['type'] == \Application\Model\Entities\League::REGIONAL_TYPE)
-                    array_push($this->overallLeagueUsers, $leagueUser);
-            }
+            foreach ($leagueUsers as $leagueUser)
+                if ($leagueUser['place'] != null) {
+                    if ($leagueUser['type'] == \Application\Model\Entities\League::MINI_TYPE)
+                        $this->temporalLeagueUsers [] = $leagueUser;
+                    else if ($leagueUser['type'] == \Application\Model\Entities\League::GLOBAL_TYPE) {
+                        array_unshift($this->overallLeagueUsers, $leagueUser);
+                        $this->globalPoints = $leagueUser['points'];
+                        $this->globalAccuracy = $leagueUser['accuracy'];
+                    } else if ($leagueUser['type'] == \Application\Model\Entities\League::REGIONAL_TYPE)
+                        array_push($this->overallLeagueUsers, $leagueUser);
+                }
             $this->wasInitialized = true;
         }
         return $this;

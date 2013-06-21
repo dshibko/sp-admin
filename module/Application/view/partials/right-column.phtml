@@ -34,59 +34,69 @@
                     </table>
                 </section>
 
-                <section class="league">
-                    <h1>Overall League</h1>
-                    <div class="block">
-                        <table>
-                            <tbody>
-                            <?php foreach($this->getLeagueStats()->getOverallLeagueUsers() as $leagueUser) : ?>
-                                <tr>
-                                    <th>
-                                        <?=$leagueUser['type'] == \Application\Model\Entities\League::GLOBAL_TYPE ? 'Global' : 'Local'?>
-                                    </th>
-                                    <td class="movement">
-                                        <?php if ($leagueUser['previousPlace'] != null) : ?>
-                                            <?php if ($leagueUser['previousPlace'] > $leagueUser['place']) : ?>
-                                                <img title="Moved Up" alt="Moved Up" src="/img/up.png" class="up">
-                                            <?php elseif ($leagueUser['previousPlace'] < $leagueUser['place']) : ?>
-                                                <img title="Moved Down" alt="Moved Down" src="/img/down.png" class="down">
+                <?php
+                    $overallLeagueUsers = $this->getLeagueStats()->getOverallLeagueUsers();
+                    if (!empty($overallLeagueUsers)) :
+                ?>
+                    <section class="league">
+                        <h1>Overall League</h1>
+                        <div class="block">
+                            <table>
+                                <tbody>
+                                <?php foreach($overallLeagueUsers as $leagueUser) : ?>
+                                    <tr>
+                                        <th>
+                                            <?=$leagueUser['type'] == \Application\Model\Entities\League::GLOBAL_TYPE ? 'Global' : 'Local'?>
+                                        </th>
+                                        <td class="movement">
+                                            <?php if ($leagueUser['previousPlace'] != null) : ?>
+                                                <?php if ($leagueUser['previousPlace'] > $leagueUser['place']) : ?>
+                                                    <img title="Moved Up" alt="Moved Up" src="/img/up.png" class="up">
+                                                <?php elseif ($leagueUser['previousPlace'] < $leagueUser['place']) : ?>
+                                                    <img title="Moved Down" alt="Moved Down" src="/img/down.png" class="down">
+                                                <?php endif;?>
                                             <?php endif;?>
-                                        <?php endif;?>
-                                    </td>
-                                    <td class="score"><?=$leagueUser['place']?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
+                                        </td>
+                                        <td class="score"><?=$leagueUser['place']?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                <?php endif;?>
 
-                <section class="league">
-                    <h1>Temporal Leagues</h1>
-                    <div class="block">
-                        <table>
-                            <tbody>
-                            <?php foreach($this->getLeagueStats()->getTemporalLeagueUsers() as $leagueUser) : ?>
-                                <tr>
-                                    <th>
-                                        <?=$leagueUser['displayName']?>
-                                    </th>
-                                    <td class="movement">
-                                        <?php if ($leagueUser['previousPlace'] != null) : ?>
-                                            <?php if ($leagueUser['previousPlace'] < $leagueUser['place']) : ?>
-                                                <img alt="Moved Up" src="/img/up.png" class="up">
-                                            <?php elseif ($leagueUser['previousPlace'] > $leagueUser['place']) : ?>
-                                                <img alt="Moved Down" src="/img/down.png" class="down">
+                <?php
+                    $temporalLeagueUsers = $this->getLeagueStats()->getTemporalLeagueUsers();
+                    if (!empty($temporalLeagueUsers)) :
+                ?>
+                    <section class="league">
+                        <h1>Temporal Leagues</h1>
+                        <div class="block">
+                            <table>
+                                <tbody>
+                                <?php foreach($temporalLeagueUsers as $leagueUser) : ?>
+                                    <tr>
+                                        <th>
+                                            <?=$leagueUser['displayName']?>
+                                        </th>
+                                        <td class="movement">
+                                            <?php if ($leagueUser['previousPlace'] != null) : ?>
+                                                <?php if ($leagueUser['previousPlace'] < $leagueUser['place']) : ?>
+                                                    <img alt="Moved Up" src="/img/up.png" class="up">
+                                                <?php elseif ($leagueUser['previousPlace'] > $leagueUser['place']) : ?>
+                                                    <img alt="Moved Down" src="/img/down.png" class="down">
+                                                <?php endif;?>
                                             <?php endif;?>
-                                        <?php endif;?>
-                                    </td>
-                                    <td class="score"><?=$leagueUser['place'] != null ? $leagueUser['place'] : '-'?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </section>
+                                        </td>
+                                        <td class="score"><?=$leagueUser['place'] != null ? $leagueUser['place'] : '-'?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                <?php endif; ?>
 
             <?php endif; ?>
             <?php if ($this->getCurrentUser()->getIsActive()) : ?>
