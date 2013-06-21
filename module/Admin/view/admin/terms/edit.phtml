@@ -1,0 +1,59 @@
+<?php echo $this->headTitle($this->translate($this->title));?>
+<div class="container-fluid">
+<?php if (!is_null($this->form) && $this->form instanceof \Zend\Form\Form ):?>
+    <?php
+    $this->form->prepare();
+    $this->form->setAttribute('action', $this->url('admin-content-terms', $this->params));
+    echo $this->form()->openTag($this->form);
+   ?>
+    <div class="form">
+        <div class="row-fluid">
+            <div class="control-group form-horizontal">
+                <label class="control-label checkbox-label"><?php echo $this->form->get('required')->getLabel();?></label>
+                <div class="controls">
+                    <?php echo $this->formCheckbox($this->form->get('required'));?>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="control-group form-horizontal">
+                <label class="control-label checkbox-label"><?php echo $this->form->get('checked')->getLabel();?></label>
+                <div class="controls">
+                    <?php echo $this->formCheckbox($this->form->get('checked'));?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php echo $this->renderFieldsets($this->form->getFieldsets(), $this->params['action'] == 'add');?>
+    <div class="form-actions">
+        <button type="submit" class="btn blue"><?=$this->translate($this->form->get('submit')->getValue());?></button>
+        <button type="button" class="btn reset"><?php echo $this->translate('Reset');?></button>
+    </div>
+    <?php echo $this->form()->closeTag();?>
+<?php endif;?>
+</div>
+<!-- BEGIN PAGE LEVEL STYLES -->
+
+<!-- END PAGE LEVEL STYLES -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script type="text/javascript" src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/ckeditor/ckeditor.js"></script>
+<script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/app.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<script type="text/javascript">
+
+    jQuery(document).ready(function() {
+        CKEDITOR.config.language = 'en';
+        App.init(); // initlayout and core plugins
+        $('button.reset').click(function(e){
+            e.preventDefault();
+            this.form.reset();
+            var checkbox = $('.form-checkbox');
+            if (checkbox.is(':checked')){
+                checkbox.closest('span').addClass('checked');
+            }else{
+                checkbox.closest('span').removeClass('checked');
+            }
+        });
+    });
+</script>
+<!-- END JAVASCRIPTS -->

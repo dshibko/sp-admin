@@ -33,9 +33,6 @@ $this->headTitle($title);
                                         <td><?=$user['displayName']?></td>
                                         <td class="hidden-480"><a href="mailto:<?=$user['email']?>"><?=$user['email']?></a></td>
                                         <td><?=$user['role']['name']?></td>
-                                        <td>
-                                            <div class="glyphicons no-js <?=strtolower($user['gender']) == 'male' ? 'user' : 'girl'?>"><i></i></div>
-                                        </td>
                                         <td class="hidden-480">
                                             <?=$user['date']->format("j F H:i")?>
                                         </td>

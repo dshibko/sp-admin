@@ -194,6 +194,10 @@ class LanguageManager extends BasicManager {
         return true;
     }
 
+    /**
+     * @param $fieldsetClassName
+     * @return array
+     */
     public function getLanguagesFieldsets($fieldsetClassName)
     {
         $languages = $this->getAllLanguages(true);

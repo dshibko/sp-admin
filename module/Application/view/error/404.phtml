@@ -1,9 +1,11 @@
 <?php $this->headTitle($this->translate('Page not found'));?>
 <div role="main">
     <div class="one-column errors-page">
-        <h1><?php echo $this->translate('Page not found') ?></h1>
+        <h1><?php echo $this->translate('Whoops!') ?></h1>
         <div class="clearfix">
             <article class="error">
+                <h2><?php echo $this->translate('Message')?>:</h2>
+                <p><?php echo $this->translate('Sorry, the page you requested could not be found')?></p>
                 <figure>
                     <div>4<img src="/img/ball.png" alt="">4</div>
                 </figure>

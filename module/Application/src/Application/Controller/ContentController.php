@@ -117,4 +117,9 @@ class ContentController extends AbstractActionController
         $view->setTerminal(true);
         return $view;
     }
+
+    public function howToPlayAction()
+    {
+        return array();
+    }
 }

@@ -271,7 +271,8 @@ class Match extends BasicObject {
      */
     public function setStartTime($startTime)
     {
-        $this->startTime = $startTime;
+        if (!empty($startTime))
+            $this->startTime = $startTime;
     
         return $this;
     }
@@ -294,7 +295,8 @@ class Match extends BasicObject {
      */
     public function setWeek($week)
     {
-        $this->week = $week;
+        if (!empty($week))
+            $this->week = $week;
     
         return $this;
     }
@@ -488,7 +490,8 @@ class Match extends BasicObject {
      */
     public function setCityName($cityName)
     {
-        $this->cityName = $cityName;
+        if (!empty($cityName))
+            $this->cityName = $cityName;
     }
 
     /**
@@ -504,7 +507,8 @@ class Match extends BasicObject {
      */
     public function setStadiumName($stadiumName)
     {
-        $this->stadiumName = $stadiumName;
+        if (!empty($stadiumName))
+            $this->stadiumName = $stadiumName;
     }
 
     /**
@@ -520,7 +524,8 @@ class Match extends BasicObject {
      */
     public function setStatus($status)
     {
-        $this->status = $status;
+        if (!empty($status))
+            $this->status = $status;
     }
 
     /**
@@ -554,7 +559,8 @@ class Match extends BasicObject {
      */
     public function setAwayTeamExtraTimeScore($awayTeamExtraTimeScore)
     {
-        $this->awayTeamExtraTimeScore = $awayTeamExtraTimeScore;
+        if ($awayTeamExtraTimeScore !== null && $awayTeamExtraTimeScore !== '')
+            $this->awayTeamExtraTimeScore = $awayTeamExtraTimeScore;
     }
 
     /**
@@ -586,7 +592,8 @@ class Match extends BasicObject {
      */
     public function setAwayTeamShootoutScore($awayTeamShootoutScore)
     {
-        $this->awayTeamShootoutScore = $awayTeamShootoutScore;
+        if ($awayTeamShootoutScore !== null && $awayTeamShootoutScore !== '')
+            $this->awayTeamShootoutScore = $awayTeamShootoutScore;
     }
 
     /**
@@ -602,7 +609,8 @@ class Match extends BasicObject {
      */
     public function setHomeTeamExtraTimeScore($homeTeamExtraTimeScore)
     {
-        $this->homeTeamExtraTimeScore = $homeTeamExtraTimeScore;
+        if ($homeTeamExtraTimeScore !== null && $homeTeamExtraTimeScore !== '')
+            $this->homeTeamExtraTimeScore = $homeTeamExtraTimeScore;
     }
 
     /**
@@ -618,7 +626,8 @@ class Match extends BasicObject {
      */
     public function setHomeTeamFullTimeScore($homeTeamFullTimeScore)
     {
-        $this->homeTeamFullTimeScore = $homeTeamFullTimeScore;
+        if ($homeTeamFullTimeScore !== null && $homeTeamFullTimeScore !== '')
+            $this->homeTeamFullTimeScore = $homeTeamFullTimeScore;
     }
 
     /**
@@ -634,7 +643,8 @@ class Match extends BasicObject {
      */
     public function setHomeTeamShootoutScore($homeTeamShootoutScore)
     {
-        $this->homeTeamShootoutScore = $homeTeamShootoutScore;
+        if ($homeTeamShootoutScore !== null && $homeTeamShootoutScore !== '')
+            $this->homeTeamShootoutScore = $homeTeamShootoutScore;
     }
 
     /**

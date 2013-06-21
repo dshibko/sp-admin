@@ -17,7 +17,7 @@ class Logotype extends AbstractHelper
 
     private function getOpenTag()
     {
-        return '<a href="/" class="logo">';
+        return '<a href="/" class="logo clearfix">';
     }
     private function getCloseTag()
     {

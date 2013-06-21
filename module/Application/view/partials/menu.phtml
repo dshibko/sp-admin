@@ -24,10 +24,13 @@
                         <li class="user-profile clearfix">
                             <img src="<?=$this->getUserAvatar($this->getCurrentUser()->getAvatar()->getMediumImagePath(), $this->getCurrentUser()->getFacebookId())?>" alt="">
                             <strong><?=$this->getCurrentUser()->getDisplayName()?></strong>
-                            <a href="#"><?=$this->translate('View full profile')?></a>
+<!--                            <a href="#">--><?//=$this->translate('View full profile')?><!--</a>-->
                         </li>
                         <li>
                             <a href="<?=$this->url('user-settings')?>"><?=$this->translate('Settings')?></a>
+                        </li>
+                        <li>
+                            <a href="<?=$this->url('how-to-play')?>"><?=$this->translate('How to play')?></a>
                         </li>
                         <li>
                             <a href="<?=$this->url('logout')?>"><?=$this->translate('Sign out')?></a>

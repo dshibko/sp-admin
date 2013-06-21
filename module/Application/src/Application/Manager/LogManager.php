@@ -43,25 +43,19 @@ class LogManager extends BasicManager {
     private $optaLogger;
 
     private function initLoggers() {
+
         $logDir = getcwd() . DIRECTORY_SEPARATOR . 'data'  . DIRECTORY_SEPARATOR . 'log'  . DIRECTORY_SEPARATOR;
 
         $appErrorLogPath = $logDir . 'app' . DIRECTORY_SEPARATOR . 'error.log';
         $appErrorLogWriter = new Stream($appErrorLogPath);
         $this->appLogger = new Logger();
-        $this->appLogger->addWriter($appErrorLogWriter, Logger::ERR);
+        $this->appLogger->addWriter($appErrorLogWriter);
 
-        $optaErrorLogPath = $logDir . 'opta' . DIRECTORY_SEPARATOR . 'error.log';
+        $optaErrorLogPath = $logDir . 'opta' . DIRECTORY_SEPARATOR . 'opta.log';
         $optaErrorLogWriter = new Stream($optaErrorLogPath);
         $this->optaLogger = new Logger();
-        $this->optaLogger->addWriter($optaErrorLogWriter, Logger::ERR);
+        $this->optaLogger->addWriter($optaErrorLogWriter);
 
-        $optaWarningLogPath = $logDir . 'opta' . DIRECTORY_SEPARATOR . 'warning.log';
-        $optaWarningLogWriter = new Stream($optaWarningLogPath);
-        $this->optaLogger->addWriter($optaWarningLogWriter, Logger::WARN);
-
-        $optaInfoLogPath = $logDir . 'opta' . DIRECTORY_SEPARATOR . 'info.log';
-        $optaInfoLogWriter = new Stream($optaInfoLogPath);
-        $this->optaLogger->addWriter($optaInfoLogWriter, Logger::INFO);
     }
 
     public function getAppLogger()
@@ -73,12 +67,16 @@ class LogManager extends BasicManager {
         $this->getAppLogger()->log($priority, $e->getMessage(), array($e->getTraceAsString()));
     }
 
-    public function logOptaException(\Exception $e) {
-        $this->optaLogger->log(Logger::ERR, $e->getMessage(), array($e->getTraceAsString()));
+    public function logOptaException(\Exception $e, $priority = Logger::ERR) {
+        $this->optaLogger->log($priority, $e->getMessage(), array($e->getTraceAsString()));
     }
 
-    public function logOptaWarning($warning) {
-        $this->optaLogger->log(Logger::WARN, $warning);
+    /**
+     * @param $message
+     * @param int $priority
+     */
+    public function logOptaMessage($message, $priority = Logger::INFO) {
+        $this->optaLogger->log($priority, $message);
     }
 
     public function logOptaInfo($info) {

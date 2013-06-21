@@ -139,7 +139,8 @@ class Team extends BasicObject {
      */
     public function setDisplayName($displayName)
     {
-        $this->displayName = $displayName;
+        if (!empty($displayName))
+            $this->displayName = $displayName;
     
         return $this;
     }
@@ -316,7 +317,8 @@ class Team extends BasicObject {
 
     public function setShortName($shortName)
     {
-        $this->shortName = $shortName;
+        if(!empty($shortName))
+            $this->shortName = $shortName;
         return $this;
     }
 
@@ -333,7 +335,8 @@ class Team extends BasicObject {
      */
     public function setFounded($founded)
     {
-        $this->founded = $founded;
+        if (!empty($founded))
+            $this->founded = $founded;
     }
 
     /**
@@ -349,7 +352,8 @@ class Team extends BasicObject {
      */
     public function setStadiumCapacity($stadiumCapacity)
     {
-        $this->stadiumCapacity = $stadiumCapacity;
+        if (!empty($stadiumCapacity))
+            $this->stadiumCapacity = $stadiumCapacity;
     }
 
     /**
@@ -365,7 +369,8 @@ class Team extends BasicObject {
      */
     public function setStadiumName($stadiumName)
     {
-        $this->stadiumName = $stadiumName;
+        if (!empty($stadiumName))
+            $this->stadiumName = $stadiumName;
     }
 
     /**
@@ -381,7 +386,8 @@ class Team extends BasicObject {
      */
     public function setManager($manager)
     {
-        $this->manager = $manager;
+        if (!empty($manager))
+            $this->manager = $manager;
     }
 
     /**

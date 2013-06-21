@@ -3,6 +3,8 @@
 namespace Application\Manager;
 
 use Application\Model\DAOs\LogotypeDAO;
+use Application\Model\DAOs\TermCopyDAO;
+use Application\Model\DAOs\TermDAO;
 use \Application\Model\Entities\FooterSocial;
 use \Application\Model\DAOs\FooterSocialDAO;
 use \Application\Model\Entities\FooterImage;
@@ -13,6 +15,8 @@ use \Application\Model\DAOs\RegionGameplayContentDAO;
 use \Application\Model\Entities\RegionContent;
 use \Application\Model\DAOs\RegionContentDAO;
 use \Application\Model\DAOs\MatchDAO;
+use Application\Model\Entities\Term;
+use Application\Model\Entities\TermCopy;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use \Application\Model\Entities\FooterPage;
@@ -300,6 +304,27 @@ class ContentManager extends BasicManager {
     }
 
     /**
+     * @param \Zend\Form\Form $form
+     * @return array
+     */
+    public function getTermLanguageData(\Zend\Form\Form $form)
+    {
+        $data = array();
+        if (!empty($form)){
+            $formData = $form->getData();
+            foreach($form->getFieldsets() as $fieldset){
+                $language = $fieldset->getData();
+                $data[$language['id']] = array(
+                    'required' => (bool)$formData['required'],
+                    'checked'  => (bool)$formData['checked'],
+                    'copy'     => $fieldset->get('copy')->getValue()
+                );
+            }
+        }
+        return $data;
+    }
+
+    /**
      * @param array $data
      */
     public function saveLogotype(array $data)
@@ -386,6 +411,16 @@ class ContentManager extends BasicManager {
     }
 
     /**
+     * @param $id
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return mixed
+     */
+    public function getTermById($id, $hydrate = false, $skipCache = false)
+    {
+        return TermDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
+    }
+    /**
      * @param $type
      * @param bool $hydrate
      * @param bool $skipCache
@@ -405,6 +440,7 @@ class ContentManager extends BasicManager {
     {
         return LogotypeDAO::getInstance($this->getServiceLocator())->findAll($hydrate, $skipCache);
     }
+
     /**
      * @param $pageType
      * @return string
@@ -419,6 +455,73 @@ class ContentManager extends BasicManager {
             return $footerPage->getContent();
         }
         return false;
+    }
+
+    /**
+     * @param Term $term
+     * @param $data
+     */
+    public function saveTerm(Term $term, $data)
+    {
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+        $termDAO = TermDAO::getInstance($this->getServiceLocator());
+        $termCopyDAO = TermCopyDAO::getInstance($this->getServiceLocator());
+        if (!empty($data)){
+            foreach($data as $id => $languageData){
+                $termCopy = $term->getTermCopyByLanguage($id);
+                $language = $languageManager->getLanguageById($id);
+                $term->setIsChecked(!empty($languageData['checked']));
+                $term->setIsRequired(!empty($languageData['required']));
+                if (is_null($termCopy)){
+                    $termCopy = new TermCopy();
+                }
+                $termCopy->setLanguage($language);
+                $termCopy->setTerm($term);
+                $termCopy->setCopy($languageData['copy']);
+                $termCopyDAO->save($termCopy, false, false);
+            }
+            $termDAO->save($term, false,false);
+            $termDAO->flush();
+            $termCopyDAO->clearCache();
+            $termDAO->clearCache();
+        }
+    }
+
+    /**
+     * @param $languageId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getTermsByLanguageId($languageId,$hydrate = false, $skipCache = false)
+    {
+        return TermDAO::getInstance($this->getServiceLocator())->getTermsByLanguageId($languageId, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param Term $term
+     */
+    public function deleteTerm(Term $term)
+    {
+       TermDAO::getInstance($this->getServiceLocator())->remove($term);
+    }
+
+    /**
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getTermsCount($skipCache = false)
+    {
+        return TermDAO::getInstance($this->getServiceLocator())->count($skipCache);
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegistrationFormTerms()
+    {
+        $language = UserManager::getInstance($this->getServiceLocator())->getCurrentUserLanguage();
+        return $this->getTermsByLanguageId($language->getId(), true);
 
     }
 

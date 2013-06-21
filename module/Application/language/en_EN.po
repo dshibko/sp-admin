@@ -1,363 +1,619 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2013-05-27 17:10+0300\n"
-"PO-Revision-Date: \n"
+"POT-Creation-Date: 2013-06-20 21:01+0300\n"
+"PO-Revision-Date: 2013-06-20 21:14+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.5\n"
-"X-Poedit-KeywordsList: translate\n"
-"X-Poedit-Basepath: C:\\WebServers\\home\\sp.loc\\tru002\\module\\Application"
-"\\view\\\n"
-"X-Poedit-SearchPath-0: C:\\WebServers\\home\\sp.loc\\tru002\\module"
-"\\Application\\view\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;translate\n"
+"X-Poedit-Basepath: e:\\MyProjects\\scorepredictor\\tru002\\module"
+"\\Application\\\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/forgot.phtml:2
+#: view/application/auth/forgot.phtml:2
 msgid "Forgot Password?"
 msgstr "Forgot Password?"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/forgot.phtml:31
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/reset.phtml:39
+#: view/application/auth/forgot.phtml:24 view/application/auth/reset.phtml:29
 msgid "Submit"
 msgstr "Submit"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:2
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:50
+#: view/application/auth/login.phtml:2 view/application/auth/login.phtml:42
 msgid "Sign In"
-msgstr "Sign in"
+msgstr "Sign In"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:13
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:72
+#: view/application/auth/login.phtml:14 view/application/index/index.phtml:73
 msgid "Login with Facebook"
 msgstr "Login with Facebook"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:33
+#: view/application/auth/login.phtml:25
 msgid "Enter Your Credentials"
 msgstr "Enter Your Credentials"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:45
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:88
+#: view/application/auth/login.phtml:37 view/application/index/index.phtml:89
 msgid "Remember me"
 msgstr "Remember me"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:53
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:94
+#: view/application/auth/login.phtml:45 view/application/index/index.phtml:95
 msgid "Forgotten password"
 msgstr "Forgotten password"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:56
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:96
+#: view/application/auth/login.phtml:48 view/application/index/index.phtml:97
 msgid "Not a member?"
-msgstr "Already a member?"
+msgstr "Not a member?"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/login.phtml:57
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:97
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:191
+#: view/application/auth/login.phtml:49 view/application/index/index.phtml:98
+#: view/application/registration/index.phtml:179
 msgid "Register"
 msgstr "Register"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/reset.phtml:2
+#: view/application/auth/reset.phtml:2
 msgid "Reset Password"
 msgstr "Reset Password"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/auth/reset.phtml:48
+#: view/application/auth/reset.phtml:38
 msgid "Reset Password Page"
 msgstr "Reset Password Page"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:65
-msgid "Find out more"
-msgstr "Find out more"
+#: view/application/content/help.phtml:9
+msgid "We would like to hear from you - any comments or suggestions or any questions you may have. Just use the form below."
+msgstr "We would like to hear from you - any comments or suggestions or any questions you may have. Just use the form below."
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:71
-msgid "Already a member?"
-msgstr "Already a member?"
+#: view/application/content/help.phtml:19
+msgid "Enter Your Contact Info and Message"
+msgstr "Enter Your Contact Info and Message"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:75
-msgid "Regular Login"
-msgstr "Regular Login"
+#: view/application/content/help.phtml:36
+msgid "Send"
+msgstr "Send"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:79
-msgid "Email"
-msgstr "Email"
+#: view/application/content/help.phtml:37
+msgid "Reset"
+msgstr "Reset"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:83
-msgid "Password"
-msgstr "Password"
+#: view/application/content/help.phtml:42
+msgid "FAQs"
+msgstr "FAQs"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:91
-msgid "Sign in"
-msgstr "Sign in"
+#: view/application/content/how-to-play.phtml:2 view/partials/menu.phtml:33
+msgid "How to play"
+msgstr "How to play"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:100
-msgid "Close"
-msgstr "Close"
+#: view/application/fixtures/index.phtml:2
+msgid "Fixtures"
+msgstr "Fixtures"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/index/index.phtml:129
-msgid "Ready to try?"
-msgstr "Ready to try?"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:7
-msgid "New"
-msgstr "New"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:15
-msgid "Prev"
-msgstr "Prev"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:15
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:20
-msgid "match"
-msgstr "match"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:20
-msgid "Next"
-msgstr "Next"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:29
-msgid "Match in progress"
-msgstr "Match in progress"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:32
-msgid "You predicted"
-msgstr "You predicted"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:85
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:112
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:135
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:136
-msgid "Select scorer"
-msgstr "Select scorer"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:92
+#: view/application/fixtures/index.phtml:39
+#: view/application/match/index.phtml:41 view/application/match/index.phtml:81
+#: view/application/predict/index.phtml:64
+#: view/application/predict/index.phtml:121
+#: view/application/results/index.phtml:60
 msgid "VS"
 msgstr "VS"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:93
+#: view/application/fixtures/index.phtml:41
+msgid "Predict the score"
+msgstr "Predict the score"
+
+#: view/application/fixtures/index.phtml:60
+msgid "No more matches will be played in this season. Please join us when next season starts."
+msgstr "No more matches will be played in this season. Please join us when next season starts."
+
+#: view/application/full-table/index.phtml:7
+msgid "League Table"
+msgstr "League Table"
+
+#: view/application/full-table/index.phtml:14
+msgid "Everyone"
+msgstr "Everyone"
+
+#: view/application/full-table/index.phtml:16
+msgid "Your friends"
+msgstr "Your friends"
+
+#: view/application/full-table/index.phtml:18
+msgid "You and around you"
+msgstr "You and around you"
+
+#: view/application/full-table/index.phtml:31
+#: view/application/tables/index.phtml:30
+#: view/application/tables/index.phtml:81
+#: view/application/tables/index.phtml:123
+msgid "pts"
+msgstr "pts"
+
+#: view/application/full-table/index.phtml:57
+msgid "Show more"
+msgstr "Show more"
+
+#: view/application/index/index.phtml:72
+msgid "Already a member?"
+msgstr "Already a member?"
+
+#: view/application/index/index.phtml:76
+msgid "Regular Login"
+msgstr "Regular Login"
+
+#: view/application/index/index.phtml:80
+msgid "Email"
+msgstr "Email"
+
+#: view/application/index/index.phtml:84
+msgid "Password"
+msgstr "Password"
+
+#: view/application/index/index.phtml:92
+msgid "Sign in"
+msgstr "Sign in"
+
+#: view/application/index/index.phtml:101
+msgid "Close"
+msgstr "Close"
+
+#: view/application/index/index.phtml:130
+msgid "Ready to try?"
+msgstr "Ready to try?"
+
+#: view/application/match/index.phtml:1 view/application/match/index.phtml:3
+#: view/application/match/index.phtml:4 view/application/predict/index.phtml:1
+#: view/application/predict/index.phtml:4
+#: view/application/predict/index.phtml:6
+#: view/application/results/index.phtml:1
+#: view/application/results/index.phtml:4
+#: view/application/results/index.phtml:6
+msgid "vs"
+msgstr "vs"
+
+#: view/application/match/index.phtml:1 view/application/match/index.phtml:3
+#: view/application/match/index.phtml:4 view/application/predict/index.phtml:4
+#: view/application/predict/index.phtml:6
+#: view/application/results/index.phtml:4
+#: view/application/results/index.phtml:6
+msgid "Match Report"
+msgstr "Match Report"
+
+#: view/application/match/index.phtml:17 view/application/match/index.phtml:68
+msgid "Public Report"
+msgstr "Public Report"
+
+#: view/application/match/index.phtml:42
+#: view/application/predict/index.phtml:65
+#: view/application/predict/index.phtml:122
+#: view/application/results/index.phtml:61
 msgid "Scorers"
 msgstr "Scorers"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:120
-msgid "Save prediction"
-msgstr "Save prediction"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:122
-msgid "Edit your prediction"
-msgstr "Edit your prediction"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:129
+#: view/application/match/index.phtml:95
+#: view/application/predict/index.phtml:158
 msgid "Time left"
 msgstr "Time left"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/predict/index.phtml:132
+#: view/application/match/index.phtml:98
+#: view/application/predict/index.phtml:161
 msgid "days hours mins secs"
 msgstr "days hours mins secs"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:2
+#: view/application/predict/index.phtml:1
+msgid "Predict at"
+msgstr "Predict at"
+
+#: view/application/predict/index.phtml:15
+#: view/application/results/index.phtml:15
+msgid "New"
+msgstr "New"
+
+#: view/application/predict/index.phtml:24
+#: view/application/results/index.phtml:24
+msgid "Prev"
+msgstr "Prev"
+
+#: view/application/predict/index.phtml:24
+#: view/application/predict/index.phtml:29
+#: view/application/results/index.phtml:24
+#: view/application/results/index.phtml:29
+msgid "match"
+msgstr "match"
+
+#: view/application/predict/index.phtml:29
+#: view/application/results/index.phtml:29
+msgid "Next"
+msgstr "Next"
+
+#: view/application/predict/index.phtml:37
+msgid "Match in progress"
+msgstr "Match in progress"
+
+#: view/application/predict/index.phtml:41
+msgid "You predicted"
+msgstr "You predicted"
+
+#: view/application/predict/index.phtml:87
+msgid "This game is currently being played... check back soon for the results"
+msgstr "This game is currently being played... check back soon for the results"
+
+#: view/application/predict/index.phtml:89
+msgid "or"
+msgstr "or"
+
+#: view/application/predict/index.phtml:90
+msgid "predict the next game"
+msgstr "predict the next game"
+
+#: view/application/predict/index.phtml:114
+#: view/application/predict/index.phtml:141
+#: view/application/predict/index.phtml:164
+#: view/application/predict/index.phtml:165
+msgid "Select scorer"
+msgstr "Select scorer"
+
+#: view/application/predict/index.phtml:149
+msgid "Make prediction"
+msgstr "Make prediction"
+
+#: view/application/predict/index.phtml:151
+msgid "Edit your prediction"
+msgstr "Edit your prediction"
+
+#: view/application/predict/index.phtml:187
+msgid "You didn't save the prediction."
+msgstr "You didn't save the prediction."
+
+#: view/application/prize/index.phtml:1
+msgid "Prizes"
+msgstr "You didn't save the prediction."
+
+#: view/application/registration/index.phtml:2
 msgid "Registration"
 msgstr "Registration"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:14
+#: view/application/registration/index.phtml:15
+#: view/application/user/settings.phtml:14
 msgid "Connect with Facebook"
 msgstr "Connect with Facebook"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:46
+#: view/application/registration/index.phtml:26
 msgid "Enter Personal Info"
 msgstr "Enter Personal Info"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:98
+#: view/application/registration/index.phtml:56
+msgid "Gender"
+msgstr "Gender"
+
+#: view/application/registration/index.phtml:59
+msgid "Male"
+msgstr "Male"
+
+#: view/application/registration/index.phtml:63
+msgid "Female"
+msgstr "Female"
+
+#: view/application/registration/index.phtml:85
 msgid "Enter Email Addresses"
 msgstr "Enter Email Addresses"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:121
+#: view/application/registration/index.phtml:108
 msgid "Enter Your Password"
 msgstr "Enter Your Password"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:144
+#: view/application/registration/index.phtml:131
 msgid "Enter Your Display Name"
 msgstr "Enter Your Display Name"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:158
+#: view/application/registration/index.phtml:145
 msgid "Enter Your Avatar"
 msgstr "Enter Your Avatar"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:170
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:84
+#: view/application/registration/index.phtml:157
+#: view/application/user/settings.phtml:120
 msgid "Or choose from selection"
 msgstr "Or choose from selection"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/index.phtml:176
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:116
-msgid "Email Settings"
-msgstr "Email Settings"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/registration/setup.phtml:2
-msgid "Set Up"
-msgstr "Set Up"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/delete.phtml:2
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:144
-msgid "Delete Account"
-msgstr "Delete Account"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/delete.phtml:8
-msgid "Are you sure?"
-msgstr "Are you sure?"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/delete.phtml:11
-msgid "Yes"
-msgstr "Yes"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/delete.phtml:12
-msgid "No"
-msgstr "No"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:2
-msgid "Settings"
-msgstr "Settings"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:10
-msgid "Connect your account to a one click login"
-msgstr "Connect your account to a one click login"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:14
-msgid "Change your Password"
-msgstr "Change your Password"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:42
-msgid "Change your email addresses"
-msgstr "Change your email addresses"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:59
-msgid "Change your display name"
-msgstr "Change your display name"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:73
-msgid "Change your avatar"
-msgstr "Change your avatar"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:74
-msgid "User avatar"
-msgstr "User avatar"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:93
-msgid "Regional Settings"
-msgstr "Regional Settings"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:95
-msgid "Your country"
-msgstr "Your country"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:98
-msgid msgstr "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league."
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/application/user/settings.phtml:131
-msgid "Profile Type"
-msgstr "Profile Type"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:1
-msgid "A 404 error occurred"
-msgstr "A 404 error occurred"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:10
-msgid "The requested controller was unable to dispatch the request."
-msgstr "The requested controller was unable to dispatch the request."
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:13
-msgid msgstr "The requested controller could not be mapped to an existing controller class."
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:16
-msgid "The requested controller was not dispatchable."
-msgstr "The requested controller was not dispatchable."
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:19
-msgid "The requested URL could not be matched by routing."
-msgstr "The requested URL could not be matched by routing."
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:22
-msgid "We cannot determine at this time why a 404 was generated."
-msgstr "We cannot determine at this time why a 404 was generated."
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:34
-msgid "Controller"
-msgstr "Controller"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:41
-#, php-format
-msgid "resolves to %s"
-msgstr "resolves to %s"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:53
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:8
-msgid "Additional information"
-msgstr "Additional information"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:56
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:80
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:11
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:35
-msgid "File"
-msgstr "File"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:60
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:84
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:15
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:39
-msgid "Message"
-msgstr "Message"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:64
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:88
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:19
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:43
-msgid "Stack trace"
-msgstr "Stack trace"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:74
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:29
-msgid "Previous exceptions"
-msgstr "Previous exceptions"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/404.phtml:103
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:58
-msgid "No Exception available"
-msgstr "No Exception available"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/error/index.phtml:1
-msgid "An error occurred"
-msgstr "An error occurred"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/cookie-bar.phtml:3
-msgid "Dismiss"
-msgstr "Dismiss"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:6
-msgid "Stay up to date with FC Barcelona"
-msgstr "Stay up to date with FC Barcelona"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:7
-msgid "See behind the scenes, match updates <br>and exclusive content"
-msgstr "See behind the scenes, match updates <br>and exclusive content"
-
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:14
+#: view/application/registration/index.phtml:164 view/partials/footer.phtml:14
 msgid "Terms"
 msgstr "Terms"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:17
+#: view/application/registration/setup.phtml:10
+msgid "Set Up"
+msgstr "Set Up"
+
+#: view/application/registration/setup.phtml:36
+#: view/partials/setup-popup.phtml:9
+msgid "Just one more thing"
+msgstr "Just one more thing"
+
+#: view/application/registration/setup.phtml:39
+#: view/partials/setup-popup.phtml:13
+msgid "Are these details correct?"
+msgstr "Are these details correct?"
+
+#: view/application/registration/setup.phtml:40
+#: view/partials/setup-popup.phtml:14
+msgid "We need to know your region su we can make sure you are antered into the right league."
+msgstr "We need to know your region su we can make sure you are antered into the right league."
+
+#: view/application/registration/setup.phtml:41
+#: view/partials/setup-popup.phtml:15
+msgid "Note: once confirmed, you will not be able to change these settings until next season"
+msgstr "Note: once confirmed, you will not be able to change these settings until next season"
+
+#: view/application/registration/setup.phtml:57
+#: view/partials/setup-popup.phtml:31
+msgid "Confirm and start playing"
+msgstr "Confirm and start playing"
+
+#: view/application/results/index.phtml:1
+msgid "Your Results of"
+msgstr "Your Results of"
+
+#: view/application/results/index.phtml:98
+msgid "Total"
+msgstr "Total"
+
+#: view/application/results/index.phtml:99
+msgid "PTS"
+msgstr "PTS"
+
+#: view/application/tables/index.phtml:2
+msgid "League Tables"
+msgstr "League Tables"
+
+#: view/application/tables/index.phtml:11
+msgid "Global league"
+msgstr "Global league"
+
+#: view/application/tables/index.phtml:28
+#: view/application/tables/index.phtml:79
+#: view/application/tables/index.phtml:121
+msgid "Top 4"
+msgstr "Top 4"
+
+#: view/application/tables/index.phtml:56
+#: view/application/tables/index.phtml:107
+#: view/application/tables/index.phtml:144
+msgid "View full table"
+msgstr "View full table"
+
+#: view/application/tables/index.phtml:62
+msgid "league"
+msgstr "league"
+
+#: view/application/user/delete.phtml:2
+#: view/application/user/settings.phtml:164
+msgid "Delete Account"
+msgstr "Delete Account"
+
+#: view/application/user/delete.phtml:11
+msgid "Are you sure you want to delete your account?"
+msgstr "Are you sure you want to delete your account?"
+
+#: view/application/user/delete.phtml:12
+msgid "<strong>Note:</strong> all data associated with your account will be lost and non-recoverable."
+msgstr "<strong>Note:</strong> all data associated with your account will be lost and non-recoverable."
+
+#: view/application/user/delete.phtml:14
+msgid "Confirm and delete account"
+msgstr "Confirm and delete account"
+
+#: view/application/user/settings.phtml:2 view/partials/menu.phtml:30
+msgid "Settings"
+msgstr "Settings"
+
+#: view/application/user/settings.phtml:25
+msgid "Change your Password"
+msgstr "Change your Password"
+
+#: view/application/user/settings.phtml:40
+#: view/application/user/settings.phtml:69
+#: view/application/user/settings.phtml:94
+#: view/application/user/settings.phtml:124
+#: view/application/user/settings.phtml:156
+msgid "Save changes"
+msgstr "Save changes"
+
+#: view/application/user/settings.phtml:58
+msgid "Change Your Email Addresses"
+msgstr "Change Your Email Addresses"
+
+#: view/application/user/settings.phtml:87
+msgid "Change Your Display Name"
+msgstr "Change Your Display Name"
+
+#: view/application/user/settings.phtml:112
+msgid "Change Your Avatar"
+msgstr "Change Your Avatar"
+
+#: view/application/user/settings.phtml:115
+msgid "User avatar"
+msgstr "User avatar"
+
+#: view/application/user/settings.phtml:142
+msgid "Regional Settings"
+msgstr "Regional Settings"
+
+#: view/application/user/settings.phtml:145
+msgid "Your country"
+msgstr "Your country"
+
+#: view/application/user/settings.phtml:148
+msgid "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league."
+msgstr "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league."
+
+#: view/error/404.phtml:1
+msgid "Page not found"
+msgstr "Page not found"
+
+#: view/error/404.phtml:4
+msgid "Whoops!"
+msgstr "Whoops!"
+
+#: view/error/404.phtml:7 view/error/500.phtml:7 view/error/index.phtml:15
+#: view/error/index.phtml:39
+msgid "Message"
+msgstr "Message"
+
+#: view/error/404.phtml:8
+msgid "Sorry, the page you requested could not be found"
+msgstr "Sorry, the page you requested could not be found"
+
+#: view/error/500.phtml:1 view/error/500.phtml:4
+msgid "Server Error"
+msgstr "Server Error"
+
+#: view/error/500.phtml:8
+msgid "Sorry, you can't see the page. We are aware of it and doing all our best to fix the problem."
+msgstr "Sorry, you can't see the page. We are aware of it and doing all our best to fix the problem."
+
+#: view/error/500.phtml:15 view/error/index.phtml:8
+msgid "Additional information"
+msgstr "Additional information"
+
+#: view/error/index.phtml:1
+msgid "An error occurred"
+msgstr "An error occurred"
+
+#: view/error/index.phtml:11 view/error/index.phtml:35
+msgid "File"
+msgstr "File"
+
+#: view/error/index.phtml:19 view/error/index.phtml:43
+msgid "Stack trace"
+msgstr "Stack trace"
+
+#: view/error/index.phtml:29
+msgid "Previous exceptions"
+msgstr "Previous exceptions"
+
+#: view/error/index.phtml:58
+msgid "No Exception available"
+msgstr "No Exception available"
+
+#: view/error/info.phtml:2 view/error/info.phtml:7
+msgid "Info Page"
+msgstr "Info Page"
+
+#: view/partials/cookie-bar.phtml:3
+msgid "Dismiss"
+msgstr "Dismiss"
+
+#: view/partials/footer.phtml:6
+msgid "Stay up to date with Truefan United"
+msgstr "Stay up to date with Truefan United"
+
+#: view/partials/footer.phtml:7
+msgid "See behind the scenes, match updates <br>and exclusive content"
+msgstr "See behind the scenes, match updates <br>and exclusive content"
+
+#: view/partials/footer.phtml:17
 msgid "Contact us"
 msgstr "Contact us"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:20
+#: view/partials/footer.phtml:20
 msgid "Privacy"
 msgstr "Privacy"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:23
+#: view/partials/footer.phtml:23
+msgid "Help & Support"
+msgstr "Help & Support"
+
+#: view/partials/footer.phtml:26
 msgid "Visit our main site"
 msgstr "Visit our main site"
 
-#: C:\WebServers\home\sp.loc\tru002\module\Application\view/partials/footer.phtml:26
+#: view/partials/footer.phtml:29
 msgid "Cookies policy"
 msgstr "Cookies policy"
+
+#: view/partials/footer.phtml:33
+msgid "MADE BY"
+msgstr "MADE BY"
+
+#: view/partials/invite-friends.phtml:8
+msgid "Invite friends to Score Predictor"
+msgstr "Invite friends to Score Predictor"
+
+#: view/partials/menu.phtml:21
+msgid "User Navigation"
+msgstr "User Navigation"
+
+#: view/partials/menu.phtml:36
+msgid "Sign out"
+msgstr "Sign out"
+
+#: view/partials/post-match-report.phtml:9
+#: view/partials/pre-match-report.phtml:9
+msgid "Share this"
+msgstr "Share this"
+
+#: view/partials/post-match-report.phtml:34
+msgid "Was the most popular prediction this match"
+msgstr "Was the most popular prediction this match"
+
+#: view/partials/post-match-report.phtml:48
+msgid "Correct scorer predictions"
+msgstr "Correct scorer predictions"
+
+#: view/partials/pre-match-report.phtml:37
+msgid "Featured Player"
+msgstr "Featured Player"
+
+#: view/partials/pre-match-report.phtml:43
+msgid "Goals this season"
+msgstr "Goals this season"
+
+#: view/partials/pre-match-report.phtml:47
+#: view/partials/pre-match-report.phtml:82
+msgid "Matches played"
+msgstr "Matches played"
+
+#: view/partials/pre-match-report.phtml:51
+msgid "Match"
+msgstr "Match"
+
+#: view/partials/pre-match-report.phtml:51
+msgid "starts"
+msgstr "starts"
+
+#: view/partials/pre-match-report.phtml:55
+msgid "Mins"
+msgstr "Mins"
+
+#: view/partials/pre-match-report.phtml:55
+msgid "played"
+msgstr "played"
+
+#: view/partials/pre-match-report.phtml:72
+msgid "GOAL KEEPER"
+msgstr "GOAL KEEPER"
+
+#: view/partials/pre-match-report.phtml:78
+msgid "Saves this season"
+msgstr "Saves this season"
+
+#: view/partials/pre-match-report.phtml:86
+msgid "Penalty saves"
+msgstr "Penalty saves"
+
+#: view/partials/pre-match-report.phtml:90
+msgid "Clean sheets"
+msgstr "Clean sheets"
+
+#: view/partials/pre-match-report.phtml:107
+msgid "Draw"
+msgstr "Draw"
+
+#: view/partials/pre-match-report.phtml:162
+msgid "Top predicted scorers"
+msgstr "Top predicted scorers"
+
+#: view/partials/pre-match-report.phtml:189
+msgid "Top 5 predicted scores"
+msgstr "Top 5 predicted scores"
+
+#: view/partials/right-column.phtml:111
+msgid "+ Invite your friends"
+msgstr "+ Invite your friends"
 

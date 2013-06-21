@@ -1,13 +1,14 @@
 <?php
 namespace Application\Form;
 
+use Zend\Form\Fieldset;
 use Zend\Form\Form;
-//use Zend\Form\Element\Captcha;
-//use Zend\Captcha\ReCaptcha;
+use Zend\InputFilter\InputFilter;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Manager\ApplicationManager;
 use Application\Form\Filter\RegistrationFilter;
+use Zend\InputFilter\Factory as InputFactory;
 
 class RegistrationForm extends Form implements ServiceLocatorAwareInterface
 {
@@ -19,9 +20,29 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
     const DEFAULT_YEAR = 1985;
     const MALE = 'male';
     const FEMALE = 'female';
+    const TERMS_FIELDSET_NAME = 'terms';
 
-    protected $captcha;
     protected $serviceLocator;
+    protected $terms = array();
+
+    /**
+     * @param mixed $terms
+     * @return $this
+     */
+    public function setTerms($terms)
+    {
+        $this->terms = $terms;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTerms()
+    {
+        return $this->terms;
+    }
+
 
     private function getDays()
     {
@@ -72,18 +93,8 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
         $this->serviceLocator = $serviceLocator;
         return $this;
     }
-
-    public function __construct(ServiceLocatorInterface $serviceLocator = null)
+    public function init()
     {
-        parent::__construct('register');
-
-        $this->setAttribute('method', 'post')
-            ->setAttribute('enctype', 'multipart/form-data')
-            ->setAttribute('autocomplete', 'off')
-            ->setServiceLocator($serviceLocator)
-            ->setInputFilter($this->getServiceLocator()->get('Application\Form\Filter\RegistrationFilter')->getInputFilter());
-
-
         //Title
         $this->add(array(
             'name' => 'title',
@@ -283,48 +294,42 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'Avatar',
             ),
         ));
+        $terms = $this->getTerms();
 
-        //TODO set checked by admin
-        //Term 1
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Checkbox',
-            'name' => 'term1',
-            'options' => array(
-                'label' => 'Term 1',
-                'use_hidden_element' => false,
-                'checked_value' => 1,
-                'unchecked_value' => 0
-            ),
-            'attributes' => array(
-//                'class' => 'required'
-            )
-        ));
+        if (!empty($terms)){
+            $fieldset = new Fieldset(self::TERMS_FIELDSET_NAME);
+            $factory = new InputFactory();
+            $inputFilter = $this->getInputFilter();
+            $termsInputFilter = new InputFilter();
+            foreach($terms as $term){
+                $name = 'term'.$term['id'];
+                $termData = array(
+                    'type' => 'Zend\Form\Element\Checkbox',
+                    'name' => $name,
+                    'options' => array(
+                        'label' => $term['copy'],
+                        'use_hidden_element' => false,
+                        'checked_value' => 1,
+                        'unchecked_value' => 0
+                    )
+                );
+                if (!empty($term['isChecked'])){
+                    $termData['attributes'] = array(
+                      'checked' => 'checked'
+                    );
+                }
+                $termsInputFilter->add($factory->createInput(array(
+                    'name'     => $name,
+                    'required' => (bool)$term['isRequired']
 
-        //TODO set checked by admin
-        //Term 2
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Checkbox',
-            'name' => 'term2',
-            'options' => array(
-                'label' => 'Term 2',
-                'use_hidden_element' => false,
-                'checked_value' => 1,
-                'unchecked_value' => 0
-            ),
-            'attributes' => array(
-//                'class' => 'required'
-            )
-        ));
+                )));
+                $fieldset->add($termData);
+            }
+            $inputFilter->add($termsInputFilter, self::TERMS_FIELDSET_NAME);
+            $this->setInputFilter($inputFilter);
+            $this->add($fieldset);
+        }
 
-        //Captcha
-        /*$this->add(array(
-            'type' => 'Zend\Form\Element\Captcha',
-            'name' => 'captcha',
-            'options' => array(
-                'label' => 'Please verify you are human',
-                'captcha' => $this->getServiceLocator()->get('Zend\Captcha\ReCaptcha'),
-            ),
-        ));*/
         //CSRF
         $this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
@@ -335,6 +340,7 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 )
             )
         ));
+
         // Submit
         $this->add(array(
             'name' => 'submit',
@@ -343,11 +349,21 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'type' => 'submit',
                 'value' => 'Register',
                 'id' => 'submitbutton',
-
             ),
         ));
+    }
+    public function __construct(ServiceLocatorInterface $serviceLocator = null, $terms = array())
+    {
+        parent::__construct('register');
 
+        $this->setAttribute('method', 'post')
+            ->setAttribute('enctype', 'multipart/form-data')
+            ->setAttribute('autocomplete', 'off')
+            ->setServiceLocator($serviceLocator)
+            ->setTerms($terms);
 
+        $inputFilter = $this->getServiceLocator()->get('Application\Form\Filter\RegistrationFilter');
+        $this->setInputFilter($inputFilter->getInputFilter());
     }
 
     public function prepareData()

@@ -24,7 +24,12 @@ class RegistrationController extends AbstractActionController
     public function indexAction()
     {
         try {
+            $terms = null;
             $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
+            $fieldsets = $form->getFieldsets();
+            if(!empty($fieldsets['terms'])){
+               $terms = $fieldsets['terms'];
+            }
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
             $registrationManager = RegistrationManager::getInstance($this->getServiceLocator());
             //if member - redirect to dashboard
@@ -56,6 +61,7 @@ class RegistrationController extends AbstractActionController
             }
             $viewModel = new ViewModel(array(
                 'form' => $form,
+                'terms' => $terms,
                 'default_avatar' => $this->getRequest()->getPost('default_avatar', null)
             ));
 

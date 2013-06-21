@@ -2,6 +2,9 @@
 
 namespace Opta\Manager;
 
+use \Application\Model\DAOs\MatchGoalDAO;
+use \Zend\Mvc\Controller\Plugin\FlashMessenger;
+use \Zend\Log\Logger;
 use \Application\Model\Entities\LineUpPlayer;
 use \Application\Model\DAOs\LineUpPlayerDAO;
 use \Application\Manager\ApplicationManager;
@@ -42,13 +45,16 @@ class OptaManager extends BasicManager {
     }
 
     /**
-     * @param \SimpleXMLElement $xml
+     * @param $filePath
      * @param \Zend\Console\Adapter\AdapterInterface $console
+     * @return bool|\Exception
      */
-    public function parseF40Feed($xml, $console) {
+    public function parseF40Feed($filePath, $console = null) {
 
         try {
-            $this->startProgress($console, true, 'F40');
+            $this->startProgress($console, 'F40', $filePath);
+
+            $xml = $this->getXMLContent($filePath);
 
             $seasonDAO = SeasonDAO::getInstance($this->getServiceLocator());
             $seasonFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'season_id');
@@ -58,6 +64,8 @@ class OptaManager extends BasicManager {
 
                 $competitionDAO = CompetitionDAO::getInstance($this->getServiceLocator());
                 $competitionFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'competition_id');
+                if (empty($competitionFeederId))
+                    throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'competition_id'));
                 $competition = $season->getCompetitionByFeederId($competitionFeederId);
                 if ($competition == null) {
                     $competition = new Competition();
@@ -76,6 +84,11 @@ class OptaManager extends BasicManager {
                 foreach ($xml->SoccerDocument->Team as $teamXml) {
                     try {
                         $teamFeederId = $this->getIdFromString($this->getXmlAttribute($teamXml, 'uID'));
+                        if (empty($teamFeederId)) {
+                            $this->doProgress($console);
+                            $this->logMessage(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'team_id'), Logger::WARN, $console);
+                            continue;
+                        }
                         $team = $teamDAO->getRepository()->findOneByFeederId($teamFeederId);
                         if ($team == null) {
                             $team = new Team();
@@ -103,72 +116,79 @@ class OptaManager extends BasicManager {
                                 $player->removeCompetition($competition);
 
                         foreach ($teamXml->Player as $playerXml) {
-                            $playerFeederId = $this->getIdFromString($this->getXmlAttribute($playerXml, 'uID'));
-                            $player = $playerDAO->getRepository()->findOneByFeederId($playerFeederId);
-                            if ($player == null) {
-                                $player = new Player();
-                                $player->setFeederId($playerFeederId);
-                                $team->addPlayer($player);
-                            } else if ($player->getTeam()->getId() != $team->getId()) {
-                                $player->clearCompetitions();
-                                $team->addPlayer($player);
-                            }
-                            if (!$player->hasCompetition($competition))
-                                $player->addCompetition($competition);
+                            try {
+                                $playerFeederId = $this->getIdFromString($this->getXmlAttribute($playerXml, 'uID'));
+                                if (empty($playerFeederId)) {
+                                    $this->logMessage(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'player_id'), Logger::WARN, $console);
+                                    continue;
+                                }
+                                $player = $playerDAO->getRepository()->findOneByFeederId($playerFeederId);
+                                if ($player == null) {
+                                    $player = new Player();
+                                    $player->setFeederId($playerFeederId);
+                                    $team->addPlayer($player);
+                                } else if ($player->getTeam()->getId() != $team->getId()) {
+                                    $player->clearCompetitions();
+                                    $team->addPlayer($player);
+                                }
+                                if (!$player->hasCompetition($competition))
+                                    $player->addCompetition($competition);
 
-                            $player->setTeam($team);
-                            if (!$player->getIsBlocked()) {
-                                $player->setDisplayName($playerXml->Name->__toString());
-                                $player->setShirtNumber($this->getNodeValue($playerXml->Stat, 6));
+                                $player->setTeam($team);
+                                if (!$player->getIsBlocked()) {
+                                    $player->setDisplayName($playerXml->Name->__toString());
+                                    $player->setShirtNumber($this->getNodeValue($playerXml->Stat, 6));
+                                }
+                                $player->setPosition($playerXml->Position->__toString());
+                                $player->setName($playerXml->Stat->{0}->__toString());
+                                $player->setSurname($playerXml->Stat->{1}->__toString());
+                                $player->setBirthDate($this->getNodeValue($playerXml->Stat, 3, 'Y-m-d'));
+                                $player->setWeight($this->getNodeValue($playerXml->Stat, 4));
+                                $player->setHeight($this->getNodeValue($playerXml->Stat, 5));
+                                $player->setRealPosition($this->getNodeValue($playerXml->Stat, 7));
+                                $player->setRealPositionSide($this->getNodeValue($playerXml->Stat, 8));
+                                $player->setJoinDate($this->getNodeValue($playerXml->Stat, 9, 'Y-m-d'));
+                                $player->setCountry($this->getNodeValue($playerXml->Stat, 10));
+                            } catch (\Exception $e) {
+                                ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::ERR, $console);
                             }
-                            $player->setPosition($playerXml->Position->__toString());
-                            $player->setName($playerXml->Stat->{0}->__toString());
-                            $player->setSurname($playerXml->Stat->{1}->__toString());
-                            $player->setBirthDate($this->getNodeValue($playerXml->Stat, 3, 'Y-m-d'));
-                            $player->setWeight($this->getNodeValue($playerXml->Stat, 4));
-                            $player->setHeight($this->getNodeValue($playerXml->Stat, 5));
-                            $player->setRealPosition($this->getNodeValue($playerXml->Stat, 7));
-                            $player->setRealPositionSide($this->getNodeValue($playerXml->Stat, 8));
-                            $player->setJoinDate($this->getNodeValue($playerXml->Stat, 9, 'Y-m-d'));
-                            $player->setCountry($this->getNodeValue($playerXml->Stat, 10));
-
                         }
 
                         $teamDAO->save($team);
+                        $playerDAO->clearCache();
 
                     } catch (\Exception $e) {
-                        ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
+                        ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::ERR, $console);
                     }
 
                     $this->doProgress($console);
 
                 }
-            }
+            } else
+                $this->logMessage(MessagesConstants::INFO_NOT_CURRENT_SEASON, Logger::NOTICE, $console);
 
-            $this->finishProgress($console, true, 'F40');
+            $this->finishProgress($console, 'F40', $filePath);
+
+            return true;
 
         } catch (\Exception $e) {
-            ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
+            ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::CRIT, $console);
+            return false;
         }
 
-    }
-
-    private function getXMLContent($filePath) {
-        $fileContents = file_get_contents($filePath);
-        $json = json_decode($fileContents);
-        return simplexml_load_string($json->content);
     }
 
     /**
      * @param $filePath
      * @param \Zend\Console\Adapter\AdapterInterface $console
+     * @return bool|\Exception
      */
-    public function parseF1Feed($filePath, $console) {
-
-        $xml = $this->getXMLContent($filePath);
+    public function parseF1Feed($filePath, $console = null) {
 
         try {
-            $this->startProgress($console, true, 'F1');
+            $this->startProgress($console, 'F1', $filePath);
+
+            $xml = $this->getXMLContent($filePath);
 
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $edition = $applicationManager->getAppEdition();
@@ -183,6 +203,8 @@ class OptaManager extends BasicManager {
             if ($season != null) {
 
                 $competitionFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'competition_id');
+                if (empty($competitionFeederId))
+                    throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'competition_id'));
 
                 if ($edition != ApplicationManager::COMPETITION_EDITION || $optaId == $competitionFeederId) {
 
@@ -200,6 +222,12 @@ class OptaManager extends BasicManager {
                                 $team1FeederId = $this->getIdFromString($this->getXmlAttribute($matchXml->TeamData->{0}, 'TeamRef'));
                                 $team2FeederId = $this->getIdFromString($this->getXmlAttribute($matchXml->TeamData->{1}, 'TeamRef'));
 
+                                if (empty($team1FeederId) || empty($team2FeederId)) {
+                                    $this->doProgress($console);
+                                    $this->logMessage(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'team_id'), Logger::WARN, $console);
+                                    continue;
+                                }
+
                                 if ($edition == ApplicationManager::CLUB_EDITION)
                                     if ($team1FeederId != $optaId && $team2FeederId != $optaId) {
                                         $this->doProgress($console);
@@ -207,6 +235,11 @@ class OptaManager extends BasicManager {
                                     }
 
                                 $matchFeederId = $this->getIdFromString($this->getXmlAttribute($matchXml, 'uID'));
+                                if (empty($matchFeederId)) {
+                                    $this->doProgress($console);
+                                    $this->logMessage(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'match_id'), Logger::WARN, $console);
+                                    continue;
+                                }
                                 $match = $matchDAO->getRepository()->findOneByFeederId($matchFeederId);
                                 if ($match == null) {
                                     $match = new Match();
@@ -247,45 +280,54 @@ class OptaManager extends BasicManager {
                                     $match->setAwayTeam($teamDAO->getRepository()->findOneByFeederId($awayTeamFeederId));
 
                                     if ($match->getHomeTeam() == null || $match->getAwayTeam() == null) {
+                                        $this->doProgress($console);
                                         $missedFeederId = $match->getHomeTeam() == null ? $homeTeamFeederId : $awayTeamFeederId;
-                                        LogManager::getInstance($this->getServiceLocator())->logOptaWarning(sprintf(MessagesConstants::WARNING_TEAM_MISSED, $missedFeederId));
+                                        $this->logMessage(sprintf(MessagesConstants::WARNING_TEAM_NOT_FOUND, $missedFeederId), Logger::WARN, $console);
+                                        continue;
                                     }
 
                                     $match->setStadiumName($this->getNodeValue($matchXml->Stat, 0));
                                     $match->setCityName($this->getNodeValue($matchXml->Stat, 1));
 
-                                    if ($match->getHomeTeam() !== null && $match->getAwayTeam() !== null)
-                                        $matchDAO->save($match);
+                                    $matchDAO->save($match);
 
                                 }
 
                             } catch (\Exception $e) {
-                                ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
+                                ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::ERR, $console);
                             }
 
                             $this->doProgress($console);
 
                         }
-                    }
-                }
-            }
+                    } else
+                        $this->logMessage(sprintf(MessagesConstants::INFO_ENTITY_NOT_FOUND, "Competition"), Logger::NOTICE, $console);
+                } else
+                    $this->logMessage(MessagesConstants::INFO_WRONG_COMPETITION, Logger::NOTICE, $console);
+            } else
+                $this->logMessage(MessagesConstants::INFO_NOT_CURRENT_SEASON, Logger::NOTICE, $console);
 
-            $this->finishProgress($console, true, 'F1');
+            $this->finishProgress($console, 'F1', $filePath);
+
+            return true;
 
         } catch (\Exception $e) {
-            ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
+            ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::CRIT, $console);
+            return false;
         }
     }
 
     /**
-     * @param \SimpleXMLElement $xml
+     * @param $filePath
      * @param \Zend\Console\Adapter\AdapterInterface $console
+     * @return bool|\Exception
      */
-    public function parseF7Feed($xml, $console) {
+    public function parseF7Feed($filePath, $console = null) {
 
         try {
+            $this->startProgress($console, 'F7', $filePath);
 
-            $this->startProgress($console, true, 'F7');
+            $xml = $this->getXMLContent($filePath);
 
             $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
             $matchFeederId = $this->getIdFromString($this->getXmlAttribute($xml->SoccerDocument, 'uID'));
@@ -299,6 +341,9 @@ class OptaManager extends BasicManager {
 
                 $teamData1 = $xml->SoccerDocument->MatchData->TeamData->{0};
                 $teamData2 = $xml->SoccerDocument->MatchData->TeamData->{1};
+
+                if (empty($teamData1) || empty($teamData2))
+                    throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'team_id'));
 
                 if ($this->getXmlAttribute($teamData2, 'Side') == 'Home') {
                     $homeTeamData = $teamData2;
@@ -388,9 +433,14 @@ class OptaManager extends BasicManager {
                 $match->setIsBlocked(true);
 
                 $matchDAO->save($match);
+                MatchGoalDAO::getInstance($this->getServiceLocator())->clearCache();
 
-                ScoringManager::getInstance($this->getServiceLocator())->calculateMatchScores($match);
-
+                try {
+                    ScoringManager::getInstance($this->getServiceLocator())->calculateMatchScores($match);
+                } catch (\Exception $e) {
+                    ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::EMERG, $console);
+                    return false;
+                }
             }
 
             $period = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo, 'Period');
@@ -404,6 +454,8 @@ class OptaManager extends BasicManager {
                     $lineUpPlayerDAO = LineUpPlayerDAO::getInstance($this->getServiceLocator());
                     $homeTeamData = $teamData->{0};
                     $awayTeamData = $teamData->{1};
+                    if (empty($homeTeamData) || empty($awayTeamData))
+                        throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'team_id'));
                     $teamsData = array($homeTeamData, $awayTeamData);
                     $hasLineUp = false;
                     foreach ($teamsData as $teamData) {
@@ -412,17 +464,18 @@ class OptaManager extends BasicManager {
                         if ($teamObj != null && $teamData->PlayerLineUp != null) {
                             $hasLineUp = true;
                             $squad = $teamData->PlayerLineUp->MatchPlayer;
-                            foreach ($squad as $player) {
-                                $lineUpPlayer = new LineUpPlayer();
-                                $playerFeederId = $this->getIdFromString($this->getXmlAttribute($player, 'PlayerRef'));
-                                $playerObj = $playerDAO->getRepository()->findOneByFeederId($playerFeederId);
-                                $lineUpPlayer->setPlayer($playerObj);
-                                $lineUpPlayer->setMatch($match);
-                                $lineUpPlayer->setTeam($teamObj);
-                                $status = $this->getXmlAttribute($player, 'Status');
-                                $lineUpPlayer->setIsStart(strtolower($status) == 'start');
-                                $lineUpPlayerDAO->save($lineUpPlayer, false, false);
-                            }
+                            if ($squad != null)
+                                foreach ($squad as $player) {
+                                    $lineUpPlayer = new LineUpPlayer();
+                                    $playerFeederId = $this->getIdFromString($this->getXmlAttribute($player, 'PlayerRef'));
+                                    $playerObj = $playerDAO->getRepository()->findOneByFeederId($playerFeederId);
+                                    $lineUpPlayer->setPlayer($playerObj);
+                                    $lineUpPlayer->setMatch($match);
+                                    $lineUpPlayer->setTeam($teamObj);
+                                    $status = $this->getXmlAttribute($player, 'Status');
+                                    $lineUpPlayer->setIsStart(strtolower($status) == 'start');
+                                    $lineUpPlayerDAO->save($lineUpPlayer, false, false);
+                                }
                         }
                     }
                     if ($hasLineUp) {
@@ -430,6 +483,7 @@ class OptaManager extends BasicManager {
                         $lineUpPlayerDAO->clearCache();
                         $match->setHasLineUp(true);
                         $matchDAO->save($match);
+                        LineUpPlayerDAO::getInstance($this->getServiceLocator())->clearCache();
                     }
                 }
             }
@@ -439,11 +493,23 @@ class OptaManager extends BasicManager {
                 $matchDAO->save($match);
             }
 
-            $this->finishProgress($console, true, 'F7');
+            $this->finishProgress($console, 'F7', $filePath);
+
+            return true;
 
         } catch (\Exception $e) {
-            ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e);
+            ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::CRIT, $console);
+            return false;
         }
+    }
+
+    private function getXMLContent($filePath) {
+        $fileContents = file_get_contents($filePath);
+        $json = json_decode($fileContents);
+        $xml = simplexml_load_string($json->content);
+        if ($xml === false)
+            throw new \Exception(MessagesConstants::ERROR_CANNOT_BE_PARSED);
+        return $xml;
     }
 
     private function getIdFromString($str) {
@@ -485,35 +551,33 @@ class OptaManager extends BasicManager {
 
     }
 
-    const LOG_FEED_IMPORT_STARTED = 'Opta Feed %s Import Started';
-    const LOG_FEED_IMPORT_FINISHED = 'Opta Feed %s Import Finished';
-
-    const LOG_FEED_SCORING_CALCULATION_STARTED = 'Scoring Calculation Started';
-    const LOG_FEED_SCORING_CALCULATION_FINISHED = 'Scoring Calculation Finished';
-
     /**
      * @param \Zend\Console\Adapter\AdapterInterface $console
-     * @param bool $isFeed
      * @param string $feedType
+     * @param string $feedFilePath
      */
-    private function startProgress($console, $isFeed, $feedType = null) {
-        $info = $isFeed ? sprintf(self::LOG_FEED_IMPORT_STARTED, $feedType) : self::LOG_FEED_SCORING_CALCULATION_STARTED;
-        LogManager::getInstance($this->getServiceLocator())->logOptaInfo($info);
-        $console->writeLine("");
-        $console->writeLine($info);
-        $console->writeLine("");
+    private function startProgress($console, $feedType, $feedFilePath) {
+        $info = sprintf(MessagesConstants::LOG_FEED_IMPORT_STARTED, $feedType, $feedFilePath);
+        LogManager::getInstance($this->getServiceLocator())->logOptaMessage($info, Logger::INFO);
+        if ($console != null) {
+            $console->writeLine("");
+            $console->writeLine($info);
+            $console->writeLine("");
+        }
     }
 
     /**
      * @param \Zend\Console\Adapter\AdapterInterface $console
-     * @param bool $isFeed
      * @param string $feedType
+     * @param string $feedFilePath
      */
-    private function finishProgress($console, $isFeed, $feedType = null) {
-        $info = $isFeed ? sprintf(self::LOG_FEED_IMPORT_FINISHED, $feedType) : self::LOG_FEED_SCORING_CALCULATION_FINISHED;
-        LogManager::getInstance($this->getServiceLocator())->logOptaInfo($info);
-        $console->writeLine("");
-        $console->writeLine($info);
+    private function finishProgress($console, $feedType, $feedFilePath) {
+        $info = sprintf(MessagesConstants::LOG_FEED_IMPORT_FINISHED, $feedType, $feedFilePath);
+        LogManager::getInstance($this->getServiceLocator())->logOptaMessage($info, Logger::INFO);
+        if ($console != null) {
+            $console->writeLine("");
+            $console->writeLine($info);
+        }
     }
 
     private $progressLength;
@@ -531,12 +595,38 @@ class OptaManager extends BasicManager {
      * @param \Zend\Console\Adapter\AdapterInterface $console
      */
     private function doProgress($console) {
-        echo "\r";
-        $percentage = (int)((++$this->progressCounter / $this->progressLength) * 100);
-        if ($percentage < 100)
-            $console->writeAt($percentage . "%", 0, 0);
-        else
-            $console->writeLine($percentage . "%");
+        if ($console != null) {
+            echo "\r";
+            $percentage = (int)((++$this->progressCounter / $this->progressLength) * 100);
+            if ($percentage < 100)
+                $console->writeAt($percentage . "%", 0, 0);
+            else
+                $console->writeLine($percentage . "%");
+        }
+    }
+
+    /**
+     * @param string $message
+     * @param int $priority
+     * @param \Zend\Console\Adapter\AdapterInterface $console
+     */
+    private function logMessage($message, $priority = Logger::INFO, $console = null) {
+        LogManager::getInstance($this->getServiceLocator())->logOptaMessage($message, $priority, $console);
+        if ($console != null) {
+            $console->writeLine("");
+            $console->writeLine($message);
+        } else {
+            $flashMessenger = $this->getServiceLocator()->get('ControllerPluginManager')->get('FlashMessenger');
+            switch ($priority) {
+                case Logger::INFO:
+                case Logger::NOTICE:
+                    $flashMessenger->addMessage(MessagesConstants::MESSAGE_PREFIX . $message);
+                    break;
+                case Logger::WARN:
+                    $flashMessenger->addErrorMessage(MessagesConstants::MESSAGE_PREFIX . $message);
+                    break;
+            }
+        }
     }
 
 }
