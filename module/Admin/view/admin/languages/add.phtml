@@ -78,7 +78,9 @@ echo $this->form()->openTag($form);
     jQuery(document).ready(function() {
         App.init(); // initlayout and core plugins
         var oTable = $('#language-table').dataTable({
-            "aoColumns": [null]
+            "aoColumns": [null],
+            "aLengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
+            "iDisplayLength" : 10
         });
     });
 </script>
