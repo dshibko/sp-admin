@@ -1,0 +1,31 @@
+<?php
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', $this->url('setup'));?>
+<?php echo $this->form()->openTag($form);?>
+    <header>
+        <p><?php echo $this->translate('Just one more thing');?></p>
+    </header>
+    <section>
+        <h1><?php echo $this->translate('Are these details correct?');?></h1>
+        <p><?php echo $this->translate('We need to know your region su we can make sure you are antered into the right league.');?></p>
+        <p class="note"><?php echo $this->translate('Note: once confirmed, you will not be able to change these settings until next season');?></p>
+        <?php echo $this->partial('partials/flash-messages');?>
+        <fieldset>
+            <div>
+                <?php echo $this->formLabel($form->get('region'));?>
+                <?php echo $this->formSelect($form->get('region'));?>
+            </div>
+            <div>
+                <div>
+                    <?php echo $this->formLabel($form->get('language'));?>
+                    <?php echo $this->formSelect($form->get('language'));?>
+                </div>
+            </div>
+        </fieldset>
+    </section>
+    <footer>
+        <button id="confirm" class="pink" type="submit"><?php echo $this->translate('Confirm and start playing');?></button>
+        <?php echo $this->formHidden($form->get('csrf'));?>
+    </footer>
+<?php echo $this->form()->closeTag();?>

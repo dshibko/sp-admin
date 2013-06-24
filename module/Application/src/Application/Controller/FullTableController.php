@@ -34,7 +34,6 @@ class FullTableController extends AbstractActionController {
             $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
             $regionManager = RegionManager::getInstance($this->getServiceLocator());
             $facebookManager = FacebookManager::getInstance($this->getServiceLocator());
-            $translator = $this->getServiceLocator()->get('translator');
 
             $leagueUsers = array();
             $leagueName = '';
@@ -47,7 +46,7 @@ class FullTableController extends AbstractActionController {
 
             switch ($league['type']) {
                 case League::GLOBAL_TYPE:
-                    $leagueName = $translator->translate($league['type']);
+                    $leagueName = $this->getTranslator()->translate($league['type']);
                     break;
                 case League::REGIONAL_TYPE:
                     $regionId = $league['leagueRegions'][0]['regionId'];

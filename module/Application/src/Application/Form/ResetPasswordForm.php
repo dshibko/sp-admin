@@ -17,7 +17,6 @@ class ResetPasswordForm extends Form {
             'name' => 'password',
             'type'  => 'text',
             'attributes' => array(
-                'placeholder' => 'Password',
                 'type' => 'password',
                 'id' => 'password'
             ),
@@ -31,7 +30,6 @@ class ResetPasswordForm extends Form {
             'name' => 'confirm_password',
             'type'  => 'text',
             'attributes' => array(
-                'placeholder' => 'Confirm Password',
                 'type' => 'password'
             ),
             'options' => array(

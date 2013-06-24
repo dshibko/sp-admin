@@ -5,10 +5,14 @@ $this->headTitle($title);
 <div role="main" class="two-column-section clearfix">
     <div class="first-column registration settings">
     <h1><?php echo $this->escapeHtml($title);?></h1>
+    <?php if ($this->user->getFacebookId()):?>
+        <?php echo $this->partial('partials/flash-messages');?>
+    <?php endif; ?>
+
     <?php if (!$this->user->getFacebookId()):?>
     <aside class="connect-facebook clearfix">
         <div>
-            <h2>Connect your account for a one click login</h2>
+            <h2><?php echo $this->translate('Connect your account for a one click login');?></h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla metus ligula, facilisis id scelerisque in, eleifend ut elit. Aenean a facilisis augue. </p>
         </div>
         <?php echo $this->renderFacebookButton($this->translate('Connect with Facebook'));?>
@@ -158,7 +162,7 @@ $this->headTitle($title);
         </section>
         <section class="bn">
             <div>
-                <h2>Delete Account</h2>
+                <h2><?php echo $this->translate('Delete Account');?></h2>
             </div>
             <div class="buttons">
                 <a href="<?php echo $this->url('delete-account');?>"><?php echo $this->translate('Delete Account');?></a>

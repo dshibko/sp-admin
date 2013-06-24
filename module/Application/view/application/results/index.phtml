@@ -33,7 +33,7 @@ if (empty($this->twitterShareCopy))
                 </header>
 
                 <div class="your-results-content clearfix">
-                    <h1>Your results</h1>
+                    <h1><?php echo $this->translate('Your results');?></h1>
                     <div class="scorers clearfix">
                         <div class="home-team">
                             <figure class="clearfix">
@@ -109,7 +109,7 @@ if (empty($this->twitterShareCopy))
                                 <h2><?=$this->achievementBlock->getTitle()?></h2>
                                 <p><?=$this->achievementBlock->getDescription()?></p>
                                 <footer class="clearfix">
-                                    <h3>Share this</h3>
+                                    <h3><?php echo $this->translate('Share this');?></h3>
                                     <ul class="social-links">
                                         <li>
                                             <a href="https://twitter.com/share" class="twitter-share-button" data-text="<?=$this->twitterShareCopy?>" data-url="<?=$this->url('match', array('code' => $this->matchCode), array('force_canonical' => true))?>" data-count="none">Tweet</a>

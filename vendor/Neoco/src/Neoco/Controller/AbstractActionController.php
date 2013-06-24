@@ -15,6 +15,7 @@ use \Application\Model\DAOs\UserDAO;
 class AbstractActionController extends \Zend\Mvc\Controller\AbstractActionController {
 
     protected $activePage = -1;
+    protected $translator;
 
     /**
      * @return \Zend\Navigation\Page\Mvc
@@ -27,18 +28,18 @@ class AbstractActionController extends \Zend\Mvc\Controller\AbstractActionContro
             $active = $breadcrumbs->findActive($navigation);
             $this->activePage = $active != null && is_array($active) ? $active['page'] : null;
             if ($this->activePage == null)
-                throw new \Exception(MessagesConstants::ERROR_ACTIVE_PAGE_NOT_FOUND);
+                throw new \Exception($this->getTranslator()->translate(MessagesConstants::ERROR_ACTIVE_PAGE_NOT_FOUND));
         }
         return $this->activePage;
     }
 
     /**
-     * @var Zend\Session\Container
+     * @var \Zend\Session\Container
      */
     protected $sessionContainer;
 
     /**
-     * @return Zend\Session\Container
+     * @return \Zend\Session\Container
      */
     public function getSessionContainer()
     {
@@ -54,7 +55,7 @@ class AbstractActionController extends \Zend\Mvc\Controller\AbstractActionContro
     public function checkSecurityKey(array $data, $post) {
         if (!array_key_exists('check_key', $post) || empty($post['check_key']) ||
             md5(serialize($data)) != $post['check_key'])
-            throw new \Exception(MessagesConstants::ERROR_SECURITY_CHECK_FAILED);
+            throw new \Exception($this->getTranslator()->translate(MessagesConstants::ERROR_SECURITY_CHECK_FAILED));
         return true;
     }
 
@@ -93,6 +94,14 @@ class AbstractActionController extends \Zend\Mvc\Controller\AbstractActionContro
             $this->getConstantHelper->setConfig($this->getServiceLocator()->get('config'));
         }
         return $this->getConstantHelper->__invoke($key);
+    }
+
+    public function getTranslator()
+    {
+        if (is_null($this->translator)){
+            $this->translator = $this->getServiceLocator()->get('translator');
+        }
+        return $this->translator;
     }
 
 }

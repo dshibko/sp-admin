@@ -61,7 +61,7 @@ class ContentController extends AbstractActionController
 
         return array(
             'content' => $content,
-            'title' =>'Cookies Privacy'
+            'title' =>'Cookies policy'
         );
     }
 
@@ -77,7 +77,7 @@ class ContentController extends AbstractActionController
 
         return array(
             'content' => $content,
-            'title' => 'Contact Us'
+            'title' => 'Contact us'
         );
     }
     public function helpAction()
@@ -94,7 +94,7 @@ class ContentController extends AbstractActionController
                 if ($form->isValid()){
                     $data = $form->getData();
                     $mailManager->sendHelpAndSupportEmail($data['email'], $data['name'], $data['query']);
-                    $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_HELP_AND_SUPPORT_MESSAGE_SENT);
+                    $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_HELP_AND_SUPPORT_MESSAGE_SENT));
                     return $this->redirect()->toRoute(self::HELP_AND_SUPPORT_PAGE_ROUTE);
                 }else{
                     $this->formErrors($form, $this);

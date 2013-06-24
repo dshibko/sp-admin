@@ -28,6 +28,7 @@ class LoginInputFilter extends InputFilter
                     ),
                 ),
                 array(
+                    'break_chain_on_failure' => true,
                     'name'    => 'EmailAddress',
                     'options' => array(),
                 ),
