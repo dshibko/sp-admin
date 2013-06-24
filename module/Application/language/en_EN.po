@@ -884,3 +884,6 @@ msgstr "The next one will start soon. You can visit our website later and start 
 msgid "Acy"
 msgstr "Acy"
 
+msgid "Cannot connect user to facebook account because facebook email has already taken by another user."
+msgstr "Cannot connect user to facebook account because facebook email has already taken by another user."
+
