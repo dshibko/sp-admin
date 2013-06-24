@@ -313,12 +313,24 @@ $this->headTitle($title);
     }
 
     //settings-change-public-profile
-    $('#settings-change-password').idealforms(passwordOptions).data('idealforms');
-    $('#settings-change-email').idealforms(emailOptions).data('idealforms');
-    $('#settings-change-display-name').idealforms(displayNameOptions).data('idealforms');
-    $('#settings-change-avatar').idealforms(avatarOptions).data('idealforms');
-    $('#settings-change-language').idealforms(languageOptions).data('idealforms');
-    $('#settings-change-email-settings').idealforms(emailSettingsOptions).data('idealforms');
+    try {
+        $('#settings-change-password').idealforms(passwordOptions).data('idealforms');
+    } catch (e) {}
+    try {
+        $('#settings-change-email').idealforms(emailOptions).data('idealforms');
+    } catch (e) {}
+    try {
+        $('#settings-change-display-name').idealforms(displayNameOptions).data('idealforms');
+    } catch (e) {}
+    try {
+        $('#settings-change-avatar').idealforms(avatarOptions).data('idealforms');
+    } catch (e) {}
+    try {
+        $('#settings-change-language').idealforms(languageOptions).data('idealforms');
+    } catch (e) {}
+    try {
+        $('#settings-change-email-settings').idealforms(emailSettingsOptions).data('idealforms');
+    } catch (e) {}
    // $('#settings-change-public-profile').idealforms(publicProfileOptions).data('idealforms');
 
 </script>
