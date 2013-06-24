@@ -100,7 +100,6 @@ class FacebookManager extends BasicManager
      */
     public function registerUser(array $data)
     {
-        $data['password'] = uniqid(); //Set default password
         $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_AVATAR_ID); //set default avatar
         $data['country'] = ApplicationManager::DEFAULT_COUNTRY_ID;  //set default country
         return RegistrationManager::getInstance($this->getServiceLocator())->register($data);

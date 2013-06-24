@@ -149,6 +149,7 @@ class RegistrationController extends AbstractActionController
             $facebookManager->getFacebookAPI()->setExtendedAccessToken();
             $facebookUserData = $facebookManager->getFacebookUserData($fUser);
             $facebookUserData['facebook_access_token'] = $facebookManager->getFacebookAPI()->getAccessToken();
+            $facebookUserData['password'] = md5(uniqid());
             $facebookUser = null;
 
             $currentUser = $applicationManager->getCurrentUser();
