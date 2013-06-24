@@ -536,3 +536,6 @@ position: relative;
 }
 
 
+.lt-ie8 .carousel-wrap .competition-countdown h4, .lt-ie8 .carousel-wrap .competition-countdown p {
+  display: inline;
+}
