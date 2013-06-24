@@ -225,6 +225,9 @@ class Module
                     $logotype = new \Neoco\View\Helper\Logotype();
                     $logotype->setServiceLocator($sm->getServiceLocator());
                     return $logotype;
+                },
+                'renderFlashMessages' => function(){
+                    return new \Neoco\View\Helper\FlashMessages();
                 }
             )
         );

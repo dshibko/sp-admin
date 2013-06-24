@@ -34,7 +34,6 @@ $this->headTitle($title );
         <section class="buttons-block clearfix">
             <div>
                 <button type="submit" name="submit"><?php echo $this->translate('Send');?></button>
-                <button id="reset" type="button"><?php echo $this->translate('Reset');?></button>
             </div>
         </section>
         <?php echo $this->form()->closeTag();?>
@@ -71,7 +70,7 @@ $this->headTitle($title );
         }
     };
 
-
-    var $support = $('#feedback').idealforms(supportOptions).data('idealforms');
-    $('#reset').click(function(){ $support.reset().fresh().focusFirst() });
+    try{
+        var $support = $('#feedback').idealforms(supportOptions).data('idealforms');
+    }catch(e){}
 </script>
