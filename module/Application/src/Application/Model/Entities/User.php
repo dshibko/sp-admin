@@ -93,6 +93,13 @@ class User extends BasicObject {
     protected $avatar;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Recovery", mappedBy="user", cascade={"remove"}, orphanRemoval=true)
+     */
+    protected $recoveries;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="favourite_player_id", type="integer", nullable=true)
@@ -109,7 +116,7 @@ class User extends BasicObject {
     protected $id;
 
     /**
-     * @var bigint
+     * @var int
      *
      * @ORM\Column(name="facebook_id", type="bigint", nullable=true, options={"unsigned"=true})
      */
@@ -122,7 +129,7 @@ class User extends BasicObject {
      */
     protected $facebookAccessToken;
     /**
-     * @var \Role
+     * @var Role
      *
      * @ORM\ManyToOne(targetEntity="Role")
      * @ORM\JoinColumns({
@@ -623,7 +630,7 @@ class User extends BasicObject {
     }
 
     /**
-     * @param \Application\Model\Entities\bigint $facebookId
+     * @param int $facebookId
      * @return \Application\Model\Entities\User
      */
     public function setFacebookId($facebookId)
@@ -633,7 +640,7 @@ class User extends BasicObject {
     }
 
     /**
-     * @return \Application\Model\Entities\bigint
+     * @return int
      */
     public function getFacebookId()
     {
@@ -658,6 +665,40 @@ class User extends BasicObject {
         return $this->isPublic;
     }
 
+
+    /**
+     * @param Recovery $recovery
+     * @return $this
+     */
+    public function addRecovery(Recovery $recovery)
+    {
+        $this->recoveries[] = $recovery;
+
+        return $this;
+    }
+
+
+    /**
+     * @param Recovery $recovery
+     * @return $this
+     */
+    public function removeRecovery(Recovery $recovery)
+    {
+        $this->recoveries->removeElement($recovery);
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRecoveries()
+    {
+        return $this->recoveries;
+    }
+
+    /**
+     * @param array $data
+     */
     public function populate(array $data = array()){
 
         if (isset($data['title'])){
