@@ -87,11 +87,12 @@ class PredictController extends AbstractActionController {
                 if ($request->isPost()) {
                     $post = $request->getPost()->toArray();
                     $this->checkSecurityKey(array($currentMatch['id'], $currentMatch['homeId'], $currentMatch['awayId']), $post);
-                    if (array_key_exists('home-team-score', $post) && array_key_exists('away-team-score', $post)) {
+                    if (array_key_exists('home-team-score', $post) && is_numeric($post['home-team-score']) &&
+                        array_key_exists('away-team-score', $post) && is_numeric($post['away-team-score'])) {
                         $homeTeamScore = $post['home-team-score'];
                         $awayTeamScore = $post['away-team-score'];
-                        $homeTeamScore = is_numeric($homeTeamScore) ? (int)$homeTeamScore : 0;
-                        $awayTeamScore = is_numeric($awayTeamScore) ? (int)$awayTeamScore : 0;
+                        $homeTeamScore = (int)$homeTeamScore;
+                        $awayTeamScore = (int)$awayTeamScore;
                         $scoresData = array();
                         $sidesArray = array(
                             'home' => $homeTeamScore,

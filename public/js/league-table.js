@@ -11,7 +11,9 @@ var seasonFilterOptions = {
 if ($(document).width() <  turnOffCustomStylePoint)
   seasonFilterOptions.disableCustom = 'select';
 
-var $seasonFilter = $('#season-filter').idealforms(seasonFilterOptions).data('idealforms');
+try {
+    $('#season-filter').idealforms(seasonFilterOptions).data('idealforms');
+} catch (e) {}
 
 var blockShowMore = false;
 var activeRequest = false;

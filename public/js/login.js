@@ -19,4 +19,6 @@ var loginOptions = {
 if ($(document).width() <  turnOffCustomStylePoint)
   loginOptions.disableCustom = 'select';
 
-var $login = $('#login').idealforms(loginOptions).data('idealforms');
+try {
+    $('#login').idealforms(loginOptions).data('idealforms');
+} catch (e) {}

@@ -534,3 +534,11 @@ position: relative;
 .ie8 .support .faqs dd:before {
   font: normal 1.6em/1 "ProximaNova-Bold", Helvetica, Arial;
 }
+
+
+.lt-ie8 .carousel-wrap .competition-countdown h4, .lt-ie8 .carousel-wrap .competition-countdown p {
+  display: inline;
+}
+.lt-ie8 .make-prediction .make-prediction-content .away-team label {
+  margin-bottom: 0;
+}

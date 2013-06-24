@@ -23,14 +23,14 @@
                     <a href="<?php echo $this->url('help');?>"><?=$this->translate('Help & Support')?></a>
                 </li>
                 <li>
-                    <a href="<?php echo $this->settingsHelper()->get('main-site-link')?>"><?=$this->translate('Visit our main site')?></a>
+                    <a target="_blank" href="<?php echo $this->settingsHelper()->get('main-site-link')?>"><?=$this->translate('Visit our main site')?></a>
                 </li>
                 <li>
                     <a href="<?php echo $this->url('cookies');?>"><?=$this->translate('Cookies policy')?></a>
                 </li>
             </ul>
         </nav>
-        <p><?=$this->translate('Made By')?> TrueFan</p>
+        <p><a href="http://www.truefan.tv" target="_blank"><img src="/img/truefan.png" alt="TRUEFAN" >MADE BY TRUEFAN</a></p>
     </div>
 </footer>
 </div>
