@@ -31,6 +31,10 @@ class FacebookManager extends BasicManager
     */
     private $facebookAPI;
 
+    /**
+     * @param array $fUser
+     * @return array
+     */
     public function getFacebookUserData(array $fUser)
     {
         $title = (
@@ -67,6 +71,10 @@ class FacebookManager extends BasicManager
         return $this->facebookAPI;
     }
 
+    /**
+     * @param \BaseFacebook $facebookAPI
+     * @return $this
+     */
     public function setFacebookAPI(\BaseFacebook $facebookAPI)
     {
         $this->facebookAPI = $facebookAPI;
@@ -85,51 +93,11 @@ class FacebookManager extends BasicManager
         }
         return self::$instance;
     }
+
     /**
-     *  Register new user
-     *
-     * @param array $fUser
-     * @return \Application\Model\Entities\User
+     * @param array $data
+     * @return User
      */
-    public function process(array $fUser)
-    {
-        $facebook_id = $fUser['id'];
-        //Check if user wants to connect to a Facebook account
-        $currentUser = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-
-        $user = !empty($currentUser) ? $currentUser : UserDAO::getInstance($this->getServiceLocator())->getUserByFacebookId($facebook_id);
-        $data = $this->getFacebookUserData($fUser);
-        //set long live access token 60 days
-        $this->getFacebookAPI()->setExtendedAccessToken();
-        $data['facebook_access_token'] = $this->getFacebookAPI()->getAccessToken();
-        $userDAO = UserDAO::getInstance($this->getServiceLocator());
-        $userByIdentity = $userDAO->findOneByIdentity($data['email']);
-        if (!empty($user)){ //Update existing member
-            $oldEmail = $user->getEmail();
-            if (!empty($userByIdentity) && $userByIdentity->getId() != $user->getId()){
-                return false;
-            }
-            $user->populate($data);
-            $userDAO->save($user);
-            if (!empty($currentUser)){
-                AuthenticationManager::getInstance($this->getServiceLocator())->changeIdentity($oldEmail, $user->getEmail());
-            }
-            return $user;
-        }else{ // New facebook member
-            //Check user email
-            if (is_null($userByIdentity)){
-                $data['password'] = uniqid(); //Set default password
-                $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_AVATAR_ID); //set default avatar
-                $data['country'] = ApplicationManager::DEFAULT_COUNTRY_ID;  //set default country
-                return RegistrationManager::getInstance($this->getServiceLocator())->register($data);
-            }else{
-                $userByIdentity->populate($data);
-                $userDAO->save($userByIdentity);
-                return $userByIdentity;
-            }
-
-        }
-    }
     public function registerUser(array $data)
     {
         $data['password'] = uniqid(); //Set default password
@@ -138,12 +106,23 @@ class FacebookManager extends BasicManager
         return RegistrationManager::getInstance($this->getServiceLocator())->register($data);
     }
 
+    /**
+     * @param User $user
+     * @param array $data
+     * @return User
+     */
     public function updateUser(User $user, array $data)
     {
         $user->populate($data);
         UserDAO::getInstance($this->getServiceLocator())->save($user);
         return $user;
     }
+
+    /**
+     * @param $facebookAccessToken
+     * @param $facebookId
+     * @return array
+     */
     public function getFacebookUserInfo($facebookAccessToken, $facebookId)
     { //TODO handle change password, de-authorize app, logs out facebook when getting data with access token
         $data = array();
@@ -194,6 +173,10 @@ class FacebookManager extends BasicManager
         return $data;
     }
 
+    /**
+     * @param User $user
+     * @return array
+     */
     public function getFriendsUsers(User $user) {
         $this->getFacebookAPI()->setAccessToken($user->getFacebookAccessToken());
         $userFriendsQuery = 'SELECT uid2 FROM friend WHERE uid1 = ' . $user->getFacebookId();
