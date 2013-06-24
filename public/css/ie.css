@@ -47,9 +47,9 @@
   }
 }
 
-/*.lt-ie9 .first-column {
+.lt-ie9 .first-column {
   border-right: 1px solid #f4f4f4;
-}*/
+}
 
 
 .lt-ie9 .login-area details {
@@ -479,6 +479,18 @@ position: relative;
 
 
 /***faqs***/
+.lt-ie8 .support textarea {
+  width: 263px;
+}
+.lt-ie9 .support.registration .ideal-wrap {
+  margin-left: -200px;
+}
+.lt-ie9 .support.registration .ideal-wrap.ideal-full-width {
+  margin-left: 50px;
+}
+.lt-ie9 .support.registration .buttons.ideal-wrap {
+   margin-left: 0px;
+}
 .lt-ie8 .support .faqs dt {
   *zoom: expression( 
           this.runtimeStyle.zoom="1",
