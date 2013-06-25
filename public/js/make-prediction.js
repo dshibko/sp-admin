@@ -13,23 +13,32 @@ var makePredictionOptions = {
       // }
   },
 
-  onSuccess: function() {
-      var homeScoreElement = $("#home-team-score");
-      var awayScoreElement = $("#away-team-score");
-      if (homeScoreElement.val() != '' && awayScoreElement.val() == '')
-          awayScoreElement.val('0');
-      if (awayScoreElement.val() != '' && homeScoreElement.val() == '')
-          homeScoreElement.val('0');
-      unbindUnload();
-  }
+  onSuccess: onSuccess
 
 };
+
+function onSuccess() {
+    var homeScoreElement = $("#home-team-score");
+    var awayScoreElement = $("#away-team-score");
+    if (homeScoreElement.val() != '' && awayScoreElement.val() == '')
+        awayScoreElement.val('0');
+    if (awayScoreElement.val() != '' && homeScoreElement.val() == '')
+        homeScoreElement.val('0');
+    unbindUnload();
+}
 
 if ($(document).width() <  turnOffCustomStylePoint)
     makePredictionOptions.disableCustom = 'select';
 
 var formElement = $('#make-prediction');
-var $makePrediction = formElement.idealforms(makePredictionOptions).data('idealforms');
+
+
+try {
+    var $makePrediction = formElement.idealforms(makePredictionOptions).data('idealforms');
+} catch (e) {
+    var $makePrediction = undefined;
+    formElement.submit(onSuccess);
+}
 
 var prevValues = [];
 if (savedHomeScore != -1 && savedAwayScore != -1) {
@@ -118,16 +127,24 @@ $(document).ready(function () {
 });
 
 function addSelect(section, data, id) {
-    $makePrediction.addFields(
-        {
-            id: id,
-            name: id,
-            type: 'select',
-            list: data
-        });
-    var divWrapper = $("#" + id).parents("div.ideal-wrap:first");
-    $("#" + id).parents("span.ideal-field:first").appendTo(section);
-    divWrapper.remove();
+    if ($makePrediction !== undefined) {
+        $makePrediction.addFields(
+            {
+                id: id,
+                name: id,
+                type: 'select',
+                list: data
+            });
+        var divWrapper = $("#" + id).parents("div.ideal-wrap:first");
+        $("#" + id).parents("span.ideal-field:first").appendTo(section);
+        divWrapper.remove();
+    } else {
+        var originalId = id.substring(0, id.lastIndexOf("-"));
+        var select = $("#" + originalId);
+        var newSelect = select.clone(true, true);
+        newSelect.attr('id', id).attr('name', id).show();
+        section.append(newSelect);
+    }
 }
 
 function removeSelect(id) {

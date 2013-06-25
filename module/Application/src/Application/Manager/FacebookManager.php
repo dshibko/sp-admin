@@ -31,29 +31,11 @@ class FacebookManager extends BasicManager
     */
     private $facebookAPI;
 
-    //TODO don't save facebook image
     /**
-     *  Get Profile Image from Facebook
-     *
-     *  @param bigint $facebook_id
-     *  @return string
-    */
-    /*private function getFacebookProfileImage($facebook_id)
-    {
-        $ch = curl_init();
-        curl_setopt ($ch, CURLOPT_URL, 'http://graph.facebook.com/'.$facebook_id.'/picture?width=72&height=72');
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
-        $data = curl_exec($ch);
-        curl_close($ch);
-        $fileName = ImageManager::IMAGES_DIR_PATH . ImageManager::IMAGE_TYPE_AVATAR . ImageManager::WEB_SEPARATOR . self::FACEBOOK_AVATAR_FOLDER . ImageManager::WEB_SEPARATOR . uniqid() .'.jpg' ;
-        $file = fopen(ImageManager::getInstance($this->getServiceLocator())->getAppPublicPath() . $fileName, 'w+');
-        fputs($file, $data);
-        fclose($file);
-        return $fileName;
-    }*/
-
-    private function getFacebookUserData(array $fUser)
+     * @param array $fUser
+     * @return array
+     */
+    public function getFacebookUserData(array $fUser)
     {
         $title = (
                     (strtolower($fUser['gender']) == self::MALE)
@@ -89,6 +71,10 @@ class FacebookManager extends BasicManager
         return $this->facebookAPI;
     }
 
+    /**
+     * @param \BaseFacebook $facebookAPI
+     * @return $this
+     */
     public function setFacebookAPI(\BaseFacebook $facebookAPI)
     {
         $this->facebookAPI = $facebookAPI;
@@ -107,48 +93,35 @@ class FacebookManager extends BasicManager
         }
         return self::$instance;
     }
+
     /**
-     *  Register new user
-     *
-     * @param array $fUser
-     * @return \Application\Model\Entities\User
+     * @param array $data
+     * @return User
      */
-    public function process(array $fUser)
+    public function registerUser(array $data)
     {
-        $facebook_id = $fUser['id'];
-        //Check if user wants to connect to a Facebook account
-        $currentUser = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-
-        $user = !empty($currentUser) ? $currentUser : UserDAO::getInstance($this->getServiceLocator())->getUserByFacebookId($facebook_id);
-        $data = $this->getFacebookUserData($fUser);
-        //set long live access token 60 days
-        $this->getFacebookAPI()->setExtendedAccessToken();
-        $data['facebook_access_token'] = $this->getFacebookAPI()->getAccessToken();
-        if (!empty($user)){ //Update existing member
-            $old_email = $user->getEmail();
-            $user->populate($data);
-            UserDAO::getInstance($this->getServiceLocator())->save($user);
-            if (!empty($currentUser)){
-                AuthenticationManager::getInstance($this->getServiceLocator())->changeIdentity($old_email, $user->getEmail());
-            }
-            return $user;
-        }else{ // New member
-            $data['password'] = uniqid(); //Set default password
-            $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_AVATAR_ID); //set default avatar
-            $data['country'] = ApplicationManager::DEFAULT_COUNTRY_ID;  //set default country
-            // $avatar = $this->getFacebookProfileImage($facebook_id);
-            /*if (!empty($avatar)){
-                $avatarHelper = new AvatarHelper();
-                $data['avatar'] =  $avatarHelper->setPath($avatar)->setNewAvatar()->getAvatar();
-            }else{
-                $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_AVATAR_ID);
-            }*/
-
-
-            return RegistrationManager::getInstance($this->getServiceLocator())->register($data);
-        }
+        $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_AVATAR_ID); //set default avatar
+        $data['country'] = ApplicationManager::DEFAULT_COUNTRY_ID;  //set default country
+        return RegistrationManager::getInstance($this->getServiceLocator())->register($data);
     }
 
+    /**
+     * @param User $user
+     * @param array $data
+     * @return User
+     */
+    public function updateUser(User $user, array $data)
+    {
+        $user->populate($data);
+        UserDAO::getInstance($this->getServiceLocator())->save($user);
+        return $user;
+    }
+
+    /**
+     * @param $facebookAccessToken
+     * @param $facebookId
+     * @return array
+     */
     public function getFacebookUserInfo($facebookAccessToken, $facebookId)
     { //TODO handle change password, de-authorize app, logs out facebook when getting data with access token
         $data = array();
@@ -199,6 +172,10 @@ class FacebookManager extends BasicManager
         return $data;
     }
 
+    /**
+     * @param User $user
+     * @return array
+     */
     public function getFriendsUsers(User $user) {
         $this->getFacebookAPI()->setAccessToken($user->getFacebookAccessToken());
         $userFriendsQuery = 'SELECT uid2 FROM friend WHERE uid1 = ' . $user->getFacebookId();

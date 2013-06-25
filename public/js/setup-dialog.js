@@ -22,5 +22,7 @@ var setupOptions = {
 if ($(document).width() <  turnOffCustomStylePoint)
   setupOptions.disableCustom = 'select';
 
-var $setup = $('#setup').idealforms(setupOptions).data('idealforms');
-$setup.focusFirst();
+try {
+    var $setup = $('#setup').idealforms(setupOptions).data('idealforms');
+    $setup.focusFirst();
+} catch (e) {}
