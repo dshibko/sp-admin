@@ -4,6 +4,7 @@ namespace Application\Manager;
 
 use \Application\Model\DAOs\LeagueDAO;
 use \Application\Model\DAOs\SeasonDAO;
+use Application\Model\DAOs\TeamDAO;
 use \Application\Model\Entities\Season;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\Entities\User;
@@ -21,7 +22,7 @@ class ApplicationManager extends BasicManager {
     const DEFAULT_COUNTRY_ISO_CODE = 'GB';
     const CLUB_EDITION = 'club';
     const COMPETITION_EDITION = 'competition';
-
+    const USER_CLUB_ID = 3;
     /**
      * @var ApplicationManager
      */
@@ -115,7 +116,6 @@ class ApplicationManager extends BasicManager {
         return CountryDAO::getInstance($this->getServiceLocator())->getCountryByISOCode($isoCode, $hydrate, $skipCache);
     }
 
-    //Get countries for select options
     /**
      * @return array
      */
@@ -241,6 +241,14 @@ class ApplicationManager extends BasicManager {
             $region = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
         }
         return $region;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAppClub()
+    {
+        return TeamDAO::getInstance($this->getServiceLocator())->findOneByFeederId($this->getAppOptaId());
     }
 
 }

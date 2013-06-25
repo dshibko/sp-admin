@@ -89,6 +89,20 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
     }
 
     /**
+     * @param int $feederId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return mixed
+     */
+    public function findOneByFeederId($feederId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('e')
+            ->from($this->getRepositoryName(), 'e')
+            ->where($qb->expr()->eq('e.feederId', ':feederId'))->setParameter('feederId',$feederId);
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array

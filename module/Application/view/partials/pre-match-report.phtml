@@ -157,7 +157,10 @@
         <div class="item col2 top-predicted-scorers">
             <section class="clearfix">
                 <img src="<?php echo !empty($topScorers['backgroundImage']) ? $topScorers['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                <img src="<?php echo !empty($topScorers['avatarImage']) ? $topScorers['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Top scorer" class="player"/>
+                <?php if (isset($topScorers['avatarImage'])):?>
+                    <img src="<?php echo !empty($topScorers['avatarImage']) ? $topScorers['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Top scorer" class="player"/>
+                <?php endif;?>
+
                 <div>
                     <h1><?php echo $this->translate('Top predicted scorers');?></h1>
                     <?php
@@ -165,10 +168,10 @@
                     $index = 0;
                     ?>
                     <ol class="clearfix">
-                        <?php foreach($topScorers['scorers'] as $name => $percentage):?>
+                        <?php foreach($topScorers['scorers'] as $scorer):?>
                         <li class="<?php echo (isset($classes[$index]) ? $classes[$index] : 'small');?>">
-                            <strong><?php echo $percentage;?><sup>%</sup></strong>
-                            <span><?php echo $name;?></span>
+                            <strong><?php echo $scorer['percentage'];?><sup>%</sup></strong>
+                            <span><?php echo $scorer['playerName'];?></span>
                         </li>
                         <?php $index++;?>
                         <?php endforeach;?>

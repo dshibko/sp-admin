@@ -93,6 +93,7 @@ class PredictionDAO extends AbstractDAO {
         $qb->select('
             COUNT(pp.playerId) as scorers_count,
             t.displayName as team_name,
+            t.id as team_id,
             pl.displayName as player_name,
             pl.backgroundImagePath,
             pl.imagePath
@@ -104,7 +105,9 @@ class PredictionDAO extends AbstractDAO {
         $qb->andWhere($qb->expr()->isNotNull('pp.playerId'));
         $qb->groupBy('pp.playerId');
         $qb->orderBy('scorers_count','DESC');
-        $qb->setMaxResults($limit);
+        if ($limit != -1){
+            $qb->setMaxResults($limit);
+        }
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
@@ -356,19 +359,20 @@ class PredictionDAO extends AbstractDAO {
     public function getCorrectScorersPredictionsCount(array $predictionIds, array $scorersIds, $hydrate = true, $skipCache = false)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-
         $qb->select('
             COUNT(pp.prediction) as predictions_count,
             pl.displayName as player_name,
+            t.id as teamId,
             pl.backgroundImagePath,
             pl.imagePath
         ');
         $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
         $qb->join('pp.player','pl');
+        $qb->join('pl.team','t');
         $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
         $qb->andWhere($qb->expr()->in('pp.playerId',':playerIds'))->setParameter('playerIds', $scorersIds);
         $qb->groupBy('pp.prediction');
-        $qb->orderBy('predictions_count','DESC');
+        $qb->addOrderBy('predictions_count', 'DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
