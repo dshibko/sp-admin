@@ -2,6 +2,8 @@
 
 namespace Application\Manager;
 
+use \Application\Model\DAOs\TeamDAO;
+use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\DAOs\PlayerDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
@@ -42,6 +44,22 @@ class PlayerManager extends BasicManager
     public function getAllPlayers($hydrate = false, $skipCache = false)
     {
         return PlayerDAO::getInstance($this->getServiceLocator())->getAllPlayers($hydrate, $skipCache);
+    }
+
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getCurrentClubPlayers($hydrate = false, $skipCache = false)
+    {
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        if ($applicationManager->getAppEdition() == $applicationManager::CLUB_EDITION) {
+            $clubFeederId = $applicationManager->getAppOptaId();
+            $currentTeam = TeamDAO::getInstance($this->getServiceLocator())->getRepository()->findOneByFeederId($clubFeederId);
+            return PlayerDAO::getInstance($this->getServiceLocator())->getAllClubPlayers($currentTeam->getId(), $hydrate, $skipCache);
+        } else
+            throw new \Exception(sprintf(MessagesConstants::ERROR_APP_WRONG_EDITION, $applicationManager::CLUB_EDITION));
     }
 
     /**

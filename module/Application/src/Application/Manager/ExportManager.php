@@ -35,7 +35,7 @@ class ExportManager extends BasicManager {
             $cols = array();
             foreach ($config as $columnName => $columnType) {
                 $value = "";
-                if (!empty($dataRow[$columnName]))
+                if ($dataRow[$columnName] !== null && $dataRow[$columnName] !== '')
                     if (is_array($columnType)) {
                         $type = array_shift(array_keys($columnType));
                         $typeConfig = $columnType[$type];
