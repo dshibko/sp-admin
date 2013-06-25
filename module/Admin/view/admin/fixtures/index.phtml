@@ -148,7 +148,7 @@ $this->headTitle($title);
 
 
         var messages = {perPage: "_MENU_ " + "<?=$this->translate('fixtures per page')?>", nextLink: "<?=$this->translate('Next')?>",
-            prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ clubs')?>"};
+            prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ fixtures')?>"};
        var oTable = $('#fixtures-table').dataTable({
             "aoColumns": [null, null,{"sType" : "date"},null,null,{bSortable: false}],
             "aaSorting": [[2,"desc"]],

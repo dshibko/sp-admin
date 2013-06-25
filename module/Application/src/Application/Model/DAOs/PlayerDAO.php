@@ -33,6 +33,30 @@ class PlayerDAO extends AbstractDAO {
     }
 
     /**
+     * @param int $teamId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     * @throws \Exception
+     */
+    public function getAllClubPlayers($teamId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('
+                    p.id,
+                    p.displayName,
+                    p.position,
+                    p.shirtNumber,
+                    p.imagePath,
+                    p.backgroundImagePath
+        ')
+            ->from($this->getRepositoryName(), 'p')
+            ->where($qb->expr()->eq('p.team', $teamId))
+            ->orderBy('p.displayName', 'ASC');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+
+    /**
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array

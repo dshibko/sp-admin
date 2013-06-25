@@ -18,7 +18,7 @@ class PlayersController extends AbstractActionController
 
         $playerManager = PlayerManager::getInstance($this->getServiceLocator());
         try {
-            $players = $playerManager->getAllPlayers(true);
+            $players = $playerManager->getCurrentClubPlayers(true);
         } catch (\Exception $e) {
             $players = array();
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);

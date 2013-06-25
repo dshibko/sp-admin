@@ -22,7 +22,6 @@ $this->headTitle($title);
                                     <th><?=$this->translate('Name')?></th>
                                     <th class="hidden-480"><?=$this->translate('Email')?></th>
                                     <th><?=$this->translate('Role')?></th>
-                                    <th class="hidden-480"><?=$this->translate('Gender')?></th>
                                     <th class="hidden-480"><?=$this->translate('Joined')?></th>
                                     <th></th>
                                 </tr>
@@ -77,11 +76,10 @@ $this->headTitle($title);
             null,
             null,
             null,
-            { "sType": 'gender' },
             null,
             { "bSortable": false }
         ],
-        [[ 4, "desc" ]]);
+        [[ 3, "desc" ]]);
     });
 </script>
 <!-- END JAVASCRIPTS -->

@@ -312,6 +312,32 @@ return array(
                     ),
                 ),
             ),
+            'admin-stats-users' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/users/[:action]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'users',
+                    ),
+                ),
+            ),
+            'admin-stats-predictions' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/predictions/[:action]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'predictions',
+                    ),
+                ),
+            ),
             'admin-opta-uploader' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -358,6 +384,7 @@ return array(
             'Admin\Controller\Opta' => 'Admin\Controller\OptaController',
             'Admin\Controller\Logotype' => 'Admin\Controller\LogotypeController',
             'Admin\Controller\Terms' => 'Admin\Controller\TermsController',
+            'Admin\Controller\Stats' => 'Admin\Controller\StatsController',
         ),
     ),
     'view_manager' => array(
@@ -700,11 +727,29 @@ return array(
                             ),
                         ),
                     ),
-                    'opta' => array(
-                        'title' => 'Opta',
+                    'stats' => array(
+                        'title' => 'Stats',
                         'label' => 'icon-bar-chart',
-                        'route' => 'admin-opta-uploader',
+                        'route' => 'admin-stats-users',
+                        'sub-menu' => true,
+                        'pages' => array(
+                            'users' => array(
+                                'title' => 'Users',
+                                'label' => 'icon-group',
+                                'route' => 'admin-stats-users',
+                            ),
+                            'predictions' => array(
+                                'title' => 'Predictions',
+                                'label' => 'icon-signal',
+                                'route' => 'admin-stats-predictions',
+                            ),
+                        ),
                     ),
+//                    'opta' => array(
+//                        'title' => 'Opta',
+//                        'label' => 'icon-bolt',
+//                        'route' => 'admin-opta-uploader',
+//                    ),
                     'settings' => array(
                         'title' => 'Settings',
                         'label' => 'icon-cogs',
