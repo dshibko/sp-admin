@@ -152,6 +152,12 @@ $this->headTitle($title);
        var oTable = $('#fixtures-table').dataTable({
             "aoColumns": [null, null,{"sType" : "date"},null,null,{bSortable: false}],
             "aaSorting": [[2,"desc"]],
+            "bStateSave" : true,
+            "iCookieDuration": 60 * 60 * 24 * 365 * 100,
+            "fnStateLoadParams" : function(oSettings, oData){
+               oData.oSearch.sSearch = '';
+               oData.aaSorting = [];
+            },
            // "bFilter": false,
             "oLanguage": {
                 "sLengthMenu": messages.perPage,

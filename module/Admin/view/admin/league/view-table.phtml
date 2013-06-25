@@ -57,6 +57,12 @@
         var oTable = $('#leagues-table').dataTable({
             "aoColumns": [null, null, {bSortable: false}, null, null],
             "aaSorting": [[0,"asc"]],
+            "bStateSave" : true,
+            "iCookieDuration": 60 * 60 * 24 * 365 * 100,
+            "fnStateLoadParams" : function(oSettings, oData){
+                oData.oSearch.sSearch = '';
+                oData.aaSorting = [];
+            },
             // "bFilter": false,
             "oLanguage": {
                 "sLengthMenu": messages.perPage,

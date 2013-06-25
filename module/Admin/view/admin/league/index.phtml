@@ -142,6 +142,12 @@ $this->headTitle($title);
             "aoColumns": [null, null, null, null, null, {bSortable: false}],
             "aaSorting": [[3,"desc"]],
            // "bFilter": false,
+           "bStateSave" : true,
+           "iCookieDuration": 60 * 60 * 24 * 365 * 100,
+           "fnStateLoadParams" : function(oSettings, oData){
+               oData.oSearch.sSearch = '';
+               oData.aaSorting = [];
+           },
             "oLanguage": {
                 "sLengthMenu": messages.perPage,
                 "oPaginate": {
