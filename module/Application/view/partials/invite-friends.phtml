@@ -1,11 +1,11 @@
 <script type="text/javascript">
-   FB.init({
-       appId:'<?php echo $this->getConstant('facebook_api_key');?>', // App ID
-       frictionlessRequests:true
-   });
-    function inviteFriends() {
-            FB.ui({method: 'apprequests',
-                message: '<?php echo $this->translate('Invite friends to Score Predictor');?>'
-            });
-    }
+       FB.init({
+           appId:'<?php echo $this->getConstant('facebook_api_key');?>', // App ID
+           frictionlessRequests:true
+       });
+       function inviteFriends() {
+           FB.ui({method: 'apprequests',
+               message: '<?php echo $this->translate('Invite friends to Score Predictor');?>'
+           });
+       }
 </script>
