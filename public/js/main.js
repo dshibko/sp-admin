@@ -164,19 +164,21 @@ $(document).ready(function () {
 
         if(layout !== state.layout) {
             state.layout = layout;
-
             htmlElement.setAttribute('data-layout', layout);
         }
 
-        current = layouts[state.layout];
+        if (state.layout && layouts[state.layout]){
+            current = layouts[state.layout];
 
-        size = Math.max(current.min, Math.min(current.max, Math.floor(current.base * (width / current.width))));
+            size = Math.max(current.min, Math.min(current.max, Math.floor(current.base * (width / current.width))));
 
-        if(size !== state.size) {
-            state.size = size;
+            if(size !== state.size) {
+                state.size = size;
 
-            htmlElement.style.fontSize = size + 'px';
+                htmlElement.style.fontSize = size + 'px';
+            }
         }
+
     }
 
     $(window).resize(updateFontsize);

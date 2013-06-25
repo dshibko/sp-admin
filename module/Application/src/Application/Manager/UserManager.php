@@ -442,5 +442,4 @@ class UserManager extends BasicManager {
         $language = !is_null($user) ? $user->getLanguage() : $userManager->getUserLanguage();
         return $language;
     }
-
 }

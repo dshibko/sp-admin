@@ -1,4 +1,4 @@
-@media only screen and (min-width: 320px) {
+/*@media only screen and (min-width: 320px) {
   .lt-ie9 body {
     font-size: 40%;
   }
@@ -28,7 +28,7 @@
     font-size: 62.5%;
   }
 }
-
+*/
 @media only screen and (min-width: 1025px) {
   .inner-page div[role="main"] {
     margin-bottom: 4em;
@@ -46,6 +46,7 @@
     width: 26%;
   }
 }
+
 
 .lt-ie9 .first-column {
   border-right: 1px solid #f4f4f4;
@@ -150,7 +151,7 @@
 }
 .lt-ie8 .registration input[type="text"], .lt-ie8  .registration input[type="password"], .lt-ie8 .registration input[type="file"] {
     padding: 0 0.4em;
-    width: 16.7em;
+    width: 265px; /*16.7em;*/
     height: 2.2em;
     border: 1px solid #d8d8d8;
     background: #fff;
@@ -249,7 +250,7 @@
 }
 .lt-ie8 .registration .field label {
   float: left;
-  width: 190px;
+  width: 11.2em; /*190px;*/
 }
 .lt-ie8 .registration .field p {
   float: left;
@@ -333,7 +334,14 @@
   margin: 0 1em 0 2em;
   width: 35%!important;
 }
-
+.lt-ie8 .your-results .your-results-content .scorers .league-block {
+  width: 18%;
+}
+@media only screen and (min-width: 320px) and (max-width:  767px) {
+  .lt-ie8 .your-results .your-results-content .scorers .league-block {
+    width: 24%;
+  }
+}
 .lt-ie8 .your-results .your-results-content .league-block em {
   margin: 0 0 1em;
 }
@@ -358,6 +366,9 @@ position: relative;
   border-left: 8em solid transparent;
   border-right: 8em solid transparent;
   border-top: 4em solid #de1012;
+}
+.lt-ie8  .your-results-content .points table td.total strong {
+  line-height: 1;
 }
 
 
