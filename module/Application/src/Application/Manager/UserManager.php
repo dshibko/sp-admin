@@ -346,10 +346,12 @@ class UserManager extends BasicManager {
 
         return false;
     }
+
     /**
      *   Delete User account
-     *   @param \Application\Model\Entities\User $user
-     *   @return bool
+     * @param \Application\Model\Entities\User $user
+     * @param bool $deleteFacebookApp
+     * @return bool
      */
     public function deleteAccount(\Application\Model\Entities\User $user, $deleteFacebookApp = true)
     {
@@ -368,6 +370,20 @@ class UserManager extends BasicManager {
         }
         UserDAO::getInstance($this->getServiceLocator())->flush();
         return true;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDirectUsersNumber() {
+        return UserDAO::getInstance($this->getServiceLocator())->getDirectUsersNumber();
+    }
+
+    /**
+     * @return int
+     */
+    public function getFacebookUsersNumber() {
+        return UserDAO::getInstance($this->getServiceLocator())->getFacebookUsersNumber();
     }
 
     /**

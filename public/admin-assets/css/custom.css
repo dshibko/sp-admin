@@ -27,7 +27,7 @@ body {
 .page-sidebar > ul > li > ul.sub-menu > li > a:hover {
     background-color: #203668 !important;
 }
-.nav > li.dropdown.user .dropdown-toggle:hover, 
+.nav > li.dropdown.user .dropdown-toggle:hover,
 .navbar-inverse .nav li.dropdown.open>.dropdown-toggle, 
 .navbar-inverse .nav li.dropdown.active>.dropdown-toggle, 
 .navbar-inverse .nav li.dropdown.open.active>.dropdown-toggle {
@@ -118,4 +118,8 @@ div.row-fluid div.tab-pane.hidden {
 
 .form-select{
     width: 247px;
+}
+
+ul.vertical-margined li {
+    padding-bottom: 5px !important;
 }

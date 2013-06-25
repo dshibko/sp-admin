@@ -14,7 +14,6 @@ $this->headTitle($title);
                     <thead>
                     <tr>
                         <th><?=$this->translate('Name');?></th>
-                        <th><?=$this->translate('Team');?></th>
                         <th><?=$this->translate('Position');?></th>
                         <th><?=$this->translate('Shirt Number');?></th>
                         <th><?=$this->translate('Avatar');?></th>
@@ -26,7 +25,6 @@ $this->headTitle($title);
                         <?php foreach ($this->players as $player) : ?>
                     <tr class="odd gradeX <?php echo (empty($player['backgroundImagePath']) || empty($player['imagePath']) ? ' new-item' : '');?>">
                         <td><?=$player['displayName'];?></td>
-                        <td><?=$player['team_name'];?></td>
                         <td><?=$player['position'];?></td>
                         <td><?=$player['shirtNumber'];?></td>
                         <td>
@@ -74,9 +72,9 @@ $this->headTitle($title);
 
 
         var messages = {perPage: "_MENU_ " + "<?=$this->translate('players per page')?>", nextLink: "<?=$this->translate('Next')?>",
-            prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ clubs')?>"};
+            prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ players')?>"};
        var oTable = $('#players-table').dataTable({
-            "aoColumns": [null, null,null, null, null,null,{bSortable: false}],
+            "aoColumns": [null, null, null, null,null,{bSortable: false}],
            // "aaSorting": aaSorting,
            // "bFilter": false,
             "oLanguage": {

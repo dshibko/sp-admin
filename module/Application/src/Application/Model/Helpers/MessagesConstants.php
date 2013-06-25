@@ -84,6 +84,7 @@ class MessagesConstants
     const ERROR_APP_OPTA_CONFIG_NOT_FOUND = 'Application opta config was not found.';
     const ERROR_APP_UNKNOWN_EDITION = 'Unknown application edition configured.';
     const ERROR_APP_WRONG_OPTA_CONFIG = 'Wrong opta id configured. Must be an integer.';
+    const ERROR_APP_WRONG_EDITION = 'The application is not "%s" edition.';
     const ERROR_PREDICT_THIS_MATCH_NOT_ALLOWED = 'You can\'t predict on this match. You can predict just on %s matches in the future.';
     const ERROR_NO_MORE_MATCHES_IN_THE_SEASON = 'No more matches will be played in this season. Please join us when next season starts.';
     const ERROR_NO_FINISHED_MATCHES_IN_THE_SEASON = 'No matches were played in this season.';

@@ -444,4 +444,146 @@ class PredictionDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getScalarResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    /**
+     * @param $seasonId
+     * @return mixed
+     */
+    function getPredictionsCount($seasonId) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('predictions', 'predictions', 'integer');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+                SELECT count(p.id) predictions
+                FROM `prediction` p
+                INNER JOIN `match` m ON m.id = p.match_id
+                INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+             ', $rsm);
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * @param $seasonId
+     * @return mixed
+     */
+    function getHighestPredictedMatches($seasonId) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('max_predictions', 'max_predictions', 'integer');
+        $maxPredictions = (int)
+            $this->getEntityManager()
+                ->createNativeQuery('
+                    SELECT MAX(pr.predictions) as max_predictions FROM (
+                        SELECT count(p.id) as predictions
+                        FROM `match` m
+                        LEFT OUTER JOIN `prediction` p ON p.match_id = m.id
+                        INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                        GROUP BY m.id
+                        ORDER BY predictions DESC) pr
+                 ', $rsm)->getSingleScalarResult();
+        return $this->getMatchesByPredictionsNumber($maxPredictions, $seasonId);
+    }
+
+    /**
+     * @param $seasonId
+     * @return mixed
+     */
+    function getLowestPredictedMatches($seasonId) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('max_predictions', 'max_predictions', 'integer');
+        $maxPredictions = (int)
+            $this->getEntityManager()
+                ->createNativeQuery('
+                    SELECT MIN(pr.predictions) as max_predictions FROM (
+                        SELECT count(p.id) as predictions
+                        FROM `match` m
+                        LEFT OUTER JOIN `prediction` p ON p.match_id = m.id
+                        INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                        WHERE m.status = \'' . Match::FULL_TIME_STATUS . '\'
+                        GROUP BY m.id
+                        ORDER BY predictions DESC) pr
+                 ', $rsm)->getSingleScalarResult();
+        return $this->getMatchesByPredictionsNumber($maxPredictions, $seasonId, true);
+    }
+
+    /**
+     * @param $predictions
+     * @param $seasonId
+     * @param bool $fullTimeOnly
+     * @return mixed
+     */
+    function getMatchesByPredictionsNumber($predictions, $seasonId, $fullTimeOnly = false) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('start_time', 'start_time', 'date');
+        $rsm->addScalarResult('competition', 'competition');
+        $rsm->addScalarResult('home_team', 'home_team');
+        $rsm->addScalarResult('away_team', 'away_team');
+        $rsm->addScalarResult('preds', 'predictions', 'integer');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+                SELECT DATE(m.start_time) as start_time, c.display_name as competition, t1.display_name as home_team, t2.display_name as away_team, ' . $predictions . ' as preds
+                FROM `match` m
+                INNER JOIN team t1 ON t1.id = m.home_team_id
+                INNER JOIN team t2 ON t2.id = m.away_team_id
+                INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                WHERE ' . ($fullTimeOnly ? 'm.status = \'' . Match::FULL_TIME_STATUS . '\' AND ' : '') . '
+                (SELECT IFNULL(count(p.id), 0) as predictions
+                FROM `prediction` p
+                WHERE p.match_id = m.id) = ' . $predictions . '
+                ORDER BY m.start_time DESC
+             ', $rsm);
+        return $query->getArrayResult();
+    }
+
+    /**
+     * @param int $seasonId
+     * @param int $limit
+     * @return array
+     * @throws \Exception
+     */
+    public function getTopScorersThisSeason($seasonId, $limit = 5)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT
+                COUNT(pp.playerId) as predictions,
+                t.displayName as team,
+                pl.displayName as player
+             FROM \Application\Model\Entities\PredictionPlayer pp
+             JOIN pp.prediction p
+             JOIN p.match m
+             JOIN m.competition c
+             JOIN c.season s WITH s.id = ' . $seasonId . '
+             JOIN pp.player pl
+             JOIN pl.team t
+             WHERE pp.playerId IS NOT NULL
+             GROUP BY pp.playerId
+             ORDER BY predictions DESC
+             '
+        )->setMaxResults($limit);
+
+        return $query->getArrayResult();
+    }
+
+    /**
+     * @param int $seasonId
+     * @param int $limit
+     * @return array
+     * @throws \Exception
+     */
+    public function getTopScoresThisSeason($seasonId, $limit = 5)
+    {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT
+                p.homeTeamScore as home_team_score,
+                p.awayTeamScore as away_team_score,
+                count(p.id) as predictions
+             FROM ' . $this->getRepositoryName() . ' p
+             JOIN p.match m
+             JOIN m.competition c
+             JOIN c.season s WITH s.id = ' . $seasonId . '
+             GROUP BY p.homeTeamScore, p.awayTeamScore
+             ORDER BY predictions DESC
+             '
+        )->setMaxResults($limit);
+
+        return $query->getArrayResult();
+    }
 }

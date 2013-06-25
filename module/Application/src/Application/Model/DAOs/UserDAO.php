@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use \Doctrine\ORM\Query\ResultSetMapping;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -151,4 +152,127 @@ class UserDAO extends AbstractDAO {
         return $query->getSingleScalarResult();
     }
 
+    /**
+     * @param bool $skipCache
+     * @return int
+     * @throws \Exception
+     */
+    public function getFacebookUsersNumber($skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('u.id'))
+            ->from($this->getRepositoryName(), 'u')
+            ->where($qb->expr()->isNotNull('u.facebookId'));
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @param bool $skipCache
+     * @return int
+     * @throws \Exception
+     */
+    public function getDirectUsersNumber($skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('u.id'))
+            ->from($this->getRepositoryName(), 'u')
+            ->where($qb->expr()->isNull('u.facebookId'));
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function getPerWeekRegistrations() {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('number','number', 'integer');
+        $rsm->addScalarResult('first_day','first_day', 'date');
+        $rsm->addScalarResult('last_day','last_day', 'date');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+                SELECT count(id) as number,
+                    DATE(DATE_ADD(`date`, INTERVAL(1-DAYOFWEEK(`date`)) DAY)) as first_day,
+                    DATE(DATE_ADD(`date`, INTERVAL(7-DAYOFWEEK(`date`)) DAY)) as last_day
+                FROM user
+                GROUP BY YEAR(`date`), WEEK(`date`)
+                ORDER BY YEAR(`date`), WEEK(`date`)
+            ', $rsm);
+        return $query->getArrayResult();
+    }
+
+    /**
+     * @param int $days
+     * @return int
+     * @throws \Exception
+     */
+    public function getNumberOfUsersPredictedLastNDays($days = 30)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('number','number', 'integer');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+                SELECT count(u.id) as number
+                FROM user u
+                WHERE EXISTS (SELECT 1 FROM
+                prediction p
+                WHERE p.creation_date > DATE_SUB(NOW(), INTERVAL ' . $days . ' DAY)
+                AND p.user_id = u.id)
+            ', $rsm);
+        $result = $query->getSingleScalarResult();
+        return !empty($result) ? (int)$result : 0;
+    }
+
+    /**
+     * @param int $days
+     * @return int
+     * @throws \Exception
+     */
+    public function getNumberOfUsersNotPredictedLastNDays($days = 30)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('number','number', 'integer');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+                SELECT count(u.id) as number
+                FROM user u
+                WHERE NOT EXISTS (SELECT 1 FROM
+                prediction p
+                WHERE p.creation_date > DATE_SUB(NOW(), INTERVAL ' . $days . ' DAY)
+                AND p.user_id = u.id)
+            ', $rsm);
+        $result = $query->getSingleScalarResult();
+        return !empty($result) ? (int)$result : 0;
+    }
+
+    /**
+     * @param bool $skipCache
+     * @return int
+     * @throws \Exception
+     */
+    public function getIncompleteUsersNumber($skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('u.id'))
+            ->from($this->getRepositoryName(), 'u')
+            ->where($qb->expr()->eq('u.isActive', 0));
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @return array
+     * @throws \Exception
+     */
+    public function getUsersByRegion() {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('region','region');
+        $rsm->addScalarResult('users','users', 'integer');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+                SELECT r.display_name as region, count(u.id) as users
+                FROM region as r
+                LEFT OUTER JOIN country as c ON c.region_id = r.id
+                LEFT OUTER JOIN user as u ON u.country_id = c.id
+                GROUP BY r.id
+                ORDER BY r.id
+            ', $rsm);
+        return $query->getArrayResult();
+    }
 }
