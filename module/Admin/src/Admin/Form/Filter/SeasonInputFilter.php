@@ -7,6 +7,9 @@ use Zend\InputFilter\InputFilter;
 
 class SeasonInputFilter extends InputFilter
 {
+    const DISPLAY_NAME_MAX_LENGTH = 100;
+    const FEEDER_ID_MIN_VALUE = 0;
+
     function __construct()
     {
         $factory = new InputFactory();
@@ -14,6 +17,14 @@ class SeasonInputFilter extends InputFilter
         $this->add($factory->createInput(array(
             'name'     => 'displayName',
             'required' => true,
+            'validators' => array(
+                array(
+                    'name' => 'StringLength',
+                    'options' => array(
+                        'max' => self::DISPLAY_NAME_MAX_LENGTH
+                    )
+                ),
+            ),
         )));
 
         $this->add($factory->createInput(array(
@@ -31,7 +42,13 @@ class SeasonInputFilter extends InputFilter
             'name'     => 'feederId',
             'required'   => true,
             'validators' => array(
-                array('name' => 'digits')
+                array('name' => 'digits'),
+                array(
+                    'name' => 'GreaterThan',
+                    'options' => array(
+                        'min' => self::FEEDER_ID_MIN_VALUE
+                    )
+                ),
             )
         )));
 

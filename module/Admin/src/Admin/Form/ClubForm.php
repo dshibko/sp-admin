@@ -2,11 +2,17 @@
 
 namespace Admin\Form;
 
+
+use Admin\Form\Filter\SeasonInputFilter;
 use \Neoco\Form\UploadableForm;
 use Zend\Form\Form;
-use \Zend\InputFilter\InputFilter;
 
 class ClubForm extends UploadableForm {
+
+    const LOGO_HEIGHT = 110;
+    const LOGO_WIDTH = 110;
+    const DISPLAY_NAME_MAX_LENGTH = 50;
+    const SHORT_NAME_MAX_LENGTH = 10;
 
     public function __construct() {
 
@@ -21,7 +27,7 @@ class ClubForm extends UploadableForm {
             'type'  => 'text',
             'attributes' => array(
                 'required' => true,
-                'maxlength' => 50,
+                'maxlength' => self::DISPLAY_NAME_MAX_LENGTH,
             ),
             'options' => array(
                 'label' => 'Name',
@@ -34,9 +40,9 @@ class ClubForm extends UploadableForm {
             'attributes' => array(
                 'required' => true,
                 'isImage' => true,
-                'minWidth' => 110,
-                'minHeight' => 110,
-                'hint' => 'Min image width: 110px, height: 110px',
+                'minWidth' => self::LOGO_WIDTH,
+                'minHeight' => self::LOGO_HEIGHT,
+                'hint' => 'Min image width: '.self::LOGO_WIDTH.'px, height: '.self::LOGO_HEIGHT.'px',
             ),
             'options' => array(
                 'label' => 'Club Logo',
@@ -47,7 +53,7 @@ class ClubForm extends UploadableForm {
             'name' => 'shortName',
             'type'  => 'text',
             'attributes' => array(
-                'maxlength' => 10
+                'maxlength' => self::SHORT_NAME_MAX_LENGTH
             ),
             'options' => array(
                 'label' => 'Short Name',

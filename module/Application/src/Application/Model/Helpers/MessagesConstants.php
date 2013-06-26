@@ -66,6 +66,8 @@ class MessagesConstants
     const ERROR_INVALID_TERM_ID = 'Invalid term id';
     const ERROR_CANNOT_FIND_TERM = 'Cannot find term';
     const ERROR_MAX_TERMS_COUNT_EXCEEDED = 'Max terms count exceeded';
+    const ERROR_INCORRECT_TIME = 'Incorrect time';
+    const ERROR_INCORRECT_CSS_COLOR = 'Incorrect CSS color';
 
 //    Application Messages Constants
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";

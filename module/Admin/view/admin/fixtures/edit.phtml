@@ -9,7 +9,7 @@ $this->headTitle($this->title);
     $elements = $form->getElements();
     echo $this->form()->openTag($form);
     $elements = $form->getElements();
-    $inputElements = array($elements['homeTeam'], $elements['awayTeam'], $elements['date'], $elements['kick_off_time'], $elements['isDoublePoints']);
+    $inputElements = array($elements['homeTeam'], $elements['awayTeam'], $elements['date'], $elements['kick_off_time'], $elements['feederId'], $elements['isDoublePoints']);
     ?>
     <div class="form">
         <div class="row-fluid">
@@ -39,6 +39,7 @@ $this->headTitle($this->title);
                 $type = $element->getAttribute('type');
                 $hint = $element->getAttribute('hint');
                 $class = $element->getAttribute('class');
+
             ?>
 
             <div class="control-group form-horizontal clearfix">
@@ -46,7 +47,7 @@ $this->headTitle($this->title);
                 <div class="controls">
                     <?php if ($type == 'text') : ?>
                     <div class="input-prepend">
-                        <span class="add-on"><i class="icon-time"></i></span><input class="m-wrap medium check-values <?php echo $class;?>" type="<?=$element->getAttribute('type');?>" name="<?=$element->getAttribute('name');?>" <?php echo ($element->getAttribute('maxlength') ? 'maxlength="'.$element->getAttribute('maxlength'). '"' : '');?>  data-original_value="<?=$element->getValue();?>" value="<?=$element->getValue();?>"/>
+                        <span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium check-values <?php echo $class;?>" type="<?=$element->getAttribute('type');?>" name="<?=$element->getAttribute('name');?>" <?php echo ($element->getAttribute('maxlength') ? 'maxlength="'.$element->getAttribute('maxlength'). '"' : '');?>  <?php echo ($element->getAttribute('disabled') ? 'disabled="disabled"' : '');?> data-original_value="<?=$element->getValue();?>" value="<?=$element->getValue();?>"/>
                     </div>
                     <?php elseif ($type == 'select'): ?>
                         <?php echo $this->formSelect($element);?>

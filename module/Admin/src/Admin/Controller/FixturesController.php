@@ -60,7 +60,7 @@ class FixturesController extends AbstractActionController
             'currentSeasonId' => $currentSeasonId
         );
     }
-    //TODO move to manager
+
     private function setRequiredFormFieldsets($form){
         $requiredGroup = false;
         foreach($form->getFieldsets() as $fieldset){
@@ -158,12 +158,14 @@ class FixturesController extends AbstractActionController
             if ($fixture->getStatus() == Match::FULL_TIME_STATUS) {
                 $isFullTime = true;
             }
+            $form->get('feederId')->setAttribute('disabled','disabled');
             if ($request->isPost()) {
                 $post = array_merge_recursive(
                     $request->getPost()->toArray(),
                     $request->getFiles()->toArray()
                 );
                 $type = $post['type'];
+                $form->getInputFilter()->get('feederId')->setRequired(false);
                 switch($type){
                     case self::FIXTURE_FORM_TYPE : {
                         $form->setData($post);
@@ -323,7 +325,11 @@ class FixturesController extends AbstractActionController
                 if ($form->isValid()) {
                     $data = $form->getData();
                     $startTime = $data['date'] . $data['kick_off_time'];
+
                     $fixture = new Match();
+                    $fixture->setStatus(Match::PRE_MATCH_STATUS);
+                    $fixture->setTimezone('GMT');
+                    $fixture->setFeederId($data['feederId']);
                     $dateTime = new \DateTime($startTime);
                     $fixture->setIsDoublePoints(!empty($data['isDoublePoints']))
                         ->setAwayTeam($teamManager->getTeamById($data['awayTeam']))
