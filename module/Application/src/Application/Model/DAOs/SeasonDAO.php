@@ -30,7 +30,7 @@ class SeasonDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\Season';
+        return 'Application\Model\Entities\Season';
     }
 
     /**
@@ -72,7 +72,7 @@ class SeasonDAO extends AbstractDAO {
     /**
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return array|\Application\Model\Entities\Season
+     * @return array|Application\Model\Entities\Season
      */
     public function getCurrentSeason($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();

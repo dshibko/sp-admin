@@ -31,7 +31,7 @@ class TeamDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\Team';
+        return 'Application\Model\Entities\Team';
     }
 
     /**

@@ -30,7 +30,7 @@ class SeasonRegionDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\SeasonRegion';
+        return 'Application\Model\Entities\SeasonRegion';
     }
 
 }

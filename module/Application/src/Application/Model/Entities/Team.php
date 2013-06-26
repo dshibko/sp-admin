@@ -129,6 +129,7 @@ class Team extends BasicObject {
         $this->homeMatches = new \Doctrine\Common\Collections\ArrayCollection();
         $this->awayMatches = new \Doctrine\Common\Collections\ArrayCollection();
         $this->players = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->isBlocked = false;
     }
     
     /**

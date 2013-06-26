@@ -30,7 +30,7 @@ class FeaturedPredictionDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\FeaturedPrediction';
+        return 'Application\Model\Entities\FeaturedPrediction';
     }
 
 }

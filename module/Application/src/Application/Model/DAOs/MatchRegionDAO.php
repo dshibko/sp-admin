@@ -30,7 +30,7 @@ class MatchRegionDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\MatchRegion';
+        return 'Application\Model\Entities\MatchRegion';
     }
 
     /**
@@ -38,7 +38,7 @@ class MatchRegionDAO extends AbstractDAO {
      * @param $regionId
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return \Application\Model\Entities\MatchRegion
+     * @return Application\Model\Entities\MatchRegion
      */
     public function getMatchRegionByMatchIdAndRegionId($matchId, $regionId, $hydrate = false, $skipCache = false)
     {

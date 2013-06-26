@@ -20,7 +20,7 @@ class OptaForm extends UploadableForm {
             'type'  => 'file',
             'attributes' => array(
                 'required' => true,
-                'ext' => 'json',
+                'ext' => 'xml',
             ),
             'options' => array(
                 'label' => 'Feed File',

@@ -860,6 +860,18 @@ COLLATE='utf8_general_ci'
 ENGINE=InnoDB
 ROW_FORMAT=DEFAULT;
 
+-- oko 26.06
+
+CREATE TABLE `feed` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `file_name` VARCHAR(255) NOT NULL,
+  `type` ENUM('F1', 'F2', 'F7', 'F40') NULL,
+  `last_sync_result` ENUM('Success', 'Error') NOT NULL,
+  `last_update` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `file_name` (`file_name`)
+) COLLATE='utf8_general_ci' ENGINE=InnoDB;
+
 -- okh 26.06
 ALTER TABLE `match`  CHANGE COLUMN `stadium_name` `stadium_name` VARCHAR(100) NULL AFTER `week`;
 ALTER TABLE `match`  CHANGE COLUMN `city_name` `city_name` VARCHAR(100) NULL AFTER `stadium_name`;

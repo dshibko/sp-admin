@@ -29,7 +29,7 @@ class AchievementBlockDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\AchievementBlock';
+        return 'Application\Model\Entities\AchievementBlock';
     }
 
     /**

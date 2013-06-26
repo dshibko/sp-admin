@@ -31,7 +31,7 @@ class RegionDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\Region';
+        return 'Application\Model\Entities\Region';
     }
 
     /**
@@ -51,7 +51,7 @@ class RegionDAO extends AbstractDAO {
     /**
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return \Application\Model\Entities\Region
+     * @return Application\Model\Entities\Region
      * @throws \Exception
      */
     public function getDefaultRegion($hydrate = false, $skipCache = false) {
@@ -72,7 +72,7 @@ class RegionDAO extends AbstractDAO {
     public function getUsersByRegion($regionId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('u')
-            ->from('\Application\Model\Entities\User', 'u')
+            ->from('Application\Model\Entities\User', 'u')
             ->join('u.country', 'c', Expr\Join::WITH, 'c.region = ' . $regionId);
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }

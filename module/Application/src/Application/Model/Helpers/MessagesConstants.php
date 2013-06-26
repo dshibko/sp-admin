@@ -83,7 +83,11 @@ class MessagesConstants
     const ERROR_CANNOT_GET_USER_BY_FACEBOOK_ID = 'Cannot get user by facebook id';
     const ERROR_APP_CONFIG_NOT_FOUND = 'Application config was not found.';
     const ERROR_APP_EDITION_CONFIG_NOT_FOUND = 'Application edition config was not found.';
-    const ERROR_APP_OPTA_CONFIG_NOT_FOUND = 'Application opta config was not found.';
+    const ERROR_APP_OPTA_ID_NOT_FOUND = 'Application opta id was not found.';
+    const ERROR_APP_OPTA_DIR_PATH_NOT_FOUND = 'Application opta directory path was not found.';
+    const ERROR_APP_OPTA_DIR_NOT_EXISTS = 'Application opta directory does not exist.';
+    const ERROR_APP_OPTA_DIR_NOT_DIR = 'Application opta directory is not a directory.';
+    const ERROR_APP_CLEAR_APP_CACHE_URL_NOT_FOUND = 'Clear application cache was not found.';
     const ERROR_APP_UNKNOWN_EDITION = 'Unknown application edition configured.';
     const ERROR_APP_WRONG_OPTA_CONFIG = 'Wrong opta id configured. Must be an integer.';
     const ERROR_APP_WRONG_EDITION = 'The application is not "%s" edition.';
@@ -132,13 +136,19 @@ class MessagesConstants
 
 
     // Opta
+    const ERROR_RUN_OUT_OF_CONSOLE = 'Cannot run this action out of console!';
+    const ERROR_TYPE_NOT_SPECIFIED = 'You have to specify feed type';
+    const ERROR_WRONG_TYPE_SPECIFIED = '"%s" type is not supported';
     const MESSAGE_PREFIX = 'Message: ';
-    const INFO_NOT_CURRENT_SEASON = 'Feed season is not current application season';
+    const INFO_SEASON_NOT_FOUND = 'Feed season was not found';
     const INFO_WRONG_COMPETITION = 'Feed competition is not an application competition';
     const INFO_ENTITY_NOT_FOUND = '"%s" was not found';
     const WARNING_TEAM_NOT_FOUND = 'A team was with team_id = "%s" was not found';
     const ERROR_FIELD_IS_EMPTY = 'The field "%s" is empty';
     const ERROR_CANNOT_BE_PARSED = 'The feed file contents cannot be parsed to xml';
+
+    const APP_CACHE_CLEARED = 'Application cache was cleared successfully';
+    const APP_CACHE_NOT_CLEARED = 'Application cache was not cleared';
 
     const LOG_FEED_IMPORT_STARTED = 'Opta Feed %s Import Started (%s)';
     const LOG_FEED_IMPORT_FINISHED = 'Opta Feed %s Import Finished (%s)';

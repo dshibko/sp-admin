@@ -23,7 +23,7 @@ class SquadSelect extends AbstractHelper
         if ($default != null)
             $html .= '<option value="-1">' . $default . '</option>';
         foreach ($squad as $player)
-            $html .= '<option ' . ($player['id'] == $scorer ? 'selected="selected"': '') . ' value="' . $player['id'] . '">' . $player['shirtNumber'] . '. ' . $player['displayName'] . ' ' . $player['position'] . '</option>';
+            $html .= '<option ' . ($player['id'] == $scorer ? 'selected="selected"': '') . ' value="' . $player['id'] . '">' . ($player['shirtNumber'] !== null ? ($player['shirtNumber']  . '. ') : ' - ') . $player['displayName'] . ' ' . $player['position'] . '</option>';
         $html .= '</select>';
         return $html;
     }
