@@ -29,7 +29,7 @@ class TermDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\Term';
+        return 'Application\Model\Entities\Term';
     }
 
     /**

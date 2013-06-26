@@ -29,7 +29,7 @@ class LogotypeDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\Logotype';
+        return 'Application\Model\Entities\Logotype';
     }
 
     /**

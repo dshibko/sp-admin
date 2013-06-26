@@ -10,8 +10,9 @@ return array(
         'firewallController' => false,
         'firewalls' => array(
             'ZfcRbac\Firewall\Route' => array(
+                array('route' => 'opta', 'roles' => 'Guest'),
+                array('route' => 'clear-app-cache', 'roles' => 'Guest'),
                 array('route' => 'match', 'roles' => 'Guest'),
-                array('route' => 'dispatch', 'roles' => 'Guest'),
                 array('route' => 'forgot', 'roles' => 'Guest'),
                 array('route' => 'reset', 'roles' => 'Guest'),
                 array('route' => 'facebook', 'roles' => 'Guest'),

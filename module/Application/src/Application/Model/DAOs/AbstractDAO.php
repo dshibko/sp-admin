@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use \Application\Manager\CacheManager;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -16,7 +17,7 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
     }
 
     public function clearCache() {
-        $this->clearEntityCache();
+        $this->getCacheManager()->clearEntityCache($this->getRepositoryName());
     }
 
     /**
@@ -31,7 +32,7 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
             if ($flush)
                 $this->getEntityManager()->flush();
             if ($clearCache)
-                $this->clearEntityCache();
+                $this->clearCache();
         } catch (\Exception $e) {
             throw $e;
         }
@@ -49,7 +50,7 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
             if ($flush)
                 $this->getEntityManager()->flush();
             if ($clearCache)
-                $this->clearEntityCache();
+                $this->clearCache();
         } catch (\Exception $e) {
             throw $e;
         }
@@ -68,7 +69,7 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
                 ->setParameter('e_id', $id);
             $qb->getQuery()->execute();
             if ($clearCache)
-                $this->clearEntityCache();
+                $this->clearCache();
         } catch (\Exception $e) {
             throw $e;
         }
@@ -149,81 +150,17 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
     }
 
     /**
-     * @param bool $skipCache
-     * @return bool
-     */
-    private function getSkipCache($skipCache) {
-        $request = $this->getServiceLocator()->get('request');
-        $config = $this->getServiceLocator()->get('config');
-        if (!$request instanceof \Zend\Console\Request &&
-            array_key_exists('skip-cache-uri-patterns', $config) && !empty($config['skip-cache-uri-patterns'])) {
-            $skipCacheUriPatterns = $config['skip-cache-uri-patterns'];
-            if (!is_array($skipCacheUriPatterns))
-                $skipCacheUriPatterns = array($skipCacheUriPatterns);
-            foreach ($skipCacheUriPatterns as $aSkipCacheUriPattern) {
-                preg_match("/" . str_replace("*", ".*", str_replace("/", "\\/", $aSkipCacheUriPattern)) . "/", $request->getRequestUri(), $match);
-                if (!empty($match) && array_shift($match) == $request->getRequestUri())
-                    return true;
-            }
-        }
-        return $skipCache;
-    }
-
-    /**
      * @param \Doctrine\ORM\QueryBuilder $qb
      * @param bool $skipCache
      * @return \Doctrine\ORM\Query
      */
     protected function getQuery(\Doctrine\ORM\QueryBuilder $qb, $skipCache = false) {
-        $cacheKey = $this->generateCacheKey();
+        $cacheKey = $this->getCacheManager()->generateCacheKey();
         $allEntities = $this->getInvolvedEntities($qb);
-        if (!($skipCache = $this->getSkipCache($skipCache)) && !$this->getCacheProvider()->contains($cacheKey))
+        if (!($skipCache = $this->getCacheManager()->getSkipCache($skipCache)) && !$this->getCacheManager()->getCacheProvider()->contains($cacheKey))
             foreach ($allEntities as $entity)
-                $this->addCacheKeyToEntity($cacheKey, $entity);
+                $this->getCacheManager()->addCacheKeyToEntity($cacheKey, $entity);
         return $qb->getQuery()->useResultCache(!$skipCache, null, $cacheKey);
-    }
-
-    /**
-     * @param string $cacheKey
-     * @param string $entity
-     * @return void
-     */
-    private function addCacheKeyToEntity($cacheKey, $entity) {
-        $entityCacheKey = md5($entity);
-        $cacheKeys = array();
-        if ($this->getCacheProvider()->contains($entityCacheKey))
-            $cacheKeys = $this->getCacheProvider()->fetch($entityCacheKey);
-        $cacheKeys [] = $cacheKey;
-        $this->getCacheProvider()->save($entityCacheKey, $cacheKeys);
-    }
-
-    protected function clearEntityCache($entity = null) {
-        if ($entity == null) $entity = $this->getRepositoryName();
-        $entityCacheKey = md5($entity);
-        if ($this->getCacheProvider()->contains($entityCacheKey)) {
-            $cacheKeys = $this->getCacheProvider()->fetch($entityCacheKey);
-            if ($cacheKeys !== false && is_array($cacheKeys))
-                foreach ((array)$cacheKeys as $cacheKey)
-                    if ($this->getCacheProvider()->contains($cacheKey))
-                        $this->getCacheProvider()->delete($cacheKey);
-        }
-        if ($this->getCacheProvider()->contains($entityCacheKey))
-            $this->getCacheProvider()->delete($entityCacheKey);
-    }
-
-    /**
-     * @return string
-     */
-    private function generateCacheKey() {
-        $backTrace = debug_backtrace();
-        if (count($backTrace) < 3)
-            throw new \Exception('AbstractDAO::generateCacheKey was called from wrong place');
-        $caller = array_shift((array_slice($backTrace, 2, 1)));
-        $class = get_class($caller['object']);
-        $method = $caller['function'];
-        $args = $caller['args'];
-        $key = md5($class . $method . serialize($args));
-        return $key;
     }
 
     /**
@@ -262,19 +199,6 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
                     }
         }
         return $allEntities;
-    }
-    /**
-     * @var \Doctrine\Common\Cache\CacheProvider
-     */
-    private $cacheProvider;
-
-    /**
-     * @return \Doctrine\Common\Cache\CacheProvider
-     */
-    private function getCacheProvider() {
-        if (!isset($this->cacheProvider))
-            $this->cacheProvider = $this->getEntityManager()->getConfiguration()->getResultCacheImpl();
-        return $this->cacheProvider;
     }
 
     /**
@@ -333,6 +257,10 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
 
         return $this->em;
 
+    }
+
+    private function getCacheManager() {
+        return CacheManager::getInstance($this->getServiceLocator());
     }
 
 }

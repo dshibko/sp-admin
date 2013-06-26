@@ -5,7 +5,7 @@ namespace Application\Model\DAOs;
 use \Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use \Application\Model\Entities\MatchGoal;
+use Application\Model\Entities\MatchGoal;
 
 class MatchGoalDAO extends AbstractDAO {
 
@@ -31,7 +31,7 @@ class MatchGoalDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\MatchGoal';
+        return 'Application\Model\Entities\MatchGoal';
     }
 
     /**

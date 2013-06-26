@@ -30,11 +30,11 @@ class RegionGameplayContentDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\RegionGameplayContent';
+        return 'Application\Model\Entities\RegionGameplayContent';
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param Application\Model\Entities\Region $region
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array

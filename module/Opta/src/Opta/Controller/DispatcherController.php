@@ -2,6 +2,11 @@
 
 namespace Opta\Controller;
 
+use \Application\Manager\SeasonManager;
+use \Application\Manager\ApplicationManager;
+use \Zend\Log\Logger;
+use \Application\Model\Entities\Feed;
+use \Application\Model\Helpers\MessagesConstants;
 use \Opta\Manager\OptaManager;
 use \Application\Manager\ExceptionManager;
 use \Zend\Console\Adapter\AdapterInterface as Console;
@@ -14,29 +19,76 @@ class DispatcherController extends AbstractActionController {
 
         error_reporting(E_ERROR | E_PARSE);
 
-        try {
-//            \Application\Manager\LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables();
+        $console = $this->getConsole();
 
-            $console = $this->getConsole();
+        try {
+
+            $type = $this->getRequest()->getParam('type', '');
+            if (empty($type))
+                throw new \Exception(MessagesConstants::ERROR_TYPE_NOT_SPECIFIED);
+
+            if (!in_array($type, Feed::getAvailableTypes()))
+                throw new \Exception(sprintf(MessagesConstants::ERROR_WRONG_TYPE_SPECIFIED, $type));
+
             $optaManager = OptaManager::getInstance($this->getServiceLocator());
 
-            $filePath = 'Z:\home\sp.loc\opta\feeds\F7\8\2012\2013-04-28-15-57-30-1596559402.json';
-            $optaManager->parseF7Feed($filePath, $console);
+            switch ($type) {
 
-//            $filePath = 'Z:\home\sp.loc\opta\feeds\F7\8\2012\2013-04-21-16-58-02-1643751763.json';
-//            $optaManager->parseF7Feed($filePath, $console);
+                // export TZ=UTC;
+                case Feed::F1_TYPE: // 10 10 * * * cd <APP_ROOT>; php public/index.php opta F1
+                    $feeds = $optaManager->getUploadedFeedsByType($type);
+                    if (!empty($feeds)) {
+                        $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
+                        $unfinishedSeasons = $seasonManager->getAllNotFinishedSeasons(true, true);
+                        $processingStarted = false;
+                        foreach ($unfinishedSeasons as $unfinishedSeason) {
+                            $unfinishedSeasonOptaId = $unfinishedSeason['feederId'];
+                            $seasonFeeds = $optaManager->filterFeedsByParameter($feeds, $type, 'season_id', $unfinishedSeasonOptaId);
+                            foreach ($seasonFeeds as $seasonFeed)
+                                if ($optaManager->hasToBeProcessed($seasonFeed)) {
+                                    $processingStarted = true;
+                                    $success = $optaManager->parseF1Feed($seasonFeed, $console);
+                                    $optaManager->processingCompleted($seasonFeed, $type, $success);
+                                }
+                        }
+                        if ($processingStarted) {
+                            $optaManager->saveFeedsChanges();
+                            $optaManager->clearAppCache($type, $console);
+                        }
+                    }
+                    break;
 
-//            $filePath = 'Z:\home\sp.loc\opta\feeds\F1\8\2012\2013-05-13-12-16-19-987650526.json';
-//            $optaManager->parseF1Feed($filePath, $console);
+                case Feed::F7_TYPE: // */5 * * * * cd <APP_ROOT>; php public/index.php opta F7
 
-//            $filePath = 'Z:\home\sp.loc\opta\feeds\F40\2012-09-26-19-36-38-1292557115.json';
-//            $optaManager->parseF40Feed($filePath, $console);
+                    break;
 
-//            $filePath = 'Z:\home\sp.loc\opta\feeds\F40\8\2012\2013-05-10-12-37-31-1793567476.json';
-//            $optaManager->parseF40Feed($filePath, $console);
+                case Feed::F40_TYPE: // 0 0,12 * * * cd <APP_ROOT>; php public/index.php opta F40
+                    $feeds = $optaManager->getUploadedFeedsByType($type);
+                    if (!empty($feeds)) {
+                        $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
+                        $unfinishedSeasons = $seasonManager->getAllNotFinishedSeasons(true, true);
+                        $processingStarted = false;
+                        foreach ($unfinishedSeasons as $unfinishedSeason) {
+                            $unfinishedSeasonOptaId = $unfinishedSeason['feederId'];
+                            $seasonFeeds = $optaManager->filterFeedsByParameter($feeds, $type, 'season_id', $unfinishedSeasonOptaId);
+                            foreach ($seasonFeeds as $seasonFeed)
+                                if ($optaManager->hasToBeProcessed($seasonFeed)) {
+                                    $processingStarted = true;
+                                    $success = $optaManager->parseF40Feed($seasonFeed, $console);
+                                    $optaManager->processingCompleted($seasonFeed, $type, $success);
+                                }
+                        }
+                        if ($processingStarted) {
+                            $optaManager->saveFeedsChanges();
+                            $optaManager->clearAppCache($type, $console);
+                        }
+                    }
+                    break;
+
+            }
 
         } catch(\Exception $e) {
-            ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, $this);
+            ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::ERR, $console);
         }
 
     }
@@ -48,7 +100,7 @@ class DispatcherController extends AbstractActionController {
     private function getConsole() {
         $console = $this->getServiceLocator()->get('console');
         if (!$console instanceof Console)
-            throw new RuntimeException('Cannot run this action out of console!');
+            throw new RuntimeException(MessagesConstants::ERROR_RUN_OUT_OF_CONSOLE);
         return $console;
     }
 
