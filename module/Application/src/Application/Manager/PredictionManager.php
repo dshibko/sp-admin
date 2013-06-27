@@ -102,13 +102,17 @@ class PredictionManager extends BasicManager {
      * @return int|string
      */
     public function getAvgNumberOfPredictions($season) {
-        $avgNumberOfPrediction = PredictionDAO::getInstance($this->getServiceLocator())->getAvgNumberOfPredictions($season);
+        $numberOfPredictions = PredictionDAO::getInstance($this->getServiceLocator())->getPredictionsCount($season->getId());
+        $numberOfFinishedMatches = MatchDAO::getInstance($this->getServiceLocator())->getBlockedFinishedMatchesInTheSeasonNumber($season);
+        $numberOfLiveMatches = MatchDAO::getInstance($this->getServiceLocator())->getLiveMatchesNumber(new \DateTime(), $season);
+        $numberOfPredictableMatches = SettingsManager::getInstance($this->getServiceLocator())->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
+        $avgNumberOfPrediction = $numberOfPredictions / ($numberOfFinishedMatches + $numberOfLiveMatches + $numberOfPredictableMatches);
+//        $avgNumberOfPrediction = PredictionDAO::getInstance($this->getServiceLocator())->getAvgNumberOfPredictions($season);
         $avgNumberOfPrediction = number_format(ceil($avgNumberOfPrediction * 100) / 100, 2);
         return $avgNumberOfPrediction;
     }
 
     /**
-     * @param \DateTime $fromTime
      * @param $offset
      * @param \Application\Model\Entities\User $user
      * @param \Application\Model\Entities\Season $season
@@ -116,11 +120,11 @@ class PredictionManager extends BasicManager {
      * @param bool $skipCache
      * @return mixed
      */
-    public function getNearestMatchWithPrediction($fromTime, $offset, $user, $season, $hydrate = false, $skipCache = false) {
+    public function getNearestMatchWithPrediction($offset, $user, $season, $hydrate = false, $skipCache = false) {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
         $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
-        $matchData = $matchDAO->getNearestMatch($fromTime, $offset, $season, $skipCache);
+        $matchData = $matchDAO->getNearestMatch($offset, $season, $skipCache);
         if (!empty($matchData)) {
             $match = $matchDAO->getMatchInfo($matchData['matchId'], $hydrate, $skipCache);
             $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);

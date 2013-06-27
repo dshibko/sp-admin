@@ -75,23 +75,20 @@ class MatchDAO extends AbstractDAO {
     }
 
     /**
-     * @param \DateTime $fromTime
      * @param integer $offset
      * @param Application\Model\Entities\Season $season
      * @param bool $skipCache
      * @return integer
      */
-    function getNearestMatch(\DateTime $fromTime, $offset, Season $season, $skipCache = false) {
+    function getNearestMatch($offset, Season $season, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('m.id as matchId, c.id as competitionId, c.displayName as competitionName')
             ->from($this->getRepositoryName(), 'm')
             ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
             ->join('m.homeTeam', 'h')
-            ->where($qb->expr()->gt('m.startTime', ":fromTime"))
-            ->andWhere($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
+            ->where($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
             ->orderBy('m.startTime', 'ASC')
             ->addOrderBy('h.displayName', 'ASC')
-            ->setParameter("fromTime", $fromTime)
             ->setParameter("status1", Match::PRE_MATCH_STATUS)
             ->setParameter("status2", Match::LIVE_STATUS)
             ->setFirstResult($offset)
@@ -171,7 +168,23 @@ class MatchDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'm')
             ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
             ->innerJoin('m.predictions', 'p', Expr\Join::WITH, 'p.user = ' . $user->getId())
-            ->andWhere($qb->expr()->eq('m.status', ':status'))
+            ->where($qb->expr()->eq('m.status', ':status'))
+            ->setParameter("status", Match::FULL_TIME_STATUS);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @param Application\Model\Entities\Season $season
+     * @param bool $skipCache
+     * @return integer
+     */
+    function getBlockedFinishedMatchesInTheSeasonNumber(Season $season, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('m.id'))
+            ->from($this->getRepositoryName(), 'm')
+            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->where($qb->expr()->eq('m.status', ':status'))
+            ->andWhere($qb->expr()->eq('m.isBlocked', 1))
             ->setParameter("status", Match::FULL_TIME_STATUS);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
@@ -195,24 +208,21 @@ class MatchDAO extends AbstractDAO {
     }
 
     /**
-     * @param \DateTime $fromTime
      * @param Application\Model\Entities\Season $season
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    function getMatchesLeftInTheSeason(\DateTime $fromTime, Season $season, $hydrate = false, $skipCache = false) {
+    function getMatchesLeftInTheSeason(Season $season, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('m.id, m.status, m.startTime, m.timezone, h.displayName as homeName, h.logoPath as homeLogo, a.displayName as awayName, a.logoPath as awayLogo, c.displayName as competitionName')
+        $qb->select('m.id, m.feederId, m.status, m.startTime, m.timezone, h.displayName as homeName, h.logoPath as homeLogo, a.displayName as awayName, a.logoPath as awayLogo, c.displayName as competitionName')
             ->from($this->getRepositoryName(), 'm')
             ->join('m.homeTeam', 'h')
             ->join('m.awayTeam', 'a')
             ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
-            ->where($qb->expr()->gt('m.startTime', ":fromTime"))
-            ->andWhere($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
+            ->where($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
             ->setParameter("status1", Match::PRE_MATCH_STATUS)
             ->setParameter("status2", Match::LIVE_STATUS)
-            ->setParameter("fromTime", $fromTime)
             ->orderBy('m.startTime', 'ASC')
             ->addOrderBy('h.displayName', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);

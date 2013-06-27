@@ -338,13 +338,13 @@ return array(
                     ),
                 ),
             ),
-            'admin-opta-uploader' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+            'admin-opta' => array(
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/opta/',
+                    'route'    => '/admin/opta/[:action][/:type]',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Opta',
-                        'action'     => 'upload'
+                        'action'     => 'index'
                     ),
                 ),
             ),
@@ -748,7 +748,7 @@ return array(
                     'opta' => array(
                         'title' => 'Opta',
                         'label' => 'icon-bolt',
-                        'route' => 'admin-opta-uploader',
+                        'route' => 'admin-opta',
                     ),
                     'settings' => array(
                         'title' => 'Settings',

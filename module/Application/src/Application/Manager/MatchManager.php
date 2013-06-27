@@ -159,16 +159,15 @@ class MatchManager extends BasicManager
     }
 
     /**
-     * @param $fromTime
      * @param $season
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getMatchesLeftInTheSeason($fromTime, $season, $hydrate = false, $skipCache = false)
+    public function getMatchesLeftInTheSeason($season, $hydrate = false, $skipCache = false)
     {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
-        $matches = $matchDAO->getMatchesLeftInTheSeason($fromTime, $season, $hydrate, $skipCache);
+        $matches = $matchDAO->getMatchesLeftInTheSeason($season, $hydrate, $skipCache);
         if ($hydrate)
             foreach ($matches as &$match) {
                 $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
@@ -758,6 +757,15 @@ class MatchManager extends BasicManager
     public function getMatchGoals($matchId, $hydrate = false, $skipCache = false) {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
         return $matchDAO->getMatchGoals($matchId, $hydrate, $skipCache);
+    }
+
+    public function getUnfinishedAndPredictableMatches($season, $hydrate = false, $skipCache = false) {
+        $liveMatchesNumber = $this->getLiveMatchesNumber(new \DateTime(), $season);
+        $matchesLeft = $this->getMatchesLeftInTheSeason($season, $hydrate, $skipCache);
+        $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
+        $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS, true);
+        $matches = array_slice($matchesLeft, 0, $maxAhead + $liveMatchesNumber);
+        return $matches;
     }
 
 }

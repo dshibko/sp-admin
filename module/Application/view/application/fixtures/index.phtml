@@ -8,57 +8,52 @@
             <h1><?=$title;?></h1>
             <h2><?=$this->seasonRegion != null ? $this->seasonRegion->getDisplayName() : ''?></h2>
         </hgroup>
-        <?php if(!empty($this->fixtures)) : ?>
-            <table>
-                <?php
-                    $predictableCount = 0;
-                    foreach ($this->fixtures as $i => $fixture) :
-                        if ($fixture['isLive'])
-                            $predictable = false;
-                        else
-                            $predictable = $predictableCount++ < $this->maxAhead;
-                        ?>
-                    <tr <?= $predictable ? 'class="flag-predictable"' : ''?>>
-                        <td class="home-team">
-                            <figure>
-                                <div>
-                                    <img src="<?=$this->clubLogo($fixture['homeLogo']);?>"  alt="<?=$fixture['homeName']?>"/>
-                                </div>
-                                <figcaption>
-                                    <?=$fixture['homeName']?>
-                                    <time>
-                                        <?php print $fixture['localStartTime']->format('D d M h.i a');?>
-                                        <?php //print strftime('%a %e %b %I.%M %P', $fixture['localStartTime']->getTimestamp()); ?>
-                                    </time>
-                                </figcaption>
-                            </figure>
-                        </td>
-                        <td class="action-block">
+        <table>
+            <?php
+                $predictableCount = 0;
+                foreach ($this->fixtures as $i => $fixture) :
+                    if ($fixture['isLive'])
+                        $predictable = false;
+                    else
+                        $predictable = $predictableCount++ < $this->maxAhead;
+                    ?>
+                <tr <?= $predictable ? 'class="flag-predictable"' : ''?>>
+                    <td class="home-team">
+                        <figure>
                             <div>
-                                <span><?=$fixture['competitionName']?></span>
-                                <em><?=$this->translate('VS')?></em>
-                                <?php if ($predictable) : ?>
-                                    <a href="<?=$this->url('predict', array('ahead' => $i > 0 ? $i : null))?>"><?=$this->translate('Predict the score')?></a>
-                                <?php endif; ?>
+                                <img src="<?=$this->clubLogo($fixture['homeLogo']);?>"  alt="<?=$fixture['homeName']?>"/>
                             </div>
-                        </td>
-                        <td class="away-team">
-                            <figure>
-                                <div>
-                                    <img src="<?=$this->clubLogo($fixture['awayLogo']);?>" alt="<?=$fixture['awayName']?>"/>
-                                </div>
-                                <figcaption>
-                                    <?=$fixture['awayName']?>
-                                </figcaption>
-                            </figure>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-        <?php else: ?>
-            <?= $this->renderMessages(); ?>
-            <?=$this->translate('No more matches will be played in this season. Please join us when next season starts.');?>
-        <?php endif; ?>
+                            <figcaption>
+                                <?=$fixture['homeName']?>
+                                <time>
+                                    <?php print $fixture['localStartTime']->format('D d M h.i a');?>
+                                    <?php //print strftime('%a %e %b %I.%M %P', $fixture['localStartTime']->getTimestamp()); ?>
+                                </time>
+                            </figcaption>
+                        </figure>
+                    </td>
+                    <td class="action-block">
+                        <div>
+                            <span><?=$fixture['competitionName']?></span>
+                            <em><?=$this->translate('VS')?></em>
+                            <?php if ($predictable) : ?>
+                                <a href="<?=$this->url('predict', array('ahead' => $i > 0 ? $i : null))?>"><?=$this->translate('Predict the score')?></a>
+                            <?php endif; ?>
+                        </div>
+                    </td>
+                    <td class="away-team">
+                        <figure>
+                            <div>
+                                <img src="<?=$this->clubLogo($fixture['awayLogo']);?>" alt="<?=$fixture['awayName']?>"/>
+                            </div>
+                            <figcaption>
+                                <?=$fixture['awayName']?>
+                            </figcaption>
+                        </figure>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
     </div>
     <?php echo $this->partial('partials/right-column'); ?>
 </div>

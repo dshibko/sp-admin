@@ -115,6 +115,7 @@ class MessagesConstants
     const INFO_LOGGED_OUT = "You've been logged out.";
     const INFO_OUT_OF_SEASON = "There is no season in play";
     const INFO_OUT_OF_SEASON_DESCRIPTION = "The next one will start soon. You can visit our website later and start playing.";
+    const INFO_NO_MORE_MATCHES_WILL_BE_PLAYED = "No more matches will be played in this season. Please join us when next season starts.";
     const INFO_YOU_PREDICTED_THE_DRAW = "You predicted the draw";
     const INFO_YOU_PREDICTED_THE_WINNER = "You predicted the winner would be %s";
     const INFO_YOU_PREDICTED_THE_SCORE = "You predicted the score would be %s";
@@ -137,6 +138,8 @@ class MessagesConstants
     const ERROR_RUN_OUT_OF_CONSOLE = 'Cannot run this action out of console!';
     const ERROR_TYPE_NOT_SPECIFIED = 'You have to specify feed type';
     const ERROR_WRONG_TYPE_SPECIFIED = '"%s" type is not supported';
+    const ERROR_UNKNOWN_FEED_TYPE = 'Unknown feed type';
+    const FEEDS_DISPATCH_COMPLETED = '"%s" feeds dispatch was completed';
     const MESSAGE_PREFIX = 'Message: ';
     const INFO_SEASON_NOT_FOUND = 'Feed season was not found';
     const INFO_WRONG_COMPETITION = 'Feed competition is not an application competition';

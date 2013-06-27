@@ -65,7 +65,7 @@ class PredictController extends AbstractActionController {
             if ($ahead > $matchesLeft + $liveMatches - 1)
                 return $this->notFoundAction();
 
-            $currentMatch = $predictionManager->getNearestMatchWithPrediction(new \DateTime(), $ahead, $user, $season);
+            $currentMatch = $predictionManager->getNearestMatchWithPrediction($ahead, $user, $season);
 
             if ($currentMatch == null)
                 return $this->notFoundAction();
