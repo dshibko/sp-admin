@@ -30,11 +30,11 @@ class FooterImageDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\FooterImage';
+        return '\Application\Model\Entities\FooterImage';
     }
 
     /**
-     * @param Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Region $region
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array

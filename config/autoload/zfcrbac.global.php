@@ -11,6 +11,7 @@ return array(
         'firewalls' => array(
             'ZfcRbac\Firewall\Route' => array(
                 array('route' => 'opta', 'roles' => 'Guest'),
+                array('route' => 'common', 'roles' => 'Guest'),
                 array('route' => 'clear-app-cache', 'roles' => 'Guest'),
                 array('route' => 'match', 'roles' => 'Guest'),
                 array('route' => 'forgot', 'roles' => 'Guest'),

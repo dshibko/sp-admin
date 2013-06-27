@@ -29,12 +29,12 @@ class RecoveryDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Recovery';
+        return '\Application\Model\Entities\Recovery';
     }
 
     /**
      * @param string $hash
-     * @return Application\Model\Entities\Recovery
+     * @return \Application\Model\Entities\Recovery
      * @throws \Exception
      */
     public function checkHash($hash) {
@@ -56,7 +56,7 @@ class RecoveryDAO extends AbstractDAO {
     /**
      * @param string $hash
      * @param string $date
-     * @return Application\Model\Entities\Recovery
+     * @return \Application\Model\Entities\Recovery
      * @throws \Exception
      */
     public function checkHashDate($hash, $date = '1H')
@@ -78,7 +78,7 @@ class RecoveryDAO extends AbstractDAO {
 
     /**
      * @param string $hash
-     * @return Application\Model\Entities\Recovery
+     * @return \Application\Model\Entities\Recovery
      * @throws \Exception
      */
     public function checkUserHash($hash) {

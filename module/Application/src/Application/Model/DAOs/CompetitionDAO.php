@@ -33,7 +33,7 @@ class CompetitionDAO extends AbstractDAO
      */
     public function getRepositoryName()
     {
-        return 'Application\Model\Entities\Competition';
+        return '\Application\Model\Entities\Competition';
     }
 
     /**

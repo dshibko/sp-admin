@@ -34,9 +34,10 @@ class FixturesController extends AbstractActionController {
                 throw new OutOfSeasonException();
 
             $seasonRegion = $season->getSeasonRegionByRegionId($regionManager->getSelectedRegion()->getId());
-
             $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
-            $matchesLeft = $matchManager->getMatchesLeftInTheSeason(new \DateTime(), $season, true);
+            $matchesLeft = $matchManager->getMatchesLeftInTheSeason($season, true);
+            if (empty($matchesLeft))
+                throw new InfoException(MessagesConstants::INFO_NO_MORE_MATCHES_WILL_BE_PLAYED);
 
             return array(
                 'fixtures' => $matchesLeft,

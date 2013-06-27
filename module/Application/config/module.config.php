@@ -283,6 +283,16 @@ return array(
                     ),
                 ),
             ),
+            //Common Requests
+            'common' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/common/:action',
+                    'defaults' => array(
+                        'controller'    => 'Application\Controller\Common',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -345,6 +355,7 @@ return array(
             'Application\Controller\FullTable' => 'Application\Controller\FullTableController',
             'Application\Controller\Match' => 'Application\Controller\MatchController',
             'Application\Controller\Prize' => 'Application\Controller\PrizeController',
+            'Application\Controller\Common' => 'Application\Controller\CommonController',
         ),
     ),
     'controller_plugins' => array(

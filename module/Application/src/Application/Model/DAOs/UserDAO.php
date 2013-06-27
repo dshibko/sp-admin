@@ -31,14 +31,14 @@ class UserDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\User';
+        return '\Application\Model\Entities\User';
     }
 
     /**
      * @param $identity
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return Application\Model\Entities\User
+     * @return \Application\Model\Entities\User
      * @throws \Exception
      */
     public function findOneByIdentity($identity, $hydrate = false, $skipCache = false) {
@@ -56,7 +56,7 @@ class UserDAO extends AbstractDAO {
      * @param int $id
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return Application\Model\Entities\User
+     * @return \Application\Model\Entities\User
      * @throws \Exception
      */
     public function findOneById($id, $hydrate = false, $skipCache = false) {
@@ -121,7 +121,7 @@ class UserDAO extends AbstractDAO {
      * @param bigint $facebook_id
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return Application\Model\Entities\User
+     * @return \Application\Model\Entities\User
      * @throws \Exception
      */
     public function getUserByFacebookId($facebook_id,$hydrate = false, $skipCache = false) {
@@ -136,14 +136,14 @@ class UserDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Season $season
      * @return integer
      */
     public function getActiveUsersNumber($season) {
         $query = $this->getEntityManager()
             ->createQuery('SELECT COUNT(u)
              FROM ' . $this->getRepositoryName() . ' u
-             WHERE EXISTS(SELECT 1 FROM Application\Model\Entities\Prediction p
+             WHERE EXISTS(SELECT 1 FROM \Application\Model\Entities\Prediction p
              JOIN p.match m
              JOIN m.competition c
              JOIN c.season s WITH s.id = ' . $season->getId() . '

@@ -29,7 +29,7 @@ class FooterPageDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\FooterPage';
+        return '\Application\Model\Entities\FooterPage';
     }
 
     public function getFooterPageByTypeAndLanguage($type, $languageId, $hydrate = false, $skipCache = false)

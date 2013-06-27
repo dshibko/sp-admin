@@ -29,7 +29,7 @@ class PlayerDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Player';
+        return '\Application\Model\Entities\Player';
     }
 
     /**

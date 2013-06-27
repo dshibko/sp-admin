@@ -24,10 +24,13 @@ body {
 .page-sidebar > ul > li >a:hover, 
 .page-sidebar > ul > li:hover >a,
 .page-sidebar > ul > li > ul.sub-menu > li.active > a, 
-.page-sidebar > ul > li > ul.sub-menu > li > a:hover {
+.page-sidebar > ul > li > ul.sub-menu > li > a:hover,
+.page-sidebar > ul > li > ul.sub-menu li > ul.sub-menu > li.active > a, 
+.page-sidebar > ul > li > ul.sub-menu li > ul.sub-menu > li > a:hover, 
+.page-sidebar > ul > li > ul.sub-menu li.open > a {
     background-color: #203668 !important;
 }
-.nav > li.dropdown.user .dropdown-toggle:hover,
+.nav > li.dropdown.user .dropdown-toggle:hover, 
 .navbar-inverse .nav li.dropdown.open>.dropdown-toggle, 
 .navbar-inverse .nav li.dropdown.active>.dropdown-toggle, 
 .navbar-inverse .nav li.dropdown.open.active>.dropdown-toggle {
@@ -118,12 +121,4 @@ div.row-fluid div.tab-pane.hidden {
 
 .form-select{
     width: 247px;
-}
-
-ul.vertical-margined li {
-    padding-bottom: 5px !important;
-}
-
-.translation-error{
-    border : 1px solid red;
 }

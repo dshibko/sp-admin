@@ -32,6 +32,7 @@ class LeagueStats extends AbstractHelper
     private $temporalLeagueUsers;
     private $globalPoints = 0;
     private $globalAccuracy = 0;
+    private $currentSeason;
 
     /**
      * @return \Neoco\View\Helper\LeagueStats
@@ -39,11 +40,13 @@ class LeagueStats extends AbstractHelper
     public function __invoke()
     {
         if (!$this->wasInitialized) {
+            $this->wasInitialized = true;
             $leagueUserDAO = \Application\Model\DAOs\LeagueUserDAO::getInstance($this->serviceLocator);
+            $this->currentSeason = ApplicationManager::getInstance($this->serviceLocator)->getCurrentSeason();
+            if ($this->currentSeason === null) return $this;
             $user = ApplicationManager::getInstance($this->serviceLocator)->getCurrentUser();
-            $season = ApplicationManager::getInstance($this->serviceLocator)->getCurrentSeason();
             $region = $user->getCountry()->getRegion();
-            $leagueUsers = $leagueUserDAO->getUserLeagues($user, $season, $region, true);
+            $leagueUsers = $leagueUserDAO->getUserLeagues($user, $this->currentSeason, $region, true);
             $this->overallLeagueUsers = $this->temporalLeagueUsers = array();
             foreach ($leagueUsers as $leagueUser)
                 if ($leagueUser['place'] != null) {
@@ -56,7 +59,6 @@ class LeagueStats extends AbstractHelper
                     } else if ($leagueUser['type'] == \Application\Model\Entities\League::REGIONAL_TYPE)
                         array_push($this->overallLeagueUsers, $leagueUser);
                 }
-            $this->wasInitialized = true;
         }
         return $this;
     }
@@ -77,6 +79,11 @@ class LeagueStats extends AbstractHelper
     public function getTemporalLeagueUsers()
     {
         return $this->temporalLeagueUsers;
+    }
+
+    public function getCurrentSeason()
+    {
+        return $this->currentSeason;
     }
 
 }
