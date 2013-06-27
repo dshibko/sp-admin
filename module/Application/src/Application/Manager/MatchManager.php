@@ -27,12 +27,27 @@ class MatchManager extends BasicManager
     const TOP_SCORES_NUMBER = 5;
     const POST_MATCH_REPORT_TOP_SCORES_NUMBER = 1;
     const POST_MATCH_REPORT_CORRECT_SCORERS_NUMBER = 3;
-
+    const ALL_SCORERS = -1;
     /**
      * @var MatchManager
      */
     private static $instance;
 
+    /**
+     * @param $a
+     * @param $b
+     * @return int
+     */
+    private function sortScorers($a, $b)
+    {
+        if ($a['percentage'] == $b['percentage']){
+            if (($a['isUserClub'] && $b['isUserClub']) || (!$a['isUserClub'] && !$b['isUserClub'])){
+                return strcmp($a['playerName'], $b['playerName']);
+            }
+            return $b['isUserClub'] - $a['isUserClub'];
+        }
+        return $a['percentage'] < $b['percentage'] ? 1 : -1;
+    }
     /**
      * @param array $leagueUser
      * @param int $matchId
@@ -403,6 +418,8 @@ class MatchManager extends BasicManager
         $matchRegionDAO = MatchRegionDAO::getInstance($this->getServiceLocator());
         $matchRegion = $matchRegionDAO->getMatchRegionByMatchIdAndRegionId($matchId, $regionId);
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+
         $match = null;
         if (!is_null($matchRegion)) {
             //Match report title
@@ -488,20 +505,37 @@ class MatchManager extends BasicManager
         $predictionIds = $match->getPredictionIds();
         if (!empty($predictionIds)){
             $totalNumberOfPredictions = count($predictionIds);
-            //Match report top predicted scorers
-            $topScorers = $predictionManager->getTopScorers($predictionIds, self::MATCH_REPORT_TOP_SCORERS_NUMBER, true);
-            $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
-            if (!empty($topScorers) && $matchPredictionPlayersCount){
-                $scorers = array();
-                foreach($topScorers as $scorer){
-                    $scorers[$scorer['player_name']] = round( ($scorer['scorers_count'] / $matchPredictionPlayersCount) * 100);
+
+            if ($applicationManager->getAppEdition() == ApplicationManager::CLUB_EDITION) {
+                //Match report top predicted scorers
+                $topScorers = $predictionManager->getTopScorers($predictionIds, self::ALL_SCORERS, true);
+                $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
+                if (!empty($topScorers) && $matchPredictionPlayersCount){
+                    $appClub = $applicationManager->getAppClub();
+                    $scorers = array();
+                    $userClubScorers = array();
+                    foreach($topScorers as $scorer){
+                        if ($scorer['team_id'] == $appClub->getId()){
+                            $userClubScorers[] = $scorer;
+                        }
+                        $scorers[] = array(
+                            'playerName' => $scorer['player_name'],
+                            'percentage' => round( ($scorer['scorers_count'] / $matchPredictionPlayersCount) * 100),
+                            'isUserClub' => ($scorer['team_id'] == $appClub->getId())
+                        );
+                    }
+                    usort($scorers,array($this, 'sortScorers'));
+                    $scorers = array_slice($scorers, 0, self::MATCH_REPORT_TOP_SCORERS_NUMBER);
+                    $report['topScorers'] = array(
+                        'scorers' => $scorers
+                    );
+                    if (!empty($userClubScorers)){
+                        $report['topScorers']['backgroundImage'] = !empty($userClubScorers[0]['backgroundImagePath']) ? $userClubScorers[0]['backgroundImagePath'] : '';
+                        $report['topScorers']['avatarImage'] = !empty($userClubScorers[0]['imagePath']) ? $userClubScorers[0]['imagePath'] : '';
+                    }
                 }
-                $report['topScorers'] = array(
-                    'backgroundImage' => $topScorers[0]['backgroundImagePath'],//Get background image of top scorer
-                    'avatarImage' =>  $topScorers[0]['imagePath'],
-                    'scorers' => $scorers
-                );
             }
+
 
             //Match report top predicted scores
             $topScores = $predictionManager->getTopScores($predictionIds, self::TOP_SCORES_NUMBER, true);
@@ -586,27 +620,44 @@ class MatchManager extends BasicManager
             }
 
             //Match report correct scorers percentage
-            $correctScorers = $this->getMatchCorrectScorers($match);
-            if (!empty($correctScorers)){
-                $correctScorersIds = array();
-                foreach($correctScorers as $correctScorer){
-                    $correctScorersIds[] = $correctScorer->getPlayer()->getId();
-                }
-                if (!empty($correctScorersIds)){
-                    $scorersPredictionsCount = $predictionManager->getCorrectScorersPredictionsCount($predictionIds, $correctScorersIds, true);
-                    if (!empty($scorersPredictionsCount)){
-                        $scorers = array();
-                        foreach($scorersPredictionsCount as $scorerCount){
-                            $scorers[$scorerCount['player_name']] = round( ($scorerCount['predictions_count'] / $totalNumberOfPredictions) * 100);
-                        }
-                        $scorers = array_slice($scorers, 0, self::POST_MATCH_REPORT_CORRECT_SCORERS_NUMBER);
-                        $report['correctScorers'] = array(
-                            'scorers' => $scorers,
-                            'backgroundImage' => $scorersPredictionsCount[0]['backgroundImagePath'],
-                            'avatarImage' => $scorersPredictionsCount[0]['imagePath']
-                        );
-                    }
+            if ($applicationManager->getAppEdition() == ApplicationManager::CLUB_EDITION) {
+                $correctScorers = $this->getMatchCorrectScorers($match);
 
+                if (!empty($correctScorers)){
+                    $correctScorersIds = array();
+                    foreach($correctScorers as $correctScorer){
+                        $correctScorersIds[] = $correctScorer->getPlayer()->getId();
+                    }
+                    if (!empty($correctScorersIds)){
+                        $appClub = $applicationManager->getAppClub();
+                        $scorersPredictionsCount = $predictionManager->getCorrectScorersPredictionsCount($predictionIds, $correctScorersIds, true);
+                        $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
+
+                        if (!empty($scorersPredictionsCount)){
+                            $scorers = array();
+                            $userClubScorers = array();
+                            foreach($scorersPredictionsCount as $scorerCount){
+                                if ($scorerCount['teamId'] == $appClub->getId()){
+                                    $userClubScorers[] = $scorerCount;
+                                }
+                                $scorers[] = array(
+                                    'playerName' => $scorerCount['player_name'],
+                                    'percentage' => round( ($scorerCount['predictions_count'] / $matchPredictionPlayersCount) * 100),
+                                    'isUserClub' =>  ($scorerCount['teamId'] == $appClub->getId())
+                                );
+                            }
+                            usort($scorers,array($this, 'sortScorers'));
+                            $scorers = array_slice($scorers, 0, self::POST_MATCH_REPORT_CORRECT_SCORERS_NUMBER);
+                            $report['correctScorers'] = array(
+                                'scorers' => $scorers,
+                            );
+                            if (!empty($userClubScorers)){
+                               $report['correctScorers']['backgroundImage'] = !empty($userClubScorers[0]['backgroundImagePath']) ? $userClubScorers[0]['backgroundImagePath'] : '';
+                               $report['correctScorers']['avatarImage'] = !empty($userClubScorers[0]['imagePath']) ? $userClubScorers[0]['imagePath'] : '';
+                            }
+                        }
+
+                    }
                 }
             }
 
@@ -651,31 +702,17 @@ class MatchManager extends BasicManager
                 }
             }
         }
-        /*$leagueUsers = $leagueUserDAO->getUserLeaguesByTypes($user, $season, $region, array(League::GLOBAL_TYPE, League::REGIONAL_TYPE));
-        if (!empty($leagueUsers)){
-            $report['leaguesMovement'] = array();
-            foreach($leagueUsers as $league){
-                if (!is_null($league['previousPlace'])){
-                    $movementPlaces = $league['previousPlace'] - $league['place'];
-                    $direction = ApplicationManager::USER_LEAGUE_MOVEMENT_SAME;
-                    if ($movementPlaces > 0 ){
-                        $direction = ApplicationManager::USER_LEAGUE_MOVEMENT_UP;
-                    }elseif($movementPlaces < 0){
-                        $direction =  ApplicationManager::USER_LEAGUE_MOVEMENT_DOWN;
-                    }
-                    $report['leaguesMovement'][] = array(
-                        'leagueName' => $league['displayName'],
-                        'places' => abs($movementPlaces),
-                        'direction' => $direction
-                    );
-                }
-
-            }
-        }*/
         return $report;
     }
 
 
+    /**
+     * @param Match $match
+     * @param $limit
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
     public function getMatchCorrectScorers(\Application\Model\Entities\Match $match, $limit = -1, $hydrate = false, $skipCache = false)
     {
         return MatchGoalDAO::getInstance($this->getServiceLocator())->getMatchScorers($match->getId(), $limit, $hydrate, $skipCache);
@@ -702,11 +739,23 @@ class MatchManager extends BasicManager
         return MatchDAO::getInstance($this->getServiceLocator())->getFinishedMatchNumber($user, $season, $matchStartTime, $skipCache);
     }
 
+    /**
+     * @param $matchId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return Match|array
+     */
     public function getMatchInfo($matchId, $hydrate = false, $skipCache = false) {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
         return $matchDAO->getMatchInfo($matchId, $hydrate, $skipCache);
     }
 
+    /**
+     * @param $matchId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return Match|array
+     */
     public function getMatchGoals($matchId, $hydrate = false, $skipCache = false) {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
         return $matchDAO->getMatchGoals($matchId, $hydrate, $skipCache);

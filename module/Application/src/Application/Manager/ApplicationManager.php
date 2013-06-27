@@ -4,6 +4,7 @@ namespace Application\Manager;
 
 use \Application\Model\DAOs\LeagueDAO;
 use \Application\Model\DAOs\SeasonDAO;
+use Application\Model\DAOs\TeamDAO;
 use \Application\Model\Entities\Season;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\Entities\User;
@@ -21,7 +22,7 @@ class ApplicationManager extends BasicManager {
     const DEFAULT_COUNTRY_ISO_CODE = 'GB';
     const CLUB_EDITION = 'club';
     const COMPETITION_EDITION = 'competition';
-
+    const USER_CLUB_ID = 3;
     /**
      * @var ApplicationManager
      */
@@ -115,7 +116,6 @@ class ApplicationManager extends BasicManager {
         return CountryDAO::getInstance($this->getServiceLocator())->getCountryByISOCode($isoCode, $hydrate, $skipCache);
     }
 
-    //Get countries for select options
     /**
      * @return array
      */
@@ -143,20 +143,43 @@ class ApplicationManager extends BasicManager {
      * @return mixed
      */
     public function getAppEdition() {
-        return array_shift($this->getAppConfig());
+        $appConfig = $this->getAppConfig();
+        return $appConfig[self::EDITION_KEY];
     }
 
     /**
      * @return mixed
      */
     public function getAppOptaId() {
-        return array_pop($this->getAppConfig());
+        $appConfig = $this->getAppConfig();
+        return $appConfig[self::OPTA_ID_KEY];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAppOptaDirPath() {
+        $appConfig = $this->getAppConfig();
+        return $appConfig[self::OPTA_DIR_PATH_KEY];
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClearAppCacheUrl() {
+        $appConfig = $this->getAppConfig();
+        return $appConfig[self::CLEAR_APP_CACHE_URL_KEY];
     }
 
     /**
      * @var array
      */
     private $appConfig;
+
+    const EDITION_KEY = 'edition';
+    const OPTA_ID_KEY = 'opta_id';
+    const OPTA_DIR_PATH_KEY = 'opta_dir_path';
+    const CLEAR_APP_CACHE_URL_KEY = 'clear_app_cache_url';
 
     /**
      * @return array
@@ -168,17 +191,32 @@ class ApplicationManager extends BasicManager {
             if (!array_key_exists('app', $config))
                 throw new \Exception(MessagesConstants::ERROR_APP_CONFIG_NOT_FOUND);
             $appConfig = $config['app'];
-            if (!array_key_exists('edition', $appConfig))
+            if (!array_key_exists(self::EDITION_KEY, $appConfig))
                 throw new \Exception(MessagesConstants::ERROR_APP_EDITION_CONFIG_NOT_FOUND);
-            if (!array_key_exists('opta_id', $appConfig))
-                throw new \Exception(MessagesConstants::ERROR_APP_OPTA_CONFIG_NOT_FOUND);
-            $edition = $appConfig['edition'];
+            if (!array_key_exists(self::OPTA_ID_KEY, $appConfig))
+                throw new \Exception(MessagesConstants::ERROR_APP_OPTA_ID_NOT_FOUND);
+            $edition = $appConfig[self::EDITION_KEY];
             if ($edition != self::CLUB_EDITION && $edition != self::COMPETITION_EDITION)
                 throw new \Exception(MessagesConstants::ERROR_APP_UNKNOWN_EDITION);
-            $optaId = $appConfig['opta_id'];
+            $optaId = $appConfig[self::OPTA_ID_KEY];
             if (!preg_match('/[0-9]+/', $optaId))
                 throw new \Exception(MessagesConstants::ERROR_APP_WRONG_OPTA_CONFIG);
-            $this->appConfig = array($edition, $optaId);
+            if (!array_key_exists(self::OPTA_DIR_PATH_KEY, $appConfig))
+                throw new \Exception(MessagesConstants::ERROR_APP_OPTA_DIR_PATH_NOT_FOUND);
+            $optaDirPath = $appConfig[self::OPTA_DIR_PATH_KEY];
+            if (!file_exists($optaDirPath))
+                throw new \Exception(MessagesConstants::ERROR_APP_OPTA_DIR_NOT_EXISTS);
+            if (!is_dir($optaDirPath))
+                throw new \Exception(MessagesConstants::ERROR_APP_OPTA_DIR_NOT_DIR);
+            if (!array_key_exists(self::CLEAR_APP_CACHE_URL_KEY, $appConfig))
+                throw new \Exception(MessagesConstants::ERROR_APP_CLEAR_APP_CACHE_URL_NOT_FOUND);
+            $clearAppCacheUrl = $appConfig[self::CLEAR_APP_CACHE_URL_KEY];
+            $this->appConfig = array(
+                self::EDITION_KEY => $edition,
+                self::OPTA_ID_KEY => $optaId,
+                self::OPTA_DIR_PATH_KEY => $optaDirPath,
+                self::CLEAR_APP_CACHE_URL_KEY => $clearAppCacheUrl,
+            );
         }
         return $this->appConfig;
     }
@@ -241,6 +279,14 @@ class ApplicationManager extends BasicManager {
             $region = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
         }
         return $region;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAppClub()
+    {
+        return TeamDAO::getInstance($this->getServiceLocator())->findOneByFeederId($this->getAppOptaId());
     }
 
 }

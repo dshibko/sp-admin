@@ -114,9 +114,12 @@ class LeagueController extends AbstractActionController {
 
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
+                        return $this->redirect()->toRoute(self::LEAGUES_INDEX_ROUTE, array('action' => 'addMiniLeague'));
                     }
-                } else
+                } else {
                     $form->handleErrorMessages($form->getMessages(), $this->flashMessenger());
+                    return $this->redirect()->toRoute(self::LEAGUES_INDEX_ROUTE, array('action' => 'addMiniLeague'));
+                }
             }
 
             $seasonValues = array();
@@ -223,7 +226,7 @@ class LeagueController extends AbstractActionController {
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            return $this->redirect()->toRoute(self::LEAGUES_INDEX_ROUTE, array('action' => 'editMiniLeague'));
+            return $this->redirect()->toRoute(self::LEAGUES_INDEX_ROUTE);
         }
 
     }

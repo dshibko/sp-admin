@@ -7,6 +7,8 @@ use Zend\InputFilter\InputFilter;
 
 class LeagueInputFilter extends InputFilter
 {
+    const DISPLAY_NAME_MAX_LENGTH = 50;
+
     function __construct()
     {
         $factory = new InputFactory();
@@ -14,6 +16,14 @@ class LeagueInputFilter extends InputFilter
         $this->add($factory->createInput(array(
             'name'     => 'displayName',
             'required' => true,
+            'validators' => array(
+                array(
+                    'name' => 'StringLength',
+                    'options' => array(
+                        'max' => self::DISPLAY_NAME_MAX_LENGTH
+                    )
+                ),
+            ),
         )));
 
         $this->add($factory->createInput(array(

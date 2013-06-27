@@ -24,6 +24,12 @@ var TableManaged = function () {
                 "aoColumns": aoColumns,
                 "aaSorting": aaSorting,
                 "bFilter": false,
+                "bStateSave" : true,
+                "iCookieDuration": 60 * 60 * 24 * 365 * 100,
+                "fnStateLoadParams" : function(oSettings, oData){
+                    oData.oSearch.sSearch = '';
+                    oData.aaSorting = [];
+                },
                 "oLanguage": {
                     "sLengthMenu": messages.perPage,
                     "oPaginate": {

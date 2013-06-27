@@ -4,9 +4,18 @@ namespace Admin\Form;
 
 use \Neoco\Form\UploadableForm;
 use Zend\Form\Form;
-use \Zend\InputFilter\InputFilter;
+
 
 class PlayerForm extends UploadableForm {
+
+    const DISPLAY_NAME_MAX_LENGTH = 50;
+    const SQUAD_NUMBER_MAX_LENGTH = 2;
+    const SQUAD_NUMBER_MIN_VALUE = 1;
+    const SQUAD_NUMBER_MAX_VALUE = 99;
+    const AVATAR_WIDTH = 110;
+    const AVATAR_HEIGHT = 110;
+    const BACKGROUND_WIDTH = 110;
+    const BACKGROUND_HEIGHT = 110;
 
     public function __construct() {
 
@@ -21,7 +30,7 @@ class PlayerForm extends UploadableForm {
             'type'  => 'text',
             'attributes' => array(
                 'required' => true,
-                'maxlength' => 50,
+                'maxlength' => self::DISPLAY_NAME_MAX_LENGTH,
             ),
             'options' => array(
                 'label' => 'Name',
@@ -33,10 +42,10 @@ class PlayerForm extends UploadableForm {
             'type'  => 'text',
             'attributes' => array(
                 'required' => true,
-                'maxlength' => 2,
+                'maxlength' => self::SQUAD_NUMBER_MAX_LENGTH,
                 'between' =>array(
-                    'min' => 1,
-                    'max' => 99
+                    'min' => self::SQUAD_NUMBER_MIN_VALUE,
+                    'max' => self::SQUAD_NUMBER_MAX_VALUE
                 ),
                 'digits' => true
             ),
@@ -52,9 +61,9 @@ class PlayerForm extends UploadableForm {
             'attributes' => array(
                 'required' => true,
                 'isImage' => true,
-                'minWidth' => 110,
-                'minHeight' => 110,
-                'hint' => 'Min image width: 110px, height: 110px',
+                'minWidth' => self::BACKGROUND_WIDTH,
+                'minHeight' => self::BACKGROUND_HEIGHT,
+                'hint' => 'Min image width: '.self::BACKGROUND_WIDTH.'px, height: '.self::BACKGROUND_HEIGHT.'px',
             ),
             'options' => array(
                 'label' => 'Player Background Image',
@@ -68,9 +77,9 @@ class PlayerForm extends UploadableForm {
             'attributes' => array(
                 'required' => true,
                 'isImage' => true,
-                'minWidth' => 110,
-                'minHeight' => 110,
-                'hint' => 'Min image width: 110px, height: 110px',
+                'minWidth' => self::AVATAR_WIDTH,
+                'minHeight' => self::AVATAR_HEIGHT,
+                'hint' => 'Min image width: '.self::AVATAR_WIDTH.'px, height: '.self::AVATAR_HEIGHT.'px',
             ),
             'options' => array(
                 'label' => 'Player Avatar',

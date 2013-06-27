@@ -3,9 +3,12 @@
 namespace Admin\Form;
 
 use \Neoco\Form\RegionFieldset;
-use \Zend\Form\Fieldset;
 
 class LeagueRegionFieldset extends RegionFieldset {
+
+    const DISPLAY_NAME_MAX_LENGTH = 255;
+    const PRIZE_TITLE_MAX_LENGTH = 50;
+    const POST_WIN_TITLE_MAX_LENGTH = 50;
 
     public function __construct($region) {
 
@@ -15,7 +18,8 @@ class LeagueRegionFieldset extends RegionFieldset {
             'name' => 'displayName',
             'type'  => 'text',
             'attributes' => array(
-                'required' => 'required'
+                'required' => 'required',
+                'maxlength' => self::DISPLAY_NAME_MAX_LENGTH
             ),
             'options' => array(
                 'label' => 'User facing league name',
@@ -38,7 +42,8 @@ class LeagueRegionFieldset extends RegionFieldset {
             'name' => 'prizeTitle',
             'type'  => 'text',
             'attributes' => array(
-                'required' => 'required'
+                'required' => 'required',
+                'maxlength' => self::PRIZE_TITLE_MAX_LENGTH
             ),
             'options' => array(
                 'label' => 'Grand Prize Title',
@@ -72,7 +77,8 @@ class LeagueRegionFieldset extends RegionFieldset {
             'name' => 'postWinTitle',
             'type'  => 'text',
             'attributes' => array(
-                'required' => 'required'
+                'required' => 'required',
+                'maxlength' => self::POST_WIN_TITLE_MAX_LENGTH
             ),
             'options' => array(
                 'label' => 'Post Win Title',

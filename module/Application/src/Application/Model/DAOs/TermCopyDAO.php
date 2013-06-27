@@ -29,6 +29,6 @@ class TermCopyDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\TermCopy';
+        return 'Application\Model\Entities\TermCopy';
     }
 }

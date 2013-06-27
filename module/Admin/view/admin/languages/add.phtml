@@ -28,9 +28,13 @@ echo $this->form()->openTag($form);
         <div class="tools">
             <a class="collapse" href="javascript:;"></a>
         </div>
+        <div class="actions">
+            <a class="btn blue submit-btn" href="javascript:;"><i class="icon-ok"></i><?php echo $form->get('submitbtn')->getValue();?></a>
+        </div>
     </div>
     <div class="portlet-body" style="display:block;">
         <?php $strings = $this->form->get('strings')->getValue();?>
+
         <?php if (!empty($this->strings)):?>
             <table class="table table-striped table-bordered table-hover" id="language-table">
                 <thead>
@@ -45,11 +49,11 @@ echo $this->form()->openTag($form);
                             <label><strong><?php echo $this->escapeHtml($id);?></strong></label>
                             <?php
                             $value = ($this->url_params['action'] == 'edit') ? $string : '';
-                            if (!empty($strings[$id])){
+                            if (isset($strings[$id])){
                                 $value = $strings[$id];
                             }
                             ?>
-                            <textarea rows="2" cols="10" style="position:relative;width:99%;"name="strings[<?php echo $id;?>]"><?php echo $value;?></textarea>
+                            <textarea rows="2" cols="10" style="position:relative;width:99%;"name="strings[<?php echo $id;?>]" class="<?php echo (empty($value) ? 'translation-error' : '');?> translation-input"><?php echo $value;?></textarea>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -61,7 +65,7 @@ echo $this->form()->openTag($form);
         <?php endif;?>
     </div>
 </div>
-<?php echo $this->formSubmit($form->get('submit')); ?>
+<?php echo $this->formSubmit($form->get('submitbtn')); ?>
 <?php echo $this->form()->closeTag();?>
 <!-- BEGIN PAGE LEVEL STYLES -->
 <link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/chosen-bootstrap/chosen/chosen.css" />
@@ -75,6 +79,16 @@ echo $this->form()->openTag($form);
 
 <!-- END PAGE LEVEL SCRIPTS -->
 <script type="text/javascript">
+    /* Create an array with the values of all the input boxes in a column */
+    jQuery.fn.dataTableExt.afnSortData['dom-text'] = function  ( oSettings, iColumn )
+    {
+        var aData = [];
+        $( 'td:eq('+iColumn+') textarea', oSettings.oApi._fnGetTrNodes(oSettings) ).each( function () {
+            aData.push( this.value );
+        } );
+        return aData;
+    }
+
     jQuery.fn.dataTableExt.oApi.fnGetHiddenNodes = function ( oSettings )
     {
         /* Note the use of a DataTables 'private' function thought the 'oApi' object */
@@ -98,12 +112,34 @@ echo $this->form()->openTag($form);
         App.init(); // initlayout and core plugins
         var language_table = $('#language-table');
         var oTable = language_table.dataTable({
-            "aoColumns": [null],
+            "aoColumns": [{ "sSortDataType": "dom-text","sType": "string"}],
+            "bStateSave" : true,
+            "iCookieDuration": 60 * 60 * 24 * 365 * 100,
+            "fnStateLoadParams" : function(oSettings, oData){
+                oData.oSearch.sSearch = '';
+                oData.aaSorting = [];
+            },
             "aLengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
             "iDisplayLength" : 10
         });
+        oTable.fnSort( [ [0,'asc'] ] );
         jQuery('#language').submit(function(){
             jQuery(oTable.fnGetHiddenNodes()).find('textarea').appendTo(this).hide();
+        });
+        jQuery('.translation-input').change(function(){
+            var val = jQuery(this).val();
+            var that = jQuery(this);
+            if (val){
+                that.removeClass('translation-error');
+            }else{
+                that.addClass('translation-error');
+            }
+        });
+
+        jQuery('.submit-btn').click(function(e){
+            e.preventDefault();
+            jQuery('#language').submit();
+            return false;
         });
     });
 </script>

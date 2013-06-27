@@ -745,11 +745,11 @@ return array(
                             ),
                         ),
                     ),
-//                    'opta' => array(
-//                        'title' => 'Opta',
-//                        'label' => 'icon-bolt',
-//                        'route' => 'admin-opta-uploader',
-//                    ),
+                    'opta' => array(
+                        'title' => 'Opta',
+                        'label' => 'icon-bolt',
+                        'route' => 'admin-opta-uploader',
+                    ),
                     'settings' => array(
                         'title' => 'Settings',
                         'label' => 'icon-cogs',

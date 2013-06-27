@@ -30,7 +30,7 @@ class FeaturedPlayerDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\FeaturedPlayerDAO';
+        return 'Application\Model\Entities\FeaturedPlayerDAO';
     }
 
 }

@@ -528,7 +528,7 @@ msgstr "Invite friends to Score Predictor"
 
 #: view/partials/menu.phtml:21
 msgid "User Navigation"
-msgstr "User Navigations"
+msgstr "User Navigation"
 
 #: view/partials/menu.phtml:36
 msgid "Sign out"
@@ -611,8 +611,8 @@ msgstr "+ Invite your friends"
 msgid "Value is required and can't be empty"
 msgstr "Field is required"
 
-msgid "Recovery link was sent to yout email. The link is active for 60 minutes"
-msgstr "Recovery link was sent to yout email. The link is active for 60 minutes"
+msgid "Recovery link was sent to your email. The link is active for 60 minutes"
+msgstr "Recovery link was sent to your email. The link is active for 60 minutes"
 
 msgid "Please use Facebook Connect Button to log in."
 msgstr "Please use Facebook Connect Button to log in."

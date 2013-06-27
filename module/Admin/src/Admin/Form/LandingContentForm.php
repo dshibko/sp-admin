@@ -4,9 +4,10 @@ namespace Admin\Form;
 
 use \Neoco\Form\UploadableForm;
 use Zend\Form\Form;
-use \Admin\Form\Filter\LoginInputFilter;
 
 class LandingContentForm extends UploadableForm {
+    const HEADLINE_MAX_LENGTH = 255;
+    const REGISTER_BUTTON_COPY_MAX_LENGTH = 50;
 
     public function __construct($name = null) {
         parent::__construct('landing');
@@ -50,7 +51,8 @@ class LandingContentForm extends UploadableForm {
                 'label' => 'Headline Copy',
             ),
             'attributes' => array(
-                'required' => true
+                'required' => true,
+                'maxlength' => self::HEADLINE_MAX_LENGTH
             ),
         ));
 
@@ -61,7 +63,8 @@ class LandingContentForm extends UploadableForm {
                 'label' => 'Register Button Copy',
             ),
             'attributes' => array(
-                'required' => true
+                'required' => true,
+                'maxlength' => self::REGISTER_BUTTON_COPY_MAX_LENGTH
             ),
         ));
 

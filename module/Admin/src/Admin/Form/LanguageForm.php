@@ -64,7 +64,7 @@ class LanguageForm extends Form {
             )
         ));
         $this->add(array(
-            'name' => 'submit',
+            'name' => 'submitbtn',
             'type'  => 'submit',
             'attributes' => array(
                 'value' => 'Save',

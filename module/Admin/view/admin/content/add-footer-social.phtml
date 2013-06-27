@@ -20,13 +20,14 @@ $this->headTitle($title);
                 foreach ($elements as $element) :
                 $type = $element->getAttribute('type');
                 $hint = $element->getAttribute('hint');
+                $maxlength = $element->getAttribute('maxlength');
                 if ($type != 'submit') : ?>
                 <div class="control-group form-horizontal">
                     <label class="control-label"><?=$this->translate($element->getLabel())?></label>
                     <div class="controls">
                         <?php if ($type == 'text') : ?>
                             <div class="input-prepend">
-                                <span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium" type="<?=$type?>" name="<?=$element->getName()?>" value="<?=$element->getValue()?>"/>
+                                <span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium" type="<?=$type?>" name="<?=$element->getName()?>" <?php echo (!empty($maxlength) ? 'maxlength="'.$maxlength.'"' : '');?>  value="<?=$element->getValue()?>"/>
                             </div>
                         <?php elseif($type == 'number'): $currentOrder = $element->getValue();?>
                             <select class="span2 m-wrap" name="<?=$element->getName()?>" data-placeholder="Select Order">
@@ -38,7 +39,10 @@ $this->headTitle($title);
                             <div class="input-prepend">
                                 <textarea class="span12 wysihtml5 m-wrap" rows="6" name="<?=$element->getAttribute('name')?>"><?=$element->getValue()?></textarea>
                             </div>
-                        <?php elseif($type == 'file'): $image = $element->getValue();?>
+                        <?php elseif($type == 'file'):
+                            $value = $element->getValue();
+                            $image = is_string($value) ? $value : ''
+                            ?>
                             <div class="fileupload fileupload-<?=(!empty($image) ? 'exists' : 'new')?>" data-provides="fileupload">
                                 <div class="input-append">
                                     <div class="uneditable-input">

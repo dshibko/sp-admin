@@ -2,7 +2,7 @@
 
 namespace Application\Model\DAOs;
 
-use \Application\Model\Entities\ShareCopy;
+use Application\Model\Entities\ShareCopy;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -30,7 +30,7 @@ class ShareCopyDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\ShareCopy';
+        return 'Application\Model\Entities\ShareCopy';
     }
 
     /**

@@ -2,11 +2,11 @@
 
 namespace Application\Model\DAOs;
 
-use \Application\Model\Entities\Season;
+use Application\Model\Entities\Season;
 use \Doctrine\ORM\Query\ResultSetMapping;
 use \Doctrine\ORM\Query\ResultSetMappingBuilder;
-use \Application\Model\Entities\Match;
-use \Application\Model\Entities\User;
+use Application\Model\Entities\Match;
+use Application\Model\Entities\User;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -36,7 +36,7 @@ class PredictionDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\Prediction';
+        return 'Application\Model\Entities\Prediction';
     }
 
     /**
@@ -44,7 +44,7 @@ class PredictionDAO extends AbstractDAO {
      * @param $userId
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return \Application\Model\Entities\Prediction
+     * @return Application\Model\Entities\Prediction
      */
     function getUserPrediction($matchId, $userId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -57,7 +57,7 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param \Application\Model\Entities\Season $season
+     * @param Application\Model\Entities\Season $season
      * @return integer
      */
     function getAvgNumberOfPredictions($season) {
@@ -93,18 +93,21 @@ class PredictionDAO extends AbstractDAO {
         $qb->select('
             COUNT(pp.playerId) as scorers_count,
             t.displayName as team_name,
+            t.id as team_id,
             pl.displayName as player_name,
             pl.backgroundImagePath,
             pl.imagePath
         ');
-        $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
+        $qb->from('Application\Model\Entities\PredictionPlayer','pp');
         $qb->join('pp.player','pl');
         $qb->join('pl.team','t');
         $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
         $qb->andWhere($qb->expr()->isNotNull('pp.playerId'));
         $qb->groupBy('pp.playerId');
         $qb->orderBy('scorers_count','DESC');
-        $qb->setMaxResults($limit);
+        if ($limit != -1){
+            $qb->setMaxResults($limit);
+        }
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
@@ -190,8 +193,8 @@ class PredictionDAO extends AbstractDAO {
             throw new \Exception('Empty prediction ids');
         }
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
-        $rsm->addRootEntityFromClassMetadata('\Application\Model\Entities\User', 'u');
-        $rsm->addEntityResult('\Application\Model\Entities\User', 'u');
+        $rsm->addRootEntityFromClassMetadata('Application\Model\Entities\User', 'u');
+        $rsm->addEntityResult('Application\Model\Entities\User', 'u');
         $query = $this->getEntityManager()
             ->createNativeQuery('
                   SELECT
@@ -273,7 +276,7 @@ class PredictionDAO extends AbstractDAO {
         $qb->select('
             COUNT(pp.playerId) as players_count
         ');
-        $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
+        $qb->from('Application\Model\Entities\PredictionPlayer','pp');
         $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
         $qb->andWhere($qb->expr()->isNotNull('pp.playerId'));
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
@@ -356,19 +359,21 @@ class PredictionDAO extends AbstractDAO {
     public function getCorrectScorersPredictionsCount(array $predictionIds, array $scorersIds, $hydrate = true, $skipCache = false)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-
         $qb->select('
             COUNT(pp.prediction) as predictions_count,
             pl.displayName as player_name,
+            t.id as teamId,
             pl.backgroundImagePath,
             pl.imagePath
         ');
-        $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
+        $qb->from('Application\Model\Entities\PredictionPlayer','pp');
         $qb->join('pp.player','pl');
+        $qb->join('pl.team','t');
         $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
-        $qb->andWhere($qb->expr()->in('pp.playerId',':playerIds'))->setParameter('playerIds', $scorersIds);
-        $qb->groupBy('pp.prediction');
-        $qb->orderBy('predictions_count','DESC');
+        $qb->andWhere($qb->expr()->in('pp.player',':playerIds'))->setParameter('playerIds', $scorersIds);
+        $qb->groupBy('pp.player');
+        $qb->orderBy('predictions_count', 'DESC');
+
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
@@ -390,8 +395,8 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param \Application\Model\Entities\Season $season
-     * @param \Application\Model\Entities\User $user
+     * @param Application\Model\Entities\Season $season
+     * @param Application\Model\Entities\User $user
      * @param \DateTime $beforeTime
      * @return integer
      */
@@ -408,8 +413,8 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param \Application\Model\Entities\Season $season
-     * @param \Application\Model\Entities\User $user
+     * @param Application\Model\Entities\Season $season
+     * @param Application\Model\Entities\User $user
      * @param \DateTime $beforeTime
      * @return integer
      */
@@ -542,7 +547,7 @@ class PredictionDAO extends AbstractDAO {
                 COUNT(pp.playerId) as predictions,
                 t.displayName as team,
                 pl.displayName as player
-             FROM \Application\Model\Entities\PredictionPlayer pp
+             FROM Application\Model\Entities\PredictionPlayer pp
              JOIN pp.prediction p
              JOIN p.match m
              JOIN m.competition c
