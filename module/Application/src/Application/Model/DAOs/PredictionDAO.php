@@ -370,15 +370,16 @@ class PredictionDAO extends AbstractDAO {
         $qb->join('pp.player','pl');
         $qb->join('pl.team','t');
         $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
-        $qb->andWhere($qb->expr()->in('pp.playerId',':playerIds'))->setParameter('playerIds', $scorersIds);
-        $qb->groupBy('pp.prediction');
-        $qb->addOrderBy('predictions_count', 'DESC');
+        $qb->andWhere($qb->expr()->in('pp.player',':playerIds'))->setParameter('playerIds', $scorersIds);
+        $qb->groupBy('pp.player');
+        $qb->orderBy('predictions_count', 'DESC');
+
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
     /**
-     * @param Application\Model\Entities\Season $season
-     * @param Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
      * @return integer
      */
     public function getUserPredictionsNumber($season, $user) {

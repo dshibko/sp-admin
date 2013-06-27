@@ -100,7 +100,7 @@ class MessagesConstants
     const ERROR_CANNOT_CONNECT_TO_FACEBOOK_ACCOUNT = 'Cannot connect user to facebook account because facebook email has already taken by another user.';
 
     const SUCCESS_RECOVERY_LINK_SENT = "Recovery link was sent to your email. The link is active for 3 hours.";
-    const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to yout email. The link is active for 60 minutes';
+    const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to your email. The link is active for 60 minutes';
     const SUCCESS_PASSWORD_CHANGED = "Your password was successfully changed. Now you can login using it.";
     const SUCCESS_CAN_CHANGE_PASSWORD = "Now you can change the password.";
     const SUCCESS_NEW_PASSWORD_SAVED = 'New password was successfully saved.';

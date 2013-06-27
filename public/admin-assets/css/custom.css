@@ -123,3 +123,7 @@ div.row-fluid div.tab-pane.hidden {
 ul.vertical-margined li {
     padding-bottom: 5px !important;
 }
+
+.translation-error{
+    border : 1px solid red;
+}
