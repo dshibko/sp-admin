@@ -2,6 +2,7 @@
 
 namespace Opta\Controller;
 
+use \Zend\Http\PhpEnvironment\RemoteAddress;
 use \Application\Manager\CacheManager;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Manager\ExceptionManager;
@@ -13,6 +14,10 @@ class ClearAppCacheController extends AbstractActionController {
     const FAIL_MESSAGE = 'FAIL';
 
     public function indexAction() {
+
+        $remoteAddresses = new RemoteAddress();
+        if ($remoteAddresses->getIpAddress() !== '127.0.0.1')
+            return $this->notFoundAction();
 
         $entities = $this->params()->fromRoute('entities', '');
 

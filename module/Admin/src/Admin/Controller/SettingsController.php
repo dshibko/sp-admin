@@ -94,4 +94,10 @@ class SettingsController extends AbstractActionController {
 
     }
 
+    public function clearAppCacheAction() {
+        apc_clear_cache('user');
+        $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_APP_CACHE_CLEARED);
+        return $this->redirect()->toRoute(self::ADMIN_REGION_LANGUAGE_ROUTE);
+    }
+
 }

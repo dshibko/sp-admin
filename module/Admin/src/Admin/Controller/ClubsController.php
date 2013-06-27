@@ -2,6 +2,8 @@
 
 namespace Admin\Controller;
 
+use \Application\Manager\ApplicationManager;
+use \Application\Manager\SettingsManager;
 use \Application\Manager\ExceptionManager;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Model\Helpers\MessagesConstants;
@@ -16,8 +18,22 @@ class ClubsController extends AbstractActionController
     public function indexAction()
     {
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
         try {
-            $clubs = $teamManager->getAllTeams(true);
+            switch ($applicationManager->getAppEdition()) {
+                case ApplicationManager::CLUB_EDITION:
+                    $season = $applicationManager->getCurrentSeason();
+                    if ($season !== null)
+                        $clubs = $teamManager->getClubEnemies($applicationManager->getAppClub(), $season, true);
+                    else
+                        $clubs = $teamManager->getAllTeams(true);
+                    break;
+                case ApplicationManager::COMPETITION_EDITION:
+                    $clubs = $teamManager->getAllTeams(true);
+                    break;
+                default:
+                    return $this->notFoundAction();
+            }
         } catch (\Exception $e) {
             $clubs = array();
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);

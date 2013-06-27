@@ -897,4 +897,4 @@ CREATE TABLE `account_removal` (
 )
   COLLATE='utf8_general_ci'
   ENGINE=InnoDB
-  ROW_FORMAT=DEFAULT
+  ROW_FORMAT=DEFAULT;

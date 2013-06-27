@@ -377,8 +377,8 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param \\Application\Model\Entities\Season $season
-     * @param \\Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
      * @return integer
      */
     public function getUserPredictionsNumber($season, $user) {
@@ -425,7 +425,7 @@ class PredictionDAO extends AbstractDAO {
              JOIN m.competition c
              JOIN c.season s WITH s.id = ' . $season->getId() . '
              WHERE p.user = ' . $user->getId() . ' AND m.startTime < :beforeTime AND p.isCorrectResult = 1'
-             )->setParameter('beforeTime', $beforeTime);
+             )->setParameter('beforeTime', $beforeTime)->setMaxResults(1);
         return $query->getOneOrNullResult();
     }
 

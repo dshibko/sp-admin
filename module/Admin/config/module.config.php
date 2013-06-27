@@ -229,9 +229,9 @@ return array(
                 ),
             ),
             'admin-settings' => array(
-                'type' => 'Literal',
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/settings/',
+                    'route'    => '/admin/settings/[:action]',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Settings',
                         'action'     => 'index',

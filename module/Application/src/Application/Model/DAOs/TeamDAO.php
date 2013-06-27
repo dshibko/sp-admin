@@ -65,5 +65,29 @@ class TeamDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    /**
+     * @param \Application\Model\Entities\Team $club
+     * @param \Application\Model\Entities\Season $season
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     * @throws \Exception
+     */
+    public function getClubEnemies($club, $season, $hydrate = false, $skipCache = false) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT t
+                FROM ' . $this->getRepositoryName() . ' t
+                LEFT JOIN t.homeMatches as hm
+                LEFT JOIN hm.competition as hc
+                LEFT JOIN t.awayMatches as am
+                LEFT JOIN am.competition as ac
+                WHERE ((hm.awayTeam = :clubId AND hc.season = :seasonId) OR (am.homeTeam = :clubId AND ac.season = :seasonId) OR t = :clubId)
+                GROUP BY t.id')
+            ->setParameter('seasonId', $season->getId())
+            ->setParameter('clubId', $club->getId());
+        return $query->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+        // TODO to add season condition and group by team id, add current club
+    }
+
 
 }

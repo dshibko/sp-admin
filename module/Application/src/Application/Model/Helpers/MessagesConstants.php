@@ -39,6 +39,7 @@ class MessagesConstants
     const SUCCESS_TERM_SAVED = 'Term was saved successfully';
     const SUCCESS_TERM_DELETED = 'Term was deleted successfully';
     const SUCCESS_OPTA_FEED_PARSED = 'Opta feed was parsed successfully';
+    const SUCCESS_APP_CACHE_CLEARED = 'Application cache was cleared successfully';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";

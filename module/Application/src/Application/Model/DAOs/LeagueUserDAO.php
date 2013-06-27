@@ -60,7 +60,7 @@ class LeagueUserDAO extends AbstractDAO {
         return $query->getArrayResult();
     }
 
-    public function getUserLeaguesByTypes(\Application\Model\Entities\User $user, \\Application\Model\Entities\Season $season, \\Application\Model\Entities\Region $region, array $types)
+    public function getUserLeaguesByTypes(\Application\Model\Entities\User $user, \Application\Model\Entities\Season $season, \Application\Model\Entities\Region $region, array $types)
     {
         $nowTime = new \DateTime();
         $nowTime->setTime(0, 0, 0);
