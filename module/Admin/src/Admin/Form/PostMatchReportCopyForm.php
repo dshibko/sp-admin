@@ -7,6 +7,8 @@ use Zend\Form\Form;
 
 class PostMatchReportCopyForm extends UploadableForm {
 
+    const TITLE_MAX_LENGTH = 255;
+
     public function __construct($name = null) {
         parent::__construct('settings');
 
@@ -41,6 +43,7 @@ class PostMatchReportCopyForm extends UploadableForm {
             ),
             'attributes' => array(
                 'required' => true,
+                'maxlength' =>self::TITLE_MAX_LENGTH,
                 'class' => 'span4',
             ),
         ));

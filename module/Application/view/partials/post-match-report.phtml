@@ -78,7 +78,7 @@
             </div>
             <script type="text/javascript">
                 var communityPredictedData = [
-                    {color : '#144a9b', data: <?php echo $this->report['correctScore'];?>, label:  '<?php echo $this->report['correctScore'] . '%';?>'},
+                    {color : '#144a9b', data: <?php echo (!empty($this->report['correctScore']) ? $this->report['correctScore'] : 0.00001);?>, label:  '<?php echo (int)$this->report['correctScore'] . '%';?>'},
                     {color : '#90b1d4', data: <?php echo (100 - $this->report['correctScore']);?>, label: ''}
 
                 ];

@@ -627,10 +627,11 @@ class MatchManager extends BasicManager
                     foreach($correctScorers as $correctScorer){
                         $correctScorersIds[] = $correctScorer->getPlayer()->getId();
                     }
-
                     if (!empty($correctScorersIds)){
                         $appClub = $applicationManager->getAppClub();
                         $scorersPredictionsCount = $predictionManager->getCorrectScorersPredictionsCount($predictionIds, $correctScorersIds, true);
+                        $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
+
                         if (!empty($scorersPredictionsCount)){
                             $scorers = array();
                             $userClubScorers = array();
@@ -640,7 +641,7 @@ class MatchManager extends BasicManager
                                 }
                                 $scorers[] = array(
                                     'playerName' => $scorerCount['player_name'],
-                                    'percentage' => round( ($scorerCount['predictions_count'] / $totalNumberOfPredictions) * 100),
+                                    'percentage' => round( ($scorerCount['predictions_count'] / $matchPredictionPlayersCount) * 100),
                                     'isUserClub' =>  ($scorerCount['teamId'] == $appClub->getId())
                                 );
                             }

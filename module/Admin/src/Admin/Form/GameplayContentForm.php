@@ -4,9 +4,10 @@ namespace Admin\Form;
 
 use \Neoco\Form\UploadableForm;
 use Zend\Form\Form;
-use \Admin\Form\Filter\LoginInputFilter;
 
 class GameplayContentForm extends UploadableForm {
+
+    const HEADING_MAX_LENGTH = 255;
 
     public function __construct($name = null) {
         parent::__construct('gameplay');
@@ -36,7 +37,8 @@ class GameplayContentForm extends UploadableForm {
                 'label' => 'Heading',
             ),
             'attributes' => array(
-                'required' => true
+                'required' => true,
+                'maxlength' => self::HEADING_MAX_LENGTH
             ),
         ));
 
@@ -58,7 +60,8 @@ class GameplayContentForm extends UploadableForm {
                 'label' => 'Order',
             ),
             'attributes' => array(
-                'required' => true
+                'required' => true,
+                'digits' => true,
             ),
         ));
 

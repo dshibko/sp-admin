@@ -66,6 +66,8 @@ class MessagesConstants
     const ERROR_INVALID_TERM_ID = 'Invalid term id';
     const ERROR_CANNOT_FIND_TERM = 'Cannot find term';
     const ERROR_MAX_TERMS_COUNT_EXCEEDED = 'Max terms count exceeded';
+    const ERROR_INCORRECT_TIME = 'Incorrect time';
+    const ERROR_INCORRECT_CSS_COLOR = 'Incorrect CSS color';
 
 //    Application Messages Constants
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
@@ -98,7 +100,7 @@ class MessagesConstants
     const ERROR_CANNOT_CONNECT_TO_FACEBOOK_ACCOUNT = 'Cannot connect user to facebook account because facebook email has already taken by another user.';
 
     const SUCCESS_RECOVERY_LINK_SENT = "Recovery link was sent to your email. The link is active for 3 hours.";
-    const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to yout email. The link is active for 60 minutes';
+    const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to your email. The link is active for 60 minutes';
     const SUCCESS_PASSWORD_CHANGED = "Your password was successfully changed. Now you can login using it.";
     const SUCCESS_CAN_CHANGE_PASSWORD = "Now you can change the password.";
     const SUCCESS_NEW_PASSWORD_SAVED = 'New password was successfully saved.';

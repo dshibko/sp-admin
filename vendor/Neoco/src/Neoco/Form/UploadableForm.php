@@ -52,11 +52,16 @@ abstract class UploadableForm extends Form implements \Zend\InputFilter\InputFil
                     'options' => $element->getAttribute('between')
                 );
             }
+            if ($element->getAttribute('absolute_url')){
+                $inputSpec[$element->getName()]['validators'][] = new \Neoco\Validator\AbsoluteUrlValidator();
+            }
             if ($element->getAttribute('digits')){
+
                 $inputSpec[$element->getName()]['validators'][] = array(
                     'name' => 'Zend\Validator\Digits',
                 );
             }
+
             if ($element->getAttribute('ext'))
                 $inputSpec[$element->getName()]['validators'][] = array('name' => 'fileextension', 'options' => array('extension' => $element->getAttribute('ext')));
         }

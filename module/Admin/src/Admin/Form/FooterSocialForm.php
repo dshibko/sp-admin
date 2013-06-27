@@ -4,9 +4,11 @@ namespace Admin\Form;
 
 use \Neoco\Form\UploadableForm;
 use Zend\Form\Form;
-use \Admin\Form\Filter\LoginInputFilter;
 
 class FooterSocialForm extends UploadableForm {
+
+    const URL_MAX_LENGTH = 500;
+    const COPY_MAX_LENGTH = 100;
 
     public function __construct($name = null) {
         parent::__construct('footer-social');
@@ -22,7 +24,9 @@ class FooterSocialForm extends UploadableForm {
                 'label' => 'Url',
             ),
             'attributes' => array(
-                'required' => true
+                'required' => true,
+                'absolute_url' => true,
+                'maxlength' => self::URL_MAX_LENGTH
             ),
         ));
 
@@ -33,7 +37,8 @@ class FooterSocialForm extends UploadableForm {
                 'label' => 'Copy',
             ),
             'attributes' => array(
-                'required' => true
+                'required' => true,
+                'maxlength'=> self::COPY_MAX_LENGTH
             ),
         ));
 
@@ -59,7 +64,8 @@ class FooterSocialForm extends UploadableForm {
                 'label' => 'Order',
             ),
             'attributes' => array(
-                'required' => true
+                'required' => true,
+                'digits' => true
             ),
         ));
 

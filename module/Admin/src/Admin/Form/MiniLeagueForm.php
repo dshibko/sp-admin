@@ -2,10 +2,8 @@
 
 namespace Admin\Form;
 
+use Admin\Form\Filter\LeagueInputFilter;
 use \Neoco\Form\RegionalisedForm;
-use \Neoco\Form\RegionFieldset;
-use \Zend\InputFilter\InputFilter;
-use \Admin\Form\Filter\LoginInputFilter;
 
 class MiniLeagueForm extends RegionalisedForm {
 
@@ -21,6 +19,7 @@ class MiniLeagueForm extends RegionalisedForm {
             'name' => 'displayName',
             'type'  => 'text',
             'attributes' => array(
+                'maxlength' => LeagueInputFilter::DISPLAY_NAME_MAX_LENGTH
             ),
             'options' => array(
                 'label' => 'Internal season name',

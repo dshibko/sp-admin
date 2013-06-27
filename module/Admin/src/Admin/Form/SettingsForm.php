@@ -76,7 +76,7 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
             'attributes' => array(
                 'required' => true,
                 'class' => 'span4',
-                'hint' => 'Bad word filter words (for users display name)',
+                'hint' => 'Bad word filter words (for users display name). Separate by comma, f.e word1,word2,word3',
             ),
         ));
 
@@ -107,7 +107,7 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
 
         $this->add(array(
             'name' => 'main-site-link',
-            'type'  => 'Zend\Form\Element\Url',
+            'type'  => 'text',
             'options' => array(
                 'label' => 'Main site link',
             ),

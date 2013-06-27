@@ -871,3 +871,7 @@ CREATE TABLE `feed` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `file_name` (`file_name`)
 ) COLLATE='utf8_general_ci' ENGINE=InnoDB;
+
+-- okh 26.06
+ALTER TABLE `match`  CHANGE COLUMN `stadium_name` `stadium_name` VARCHAR(100) NULL AFTER `week`;
+ALTER TABLE `match`  CHANGE COLUMN `city_name` `city_name` VARCHAR(100) NULL AFTER `stadium_name`;

@@ -100,10 +100,25 @@ class FixtureForm extends RegionalisedForm {
             'name' => 'kick_off_time',
             'type'  => 'text',
             'attributes' => array(
-                'class' => 'kick-off-time'
+                'class' => 'kick-off-time',
+                 'hint' => 'UTC time'
             ),
             'options' => array(
                 'label' => 'Kick-off Time',
+            ),
+        ));
+
+        //Feeder Id
+        $this->add(array(
+            'name' => 'feederId',
+            'type'  => 'text',
+            'attributes' => array(
+                'class' => 'check-values',
+                'data-original_value'=> '',
+
+            ),
+            'options' => array(
+                'label' => 'Feeder Id',
             ),
         ));
 
@@ -153,11 +168,11 @@ class FixtureForm extends RegionalisedForm {
             'homeTeam' => $homeTeamId,
             'date' => $match->getStartTime()->format('m/d/Y'),
             'kick_off_time' => $match->getStartTime()->format('h:i A'),
-            'isDoublePoints' => $match->getIsDoublePoints()
+            'isDoublePoints' => $match->getIsDoublePoints(),
+            'feederId' => $match->getFeederId()
         ));
         $this->get('awayTeam')->setAttribute('data-original_value', $awayTeamId);
         $this->get('homeTeam')->setAttribute('data-original_value', $homeTeamId);
-
     }
 
     /**
