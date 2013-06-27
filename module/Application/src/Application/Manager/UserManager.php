@@ -2,6 +2,8 @@
 
 namespace Application\Manager;
 
+use Application\Model\DAOs\AccountRemovalDAO;
+use Application\Model\Entities\AccountRemoval;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use Application\Manager\ApplicationManager;
@@ -355,6 +357,9 @@ class UserManager extends BasicManager {
      */
     public function deleteAccount(\Application\Model\Entities\User $user, $deleteFacebookApp = true)
     {
+        $userDAO = UserDAO::getInstance($this->getServiceLocator());
+        $accountRemovalDAO = AccountRemovalDAO::getInstance($this->getServiceLocator());
+        $avatarDAO = AvatarDAO::getInstance($this->getServiceLocator());
         //TODO remove predictions, etc all user data
         if ($user->getFacebookId() && $deleteFacebookApp){
             //remove facebook application
@@ -362,13 +367,22 @@ class UserManager extends BasicManager {
             $facebook->api('/'.$user->getFacebookId(). '/permissions', 'DELETE', array('access_token' => $user->getFacebookAccessToken()));
         }
         $avatar = $user->getAvatar();
-        UserDAO::getInstance($this->getServiceLocator())->remove($user, false, false);
+        $userDAO->remove($user, false, false);
         if (!$avatar->getIsDefault()){
             //TODO move these lines to method
             $this->deleteAvatarImages($avatar);
-            AvatarDAO::getInstance($this->getServiceLocator())->remove($avatar, false, false);
+            $avatarDAO->remove($avatar, false, false);
         }
-        UserDAO::getInstance($this->getServiceLocator())->flush();
+        $accountRemoval = new AccountRemoval();
+        $accountType = ($user->getFacebookId()) ? AccountRemoval::FACEBOOK_ACCOUNT : AccountRemoval::DIRECT_ACCOUNT;
+        $accountRemoval->setDate(new \DateTime())->setAccountType($accountType);
+        $accountRemovalDAO->save($accountRemoval, false, false);
+
+        $userDAO->flush();
+        $accountRemovalDAO->clearCache();
+        $userDAO->clearCache();
+        $avatarDAO->clearCache();
+
         return true;
     }
 

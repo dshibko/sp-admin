@@ -31,9 +31,10 @@ class Logotype extends BasicObject {
     protected $language;
 
     /**
-     * @var string
+     * @var Emblem
      *
-     * @ORM\Column(name="emblem_image_path", type="string", length=255, nullable=false)
+     * @ORM\OneToOne(targetEntity="Emblem")
+     * @ORM\JoinColumn(name="emblem_id", referencedColumnName="id")
      */
     protected $emblem;
 
@@ -55,7 +56,7 @@ class Logotype extends BasicObject {
     }
 
     /**
-     * @return string
+     * @return Emblem
      */
     public function getEmblem()
     {

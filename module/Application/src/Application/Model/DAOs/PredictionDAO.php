@@ -141,10 +141,9 @@ class PredictionDAO extends AbstractDAO {
 
     /**
      * @param array $predictionIds
-     * @param bool $hydrate
      * @param bool $skipCache
-     * @return mixed
      * @throws \Exception
+     * @return mixed
      */
     public function getUsersCountWithCorrectResult(array $predictionIds, $skipCache = false)
     {
@@ -462,6 +461,29 @@ class PredictionDAO extends AbstractDAO {
         return $query->getSingleScalarResult();
     }
 
+    public function getPredictionsPerDayWhileSeason($seasonId)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('predictions','predictions');
+        $rsm->addScalarResult('date','date','date');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+                SELECT
+                    count(p.id) predictions,
+                    DATE(p.creation_date) as date
+                FROM
+                    `prediction` p
+                INNER JOIN
+                    `match` m ON m.id = p.match_id
+                INNER JOIN
+                    competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                GROUP BY
+                      date
+                ORDER BY
+                    date
+            ', $rsm);
+        return $query->getArrayResult();
+    }
     /**
      * @param $seasonId
      * @return mixed

@@ -2,8 +2,10 @@
 
 namespace Neoco\View\Helper;
 
+use Zend\Soap\Server;
 use Zend\View\Helper\AbstractHelper;
 use Zend\Http\Request;
+use Zend\View\Helper\ServerUrl;
 
 class FacebookLoginButton extends AbstractHelper
 {
@@ -45,17 +47,17 @@ class FacebookLoginButton extends AbstractHelper
     {
         return $this->request;
     }
+
     /**
-     * @param  string $key
+     * @param string $label
      * @return string
      */
     public function __invoke($label = 'Connect with Facebook')
     {
-        $uri = $this->getRequest()->getUri();
-        $base = sprintf('%s://%s', $uri->getScheme(), $uri->getHost());
+        $serverUrl = new ServerUrl();
         return '<a href="' .$this->getFacebookAPI()->getLoginUrl(array(
             'scope' => $this->getScope(),
-            'redirect_uri' => $base.'/facebook'
+            'redirect_uri' => $serverUrl().'/facebook'
         )).'" class="login-with-facebook"><span>'.$label.'</span></a>';
     }
 }

@@ -2,6 +2,8 @@
 
 namespace Application\Manager;
 
+use Application\Model\DAOs\AccountRemovalDAO;
+use Application\Model\Entities\AccountRemoval;
 use \Neoco\Exception\InfoException;
 use \Application\Model\DAOs\PredictionDAO;
 use \Application\Model\DAOs\UserDAO;
@@ -274,6 +276,7 @@ class StatsManager extends BasicManager {
     }
 
     /**
+     * @throws \Neoco\Exception\InfoException
      * @return string
      */
     public function getMostPopularScorersThisSeasonContent() {
@@ -294,7 +297,24 @@ class StatsManager extends BasicManager {
         return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($topScorersThisSeason, $exportConfig);
     }
 
+    public function getPredictionsPerDayWhileSeason()
+    {
+        $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+        if ($season === null)
+            throw new InfoException(MessagesConstants::INFO_ADMIN_OUT_OF_SEASON);
+
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        $predictionsPerDayWhileSeason = $predictionDAO->getPredictionsPerDayWhileSeason($season->getId());
+        $exportConfig = array(
+            'predictions' => 'number',
+            'date' => array('date' => 'j F Y'),
+        );
+
+        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($predictionsPerDayWhileSeason, $exportConfig);
+    }
+
     /**
+     * @throws \Neoco\Exception\InfoException
      * @return string
      */
     public function getMostPopularScoresThisSeasonContent() {
@@ -314,6 +334,25 @@ class StatsManager extends BasicManager {
         );
 
         return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($topScoresThisSeason, $exportConfig);
+    }
+
+    public function getAccountDeletions()
+    {
+        $accountRemovalDAO = AccountRemovalDAO::getInstance($this->getServiceLocator());
+
+        $data = array(
+            array(
+                'facebook' => $accountRemovalDAO->getDeletionsCountByType(AccountRemoval::FACEBOOK_ACCOUNT),
+                'direct' => $accountRemovalDAO->getDeletionsCountByType(AccountRemoval::DIRECT_ACCOUNT),
+            ),
+        );
+
+        $exportConfig = array(
+            'facebook' => 'number',
+            'direct' => 'number',
+        );
+
+        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($data, $exportConfig);
     }
 
 }

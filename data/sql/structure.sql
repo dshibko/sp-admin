@@ -875,3 +875,26 @@ CREATE TABLE `feed` (
 -- okh 26.06
 ALTER TABLE `match`  CHANGE COLUMN `stadium_name` `stadium_name` VARCHAR(100) NULL AFTER `week`;
 ALTER TABLE `match`  CHANGE COLUMN `city_name` `city_name` VARCHAR(100) NULL AFTER `stadium_name`;
+
+-- okh 27.06
+CREATE TABLE `emblem` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `path` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`id`)
+)
+  COLLATE='utf8_general_ci'
+  ENGINE=InnoDB
+  ROW_FORMAT=DEFAULT;
+ALTER TABLE `logotype`  CHANGE COLUMN `emblem_image_path` `emblem_id` INT(11) NOT NULL AFTER `language_id`,  ADD INDEX `emblem_id` (`emblem_id`);
+ALTER TABLE `logotype`  ADD CONSTRAINT `FK_logotype_emblem` FOREIGN KEY (`emblem_id`) REFERENCES `emblem` (`id`);
+
+CREATE TABLE `account_removal` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `date` DATETIME NOT NULL,
+  `account_type` ENUM('direct','facebook') NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `account_type` (`account_type`)
+)
+  COLLATE='utf8_general_ci'
+  ENGINE=InnoDB
+  ROW_FORMAT=DEFAULT

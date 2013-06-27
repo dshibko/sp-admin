@@ -36,7 +36,7 @@ class LogotypeForm extends FieldsetsForm
 
     protected function initFormByObject($logotypes){
         if (!empty($logotypes)){
-            $this->get('emblem')->setValue($logotypes[0]->getEmblem());
+            $this->get('emblem')->setValue($logotypes[0]->getEmblem()->getPath());
         }
     }
 }

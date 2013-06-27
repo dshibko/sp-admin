@@ -5,21 +5,20 @@ namespace Application\Model\DAOs;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class LogotypeDAO extends AbstractDAO {
-
+class AccountRemovalDAO extends AbstractDAO {
     /**
-     * @var LogotypeDAO
+     * @var AccountRemovalDAO
      */
     private static $instance;
 
     /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return LogotypeDAO
+     * @return AccountRemovalDAO
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
         if (self::$instance == null) {
-            self::$instance = new LogotypeDAO();
+            self::$instance = new AccountRemovalDAO();
             self::$instance->setServiceLocator($serviceLocatorInterface);
         }
         return self::$instance;
@@ -29,22 +28,24 @@ class LogotypeDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Logotype';
+        return 'Application\Model\Entities\AccountRemoval';
     }
 
     /**
-     * @param $languageId
-     * @param bool $hydrate
+     * @param $accountType
      * @param bool $skipCache
      * @return mixed
      */
-    public function getLogotypeByLanguage($languageId, $hydrate = false, $skipCache = false)
+    public function getDeletionsCountByType($accountType, $skipCache = false)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('l, e')
-            ->from($this->getRepositoryName(), 'l')
-            ->join('l.emblem', 'e')
-            ->andWhere($qb->expr()->eq('l.language',':language'))->setParameter('language', $languageId);
-        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
+        $qb->select('
+            COUNT(d.id) as deletions_count
+        ');
+        $qb->from($this->getRepositoryName(),'d');
+        $qb->where($qb->expr()->eq('d.accountType',':accountType'))->setParameter('accountType', $accountType);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
+
+
 }
