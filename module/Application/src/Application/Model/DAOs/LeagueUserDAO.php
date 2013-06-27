@@ -2,7 +2,7 @@
 
 namespace Application\Model\DAOs;
 
-use Application\Model\Entities\League;
+use \Application\Model\Entities\League;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -32,13 +32,13 @@ class LeagueUserDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\LeagueUser';
+        return '\Application\Model\Entities\LeagueUser';
     }
 
     /**
-     * @param Application\Model\Entities\User $user
-     * @param Application\Model\Entities\Season $season
-     * @param Application\Model\Entities\Region|null $region
+     * @param \Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Region|null $region
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
@@ -60,7 +60,7 @@ class LeagueUserDAO extends AbstractDAO {
         return $query->getArrayResult();
     }
 
-    public function getUserLeaguesByTypes(Application\Model\Entities\User $user, Application\Model\Entities\Season $season, Application\Model\Entities\Region $region, array $types)
+    public function getUserLeaguesByTypes(\Application\Model\Entities\User $user, \\Application\Model\Entities\Season $season, \\Application\Model\Entities\Region $region, array $types)
     {
         $nowTime = new \DateTime();
         $nowTime->setTime(0, 0, 0);

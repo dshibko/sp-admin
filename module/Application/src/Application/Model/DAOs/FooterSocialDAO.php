@@ -30,11 +30,11 @@ class FooterSocialDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\FooterSocial';
+        return '\Application\Model\Entities\FooterSocial';
     }
 
     /**
-     * @param Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Region $region
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array

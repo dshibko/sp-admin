@@ -2,9 +2,9 @@
 
 namespace Application\Model\DAOs;
 
-use Application\Model\Entities\User;
-use Application\Model\Entities\Match;
-use Application\Model\Entities\Season;
+use \Application\Model\Entities\User;
+use \Application\Model\Entities\Match;
+use \Application\Model\Entities\Season;
 use \Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -34,13 +34,13 @@ class MatchDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Match';
+        return '\Application\Model\Entities\Match';
     }
 
     /**
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return Application\Model\Entities\Match
+     * @return \Application\Model\Entities\Match
      */
     public function getNextMatch($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -59,7 +59,7 @@ class MatchDAO extends AbstractDAO {
     /**
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return Application\Model\Entities\Match
+     * @return \Application\Model\Entities\Match
      */
     public function getPrevMatch($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -76,7 +76,7 @@ class MatchDAO extends AbstractDAO {
 
     /**
      * @param integer $offset
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Season $season
      * @param bool $skipCache
      * @return integer
      */
@@ -98,8 +98,8 @@ class MatchDAO extends AbstractDAO {
 
     /**
      * @param integer $offset
-     * @param Application\Model\Entities\User $user
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
      * @param bool $skipCache
      * @return integer
      */
@@ -121,7 +121,7 @@ class MatchDAO extends AbstractDAO {
 
     /**
      * @param \DateTime $fromTime
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Season $season
      * @param bool $skipCache
      * @return integer
      */
@@ -140,7 +140,7 @@ class MatchDAO extends AbstractDAO {
 
     /**
      * @param \DateTime $fromTime
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Season $season
      * @param bool $skipCache
      * @return integer
      */
@@ -157,8 +157,8 @@ class MatchDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\User $user
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
      * @param bool $skipCache
      * @return integer
      */
@@ -174,7 +174,7 @@ class MatchDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Season $season
      * @param bool $skipCache
      * @return integer
      */
@@ -190,8 +190,8 @@ class MatchDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\User $user
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
      * @param bool $skipCache
      * @return integer
      */
@@ -208,7 +208,7 @@ class MatchDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Season $season
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
@@ -256,7 +256,7 @@ class MatchDAO extends AbstractDAO {
     function getMatchGoals($matchId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('mg.order, t.id teamId, p.id as playerId, p.displayName')
-            ->from('Application\Model\Entities\MatchGoal', 'mg')
+            ->from('\Application\Model\Entities\MatchGoal', 'mg')
             ->join('mg.player', 'p')
             ->join('mg.team', 't')
             ->where($qb->expr()->eq('mg.match', $matchId));
@@ -295,7 +295,7 @@ class MatchDAO extends AbstractDAO {
     function getMatchTeamSquad($matchId, $teamId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p.displayName, p.position, p.shirtNumber, p.id, lup.isStart')
-            ->from('Application\Model\Entities\LineUpPlayer', 'lup')
+            ->from('\Application\Model\Entities\LineUpPlayer', 'lup')
             ->join('lup.player', 'p')
             ->where($qb->expr()->eq('lup.team', $teamId))
             ->andWhere($qb->expr()->eq('lup.match', $matchId));
@@ -305,7 +305,7 @@ class MatchDAO extends AbstractDAO {
     /**
      * @param \DateTime $fromTime
      * @param \DateTime $tillTime
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Season $season
      * @param bool $skipCache
      * @return integer
      */
@@ -328,8 +328,8 @@ class MatchDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\User $user
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
      * @param \DateTime $fromTime
      * @param bool $skipCache
      * @return integer

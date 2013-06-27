@@ -30,14 +30,14 @@ class RegionContentDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\RegionContent';
+        return '\Application\Model\Entities\RegionContent';
     }
 
     /**
-     * @param Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Region $region
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return Application\Model\Entities\RegionContent|array
+     * @return \Application\Model\Entities\RegionContent|array
      */
     public function getRegionContent($region, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();

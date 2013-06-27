@@ -29,6 +29,6 @@ class RoleDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Role';
+        return '\Application\Model\Entities\Role';
     }
 }

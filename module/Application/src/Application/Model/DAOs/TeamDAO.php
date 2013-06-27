@@ -31,7 +31,7 @@ class TeamDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Team';
+        return '\Application\Model\Entities\Team';
     }
 
     /**
@@ -44,7 +44,7 @@ class TeamDAO extends AbstractDAO {
     function getTeamSquadInCompetition($teamId, $competitionId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p.displayName, p.position, p.shirtNumber, p.id')
-            ->from('Application\Model\Entities\Player', 'p')
+            ->from('\Application\Model\Entities\Player', 'p')
             ->join('p.competitions', 'cp', Expr\Join::WITH, 'cp.id = ' . $competitionId)
             ->where($qb->expr()->eq('p.team', $teamId))
             ->orderBy('p.position', 'ASC');

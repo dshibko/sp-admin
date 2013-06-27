@@ -30,7 +30,7 @@ class CountryDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Country';
+        return '\Application\Model\Entities\Country';
     }
 
     /**
@@ -50,7 +50,7 @@ class CountryDAO extends AbstractDAO {
      * @param bool $isoCode
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return Application\Model\Entities\Country
+     * @return \Application\Model\Entities\Country
      * @throws \Exception
      */
     public function getCountryByISOCode($isoCode, $hydrate = false, $skipCache = false)

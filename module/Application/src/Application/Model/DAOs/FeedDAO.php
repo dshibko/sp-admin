@@ -29,14 +29,14 @@ class FeedDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Feed';
+        return '\Application\Model\Entities\Feed';
     }
 
     /**
      * @param string $fileName
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return Application\Model\Entities\Feed|array
+     * @return \Application\Model\Entities\Feed|array
      * @throws \Exception
      */
     public function getFeedByFileName($fileName, $hydrate = false, $skipCache = false) {

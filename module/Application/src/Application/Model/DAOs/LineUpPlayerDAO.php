@@ -29,7 +29,7 @@ class LineUpPlayerDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\LineUpPlayer';
+        return '\Application\Model\Entities\LineUpPlayer';
     }
 
 }

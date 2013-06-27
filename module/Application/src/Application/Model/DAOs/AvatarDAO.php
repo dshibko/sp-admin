@@ -29,7 +29,7 @@ class AvatarDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Avatar';
+        return '\Application\Model\Entities\Avatar';
     }
 
     /**
