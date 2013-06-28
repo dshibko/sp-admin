@@ -898,3 +898,9 @@ CREATE TABLE `account_removal` (
   COLLATE='utf8_general_ci'
   ENGINE=InnoDB
   ROW_FORMAT=DEFAULT;
+
+-- okh 28.06
+ALTER TABLE `role`  DROP INDEX `parent_id`,  ADD INDEX `parent_id` (`parent_id`),  ADD INDEX `name` (`name`);
+ALTER TABLE `user`  ADD COLUMN `last_logged_in` DATETIME NULL AFTER `date`;
+-- When create admin we don't set these fields
+ALTER TABLE `user`  CHANGE COLUMN `title` `title` VARCHAR(5) NULL AFTER `id`,  CHANGE COLUMN `birthday` `birthday` DATE NULL AFTER `country_id`;

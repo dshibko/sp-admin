@@ -65,6 +65,7 @@ class AuthenticationManager extends BasicManager {
             $this->getAuthService()->getStorage()->setRememberMe(1);
         }
         $this->getAuthService()->getStorage()->write($identity);
+        UserManager::getInstance($this->getServiceLocator())->updateUserLastLoggedIn();
     }
     /**
      * @return void
@@ -124,7 +125,8 @@ class AuthenticationManager extends BasicManager {
      */
     public function saveNewPassword($recovery, $password) {
         $user = $recovery->getUser();
-        $user->setPassword($this->preparePassword($password));
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $user->setPassword($applicationManager->encryptPassword($password));
         UserDAO::getInstance($this->getServiceLocator())->save($user);
         $recovery->setIsActive(false);
         RecoveryDAO::getInstance($this->getServiceLocator())->save($recovery);

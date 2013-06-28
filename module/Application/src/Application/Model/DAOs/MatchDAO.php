@@ -272,6 +272,7 @@ class MatchDAO extends AbstractDAO {
             SELECT
                 m.id,
                 m.startTime as date_and_time,
+                m.status,
                 c.displayName as competition_name,
                 s.displayName as season_name,
                 at.displayName as away_team,

@@ -59,7 +59,7 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
 
         ));
         //CSRF
-        $this->add(array(
+        /*$this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
             'name' => 'csrf',
             'options' => array(
@@ -67,7 +67,7 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
                     'timeout' => 600
                 )
             )
-        ));
+        ));*/
         $this->add(array(
             'name' => 'submit',
             'type'  => 'submit',

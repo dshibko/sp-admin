@@ -13,6 +13,7 @@ use Zend\View\Model\ViewModel;
 use \Admin\Form\AccountForm;
 use \Application\Manager\AuthenticationManager;
 use \Admin\Form\AccountPasswordForm;
+use Zend\Session\Container as SessionContainer;
 
 class IndexController extends AbstractActionController
 {
@@ -30,6 +31,7 @@ class IndexController extends AbstractActionController
         $rbac = $this->getServiceLocator()->get('ZfcRbac\Service\Rbac');
         $router = new \ZfcRbac\Firewall\Route($rules);
         $router->setRbac($rbac);
+        $isFirstTimeLogin = false;
         if (!$router->isGranted('admin'))
             return $this->redirect()->toRoute(self::ADMIN_LOGIN_PAGE_ROUTE);
 
@@ -40,6 +42,11 @@ class IndexController extends AbstractActionController
             $registeredUsersNumber = $userManager->getRegisteredUsersNumber();
             $usersRegisteredInPast7Days = $userManager->getUsersRegisteredInPastDays(7, true);
             $currentSeason = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+            $session = new SessionContainer('admin');
+            if (!empty($session->isFirstTimeLogin)){
+                $isFirstTimeLogin = true;
+                unset($session->isFirstTimeLogin);
+            }
             if ($currentSeason == null) {
                 $activeUsersNumber = $inactiveUsersNumber = $avgNumberOfPredictions =
                 $nextMatchPredictions = $prevMatchPredictions = MessagesConstants::INFO_ADMIN_OUT_OF_SEASON;
@@ -81,6 +88,7 @@ class IndexController extends AbstractActionController
             'usersRegisteredInPast7Days' => $usersRegisteredInPast7Days,
             'nextMatchId' => $nextMatchId,
             'prevMatchId' => $prevMatchId,
+            'isFirstTimeLogin' => $isFirstTimeLogin
         ));
 
     }
@@ -151,10 +159,10 @@ class IndexController extends AbstractActionController
                         if ($passwordForm->isValid()){
                             $data = $passwordForm->getData();
                             //Check Old Password
-                            if ($user->getPassword() !== md5($data['password'])){
+                            if ($user->getPassword() !== $applicationManager->encryptPassword($data['password'])){
                                 throw new \Exception(MessagesConstants::ERROR_INVALID_OLD_PASSWORD);
                             }
-                            $user->setPassword(md5($data['new_password']));
+                            $user->setPassword($applicationManager->encryptPassword($data['new_password']));
                             $userManager->save($user);
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_PASSWORD_SAVED);
                             return $this->redirect()->toRoute(self::ADMIN_ACCOUNT_PAGE);

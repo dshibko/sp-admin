@@ -289,4 +289,9 @@ class ApplicationManager extends BasicManager {
         return TeamDAO::getInstance($this->getServiceLocator())->findOneByFeederId($this->getAppOptaId());
     }
 
+    public function encryptPassword($password)
+    {
+        return md5($password);
+    }
+
 }

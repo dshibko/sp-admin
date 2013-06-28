@@ -247,8 +247,8 @@ class Module
                         'identityClass' => 'Application\Model\Entities\User',
                         'identityProperty' => 'email',
                         'credentialProperty' => 'password',
-                        'credentialCallable' => function($identity, $credential) {
-                            return md5($credential);
+                        'credentialCallable' => function($identity, $credential) use ($sm){
+                            return ApplicationManager::getInstance($sm)->encryptPassword($credential);
                         }
                     ));
 

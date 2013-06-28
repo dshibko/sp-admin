@@ -38,7 +38,7 @@ $this->headTitle($title);
                         <label>
                             <select class="type-filter">
                                   <option value="1"><?=$this->translate('Upcoming');?></option>
-                                  <option value="2"><?=$this->translate('Past');?></option>
+                                  <option value="0"><?=$this->translate('Past');?></option>
                             </select>
                             <?php echo $this->translate('filter by type');?>
                         </label>
@@ -51,6 +51,7 @@ $this->headTitle($title);
                             <th><?=$this->translate('Date And Time');?></th>
                             <th><?=$this->translate('Competition');?></th>
                             <th><?=$this->translate('Season');?></th>
+                            <th style="display:none;"><?=$this->translate('Status');?></th>
                             <th style="width: 60px"><?php echo $this->translate('Action');?></th>
                         </tr>
                         </thead>
@@ -62,6 +63,7 @@ $this->headTitle($title);
                             <td><?=$fixture['date_and_time']->format('D, d M Y H:i');?></td>
                             <td><?=$fixture['competition_name'];?></td>
                             <td><?=$fixture['season_name'];?></td>
+                            <td style="display:none;"><?=$fixture['status'];?></td>
                             <td>
                                 <a href="<?=$this->url('admin-fixtures', array('action' => 'edit', 'fixture' => $fixture['id']))?>" class="btn mini blue">
                                     <i class="icon-edit"></i>
@@ -90,7 +92,7 @@ $this->headTitle($title);
 <script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/app.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->
 <script type="text/javascript">
-
+     var PRE_MATCH_STATUS = '<?php echo \Application\Model\Entities\Match::PRE_MATCH_STATUS;?>'
     //Filter by season
     jQuery.fn.dataTableExt.afnFiltering.push(
         function( oSettings, aData, iDataIndex ) {
@@ -118,26 +120,9 @@ $this->headTitle($title);
     //Filter by type
     jQuery.fn.dataTableExt.afnFiltering.push(
         function( oSettings, aData, iDataIndex ) {
-            var type = jQuery('.type-filter').val();
-            var value = aData[2];
-            var timestamp = Date.parse(value);
-            var current_timestamp = new Date().getTime();
-            switch(type){
-                case "1" : { //Upcoming
-                    if (current_timestamp > timestamp ){
-                        return false;
-                    }
-                    break
-                }
-                case "2" : { //Past
-                    if (current_timestamp < timestamp ){
-                          return false;
-                    }
-                    break;
-                }
-            }
-
-            return true;
+            var isUpcoming = parseInt(jQuery('.type-filter').val());
+            var value = aData[5];
+            return (isUpcoming && value == PRE_MATCH_STATUS) || (!isUpcoming && value != PRE_MATCH_STATUS);
         }
     );
 
@@ -147,11 +132,11 @@ $this->headTitle($title);
         /* Custom filtering function which will filter data in column four between two values */
 
 
-        var messages = {perPage: "_MENU_ " + "<?=$this->translate('fixtures per page')?>", nextLink: "<?=$this->translate('Next')?>",
+       var messages = {perPage: "_MENU_ " + "<?=$this->translate('fixtures per page')?>", nextLink: "<?=$this->translate('Next')?>",
             prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ fixtures')?>"};
        var oTable = $('#fixtures-table').dataTable({
-            "aoColumns": [null, null,{"sType" : "date"},null,null,{bSortable: false}],
-            "aaSorting": [[2,"desc"]],
+            "aoColumns": [null, null,{"sType" : "date"},null,null,null,{bSortable: false}],
+            "aLengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
             "bStateSave" : true,
             "iCookieDuration": 60 * 60 * 24 * 365 * 100,
             "fnStateLoadParams" : function(oSettings, oData){
@@ -168,7 +153,7 @@ $this->headTitle($title);
                 "sInfo": messages.showingLabel
             }
         });
-
+        oTable.fnSort( [ [2,'desc'] ] );
         //Filter by season
         $('.seasons-filter, .competitions-filter, .type-filter').change(function(){
             oTable.fnDraw();

@@ -5,12 +5,9 @@ namespace Admin\Controller;
 use \Zend\Authentication\Result;
 use \Application\Manager\ExceptionManager;
 use \Application\Manager\ApplicationManager;
-use \Zend\Form\Annotation\AnnotationBuilder;
-use \Application\Model\Entities\User;
 use \Admin\Form\LoginForm;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\AuthenticationManager;
-use Zend\View\Model\ViewModel;
 use Zend\Session\Container;
 use \Application\Model\Helpers\MessagesConstants;
 

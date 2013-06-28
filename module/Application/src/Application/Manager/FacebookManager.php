@@ -19,7 +19,6 @@ class FacebookManager extends BasicManager
     const MALE = 'male';
     const FEMALE = 'female';
     const FACEBOOK_AVATAR_FOLDER = 'small';
-    const DEFAULT_AVATAR_ID = 1;
     const GRAPH_API_URL = 'https://graph.facebook.com/';
 
     /**
@@ -100,7 +99,7 @@ class FacebookManager extends BasicManager
      */
     public function registerUser(array $data)
     {
-        $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_AVATAR_ID); //set default avatar
+        $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(RegistrationManager::DEFAULT_AVATAR_ID); //set default avatar
         $data['country'] = ApplicationManager::DEFAULT_COUNTRY_ID;  //set default country
         return RegistrationManager::getInstance($this->getServiceLocator())->register($data);
     }

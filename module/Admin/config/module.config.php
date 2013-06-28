@@ -64,32 +64,16 @@ return array(
                 ),
             ),
             'admin-users' => array(
-                'type' => 'Literal',
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/users/',
+                    'route'    => '/admin/users/[:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'index',
-                    ),
-                ),
-            ),
-            'admin-user-view' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route'    => '/admin/users/:id',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'view',
-                    ),
-                ),
-            ),
-            'admin-users-export' => array(
-                'type' => 'Literal',
-                'options' => array(
-                    'route'    => '/admin/users/export',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'export',
                     ),
                 ),
             ),
@@ -406,10 +390,16 @@ return array(
             'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
             'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
             'admin/terms/add' => __DIR__ . '/../view/admin/terms/edit.phtml',
+            'admin/user/edit-admin' => __DIR__ . '/../view/admin/user/add-admin.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
+    ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'formErrors' => 'Neoco\Controller\Plugin\FormErrors',
+        )
     ),
     'navigation' => array(
         'default' => array(
@@ -427,12 +417,49 @@ return array(
                         'title' => 'Users',
                         'label' => 'icon-underline',
                         'route' => 'admin-users',
+                        'action' => 'index',
+                        'sub-menu' => true,
                         'pages' => array(
-                            array(
-                                'title' => 'View',
-                                'label' => 'icon-eye-open',
-                                'route' => 'admin-user-view',
-                            ),
+                                array(
+                                    'title' => 'All Users',
+                                    'label' => 'icon-underline',
+                                    'route' => 'admin-users',
+                                    'action' => 'index',
+                                    'pages' => array(
+                                        array(
+                                            'title' => 'View',
+                                            'label' => 'icon-eye-open',
+                                            'route' => 'admin-users',
+                                            'action' => 'view',
+                                        ),
+                                    ),
+                                ),
+                                array(
+                                    'title' => 'Admins',
+                                    'label' => 'icon-font',
+                                    'route' => 'admin-users',
+                                    'action' => 'admins',
+                                    'pages' => array(
+                                        array(
+                                            'title' => 'Add Admin',
+                                            'label' => 'icon-plus',
+                                            'route' => 'admin-users',
+                                            'action' => 'addAdmin',
+                                        ),
+                                        array(
+                                            'title' => 'Edit Admin',
+                                            'label' => 'icon-edit',
+                                            'route' => 'admin-users',
+                                            'action' => 'editAdmin',
+                                        ),
+                                        array(
+                                            'title' => 'Delete Admin',
+                                            'label' => 'icon-minus',
+                                            'route' => 'admin-users',
+                                            'action' => 'deleteAdmin',
+                                        ),
+                                    ),
+                                ),
                         )
                     ),
                     'admin-account' => array(

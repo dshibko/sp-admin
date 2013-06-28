@@ -56,7 +56,7 @@ class RegistrationManager extends BasicManager
         $data['country'] = CountryDAO::getInstance($this->getServiceLocator())->findOneById($data['country']);
         $data['date'] = new \DateTime();
         $data['date_of_birth'] = new \DateTime($data['date_of_birth']);
-        $data['password'] = md5($data['password']);
+        $data['password'] = ApplicationManager::getInstance($this->getServiceLocator())->encryptPassword($data['password']);
 
         $user = new User();
 

@@ -1,6 +1,7 @@
 <?php
+use \Application\Model\Entities\Role;
 
-$anonymousRole = 'Guest';
+$anonymousRole = Role::GUEST;
 
 return array(
     'zfcrbac' => array(
@@ -10,27 +11,27 @@ return array(
         'firewallController' => false,
         'firewalls' => array(
             'ZfcRbac\Firewall\Route' => array(
-                array('route' => 'opta', 'roles' => 'Guest'),
-                array('route' => 'common', 'roles' => 'Guest'),
-                array('route' => 'clear-app-cache', 'roles' => 'Guest'),
-                array('route' => 'match', 'roles' => 'Guest'),
-                array('route' => 'forgot', 'roles' => 'Guest'),
-                array('route' => 'reset', 'roles' => 'Guest'),
-                array('route' => 'facebook', 'roles' => 'Guest'),
-                array('route' => 'privacy', 'roles' => 'Guest'),
-                array('route' => 'terms', 'roles' => 'Guest'),
-                array('route' => 'cookies', 'roles' => 'Guest'),
-                array('route' => 'help', 'roles' => 'Guest'),
-                array('route' => 'contact', 'roles' => 'Guest'),
-                array('route' => 'deauthorise-facebook-app', 'roles' => 'Guest'),
-                array('route' => 'registration', 'roles' => 'Guest'),
-                array('route' => 'login', 'roles' => 'Guest'),
-                array('route' => 'home', 'roles' => 'Guest'),
-                array('route' => 'admin-login', 'roles' => 'Guest'),
-                array('route' => 'admin-forgot', 'roles' => 'Guest'),
-                array('route' => 'admin-home', 'roles' => 'Guest'),
-                array('route' => 'admin', 'roles' => 'Regional Manager'),
-                array('route' => '.*', 'roles' => array('User', 'Regional Manager', 'Super Admin')),
+                array('route' => 'opta', 'roles' => Role::GUEST),
+                array('route' => 'common', 'roles' => Role::GUEST),
+                array('route' => 'clear-app-cache', 'roles' => Role::GUEST),
+                array('route' => 'match', 'roles' => Role::GUEST),
+                array('route' => 'forgot', 'roles' => Role::GUEST),
+                array('route' => 'reset', 'roles' => Role::GUEST),
+                array('route' => 'facebook', 'roles' => Role::GUEST),
+                array('route' => 'privacy', 'roles' => Role::GUEST),
+                array('route' => 'terms', 'roles' => Role::GUEST),
+                array('route' => 'cookies', 'roles' => Role::GUEST),
+                array('route' => 'help', 'roles' => Role::GUEST),
+                array('route' => 'contact', 'roles' => Role::GUEST),
+                array('route' => 'deauthorise-facebook-app', 'roles' => Role::GUEST),
+                array('route' => 'registration', 'roles' => Role::GUEST),
+                array('route' => 'login', 'roles' => Role::GUEST),
+                array('route' => 'home', 'roles' => Role::GUEST),
+                array('route' => 'admin-login', 'roles' => Role::GUEST),
+                array('route' => 'admin-forgot', 'roles' => Role::GUEST),
+                array('route' => 'admin-home', 'roles' => Role::GUEST),
+                array('route' => 'admin', 'roles' => Role::REGIONAL_MANAGER),
+                array('route' => '.*', 'roles' => array(Role::USER, Role::REGIONAL_MANAGER, Role::SUPER_ADMIN)),
             ),
         ),
         'providers' => array(

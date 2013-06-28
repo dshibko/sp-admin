@@ -40,6 +40,9 @@ class MessagesConstants
     const SUCCESS_TERM_DELETED = 'Term was deleted successfully';
     const SUCCESS_OPTA_FEED_PARSED = 'Opta feed was parsed successfully';
     const SUCCESS_APP_CACHE_CLEARED = 'Application cache was cleared successfully';
+    const SUCCESS_ADMIN_CREATED = 'New admin was successfully created.';
+    const SUCCESS_ADMIN_UPDATED = 'Admin was successfully updated';
+    const SUCCESS_ADMIN_DELETED = 'Admin was successfully deleted';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -69,6 +72,8 @@ class MessagesConstants
     const ERROR_MAX_TERMS_COUNT_EXCEEDED = 'Max terms count exceeded';
     const ERROR_INCORRECT_TIME = 'Incorrect time';
     const ERROR_INCORRECT_CSS_COLOR = 'Incorrect CSS color';
+    const ERROR_INVALID_ADMIN_ID = 'Invalid Admin id';
+    const ERROR_CANNOT_FIND_ADMIN = 'Cannot find Admin';
 
 //    Application Messages Constants
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
