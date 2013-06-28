@@ -84,20 +84,20 @@ class MailManager extends BasicManager {
     }
 
     private function prepareTransport() {
-       $transport = new Smtp();
+       /*$transport = new Smtp();
         $options   = new SmtpOptions();
         $options->setHost('smtp.gmail.com')
             ->setConnectionClass('login')
             ->setName('smtp.gmail.com')
             ->setPort(587)
             ->setConnectionConfig(array(
-                'username' => 'hiqo.work@gmail.com',
-                'password' => 'hiqo2136878',
+                'username' => '******',
+                'password' => '*********',
                 'ssl' => 'tls',
             ));
         $transport->setOptions($options);
-        return $transport;
-       // return new Sendmail();
+        return $transport;*/
+       return new Sendmail();
     }
 
     private function prepareMessage($to, $subject, $content) {
