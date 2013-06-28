@@ -28,7 +28,7 @@ class ClearAppCacheController extends AbstractActionController {
         try {
 
             if (empty($entities))
-                apc_clear_cache('user');
+                CacheManager::getInstance($this->getServiceLocator())->clearCache();
             else {
                 $entitiesArr = explode(",", $entities);
                 foreach ($entitiesArr as $entity) {

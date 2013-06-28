@@ -88,6 +88,10 @@ class CacheManager extends BasicManager {
         return $key;
     }
 
+    public function clearCache() {
+        $this->getCacheProvider()->flushAll();
+    }
+
     /**
      * @var \Doctrine\Common\Cache\CacheProvider
      */

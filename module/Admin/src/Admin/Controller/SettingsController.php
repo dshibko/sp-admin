@@ -2,6 +2,7 @@
 
 namespace Admin\Controller;
 
+use \Application\Manager\CacheManager;
 use \Application\Manager\SettingsManager;
 use \Zend\View\Model\ViewModel;
 use \Admin\Form\FooterSocialForm;
@@ -95,7 +96,7 @@ class SettingsController extends AbstractActionController {
     }
 
     public function clearAppCacheAction() {
-        apc_clear_cache('user');
+        CacheManager::getInstance($this->getServiceLocator())->clearCache();
         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_APP_CACHE_CLEARED);
         return $this->redirect()->toRoute(self::ADMIN_REGION_LANGUAGE_ROUTE);
     }
