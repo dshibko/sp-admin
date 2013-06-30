@@ -31,7 +31,8 @@ class IndexController extends AbstractActionController
         $rbac = $this->getServiceLocator()->get('ZfcRbac\Service\Rbac');
         $router = new \ZfcRbac\Firewall\Route($rules);
         $router->setRbac($rbac);
-        $isFirstTimeLogin = false;
+        $isFirstTimeLoggedIn = false;
+        $passwordForm = null;
         if (!$router->isGranted('admin'))
             return $this->redirect()->toRoute(self::ADMIN_LOGIN_PAGE_ROUTE);
 
@@ -42,11 +43,15 @@ class IndexController extends AbstractActionController
             $registeredUsersNumber = $userManager->getRegisteredUsersNumber();
             $usersRegisteredInPast7Days = $userManager->getUsersRegisteredInPastDays(7, true);
             $currentSeason = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+
             $session = new SessionContainer('admin');
-            if (!empty($session->isFirstTimeLogin)){
-                $isFirstTimeLogin = true;
-                unset($session->isFirstTimeLogin);
+            if (!empty($session->isFirstTimeLoggedIn)){ //First time logged in
+                $isFirstTimeLoggedIn = true;
+                $passwordForm = new AccountPasswordForm(self::PASSWORD_FORM_TYPE);
+                $passwordForm->get('password')->setLabel('Temporary Password');
+                unset($session->isFirstTimeLoggedIn);
             }
+
             if ($currentSeason == null) {
                 $activeUsersNumber = $inactiveUsersNumber = $avgNumberOfPredictions =
                 $nextMatchPredictions = $prevMatchPredictions = MessagesConstants::INFO_ADMIN_OUT_OF_SEASON;
@@ -88,7 +93,8 @@ class IndexController extends AbstractActionController
             'usersRegisteredInPast7Days' => $usersRegisteredInPast7Days,
             'nextMatchId' => $nextMatchId,
             'prevMatchId' => $prevMatchId,
-            'isFirstTimeLogin' => $isFirstTimeLogin
+            'isFirstTimeLoggedIn' => $isFirstTimeLoggedIn,
+            'passwordForm' => $passwordForm
         ));
 
     }

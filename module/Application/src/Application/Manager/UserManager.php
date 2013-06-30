@@ -475,7 +475,7 @@ class UserManager extends BasicManager {
         $lastLoggedIn = $user->getLastLoggedIn();
         if (is_null($lastLoggedIn)){
             $session = new SessionContainer('admin');
-            $session->isFirstTimeLogin = true;
+            $session->isFirstTimeLoggedIn = true;
         }
         $user->setLastLoggedIn(new \DateTime());
         $this->save($user);
