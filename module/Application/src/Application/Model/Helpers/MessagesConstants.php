@@ -43,6 +43,7 @@ class MessagesConstants
     const SUCCESS_ADMIN_CREATED = 'New admin was successfully created.';
     const SUCCESS_ADMIN_UPDATED = 'Admin was successfully updated';
     const SUCCESS_ADMIN_DELETED = 'Admin was successfully deleted';
+    const SUCCESS_DEFAULT_MATCH_REPORT_CONTENT_UPDATE = 'Default %s report content was successfully updated';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";

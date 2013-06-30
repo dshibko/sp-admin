@@ -904,3 +904,17 @@ ALTER TABLE `role`  DROP INDEX `parent_id`,  ADD INDEX `parent_id` (`parent_id`)
 ALTER TABLE `user`  ADD COLUMN `last_logged_in` DATETIME NULL AFTER `date`;
 -- When create admin we don't set these fields
 ALTER TABLE `user`  CHANGE COLUMN `title` `title` VARCHAR(5) NULL AFTER `id`,  CHANGE COLUMN `birthday` `birthday` DATE NULL AFTER `country_id`;
+
+-- oko 28.06
+
+ALTER TABLE  `match_goal` CHANGE  `player_id`  `player_id` INT( 11 ) NULL;
+CREATE TABLE `default_report_content` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `title` VARCHAR(255) NOT NULL,
+  `intro` TEXT NOT NULL,
+  `header_image` VARCHAR(255) NOT NULL,
+  `region_id` INT(11) NOT NULL,
+  `report_type` ENUM('Pre-Match', 'Post-Match') NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `FK_default_report_content_region` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`)
+) COLLATE='utf8_general_ci' ENGINE=InnoDB;

@@ -246,22 +246,22 @@ return array(
                     ),
                 ),
             ),
-            'admin-pre-match-share-copy' => array(
-                'type' => 'Literal',
+            'admin-pre-match-content' => array(
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/pre-match-share-copy/',
+                    'route'    => '/admin/pre-match-content/[:action]',
                     'defaults' => array(
-                        'controller' => 'Admin\Controller\PreMatchShareCopy',
+                        'controller' => 'Admin\Controller\PreMatchContent',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'admin-post-match-share-copy' => array(
-                'type' => 'Literal',
+            'admin-post-match-content' => array(
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/post-match-share-copy/',
+                    'route'    => '/admin/post-match-content/[:action]',
                     'defaults' => array(
-                        'controller' => 'Admin\Controller\PostMatchShareCopy',
+                        'controller' => 'Admin\Controller\PostMatchContent',
                         'action'     => 'index',
                     ),
                 ),
@@ -363,8 +363,8 @@ return array(
             'Admin\Controller\Fixtures' => 'Admin\Controller\FixturesController',
             'Admin\Controller\User' => 'Admin\Controller\UserController',
             'Admin\Controller\FooterPages' => 'Admin\Controller\FooterPagesController',
-            'Admin\Controller\PreMatchShareCopy' => 'Admin\Controller\PreMatchShareCopyController',
-            'Admin\Controller\PostMatchShareCopy' => 'Admin\Controller\PostMatchShareCopyController',
+            'Admin\Controller\PreMatchContent' => 'Admin\Controller\PreMatchContentController',
+            'Admin\Controller\PostMatchContent' => 'Admin\Controller\PostMatchContentController',
             'Admin\Controller\Opta' => 'Admin\Controller\OptaController',
             'Admin\Controller\Logotype' => 'Admin\Controller\LogotypeController',
             'Admin\Controller\Terms' => 'Admin\Controller\TermsController',
@@ -631,21 +631,21 @@ return array(
                                     ),
                                 ),
                             ),
-                            'share-copy' => array(
-                                'title' => 'Reports Share Copy',
+                            'reports-content' => array(
+                                'title' => 'Match Reports',
                                 'label' => 'icon-bar-chart',
-                                'route' => 'admin-pre-match-share-copy',
+                                'route' => 'admin-pre-match-content',
                                 'sub-menu' => true,
                                 'pages' => array(
                                     array(
-                                        'title' => 'Pre Match',
+                                        'title' => 'Pre-Match',
                                         'label' => 'icon-chevron-left',
-                                        'route' => 'admin-pre-match-share-copy',
+                                        'route' => 'admin-pre-match-content',
                                     ),
                                     array(
-                                        'title' => 'Post Match',
+                                        'title' => 'Post-Match',
                                         'label' => 'icon-chevron-right',
-                                        'route' => 'admin-post-match-share-copy',
+                                        'route' => 'admin-post-match-content',
                                     ),
                                 )
                             ),

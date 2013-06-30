@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use \Application\Model\DAOs\DefaultReportContentDAO;
 use Application\Model\DAOs\EmblemDAO;
 use Application\Model\DAOs\LogotypeDAO;
 use Application\Model\DAOs\TermCopyDAO;
@@ -534,6 +535,26 @@ class ContentManager extends BasicManager {
         $language = UserManager::getInstance($this->getServiceLocator())->getCurrentUserLanguage();
         return $this->getTermsByLanguageId($language->getId(), true);
 
+    }
+
+    /**
+     * @param $regionId
+     * @param $type
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\DefaultReportContent|array
+     */
+    public function getDefaultReportContentByTypeAndRegion($regionId, $type, $hydrate = false, $skipCache = false) {
+        return DefaultReportContentDAO::getInstance($this->getServiceLocator())->getDefaultReportContentByTypeAndRegion($regionId, $type, $hydrate, $skipCache);
+    }
+
+    public function saveDefaultReportContent($defaultReportContent, $flush = true, $clearCache = true) {
+        DefaultReportContentDAO::getInstance($this->getServiceLocator())->save($defaultReportContent, $flush, $clearCache);
+    }
+
+    public function flushAndClearCacheDefaultReportContent() {
+        DefaultReportContentDAO::getInstance($this->getServiceLocator())->flush();
+        DefaultReportContentDAO::getInstance($this->getServiceLocator())->clearCache();
     }
 
 }

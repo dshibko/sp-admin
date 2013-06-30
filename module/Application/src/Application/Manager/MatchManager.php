@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use \Application\Model\Entities\DefaultReportContent;
 use \Application\Model\DAOs\LeagueUserPlaceDAO;
 use \Application\Model\Entities\Match;
 use \Application\Model\DAOs\MatchDAO;
@@ -498,6 +499,19 @@ class MatchManager extends BasicManager
             }
         }
 
+        if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
+            $contentManager = ContentManager::getInstance($this->getServiceLocator());
+            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($regionId, DefaultReportContent::PRE_MATCH_TYPE);
+            if ($defaultReportContent !== null) {
+                if (empty($report['title']))
+                    $report['title'] = $defaultReportContent->getTitle();
+                if (empty($report['intro']))
+                    $report['intro'] = $defaultReportContent->getIntro();
+                if (empty($report['headerImage']))
+                    $report['headerImage'] = $defaultReportContent->getHeaderImage();
+            }
+        }
+
         if (is_null($match)){
             $match = MatchManager::getInstance($this->getServiceLocator())->getMatchById($matchId);
         }
@@ -664,6 +678,19 @@ class MatchManager extends BasicManager
             if ($totalNumberOfPredictions){
                 $correctScoreCount = $predictionManager->getPredictionsCorrectScoreCount($predictionIds);
                 $report['correctScore'] = round( ($correctScoreCount / $totalNumberOfPredictions) * 100);
+            }
+        }
+
+        if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
+            $contentManager = ContentManager::getInstance($this->getServiceLocator());
+            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($regionId, DefaultReportContent::POST_MATCH_TYPE);
+            if ($defaultReportContent !== null) {
+                if (empty($report['title']))
+                    $report['title'] = $defaultReportContent->getTitle();
+                if (empty($report['intro']))
+                    $report['intro'] = $defaultReportContent->getIntro();
+                if (empty($report['headerImage']))
+                    $report['headerImage'] = $defaultReportContent->getHeaderImage();
             }
         }
 

@@ -1,10 +1,12 @@
 <!--HEADER STARTS-->
     <section class="match-banner">
         <div class="clearfix">
-            <img src="<?php echo (!empty($this->report['headerImage']) ? $this->report['headerImage'] : $this->getConstant('default_pre_match_report_header_image'));?>" alt="">
+            <?php if (!empty($this->report['headerImage'])): ?>
+                <img src="<?php echo $this->report['headerImage'];?>" alt="">
+            <?php endif; ?>
             <article>
-                <h1><?php echo $this->escapeHtml(!empty($this->report['title']) ? $this->report['title'] : $this->getConstant('default_pre_match_report_title'));?></h1>
-                <p><?php echo (!empty($this->report['intro']) ? $this->report['intro'] : $this->getConstant('default_pre_match_report_intro'));?></p>
+                <h1><?php echo $this->escapeHtml($this->report['title']);?></h1>
+                <p><?php echo $this->report['intro'];?></p>
                 <footer class="clearfix">
                     <h3><?php echo $this->translate('Share this');?></h3>
                     <ul class="social-links">

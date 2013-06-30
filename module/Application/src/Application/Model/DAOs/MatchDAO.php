@@ -49,8 +49,6 @@ class MatchDAO extends AbstractDAO {
             ->where($qb->expr()->orX($qb->expr()->eq('m.status', ":status1"), $qb->expr()->eq('m.status', ":status2")))
             ->setParameter("status1", Match::PRE_MATCH_STATUS)
             ->setParameter("status2", Match::LIVE_STATUS)
-//            ->where($qb->expr()->gt('m.startTime', ":now"))
-//            ->setParameter("now", new \DateTime())
             ->orderBy("m.startTime", "ASC")
             ->setMaxResults(1);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
@@ -67,8 +65,6 @@ class MatchDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'm')
             ->where($qb->expr()->eq('m.status', ":status"))
             ->setParameter("status", Match::FULL_TIME_STATUS)
-//            ->where($qb->expr()->lt('m.startTime', ":now"))
-//            ->setParameter("now", new \DateTime())
             ->orderBy("m.startTime", "DESC")
             ->setMaxResults(1);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
@@ -316,9 +312,7 @@ class MatchDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'm')
             ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
             ->join('m.homeTeam', 'h')
-            ->where($qb->expr()->gt('m.startTime', ":fromTime"))
-            ->andWhere($qb->expr()->lte('m.startTime', ":tillTime"))
-            ->andWhere($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
+            ->where($qb->expr()->orX($qb->expr()->andX($qb->expr()->gt('m.startTime', ":fromTime"), $qb->expr()->lte('m.startTime', ":tillTime"), $qb->expr()->eq('m.status', ':status1')), $qb->expr()->eq('m.status', ':status2')))
             ->orderBy('m.startTime', 'ASC')
             ->addOrderBy('h.displayName', 'ASC')
             ->setParameter("fromTime", $fromTime)

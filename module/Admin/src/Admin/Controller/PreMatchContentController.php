@@ -2,6 +2,9 @@
 
 namespace Admin\Controller;
 
+use \Admin\Form\MatchReportContentFieldset;
+use \Application\Manager\RegionManager;
+use \Admin\Form\MatchReportContentForm;
 use \Application\Model\Entities\ShareCopy;
 use \Admin\Form\PreMatchReportCopyForm;
 use \Application\Manager\ShareManager;
@@ -10,13 +13,15 @@ use \Application\Model\Helpers\MessagesConstants;
 use \Application\Manager\ExceptionManager;
 use \Neoco\Controller\AbstractActionController;
 
-class PreMatchShareCopyController extends AbstractActionController {
+class PreMatchContentController extends MatchContentController {
 
-    const ADMIN_PRE_MATCH_SHARE_COPY_ROUTE = 'admin-pre-match-share-copy';
+    const ADMIN_PRE_MATCH_CONTENT_ROUTE = 'admin-pre-match-content';
 
     public function indexAction() {
 
         $preMatchReportCopyForm = new PreMatchReportCopyForm();
+
+        $reportContentForm = $this->getReportContentForm(true);
 
         try {
 
@@ -45,7 +50,7 @@ class PreMatchShareCopyController extends AbstractActionController {
                     }
                     $shareManager->flushAndClearCache();
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_PRE_MATCH_SHARE_COPY_UPDATED);
-                    return $this->redirect()->toRoute(self::ADMIN_PRE_MATCH_SHARE_COPY_ROUTE);
+                    return $this->redirect()->toRoute(self::ADMIN_PRE_MATCH_CONTENT_ROUTE);
                 } else
                     foreach ($preMatchReportCopyForm->getMessages() as $el => $messages)
                         $this->flashMessenger()->addErrorMessage($preMatchReportCopyForm->get($el)->getLabel() . ": " .
@@ -58,8 +63,19 @@ class PreMatchShareCopyController extends AbstractActionController {
 
         return array(
             'preMatchReportCopyForm' => $preMatchReportCopyForm,
+            'reportContentForm' => $reportContentForm,
         );
 
+    }
+
+    protected function getRedirectRoute()
+    {
+        return self::ADMIN_PRE_MATCH_CONTENT_ROUTE;
+    }
+
+    protected function getMatchReportType()
+    {
+        return \Application\Model\Entities\DefaultReportContent::PRE_MATCH_TYPE;
     }
 
 }
