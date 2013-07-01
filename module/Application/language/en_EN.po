@@ -887,3 +887,6 @@ msgstr "Acy"
 msgid "Cannot connect user to facebook account because facebook email has already taken by another user."
 msgstr "Cannot connect user to facebook account because facebook email has already taken by another user."
 
+msgid "Your Facebook data will be used to create your account."
+msgstr "Your Facebook data will be used to create your account."
+
