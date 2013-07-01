@@ -128,16 +128,25 @@ class PredictionManager extends BasicManager {
         if (!empty($matchData)) {
             $match = $matchDAO->getMatchInfo($matchData['matchId'], $hydrate, $skipCache);
             $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
-            $homeSquad = $match['hasLineUp'] ? $matchDAO->getMatchTeamSquad($matchData['matchId'], $match['homeId'], $hydrate, $skipCache) :
-                $teamDAO->getTeamSquadInCompetition($match['homeId'], $matchData['competitionId'], $hydrate, $skipCache);
+            $homeSquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['homeId'], $matchData['competitionId'], $hydrate, $skipCache);
             $match['homeSquad'] = $this->preparePlayers($homeSquad);
-            $awaySquad = $match['hasLineUp'] ? $matchDAO->getMatchTeamSquad($matchData['matchId'], $match['awayId'], $hydrate, $skipCache) :
-                $teamDAO->getTeamSquadInCompetition($match['awayId'], $matchData['competitionId'], $hydrate, $skipCache);
+            $awaySquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['awayId'], $matchData['competitionId'], $hydrate, $skipCache);
             $match['awaySquad'] = $this->preparePlayers($awaySquad);
             $match['prediction'] = $predictionDAO->getUserPrediction($matchData['matchId'], $user->getId(), true, $skipCache);
             return $match;
         } else
             return null;
+    }
+
+    private function getTeamSquad($hasLineUp, $matchId, $teamId, $competitionId, $hydrate, $skipCache) {
+        if ($hasLineUp)
+            $squad = MatchDAO::getInstance($this->getServiceLocator())->getMatchTeamSquad($matchId, $teamId, $hydrate, $skipCache);
+        else {
+            $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquadInCompetition($teamId, $competitionId, $hydrate, $skipCache);
+            if (empty($squad))
+                $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquad($teamId, $hydrate, $skipCache);
+        }
+        return $squad;
     }
 
     /**
