@@ -101,7 +101,6 @@ class TeamDAO extends AbstractDAO {
             ->setParameter('seasonId', $season->getId())
             ->setParameter('clubId', $club->getId());
         return $query->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
-        // TODO to add season condition and group by team id, add current club
     }
 
 

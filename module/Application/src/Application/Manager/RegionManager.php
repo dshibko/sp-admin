@@ -202,7 +202,6 @@ class RegionManager extends BasicManager {
                 )
             );
             $headerImage = $fieldset->get('pre_match_report_header_image')->getValue();
-            //TODO resize background
             $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('pre_match_report_header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
             if ($hImage){
                 $regionsData[$region['id']]['pre_match_report']['header_image_path'] = $hImage;
@@ -225,7 +224,6 @@ class RegionManager extends BasicManager {
                 )
             );
             $headerImage = $fieldset->get('post_match_report_header_image')->getValue();
-            //TODO resize background
             $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('post_match_report_header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
             if ($hImage){
                 $regionsData[$region['id']]['post_match_report']['header_image_path'] = $hImage;

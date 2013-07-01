@@ -155,10 +155,7 @@ class LanguagesController extends AbstractActionController
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_LANGUAGE_UPDATED);
                     return $this->redirect()->toUrl($this->url()->fromRoute(self::LANGUAGE_LIST_PAGE_ROUTE, $params));
                 } else {
-                    //TODO move this to separate method
-                    foreach ($languageForm->getMessages() as $el => $messages) {
-                        $this->flashMessenger()->addErrorMessage($languageForm->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
-                    }
+                   $this->formErrors($languageForm, $this);
 
                 }
             }

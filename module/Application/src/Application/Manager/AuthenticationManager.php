@@ -137,7 +137,7 @@ class AuthenticationManager extends BasicManager {
      * @return string
      */
     private function preparePassword($password) {
-        return md5($password); // TODO to define password strategy
+        return md5($password);
     }
 
     /**

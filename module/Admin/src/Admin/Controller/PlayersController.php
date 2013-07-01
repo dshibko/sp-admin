@@ -64,7 +64,6 @@ class PlayersController extends AbstractActionController
                 if ($form->isValid()){
                     try {
                         $imageManager = ImageManager::getInstance($this->getServiceLocator());
-                        //TODO resize images
                         //Player Avatar
                         $avatar = $form->get('imagePath')->getValue();
                         if (!array_key_exists('stored', $avatar) || $avatar['stored'] == 0) {
@@ -84,7 +83,7 @@ class PlayersController extends AbstractActionController
                             $player->setBackgroundImagePath($backgroundPath);
                         }
                         $data = $form->getData();
-                        //Check changed data  TODO check status
+                        //Check changed data
                         if (!$player->getIsBlocked()){
                             if ($player->getDisplayName() != $data['displayName'] || $player->getShirtNumber() != $data['shirtNumber']){
                                 $player->setIsBlocked(true);

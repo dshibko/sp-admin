@@ -8,7 +8,6 @@ class FormErrors extends AbstractPlugin
     public function __invoke(\Zend\Form\Form $form, \Zend\Mvc\Controller\AbstractActionController $controller)
     {
         $translator = $controller->getServiceLocator()->get('translator');
-        //TODO need refactoring
         foreach ($form->getMessages() as $el => $messages) {
             $label = $translator->translate($form->get($el)->getLabel());
 

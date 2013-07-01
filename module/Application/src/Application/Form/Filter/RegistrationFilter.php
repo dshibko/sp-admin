@@ -213,7 +213,6 @@ class RegistrationFilter implements InputFilterAwareInterface
                     )
                 ),
             )));
-            //TODO strength indicator
             //Password
             $inputFilter->add($factory->createInput(array(
                 'name' => 'password',
