@@ -98,7 +98,7 @@ class UserManager extends BasicManager {
      */
     private function deleteAvatarImages(\Application\Model\Entities\Avatar $avatar)
     {
-        //TODO change web separator to directory separator
+
         //Delete user avatars
         $publicPath = ImageManager::getInstance($this->getServiceLocator())->getAppPublicPath();
         if (file_exists($publicPath.$avatar->getBigImagePath())){
@@ -293,7 +293,6 @@ class UserManager extends BasicManager {
             $user->setAvatar($newAvatar);
             UserDAO::getInstance($this->getServiceLocator())->save($user, false, false);
             if (!$oldAvatar->getIsDefault()){
-                //TODO move these lines to method
                 $this->deleteAvatarImages($oldAvatar);
                 AvatarDAO::getInstance($this->getServiceLocator())->remove($oldAvatar, false, false);
             }
@@ -371,7 +370,6 @@ class UserManager extends BasicManager {
         $userDAO = UserDAO::getInstance($this->getServiceLocator());
         $accountRemovalDAO = AccountRemovalDAO::getInstance($this->getServiceLocator());
         $avatarDAO = AvatarDAO::getInstance($this->getServiceLocator());
-        //TODO remove predictions, etc all user data
         if ($user->getFacebookId() && $deleteFacebookApp){
             //remove facebook application
             $facebook = $this->getServiceLocator()->get('facebook');
@@ -380,7 +378,6 @@ class UserManager extends BasicManager {
         $avatar = $user->getAvatar();
         $userDAO->remove($user, false, false);
         if (!$avatar->getIsDefault()){
-            //TODO move these lines to method
             $this->deleteAvatarImages($avatar);
             $avatarDAO->remove($avatar, false, false);
         }

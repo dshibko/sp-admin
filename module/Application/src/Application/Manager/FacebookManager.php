@@ -122,7 +122,7 @@ class FacebookManager extends BasicManager
      * @return array
      */
     public function getFacebookUserInfo($facebookAccessToken, $facebookId)
-    { //TODO handle change password, de-authorize app, logs out facebook when getting data with access token
+    {
         $data = array();
         try {
             $this->getFacebookAPI()->setAccessToken($facebookAccessToken);
@@ -134,7 +134,6 @@ class FacebookManager extends BasicManager
                 'query' => $userFriendsCountQuery
             ));
             // Get link to avatar
-            //TODO create method to get url by user
             $avatarLink = self::GRAPH_API_URL . $facebookId .'/picture?type=large';
             //Get user likes
             $userLikesQuery = 'SELECT name FROM page WHERE page_id IN (SELECT page_id FROM page_fan WHERE uid = '.$facebookId.')';

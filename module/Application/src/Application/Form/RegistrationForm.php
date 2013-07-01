@@ -54,7 +54,6 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
         return $days;
     }
 
-    //TODO find zend array of months
     private function getMonths()
     {
         return array(

@@ -31,7 +31,6 @@ class EmblemDAO extends AbstractDAO {
         return 'Application\Model\Entities\Emblem';
     }
 
-    //TODO we have one emblem for now
     public function getEmblem($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('e')

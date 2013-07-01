@@ -124,7 +124,6 @@ class UserController extends AbstractActionController
 
                     //Change Email Settings
                     case self::FORM_TYPE_CHANGE_EMAIL_SETTINGS : {
-                        //TODO process email settings
                         $emailSettingsForm->setData($request->getPost());
                         $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_NEW_EMAIL_SETTINGS_SAVED));
                         $success = true;

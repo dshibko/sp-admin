@@ -11,7 +11,6 @@ $this->headTitle($title);
                 <div class="portlet-title">
                     <h4><i class="icon-user"></i><?=$this->translate('Admins')?></h4>
                     <div class="actions">
-                        <?php //TODO check if super admin to add users?>
                         <a href="<?=$this->url('admin-users', array('action' => 'addAdmin'))?>" class="btn green"><i class="icon-plus"></i> <?=$this->translate('New admin')?></a>
                     </div>
                 </div>
