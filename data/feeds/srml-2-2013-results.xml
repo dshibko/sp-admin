@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2001-2013 Opta Sportsdata Ltd. All rights reserved. -->
+
+<!-- PRODUCTION HEADER
+     produced on:        valde-jobq-a06.nexus.opta.net
+     production time:    20130630T170339,934Z
+     production module:  Opta::Feed::XML::Soccer::F1
+-->
+<SoccerFeed>
+  <SoccerDocument Type="RESULTS Latest" competition_code="EN_LC" competition_id="2" competition_name="English League Cup" game_system_id="1" season_id="2013" season_name="Season 2013/2014" timestamp="2013-06-30 18-03-39">
+    <MatchData detail_id="3" last_modified="2013-06-26T15:18:44+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694860">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="105">
+        <Date>2013-08-05 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Deepdale</Stat>
+      <Stat Type="City">Preston</Stat>
+      <TeamData Side="Home" TeamRef="t107" />
+      <TeamData Side="Away" TeamRef="t92" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:36:30+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694835">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="53">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Oakwell Stadium</Stat>
+      <Stat Type="City">Barnsley</Stat>
+      <TeamData Side="Home" TeamRef="t37" />
+      <TeamData Side="Away" TeamRef="t93" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:42:07+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694836">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="57">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">St. Andrew&#39;s Stadium</Stat>
+      <Stat Type="City">Birmingham</Stat>
+      <TeamData Side="Home" TeamRef="t41" />
+      <TeamData Side="Away" TeamRef="t76" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:42:22+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694837">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="2734">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Seward Stadium</Stat>
+      <Stat Type="City">Bournemouth</Stat>
+      <TeamData Side="Home" TeamRef="t91" />
+      <TeamData Side="Away" TeamRef="t47" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:42:41+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694838">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="92">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Griffin Park</Stat>
+      <Stat Type="City">Brentford</Stat>
+      <TeamData Side="Home" TeamRef="t94" />
+      <TeamData Side="Away" TeamRef="t457" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:42:58+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694839">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="7403">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Amex Stadium</Stat>
+      <Stat Type="City">Falmer</Stat>
+      <TeamData Side="Home" TeamRef="t36" />
+      <TeamData Side="Away" TeamRef="t437" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:43:15+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694840">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="94">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">The Memorial Stadium</Stat>
+      <Stat Type="City">Bristol</Stat>
+      <TeamData Side="Home" TeamRef="t96" />
+      <TeamData Side="Away" TeamRef="t57" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:43:29+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694841">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="93">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Gigg Lane</Stat>
+      <Stat Type="City">Bury</Stat>
+      <TeamData Side="Home" TeamRef="t95" />
+      <TeamData Side="Away" TeamRef="t51" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:43:44+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694842">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="19">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Brunton Park</Stat>
+      <Stat Type="City">Carlisle</Stat>
+      <TeamData Side="Home" TeamRef="t68" />
+      <TeamData Side="Away" TeamRef="t5" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:44:30+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694843">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="49">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">The Valley</Stat>
+      <Stat Type="City">London</Stat>
+      <TeamData Side="Home" TeamRef="t33" />
+      <TeamData Side="Away" TeamRef="t106" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:44:51+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694844">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="85">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Whaddon Road</Stat>
+      <Stat Type="City">Cheltenham</Stat>
+      <TeamData Side="Home" TeamRef="t87" />
+      <TeamData Side="Away" TeamRef="t1525" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:45:15+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694845">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="7934">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Weston Homes Community Stadium</Stat>
+      <Stat Type="City">Colchester</Stat>
+      <TeamData Side="Home" TeamRef="t99" />
+      <TeamData Side="Away" TeamRef="t73" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:46:31+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694846">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="3314">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">The Keepmoat Stadium</Stat>
+      <Stat Type="City">Doncaster</Stat>
+      <TeamData Side="Home" TeamRef="t290" />
+      <TeamData Side="Away" TeamRef="t82" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:46:46+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694847">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="22">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">St James Park</Stat>
+      <Stat Type="City">Exeter</Stat>
+      <TeamData Side="Home" TeamRef="t71" />
+      <TeamData Side="Away" TeamRef="t52" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:47:05+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694848">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="98">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Priestfield Stadium</Stat>
+      <Stat Type="City">Gillingham</Stat>
+      <TeamData Side="Home" TeamRef="t100" />
+      <TeamData Side="Away" TeamRef="t113" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:47:19+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694849">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="54">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Galpharm Stadium</Stat>
+      <Stat Type="City">Huddersfield</Stat>
+      <TeamData Side="Home" TeamRef="t38" />
+      <TeamData Side="Away" TeamRef="t55" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:49:09+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694850">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="29">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Elland Road</Stat>
+      <Stat Type="City">Leeds</Stat>
+      <TeamData Side="Home" TeamRef="t2" />
+      <TeamData Side="Away" TeamRef="t98" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:49:23+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694851">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="2737">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Matchroom Stadium</Stat>
+      <Stat Type="City">London</Stat>
+      <TeamData Side="Home" TeamRef="t85" />
+      <TeamData Side="Away" TeamRef="t9" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:50:11+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694852">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="46">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Riverside Stadium</Stat>
+      <Stat Type="City">Middlesbrough</Stat>
+      <TeamData Side="Home" TeamRef="t25" />
+      <TeamData Side="Away" TeamRef="t888" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T11:07:33+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694853">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="101">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">The New Den</Stat>
+      <Stat Type="City">London</Stat>
+      <TeamData Side="Home" TeamRef="t103" />
+      <TeamData Side="Away" TeamRef="t2623" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:50:38+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694854">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="7483">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Globe Arena</Stat>
+      <Stat Type="City">Morecambe</Stat>
+      <TeamData Side="Home" TeamRef="t286" />
+      <TeamData Side="Away" TeamRef="t39" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:50:53+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694855">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="26">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Sixfields Stadium</Stat>
+      <Stat Type="City">Northampton</Stat>
+      <TeamData Side="Home" TeamRef="t75" />
+      <TeamData Side="Away" TeamRef="t22" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:53:27+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694856">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="40">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">City Ground</Stat>
+      <Stat Type="City">Nottingham</Stat>
+      <TeamData Side="Home" TeamRef="t17" />
+      <TeamData Side="Away" TeamRef="t89" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:53:42+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694857">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="102">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Meadow Lane</Stat>
+      <Stat Type="City">Nottingham</Stat>
+      <TeamData Side="Home" TeamRef="t104" />
+      <TeamData Side="Away" TeamRef="t2048" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:53:55+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694858">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="103">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Boundary Park</Stat>
+      <Stat Type="City">Oldham</Stat>
+      <TeamData Side="Home" TeamRef="t105" />
+      <TeamData Side="Away" TeamRef="t24" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:57:20+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694859">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="66">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Vale Park</Stat>
+      <Stat Type="City">Port Vale</Stat>
+      <TeamData Side="Home" TeamRef="t50" />
+      <TeamData Side="Away" TeamRef="t42" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T10:58:09+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694861">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="8148">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">New York Stadium</Stat>
+      <Stat Type="City">Rotherham</Stat>
+      <TeamData Side="Home" TeamRef="t72" />
+      <TeamData Side="Away" TeamRef="t19" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T11:00:25+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694862">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="65">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Bramall Lane</Stat>
+      <Stat Type="City">Sheffield</Stat>
+      <TeamData Side="Home" TeamRef="t49" />
+      <TeamData Side="Away" TeamRef="t587" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T11:00:39+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694863">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="4784">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">New Meadow</Stat>
+      <Stat Type="City">Shrewsbury</Stat>
+      <TeamData Side="Home" TeamRef="t74" />
+      <TeamData Side="Away" TeamRef="t30" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T11:00:57+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694864">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="79">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Roots Hall</Stat>
+      <Stat Type="City">Southend</Stat>
+      <TeamData Side="Home" TeamRef="t81" />
+      <TeamData Side="Away" TeamRef="t283" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T11:01:15+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694865">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="2882">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Broadhall Way</Stat>
+      <Stat Type="City">Stevenage</Stat>
+      <TeamData Side="Home" TeamRef="t288" />
+      <TeamData Side="Away" TeamRef="t40" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T11:01:37+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694866">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="62">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">The County Ground</Stat>
+      <Stat Type="City">Swindon</Stat>
+      <TeamData Side="Home" TeamRef="t46" />
+      <TeamData Side="Away" TeamRef="t79" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T11:02:26+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694867">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="60">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Prenton Park</Stat>
+      <Stat Type="City">Tranmere</Stat>
+      <TeamData Side="Home" TeamRef="t44" />
+      <TeamData Side="Away" TeamRef="t77" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T11:03:10+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694868">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="3">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Adams Park</Stat>
+      <Stat Type="City">Wycombe</Stat>
+      <TeamData Side="Home" TeamRef="t112" />
+      <TeamData Side="Away" TeamRef="t13" />
+    </MatchData>
+    <MatchData detail_id="3" last_modified="2013-06-18T11:03:25+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g694869">
+      <MatchInfo MatchType="Cup" Period="PreMatch" RoundNumber="1" RoundType="Round" Venue_id="76">
+        <Date>2013-08-06 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Bootham Crescent</Stat>
+      <TeamData Side="Home" TeamRef="t78" />
+      <TeamData Side="Away" TeamRef="t90" />
+    </MatchData>
+    <TimingTypes>
+      <DetailTypes>
+        <DetailType detail_id="0" name="Unknown" />
+        <DetailType detail_id="1" name="All Events (with positions)" />
+        <DetailType detail_id="2" name="All Events" />
+        <DetailType detail_id="3" name="Key Events" />
+        <DetailType detail_id="4" name="Lineups, Goals &amp; Cards" />
+        <DetailType detail_id="5" name="Goals" />
+        <DetailType detail_id="6" name="Scores" />
+      </DetailTypes>
+      <TimestampAccuracyTypes>
+        <TimestampAccuracyType name="Unknown" timing_id="0" />
+        <TimestampAccuracyType name="Fully Accurate Timestamps (24hr + Match Times)" timing_id="1" />
+        <TimestampAccuracyType name="Accurate Match Times only" timing_id="2" />
+        <TimestampAccuracyType name="To The Minute Accurate" timing_id="3" />
+        <TimestampAccuracyType name="Low Level Accurate Match Times" timing_id="4" />
+        <TimestampAccuracyType name="No Match Time Accuracy" timing_id="5" />
+      </TimestampAccuracyTypes>
+      <TimingType>
+        <TimingType name="Unknown" timestamp_accuracy_id="0" />
+        <TimingType name="Live" timestamp_accuracy_id="1" />
+        <TimingType name="Live Delayed" timestamp_accuracy_id="2" />
+        <TimingType name="Post Match (less than 24 hours)" timestamp_accuracy_id="3" />
+        <TimingType name="Post Match (24 hours+)" timestamp_accuracy_id="4" />
+      </TimingType>
+    </TimingTypes>
+    <Team uID="t33">
+      <Name>Charlton Athletic</Name>
+    </Team>
+    <Team uID="t90">
+      <Name>Burnley</Name>
+    </Team>
+    <Team uID="t71">
+      <Name>Exeter City</Name>
+    </Team>
+    <Team uID="t288">
+      <Name>Stevenage</Name>
+    </Team>
+    <Team uID="t457">
+      <Name>Dagenham and Redbridge</Name>
+    </Team>
+    <Team uID="t99">
+      <Name>Colchester United</Name>
+    </Team>
+    <Team uID="t72">
+      <Name>Rotherham United</Name>
+    </Team>
+    <Team uID="t44">
+      <Name>Tranmere Rovers</Name>
+    </Team>
+    <Team uID="t55">
+      <Name>Bradford City</Name>
+    </Team>
+    <Team uID="t587">
+      <Name>Burton Albion</Name>
+    </Team>
+    <Team uID="t74">
+      <Name>Shrewsbury Town</Name>
+    </Team>
+    <Team uID="t437">
+      <Name>Newport County</Name>
+    </Team>
+    <Team uID="t57">
+      <Name>Watford</Name>
+    </Team>
+    <Team uID="t95">
+      <Name>Bury</Name>
+    </Team>
+    <Team uID="t92">
+      <Name>Blackpool</Name>
+    </Team>
+    <Team uID="t888">
+      <Name>Accrington Stanley</Name>
+    </Team>
+    <Team uID="t103">
+      <Name>Millwall</Name>
+    </Team>
+    <Team uID="t89">
+      <Name>Hartlepool United</Name>
+    </Team>
+    <Team uID="t113">
+      <Name>Bristol City</Name>
+    </Team>
+    <Team uID="t2623">
+      <Name>AFC Wimbledon</Name>
+    </Team>
+    <Team uID="t91">
+      <Name>Bournemouth</Name>
+    </Team>
+    <Team uID="t78">
+      <Name>York City</Name>
+    </Team>
+    <Team uID="t107">
+      <Name>Preston North End</Name>
+    </Team>
+    <Team uID="t87">
+      <Name>Cheltenham Town</Name>
+    </Team>
+    <Team uID="t93">
+      <Name>Scunthorpe United</Name>
+    </Team>
+    <Team uID="t77">
+      <Name>Mansfield Town</Name>
+    </Team>
+    <Team uID="t106">
+      <Name>Oxford United</Name>
+    </Team>
+    <Team uID="t290">
+      <Name>Doncaster Rovers</Name>
+    </Team>
+    <Team uID="t1525">
+      <Name>Crawley Town</Name>
+    </Team>
+    <Team uID="t50">
+      <Name>Port Vale</Name>
+    </Team>
+    <Team uID="t39">
+      <Name>Wolverhampton Wanderers</Name>
+    </Team>
+    <Team uID="t41">
+      <Name>Birmingham City</Name>
+    </Team>
+    <Team uID="t52">
+      <Name>Queens Park Rangers</Name>
+    </Team>
+    <Team uID="t81">
+      <Name>Southend United</Name>
+    </Team>
+    <Team uID="t73">
+      <Name>Peterborough United</Name>
+    </Team>
+    <Team uID="t19">
+      <Name>Sheffield Wednesday</Name>
+    </Team>
+    <Team uID="t76">
+      <Name>Plymouth Argyle</Name>
+    </Team>
+    <Team uID="t68">
+      <Name>Carlisle United</Name>
+    </Team>
+    <Team uID="t2">
+      <Name>Leeds United</Name>
+    </Team>
+    <Team uID="t17">
+      <Name>Nottingham Forest</Name>
+    </Team>
+    <Team uID="t30">
+      <Name>Bolton Wanderers</Name>
+    </Team>
+    <Team uID="t100">
+      <Name>Gillingham</Name>
+    </Team>
+    <Team uID="t82">
+      <Name>Rochdale</Name>
+    </Team>
+    <Team uID="t25">
+      <Name>Middlesbrough</Name>
+    </Team>
+    <Team uID="t286">
+      <Name>Morecambe</Name>
+    </Team>
+    <Team uID="t2048">
+      <Name>Fleetwood Town</Name>
+    </Team>
+    <Team uID="t283">
+      <Name>Yeovil Town</Name>
+    </Team>
+    <Team uID="t40">
+      <Name>Ipswich Town</Name>
+    </Team>
+    <Team uID="t75">
+      <Name>Northampton Town</Name>
+    </Team>
+    <Team uID="t112">
+      <Name>Wycombe Wanderers</Name>
+    </Team>
+    <Team uID="t49">
+      <Name>Sheffield United</Name>
+    </Team>
+    <Team uID="t24">
+      <Name>Derby County</Name>
+    </Team>
+    <Team uID="t104">
+      <Name>Notts County</Name>
+    </Team>
+    <Team uID="t79">
+      <Name>Torquay United</Name>
+    </Team>
+    <Team uID="t22">
+      <Name>MK Dons</Name>
+    </Team>
+    <Team uID="t42">
+      <Name>Walsall</Name>
+    </Team>
+    <Team uID="t46">
+      <Name>Swindon Town</Name>
+    </Team>
+    <Team uID="t13">
+      <Name>Leicester City</Name>
+    </Team>
+    <Team uID="t96">
+      <Name>Bristol Rovers</Name>
+    </Team>
+    <Team uID="t105">
+      <Name>Oldham Athletic</Name>
+    </Team>
+    <Team uID="t85">
+      <Name>Leyton Orient</Name>
+    </Team>
+    <Team uID="t36">
+      <Name>Brighton and Hove Albion</Name>
+    </Team>
+    <Team uID="t94">
+      <Name>Brentford</Name>
+    </Team>
+    <Team uID="t9">
+      <Name>Coventry City</Name>
+    </Team>
+    <Team uID="t51">
+      <Name>Crewe Alexandra</Name>
+    </Team>
+    <Team uID="t47">
+      <Name>Portsmouth</Name>
+    </Team>
+    <Team uID="t38">
+      <Name>Huddersfield Town</Name>
+    </Team>
+    <Team uID="t98">
+      <Name>Chesterfield</Name>
+    </Team>
+    <Team uID="t37">
+      <Name>Barnsley</Name>
+    </Team>
+    <Team uID="t5">
+      <Name>Blackburn Rovers</Name>
+    </Team>
+  </SoccerDocument>
+</SoccerFeed>
