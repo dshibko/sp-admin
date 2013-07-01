@@ -417,49 +417,50 @@ return array(
                         'title' => 'Users',
                         'label' => 'icon-underline',
                         'route' => 'admin-users',
-                        'action' => 'index',
+                        'action' => 'admins',
                         'sub-menu' => true,
                         'pages' => array(
-                                array(
-                                    'title' => 'All Users',
-                                    'label' => 'icon-underline',
-                                    'route' => 'admin-users',
-                                    'action' => 'index',
-                                    'pages' => array(
-                                        array(
-                                            'title' => 'View',
-                                            'label' => 'icon-eye-open',
-                                            'route' => 'admin-users',
-                                            'action' => 'view',
-                                        ),
+                            array(
+                                'title' => 'Admins',
+                                'label' => 'icon-font',
+                                'route' => 'admin-users',
+                                'action' => 'admins',
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Add Admin',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-users',
+                                        'action' => 'addAdmin',
+                                    ),
+                                    array(
+                                        'title' => 'Edit Admin',
+                                        'label' => 'icon-edit',
+                                        'route' => 'admin-users',
+                                        'action' => 'editAdmin',
+                                    ),
+                                    array(
+                                        'title' => 'Delete Admin',
+                                        'label' => 'icon-minus',
+                                        'route' => 'admin-users',
+                                        'action' => 'deleteAdmin',
                                     ),
                                 ),
-                                array(
-                                    'title' => 'Admins',
-                                    'label' => 'icon-font',
-                                    'route' => 'admin-users',
-                                    'action' => 'admins',
-                                    'pages' => array(
-                                        array(
-                                            'title' => 'Add Admin',
-                                            'label' => 'icon-plus',
-                                            'route' => 'admin-users',
-                                            'action' => 'addAdmin',
-                                        ),
-                                        array(
-                                            'title' => 'Edit Admin',
-                                            'label' => 'icon-edit',
-                                            'route' => 'admin-users',
-                                            'action' => 'editAdmin',
-                                        ),
-                                        array(
-                                            'title' => 'Delete Admin',
-                                            'label' => 'icon-minus',
-                                            'route' => 'admin-users',
-                                            'action' => 'deleteAdmin',
-                                        ),
+                            ),
+                            array(
+                                'title' => 'All Users',
+                                'label' => 'icon-underline',
+                                'route' => 'admin-users',
+                                'action' => 'index',
+                                'pages' => array(
+                                    array(
+                                        'title' => 'View',
+                                        'label' => 'icon-eye-open',
+                                        'route' => 'admin-users',
+                                        'action' => 'view',
                                     ),
                                 ),
+                            ),
+
                         )
                     ),
                     'admin-account' => array(
