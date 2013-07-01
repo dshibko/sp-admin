@@ -132,6 +132,7 @@ class MessagesConstants
     const INFO_YOU_PREDICTED_SCORER_ORDER = "You predicted that %s will score goal number %s of %s";
     const INFO_YOUR_ACCURACY = "You were %s accurate in your prediction";
     const INFO_THIS_IS_DOUBLE_POINTS_MATCH = "This is double points match";
+    const INFO_FACEBOOK_CONNECT_BUTTON = "Your Facebook data will be used to create your account.";
 
     const FAILED_CONNECTION_TO_FACEBOOK = 'Error happened while connecting to your facebook account. Please try again later';
     const FAILED_RETRIEVING_FACEBOOK_DATA = 'Error happened while retrieving your facebook data. Please try again later.';
