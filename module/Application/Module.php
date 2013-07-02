@@ -290,6 +290,7 @@ class Module
                 },
                 'confirmPasswordValidator' => function($sm){
                     $confirmPasswordValidator = new \Neoco\Validator\ConfirmPasswordValidator();
+                    $confirmPasswordValidator->setServiceLocator($sm);
                     $user = ApplicationManager::getInstance($sm)->getCurrentUser();
                     if (!is_null($user)){
                         $confirmPasswordValidator->setPassword($user->getPassword());

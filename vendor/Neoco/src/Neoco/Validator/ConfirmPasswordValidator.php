@@ -1,6 +1,7 @@
 <?php
 namespace Neoco\Validator;
 
+use Application\Manager\ApplicationManager;
 use Zend\Validator\AbstractValidator;
 
 class ConfirmPasswordValidator  extends AbstractValidator
@@ -16,6 +17,19 @@ class ConfirmPasswordValidator  extends AbstractValidator
      * @param mixed $password
      * @return $this
      */
+    /**
+     * @var \Zend\ServiceManager\ServiceLocatorInterface
+     */
+    protected $serviceLocator;
+
+    /**
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocator
+     */
+    public function setServiceLocator(\Zend\ServiceManager\ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
     public function setPassword($password)
     {
         $this->password = $password;
@@ -36,8 +50,9 @@ class ConfirmPasswordValidator  extends AbstractValidator
     }
 
     public function isValid($value){
+        $applicationManager = ApplicationManager::getInstance($this->serviceLocator);
         $this->setValue($value);
-        if (md5($value) !== $this->getPassword()){
+        if ($applicationManager->encryptPassword($value, $this->getPassword()) !== $this->getPassword()){
             $this->error(self::INCORRECT_PASSWORD);
             return false;
         }
