@@ -165,7 +165,7 @@ class IndexController extends AbstractActionController
                         if ($passwordForm->isValid()){
                             $data = $passwordForm->getData();
                             //Check Old Password
-                            if ($user->getPassword() !== $applicationManager->encryptPassword($data['password'])){
+                            if ($user->getPassword() !== $applicationManager->encryptPassword($data['password'], $user->getPassword())){
                                 throw new \Exception(MessagesConstants::ERROR_INVALID_OLD_PASSWORD);
                             }
                             $user->setPassword($applicationManager->encryptPassword($data['new_password']));
