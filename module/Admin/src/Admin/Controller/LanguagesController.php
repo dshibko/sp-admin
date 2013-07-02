@@ -156,7 +156,6 @@ class LanguagesController extends AbstractActionController
                     return $this->redirect()->toUrl($this->url()->fromRoute(self::LANGUAGE_LIST_PAGE_ROUTE, $params));
                 } else {
                    $this->formErrors($languageForm, $this);
-
                 }
             }
         } catch (\Exception $e) {

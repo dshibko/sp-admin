@@ -3069,3 +3069,7 @@ ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_2` FOREIGN KEY (`avatar_id`) REFERENCES `avatar` (`id`),
   ADD CONSTRAINT `user_ibfk_4` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`),
   ADD CONSTRAINT `user_ibfk_5` FOREIGN KEY (`country_id`) REFERENCES `country` (`id`);
+
+
+-- okh 02.07
+ALTER TABLE `country`  ADD INDEX `name` (`name`);

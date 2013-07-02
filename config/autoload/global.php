@@ -11,6 +11,8 @@
  * file.
  */
 
+use Neoco\View\Helper\AppClub;
+
 return array(
     'doctrine' => array(
         'connection' => array(
@@ -34,10 +36,20 @@ return array(
             )
         ),
     ),
+    'view_helpers' => array(
+        'factories' => array(
+            'getAppClub' => function($sm){
+                $appClub = new AppClub();
+                $appClub->setServiceLocator($sm->getServiceLocator());
+                return $appClub;
+            }
+        )
+    ),
     'email' => array(
         'fromEmail' => 'hello@neoco.com',
         'fromName' => 'Score Predictor',
     ),
+
     'app_name' => 'Score Predictor',
     'admin_assets_path_prefix' => '/admin-',
     'skip-cache-uri-patterns' => array('/admin/*'),

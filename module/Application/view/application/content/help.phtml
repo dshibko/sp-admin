@@ -37,10 +37,12 @@ $this->headTitle($title );
             </div>
         </section>
         <?php echo $this->form()->closeTag();?>
-        <section class="faqs">
-            <h1><?php echo $this->translate('FAQs');?></h1>
-            <?php echo $this->content;?>
-        </section>
+        <?php if (!empty($this->content)):?>
+            <section class="faqs">
+                <h1><?php echo $this->translate('FAQs');?></h1>
+                <?php echo $this->content;?>
+            </section>
+        <?php endif;?>
     </div>
     <?php if ($this->getCurrentUser()):?>
         <?php echo $this->partial('partials/right-column');?>

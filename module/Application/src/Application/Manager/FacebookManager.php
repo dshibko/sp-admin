@@ -134,7 +134,6 @@ class FacebookManager extends BasicManager
                 'query' => $userFriendsCountQuery
             ));
             // Get link to avatar
-
             $avatarLink = self::GRAPH_API_URL . $facebookId .'/picture?type=large';
             //Get user likes
             $userLikesQuery = 'SELECT name FROM page WHERE page_id IN (SELECT page_id FROM page_fan WHERE uid = '.$facebookId.')';
