@@ -2839,7 +2839,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`id`, `title`, `first_name`, `last_name`, `email`, `password`, `country_id`, `birthday`, `gender`, `display_name`, `avatar_id`, `language_id`, `role_id`, `favourite_player_id`, `is_active`, `is_public`, `facebook_id`, `facebook_access_token`, `date`, `last_logged_in`) VALUES
-(1, 'Mr.', 'Super', 'Admin', 'super@admin.com', '7b19de6d4d54999531beb27f758f71f6', 95, '1987-10-31', 'Male', 'Super Admin', 1, 1, 1, NULL, 1, 1, NULL, NULL, '2013-05-04 15:43:00', '2013-06-30 23:20:07');
+(1, 'Mr.', 'Super', 'Admin', 'super@admin.com', '$1$8a/.vj/.$9VT7aco9Go/VEHRjSnHpa/', 95, '1987-10-31', 'Male', 'Super Admin', 1, 1, 1, NULL, 1, 1, NULL, NULL, '2013-05-04 15:43:00', '2013-06-30 23:20:07');
 
 --
 -- Constraints for dumped tables

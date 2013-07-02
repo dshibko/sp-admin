@@ -248,7 +248,7 @@ class Module
                         'identityProperty' => 'email',
                         'credentialProperty' => 'password',
                         'credentialCallable' => function($identity, $credential) use ($sm){
-                            return ApplicationManager::getInstance($sm)->encryptPassword($credential);
+                            return ApplicationManager::getInstance($sm)->encryptPassword($credential, $identity->getPassword());
                         }
                     ));
 
