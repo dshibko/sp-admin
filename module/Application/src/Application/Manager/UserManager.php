@@ -98,7 +98,6 @@ class UserManager extends BasicManager {
      */
     private function deleteAvatarImages(\Application\Model\Entities\Avatar $avatar)
     {
-
         //Delete user avatars
         $publicPath = ImageManager::getInstance($this->getServiceLocator())->getAppPublicPath();
         if (file_exists($publicPath.$avatar->getBigImagePath())){
