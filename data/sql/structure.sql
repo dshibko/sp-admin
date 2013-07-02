@@ -919,5 +919,5 @@ CREATE TABLE `default_report_content` (
   CONSTRAINT `FK_default_report_content_region` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`)
 ) COLLATE='utf8_general_ci' ENGINE=InnoDB;
 
---okh 02.07
+-- okh 02.07
 ALTER TABLE `country`  ADD INDEX `name` (`name`);
