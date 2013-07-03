@@ -91,7 +91,7 @@ class RegistrationController extends AbstractActionController
             }
             $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
             $userManager = UserManager::getInstance($this->getServiceLocator());
-            $country = $userManager->getUserGeoIpCountry();
+            $country = $user->getCountry();
             $language = $userManager->getUserLanguage();
             $form->get('region')->setValue($country->getId());
             $form->get('language')->setValue($language->getId());
