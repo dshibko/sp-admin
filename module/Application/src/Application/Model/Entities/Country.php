@@ -30,13 +30,6 @@ class Country extends BasicObject {
     /**
      * @var string
      *
-     * @ORM\Column(name="short_name", type="string", length=30, nullable=false)
-     */
-    private $shortName;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="iso_code", type="string", length=2, nullable=false)
      */
     private $isoCode;
@@ -113,29 +106,6 @@ class Country extends BasicObject {
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set shortName
-     *
-     * @param string $shortName
-     * @return Country
-     */
-    public function setShortName($shortName)
-    {
-        $this->shortName = $shortName;
-    
-        return $this;
-    }
-
-    /**
-     * Get shortName
-     *
-     * @return string 
-     */
-    public function getShortName()
-    {
-        return $this->shortName;
     }
 
     /**
