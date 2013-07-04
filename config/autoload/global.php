@@ -11,8 +11,6 @@
  * file.
  */
 
-use Neoco\View\Helper\AppClub;
-
 return array(
     'doctrine' => array(
         'connection' => array(
@@ -35,15 +33,6 @@ return array(
                 'result_cache'      => 'apc',
             )
         ),
-    ),
-    'view_helpers' => array(
-        'factories' => array(
-            'getAppClub' => function($sm){
-                $appClub = new AppClub();
-                $appClub->setServiceLocator($sm->getServiceLocator());
-                return $appClub;
-            }
-        )
     ),
     'email' => array(
         'fromEmail' => 'hello@neoco.com',
