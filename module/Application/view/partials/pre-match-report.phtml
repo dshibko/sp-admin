@@ -33,7 +33,6 @@
                 <div class="item col2 featured-player">
                     <section class="clearfix">
                         <img src="<?php echo !empty($featuredPlayer['backgroundImage']) ? $featuredPlayer['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                        <img src="<?php echo !empty($featuredPlayer['avatarImage']) ? $featuredPlayer['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Featured Player" class="player"/>
                         <div>
                             <hgroup>
                                 <h1><?php echo $this->translate('Featured Player');?></h1>
@@ -68,7 +67,6 @@
         <div class="item col2 featured-player">
             <section class="clearfix">
                 <img src="<?php echo !empty($featuredGoalkeeper['backgroundImage']) ? $featuredGoalkeeper['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                <img src="<?php echo !empty($featuredGoalkeeper['avatarImage']) ? $featuredGoalkeeper['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Featured Goalkeeper" class="player"/>
                 <div>
                     <hgroup>
                         <h1><?php echo $this->translate('GOAL KEEPER');?></h1>
@@ -159,10 +157,6 @@
         <div class="item col2 top-predicted-scorers">
             <section class="clearfix">
                 <img src="<?php echo !empty($topScorers['backgroundImage']) ? $topScorers['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                <?php if (isset($topScorers['avatarImage'])):?>
-                    <img src="<?php echo !empty($topScorers['avatarImage']) ? $topScorers['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Top scorer" class="player"/>
-                <?php endif;?>
-
                 <div>
                     <h1><?php echo $this->translate('Top predicted scorers');?></h1>
                     <?php
