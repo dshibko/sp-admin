@@ -43,6 +43,9 @@ class RegistrationController extends AbstractActionController
                     $request->getPost()->toArray(),
                     $request->getFiles()->toArray()
                 );
+                $post['email'] = isset($post['email']) ? strtolower($post['email']) : null;
+                $post['confirm_email'] = isset($post['confirm_email']) ? strtolower($post['confirm_email']) : null;
+
                 $form->setData($post)->prepareData();
                 if ($form->isValid()) {
                     $data = $form->getData();

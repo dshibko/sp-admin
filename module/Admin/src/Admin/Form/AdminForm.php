@@ -34,7 +34,17 @@ class AdminForm extends Form {
                 'label' => 'Last Name',
             ),
         ));
-
+        //Display Name
+        $this->add(array(
+            'name' => 'display_name',
+            'type'  => 'text',
+            'attributes' => array(
+                'maxlength'=> AdminFormFilter::DISPLAY_NAME_MAX_LENGTH
+            ),
+            'options' => array(
+                'label' => 'Display Name',
+            ),
+        ));
         //Permissions
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
@@ -77,6 +87,7 @@ class AdminForm extends Form {
     {
         $this->get('first_name')->setValue($user->getFirstName());
         $this->get('last_name')->setValue($user->getLastName());
+        $this->get('display_name')->setValue($user->getDisplayName());
         $this->get('email')->setValue($user->getEmail());
     }
 }
