@@ -444,7 +444,6 @@ class MatchManager extends BasicManager
                     'matchStarts' => (int)$featuredPlayer->getMatchStarts(),
                     'minutesPlayed' => (int)$featuredPlayer->getMinutesPlayed(),
                     'backgroundImage' => $featuredPlayer->getPlayer()->getBackgroundImagePath(),
-                    'avatarImage' => $featuredPlayer->getPlayer()->getImagePath()
                 );
             }
 
@@ -458,7 +457,6 @@ class MatchManager extends BasicManager
                     'penaltySaves' => (int)$featuredGoalkeeper->getPenaltySaves(),
                     'cleanSheets' => (int)$featuredGoalkeeper->getCleanSheets(),
                     'backgroundImage' => $featuredGoalkeeper->getPlayer()->getBackgroundImagePath(),
-                    'avatarImage' => $featuredGoalkeeper->getPlayer()->getImagePath()
                 );
             }
 
@@ -526,15 +524,12 @@ class MatchManager extends BasicManager
                 if (!empty($topScorers) && $matchPredictionPlayersCount){
                     $appClub = $applicationManager->getAppClub();
                     $scorers = array();
-                    $userClubScorers = array();
                     foreach($topScorers as $scorer){
-                        if ($scorer['team_id'] == $appClub->getId()){
-                            $userClubScorers[] = $scorer;
-                        }
                         $scorers[] = array(
                             'playerName' => $scorer['player_name'],
                             'percentage' => round( ($scorer['scorers_count'] / $matchPredictionPlayersCount) * 100),
-                            'isUserClub' => ($scorer['team_id'] == $appClub->getId())
+                            'isUserClub' => ($scorer['team_id'] == $appClub->getId()),
+                            'backgroundImage' => $scorer['backgroundImagePath']
                         );
                     }
                     usort($scorers,array($this, 'sortScorers'));
@@ -542,14 +537,17 @@ class MatchManager extends BasicManager
                     $report['topScorers'] = array(
                         'scorers' => $scorers
                     );
-                    if (!empty($userClubScorers)){
-                        $report['topScorers']['backgroundImage'] = !empty($userClubScorers[0]['backgroundImagePath']) ? $userClubScorers[0]['backgroundImagePath'] : '';
-                        $report['topScorers']['avatarImage'] = !empty($userClubScorers[0]['imagePath']) ? $userClubScorers[0]['imagePath'] : '';
+                    //Get User Club player background image
+                    if (!empty($scorers)){
+                        foreach($scorers as $scorer){
+                            if ($scorer['isUserClub']){
+                                $report['topScorers']['backgroundImage'] = $scorer['backgroundImage'];
+                                break;
+                            }
+                        }
                     }
                 }
             }
-
-
             //Match report top predicted scores
             $topScores = $predictionManager->getTopScores($predictionIds, self::TOP_SCORES_NUMBER, true);
             if (!empty($topScores) && $totalNumberOfPredictions){
@@ -648,15 +646,12 @@ class MatchManager extends BasicManager
 
                         if (!empty($scorersPredictionsCount)){
                             $scorers = array();
-                            $userClubScorers = array();
                             foreach($scorersPredictionsCount as $scorerCount){
-                                if ($scorerCount['teamId'] == $appClub->getId()){
-                                    $userClubScorers[] = $scorerCount;
-                                }
                                 $scorers[] = array(
                                     'playerName' => $scorerCount['player_name'],
                                     'percentage' => round( ($scorerCount['predictions_count'] / $matchPredictionPlayersCount) * 100),
-                                    'isUserClub' =>  ($scorerCount['teamId'] == $appClub->getId())
+                                    'isUserClub' =>  ($scorerCount['teamId'] == $appClub->getId()),
+                                    'backgroundImage' => $scorerCount['backgroundImagePath']
                                 );
                             }
                             usort($scorers,array($this, 'sortScorers'));
@@ -664,9 +659,15 @@ class MatchManager extends BasicManager
                             $report['correctScorers'] = array(
                                 'scorers' => $scorers,
                             );
-                            if (!empty($userClubScorers)){
-                               $report['correctScorers']['backgroundImage'] = !empty($userClubScorers[0]['backgroundImagePath']) ? $userClubScorers[0]['backgroundImagePath'] : '';
-                               $report['correctScorers']['avatarImage'] = !empty($userClubScorers[0]['imagePath']) ? $userClubScorers[0]['imagePath'] : '';
+
+                            //Get User Club player background image
+                            if (!empty($scorers)){
+                                foreach($scorers as $scorer){
+                                    if ($scorer['isUserClub']){
+                                        $report['correctScorers']['backgroundImage'] = $scorer['backgroundImage'];
+                                        break;
+                                    }
+                                }
                             }
                         }
 

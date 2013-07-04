@@ -140,7 +140,19 @@ class SettingsFormFilter extends InputFilter
                 ),
             ),
         )));
-
+        //GA Account Id
+        $this->add($factory->createInput(array(
+            'name' => 'ga-account-id',
+            'required' => true,
+            'validators' => array(
+                array(
+                    'name' => 'StringLength',
+                    'options' => array(
+                        'max' => self::MAX_VALUE_LENGTH
+                    )
+                ),
+            )
+        )));
         //Main Site Link
         $this->add($factory->createInput(array(
             'name' => 'main-site-link',
