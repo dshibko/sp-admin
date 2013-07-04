@@ -469,7 +469,7 @@ class UserManager extends BasicManager {
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
         }
         $lastLoggedIn = $user->getLastLoggedIn();
-        if (is_null($lastLoggedIn)){
+        if (is_null($lastLoggedIn) && $user->isAdmin()){
             $session = new SessionContainer('admin');
             $session->isFirstTimeLoggedIn = true;
         }

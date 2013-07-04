@@ -9,7 +9,8 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AdminFormFilter extends InputFilter
 {
-    const NAME_MAX_LENGTH = 20;
+    const DISPLAY_NAME_MAX_LENGTH = 20;
+    const NAME_MAX_LENGTH = 30;
     const EMAIL_MAX_LENGTH = 50;
 
     protected $repository;
@@ -70,7 +71,25 @@ class AdminFormFilter extends InputFilter
                     ),
                 ),
         ))));
-
+        //Display Name
+        $this->add($factory->createInput(array(
+            'name' => 'display_name',
+            'required' => true,
+            'filters' => array(
+                array('name' => 'StripTags'),
+                array('name' => 'StringTrim'),
+            ),
+            'validators' => array(
+                array(
+                    'name' => 'StringLength',
+                    'options' => array(
+                        'encoding' => 'UTF-8',
+                        'max' => self::DISPLAY_NAME_MAX_LENGTH,
+                    ),
+                ),
+                $this->getServiceLocator()->get('badWordValidator')
+            ),
+        )));
         //Email
         $this->add($factory->createInput(array(
             'name' => 'email',

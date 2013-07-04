@@ -333,6 +333,15 @@ return array(
             'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
         ),
     ),
+    'view_helpers' => array(
+        'factories' => array(
+            'getAppClub' => function($sm){
+                $appClub = new AppClub();
+                $appClub->setServiceLocator($sm->getServiceLocator());
+                return $appClub;
+            }
+        )
+    ),
     'translator' => array(
         'locale' => 'en_EN',
         'translation_file_patterns' => array(
@@ -405,15 +414,6 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
-    'view_helpers' => array(
-       'factories' => array(
-           'getAppClub' => function($sm){
-               $appClub = new AppClub();
-               $appClub->setServiceLocator($sm->getServiceLocator());
-               return $appClub;
-           }
-       )
-   ),
     'navigation' => array(
         'default' => array(
             'predict' => array(

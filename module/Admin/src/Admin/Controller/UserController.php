@@ -116,7 +116,9 @@ class UserController extends AbstractActionController
             $form = new AdminForm();
             $request = $this->getRequest();
             if ($request->isPost()) {
-                $form->setData($request->getPost());
+                $post = $request->getPost();
+                $post = isset($post['email']) ? strtolower($post['email']) : null;
+                $form->setData($post);
                 $form->setInputFilter($this->getServiceLocator()->get('adminFormFilter'));
                 if ($form->isValid()) {
                     $data = $form->getData();
@@ -128,7 +130,6 @@ class UserController extends AbstractActionController
                     $data['date'] = new \DateTime();
                     $data['avatar'] = $avatarDAO->findOneById(RegistrationManager::DEFAULT_AVATAR_ID);
                     $role = $roleManager->getRoleByName($data['permissions']);
-                    $data['display_name'] = $data['first_name'] . ' ' . $data['last_name'];
                     if (!is_null($role)) {
                         $data['role'] = $role;
                     }
@@ -175,14 +176,21 @@ class UserController extends AbstractActionController
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $post = $request->getPost();
+                $post['email'] = isset($post['email']) ? strtolower($post['email']) : null;
                 $form->setInputFilter($this->getServiceLocator()->get('adminFormFilter'));
-                if ($post['email'] === $user->getEmail()) {
+                $oldEmail = false;
+                if ($post['email'] === strtolower($user->getEmail())) {
                     $form->getInputFilter()->remove('email');
+                }else{
+                    $oldEmail = $user->getEmail();
                 }
                 $form->setData($post);
                 if ($form->isValid()) {
                     $data = $form->getData();
                     $userManager->saveAdmin($user, $data);
+                    if ($oldEmail){
+                        AuthenticationManager::getInstance($this->getServiceLocator())->changeIdentity($oldEmail, $user->getEmail());
+                    }
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_ADMIN_UPDATED);
                     return $this->redirect()->toUrl($this->url()->fromRoute(self::ADMIN_USER_ROUTE, $params));
                 } else {

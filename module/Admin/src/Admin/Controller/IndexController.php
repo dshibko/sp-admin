@@ -119,23 +119,15 @@ class IndexController extends AbstractActionController
 
                     //Personal Data
                     case self::PERSONAL_INFO_FORM_TYPE : {
-                        $personalInfoForm->setData($request->getPost());
+                        $post = $request->getPost();
+                        $post['email'] = isset($post['email']) ? strtolower($post['email']) : null;
+                        $personalInfoForm->setData($post);
                         $personalInfoForm->setInputFilter($this->getServiceLocator()->get('accountFilter'));
                         $email = $personalInfoForm->get('email')->getValue();
                         $oldEmail = false;
                         //Disable checking email if it is old email
-                        if ($email === $user->getEmail()) {
-                            // create new validator chain
-                            $newValidatorChain = new \Zend\Validator\ValidatorChain;
-                            // loop through all validators of the validator chained currently attached to the element
-                            foreach ($personalInfoForm->getInputFilter()->get('email')->getValidatorChain()->getValidators() as $validator) {
-                                // attach validator unless it's instance of Zend\Validator\EmailAddress
-                                if (!($validator['instance'] instanceof \DoctrineModule\Validator\NoObjectExists)) {
-                                    $newValidatorChain->attach($validator['instance'], $validator['breakChainOnFailure']);
-                                }
-                            }
-                            // replace the old validator chain on the element
-                            $personalInfoForm->getInputFilter()->get('email')->setValidatorChain($newValidatorChain);
+                        if ($email === strtolower($user->getEmail())) {
+                            $personalInfoForm->getInputFilter()->remove('email');
                         }else{
                             $oldEmail = $user->getEmail();
                         }
@@ -143,8 +135,10 @@ class IndexController extends AbstractActionController
                         if ($personalInfoForm->isValid()) {
                             $data = $personalInfoForm->getData();
                             $user->setFirstName($data['firstName'])
-                                ->setLastName($data['lastName'])
-                                ->setEmail($data['email']);
+                                ->setLastName($data['lastName']);
+                            if (!empty($data['email'])){
+                                $user->setEmail($data['email']);
+                            }
                             $userManager->save($user);
                             //if email was changed - update identity
                             if ($oldEmail){
@@ -153,9 +147,7 @@ class IndexController extends AbstractActionController
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_ACCOUNT_SAVED);
                             return $this->redirect()->toRoute(self::ADMIN_ACCOUNT_PAGE);
                         } else {
-                            foreach ($personalInfoForm->getMessages() as $el => $messages) {
-                                $this->flashMessenger()->addErrorMessage($personalInfoForm->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
-                            }
+                            $this->formErrors($personalInfoForm, $this);
                         }
                         break;
                     }
@@ -173,9 +165,7 @@ class IndexController extends AbstractActionController
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_PASSWORD_SAVED);
                             return $this->redirect()->toRoute(self::ADMIN_ACCOUNT_PAGE);
                         }else{
-                            foreach ($passwordForm->getMessages() as $el => $messages) {
-                                $this->flashMessenger()->addErrorMessage($passwordForm->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
-                            }
+                            $this->formErrors($passwordForm, $this);
                         }
                         break;
                     }

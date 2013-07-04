@@ -782,4 +782,13 @@ class User extends BasicObject {
         return $this->lastLoggedIn;
     }
 
+    public function isAdmin()
+    {
+        $role = $this->getRole();
+        if ($role instanceof Role){
+            return in_array($this->getRole()->getName(),array(Role::REGIONAL_MANAGER, Role::SUPER_ADMIN));
+        }
+        return false;
+    }
+
 }
