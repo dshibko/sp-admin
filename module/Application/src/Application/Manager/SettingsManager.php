@@ -15,6 +15,7 @@ class SettingsManager extends BasicManager {
     const HELP_AND_SUPPORT_EMAIL = 'help-and-support-email';
     const MAIN_SITE_LINK = 'main-site-link';
     const SEND_WELCOME_EMAIL = 'send-welcome-email';
+    const GA_ACCOUNT_ID = 'ga-account-id';
 
     /**
      * @var SettingsManager

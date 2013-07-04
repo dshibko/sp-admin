@@ -1168,3 +1168,6 @@ INSERT INTO `country` (`id`, `name`, `iso_code`, `dial_code`, `flag_image`, `ori
 ALTER TABLE `country`
   ADD CONSTRAINT `country_ibfk_1` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`),
   ADD CONSTRAINT `country_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`);
+
+-- okh 04.07
+INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES ('ga-account-id', '');

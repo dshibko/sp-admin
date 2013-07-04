@@ -45,9 +45,6 @@
             <div class="item col2 top-predicted-scorers">
                 <section class="clearfix">
                     <img src="<?php echo !empty($correctScorers['backgroundImage']) ? $correctScorers['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                    <?php if (isset($correctScorers['avatarImage'])):?>
-                        <img src="<?php echo !empty($correctScorers['avatarImage']) ? $correctScorers['avatarImage'] : $this->getConstant('default_player_avatar');?>" alt="Top scorer" class="player"/>
-                    <?php endif;?>
                     <div>
                         <h1><?php echo $this->translate('Correct scorer predictions');?></h1>
                         <?php
