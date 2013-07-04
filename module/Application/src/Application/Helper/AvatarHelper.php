@@ -1,6 +1,7 @@
 <?php
 namespace Application\Helper;
 
+use \Application\Model\Entities\Avatar;
 use Zend\Validator\File\Size;
 use Zend\Validator\File\IsImage;
 use Zend\File\Transfer\Adapter\Http;
@@ -18,6 +19,18 @@ class AvatarHelper
 {
     const IMAGE_MAX_SIZE = '2MB';
     const DEFAULT_AVATAR_ID = 1;
+
+    const BIG_IMAGE_SIZE = 100;
+    const MEDIUM_IMAGE_SIZE = 79;
+    const SMALL_IMAGE_SIZE = 50;
+    const TINY_IMAGE_SIZE = 29;
+
+    const ORIGINAL_IMAGE_DIR = 'original';
+    const BIG_IMAGE_DIR = 'big';
+    const MEDIUM_IMAGE_DIR = 'medium';
+    const SMALL_IMAGE_DIR = 'small';
+    const TINY_IMAGE_DIR = 'tiny';
+
     /**
      *   @var File
     **/
@@ -25,11 +38,10 @@ class AvatarHelper
     protected $errorMessages = array();
     protected $adapter;
     protected $path;
-    protected $height = 72;
-    protected $width = 72;
     protected $defaultAvatarId;
     protected $use_default = false;
     protected $avatar;
+    protected $serviceLocator;
 
     function __construct(File $data = null, ServiceLocatorInterface $serviceLocator = null)
     {
@@ -92,29 +104,7 @@ class AvatarHelper
         return $this;
     }
 
-    public function getWidth()
-    {
-        return $this->width;
-    }
-
-    public function setWidth($width)
-    {
-        $this->width = $width;
-        return $this;
-    }
-
-    public function setHeight($height)
-    {
-        $this->height = $height;
-        return $this;
-    }
-
-    public function getHeight()
-    {
-        return $this->height;
-    }
-
-    public function getPath()
+    public function getOriginalPath()
     {
         return $this->path;
     }
@@ -152,21 +142,6 @@ class AvatarHelper
         return $this->data;
     }
 
-    public function populate()
-    {
-        $avatarData = array(
-            'original_image_path' => $this->getPath(),
-            'big_image_path' => $this->getPath(),
-            'medium_image_path' => $this->getPath(),
-            'small_image_path' => $this->getPath(),
-            'tiny_image_path' => $this->getPath()
-        );
-
-        $avatar = new EntityAvatar();
-        $avatar->populate($avatarData);
-        $this->setAvatar($avatar);
-        return $this;
-    }
     public function validate()
     {
         $data = $this->getData()->getValue();
@@ -202,8 +177,8 @@ class AvatarHelper
     public function save()
     {
         if (!$this->getUseDefault()) { //Get upload avatar
-            $path = ImageManager::getInstance($this->getServiceLocator())->saveUploadedImage($this->getData(), 'avatar/small');
-            $this->setPath($path)->populate();
+            $path = ImageManager::getInstance($this->getServiceLocator())->saveUploadedImage($this->getData(), ImageManager::IMAGE_TYPE_AVATAR . ImageManager::WEB_SEPARATOR . self::ORIGINAL_IMAGE_DIR);
+            $this->setPath($path);
         } else {   //Get default avatar
             $avatar_id = ($this->getDefaultAvatarId()) ? $this->getDefaultAvatarId() : self::DEFAULT_AVATAR_ID;
             $avatar = AvatarDAO::getInstance($this->getServiceLocator())->findOneById($avatar_id);
@@ -216,11 +191,24 @@ class AvatarHelper
     public function resize()
     {
         if (!$this->getUseDefault()){
-            $imagine = new Imagine();
-            $size = new Box($this->getWidth(), $this->getHeight());
-            $file = ImageManager::getInstance($this->getServiceLocator())->getAppPublicPath() . $this->getPath();
-            $image = $imagine->open($file);
-            $image->thumbnail($size, ImageInterface::THUMBNAIL_INSET)->save($file);
+            $imageManager = ImageManager::getInstance($this->getServiceLocator());
+            $sizes = array(
+                self::BIG_IMAGE_DIR => self::BIG_IMAGE_SIZE,
+                self::MEDIUM_IMAGE_DIR => self::MEDIUM_IMAGE_SIZE,
+                self::SMALL_IMAGE_DIR => self::SMALL_IMAGE_SIZE,
+                self::TINY_IMAGE_DIR => self::TINY_IMAGE_SIZE,
+            );
+            $data = array('original_image_path' => $this->getOriginalPath());
+            foreach ($sizes as $dir => $size) {
+                $imagePath = ImageManager::IMAGES_DIR_PATH . ImageManager::IMAGE_TYPE_AVATAR . ImageManager::WEB_SEPARATOR . $dir . ImageManager::WEB_SEPARATOR;
+                $thumbInfo = pathinfo($this->getOriginalPath());
+                $imagePath .= uniqid() . "." . $thumbInfo["extension"];
+                $imageManager->resizeImage($this->getOriginalPath(), $size, $size, $imagePath);
+                $data[$dir . '_image_path'] = $imagePath;
+            }
+            $avatar = new Avatar();
+            $avatar->populate($data);
+            $this->setAvatar($avatar);
         }
         return $this;
     }
