@@ -247,8 +247,8 @@ class Module
                         'identityClass' => 'Application\Model\Entities\User',
                         'identityProperty' => 'email',
                         'credentialProperty' => 'password',
-                        'credentialCallable' => function($identity, $credential) {
-                            return md5($credential);
+                        'credentialCallable' => function($identity, $credential) use ($sm){
+                            return ApplicationManager::getInstance($sm)->encryptPassword($credential, $identity->getPassword());
                         }
                     ));
 
@@ -290,6 +290,7 @@ class Module
                 },
                 'confirmPasswordValidator' => function($sm){
                     $confirmPasswordValidator = new \Neoco\Validator\ConfirmPasswordValidator();
+                    $confirmPasswordValidator->setServiceLocator($sm);
                     $user = ApplicationManager::getInstance($sm)->getCurrentUser();
                     if (!is_null($user)){
                         $confirmPasswordValidator->setPassword($user->getPassword());

@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use \Application\Model\Entities\DefaultReportContent;
 use \Application\Model\DAOs\LeagueUserPlaceDAO;
 use \Application\Model\Entities\Match;
 use \Application\Model\DAOs\MatchDAO;
@@ -159,16 +160,15 @@ class MatchManager extends BasicManager
     }
 
     /**
-     * @param $fromTime
      * @param $season
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getMatchesLeftInTheSeason($fromTime, $season, $hydrate = false, $skipCache = false)
+    public function getMatchesLeftInTheSeason($season, $hydrate = false, $skipCache = false)
     {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
-        $matches = $matchDAO->getMatchesLeftInTheSeason($fromTime, $season, $hydrate, $skipCache);
+        $matches = $matchDAO->getMatchesLeftInTheSeason($season, $hydrate, $skipCache);
         if ($hydrate)
             foreach ($matches as &$match) {
                 $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
@@ -499,6 +499,19 @@ class MatchManager extends BasicManager
             }
         }
 
+        if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
+            $contentManager = ContentManager::getInstance($this->getServiceLocator());
+            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($regionId, DefaultReportContent::PRE_MATCH_TYPE);
+            if ($defaultReportContent !== null) {
+                if (empty($report['title']))
+                    $report['title'] = $defaultReportContent->getTitle();
+                if (empty($report['intro']))
+                    $report['intro'] = $defaultReportContent->getIntro();
+                if (empty($report['headerImage']))
+                    $report['headerImage'] = $defaultReportContent->getHeaderImage();
+            }
+        }
+
         if (is_null($match)){
             $match = MatchManager::getInstance($this->getServiceLocator())->getMatchById($matchId);
         }
@@ -668,6 +681,19 @@ class MatchManager extends BasicManager
             }
         }
 
+        if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
+            $contentManager = ContentManager::getInstance($this->getServiceLocator());
+            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($regionId, DefaultReportContent::POST_MATCH_TYPE);
+            if ($defaultReportContent !== null) {
+                if (empty($report['title']))
+                    $report['title'] = $defaultReportContent->getTitle();
+                if (empty($report['intro']))
+                    $report['intro'] = $defaultReportContent->getIntro();
+                if (empty($report['headerImage']))
+                    $report['headerImage'] = $defaultReportContent->getHeaderImage();
+            }
+        }
+
         //Leagues Positions
 
         $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
@@ -759,6 +785,15 @@ class MatchManager extends BasicManager
     public function getMatchGoals($matchId, $hydrate = false, $skipCache = false) {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
         return $matchDAO->getMatchGoals($matchId, $hydrate, $skipCache);
+    }
+
+    public function getUnfinishedAndPredictableMatches($season, $hydrate = false, $skipCache = false) {
+        $liveMatchesNumber = $this->getLiveMatchesNumber(new \DateTime(), $season);
+        $matchesLeft = $this->getMatchesLeftInTheSeason($season, $hydrate, $skipCache);
+        $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
+        $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS, true);
+        $matches = array_slice($matchesLeft, 0, $maxAhead + $liveMatchesNumber);
+        return $matches;
     }
 
 }

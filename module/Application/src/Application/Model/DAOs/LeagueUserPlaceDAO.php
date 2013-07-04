@@ -2,7 +2,7 @@
 
 namespace Application\Model\DAOs;
 
-use Application\Model\Entities\League;
+use \Application\Model\Entities\League;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -32,7 +32,7 @@ class LeagueUserPlaceDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\LeagueUserPlace';
+        return '\Application\Model\Entities\LeagueUserPlace';
     }
 
     /**

@@ -60,7 +60,7 @@ class ScoringManager extends BasicManager {
             $goals = $match->getMatchGoals();
             $goalScorers = array();
             foreach ($goals as $goal)
-                if ($goal->getType() != MatchGoal::OWN_TYPE) {
+                if ($goal->getPlayer() != null && $goal->getType() != MatchGoal::OWN_TYPE) {
                     $scorerId = $goal->getPlayer()->getId();
                     if (array_key_exists($scorerId, $goalScorers))
                         $goalScorers[$scorerId] = 0;

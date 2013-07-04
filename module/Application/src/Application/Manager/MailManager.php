@@ -19,7 +19,8 @@ class MailManager extends BasicManager {
     const WELCOME_EMAIL_TEMPLATE = 'welcome';
     const HELP_AND_SUPPORT_EMAIL_TEMPLATE = 'help_and_support';
     const HELP_AND_SUPPORT_EMAIL_SUBJECT = 'Support Email';
-
+    const NEW_ADMIN_EMAIL_SUBJECT = 'New Admin Account';
+    const NEW_ADMIN_EMAIL_TEMPLATE = 'new_admin';
     /**
      * @var MailManager
      */
@@ -64,7 +65,15 @@ class MailManager extends BasicManager {
             ));
         }
         return true;
+    }
 
+    public function sendNewAdminEmail($email, $password)
+    {   $router = $this->getServiceLocator()->get('router');
+        $this->sendEmail($email,self::NEW_ADMIN_EMAIL_SUBJECT, self::NEW_ADMIN_EMAIL_TEMPLATE, array(
+            'password' => $password,
+            'email'    => $email,
+            'link'   => $router->assemble(array(),array('name' => 'admin-login', 'force_canonical' => true))
+        ));
     }
     private function sendEmail($to, $subject, $template, $params = array()) {
         $content = $this->prepareContent($template, $params);
@@ -75,20 +84,20 @@ class MailManager extends BasicManager {
     }
 
     private function prepareTransport() {
-       // $transport = new Smtp();
-        //$options   = new SmtpOptions();
-        /*$options->setHost('smtp.gmail.com')
+       /*$transport = new Smtp();
+        $options   = new SmtpOptions();
+        $options->setHost('smtp.gmail.com')
             ->setConnectionClass('login')
             ->setName('smtp.gmail.com')
             ->setPort(587)
             ->setConnectionConfig(array(
-                'username' => '*******',
-                'password' => '*******',
+                'username' => '******',
+                'password' => '*********',
                 'ssl' => 'tls',
             ));
-        //$transport->setOptions($options);
-        //return $transport;*/
-        return new Sendmail();
+        $transport->setOptions($options);
+        return $transport;*/
+       return new Sendmail();
     }
 
     private function prepareMessage($to, $subject, $content) {

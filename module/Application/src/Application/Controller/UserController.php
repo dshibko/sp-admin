@@ -71,7 +71,10 @@ class UserController extends AbstractActionController
                     }
                     //Change Email
                     case self::FORM_TYPE_CHANGE_EMAIL : {
-                        $emailForm->setData($request->getPost());
+                        $post = $request->getPost();
+                        $post['email'] = isset($post['email']) ? strtolower($post['email']) : null;
+                        $post['confirm_email'] = isset($post['confirm_email']) ? strtolower($post['confirm_email']) : null;
+                        $emailForm->setData($post);
                         if (UserManager::getInstance($this->getServiceLocator())->processChangeEmailForm($emailForm)) {
                             $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_NEW_EMAIL_SAVED));
                             $success = true;
@@ -124,7 +127,6 @@ class UserController extends AbstractActionController
 
                     //Change Email Settings
                     case self::FORM_TYPE_CHANGE_EMAIL_SETTINGS : {
-                        //TODO process email settings
                         $emailSettingsForm->setData($request->getPost());
                         $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_NEW_EMAIL_SETTINGS_SAVED));
                         $success = true;

@@ -39,6 +39,11 @@ class MessagesConstants
     const SUCCESS_TERM_SAVED = 'Term was saved successfully';
     const SUCCESS_TERM_DELETED = 'Term was deleted successfully';
     const SUCCESS_OPTA_FEED_PARSED = 'Opta feed was parsed successfully';
+    const SUCCESS_APP_CACHE_CLEARED = 'Application cache was cleared successfully';
+    const SUCCESS_ADMIN_CREATED = 'New admin was successfully created.';
+    const SUCCESS_ADMIN_UPDATED = 'Admin was successfully updated';
+    const SUCCESS_ADMIN_DELETED = 'Admin was successfully deleted';
+    const SUCCESS_DEFAULT_MATCH_REPORT_CONTENT_UPDATE = 'Default %s report content was successfully updated';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -68,6 +73,8 @@ class MessagesConstants
     const ERROR_MAX_TERMS_COUNT_EXCEEDED = 'Max terms count exceeded';
     const ERROR_INCORRECT_TIME = 'Incorrect time';
     const ERROR_INCORRECT_CSS_COLOR = 'Incorrect CSS color';
+    const ERROR_INVALID_ADMIN_ID = 'Invalid Admin id';
+    const ERROR_CANNOT_FIND_ADMIN = 'Cannot find Admin';
 
 //    Application Messages Constants
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
@@ -97,7 +104,7 @@ class MessagesConstants
     const ERROR_SECURITY_CHECK_FAILED = 'Bad request. Security check failed.';
     const ERROR_INVALID_SETTING_FORM_TYPE = 'Invalid form type';
     const ERROR_INVALID_OLD_PASSWORD = 'Invalid old password';
-    const ERROR_CANNOT_CONNECT_TO_FACEBOOK_ACCOUNT = 'Cannot connect user to facebook account because facebook email has already taken by another user.';
+    const ERROR_CANNOT_CONNECT_TO_FACEBOOK_ACCOUNT = 'Cannot connect user to facebook account because facebook email has been already taken by another user.';
 
     const SUCCESS_RECOVERY_LINK_SENT = "Recovery link was sent to your email. The link is active for 3 hours.";
     const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to your email. The link is active for 60 minutes';
@@ -117,6 +124,7 @@ class MessagesConstants
     const INFO_LOGGED_OUT = "You've been logged out.";
     const INFO_OUT_OF_SEASON = "There is no season in play";
     const INFO_OUT_OF_SEASON_DESCRIPTION = "The next one will start soon. You can visit our website later and start playing.";
+    const INFO_NO_MORE_MATCHES_WILL_BE_PLAYED = "No more matches will be played in this season. Please join us when next season starts.";
     const INFO_YOU_PREDICTED_THE_DRAW = "You predicted the draw";
     const INFO_YOU_PREDICTED_THE_WINNER = "You predicted the winner would be %s";
     const INFO_YOU_PREDICTED_THE_SCORE = "You predicted the score would be %s";
@@ -124,6 +132,7 @@ class MessagesConstants
     const INFO_YOU_PREDICTED_SCORER_ORDER = "You predicted that %s will score goal number %s of %s";
     const INFO_YOUR_ACCURACY = "You were %s accurate in your prediction";
     const INFO_THIS_IS_DOUBLE_POINTS_MATCH = "This is double points match";
+    const INFO_FACEBOOK_CONNECT_BUTTON = "Your Facebook data will be used to create your account.";
 
     const FAILED_CONNECTION_TO_FACEBOOK = 'Error happened while connecting to your facebook account. Please try again later';
     const FAILED_RETRIEVING_FACEBOOK_DATA = 'Error happened while retrieving your facebook data. Please try again later.';
@@ -139,6 +148,8 @@ class MessagesConstants
     const ERROR_RUN_OUT_OF_CONSOLE = 'Cannot run this action out of console!';
     const ERROR_TYPE_NOT_SPECIFIED = 'You have to specify feed type';
     const ERROR_WRONG_TYPE_SPECIFIED = '"%s" type is not supported';
+    const ERROR_UNKNOWN_FEED_TYPE = 'Unknown feed type';
+    const FEEDS_DISPATCH_COMPLETED = '"%s" feeds dispatch was completed';
     const MESSAGE_PREFIX = 'Message: ';
     const INFO_SEASON_NOT_FOUND = 'Feed season was not found';
     const INFO_WRONG_COMPETITION = 'Feed competition is not an application competition';

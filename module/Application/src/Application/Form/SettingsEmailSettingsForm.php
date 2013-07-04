@@ -36,7 +36,6 @@ class SettingsEmailSettingsForm extends Form {
         $this->setAttribute('method', 'post')->setAttribute('id', 'settings-change-email-settings');
         $this->setType($type)->setServiceLocator($serviceLocator);
 
-        //TODO set checked by admin
         //Email Settings
         //Term 1
         $this->add(array(
@@ -50,7 +49,6 @@ class SettingsEmailSettingsForm extends Form {
             ),
         ));
 
-        //TODO set checked by admin
         //Term 2
         $this->add(array(
             'type' => 'Zend\Form\Element\Checkbox',

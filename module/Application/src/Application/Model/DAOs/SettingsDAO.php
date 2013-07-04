@@ -29,7 +29,7 @@ class SettingsDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Setting';
+        return '\Application\Model\Entities\Setting';
     }
 
     /**

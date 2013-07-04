@@ -43,6 +43,9 @@ class RegistrationController extends AbstractActionController
                     $request->getPost()->toArray(),
                     $request->getFiles()->toArray()
                 );
+                $post['email'] = isset($post['email']) ? strtolower($post['email']) : null;
+                $post['confirm_email'] = isset($post['confirm_email']) ? strtolower($post['confirm_email']) : null;
+
                 $form->setData($post)->prepareData();
                 if ($form->isValid()) {
                     $data = $form->getData();
@@ -91,7 +94,7 @@ class RegistrationController extends AbstractActionController
             }
             $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
             $userManager = UserManager::getInstance($this->getServiceLocator());
-            $country = $userManager->getUserGeoIpCountry();
+            $country = $user->getCountry();
             $language = $userManager->getUserLanguage();
             $form->get('region')->setValue($country->getId());
             $form->get('language')->setValue($language->getId());
@@ -149,7 +152,7 @@ class RegistrationController extends AbstractActionController
             $facebookManager->getFacebookAPI()->setExtendedAccessToken();
             $facebookUserData = $facebookManager->getFacebookUserData($fUser);
             $facebookUserData['facebook_access_token'] = $facebookManager->getFacebookAPI()->getAccessToken();
-            $facebookUserData['password'] = md5(uniqid());
+            $facebookUserData['password'] = $applicationManager->encryptPassword(uniqid());
             $facebookUser = null;
 
             $currentUser = $applicationManager->getCurrentUser();

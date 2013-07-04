@@ -36,6 +36,15 @@ $this->headTitle($title);
         </div>
     </div>
 </div>
+<div>
+    <div class="row-fluid">
+        <ul class="unstyled span10 vertical-margined">
+            <li>
+                <a href="<?=$this->url('admin-settings', array('action' => 'clearAppCache'))?>" class="btn green"><i class="icon-trash"></i> <?=$this->translate('Clear Cache')?></a>
+            </li>
+        </ul>
+    </div>
+</div>
 <link rel="stylesheet" type="text/css" href="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-colorpicker/css/colorpicker.css" />
 <script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js" type="text/javascript"></script>
 <script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/app.js" type="text/javascript"></script>

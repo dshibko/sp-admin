@@ -19,7 +19,6 @@ class FacebookManager extends BasicManager
     const MALE = 'male';
     const FEMALE = 'female';
     const FACEBOOK_AVATAR_FOLDER = 'small';
-    const DEFAULT_AVATAR_ID = 1;
     const GRAPH_API_URL = 'https://graph.facebook.com/';
 
     /**
@@ -100,7 +99,7 @@ class FacebookManager extends BasicManager
      */
     public function registerUser(array $data)
     {
-        $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(self::DEFAULT_AVATAR_ID); //set default avatar
+        $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(RegistrationManager::DEFAULT_AVATAR_ID); //set default avatar
         $data['country'] = ApplicationManager::DEFAULT_COUNTRY_ID;  //set default country
         return RegistrationManager::getInstance($this->getServiceLocator())->register($data);
     }
@@ -123,7 +122,7 @@ class FacebookManager extends BasicManager
      * @return array
      */
     public function getFacebookUserInfo($facebookAccessToken, $facebookId)
-    { //TODO handle change password, de-authorize app, logs out facebook when getting data with access token
+    {
         $data = array();
         try {
             $this->getFacebookAPI()->setAccessToken($facebookAccessToken);
@@ -135,7 +134,6 @@ class FacebookManager extends BasicManager
                 'query' => $userFriendsCountQuery
             ));
             // Get link to avatar
-            //TODO create method to get url by user
             $avatarLink = self::GRAPH_API_URL . $facebookId .'/picture?type=large';
             //Get user likes
             $userLikesQuery = 'SELECT name FROM page WHERE page_id IN (SELECT page_id FROM page_fan WHERE uid = '.$facebookId.')';

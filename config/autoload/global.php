@@ -34,6 +34,7 @@ return array(
             )
         ),
     ),
+
     'email' => array(
         'fromEmail' => 'hello@neoco.com',
         'fromName' => 'Score Predictor',
@@ -61,12 +62,6 @@ return array(
                               publish_actions',
     'favicon_path' => '/img/fav.ico',
     'default_club_logo' => '/img/club-logo.png',
-    'default_pre_match_report_title' => 'Match Report',
-    'default_pre_match_report_intro' => 'This is default match report intro',
-    'default_pre_match_report_header_image' => '/img/match-report.png',
-    'default_post_match_report_title' => 'Post Match Report',
-    'default_post_match_report_intro' => 'This is default post match report intro',
-    'default_post_match_report_header_image' => '/img/match-report.png',
     'default_player_background' => '/img/default-player-bg.png',
     'default_player_avatar' => '/img/default_player.png',
     'move_up_image_source' => '/img/up-place.png',

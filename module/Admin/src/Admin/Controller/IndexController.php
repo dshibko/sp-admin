@@ -13,6 +13,7 @@ use Zend\View\Model\ViewModel;
 use \Admin\Form\AccountForm;
 use \Application\Manager\AuthenticationManager;
 use \Admin\Form\AccountPasswordForm;
+use Zend\Session\Container as SessionContainer;
 
 class IndexController extends AbstractActionController
 {
@@ -30,6 +31,8 @@ class IndexController extends AbstractActionController
         $rbac = $this->getServiceLocator()->get('ZfcRbac\Service\Rbac');
         $router = new \ZfcRbac\Firewall\Route($rules);
         $router->setRbac($rbac);
+        $isFirstTimeLoggedIn = false;
+        $passwordForm = null;
         if (!$router->isGranted('admin'))
             return $this->redirect()->toRoute(self::ADMIN_LOGIN_PAGE_ROUTE);
 
@@ -40,6 +43,15 @@ class IndexController extends AbstractActionController
             $registeredUsersNumber = $userManager->getRegisteredUsersNumber();
             $usersRegisteredInPast7Days = $userManager->getUsersRegisteredInPastDays(7, true);
             $currentSeason = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+
+            $session = new SessionContainer('admin');
+            if (!empty($session->isFirstTimeLoggedIn)){ //First time logged in
+                $isFirstTimeLoggedIn = true;
+                $passwordForm = new AccountPasswordForm(self::PASSWORD_FORM_TYPE);
+                $passwordForm->get('password')->setLabel('Temporary Password');
+                unset($session->isFirstTimeLoggedIn);
+            }
+
             if ($currentSeason == null) {
                 $activeUsersNumber = $inactiveUsersNumber = $avgNumberOfPredictions =
                 $nextMatchPredictions = $prevMatchPredictions = MessagesConstants::INFO_ADMIN_OUT_OF_SEASON;
@@ -81,6 +93,8 @@ class IndexController extends AbstractActionController
             'usersRegisteredInPast7Days' => $usersRegisteredInPast7Days,
             'nextMatchId' => $nextMatchId,
             'prevMatchId' => $prevMatchId,
+            'isFirstTimeLoggedIn' => $isFirstTimeLoggedIn,
+            'passwordForm' => $passwordForm
         ));
 
     }
@@ -105,23 +119,15 @@ class IndexController extends AbstractActionController
 
                     //Personal Data
                     case self::PERSONAL_INFO_FORM_TYPE : {
-                        $personalInfoForm->setData($request->getPost());
+                        $post = $request->getPost();
+                        $post['email'] = isset($post['email']) ? strtolower($post['email']) : null;
+                        $personalInfoForm->setData($post);
                         $personalInfoForm->setInputFilter($this->getServiceLocator()->get('accountFilter'));
                         $email = $personalInfoForm->get('email')->getValue();
                         $oldEmail = false;
                         //Disable checking email if it is old email
-                        if ($email === $user->getEmail()) {
-                            // create new validator chain
-                            $newValidatorChain = new \Zend\Validator\ValidatorChain;
-                            // loop through all validators of the validator chained currently attached to the element
-                            foreach ($personalInfoForm->getInputFilter()->get('email')->getValidatorChain()->getValidators() as $validator) {
-                                // attach validator unless it's instance of Zend\Validator\EmailAddress
-                                if (!($validator['instance'] instanceof \DoctrineModule\Validator\NoObjectExists)) {
-                                    $newValidatorChain->attach($validator['instance'], $validator['breakChainOnFailure']);
-                                }
-                            }
-                            // replace the old validator chain on the element
-                            $personalInfoForm->getInputFilter()->get('email')->setValidatorChain($newValidatorChain);
+                        if ($email === strtolower($user->getEmail())) {
+                            $personalInfoForm->getInputFilter()->remove('email');
                         }else{
                             $oldEmail = $user->getEmail();
                         }
@@ -129,8 +135,10 @@ class IndexController extends AbstractActionController
                         if ($personalInfoForm->isValid()) {
                             $data = $personalInfoForm->getData();
                             $user->setFirstName($data['firstName'])
-                                ->setLastName($data['lastName'])
-                                ->setEmail($data['email']);
+                                ->setLastName($data['lastName']);
+                            if (!empty($data['email'])){
+                                $user->setEmail($data['email']);
+                            }
                             $userManager->save($user);
                             //if email was changed - update identity
                             if ($oldEmail){
@@ -139,9 +147,7 @@ class IndexController extends AbstractActionController
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_ACCOUNT_SAVED);
                             return $this->redirect()->toRoute(self::ADMIN_ACCOUNT_PAGE);
                         } else {
-                            foreach ($personalInfoForm->getMessages() as $el => $messages) {
-                                $this->flashMessenger()->addErrorMessage($personalInfoForm->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
-                            }
+                            $this->formErrors($personalInfoForm, $this);
                         }
                         break;
                     }
@@ -151,17 +157,15 @@ class IndexController extends AbstractActionController
                         if ($passwordForm->isValid()){
                             $data = $passwordForm->getData();
                             //Check Old Password
-                            if ($user->getPassword() !== md5($data['password'])){
+                            if ($user->getPassword() !== $applicationManager->encryptPassword($data['password'], $user->getPassword())){
                                 throw new \Exception(MessagesConstants::ERROR_INVALID_OLD_PASSWORD);
                             }
-                            $user->setPassword(md5($data['new_password']));
+                            $user->setPassword($applicationManager->encryptPassword($data['new_password']));
                             $userManager->save($user);
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_NEW_PASSWORD_SAVED);
                             return $this->redirect()->toRoute(self::ADMIN_ACCOUNT_PAGE);
                         }else{
-                            foreach ($passwordForm->getMessages() as $el => $messages) {
-                                $this->flashMessenger()->addErrorMessage($passwordForm->get($el)->getLabel() . ": " . (is_array($messages) ? implode(", ", $messages) : $messages));
-                            }
+                            $this->formErrors($passwordForm, $this);
                         }
                         break;
                     }

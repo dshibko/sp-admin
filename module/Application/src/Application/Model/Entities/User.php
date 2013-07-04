@@ -146,6 +146,13 @@ class User extends BasicObject {
     protected $date;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_logged_in", type="datetime", nullable=true)
+     */
+    protected $lastLoggedIn;
+
+    /**
      * @var Country
      *
      * @ORM\ManyToOne(targetEntity="Country")
@@ -734,6 +741,9 @@ class User extends BasicObject {
         if (isset($data['date']) && $data['date'] instanceof \DateTime){
             $this->setDate($data['date']);
         }
+        if (isset($data['last_logged_in']) && $data['last_logged_in'] instanceof \DateTime){
+            $this->setLastLoggedIn($data['last_logged_in']);
+        }
         if (isset($data['language']) && $data['language'] instanceof \Application\Model\Entities\Language){
             $this->setLanguage($data['language']);
         }
@@ -752,6 +762,33 @@ class User extends BasicObject {
         if (isset($data['is_public'])){
             $this->setIsPublic($data['is_public']);
         }
+    }
+
+    /**
+     * @param \DateTime $lastLoggedIn
+     * @return $this
+     */
+    public function setLastLoggedIn(\DateTime $lastLoggedIn)
+    {
+        $this->lastLoggedIn = $lastLoggedIn;
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastLoggedIn()
+    {
+        return $this->lastLoggedIn;
+    }
+
+    public function isAdmin()
+    {
+        $role = $this->getRole();
+        if ($role instanceof Role){
+            return in_array($this->getRole()->getName(),array(Role::REGIONAL_MANAGER, Role::SUPER_ADMIN));
+        }
+        return false;
     }
 
 }

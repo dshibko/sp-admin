@@ -30,7 +30,7 @@ class FeaturedGoalkeeperDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\FeaturedGoalkeeper';
+        return '\Application\Model\Entities\FeaturedGoalkeeper';
     }
 
 }

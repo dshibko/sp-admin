@@ -29,7 +29,7 @@ class LogotypeDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Logotype';
+        return '\Application\Model\Entities\Logotype';
     }
 
     /**
@@ -41,8 +41,9 @@ class LogotypeDAO extends AbstractDAO {
     public function getLogotypeByLanguage($languageId, $hydrate = false, $skipCache = false)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('l')
+        $qb->select('l, e')
             ->from($this->getRepositoryName(), 'l')
+            ->join('l.emblem', 'e')
             ->andWhere($qb->expr()->eq('l.language',':language'))->setParameter('language', $languageId);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }

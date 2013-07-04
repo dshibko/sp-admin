@@ -126,7 +126,7 @@ echo $this->form()->openTag($form);
         jQuery('#language').submit(function(){
             jQuery(oTable.fnGetHiddenNodes()).find('textarea').appendTo(this).hide();
         });
-        jQuery('.translation-input').change(function(){
+        jQuery(document).on('change','.translation-input', function(){
             var val = jQuery(this).val();
             var that = jQuery(this);
             if (val){
@@ -135,8 +135,7 @@ echo $this->form()->openTag($form);
                 that.addClass('translation-error');
             }
         });
-
-        jQuery('.submit-btn').click(function(e){
+        jQuery('.submit-btn').on('click',function(e){
             e.preventDefault();
             jQuery('#language').submit();
             return false;

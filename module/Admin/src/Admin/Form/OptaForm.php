@@ -27,26 +27,6 @@ class OptaForm extends UploadableForm {
             ),
         ));
 
-        //Featured Goalkeeper
-        $this->add(array(
-            'type' => 'Zend\Form\Element\Select',
-            'attributes' => array(
-                'required' => true,
-                'class' => 'chosen',
-                'tabindex' => 6,
-            ),
-            'name' => 'type',
-            'options' => array(
-                'label' => 'Feed Type',
-                'empty_option' => '---',
-                'value_options' => array(
-                    'F1' => 'F1',
-                    'F7' => 'F7',
-                    'F40' => 'F40',
-                ),
-            ),
-        ));
-
         $this->add(array(
             'name' => 'submit',
             'type'  => 'submit',

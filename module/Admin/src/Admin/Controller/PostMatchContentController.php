@@ -12,13 +12,15 @@ use \Application\Model\Helpers\MessagesConstants;
 use \Application\Manager\ExceptionManager;
 use \Neoco\Controller\AbstractActionController;
 
-class PostMatchShareCopyController extends AbstractActionController {
+class PostMatchContentController extends MatchContentController {
 
-    const ADMIN_POST_MATCH_SHARE_COPY_ROUTE = 'admin-post-match-share-copy';
+    const ADMIN_POST_MATCH_CONTENT_ROUTE = 'admin-post-match-content';
 
     public function indexAction() {
 
         $forms = array();
+
+        $reportContentForm = $this->getReportContentForm(true);
 
         try {
 
@@ -60,7 +62,7 @@ class PostMatchShareCopyController extends AbstractActionController {
                         $achievementBlock->getTwitterShareCopy()->setCopy($data['twitter']);
                         $shareManager->saveAchievementBlock($achievementBlock);
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_POST_MATCH_SHARE_COPY_UPDATED);
-                        return $this->redirect()->toRoute(self::ADMIN_POST_MATCH_SHARE_COPY_ROUTE);
+                        return $this->redirect()->toRoute(self::ADMIN_POST_MATCH_CONTENT_ROUTE);
                     } else
                         foreach ($form->getMessages() as $el => $messages)
                             $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " .
@@ -74,8 +76,19 @@ class PostMatchShareCopyController extends AbstractActionController {
 
         return array(
             'forms' => $forms,
+            'reportContentForm' => $reportContentForm,
         );
 
+    }
+
+    protected function getRedirectRoute()
+    {
+        return self::ADMIN_POST_MATCH_CONTENT_ROUTE;
+    }
+
+    protected function getMatchReportType()
+    {
+        return \Application\Model\Entities\DefaultReportContent::POST_MATCH_TYPE;
     }
 
 }

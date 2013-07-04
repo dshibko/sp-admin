@@ -8,11 +8,10 @@ use \Neoco\Manager\BasicManager;
 use \Application\Model\Entities\Language;
 use \Application\Model\DAOs\CountryDAO;
 
-//TODO do somethings with it
 require_once getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'mogenerator' .DIRECTORY_SEPARATOR .'php-mo.php';
 
 class LanguageManager extends BasicManager {
-    //TODO change
+
     const LANGUAGE_FILES_DIRECTORY = 'module/Application/language/';
     /**
      * @var LanguageManager

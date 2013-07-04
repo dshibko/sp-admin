@@ -31,7 +31,7 @@ class TeamDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Team';
+        return '\Application\Model\Entities\Team';
     }
 
     /**
@@ -44,8 +44,23 @@ class TeamDAO extends AbstractDAO {
     function getTeamSquadInCompetition($teamId, $competitionId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p.displayName, p.position, p.shirtNumber, p.id')
-            ->from('Application\Model\Entities\Player', 'p')
+            ->from('\Application\Model\Entities\Player', 'p')
             ->join('p.competitions', 'cp', Expr\Join::WITH, 'cp.id = ' . $competitionId)
+            ->where($qb->expr()->eq('p.team', $teamId))
+            ->orderBy('p.position', 'ASC');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
+     * @param integer $teamId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    function getTeamSquad($teamId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('p.displayName, p.position, p.shirtNumber, p.id')
+            ->from('\Application\Model\Entities\Player', 'p')
             ->where($qb->expr()->eq('p.team', $teamId))
             ->orderBy('p.position', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
@@ -63,6 +78,29 @@ class TeamDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 't')
             ->orderBy('t.displayName', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
+     * @param \Application\Model\Entities\Team $club
+     * @param \Application\Model\Entities\Season $season
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     * @throws \Exception
+     */
+    public function getClubEnemies($club, $season, $hydrate = false, $skipCache = false) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT t
+                FROM ' . $this->getRepositoryName() . ' t
+                LEFT JOIN t.homeMatches as hm
+                LEFT JOIN hm.competition as hc
+                LEFT JOIN t.awayMatches as am
+                LEFT JOIN am.competition as ac
+                WHERE ((hm.awayTeam = :clubId AND hc.season = :seasonId) OR (am.homeTeam = :clubId AND ac.season = :seasonId) OR t = :clubId)
+                GROUP BY t.id')
+            ->setParameter('seasonId', $season->getId())
+            ->setParameter('clubId', $club->getId());
+        return $query->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
 

@@ -64,32 +64,16 @@ return array(
                 ),
             ),
             'admin-users' => array(
-                'type' => 'Literal',
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/users/',
+                    'route'    => '/admin/users/[:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'index',
-                    ),
-                ),
-            ),
-            'admin-user-view' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route'    => '/admin/users/:id',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'view',
-                    ),
-                ),
-            ),
-            'admin-users-export' => array(
-                'type' => 'Literal',
-                'options' => array(
-                    'route'    => '/admin/users/export',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'export',
                     ),
                 ),
             ),
@@ -229,9 +213,9 @@ return array(
                 ),
             ),
             'admin-settings' => array(
-                'type' => 'Literal',
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/settings/',
+                    'route'    => '/admin/settings/[:action]',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Settings',
                         'action'     => 'index',
@@ -262,22 +246,22 @@ return array(
                     ),
                 ),
             ),
-            'admin-pre-match-share-copy' => array(
-                'type' => 'Literal',
+            'admin-pre-match-content' => array(
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/pre-match-share-copy/',
+                    'route'    => '/admin/pre-match-content/[:action]',
                     'defaults' => array(
-                        'controller' => 'Admin\Controller\PreMatchShareCopy',
+                        'controller' => 'Admin\Controller\PreMatchContent',
                         'action'     => 'index',
                     ),
                 ),
             ),
-            'admin-post-match-share-copy' => array(
-                'type' => 'Literal',
+            'admin-post-match-content' => array(
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/post-match-share-copy/',
+                    'route'    => '/admin/post-match-content/[:action]',
                     'defaults' => array(
-                        'controller' => 'Admin\Controller\PostMatchShareCopy',
+                        'controller' => 'Admin\Controller\PostMatchContent',
                         'action'     => 'index',
                     ),
                 ),
@@ -338,13 +322,13 @@ return array(
                     ),
                 ),
             ),
-            'admin-opta-uploader' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+            'admin-opta' => array(
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/opta/',
+                    'route'    => '/admin/opta/[:action][/:type]',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Opta',
-                        'action'     => 'upload'
+                        'action'     => 'index'
                     ),
                 ),
             ),
@@ -379,8 +363,8 @@ return array(
             'Admin\Controller\Fixtures' => 'Admin\Controller\FixturesController',
             'Admin\Controller\User' => 'Admin\Controller\UserController',
             'Admin\Controller\FooterPages' => 'Admin\Controller\FooterPagesController',
-            'Admin\Controller\PreMatchShareCopy' => 'Admin\Controller\PreMatchShareCopyController',
-            'Admin\Controller\PostMatchShareCopy' => 'Admin\Controller\PostMatchShareCopyController',
+            'Admin\Controller\PreMatchContent' => 'Admin\Controller\PreMatchContentController',
+            'Admin\Controller\PostMatchContent' => 'Admin\Controller\PostMatchContentController',
             'Admin\Controller\Opta' => 'Admin\Controller\OptaController',
             'Admin\Controller\Logotype' => 'Admin\Controller\LogotypeController',
             'Admin\Controller\Terms' => 'Admin\Controller\TermsController',
@@ -406,10 +390,16 @@ return array(
             'admin/league/edit-mini-league' => __DIR__ . '/../view/admin/league/add-mini-league.phtml',
             'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
             'admin/terms/add' => __DIR__ . '/../view/admin/terms/edit.phtml',
+            'admin/user/edit-admin' => __DIR__ . '/../view/admin/user/add-admin.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
         ),
+    ),
+    'controller_plugins' => array(
+        'invokables' => array(
+            'formErrors' => 'Neoco\Controller\Plugin\FormErrors',
+        )
     ),
     'navigation' => array(
         'default' => array(
@@ -427,12 +417,50 @@ return array(
                         'title' => 'Users',
                         'label' => 'icon-underline',
                         'route' => 'admin-users',
+                        'action' => 'admins',
+                        'sub-menu' => true,
                         'pages' => array(
                             array(
-                                'title' => 'View',
-                                'label' => 'icon-eye-open',
-                                'route' => 'admin-user-view',
+                                'title' => 'Admins',
+                                'label' => 'icon-font',
+                                'route' => 'admin-users',
+                                'action' => 'admins',
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Add Admin',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-users',
+                                        'action' => 'addAdmin',
+                                    ),
+                                    array(
+                                        'title' => 'Edit Admin',
+                                        'label' => 'icon-edit',
+                                        'route' => 'admin-users',
+                                        'action' => 'editAdmin',
+                                    ),
+                                    array(
+                                        'title' => 'Delete Admin',
+                                        'label' => 'icon-minus',
+                                        'route' => 'admin-users',
+                                        'action' => 'deleteAdmin',
+                                    ),
+                                ),
                             ),
+                            array(
+                                'title' => 'All Users',
+                                'label' => 'icon-underline',
+                                'route' => 'admin-users',
+                                'action' => 'index',
+                                'pages' => array(
+                                    array(
+                                        'title' => 'View',
+                                        'label' => 'icon-eye-open',
+                                        'route' => 'admin-users',
+                                        'action' => 'view',
+                                    ),
+                                ),
+                            ),
+
                         )
                     ),
                     'admin-account' => array(
@@ -604,21 +632,21 @@ return array(
                                     ),
                                 ),
                             ),
-                            'share-copy' => array(
-                                'title' => 'Reports Share Copy',
+                            'reports-content' => array(
+                                'title' => 'Match Reports',
                                 'label' => 'icon-bar-chart',
-                                'route' => 'admin-pre-match-share-copy',
+                                'route' => 'admin-pre-match-content',
                                 'sub-menu' => true,
                                 'pages' => array(
                                     array(
-                                        'title' => 'Pre Match',
+                                        'title' => 'Pre-Match',
                                         'label' => 'icon-chevron-left',
-                                        'route' => 'admin-pre-match-share-copy',
+                                        'route' => 'admin-pre-match-content',
                                     ),
                                     array(
-                                        'title' => 'Post Match',
+                                        'title' => 'Post-Match',
                                         'label' => 'icon-chevron-right',
-                                        'route' => 'admin-post-match-share-copy',
+                                        'route' => 'admin-post-match-content',
                                     ),
                                 )
                             ),
@@ -748,7 +776,7 @@ return array(
                     'opta' => array(
                         'title' => 'Opta',
                         'label' => 'icon-bolt',
-                        'route' => 'admin-opta-uploader',
+                        'route' => 'admin-opta',
                     ),
                     'settings' => array(
                         'title' => 'Settings',

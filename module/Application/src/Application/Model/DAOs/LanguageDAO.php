@@ -29,7 +29,7 @@ class LanguageDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Language';
+        return '\Application\Model\Entities\Language';
     }
 
     /**
@@ -48,7 +48,7 @@ class LanguageDAO extends AbstractDAO {
     /**
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return Application\Model\Entities\Language
+     * @return \Application\Model\Entities\Language
      * @throws \Exception
      */
     public function getDefaultLanguage($hydrate = false, $skipCache = false) {

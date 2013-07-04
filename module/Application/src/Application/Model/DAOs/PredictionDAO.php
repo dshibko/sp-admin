@@ -2,11 +2,11 @@
 
 namespace Application\Model\DAOs;
 
-use Application\Model\Entities\Season;
+use \Application\Model\Entities\Season;
 use \Doctrine\ORM\Query\ResultSetMapping;
 use \Doctrine\ORM\Query\ResultSetMappingBuilder;
-use Application\Model\Entities\Match;
-use Application\Model\Entities\User;
+use \Application\Model\Entities\Match;
+use \Application\Model\Entities\User;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -36,7 +36,7 @@ class PredictionDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Prediction';
+        return '\Application\Model\Entities\Prediction';
     }
 
     /**
@@ -44,7 +44,7 @@ class PredictionDAO extends AbstractDAO {
      * @param $userId
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return Application\Model\Entities\Prediction
+     * @return \Application\Model\Entities\Prediction
      */
     function getUserPrediction($matchId, $userId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -57,7 +57,7 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Season $season
      * @return integer
      */
     function getAvgNumberOfPredictions($season) {
@@ -98,7 +98,7 @@ class PredictionDAO extends AbstractDAO {
             pl.backgroundImagePath,
             pl.imagePath
         ');
-        $qb->from('Application\Model\Entities\PredictionPlayer','pp');
+        $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
         $qb->join('pp.player','pl');
         $qb->join('pl.team','t');
         $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
@@ -141,10 +141,9 @@ class PredictionDAO extends AbstractDAO {
 
     /**
      * @param array $predictionIds
-     * @param bool $hydrate
      * @param bool $skipCache
-     * @return mixed
      * @throws \Exception
+     * @return mixed
      */
     public function getUsersCountWithCorrectResult(array $predictionIds, $skipCache = false)
     {
@@ -193,8 +192,8 @@ class PredictionDAO extends AbstractDAO {
             throw new \Exception('Empty prediction ids');
         }
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
-        $rsm->addRootEntityFromClassMetadata('Application\Model\Entities\User', 'u');
-        $rsm->addEntityResult('Application\Model\Entities\User', 'u');
+        $rsm->addRootEntityFromClassMetadata('\Application\Model\Entities\User', 'u');
+        $rsm->addEntityResult('\Application\Model\Entities\User', 'u');
         $query = $this->getEntityManager()
             ->createNativeQuery('
                   SELECT
@@ -276,7 +275,7 @@ class PredictionDAO extends AbstractDAO {
         $qb->select('
             COUNT(pp.playerId) as players_count
         ');
-        $qb->from('Application\Model\Entities\PredictionPlayer','pp');
+        $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
         $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
         $qb->andWhere($qb->expr()->isNotNull('pp.playerId'));
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
@@ -366,7 +365,7 @@ class PredictionDAO extends AbstractDAO {
             pl.backgroundImagePath,
             pl.imagePath
         ');
-        $qb->from('Application\Model\Entities\PredictionPlayer','pp');
+        $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
         $qb->join('pp.player','pl');
         $qb->join('pl.team','t');
         $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
@@ -395,8 +394,8 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\Season $season
-     * @param Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
      * @param \DateTime $beforeTime
      * @return integer
      */
@@ -413,8 +412,8 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\Season $season
-     * @param Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\User $user
      * @param \DateTime $beforeTime
      * @return integer
      */
@@ -426,7 +425,7 @@ class PredictionDAO extends AbstractDAO {
              JOIN m.competition c
              JOIN c.season s WITH s.id = ' . $season->getId() . '
              WHERE p.user = ' . $user->getId() . ' AND m.startTime < :beforeTime AND p.isCorrectResult = 1'
-             )->setParameter('beforeTime', $beforeTime);
+             )->setParameter('beforeTime', $beforeTime)->setMaxResults(1);
         return $query->getOneOrNullResult();
     }
 
@@ -462,6 +461,29 @@ class PredictionDAO extends AbstractDAO {
         return $query->getSingleScalarResult();
     }
 
+    public function getPredictionsPerDayWhileSeason($seasonId)
+    {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('predictions','predictions');
+        $rsm->addScalarResult('date','date','date');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+                SELECT
+                    count(p.id) predictions,
+                    DATE(p.creation_date) as date
+                FROM
+                    `prediction` p
+                INNER JOIN
+                    `match` m ON m.id = p.match_id
+                INNER JOIN
+                    competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                GROUP BY
+                      date
+                ORDER BY
+                    date
+            ', $rsm);
+        return $query->getArrayResult();
+    }
     /**
      * @param $seasonId
      * @return mixed
@@ -547,7 +569,7 @@ class PredictionDAO extends AbstractDAO {
                 COUNT(pp.playerId) as predictions,
                 t.displayName as team,
                 pl.displayName as player
-             FROM Application\Model\Entities\PredictionPlayer pp
+             FROM \Application\Model\Entities\PredictionPlayer pp
              JOIN pp.prediction p
              JOIN p.match m
              JOIN m.competition c

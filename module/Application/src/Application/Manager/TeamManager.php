@@ -30,6 +30,18 @@ class TeamManager extends BasicManager
 
 
     /**
+     * @param \Application\Model\Entities\Team $club
+     * @param \Application\Model\Entities\Season $season
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getClubEnemies($club, $season, $hydrate = false, $skipCache = false)
+    {
+        return TeamDAO::getInstance($this->getServiceLocator())->getClubEnemies($club, $season, $hydrate, $skipCache);
+    }
+
+    /**
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array

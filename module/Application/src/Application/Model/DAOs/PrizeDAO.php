@@ -30,7 +30,7 @@ class PrizeDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Prize';
+        return '\Application\Model\Entities\Prize';
     }
 
 }

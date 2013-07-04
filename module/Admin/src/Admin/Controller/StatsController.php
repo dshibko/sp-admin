@@ -87,9 +87,8 @@ class StatsController extends AbstractActionController {
     public function exportAccountDeletionsAction() {
 
         try {
-
-            $content = ''; // TODO to implement
-
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $content = $statsManager->getAccountDeletions();
             return $this->exportAction($content, __FUNCTION__);
 
         } catch(\Exception $e) {
@@ -134,8 +133,8 @@ class StatsController extends AbstractActionController {
     public function exportPredictionsPerMatchOverTimeAction() {
 
         try {
-
-            $content = ''; // TODO to implement
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $content = $statsManager->getPredictionsPerDayWhileSeason();
 
             return $this->exportAction($content, __FUNCTION__);
 

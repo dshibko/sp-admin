@@ -2,6 +2,7 @@
 
 namespace Opta\Controller;
 
+use \Zend\Http\PhpEnvironment\RemoteAddress;
 use \Application\Manager\CacheManager;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Manager\ExceptionManager;
@@ -14,6 +15,10 @@ class ClearAppCacheController extends AbstractActionController {
 
     public function indexAction() {
 
+        $remoteAddresses = new RemoteAddress();
+        if ($remoteAddresses->getIpAddress() !== '127.0.0.1')
+            return $this->notFoundAction();
+
         $entities = $this->params()->fromRoute('entities', '');
 
         $response = $this->getResponse();
@@ -23,7 +28,7 @@ class ClearAppCacheController extends AbstractActionController {
         try {
 
             if (empty($entities))
-                apc_clear_cache('user');
+                CacheManager::getInstance($this->getServiceLocator())->clearCache();
             else {
                 $entitiesArr = explode(",", $entities);
                 foreach ($entitiesArr as $entity) {

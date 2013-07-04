@@ -3,7 +3,7 @@
 namespace Application\Model\DAOs;
 
 use \Doctrine\ORM\Query\ResultSetMapping;
-use Application\Model\Entities\League;
+use \Application\Model\Entities\League;
 use \Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -33,11 +33,11 @@ class LeagueDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\League';
+        return '\Application\Model\Entities\League';
     }
 
     /**
-     * @param Application\Model\Entities\League $league
+     * @param \Application\Model\Entities\League $league
      * @return array
      */
     public function getLeagueUsersScores($league) {
@@ -76,7 +76,7 @@ class LeagueDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Season $season
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
@@ -104,8 +104,8 @@ class LeagueDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\League $league
-     * @param Application\Model\Entities\User $user
+     * @param \Application\Model\Entities\League $league
+     * @param \Application\Model\Entities\User $user
      * @param bool $skipCache
      * @return bool
      */
@@ -120,8 +120,8 @@ class LeagueDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\Season $season
-     * @param Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Season $season
+     * @param \Application\Model\Entities\Region $region
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
@@ -138,7 +138,7 @@ class LeagueDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Region $region
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
@@ -154,7 +154,7 @@ class LeagueDAO extends AbstractDAO {
     }
 
     /**
-     * @param Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Region $region
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array

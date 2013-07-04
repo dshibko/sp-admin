@@ -2,9 +2,12 @@
 
 namespace Application\Manager;
 
+use \Application\Model\DAOs\DefaultReportContentDAO;
+use Application\Model\DAOs\EmblemDAO;
 use Application\Model\DAOs\LogotypeDAO;
 use Application\Model\DAOs\TermCopyDAO;
 use Application\Model\DAOs\TermDAO;
+use Application\Model\Entities\Emblem;
 use \Application\Model\Entities\FooterSocial;
 use \Application\Model\DAOs\FooterSocialDAO;
 use \Application\Model\Entities\FooterImage;
@@ -331,9 +334,24 @@ class ContentManager extends BasicManager {
     {
         $languageManager = LanguageManager::getInstance($this->getServiceLocator());
         $logotypeDAO = LogotypeDAO::getInstance($this->getServiceLocator());
+        $emblemDAO = EmblemDAO::getInstance($this->getServiceLocator());
+
         $imageManager = ImageManager::getInstance($this->getServiceLocator());
         if (!empty($data)){
-            $emblem = $data['emblem'];
+            $emblemPath = $data['emblem'];
+            $emblem = $emblemDAO->getEmblem();
+            if (is_null($emblem)){
+                $emblem = new Emblem();
+            }
+            if (!empty($emblemPath)){
+                $oldEmblem = $emblem->getPath();
+                if (!empty($oldEmblem)){
+                    $imageManager->deleteImage($oldEmblem);
+                }
+                $emblem->setPath($emblemPath);
+                $emblemDAO->save($emblem, false, false);
+            }
+
             foreach($data['languages'] as $id => $languageData){
                 $logotype = $this->getLogotypeByLanguage($id);
                 if (is_null($logotype)){
@@ -341,14 +359,7 @@ class ContentManager extends BasicManager {
                 }
                 $language = $languageManager->getLanguageById($id);
                 $logotype->setLanguage($language);
-
-                if (!empty($emblem)){
-                    $oldEmblem = $logotype->getEmblem();
-                    if (!empty($oldEmblem)){
-                        $imageManager->deleteImage($oldEmblem);
-                    }
-                    $logotype->setEmblem($emblem);
-                }
+                $logotype->setEmblem($emblem);
                 if (!empty($languageData['logotype'])){
                     $oldLogotype = $logotype->getLogotype();
                     if (!empty($oldLogotype)){
@@ -361,6 +372,7 @@ class ContentManager extends BasicManager {
 
             $logotypeDAO->flush();
             $logotypeDAO->clearCache();
+            $emblemDAO->clearCache();
         }
     }
     /**
@@ -523,6 +535,26 @@ class ContentManager extends BasicManager {
         $language = UserManager::getInstance($this->getServiceLocator())->getCurrentUserLanguage();
         return $this->getTermsByLanguageId($language->getId(), true);
 
+    }
+
+    /**
+     * @param $regionId
+     * @param $type
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\DefaultReportContent|array
+     */
+    public function getDefaultReportContentByTypeAndRegion($regionId, $type, $hydrate = false, $skipCache = false) {
+        return DefaultReportContentDAO::getInstance($this->getServiceLocator())->getDefaultReportContentByTypeAndRegion($regionId, $type, $hydrate, $skipCache);
+    }
+
+    public function saveDefaultReportContent($defaultReportContent, $flush = true, $clearCache = true) {
+        DefaultReportContentDAO::getInstance($this->getServiceLocator())->save($defaultReportContent, $flush, $clearCache);
+    }
+
+    public function flushAndClearCacheDefaultReportContent() {
+        DefaultReportContentDAO::getInstance($this->getServiceLocator())->flush();
+        DefaultReportContentDAO::getInstance($this->getServiceLocator())->clearCache();
     }
 
 }

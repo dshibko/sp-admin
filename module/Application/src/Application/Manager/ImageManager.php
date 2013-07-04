@@ -113,9 +113,12 @@ class ImageManager extends BasicManager {
         return $contentImage;
     }
 
-    public function resizeImage($webImagePath, $width = null, $height = null) {
+    public function resizeImage($webImagePath, $width = null, $height = null, $targetWebImagePath = null) {
         if ($width != null || $height != null) {
+            if ($targetWebImagePath === null)
+                $targetWebImagePath = $webImagePath;
             $imagePath = $this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $webImagePath);
+            $targetImagePath = $this->getAppPublicPath() . str_replace(self::WEB_SEPARATOR, DIRECTORY_SEPARATOR, $targetWebImagePath);
             $imageSize = getimagesize($imagePath);
             $imagine = new Imagine();
             $thumbSize = new Box($imageSize[0], $imageSize[1]);
@@ -124,7 +127,7 @@ class ImageManager extends BasicManager {
             if ($height != null)
                 $thumbSize = $thumbSize->heighten($height);
             $image = $imagine->open($imagePath);
-            $image->thumbnail($thumbSize, ImageInterface::THUMBNAIL_INSET)->save($imagePath);
+            $image->thumbnail($thumbSize, ImageInterface::THUMBNAIL_INSET)->save($targetImagePath);
         }
     }
 

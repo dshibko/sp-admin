@@ -42,7 +42,7 @@ if (empty($this->twitterShareCopy))
                         </h2>
                         <div class="home-team">
                             <figure class="clearfix">
-                                <img src="<?=$this->current['homeLogo'];?>" alt="<?=$this->current['homeName']; ?>">
+                                <img src="<?=$this->clubLogo($this->current['homeLogo']);?>" alt="<?=$this->current['homeName']; ?>">
                                 <figcaption>
                                     <?=$this->current['homeName']; ?>
                                 </figcaption>
@@ -66,7 +66,7 @@ if (empty($this->twitterShareCopy))
                         </div>
                         <div class="away-team">
                             <figure class="clearfix">
-                                <img src="<?=$this->current['awayLogo'];?>" alt="<?=$this->current['awayName']; ?>">
+                                <img src="<?=$this->clubLogo($this->current['awayLogo']);?>" alt="<?=$this->current['awayName']; ?>">
                                 <figcaption>
                                     <?=$this->current['awayName']; ?>
                                 </figcaption>
@@ -185,6 +185,7 @@ if (empty($this->twitterShareCopy))
     var savedHomeScore = <?=!empty($this->current['prediction']) ? $this->current['prediction']['homeTeamScore'] : -1 ?>;
     var savedAwayScore = <?=!empty($this->current['prediction']) ? $this->current['prediction']['awayTeamScore'] : -1 ?>;
     var pageUnloadCopy = "<?=$this->translate('You didn\'t save the prediction.')?>";
+    var utcTimeUrl = '<?= $this->url('common', array('action' => 'utcTime')); ?>';
 </script>
 <script type="text/javascript" src="/js/vendor/jquery.countdown.js"></script>
 <script type="text/javascript" src="/js/make-prediction.js"></script>

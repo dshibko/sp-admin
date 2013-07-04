@@ -49,7 +49,7 @@ class Logotype extends AbstractHelper
             return $this->getDefaultLogotype();
         }
         $html = $this->getOpenTag();
-        $html .= '<img src="'.$logotype->getEmblem().'" alt=""/>';
+        $html .= '<img src="'.$logotype->getEmblem()->getPath().'" alt=""/>';
         $html .= '<img src="'.$logotype->getLogotype().'" alt=""/>';
         $html .= $this->getCloseTag();
         return $html;

@@ -2,6 +2,8 @@
 
 namespace Opta\Manager;
 
+use \Application\Manager\MatchManager;
+use \Application\Manager\SeasonManager;
 use \Opta\Controller\ClearAppCacheController;
 use \Application\Model\DAOs\FeedDAO;
 use \Application\Model\Entities\Feed;
@@ -522,7 +524,7 @@ class OptaManager extends BasicManager {
                 }
             }
 
-            if ($type == 'Latest' && ($period == 'FirstHalf' || $period == 'SecondHalf') && $match != null && $match->getStatus() == Match::PRE_MATCH_STATUS) {
+            if ($type == 'Latest' && ($period == 'FirstHalf' || $period == 'HalfTime' && $period == 'SecondHalf') && $match != null && $match->getStatus() == Match::PRE_MATCH_STATUS) {
                 $match->setStatus(Match::LIVE_STATUS);
                 $matchDAO->save($match);
             }
@@ -662,11 +664,85 @@ class OptaManager extends BasicManager {
         }
     }
 
+    public function dispatchFeedsByType($type, $force = false, $console = null) {
+
+        switch ($type) {
+
+            // export TZ=UTC;
+            case Feed::F1_TYPE: // 10 10 * * * cd <APP_ROOT>; php public/index.php opta F1
+            case Feed::F40_TYPE: // 0 0,12 * * * cd <APP_ROOT>; php public/index.php opta F40
+                $feeds = $this->getUploadedFeedsByType($type);
+                if (!empty($feeds)) {
+                    $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
+                    $unfinishedSeasons = $seasonManager->getAllNotFinishedSeasons(true, true);
+                    $processingStarted = false;
+                    foreach ($unfinishedSeasons as $unfinishedSeason) {
+                        $unfinishedSeasonOptaId = $unfinishedSeason['feederId'];
+                        $seasonFeeds = $this->filterFeedsByParameters($feeds, $type, array('season_id' => $unfinishedSeasonOptaId));
+                        foreach ($seasonFeeds as $seasonFeed)
+                            if ($force || $this->hasToBeProcessed($seasonFeed)) {
+                                $processingStarted = true;
+                                $success = $type == Feed::F1_TYPE ? $this->parseF1Feed($seasonFeed, $console) :
+                                    ($type == Feed::F40_TYPE ? $this->parseF40Feed($seasonFeed, $console) : false);
+                                $this->processingCompleted($seasonFeed, $type, $success);
+                            }
+                    }
+                    if ($processingStarted) {
+                        $this->saveFeedsChanges();
+                        $this->clearAppCache($type, $console);
+                    }
+                }
+                break;
+
+            case Feed::F7_TYPE: // */5 * * * * cd <APP_ROOT>; php public/index.php opta F7
+                $feeds = $this->getUploadedFeedsByType($type);
+                if (!empty($feeds)) {
+                    $currentSeason = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+                    $matchManager = MatchManager::getInstance($this->getServiceLocator());
+                    $unfinishedAndPredictableMatches = $matchManager->getUnfinishedAndPredictableMatches($currentSeason, true, true);
+                    $processingStarted = false;
+                    foreach ($unfinishedAndPredictableMatches as $match) {
+                        $seasonOptaId = $currentSeason->getFeederId();
+                        $matchFeeds = $this->filterFeedsByParameters($feeds, $type, array(
+                            'season_id' => $seasonOptaId,
+                            'game_id' => $match['feederId'],
+                        ));
+                        foreach ($matchFeeds as $matchFeed)
+                            if ($force || $this->hasToBeProcessed($matchFeed)) {
+                                $processingStarted = true;
+                                $success = $this->parseF7Feed($matchFeed, $console);
+                                $this->processingCompleted($matchFeed, $type, $success);
+                            }
+                    }
+                    if ($processingStarted) {
+                        $this->saveFeedsChanges();
+                        $this->clearAppCache($type, $console);
+                    }
+                }
+                break;
+
+        }
+    }
+
     private static $feedsPatterns = array(
         Feed::F1_TYPE => 'srml-{competition_id}-{season_id}-results.xml',
         Feed::F7_TYPE => 'srml-{competition_id}-{season_id}-f{game_id}-matchresults.xml',
         Feed::F40_TYPE => 'srml-{competition_id}-{season_id}-squads.xml',
     );
+
+    public function getAvailableFeedTypes() {
+        return array_keys(self::$feedsPatterns);
+    }
+
+    public function getFeedTypeByName($feedName) {
+        foreach (self::$feedsPatterns as $feedType => $feedPattern) {
+            $feedPattern = preg_quote(preg_replace('/(\{[^\}]*\})/', '*', $feedPattern));
+            $feedPattern = '/' . preg_replace('/(\\\\\*)/', '([\d]*)', $feedPattern) . '/';
+            if (preg_match($feedPattern, $feedName) > 0)
+                return $feedType;
+        }
+        return false;
+    }
 
     public function getUploadedFeedsByType($type) {
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
@@ -676,9 +752,10 @@ class OptaManager extends BasicManager {
         return glob($optaDirPath . DIRECTORY_SEPARATOR . $feedPattern);
     }
 
-    public function filterFeedsByParameter($feeds, $type, $parameterName, $parameterValue) {
+    public function filterFeedsByParameters($feeds, $type, $parameters) {
         $feedPattern = self::$feedsPatterns[$type];
-        $feedPattern = preg_replace("/{" . $parameterName . "}/", $parameterValue, $feedPattern);
+        foreach ($parameters as $parameterName => $parameterValue)
+            $feedPattern = preg_replace("/{" . $parameterName . "}/", $parameterValue, $feedPattern);
         $feedPattern = preg_quote(preg_replace('/(\{[^\}]*\})/', '*', $feedPattern));
         $feedPattern = '/' . preg_replace('/(\\\\\*)/', '([\d]*)', $feedPattern) . '/';
         return array_filter($feeds, function($feed) use ($feedPattern) {
@@ -724,36 +801,37 @@ class OptaManager extends BasicManager {
     }
 
     public function clearAppCache($type, $console) {
-        $entitiesToBeCleared = array();
-        switch ($type) {
-            case Feed::F1_TYPE:
-                $entitiesToBeCleared[] = CompetitionDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                $entitiesToBeCleared[] = TeamDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                $entitiesToBeCleared[] = MatchDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                break;
+        if ($console !== null) {
+            $entitiesToBeCleared = array();
+            switch ($type) {
+                case Feed::F1_TYPE:
+                    $entitiesToBeCleared[] = CompetitionDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = TeamDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = MatchDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    break;
 
-            case Feed::F7_TYPE:
-                $entitiesToBeCleared[] = MatchDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                $entitiesToBeCleared[] = MatchGoalDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                $entitiesToBeCleared[] = LineUpPlayerDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                break;
+                case Feed::F7_TYPE:
+                    $entitiesToBeCleared[] = MatchDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = MatchGoalDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = LineUpPlayerDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    break;
 
-            case Feed::F40_TYPE:
-                $entitiesToBeCleared[] = CompetitionDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                $entitiesToBeCleared[] = TeamDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                $entitiesToBeCleared[] = PlayerDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                break;
+                case Feed::F40_TYPE:
+                    $entitiesToBeCleared[] = CompetitionDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = TeamDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = PlayerDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    break;
+            }
+
+            $entitiesToBeClearedQueryString = implode(",", $entitiesToBeCleared);
+            $clearAppCacheUrl = ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheUrl();
+            $clearAppCacheUrl = $clearAppCacheUrl . $entitiesToBeClearedQueryString;
+            $clearAppCacheResult = file_get_contents($clearAppCacheUrl);
+            if ($clearAppCacheResult == ClearAppCacheController::OK_MESSAGE)
+                $this->logMessage(MessagesConstants::APP_CACHE_CLEARED, Logger::INFO, $console);
+            else
+                $this->logMessage(MessagesConstants::APP_CACHE_NOT_CLEARED, Logger::WARN, $console);
         }
-
-        $entitiesToBeClearedQueryString = implode(",", $entitiesToBeCleared);
-        $clearAppCacheUrl = ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheUrl();
-        $clearAppCacheUrl = $clearAppCacheUrl . $entitiesToBeClearedQueryString;
-        $clearAppCacheResult = file_get_contents($clearAppCacheUrl);
-        if ($clearAppCacheResult == ClearAppCacheController::OK_MESSAGE)
-            $this->logMessage(MessagesConstants::APP_CACHE_CLEARED, Logger::INFO, $console);
-        else
-            $this->logMessage(MessagesConstants::APP_CACHE_NOT_CLEARED, Logger::WARN, $console);
-
     }
 
 }

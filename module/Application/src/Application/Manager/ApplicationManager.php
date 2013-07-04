@@ -105,6 +105,10 @@ class ApplicationManager extends BasicManager {
         return CountryDAO::getInstance($this->getServiceLocator())->getAllCountries($hydrate);
     }
 
+    public function getAllCountriesOrderedByIds(array $ids = array(CountryDAO::UNITED_KINGDOM_ID, CountryDAO::UNITED_STATES_ID), $sorting = 'DESC')
+    {
+        return CountryDAO::getInstance($this->getServiceLocator())->getAllCountriesOrderedByIds($ids, $sorting);
+    }
     /**
      * @param $isoCode
      * @param bool $hydrate
@@ -122,7 +126,7 @@ class ApplicationManager extends BasicManager {
     public function getCountriesSelectOptions()
     {
         $countries = array();
-        $data = $this->getAllCountries(true);
+        $data = $this->getAllCountriesOrderedByIds();
         if (!empty($data) && is_array($data)){
             foreach($data as $country){
                 $countries[$country['id']] = $country['name'];
@@ -287,6 +291,11 @@ class ApplicationManager extends BasicManager {
     public function getAppClub()
     {
         return TeamDAO::getInstance($this->getServiceLocator())->findOneByFeederId($this->getAppOptaId());
+    }
+
+    public function encryptPassword($password, $salt = null)
+    {
+        return crypt($password,$salt);
     }
 
 }

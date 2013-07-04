@@ -46,7 +46,7 @@ class PredictController extends AbstractActionController {
             if (!$user->getIsActive()){
                 $userManager = UserManager::getInstance($this->getServiceLocator());
                 $setUpForm = $this->getServiceLocator()->get('Application\Form\SetUpForm');
-                $country = $userManager->getUserGeoIpCountry();
+                $country = $user->getCountry();
                 $language = $userManager->getUserLanguage();
                 $setUpForm ->get('region')->setValue($country->getId());
                 $setUpForm ->get('language')->setValue($language->getId());
@@ -65,7 +65,7 @@ class PredictController extends AbstractActionController {
             if ($ahead > $matchesLeft + $liveMatches - 1)
                 return $this->notFoundAction();
 
-            $currentMatch = $predictionManager->getNearestMatchWithPrediction(new \DateTime(), $ahead, $user, $season);
+            $currentMatch = $predictionManager->getNearestMatchWithPrediction($ahead, $user, $season);
 
             if ($currentMatch == null)
                 return $this->notFoundAction();

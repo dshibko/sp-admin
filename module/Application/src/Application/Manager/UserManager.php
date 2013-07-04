@@ -2,10 +2,12 @@
 
 namespace Application\Manager;
 
+use Application\Model\DAOs\AccountRemovalDAO;
+use Application\Model\Entities\AccountRemoval;
+use Zend\Authentication\Storage\Session;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use Application\Manager\ApplicationManager;
-use \Application\Model\Helpers\MessagesConstants;
 use Application\Helper\AvatarHelper;
 use Application\Model\DAOs\LanguageDAO;
 use Application\Model\DAOs\UserDAO;
@@ -13,6 +15,7 @@ use Application\Model\DAOs\AvatarDAO;
 use Application\Model\DAOs\CountryDAO;
 use Application\Manager\ImageManager;
 use Zend\Http\PhpEnvironment\RemoteAddress;
+use Zend\Session\Container as SessionContainer;
 
 class UserManager extends BasicManager {
 
@@ -95,7 +98,6 @@ class UserManager extends BasicManager {
      */
     private function deleteAvatarImages(\Application\Model\Entities\Avatar $avatar)
     {
-        //TODO change web separator to directory separator
         //Delete user avatars
         $publicPath = ImageManager::getInstance($this->getServiceLocator())->getAppPublicPath();
         if (file_exists($publicPath.$avatar->getBigImagePath())){
@@ -142,6 +144,16 @@ class UserManager extends BasicManager {
         return UserDAO::getInstance($this->getServiceLocator())->getAllUsers($hydrate, $skipCache);
     }
 
+    /**
+     * @param array $roles
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getUsersByRoles(array $roles, $hydrate = false, $skipCache = false)
+    {
+        return UserDAO::getInstance($this->getServiceLocator())->getUsersByRoles($roles, $hydrate, $skipCache);
+    }
     /**
      * @param $identity
      * @param bool $hydrate
@@ -220,7 +232,7 @@ class UserManager extends BasicManager {
         if ($form->isValid()){
             $data = $form->getData();
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-            $user->setPassword(md5($data['new_password']));
+            $user->setPassword(ApplicationManager::getInstance($this->getServiceLocator())->encryptPassword($data['new_password']));
             UserDAO::getInstance($this->getServiceLocator())->save($user);
             return true;
         }
@@ -280,7 +292,6 @@ class UserManager extends BasicManager {
             $user->setAvatar($newAvatar);
             UserDAO::getInstance($this->getServiceLocator())->save($user, false, false);
             if (!$oldAvatar->getIsDefault()){
-                //TODO move these lines to method
                 $this->deleteAvatarImages($oldAvatar);
                 AvatarDAO::getInstance($this->getServiceLocator())->remove($oldAvatar, false, false);
             }
@@ -355,20 +366,30 @@ class UserManager extends BasicManager {
      */
     public function deleteAccount(\Application\Model\Entities\User $user, $deleteFacebookApp = true)
     {
-        //TODO remove predictions, etc all user data
+        $userDAO = UserDAO::getInstance($this->getServiceLocator());
+        $accountRemovalDAO = AccountRemovalDAO::getInstance($this->getServiceLocator());
+        $avatarDAO = AvatarDAO::getInstance($this->getServiceLocator());
         if ($user->getFacebookId() && $deleteFacebookApp){
             //remove facebook application
             $facebook = $this->getServiceLocator()->get('facebook');
             $facebook->api('/'.$user->getFacebookId(). '/permissions', 'DELETE', array('access_token' => $user->getFacebookAccessToken()));
         }
         $avatar = $user->getAvatar();
-        UserDAO::getInstance($this->getServiceLocator())->remove($user, false, false);
+        $userDAO->remove($user, false, false);
         if (!$avatar->getIsDefault()){
-            //TODO move these lines to method
             $this->deleteAvatarImages($avatar);
-            AvatarDAO::getInstance($this->getServiceLocator())->remove($avatar, false, false);
+            $avatarDAO->remove($avatar, false, false);
         }
-        UserDAO::getInstance($this->getServiceLocator())->flush();
+        $accountRemoval = new AccountRemoval();
+        $accountType = ($user->getFacebookId()) ? AccountRemoval::FACEBOOK_ACCOUNT : AccountRemoval::DIRECT_ACCOUNT;
+        $accountRemoval->setDate(new \DateTime())->setAccountType($accountType);
+        $accountRemovalDAO->save($accountRemoval, false, false);
+
+        $userDAO->flush();
+        $accountRemovalDAO->clearCache();
+        $userDAO->clearCache();
+        $avatarDAO->clearCache();
+
         return true;
     }
 
@@ -437,9 +458,31 @@ class UserManager extends BasicManager {
      */
     public function getCurrentUserLanguage()
     {
-        $userManager = UserManager::getInstance($this->getServiceLocator());
         $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-        $language = !is_null($user) ? $user->getLanguage() : $userManager->getUserLanguage();
+        $language = !is_null($user) ? $user->getLanguage() : $this->getUserLanguage();
         return $language;
+    }
+
+    public function updateUserLastLoggedIn(\Application\Model\Entities\User $user = null)
+    {
+        if (is_null($user)){
+            $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        }
+        $lastLoggedIn = $user->getLastLoggedIn();
+        if (is_null($lastLoggedIn) && $user->isAdmin()){
+            $session = new SessionContainer('admin');
+            $session->isFirstTimeLoggedIn = true;
+        }
+        $user->setLastLoggedIn(new \DateTime());
+        $this->save($user);
+    }
+
+    public function saveAdmin(\Application\Model\Entities\User $user, array $data)
+    {
+        $userDAO = UserDAO::getInstance($this->getServiceLocator());
+        if (!empty($data)){
+            $user->populate($data);
+            $userDAO->save($user);
+        }
     }
 }

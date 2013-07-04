@@ -15,7 +15,7 @@ if ($active != null) {
         <li><span><?=$this->translate('Display Name')?>:</span> <?=$this->user['displayName']?></li>
         <li><span><?=$this->translate('First Name')?>:</span> <?=$this->user['firstName']?></li>
         <li><span><?=$this->translate('Last Name')?>:</span> <?=$this->user['lastName']?></li>
-        <li><span><?=$this->translate('Birthday')?>:</span> <?=$this->user['birthday']->format('j F Y')?></li>
+        <li><span><?=$this->translate('Birthday')?>:</span> <?= !empty($this->user['birthday']) ? $this->user['birthday']->format('j F Y') : '';?></li>
         <li><span><?=$this->translate('Email')?>:</span> <a href="mailto:<?=$this->user['email']?>"><?=$this->user['email']?></a></li>
         <li><span><?=$this->translate('Role')?>:</span> <?=$this->user['role']['name']?></li>
         <li><span><?=$this->translate('Registration Date')?>:</span> <?=$this->user['date']->format('j F Y')?></li>

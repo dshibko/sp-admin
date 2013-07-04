@@ -30,7 +30,7 @@ class PredictionPlayerDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\PredictionPlayer';
+        return '\Application\Model\Entities\PredictionPlayer';
     }
 
 }

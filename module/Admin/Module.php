@@ -99,6 +99,10 @@ class Module
                 'accountFilter' => function($sm){
                     $filter = new \Admin\Form\Filter\AccountFormFilter($sm);
                     return $filter;
+                },
+                'adminFormFilter' => function($sm){
+                    $filter = new \Admin\Form\Filter\AdminFormFilter($sm);
+                    return $filter;
                 }
             )
         );

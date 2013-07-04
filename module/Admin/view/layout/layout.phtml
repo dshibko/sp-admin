@@ -5,7 +5,7 @@
 <!-- BEGIN HEAD -->
     <head>
         <meta charset="utf-8" />
-        <?php echo $this->headTitle($this->translate('Admin Dashboard'))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headTitle($this->translate('Admin Dashboard') .' - '.$this->getAppClub()->getDisplayName())->setSeparator(' - ')->setAutoEscape(false) ?>
 
         <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
 
@@ -27,6 +27,7 @@
         <script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/jquery.blockui.js" type="text/javascript"></script>
         <script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/jquery.cookie.js" type="text/javascript"></script>
         <script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
+        <script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/custom.js" type="text/javascript" ></script>
         <!-- END CORE PLUGINS -->
 
         <!-- BEGIN GLOBAL MANDATORY STYLES -->

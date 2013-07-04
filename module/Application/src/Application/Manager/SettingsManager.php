@@ -63,11 +63,12 @@ class SettingsManager extends BasicManager {
 
     /**
      * @param string $key
+     * @param bool $skipCache
      * @return string|bool
      */
-    public function getSetting($key) {
+    public function getSetting($key, $skipCache = false) {
         if ($this->settingsArray == null)
-            $this->settingsArray = $this->getSettingsAsArray();
+            $this->settingsArray = $this->getSettingsAsArray($skipCache);
         return array_key_exists($key, $this->settingsArray) ? $this->settingsArray[$key] : false;
     }
 

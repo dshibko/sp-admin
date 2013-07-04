@@ -8,8 +8,7 @@ use Application\Manager\LanguageManager;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Form\Filter\SetUpFormFilter;
-use Application\Model\Entities\Language;
-use Application\Model\Entities\Country;
+
 
 class SetUpForm extends Form implements ServiceLocatorAwareInterface{
 
@@ -59,7 +58,7 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
 
         ));
         //CSRF
-        $this->add(array(
+        /*$this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
             'name' => 'csrf',
             'options' => array(
@@ -67,7 +66,7 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
                     'timeout' => 600
                 )
             )
-        ));
+        ));*/
         $this->add(array(
             'name' => 'submit',
             'type'  => 'submit',

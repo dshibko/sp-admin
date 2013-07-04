@@ -13,6 +13,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Role extends BasicObject {
 
+     const SUPER_ADMIN = 'Super Admin';
+     const REGIONAL_MANAGER = 'Regional Manager';
+     const USER = 'User';
+     const GUEST = 'Guest';
+
     /**
      * @var string
      *

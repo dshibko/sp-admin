@@ -53,41 +53,41 @@ function initCharts(doResize){
     }
 
 
-    if ($('#chart-head-to-head-results').size() > 0){
-        var headToHeadChart = $.plot($('#chart-head-to-head-results'),
-            [
-                {color: '#363636', data: 7, label:''},
-                {color: '#144a9b', data: 25, label:''},
-                {color: '#7f7f80', data: 10,label:''}
-            ],
-            {
-                series: {
-                    pie: {
-                        innerRadius: 0.4,
-                        stroke: {color: '#e6edf8', width: 0},
-                        show: true,
-                        radius: 1,
-                        label: {
-                            show: true,
-                            radius: 2/3,
-                            formatter: function(label, series) {
-                                return series.data[0][1];
-                            }
-                        }
-                    }
-                },
-                legend: {
-                    show: false
-                }
-            }
-        );
-
-        if (doResize === true){
-            headToHeadChart.resize();
-            headToHeadChart.setupGrid();
-            headToHeadChart.draw();
-        }
-    }
+//    if ($('#chart-head-to-head-results').size() > 0){
+//        var headToHeadChart = $.plot($('#chart-head-to-head-results'),
+//            [
+//                {color: '#363636', data: 7, label:''},
+//                {color: '#144a9b', data: 25, label:''},
+//                {color: '#7f7f80', data: 10,label:''}
+//            ],
+//            {
+//                series: {
+//                    pie: {
+//                        innerRadius: 0.4,
+//                        stroke: {color: '#e6edf8', width: 0},
+//                        show: true,
+//                        radius: 1,
+//                        label: {
+//                            show: true,
+//                            radius: 2/3,
+//                            formatter: function(label, series) {
+//                                return series.data[0][1];
+//                            }
+//                        }
+//                    }
+//                },
+//                legend: {
+//                    show: false
+//                }
+//            }
+//        );
+//
+//        if (doResize === true){
+//            headToHeadChart.resize();
+//            headToHeadChart.setupGrid();
+//            headToHeadChart.draw();
+//        }
+//    }
 
     if ($('#chart-away-form').size() > 0){
         var awayFormChart = $.plot($('#chart-away-form'),

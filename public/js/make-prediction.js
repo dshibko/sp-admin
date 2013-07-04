@@ -5,15 +5,15 @@ var turnOffCustomStylePoint = isMobile() ? 767 : 0;
 
 var makePredictionOptions = {
 
-  responsiveAt: turnOffCustomStylePoint,
+    responsiveAt: turnOffCustomStylePoint,
 
-  inputs: {
-      // 'title': {
+    inputs: {
+        // 'title': {
 
-      // }
-  },
+        // }
+    },
 
-  onSuccess: onSuccess
+    onSuccess: onSuccess
 
 };
 
@@ -47,7 +47,10 @@ if (savedHomeScore != -1 && savedAwayScore != -1) {
 }
 
 var numbersKeys = [48, 49, 50, 51, 52, 53, 54 , 55, 56, 57,
-                    96, 97, 98, 99, 100, 101, 102, 103, 104, 105];
+    96, 97, 98, 99, 100, 101, 102, 103, 104, 105];
+
+//var countdownEl;
+var startTime;
 
 $(document).ready(function () {
 
@@ -56,15 +59,9 @@ $(document).ready(function () {
 
     var countdown = $('aside.competition-countdown');
     var untilTime = countdown.find('strong').text();
-    var startTime = new Date(parseInt(untilTime) * 1000);
-    countdown.find('strong').countdown({
-        until: $.countdown.UTCDate(-1 * startTime.getTimezoneOffset(), startTime),
-        format: "DHMS",
-        layout: "{dnn} {hnn} {mnn} {snn}",
-        onExpiry: function() {
-            window.location.href = liveMatchRedirect;
-        }
-    });
+    startTime = new Date(parseInt(untilTime) * 1000);
+    countdown.find('strong').remove();
+    initCountdown();
     countdown.show();
 
     $("#home-team-score, #away-team-score").blur(function() {
@@ -125,6 +122,51 @@ $(document).ready(function () {
     });
 
 });
+
+var prevPeriods;
+
+function initCountdown() {
+    prevPeriods = null;
+    $.ajax({
+        type: "POST",
+        url: utcTimeUrl,
+        async: false,
+        success : function(data) {
+            var now = new Date();
+            now.setTime(data * 1000);
+            var cdEl = $("<strong></strong>");
+            cdEl.countdown({
+                until: startTime,
+                format: "DHMS",
+                layout: "{dnn} {hnn} {mnn} {snn}",
+                serverSync: function() {
+                    return now;
+                },
+                onTick: function (periods) {
+                    if (prevPeriods !== null) {
+                        var prevDate = getDateFromPeriods(prevPeriods);
+                        var newDate = getDateFromPeriods(periods);
+                        var timeDif = prevDate.getTime() - newDate.getTime();
+                        if (timeDif < 0 || timeDif > 1000) {
+                            $('aside.competition-countdown p strong').countdown('destroy').remove();
+                            initCountdown();
+                        }
+                    }
+                    prevPeriods = periods;
+                },
+                expiryUrl: liveMatchRedirect
+            });
+            $('aside.competition-countdown p').prepend(cdEl);
+        }
+    });
+}
+
+function getDateFromPeriods(periods) {
+    var date = new Date();
+    var time = periods[6] + periods[5] * 60 + periods[4] * 60 * 60 + periods[3] * 60 * 60 * 24;
+    date.setTime(time * 1000);
+    return date;
+}
 
 function addSelect(section, data, id) {
     if ($makePrediction !== undefined) {

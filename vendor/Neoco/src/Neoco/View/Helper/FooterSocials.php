@@ -32,7 +32,7 @@ class FooterSocials extends AbstractHelper
         if (!empty($footerSocials)) {
             $footerSocialHtml = '<ul>';
             foreach ($footerSocials as $footerSocial)
-                $footerSocialHtml .= '<li><a class="social-link" style="background: url(' . $footerSocial['icon'] . ') no-repeat left top;" href="' . $footerSocial['url'] . '">' . $footerSocial['copy'] . '</a></li>';
+                $footerSocialHtml .= '<li><a target="_blank" class="social-link" style="background: url(' . $footerSocial['icon'] . ') no-repeat left top;" href="' . $footerSocial['url'] . '">' . $footerSocial['copy'] . '</a></li>';
             $footerSocialHtml .= '</ul>';
             return $footerSocialHtml;
         } else return '';
