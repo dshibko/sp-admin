@@ -7,6 +7,8 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
+use Neoco\View\Helper\AppClub;
+
 return array(
     'router' => array(
         'routes' => array(
@@ -403,6 +405,15 @@ return array(
             __DIR__ . '/../view',
         ),
     ),
+    'view_helpers' => array(
+       'factories' => array(
+           'getAppClub' => function($sm){
+               $appClub = new AppClub();
+               $appClub->setServiceLocator($sm->getServiceLocator());
+               return $appClub;
+           }
+       )
+   ),
     'navigation' => array(
         'default' => array(
             'predict' => array(
