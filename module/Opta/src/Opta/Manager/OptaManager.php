@@ -8,10 +8,13 @@ use Application\Manager\PlayerManager;
 use Application\Manager\RegionManager;
 use \Application\Manager\SeasonManager;
 use Application\Manager\UserManager;
+use Application\Model\Entities\Season;
+use Neoco\Exception\OutOfSeasonException;
 use \Opta\Controller\ClearAppCacheController;
 use \Application\Model\DAOs\FeedDAO;
 use \Application\Model\Entities\Feed;
 use \Application\Model\DAOs\MatchGoalDAO;
+use Zend\Mvc\Application;
 use \Zend\Mvc\Controller\Plugin\FlashMessenger;
 use \Zend\Log\Logger;
 use \Application\Model\Entities\LineUpPlayer;
@@ -54,20 +57,17 @@ class OptaManager extends BasicManager {
     }
 
     /**
-     * @param $filePath
+     * @param string $filePath
+     * @param Season $season
      * @param \Zend\Console\Adapter\AdapterInterface $console
      * @return bool|\Exception
      */
-    public function parseF40Feed($filePath, $console = null) {
+    public function parseF40Feed($filePath, $season, $console = null) {
 
         try {
             $this->startProgress($console, 'F40', $filePath);
 
             $xml = $this->getXMLContent($filePath);
-
-            $seasonDAO = SeasonDAO::getInstance($this->getServiceLocator());
-            $seasonFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'season_id');
-            $season = $seasonDAO->findOneByFeederId($seasonFeederId);
 
             if ($season != null) {
 
@@ -190,11 +190,12 @@ class OptaManager extends BasicManager {
     }
 
     /**
-     * @param $filePath
+     * @param string $filePath
+     * @param Season $season
      * @param \Zend\Console\Adapter\AdapterInterface $console
      * @return bool|\Exception
      */
-    public function parseF1Feed($filePath, $console = null) {
+    public function parseF1Feed($filePath, $season, $console = null) {
 
         try {
             $this->startProgress($console, 'F1', $filePath);
@@ -204,10 +205,6 @@ class OptaManager extends BasicManager {
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $edition = $applicationManager->getAppEdition();
             $optaId = $applicationManager->getAppOptaId();
-
-            $seasonDAO = SeasonDAO::getInstance($this->getServiceLocator());
-            $seasonFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'season_id');
-            $season = $seasonDAO->findOneByFeederId($seasonFeederId);
 
             $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
 
@@ -266,13 +263,6 @@ class OptaManager extends BasicManager {
                             }
 
                             if (!$match->getIsBlocked()) {
-                                $match->setCompetition($competition);
-                                $match->setWeek($this->getXmlAttribute($matchXml->MatchInfo, 'MatchDay'));
-                                $status = $this->getXmlAttribute($matchXml->MatchInfo, 'Period');
-                                if (!in_array($status, Match::getAvailableStatuses()))
-                                    $status = Match::LIVE_STATUS;
-
-                                $match->setStatus($status);
                                 $timezoneAbbr = $this->getNodeValue($matchXml->MatchInfo, 'TZ');
                                 $match->setTimezone($timezoneAbbr);
                                 $timezone = !empty($timezoneAbbr) ? new \DateTimeZone(timezone_name_from_abbr($timezoneAbbr)) : null;
@@ -285,6 +275,18 @@ class OptaManager extends BasicManager {
                                         $startTime->add($offsetInterval);
                                 }
                                 $match->setStartTime($startTime);
+                                if (!$season->getIsActive($match->getStartTime())) {
+                                    $this->doProgress($console);
+                                    continue;
+                                }
+
+                                $match->setCompetition($competition);
+                                $match->setWeek($this->getXmlAttribute($matchXml->MatchInfo, 'MatchDay'));
+                                $status = $this->getXmlAttribute($matchXml->MatchInfo, 'Period');
+                                if (!in_array($status, Match::getAvailableStatuses()))
+                                    $status = Match::LIVE_STATUS;
+
+                                $match->setStatus($status);
                                 $team2Side = $this->getXmlAttribute($matchXml->TeamData->{1}, 'Side');
 
                                 if ($team2Side == 'Home') {
@@ -676,24 +678,24 @@ class OptaManager extends BasicManager {
             case Feed::F40_TYPE: // 0 0,12 * * * cd <APP_ROOT>; php public/index.php opta F40
                 $feeds = $this->getUploadedFeedsByType($type);
                 if (!empty($feeds)) {
-                    $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
-                    $unfinishedSeasons = $seasonManager->getAllNotFinishedSeasons(true, true);
+                    $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+                    $currentSeason = $applicationManager->getCurrentSeason();
+                    if ($currentSeason === null)
+                        throw new OutOfSeasonException();
                     $processingStarted = false;
-                    foreach ($unfinishedSeasons as $unfinishedSeason) {
-                        $unfinishedSeasonOptaId = $unfinishedSeason['feederId'];
-                        $seasonFeeds = $this->filterFeedsByParameters($feeds, $type, array('season_id' => $unfinishedSeasonOptaId));
-                        foreach ($seasonFeeds as $seasonFeed)
-                            if ($force || $this->hasToBeProcessed($seasonFeed)) {
-                                $processingStarted = true;
-                                $success = $type == Feed::F1_TYPE ? $this->parseF1Feed($seasonFeed, $console) :
-                                    ($type == Feed::F40_TYPE ? $this->parseF40Feed($seasonFeed, $console) : false);
-                                $this->processingCompleted($seasonFeed, $type, $success);
-                            }
-                    }
-                    if ($processingStarted) {
-                        $this->saveFeedsChanges();
+                    $seasonFeeds = $this->filterFeedsByParameters($feeds, $type, array('season_id' => $currentSeason->getFeederId()));
+                    foreach ($seasonFeeds as $seasonFeed)
+                        if ($force || $this->hasToBeProcessed($seasonFeed)) {
+                            $processingStarted = true;
+                            $this->processingStarted($seasonFeed, $type);
+                            $this->saveFeedsChanges();
+                            $success = $type == Feed::F1_TYPE ? $this->parseF1Feed($seasonFeed, $currentSeason, $console) :
+                                ($type == Feed::F40_TYPE ? $this->parseF40Feed($seasonFeed, $currentSeason, $console) : false);
+                            $this->processingCompleted($seasonFeed, $type, $success);
+                            $this->saveFeedsChanges();
+                        }
+                    if ($processingStarted)
                         $this->clearAppCache($type, $console);
-                    }
                 }
                 break;
 
@@ -702,8 +704,11 @@ class OptaManager extends BasicManager {
                 $feeds = $this->getUploadedFeedsByType($type);
                 if (!empty($feeds)) {
                     $currentSeason = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+                    if ($currentSeason === null)
+                        throw new OutOfSeasonException();
                     $matchManager = MatchManager::getInstance($this->getServiceLocator());
                     $unfinishedAndPredictableMatches = $matchManager->getUnfinishedAndPredictableMatches($currentSeason, true, true);
+                    $processingStarted = false;
                     foreach ($unfinishedAndPredictableMatches as $match) {
                         $seasonOptaId = $currentSeason->getFeederId();
                         $matchFeeds = $this->filterFeedsByParameters($feeds, $type, array(
@@ -712,14 +717,16 @@ class OptaManager extends BasicManager {
                         ));
                         foreach ($matchFeeds as $matchFeed)
                             if ($force || $this->hasToBeProcessed($matchFeed)) {
+                                $processingStarted = true;
                                 $this->processingStarted($matchFeed, $type);
-                                $success = $this->parseF7Feed($matchFeed, $console);
                                 $this->saveFeedsChanges();
+                                $success = $this->parseF7Feed($matchFeed, $console);
                                 $this->processingCompleted($matchFeed, $type, $success);
                                 $this->saveFeedsChanges();
-                                $this->clearAppCache($type, $console);
                             }
                     }
+                    if ($processingStarted)
+                        $this->clearAppCache($type, $console);
                 }
                 break;
 
@@ -789,6 +796,9 @@ class OptaManager extends BasicManager {
             $feed->setType($type);
             $feed->setFileName($feedName);
         }
+        $lastUpdate = new \DateTime();
+        $lastUpdate->setTimestamp(filemtime($feedFilePath));
+        $feed->setLastUpdate($lastUpdate);
         $feed->setLastSyncResult(Feed::IN_PROGRESS_RESULT);
         $feedDAO->save($feed, false, false);
     }
