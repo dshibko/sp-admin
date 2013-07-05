@@ -43,26 +43,31 @@ class LeagueManager extends BasicManager {
         return self::$instance;
     }
 
-    public function recalculateLeaguesTables(\Application\Model\Entities\Match $match) {
+    public function recalculateLeaguesTables(\Application\Model\Entities\Match $match, array $predictions) {
 
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
 
         if ($season != null) {
 
-            $predictorsIdsArr = PredictionManager::getInstance($this->getServiceLocator())->getMatchPredictorsIds($match->getId(), true);
-            $predictorsIds = array();
-            foreach($predictorsIdsArr as $predictorsIdRow)
-                $predictorsIds []= (int)$predictorsIdRow['id'];
             $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
             $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-            $leagueUserPlaceDAO = LeagueUserPlaceDAO::getInstance($this->getServiceLocator());
-            $now = $match->getStartTime();
+
+            $leagueUserDAO->beginLeagueUsersUpdate();
+
             foreach ($season->getLeagues() as $league)
-                if ($league->getType() != League::MINI_TYPE || $league->getIsActive($now)) {
+                if ($league->getType() != League::MINI_TYPE || $league->getIsActive($match->getStartTime())) {
                     $usersData = $leagueDAO->getLeagueUsersScores($league);
 
-                    foreach ($usersData as $i => $userRow) {
-                        if ($userRow['place'] != null || in_array($userRow['user_id'], $predictorsIds)) {
+                    $leagueUsers = array();
+                    foreach ($usersData as $userRow) {
+                        if (array_key_exists($userRow['user_id'], $predictions)) {
+                            $prediction = $predictions[$userRow['user_id']];
+                            $userRow['predictions_players_count'] += $prediction['predictions_players_count'];
+                            $userRow['predictions_count']++;
+                            $userRow['correct_results'] += $prediction['is_correct_result'];
+                            $userRow['correct_scores'] += $prediction['is_correct_score'];
+                            $userRow['correct_scorers'] += $prediction['correct_scorers'];
+                            $userRow['correct_scorers_order'] += $prediction['correct_scorers_order'];
                             $userRow['accuracy'] = $userRow['correct_results'] / $userRow['predictions_count'] + $userRow['correct_scores'] / $userRow['predictions_count'];
                             $divider = 2;
                             if ($userRow['predictions_players_count'] > 0) {
@@ -70,44 +75,37 @@ class LeagueManager extends BasicManager {
                                 $divider = 4;
                             }
                             $userRow['accuracy'] /= $divider;
-                            $userRow['date'] = new \DateTime($userRow['date']);
-                            $usersData[$i] = $userRow;
+                            if ($userRow['points'] === null)
+                                $userRow['points'] = $prediction['points'];
+                            else
+                                $userRow['points'] += $prediction['points'];
                         }
+                        $userRow['date'] = new \DateTime($userRow['registration_date']);
+                        if ($userRow['points'] !== null)
+                            $leagueUsers[] = $userRow;
                     }
 
-                    usort($usersData, function($u2, $u1) {
+                    usort($leagueUsers, function($u2, $u1) {
                         $res = $u1['points'] != $u2['points'] ? $u1['points'] - $u2['points'] :
                             (floor(100 * $u1['accuracy']) != floor(100 * $u2['accuracy']) ? $u1['accuracy'] - $u2['accuracy'] :
                             ($u1['predictions_count'] != $u2['predictions_count'] ? $u1['predictions_count'] - $u2['predictions_count'] :
                             ($u1['correct_results'] != $u2['correct_results'] ? $u1['correct_results'] - $u2['correct_results'] :
                             ($u1['correct_scores'] != $u2['correct_scores'] ? $u1['correct_scores'] - $u2['correct_scores'] :
                             ($u1['correct_scorers'] != $u2['correct_scorers'] ? $u1['correct_scorers'] - $u2['correct_scorers'] :
-                            ($u1['date']->getTimestamp() != $u2['date']->getTimestamp() ? $u1['date']->getTimestamp() - $u2['date']->getTimestamp() : 1))))));
+                            ($u1['date']->getTimestamp() != $u2['date']->getTimestamp() ? $u2['date']->getTimestamp() - $u1['date']->getTimestamp() :
+                            ($u2['user_id'] - $u1['user_id'])))))));
                         return (int)($res/abs($res));
                     });
 
-                    foreach ($usersData as $i => $userRow) {
-                        $leagueUser = $leagueUserDAO->findOneById($userRow['id']);
-                        $leagueUser->setPreviousPlace($leagueUser->getPlace());
-                        $leagueUser->setPlace($i + 1);
-                        $leagueUser->setPoints($userRow['points']);
-                        $leagueUser->setAccuracy(floor(100 * $userRow['accuracy']));
-                        $leagueUserPlace = $leagueUserPlaceDAO->getLeagueUserPlace($leagueUser->getId(), $match->getId());
-                        if ($leagueUserPlace === null) {
-                            $leagueUserPlace = new LeagueUserPlace();
-                            $leagueUserPlace->setMatch($match);
-                            $leagueUserPlace->setLeagueUser($leagueUser);
-                        }
-                        $leagueUserPlace->setPlace($leagueUser->getPlace());
-                        $leagueUserPlace->setPreviousPlace($leagueUser->getPreviousPlace());
-                        $leagueUserPlaceDAO->save($leagueUserPlace, false, false);
-                        $leagueUserDAO->save($leagueUser, false, false);
+                    foreach ($leagueUsers as $i => $userRow) {
+                        $leagueUserDAO->appendLeagueUsersUpdate($userRow, $i + 1);
+                        $leagueUserDAO->appendLeagueUserPlace($userRow, $i + 1, $match->getId());
                     }
-                    $leagueUserDAO->flush();
-                    $leagueUserDAO->clearCache();
-                    $leagueUserPlaceDAO->clearCache();
 
                 }
+
+            $leagueUserDAO->commitLeagueUsersUpdate();
+            $leagueUserDAO->clearCache();
 
         } else
             throw new \Exception(MessagesConstants::INFO_OUT_OF_SEASON);
@@ -163,10 +161,8 @@ class LeagueManager extends BasicManager {
         $league->setType(League::MINI_TYPE);
         $league->setDisplayName($displayName);
         $regionDAO = RegionDAO::getInstance($this->getServiceLocator());
-        $regionManager = RegionManager::getInstance($this->getServiceLocator());
         $prizes = array();
         $leagueRegions = array();
-        $leagueUsers = array();
         foreach ($regionsData as $regionId => $regionRow) {
             $region = $regionDAO->findOneById($regionId);
             if ($region != null) {
@@ -195,16 +191,6 @@ class LeagueManager extends BasicManager {
                 $leagueRegion->setLeague($league);
                 $leagueRegion->setRegion($region);
                 $leagueRegions [] = $leagueRegion;
-                if ($editableLeague) {
-                    $users = $regionManager->getUsers($regionId);
-                    foreach ($users as $user) {
-                        $leagueUser = new LeagueUser();
-                        $leagueUser->setUser($user);
-                        $leagueUser->setJoinDate(new \DateTime());
-                        $leagueUser->setLeague($league);
-                        $leagueUsers [] = $leagueUser;
-                    }
-                }
             }
         }
         if ($editableLeague) {
@@ -212,10 +198,13 @@ class LeagueManager extends BasicManager {
             $league->setPrizes(new ArrayCollection($prizes));
             $league->getLeagueRegions()->clear();
             $league->setLeagueRegions(new ArrayCollection($leagueRegions));
-            $league->getLeagueUsers()->clear();
-            $league->setLeagueUsers(new ArrayCollection($leagueUsers));
         }
         $leagueDAO->save($league);
+        if ($editableLeague) {
+            $userManager = UserManager::getInstance($this->getServiceLocator());
+            foreach ($regionsData as $regionId => $regionRow)
+                $userManager->registerLeagueUsers($league, $regionId);
+        }
     }
 
     /**

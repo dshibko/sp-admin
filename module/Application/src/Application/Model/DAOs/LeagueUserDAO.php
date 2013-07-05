@@ -157,4 +157,42 @@ class LeagueUserDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    public function beginLeagueUsersUpdate() {
+        $this->getEntityManager()->getConnection()->beginTransaction();
+    }
+
+    public function appendLeagueUsersUpdate($leagueUser, $place) {
+        $points = $leagueUser['points'];
+        $previousPlace = $leagueUser['place'] !== null ? $leagueUser['place'] : 'null';
+        $accuracy = floor(100 * $leagueUser['accuracy']);
+        $id = $leagueUser['id'];
+        $correctResults = $leagueUser['correct_results'];
+        $correctScores = $leagueUser['correct_scores'];
+        $correctScorers = $leagueUser['correct_scorers'];
+        $correctScorersOrder = $leagueUser['correct_scorers_order'];
+        $predictionsPlayersCount = $leagueUser['predictions_players_count'];
+        $predictionsCount = $leagueUser['predictions_count'];
+
+        $this->getEntityManager()->getConnection()->executeQuery("
+            UPDATE league_user lu
+            SET lu.correct_results = $correctResults, lu.correct_scores = $correctScores,
+            lu.correct_scorers = $correctScorers, lu.correct_scorers_order = $correctScorersOrder,
+            lu.predictions_players_count = $predictionsPlayersCount, lu.predictions_count = $predictionsCount,
+            lu.points = $points, lu.place = $place, lu.previous_place = $previousPlace, lu.accuracy = $accuracy
+            WHERE lu.id = $id;
+        ");
+    }
+
+    public function appendLeagueUserPlace($leagueUser, $place, $matchId) {
+        $leagueUserId = $leagueUser['id'];
+        $previousPlace = $leagueUser['place'] !== null ? $leagueUser['place'] : 'null';
+        $this->getEntityManager()->getConnection()->executeQuery("
+            INSERT INTO league_user_place (league_user_id, match_id, place, previous_place)
+            VALUES($leagueUserId, $matchId, $place, $previousPlace)
+        ");
+    }
+
+    public function commitLeagueUsersUpdate() {
+        $this->getEntityManager()->getConnection()->commit();
+    }
 }

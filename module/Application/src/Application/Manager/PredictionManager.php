@@ -347,9 +347,4 @@ class PredictionManager extends BasicManager {
         return $predictionDAO->getUserPrediction($matchId, $userId, $hydrate, $skipCache);
     }
 
-    public function getMatchPredictorsIds($matchId, $hydrate = false, $skipCache = false) {
-        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
-        return $predictionDAO->getMatchPredictorsIds($matchId, $hydrate, $skipCache);
-    }
-
 }

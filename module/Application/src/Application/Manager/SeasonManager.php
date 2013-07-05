@@ -2,7 +2,7 @@
 
 namespace Application\Manager;
 
-use \Application\Model\Entities\LeagueUser;
+use Application\Model\DAOs\LeagueUserDAO;
 use \Application\Model\Entities\Prize;
 use \Application\Model\DAOs\PrizeDAO;
 use \Application\Model\DAOs\SeasonRegionDAO;
@@ -81,7 +81,6 @@ class SeasonManager extends BasicManager {
         $seasonDAO = SeasonDAO::getInstance($this->getServiceLocator());
         $seasonDAO->save($season, false, false);
 
-        $users = UserManager::getInstance($this->getServiceLocator())->getAllUsers();
         $globalLeague = new League();
         $globalLeague->setDisplayName(self::GLOBAL_LEAGUE_PREFIX . $season->getDisplayName());
         $globalLeague->setStartDate($season->getStartDate());
@@ -90,21 +89,14 @@ class SeasonManager extends BasicManager {
         $globalLeague->setType(League::GLOBAL_TYPE);
         $globalLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
         $globalLeague->setCreationDate(new \DateTime());
-        foreach ($users as $user) {
-            $leagueUser = new LeagueUser();
-            $leagueUser->setUser($user);
-            $leagueUser->setLeague($globalLeague);
-            $leagueUser->setJoinDate(new \DateTime());
-            $globalLeague->addLeagueUser($leagueUser);
-        }
 
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         $leagueDAO->save($globalLeague, false, false);
 
         $seasonRegionDAO = SeasonRegionDAO::getInstance($this->getServiceLocator());
         $prizeDAO = PrizeDAO::getInstance($this->getServiceLocator());
-        $regionManager = RegionManager::getInstance($this->getServiceLocator());
 
+        $regionalLeagues = array();
         foreach ($regionsData as $id => $regionRow) {
             $region = RegionManager::getInstance($this->getServiceLocator())->getNonHydratedRegionFromArray($id);
             if (!$region) continue;
@@ -137,24 +129,24 @@ class SeasonManager extends BasicManager {
             $regionLeague->setType(League::REGIONAL_TYPE);
             $regionLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
             $regionLeague->setCreationDate(new \DateTime());
-            $users = $regionManager->getUsers($region->getId());
-            foreach ($users as $user) {
-                $leagueUser = new LeagueUser();
-                $leagueUser->setUser($user);
-                $leagueUser->setJoinDate(new \DateTime());
-                $leagueUser->setLeague($regionLeague);
-                $regionLeague->addLeagueUser($leagueUser);
-            }
 
             $leagueDAO->save($regionLeague, false, false);
+
+            $regionalLeagues [$id] = $regionLeague;
         }
 
         $seasonDAO->flush();
+
+        $userManager = UserManager::getInstance($this->getServiceLocator());
+        $userManager->registerLeagueUsers($globalLeague);
+        foreach ($regionalLeagues as $regionId => $regionalLeague)
+            $userManager->registerLeagueUsers($regionalLeague, $regionId);
 
         $seasonDAO->clearCache();
         $leagueDAO->clearCache();
         $seasonRegionDAO->clearCache();
         $prizeDAO->clearCache();
+        LeagueUserDAO::getInstance($this->getServiceLocator())->clearCache();
 
         return $season;
     }

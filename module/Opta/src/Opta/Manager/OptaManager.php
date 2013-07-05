@@ -2,8 +2,12 @@
 
 namespace Opta\Manager;
 
+use Application\Manager\LeagueManager;
 use \Application\Manager\MatchManager;
+use Application\Manager\PlayerManager;
+use Application\Manager\RegionManager;
 use \Application\Manager\SeasonManager;
+use Application\Manager\UserManager;
 use \Opta\Controller\ClearAppCacheController;
 use \Application\Model\DAOs\FeedDAO;
 use \Application\Model\Entities\Feed;
@@ -465,18 +469,17 @@ class OptaManager extends BasicManager {
                     }
                 }
 
-                $match->setStatus(Match::FULL_TIME_STATUS);
-                $match->setIsBlocked(true);
-
-                $matchDAO->save($match);
-                MatchGoalDAO::getInstance($this->getServiceLocator())->clearCache();
-
                 try {
                     ScoringManager::getInstance($this->getServiceLocator())->calculateMatchScores($match);
                 } catch (\Exception $e) {
                     ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::EMERG, $console);
-                    return false;
                 }
+
+                $match->setStatus(Match::FULL_TIME_STATUS);
+                $matchDAO->save($match);
+
+                MatchGoalDAO::getInstance($this->getServiceLocator())->clearCache();
+
             }
 
             $period = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo, 'Period');
@@ -695,12 +698,12 @@ class OptaManager extends BasicManager {
                 break;
 
             case Feed::F7_TYPE: // */5 * * * * cd <APP_ROOT>; php public/index.php opta F7
+
                 $feeds = $this->getUploadedFeedsByType($type);
                 if (!empty($feeds)) {
                     $currentSeason = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
                     $matchManager = MatchManager::getInstance($this->getServiceLocator());
                     $unfinishedAndPredictableMatches = $matchManager->getUnfinishedAndPredictableMatches($currentSeason, true, true);
-                    $processingStarted = false;
                     foreach ($unfinishedAndPredictableMatches as $match) {
                         $seasonOptaId = $currentSeason->getFeederId();
                         $matchFeeds = $this->filterFeedsByParameters($feeds, $type, array(
@@ -709,14 +712,13 @@ class OptaManager extends BasicManager {
                         ));
                         foreach ($matchFeeds as $matchFeed)
                             if ($force || $this->hasToBeProcessed($matchFeed)) {
-                                $processingStarted = true;
+                                $this->processingStarted($matchFeed, $type);
                                 $success = $this->parseF7Feed($matchFeed, $console);
+                                $this->saveFeedsChanges();
                                 $this->processingCompleted($matchFeed, $type, $success);
+                                $this->saveFeedsChanges();
+                                $this->clearAppCache($type, $console);
                             }
-                    }
-                    if ($processingStarted) {
-                        $this->saveFeedsChanges();
-                        $this->clearAppCache($type, $console);
                     }
                 }
                 break;
@@ -767,21 +769,35 @@ class OptaManager extends BasicManager {
         $feedInfo = pathinfo($feedFilePath);
         $feedName = $feedInfo['basename'];
         $feedDAO = FeedDAO::getInstance($this->getServiceLocator());
-        $feed = $feedDAO->getFeedByFileName($feedName, true);
+        $feed = $feedDAO->getFeedByFileName($feedName, true, true);
         if ($feed !== null) {
             $lastFileUpdate = new \DateTime();
             $lastFileUpdate->setTimestamp(filemtime($feedFilePath));
             $lastFeedUpdate = $feed['lastUpdate'];
-            return $lastFeedUpdate < $lastFileUpdate;
+            return $feed['lastSyncResult'] != Feed::IN_PROGRESS_RESULT && $lastFeedUpdate < $lastFileUpdate;
         }
         return true;
+    }
+
+    public function processingStarted($feedFilePath, $type) {
+        $feedInfo = pathinfo($feedFilePath);
+        $feedName = $feedInfo['basename'];
+        $feedDAO = FeedDAO::getInstance($this->getServiceLocator());
+        $feed = $feedDAO->getFeedByFileName($feedName, false, true);
+        if ($feed === null) {
+            $feed = new Feed();
+            $feed->setType($type);
+            $feed->setFileName($feedName);
+        }
+        $feed->setLastSyncResult(Feed::IN_PROGRESS_RESULT);
+        $feedDAO->save($feed, false, false);
     }
 
     public function processingCompleted($feedFilePath, $type, $successfully = true) {
         $feedInfo = pathinfo($feedFilePath);
         $feedName = $feedInfo['basename'];
         $feedDAO = FeedDAO::getInstance($this->getServiceLocator());
-        $feed = $feedDAO->getFeedByFileName($feedName);
+        $feed = $feedDAO->getFeedByFileName($feedName, false, true);
         if ($feed === null) {
             $feed = new Feed();
             $feed->setType($type);

@@ -13,11 +13,10 @@ var TableManaged = function () {
                 aoColumns = [
                     null,
                     null,
-                    null,
                     null];
 
             if (aaSorting == undefined)
-                aaSorting = [[ 3, "desc" ]];
+                aaSorting = [[ 2, "desc" ]];
 
             // begin first table
             $('#users-table').dataTable({
