@@ -12,10 +12,10 @@ class PlayerForm extends UploadableForm {
     const SQUAD_NUMBER_MAX_LENGTH = 2;
     const SQUAD_NUMBER_MIN_VALUE = 1;
     const SQUAD_NUMBER_MAX_VALUE = 99;
-    const AVATAR_WIDTH = 110;
-    const AVATAR_HEIGHT = 110;
-    const BACKGROUND_WIDTH = 110;
-    const BACKGROUND_HEIGHT = 110;
+//    const AVATAR_WIDTH = 110;
+//    const AVATAR_HEIGHT = 110;
+    const BACKGROUND_WIDTH = 580;
+    const BACKGROUND_HEIGHT = 290;
 
     public function __construct() {
 
@@ -59,7 +59,6 @@ class PlayerForm extends UploadableForm {
             'name' => 'backgroundImagePath',
             'type'  => 'file',
             'attributes' => array(
-                'required' => true,
                 'isImage' => true,
                 'minWidth' => self::BACKGROUND_WIDTH,
                 'minHeight' => self::BACKGROUND_HEIGHT,
@@ -75,11 +74,10 @@ class PlayerForm extends UploadableForm {
             'name' => 'imagePath',
             'type'  => 'file',
             'attributes' => array(
-                'required' => true,
                 'isImage' => true,
-                'minWidth' => self::AVATAR_WIDTH,
-                'minHeight' => self::AVATAR_HEIGHT,
-                'hint' => 'Min image width: '.self::AVATAR_WIDTH.'px, height: '.self::AVATAR_HEIGHT.'px',
+//                'minWidth' => self::AVATAR_WIDTH,
+//                'minHeight' => self::AVATAR_HEIGHT,
+//                'hint' => 'Min image width: '.self::AVATAR_WIDTH.'px, height: '.self::AVATAR_HEIGHT.'px',
             ),
             'options' => array(
                 'label' => 'Player Avatar',
