@@ -294,8 +294,8 @@ class UserDAO extends AbstractDAO {
         if ($regionId === null)
             $conn->executeQuery('
                 INSERT INTO league_user (user_id, league_id, registration_date, join_date)
-                SELECT id, ?, u.date, ?
-                FROM user
+                SELECT u.id, ?, u.date, ?
+                FROM user u
             ', array($leagueId, $now));
         else {
             $conn->executeQuery('
