@@ -108,7 +108,7 @@ class PredictionManager extends BasicManager {
         $numberOfMatchesLeftThisSeason = MatchDAO::getInstance($this->getServiceLocator())->getMatchesLeftInTheSeasonNumber(new \DateTime(), $season);
         $numberOfPredictableMatches = SettingsManager::getInstance($this->getServiceLocator())->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
         $avgNumberOfPrediction = $numberOfPredictions / ($numberOfFinishedMatches + $numberOfLiveMatches + min($numberOfMatchesLeftThisSeason, $numberOfPredictableMatches));
-        $avgNumberOfPrediction = number_format(ceil($avgNumberOfPrediction * 100) / 100, 2);
+        $avgNumberOfPrediction = number_format(round($avgNumberOfPrediction * 100) / 100, 2);
         return $avgNumberOfPrediction;
     }
 
