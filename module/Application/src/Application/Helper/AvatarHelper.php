@@ -2,6 +2,7 @@
 namespace Application\Helper;
 
 use \Application\Model\Entities\Avatar;
+use Zend\Validator\File\Extension;
 use Zend\Validator\File\Size;
 use Zend\Validator\File\IsImage;
 use Zend\File\Transfer\Adapter\Http;
@@ -147,8 +148,10 @@ class AvatarHelper
                 'max' => self::IMAGE_MAX_SIZE
             ));
 
-//            $isImage = new IsImage(array());
-//            $this->getAdapter()->setValidators(array($size, $isImage), $data['name']);
+            $isImage = new Extension(array(
+                array('extension' => 'jpg,jpeg,gif,png,bmp')
+            ));
+            $this->getAdapter()->setValidators(array($size, $isImage), $data['name']);
             $this->getAdapter()->setFilters(array());
             if (!$this->getAdapter()->isValid()) {
                 $dataError = $this->getAdapter()->getMessages();

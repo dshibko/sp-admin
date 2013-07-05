@@ -66,7 +66,7 @@ class PlayersController extends AbstractActionController
                         $imageManager = ImageManager::getInstance($this->getServiceLocator());
                         //Player Avatar
                         $avatar = $form->get('imagePath')->getValue();
-                        if ($avatar['error'] != 4)
+                        if ($avatar['error'] != UPLOAD_ERR_NO_FILE)
                             if (!array_key_exists('stored', $avatar) || $avatar['stored'] == 0) {
                                 $imageManager->deleteImage($player->getImagePath());
                                 $avatarPath = $imageManager->saveUploadedImage($form->get('imagePath'), ImageManager::IMAGE_PLAYER_AVATAR);
@@ -75,7 +75,7 @@ class PlayersController extends AbstractActionController
 
                         //Player Background
                         $background = $form->get('backgroundImagePath')->getValue();
-                        if ($background['error'] != 4)
+                        if ($background['error'] != UPLOAD_ERR_NO_FILE)
                             if (!array_key_exists('stored', $background) || $background['stored'] == 0) {
                                 $imageManager->deleteImage($player->getBackgroundImagePath());
 
