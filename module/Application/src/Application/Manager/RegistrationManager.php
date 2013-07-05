@@ -114,6 +114,7 @@ class RegistrationManager extends BasicManager
                 $leagueUser = new LeagueUser();
                 $leagueUser->setUser($user);
                 $leagueUser->setJoinDate(new \DateTime());
+                $leagueUser->setRegistrationDate($user->getDate());
                 $leagueUser->setLeague($globalLeague);
                 $globalLeague->addLeagueUser($leagueUser);
                 $leagueDAO->save($globalLeague, false, false);
@@ -127,6 +128,7 @@ class RegistrationManager extends BasicManager
                     $leagueUser = new LeagueUser();
                     $leagueUser->setUser($user);
                     $leagueUser->setJoinDate(new \DateTime());
+                    $leagueUser->setRegistrationDate($user->getDate());
                     $leagueUser->setLeague($regionalLeague);
                     $regionalLeague->addLeagueUser($leagueUser);
                     $leagueDAO->save($regionalLeague, false, false);
@@ -137,6 +139,7 @@ class RegistrationManager extends BasicManager
                     $leagueUser = new LeagueUser();
                     $leagueUser->setUser($user);
                     $leagueUser->setJoinDate(new \DateTime());
+                    $leagueUser->setRegistrationDate($user->getDate());
                     $leagueUser->setLeague($temporalLeague);
                     $temporalLeague->addLeagueUser($leagueUser);
                     $leagueDAO->save($temporalLeague, false, false);
