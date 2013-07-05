@@ -7,11 +7,7 @@ use Zend\Validator\File\IsImage;
 use Zend\File\Transfer\Adapter\Http;
 use Zend\Form\Element\File as File;
 use Application\Manager\ImageManager;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Imagine\Gd\Imagine;
-use Imagine\Image\Box;
-use Imagine\Image\ImageInterface;
 use Application\Model\Entities\Avatar as EntityAvatar;
 use Application\Model\DAOs\AvatarDAO;
 
