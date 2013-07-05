@@ -110,6 +110,7 @@ class FixturesController extends AbstractActionController
         $matchManager = MatchManager::getInstance($this->serviceLocator);
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         $regionManager = RegionManager::getInstance($this->getServiceLocator());
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
 
         $form = null;
         $featuredPlayerForm = null;
@@ -123,7 +124,8 @@ class FixturesController extends AbstractActionController
                 $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_CANNOT_FIND_FIXTURE);
                 return $this->redirect()->toRoute(self::FIXTURES_LIST_ROUTE);
             }
-            $teamIds = array($fixture->getHomeTeam()->getId(), $fixture->getAwayTeam());
+            $appClub = $applicationManager->getAppClub();
+            $teamIds = array($appClub);
             $playerPositions = array(PlayerManager::DEFENDER_POSITION, PlayerManager::MIDFIELDER_POSITION, PlayerManager::FORWARD_POSITION);
             $goalkeeperPositions = array(PlayerManager::GOALKEEPER_POSITION);
             $featuredPlayerRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedPlayerFieldset');

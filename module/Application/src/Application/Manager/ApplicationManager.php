@@ -22,7 +22,7 @@ class ApplicationManager extends BasicManager {
     const DEFAULT_COUNTRY_ISO_CODE = 'GB';
     const CLUB_EDITION = 'club';
     const COMPETITION_EDITION = 'competition';
-    const USER_CLUB_ID = 3;
+
     /**
      * @var ApplicationManager
      */
