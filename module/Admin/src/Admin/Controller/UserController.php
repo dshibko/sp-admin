@@ -117,7 +117,7 @@ class UserController extends AbstractActionController
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $post = $request->getPost();
-                $post = isset($post['email']) ? strtolower($post['email']) : null;
+                $post['email'] = isset($post['email']) ? strtolower($post['email']) : null;
                 $form->setData($post);
                 $form->setInputFilter($this->getServiceLocator()->get('adminFormFilter'));
                 if ($form->isValid()) {
