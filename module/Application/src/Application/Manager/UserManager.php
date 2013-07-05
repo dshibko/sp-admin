@@ -203,7 +203,6 @@ class UserManager extends BasicManager {
             'id' => 'number',
             'displayName' => 'string',
             'email' => 'string',
-            'role' => 'string',
             'date' => array('date' => 'j F Y'),
             'predictions' => 'number',
             'facebook_id' => 'number',
@@ -485,4 +484,11 @@ class UserManager extends BasicManager {
             $userDAO->save($user);
         }
     }
+
+    public function registerLeagueUsers($league, $regionId = null)
+    {
+        $userDAO = UserDAO::getInstance($this->getServiceLocator());
+        $userDAO->registerLeagueUsers($league->getId(), $regionId);
+    }
+
 }

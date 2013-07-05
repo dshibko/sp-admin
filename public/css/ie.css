@@ -404,6 +404,12 @@ position: relative;
 }
 
 /***report***/
+
+.grid-layout .item.top-predicted-scorers section div {
+  filter: none!important;
+  background: url("../img/translucent-gradient.png") repeat-y left top;
+}
+
 .lt-ie9 .grid-layout .item.featured-player section div ul {
   background: #fff;
 }
@@ -413,6 +419,7 @@ position: relative;
 .lt-ie8 .grid-layout .item.top-predicted-scorers section div h1 {
   margin-bottom: 0.8em;
 }
+
 
 .lt-ie8 .grid-layout .item.stacked-bar section figure ol.legend li, 
 .lt-ie8 .grid-layout .pie-chart section ol li {

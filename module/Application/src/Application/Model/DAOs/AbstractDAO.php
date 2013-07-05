@@ -259,6 +259,10 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
 
     }
 
+    public function clearEntityManager() {
+        $this->getEntityManager()->clear();
+    }
+
     private function getCacheManager() {
         return CacheManager::getInstance($this->getServiceLocator());
     }

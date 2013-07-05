@@ -66,8 +66,13 @@ return array(
             'standard_identity' => function ($sm) use ($anonymousRole) {
                 $identity = $sm->get('AuthService')->getIdentity();
                 if ($identity == null) return $anonymousRole;
-                else
-                    return \Application\Manager\ApplicationManager::getInstance($sm)->getCurrentUser()->getRole()->getName();
+                else {
+                    $user = \Application\Manager\ApplicationManager::getInstance($sm)->getCurrentUser();
+                    if ($user === null)
+                        return $anonymousRole;
+                    else
+                        return $user->getRole()->getName();
+                }
             }
         )
     )

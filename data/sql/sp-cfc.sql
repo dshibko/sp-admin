@@ -3320,3 +3320,14 @@ INSERT INTO `country` (`id`, `name`, `iso_code`, `dial_code`, `flag_image`, `ori
 ALTER TABLE `country`
   ADD CONSTRAINT `country_ibfk_1` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`),
   ADD CONSTRAINT `country_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`);
+
+-- oko 04.07
+
+ALTER TABLE  `league_user` ADD  `correct_results` INT NOT NULL AFTER  `accuracy` ,
+ADD  `correct_scores` INT NOT NULL AFTER  `correct_results` ,
+ADD  `correct_scorers` INT NOT NULL AFTER  `correct_scores` ,
+ADD  `correct_scorers_order` INT NOT NULL AFTER  `correct_scorers` ,
+ADD  `predictions_players_count` INT NOT NULL AFTER  `correct_scorers_order` ,
+ADD  `predictions_count` INT NOT NULL AFTER  `predictions_players_count`,
+ADD  `registration_date` DATETIME NOT NULL AFTER  `previous_place`;
+

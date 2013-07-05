@@ -2,6 +2,7 @@
 
 namespace Application\Controller;
 
+use Application\Manager\LeagueManager;
 use \Neoco\Exception\InfoException;
 use \Neoco\Exception\OutOfSeasonException;
 use \Application\Manager\ShareManager;
@@ -26,6 +27,8 @@ class PredictController extends AbstractActionController {
 
         try {
 
+//            UserManager::getInstance($this->getServiceLocator())->registerLeagueUsers(LeagueManager::getInstance($this->getServiceLocator())->getLeagueById(2), 1);
+//die('ok');
             $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());

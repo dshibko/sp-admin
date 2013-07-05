@@ -20,9 +20,8 @@ $this->headTitle($title);
                             <thead>
                                 <tr>
                                     <th><?=$this->translate('Name')?></th>
-                                    <th class="hidden-480"><?=$this->translate('Email')?></th>
-                                    <th><?=$this->translate('Role')?></th>
-                                    <th class="hidden-480"><?=$this->translate('Joined')?></th>
+                                    <th><?=$this->translate('Email')?></th>
+                                    <th><?=$this->translate('Joined')?></th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -30,9 +29,8 @@ $this->headTitle($title);
                                 <?php foreach ($this->users as $user) : ?>
                                     <tr class="odd gradeX">
                                         <td><?=$user['displayName']?></td>
-                                        <td class="hidden-480"><a href="mailto:<?=$user['email']?>"><?=$user['email']?></a></td>
-                                        <td><?=$user['role']['name']?></td>
-                                        <td class="hidden-480">
+                                        <td><a href="mailto:<?=$user['email']?>"><?=$user['email']?></a></td>
+                                        <td>
                                             <?=$user['date']->format("j F H:i")?>
                                         </td>
                                         <td>
@@ -76,10 +74,9 @@ $this->headTitle($title);
             null,
             null,
             null,
-            null,
             { "bSortable": false }
         ],
-        [[ 3, "desc" ]]);
+        [[ 2, "desc" ]]);
     });
 </script>
 <!-- END JAVASCRIPTS -->

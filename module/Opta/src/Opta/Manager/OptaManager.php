@@ -2,8 +2,12 @@
 
 namespace Opta\Manager;
 
+use Application\Manager\LeagueManager;
 use \Application\Manager\MatchManager;
+use Application\Manager\PlayerManager;
+use Application\Manager\RegionManager;
 use \Application\Manager\SeasonManager;
+use Application\Manager\UserManager;
 use \Opta\Controller\ClearAppCacheController;
 use \Application\Model\DAOs\FeedDAO;
 use \Application\Model\Entities\Feed;
@@ -465,18 +469,17 @@ class OptaManager extends BasicManager {
                     }
                 }
 
-                $match->setStatus(Match::FULL_TIME_STATUS);
-                $match->setIsBlocked(true);
-
-                $matchDAO->save($match);
-                MatchGoalDAO::getInstance($this->getServiceLocator())->clearCache();
-
                 try {
                     ScoringManager::getInstance($this->getServiceLocator())->calculateMatchScores($match);
                 } catch (\Exception $e) {
                     ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::EMERG, $console);
-                    return false;
                 }
+
+                $match->setStatus(Match::FULL_TIME_STATUS);
+                $matchDAO->save($match);
+
+                MatchGoalDAO::getInstance($this->getServiceLocator())->clearCache();
+
             }
 
             $period = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo, 'Period');
@@ -695,6 +698,7 @@ class OptaManager extends BasicManager {
                 break;
 
             case Feed::F7_TYPE: // */5 * * * * cd <APP_ROOT>; php public/index.php opta F7
+
                 $feeds = $this->getUploadedFeedsByType($type);
                 if (!empty($feeds)) {
                     $currentSeason = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();

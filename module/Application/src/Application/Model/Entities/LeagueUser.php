@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class LeagueUser
 {
+    function __construct()
+    {
+        $this->correctScorers = $this->correctScores = $this->correctResults = $this->correctScorersOrder = $this->predictionsCount = $this->predictionsPlayersCount = 0;
+    }
+
     /**
      * @var integer
      *
@@ -25,6 +30,48 @@ class LeagueUser
      * @ORM\Column(name="accuracy", type="integer")
      */
     private $accuracy;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="correct_results", type="integer")
+     */
+    private $correctResults;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="correct_scores", type="integer")
+     */
+    private $correctScores;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="correct_scorers", type="integer")
+     */
+    private $correctScorers;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="correct_scorers_order", type="integer")
+     */
+    private $correctScorersOrder;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="predictions_players_count", type="integer")
+     */
+    private $predictionsPlayersCount;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="predictions_count", type="integer")
+     */
+    private $predictionsCount;
 
     /**
      * @var integer
@@ -68,6 +115,13 @@ class LeagueUser
      * })
      */
     private $user;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="registration_date", type="datetime", nullable=false)
+     */
+    private $registrationDate;
 
     /**
      * @var \DateTime
@@ -203,6 +257,118 @@ class LeagueUser
     public function getPreviousPlace()
     {
         return $this->previousPlace;
+    }
+
+    /**
+     * @param int $correctResults
+     */
+    public function setCorrectResults($correctResults)
+    {
+        $this->correctResults = $correctResults;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCorrectResults()
+    {
+        return $this->correctResults;
+    }
+
+    /**
+     * @param int $correctScorers
+     */
+    public function setCorrectScorers($correctScorers)
+    {
+        $this->correctScorers = $correctScorers;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCorrectScorers()
+    {
+        return $this->correctScorers;
+    }
+
+    /**
+     * @param int $correctScorersOrder
+     */
+    public function setCorrectScorersOrder($correctScorersOrder)
+    {
+        $this->correctScorersOrder = $correctScorersOrder;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCorrectScorersOrder()
+    {
+        return $this->correctScorersOrder;
+    }
+
+    /**
+     * @param int $correctScores
+     */
+    public function setCorrectScores($correctScores)
+    {
+        $this->correctScores = $correctScores;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCorrectScores()
+    {
+        return $this->correctScores;
+    }
+
+    /**
+     * @param int $predictionsCount
+     */
+    public function setPredictionsCount($predictionsCount)
+    {
+        $this->predictionsCount = $predictionsCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPredictionsCount()
+    {
+        return $this->predictionsCount;
+    }
+
+    /**
+     * @param int $predictionsPlayersCount
+     */
+    public function setPredictionsPlayersCount($predictionsPlayersCount)
+    {
+        $this->predictionsPlayersCount = $predictionsPlayersCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPredictionsPlayersCount()
+    {
+        return $this->predictionsPlayersCount;
+    }
+
+    /**
+     * @param \DateTime $registrationDate
+     */
+    public function setRegistrationDate($registrationDate)
+    {
+        $this->registrationDate = $registrationDate;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getRegistrationDate()
+    {
+        return $this->registrationDate;
     }
 
 }
