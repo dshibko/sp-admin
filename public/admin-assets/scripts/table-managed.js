@@ -24,6 +24,8 @@ var TableManaged = function () {
                 "aaSorting": aaSorting,
                 "bFilter": false,
                 "bStateSave" : true,
+                "aLengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
+                "iDisplayLength" : 25,
                 "iCookieDuration": 60 * 60 * 24 * 365 * 100,
                 "fnStateLoadParams" : function(oSettings, oData){
                     oData.oSearch.sSearch = '';
