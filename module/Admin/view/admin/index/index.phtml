@@ -187,7 +187,11 @@ $this->headTitle($title);
         App.init(); // initlayout and core plugins
         var messages = {perPage: "_MENU_ " + "<?=$this->translate('users per page')?>", nextLink: "<?=$this->translate('Next')?>",
             prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ users')?>"};
-        TableManaged.init(messages);
+        TableManaged.init(messages,[
+            null,
+            null,
+            null,
+            null]);
     });
 </script>
 <!-- END JAVASCRIPTS -->
