@@ -3071,9 +3071,6 @@ ALTER TABLE `user`
   ADD CONSTRAINT `user_ibfk_5` FOREIGN KEY (`country_id`) REFERENCES `country` (`id`);
 
 
--- okh 02.07
-ALTER TABLE `country`  ADD INDEX `name` (`name`);
-
 -- oko 03.07
 
 DROP TABLE IF EXISTS `country`;
@@ -3335,3 +3332,4 @@ ADD  `predictions_players_count` INT NOT NULL AFTER  `correct_scorers_order` ,
 ADD  `predictions_count` INT NOT NULL AFTER  `predictions_players_count`,
 ADD  `registration_date` DATETIME NOT NULL AFTER  `previous_place`;
 
+ALTER TABLE  `feed` CHANGE  `last_sync_result`  `last_sync_result` ENUM(  'Success',  'Error',  'InProgress' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

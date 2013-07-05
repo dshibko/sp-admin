@@ -120,10 +120,11 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
             'name' => 'ga-account-id',
             'type'  => 'text',
             'options' => array(
-                'label' => 'Google Analytics Account Id',
+                'label' => 'Google Analytics Id',
             ),
             'attributes' => array(
-                'required' => true
+                'required' => true,
+                'hint' => 'Like this "UA-XXXXX-Y"',
             ),
         ));
         $this->add(array(

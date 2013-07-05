@@ -18,6 +18,7 @@ class Feed extends BasicObject {
     const F7_TYPE = 'F7';
     const F40_TYPE = 'F40';
 
+    const IN_PROGRESS_RESULT = 'InProgress';
     const SUCCESS_RESULT = 'Success';
     const ERROR_RESULT = 'Error';
 
@@ -46,7 +47,7 @@ class Feed extends BasicObject {
     /**
      * @var string
      *
-     * @ORM\Column(name="last_sync_result", type="string", columnDefinition="ENUM('Success', 'Error')")
+     * @ORM\Column(name="last_sync_result", type="string", columnDefinition="ENUM('Success', 'Error', 'InProgress')")
      */
     protected $lastSyncResult;
 
