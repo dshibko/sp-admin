@@ -44,7 +44,7 @@ class LeagueDAO extends AbstractDAO {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('id', 'id');
         $rsm->addScalarResult('place', 'place');
-        $rsm->addScalarResult('date', 'date');
+        $rsm->addScalarResult('registration_date', 'registration_date');
         $rsm->addScalarResult('user_id', 'user_id');
         $rsm->addScalarResult('predictions_count', 'predictions_count');
         $rsm->addScalarResult('predictions_players_count', 'predictions_players_count');
@@ -55,22 +55,16 @@ class LeagueDAO extends AbstractDAO {
         $rsm->addScalarResult('correct_scorers_order', 'correct_scorers_order');
         $query = $this->getEntityManager()
             ->createNativeQuery('
-                SELECT lu.id, lu.place, u.date, u.id as user_id,
-                COUNT(p.id) as predictions_count,
-                IFNULL(SUM(pp.players), 0) as predictions_players_count,
-                SUM(p.points) as points,
-                SUM(p.is_correct_result) as correct_results,
-                SUM(p.is_correct_score) as correct_scores,
-                SUM(p.correct_scorers) as correct_scorers,
-                SUM(p.correct_scorers_order) as correct_scorers_order
+                SELECT lu.id, lu.place, lu.registration_date, lu.user_id,
+                lu.predictions_count,
+                lu.predictions_players_count,
+                lu.points,
+                lu.correct_results,
+                lu.correct_scores,
+                lu.correct_scorers,
+                lu.correct_scorers_order
                 FROM league_user lu
-                INNER JOIN user u ON u.id = lu.user_id
-                INNER JOIN league l ON l.id = lu.league_id AND l.id = ' . $league->getId() . '
-                INNER JOIN prediction p ON p.user_id = u.id AND p.points is not null
-                INNER JOIN `match` m ON m.id = p.match_id
-                LEFT OUTER JOIN (SELECT pp.prediction_id, COUNT(pp.id) players FROM prediction_player pp WHERE pp.player_id is not null GROUP BY pp.prediction_id) pp ON pp.prediction_id = p.id
-                WHERE DATE(m.start_time) >= l.start_date AND DATE(m.start_time) <= l.end_date
-                GROUP BY lu.id
+                WHERE lu.league_id = ' . $league->getId() . '
           ', $rsm);
         return $query->getArrayResult();
     }

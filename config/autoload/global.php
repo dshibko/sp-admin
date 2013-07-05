@@ -34,11 +34,12 @@ return array(
             )
         ),
     ),
-
     'email' => array(
         'fromEmail' => 'hello@neoco.com',
         'fromName' => 'Score Predictor',
     ),
+
+    'club_name' => 'TrueFan Utd',
     'app_name' => 'Score Predictor',
     'admin_assets_path_prefix' => '/admin-',
     'skip-cache-uri-patterns' => array('/admin/*'),

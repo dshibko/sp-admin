@@ -430,21 +430,6 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param $matchId
-     * @param bool $hydrate
-     * @param bool $skipCache
-     * @return array
-     */
-    function getMatchPredictorsIds($matchId, $hydrate = false, $skipCache = false) {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('u.id')
-            ->from($this->getRepositoryName(), 'p')
-            ->join('p.match', 'm', Expr\Join::WITH, 'm.id = ' . $matchId)
-            ->join('p.user', 'u');
-        return $this->getQuery($qb, $skipCache)->getScalarResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
-    }
-
-    /**
      * @param $seasonId
      * @return mixed
      */
@@ -608,5 +593,49 @@ class PredictionDAO extends AbstractDAO {
         )->setMaxResults($limit);
 
         return $query->getArrayResult();
+    }
+
+    /**
+     * @param int $matchId
+     * @return mixed
+     */
+    public function getMatchPredictions($matchId) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('user_id', 'user_id');
+        $rsm->addScalarResult('home_team_score', 'home_team_score');
+        $rsm->addScalarResult('away_team_score', 'away_team_score');
+        $rsm->addScalarResult('players', 'players');
+        $rsm->addScalarResult('teams', 'teams');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+             SELECT p.id, p.user_id, p.home_team_score, p.away_team_score, GROUP_CONCAT(IFNULL(pp.player_id, "") ORDER BY pp.order SEPARATOR \',\') players, GROUP_CONCAT(IFNULL(pp.team_id, "") ORDER BY pp.order SEPARATOR \',\') teams
+             FROM `prediction2` p
+             LEFT OUTER JOIN `prediction_player2` pp ON pp.prediction_id = p.id
+             WHERE p.match_id = ' . $matchId . '
+             GROUP BY p.id', $rsm);
+        return $query->getArrayResult();
+    }
+
+    public function beginPredictionsUpdate() {
+        $this->getEntityManager()->getConnection()->beginTransaction();
+    }
+
+    public function appendPredictionsUpdate($prediction) {
+        $isCorrectResult = $prediction['is_correct_result'];
+        $isCorrectScore = $prediction['is_correct_score'];
+        $correctScorers = $prediction['correct_scorers'];
+        $correctScorersOrder = $prediction['correct_scorers_order'];
+        $points = $prediction['points'];
+        $id = $prediction['id'];
+        $this->getEntityManager()->getConnection()->executeQuery("
+            UPDATE prediction p
+            SET p.is_correct_result = $isCorrectResult, p.is_correct_score = $isCorrectScore, p.correct_scorers = $correctScorers, p.correct_scorers_order = $correctScorersOrder, p.points = $points
+            WHERE p.id = $id;
+        ");
+    }
+
+    public function commitPredictionsUpdate() {
+        $this->getEntityManager()->getConnection()->commit();
     }
 }

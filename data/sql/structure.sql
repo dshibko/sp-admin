@@ -919,9 +919,6 @@ CREATE TABLE `default_report_content` (
   CONSTRAINT `FK_default_report_content_region` FOREIGN KEY (`region_id`) REFERENCES `region` (`id`)
 ) COLLATE='utf8_general_ci' ENGINE=InnoDB;
 
--- okh 02.07
-ALTER TABLE `country`  ADD INDEX `name` (`name`);
-
 -- oko 03.07
 
 DROP TABLE IF EXISTS `country`;
@@ -1171,3 +1168,15 @@ ALTER TABLE `country`
 
 -- okh 04.07
 INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES ('ga-account-id', '');
+
+-- oko 04.07
+
+ALTER TABLE  `league_user` ADD  `correct_results` INT NOT NULL AFTER  `accuracy` ,
+ADD  `correct_scores` INT NOT NULL AFTER  `correct_results` ,
+ADD  `correct_scorers` INT NOT NULL AFTER  `correct_scores` ,
+ADD  `correct_scorers_order` INT NOT NULL AFTER  `correct_scorers` ,
+ADD  `predictions_players_count` INT NOT NULL AFTER  `correct_scorers_order` ,
+ADD  `predictions_count` INT NOT NULL AFTER  `predictions_players_count`,
+ADD  `registration_date` DATETIME NOT NULL AFTER  `previous_place`;
+
+ALTER TABLE  `feed` CHANGE  `last_sync_result`  `last_sync_result` ENUM(  'Success',  'Error',  'InProgress' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;

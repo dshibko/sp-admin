@@ -40,19 +40,36 @@ class ScoringManager extends BasicManager {
      */
     public function calculateMatchScores($match) {
 
-        $predictions = $match->getPredictions();
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        $predictions = $predictionDAO->getMatchPredictions($match->getId());
+        $predictionsArr = array();
+        $predictionDAO->beginPredictionsUpdate();
 
         foreach ($predictions as $prediction) {
             $points = 0;
 
-            $isCorrectResult = $this->getMatchResult($prediction->getHomeTeamScore(), $prediction->getAwayTeamScore()) ==
+            $homeTeamScore = (int)$prediction['home_team_score'];
+            $awayTeamScore = (int)$prediction['away_team_score'];
+            $playersArr = explode(",", $prediction['players']);
+            $teamsArr = explode(",", $prediction['teams']);
+            $predictionsGoals = array();
+            $predictionsPlayersCount = 0;
+            foreach ($playersArr as $order => $playerId) {
+                $predictionsGoals[] = array(
+                    'order' => $order + 1,
+                    'player_id' => !empty($playerId) ? (int)$playerId : null,
+                    'team_id' => (int)$teamsArr[$order],
+                );
+                if (!empty($playerId)) $predictionsPlayersCount++;
+            }
+
+            $isCorrectResult = $this->getMatchResult($homeTeamScore, $awayTeamScore) ==
                 $this->getMatchResult($match->getHomeTeamFullTimeScore(), $match->getAwayTeamFullTimeScore());
             if ($isCorrectResult)
                 $points += self::MATCH_RESULT_POINTS;
 
-            $isCorrectScore = $prediction->getHomeTeamScore() == $match->getHomeTeamFullTimeScore() &&
-                $prediction->getAwayTeamScore() == $match->getAwayTeamFullTimeScore();
+            $isCorrectScore = $homeTeamScore == $match->getHomeTeamFullTimeScore() &&
+                $awayTeamScore == $match->getAwayTeamFullTimeScore();
             if ($isCorrectScore)
                 $points += self::MATCH_SCORE_POINTS;
 
@@ -62,16 +79,18 @@ class ScoringManager extends BasicManager {
             foreach ($goals as $goal)
                 if ($goal->getPlayer() != null && $goal->getType() != MatchGoal::OWN_TYPE) {
                     $scorerId = $goal->getPlayer()->getId();
-                    if (array_key_exists($scorerId, $goalScorers))
+                    if (!array_key_exists($scorerId, $goalScorers))
                         $goalScorers[$scorerId] = 0;
-                    $playerGoals = $prediction->getPredictionPlayers()->filter(function(PredictionPlayer $predictionPlayer) use ($goal) {
-                        return $predictionPlayer->getTeam()->getId() == $goal->getTeam()->getId() &&
-                            $predictionPlayer->getPlayer() != null && $predictionPlayer->getPlayer()->getId() == $goal->getPlayer()->getId();
-                    });
+                    $playerGoals = array();
+                    foreach ($predictionsGoals as $predictionGoal) {
+                        if ($predictionGoal['team_id'] == $goal->getTeam()->getId() &&
+                            ($predictionGoal['player_id'] !== null && $predictionGoal['player_id'] == $goal->getPlayer()->getId()))
+                            $playerGoals[] = $predictionGoal;
+                    }
                     if ($goalScorers[$scorerId]++ < count($playerGoals)) {
                         $correctScorers++;
                         foreach ($playerGoals as $playerGoal)
-                            if ($playerGoal->getOrder() == $goal->getOrder()) {
+                            if ($playerGoal['order'] == $goal->getOrder()) {
                                 $correctScorersOrder++;
                                 break;
                             }
@@ -84,16 +103,27 @@ class ScoringManager extends BasicManager {
             if ($match->getIsDoublePoints())
                 $points *= 2;
 
-            $prediction->setIsCorrectResult($isCorrectResult);
-            $prediction->setIsCorrectScore($isCorrectScore);
-            $prediction->setCorrectScorers($correctScorers);
-            $prediction->setCorrectScorersOrder($correctScorersOrder);
-            $prediction->setPoints($points);
+            $prediction = array (
+                'id' => (int)$prediction['id'],
+                'user_id' => (int)$prediction['user_id'],
+                'is_correct_result' => (int)$isCorrectResult,
+                'is_correct_score' => (int)$isCorrectScore,
+                'correct_scorers' => $correctScorers,
+                'correct_scorers_order' => $correctScorersOrder,
+                'predictions_players_count' => $predictionsPlayersCount,
+                'points' => $points,
+            );
 
-            $predictionDAO->save($prediction);
+            $predictionsArr [$prediction['user_id']] = $prediction;
+
+            $predictionDAO->appendPredictionsUpdate($prediction);
+
         }
 
-        \Application\Manager\LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables($match);
+        $predictionDAO->commitPredictionsUpdate();
+        $predictionDAO->clearCache();
+
+        \Application\Manager\LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables($match, $predictionsArr);
 
     }
 

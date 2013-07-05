@@ -96,9 +96,10 @@ class UserDAO extends AbstractDAO {
      */
     public function getAllUsers($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('u, r')
+        $qb->select('u.id, u.displayName, u.email, u.date')
             ->from($this->getRepositoryName(), 'u')
-            ->join('u.role', 'r');
+            ->orderBy('u.date', 'DESC')
+            ->setMaxResults(100);
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
 
@@ -120,9 +121,8 @@ class UserDAO extends AbstractDAO {
      */
     public function getExportUsers($skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('u.id, u.displayName, u.email, u.date, u.facebookId, u.facebookAccessToken, r.name as role, count(p.id) as predictions')
+        $qb->select('u.id, u.displayName, u.email, u.date, u.facebookId, u.facebookAccessToken, count(p.id) as predictions')
             ->from($this->getRepositoryName(), 'u')
-            ->join('u.role', 'r')
             ->leftJoin('u.predictions', 'p')
             ->groupBy('u.id');
         return $this->getQuery($qb, $skipCache)->getResult(\Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
@@ -286,4 +286,25 @@ class UserDAO extends AbstractDAO {
             ', $rsm);
         return $query->getArrayResult();
     }
+
+    public function registerLeagueUsers($leagueId, $regionId = null) {
+        $conn = $this->getEntityManager()->getConnection();
+        $now = new \DateTime();
+        $now = date("Y-m-d H:i:s", $now->getTimestamp());
+        if ($regionId === null)
+            $conn->executeQuery('
+                INSERT INTO league_user (user_id, league_id, registration_date, join_date)
+                SELECT id, ?, u.date, ?
+                FROM user
+            ', array($leagueId, $now));
+        else {
+            $conn->executeQuery('
+                INSERT INTO league_user (user_id, league_id, registration_date, join_date)
+                SELECT u.id, ?, u.date, ?
+                FROM user u
+                INNER JOIN country c ON c.id = u.country_id AND c.region_id = ?
+            ', array($leagueId, $now, $regionId));
+        }
+    }
+
 }
