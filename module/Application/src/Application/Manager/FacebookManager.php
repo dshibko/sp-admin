@@ -100,7 +100,7 @@ class FacebookManager extends BasicManager
     public function registerUser(array $data)
     {
         $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(RegistrationManager::DEFAULT_AVATAR_ID); //set default avatar
-        $data['country'] = ApplicationManager::DEFAULT_COUNTRY_ID;  //set default country
+        $data['country'] = UserManager::getInstance($this->getServiceLocator())->getUserGeoIpCountry();
         return RegistrationManager::getInstance($this->getServiceLocator())->register($data);
     }
 
