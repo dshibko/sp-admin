@@ -137,6 +137,7 @@ function enableEditMode(event) {
     $("div.home-team-scorers, div.away-team-scorers").html('');
     $("div.home-team section, div.away-team section").find('span.ideal-field, select').show();
     $("button[type='submit']").off('click', enableEditMode);
+    renderScorersLabel();
 }
 
 var prevPeriods;
