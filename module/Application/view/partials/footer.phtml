@@ -34,6 +34,9 @@
     </div>
 </footer>
 </div>
-<?php echo $this->partial('partials/google-analytics');?>
+<?php $accountId = $this->settingsHelper()->get(\Application\Manager\SettingsManager::GA_ACCOUNT_ID, null);?>
+<?php if (!empty($accountId)):?>
+    <?php echo $this->partial('partials/google-analytics', array('accountId' => $accountId));?>
+<?php endif;?>
 </body>
 </html>

@@ -19,7 +19,7 @@ var TableManaged = function () {
                 aaSorting = [[ 2, "desc" ]];
 
             // begin first table
-            $('#users-table').dataTable({
+            var oTable = $('#users-table').dataTable({
                 "aoColumns": aoColumns,
                 "aaSorting": aaSorting,
                 "bFilter": false,
@@ -40,7 +40,7 @@ var TableManaged = function () {
                     "sInfo": messages.showingLabel
                 }
             });
-
+            oTable.fnSort( [ [0,'asc'] ] );
         }
     };
 

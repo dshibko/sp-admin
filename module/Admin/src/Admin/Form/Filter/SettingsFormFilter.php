@@ -143,7 +143,7 @@ class SettingsFormFilter extends InputFilter
         //GA Account Id
         $this->add($factory->createInput(array(
             'name' => 'ga-account-id',
-            'required' => true,
+            'required' => false,
             'validators' => array(
                 array(
                     'name' => 'StringLength',
