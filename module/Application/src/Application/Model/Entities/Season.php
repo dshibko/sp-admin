@@ -131,7 +131,7 @@ class Season extends BasicObject {
      */
     public function getEndDate()
     {
-        return $this->endDate;
+        return $this->endDate->setTime(23, 59, 59);
     }
 
     /**
@@ -326,4 +326,13 @@ class Season extends BasicObject {
         return ($competitions->count() > 0) ? $competitions->first() : null;
     }
 
+    /**
+     * @param \DateTime $dateTime
+     * @return bool
+     */
+    public function getIsActive($dateTime) {
+        $startDate = $this->getStartDate();
+        $endDate = $this->getEndDate();
+        return $dateTime >= $startDate && $dateTime <= $endDate;
+    }
 }
