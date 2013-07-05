@@ -45,8 +45,8 @@ return array(
     'skip-cache-uri-patterns' => array('/admin/*'),
     'is_geo_ip_blocked' => false,
     'show_error_messages' => false,
-    'facebook_api_key' => '639647056062341',
-    'facebook_secret_key' => '73bc16bfe1d05f4c213a34a6c2d2ebfa',
+    'facebook_api_key' => '',// to change
+    'facebook_secret_key' => '',// to change
     'facebook_permissions' => 'email,
                               user_likes,
                               friends_likes,

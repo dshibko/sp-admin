@@ -151,8 +151,8 @@ class AvatarHelper
                 'max' => self::IMAGE_MAX_SIZE
             ));
 
-            $isImage = new IsImage(array());
-            $this->getAdapter()->setValidators(array($size, $isImage), $data['name']);
+//            $isImage = new IsImage(array());
+//            $this->getAdapter()->setValidators(array($size, $isImage), $data['name']);
             $this->getAdapter()->setFilters(array());
             if (!$this->getAdapter()->isValid()) {
                 $dataError = $this->getAdapter()->getMessages();
