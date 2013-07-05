@@ -48,6 +48,7 @@ class PredictController extends AbstractActionController {
                 $userManager = UserManager::getInstance($this->getServiceLocator());
                 $setUpForm = $this->getServiceLocator()->get('Application\Form\SetUpForm');
                 var_dump($userManager->getUserGeoIpIsoCode());
+                var_dump($userManager->getUserGeoIpCountry()->getId());
                 die;
                 $country = $user->getFacebookId() !== null ? $userManager->getUserGeoIpCountry() : $user->getCountry();
                 $language = $userManager->getUserLanguage();
