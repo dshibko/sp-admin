@@ -62,6 +62,11 @@ class RegistrationController extends AbstractActionController
                     $this->formErrors($form, $this);
                 }
             }
+
+            $getIpCountry = UserManager::getInstance($this->getServiceLocator())->getGeoIpCountry();
+            if ($getIpCountry !== null)
+                $form->get('country')->setValue($getIpCountry->getId());
+
             $viewModel = new ViewModel(array(
                 'form' => $form,
                 'terms' => $terms,
@@ -94,7 +99,7 @@ class RegistrationController extends AbstractActionController
             }
             $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
             $userManager = UserManager::getInstance($this->getServiceLocator());
-            $country = $user->getCountry();
+            $country = $user->getFacebookId() !== null ? $userManager->getUserGeoIpCountry() : $user->getCountry();
             $language = $userManager->getUserLanguage();
             $form->get('region')->setValue($country->getId());
             $form->get('language')->setValue($language->getId());

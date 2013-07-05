@@ -74,6 +74,17 @@ class UserManager extends BasicManager {
     }
 
     /**
+     * @return \Application\Model\Entities\Country
+     */
+    public function getGeoIpCountry()
+    {
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $isoCode = $this->getUserGeoIpIsoCode();
+        if (empty($isoCode)) return null;
+        return $applicationManager->getCountryByISOCode($isoCode);
+    }
+
+    /**
      * @return \Application\Model\Entities\Language
      */
     public function getUserLanguage()
