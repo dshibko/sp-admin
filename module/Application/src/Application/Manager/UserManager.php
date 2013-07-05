@@ -61,13 +61,11 @@ class UserManager extends BasicManager {
         if (null === $this->userGeoIpCountry){
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $isoCode = $this->getUserGeoIpIsoCode();
-            if (empty($isoCode)){
+            if (empty($isoCode))
                 $isoCode = ApplicationManager::DEFAULT_COUNTRY_ISO_CODE;
-            }
-            $applicationManager->getCountryByISOCode($isoCode);
-            if (empty($country)){
+            $country = $applicationManager->getCountryByISOCode($isoCode);
+            if (empty($country))
                 $country =  $applicationManager->getDefaultCountry();
-            }
             $this->userGeoIpCountry = $country;
         }
         return $this->userGeoIpCountry;
