@@ -99,7 +99,7 @@ class TeamDAO extends AbstractDAO {
                 WHERE ((hm.awayTeam = :clubId AND hc.season = :seasonId) OR (am.homeTeam = :clubId AND ac.season = :seasonId) OR t = :clubId)
                 GROUP BY t.id')
             ->setParameter('seasonId', $season->getId())
-            ->setParameter('clubId', $club->getId());
+            ->setParameter('clubId', $club != null ? $club->getId() : null);
         return $query->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
