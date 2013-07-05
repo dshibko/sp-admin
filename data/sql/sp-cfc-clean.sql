@@ -9,7 +9,8 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Table structure for table `account_removal`
 --
-
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS `account_removal`;
 CREATE TABLE IF NOT EXISTS `account_removal` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
@@ -29,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `account_removal` (
 -- Table structure for table `achievement_block`
 --
 
+DROP TABLE IF EXISTS `achievement_block`;
 CREATE TABLE IF NOT EXISTS `achievement_block` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `type` enum('First Correct Result','First Correct Scorer') DEFAULT NULL,
@@ -52,7 +54,7 @@ INSERT INTO `achievement_block` (`id`, `type`, `title`, `description`, `icon_pat
 --
 -- Table structure for table `avatar`
 --
-
+DROP TABLE IF EXISTS `avatar`;
 CREATE TABLE IF NOT EXISTS `avatar` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `original_image_path` varchar(255) NOT NULL,
@@ -80,6 +82,7 @@ INSERT INTO `avatar` (`id`, `original_image_path`, `big_image_path`, `medium_ima
 -- Table structure for table `competition`
 --
 
+DROP TABLE IF EXISTS `competition`;
 CREATE TABLE IF NOT EXISTS `competition` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `season_id` int(11) NOT NULL,
@@ -96,6 +99,7 @@ CREATE TABLE IF NOT EXISTS `competition` (
 -- Table structure for table `content_image`
 --
 
+DROP TABLE IF EXISTS `content_image`;
 CREATE TABLE IF NOT EXISTS `content_image` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `width1280` varchar(255) NOT NULL,
@@ -125,7 +129,7 @@ INSERT INTO `content_image` (`id`, `width1280`, `width1024`, `width600`, `width4
 -- Table structure for table `country`
 --
 
-CREATE TABLE IF NOT EXISTS `country` (
+DROP TABLE IF EXISTS `country`;CREATE TABLE IF NOT EXISTS  `country` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(40) NOT NULL,
   `iso_code` varchar(2) NOT NULL,
@@ -369,7 +373,7 @@ INSERT INTO `country` (`id`, `name`, `iso_code`, `dial_code`, `flag_image`, `ori
 -- Table structure for table `default_report_content`
 --
 
-CREATE TABLE IF NOT EXISTS `default_report_content` (
+DROP TABLE IF EXISTS `default_report_content`;CREATE TABLE IF NOT EXISTS  `default_report_content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `intro` text NOT NULL,
@@ -394,7 +398,7 @@ INSERT INTO `default_report_content` (`id`, `title`, `intro`, `header_image`, `r
 -- Table structure for table `emblem`
 --
 
-CREATE TABLE IF NOT EXISTS `emblem` (
+DROP TABLE IF EXISTS `emblem`;CREATE TABLE IF NOT EXISTS  `emblem` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `path` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
@@ -413,7 +417,7 @@ INSERT INTO `emblem` (`id`, `path`) VALUES
 -- Table structure for table `featured_goalkeeper`
 --
 
-CREATE TABLE IF NOT EXISTS `featured_goalkeeper` (
+DROP TABLE IF EXISTS `featured_goalkeeper`;CREATE TABLE IF NOT EXISTS  `featured_goalkeeper` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `player_id` int(11) DEFAULT NULL,
   `saves` int(6) DEFAULT '0',
@@ -435,7 +439,7 @@ CREATE TABLE IF NOT EXISTS `featured_goalkeeper` (
 -- Table structure for table `featured_player`
 --
 
-CREATE TABLE IF NOT EXISTS `featured_player` (
+DROP TABLE IF EXISTS `featured_player`;CREATE TABLE IF NOT EXISTS  `featured_player` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `player_id` int(11) DEFAULT NULL,
   `goals` int(3) DEFAULT '0',
@@ -457,7 +461,7 @@ CREATE TABLE IF NOT EXISTS `featured_player` (
 -- Table structure for table `featured_prediction`
 --
 
-CREATE TABLE IF NOT EXISTS `featured_prediction` (
+DROP TABLE IF EXISTS `featured_prediction`;CREATE TABLE IF NOT EXISTS  `featured_prediction` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) DEFAULT NULL,
   `copy` text,
@@ -476,7 +480,7 @@ CREATE TABLE IF NOT EXISTS `featured_prediction` (
 -- Table structure for table `feed`
 --
 
-CREATE TABLE IF NOT EXISTS `feed` (
+DROP TABLE IF EXISTS `feed`;CREATE TABLE IF NOT EXISTS  `feed` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `file_name` varchar(255) NOT NULL,
   `type` enum('F1','F2','F7','F40') DEFAULT NULL,
@@ -492,7 +496,7 @@ CREATE TABLE IF NOT EXISTS `feed` (
 -- Table structure for table `footer_image`
 --
 
-CREATE TABLE IF NOT EXISTS `footer_image` (
+DROP TABLE IF EXISTS `footer_image`;CREATE TABLE IF NOT EXISTS  `footer_image` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `region_id` int(11) NOT NULL,
   `footer_image` varchar(255) NOT NULL,
@@ -513,7 +517,7 @@ INSERT INTO `footer_image` (`id`, `region_id`, `footer_image`) VALUES
 -- Table structure for table `footer_page`
 --
 
-CREATE TABLE IF NOT EXISTS `footer_page` (
+DROP TABLE IF EXISTS `footer_page`;CREATE TABLE IF NOT EXISTS  `footer_page` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL,
   `type` enum('terms','privacy','contact-us','cookies-policy','help-and-support') NOT NULL,
@@ -534,7 +538,7 @@ CREATE TABLE IF NOT EXISTS `footer_page` (
 -- Table structure for table `footer_social`
 --
 
-CREATE TABLE IF NOT EXISTS `footer_social` (
+DROP TABLE IF EXISTS `footer_social`;CREATE TABLE IF NOT EXISTS  `footer_social` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `region_id` int(11) NOT NULL,
   `url` varchar(500) NOT NULL,
@@ -559,7 +563,7 @@ INSERT INTO `footer_social` (`id`, `region_id`, `url`, `copy`, `icon`, `order`) 
 -- Table structure for table `language`
 --
 
-CREATE TABLE IF NOT EXISTS `language` (
+DROP TABLE IF EXISTS `language`;CREATE TABLE IF NOT EXISTS  `language` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `language_code` varchar(5) NOT NULL,
   `display_name` varchar(40) NOT NULL,
@@ -580,7 +584,7 @@ INSERT INTO `language` (`id`, `language_code`, `display_name`, `is_default`) VAL
 -- Table structure for table `league`
 --
 
-CREATE TABLE IF NOT EXISTS `league` (
+DROP TABLE IF EXISTS `league`;CREATE TABLE IF NOT EXISTS  `league` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `display_name` varchar(50) NOT NULL,
   `season_id` int(11) NOT NULL,
@@ -601,7 +605,7 @@ CREATE TABLE IF NOT EXISTS `league` (
 -- Table structure for table `league_region`
 --
 
-CREATE TABLE IF NOT EXISTS `league_region` (
+DROP TABLE IF EXISTS `league_region`;CREATE TABLE IF NOT EXISTS  `league_region` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `league_id` int(11) NOT NULL,
   `region_id` int(11) NOT NULL,
@@ -617,7 +621,7 @@ CREATE TABLE IF NOT EXISTS `league_region` (
 -- Table structure for table `league_user`
 --
 
-CREATE TABLE IF NOT EXISTS `league_user` (
+DROP TABLE IF EXISTS `league_user`;CREATE TABLE IF NOT EXISTS  `league_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `league_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -637,7 +641,7 @@ CREATE TABLE IF NOT EXISTS `league_user` (
 -- Table structure for table `league_user_place`
 --
 
-CREATE TABLE IF NOT EXISTS `league_user_place` (
+DROP TABLE IF EXISTS `league_user_place`;CREATE TABLE IF NOT EXISTS  `league_user_place` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `league_user_id` int(11) NOT NULL,
   `match_id` int(11) NOT NULL,
@@ -659,7 +663,7 @@ CREATE TABLE IF NOT EXISTS `league_user_place` (
 -- Table structure for table `line_up`
 --
 
-CREATE TABLE IF NOT EXISTS `line_up` (
+DROP TABLE IF EXISTS `line_up`;CREATE TABLE IF NOT EXISTS  `line_up` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `match_id` int(11) NOT NULL,
   `team_id` int(11) NOT NULL,
@@ -682,7 +686,7 @@ CREATE TABLE IF NOT EXISTS `line_up` (
 -- Table structure for table `logotype`
 --
 
-CREATE TABLE IF NOT EXISTS `logotype` (
+DROP TABLE IF EXISTS `logotype`;CREATE TABLE IF NOT EXISTS  `logotype` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL,
   `emblem_id` int(11) NOT NULL,
@@ -705,7 +709,7 @@ INSERT INTO `logotype` (`id`, `language_id`, `emblem_id`, `logotype_image_path`)
 -- Table structure for table `match`
 --
 
-CREATE TABLE IF NOT EXISTS `match` (
+DROP TABLE IF EXISTS `match`;CREATE TABLE IF NOT EXISTS  `match` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `competition_id` int(11) NOT NULL,
   `home_team_id` int(11) NOT NULL,
@@ -740,7 +744,7 @@ CREATE TABLE IF NOT EXISTS `match` (
 -- Table structure for table `match_goal`
 --
 
-CREATE TABLE IF NOT EXISTS `match_goal` (
+DROP TABLE IF EXISTS `match_goal`;CREATE TABLE IF NOT EXISTS  `match_goal` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `match_id` int(11) NOT NULL,
   `team_id` int(11) NOT NULL,
@@ -767,7 +771,7 @@ CREATE TABLE IF NOT EXISTS `match_goal` (
 -- Table structure for table `match_region`
 --
 
-CREATE TABLE IF NOT EXISTS `match_region` (
+DROP TABLE IF EXISTS `match_region`;CREATE TABLE IF NOT EXISTS  `match_region` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `match_id` int(11) NOT NULL,
   `region_id` int(11) NOT NULL,
@@ -800,7 +804,7 @@ CREATE TABLE IF NOT EXISTS `match_region` (
 -- Table structure for table `permission`
 --
 
-CREATE TABLE IF NOT EXISTS `permission` (
+DROP TABLE IF EXISTS `permission`;CREATE TABLE IF NOT EXISTS  `permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
@@ -821,7 +825,7 @@ INSERT INTO `permission` (`id`, `name`) VALUES
 -- Table structure for table `player`
 --
 
-CREATE TABLE IF NOT EXISTS `player` (
+DROP TABLE IF EXISTS `player`;CREATE TABLE IF NOT EXISTS  `player` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `team_id` int(11) NOT NULL,
   `feeder_id` int(11) NOT NULL,
@@ -850,7 +854,7 @@ CREATE TABLE IF NOT EXISTS `player` (
 -- Table structure for table `player_competition`
 --
 
-CREATE TABLE IF NOT EXISTS `player_competition` (
+DROP TABLE IF EXISTS `player_competition`;CREATE TABLE IF NOT EXISTS  `player_competition` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `player_id` int(11) NOT NULL,
   `competition_id` int(11) NOT NULL,
@@ -863,7 +867,7 @@ CREATE TABLE IF NOT EXISTS `player_competition` (
 -- Table structure for table `prediction`
 --
 
-CREATE TABLE IF NOT EXISTS `prediction` (
+DROP TABLE IF EXISTS `prediction`;CREATE TABLE IF NOT EXISTS  `prediction` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `match_id` int(11) NOT NULL,
@@ -893,7 +897,7 @@ CREATE TABLE IF NOT EXISTS `prediction` (
 -- Table structure for table `prediction_player`
 --
 
-CREATE TABLE IF NOT EXISTS `prediction_player` (
+DROP TABLE IF EXISTS `prediction_player`;CREATE TABLE IF NOT EXISTS  `prediction_player` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `prediction_id` int(11) NOT NULL,
   `team_id` int(11) NOT NULL,
@@ -916,7 +920,7 @@ CREATE TABLE IF NOT EXISTS `prediction_player` (
 -- Table structure for table `prize`
 --
 
-CREATE TABLE IF NOT EXISTS `prize` (
+DROP TABLE IF EXISTS `prize`;CREATE TABLE IF NOT EXISTS  `prize` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `league_id` int(11) NOT NULL,
   `region_id` int(11) NOT NULL,
@@ -944,7 +948,7 @@ CREATE TABLE IF NOT EXISTS `prize` (
 -- Table structure for table `recovery`
 --
 
-CREATE TABLE IF NOT EXISTS `recovery` (
+DROP TABLE IF EXISTS `recovery`;CREATE TABLE IF NOT EXISTS  `recovery` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hash` varchar(255) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -965,7 +969,7 @@ CREATE TABLE IF NOT EXISTS `recovery` (
 -- Table structure for table `region`
 --
 
-CREATE TABLE IF NOT EXISTS `region` (
+DROP TABLE IF EXISTS `region`;CREATE TABLE IF NOT EXISTS  `region` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `display_name` varchar(50) NOT NULL,
   `is_default` tinyint(1) NOT NULL,
@@ -985,7 +989,7 @@ INSERT INTO `region` (`id`, `display_name`, `is_default`) VALUES
 -- Table structure for table `region_content`
 --
 
-CREATE TABLE IF NOT EXISTS `region_content` (
+DROP TABLE IF EXISTS `region_content`;CREATE TABLE IF NOT EXISTS  `region_content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `region_id` int(11) NOT NULL,
   `headline_copy` varchar(255) DEFAULT NULL,
@@ -1011,7 +1015,7 @@ INSERT INTO `region_content` (`id`, `region_id`, `headline_copy`, `register_butt
 -- Table structure for table `region_gameplay_content`
 --
 
-CREATE TABLE IF NOT EXISTS `region_gameplay_content` (
+DROP TABLE IF EXISTS `region_gameplay_content`;CREATE TABLE IF NOT EXISTS  `region_gameplay_content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `region_id` int(11) NOT NULL,
   `heading` varchar(255) NOT NULL,
@@ -1038,7 +1042,7 @@ INSERT INTO `region_gameplay_content` (`id`, `region_id`, `heading`, `descriptio
 -- Table structure for table `role`
 --
 
-CREATE TABLE IF NOT EXISTS `role` (
+DROP TABLE IF EXISTS `role`;CREATE TABLE IF NOT EXISTS  `role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   `parent_id` int(11) DEFAULT NULL,
@@ -1063,7 +1067,7 @@ INSERT INTO `role` (`id`, `name`, `parent_id`) VALUES
 -- Table structure for table `role_permission`
 --
 
-CREATE TABLE IF NOT EXISTS `role_permission` (
+DROP TABLE IF EXISTS `role_permission`;CREATE TABLE IF NOT EXISTS  `role_permission` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role_id` int(11) NOT NULL,
   `perm_id` int(11) NOT NULL,
@@ -1087,7 +1091,7 @@ INSERT INTO `role_permission` (`id`, `role_id`, `perm_id`) VALUES
 -- Table structure for table `season`
 --
 
-CREATE TABLE IF NOT EXISTS `season` (
+DROP TABLE IF EXISTS `season`;CREATE TABLE IF NOT EXISTS  `season` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `display_name` varchar(100) NOT NULL,
   `start_date` date NOT NULL,
@@ -1105,7 +1109,7 @@ CREATE TABLE IF NOT EXISTS `season` (
 -- Table structure for table `season_region`
 --
 
-CREATE TABLE IF NOT EXISTS `season_region` (
+DROP TABLE IF EXISTS `season_region`;CREATE TABLE IF NOT EXISTS  `season_region` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `season_id` int(11) NOT NULL,
   `region_id` int(11) NOT NULL,
@@ -1129,7 +1133,7 @@ CREATE TABLE IF NOT EXISTS `season_region` (
 -- Table structure for table `settings`
 --
 
-CREATE TABLE IF NOT EXISTS `settings` (
+DROP TABLE IF EXISTS `settings`;CREATE TABLE IF NOT EXISTS  `settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `setting_key` varchar(100) NOT NULL,
   `setting_value` varchar(500) NOT NULL,
@@ -1155,7 +1159,7 @@ INSERT INTO `settings` (`id`, `setting_key`, `setting_value`) VALUES
 -- Table structure for table `share_copy`
 --
 
-CREATE TABLE IF NOT EXISTS `share_copy` (
+DROP TABLE IF EXISTS `share_copy`;CREATE TABLE IF NOT EXISTS  `share_copy` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `engine` enum('Facebook','Twitter') DEFAULT NULL,
   `target` enum('PreMatchReport','PostMatchReport') DEFAULT NULL,
@@ -1194,7 +1198,7 @@ INSERT INTO `share_copy` (`id`, `engine`, `target`, `copy`, `weight`, `achieveme
 -- Table structure for table `team`
 --
 
-CREATE TABLE IF NOT EXISTS `team` (
+DROP TABLE IF EXISTS `team`;CREATE TABLE IF NOT EXISTS  `team` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `display_name` varchar(50) NOT NULL,
   `short_name` varchar(10) DEFAULT NULL,
@@ -1213,7 +1217,7 @@ CREATE TABLE IF NOT EXISTS `team` (
 -- Table structure for table `team_competition`
 --
 
-CREATE TABLE IF NOT EXISTS `team_competition` (
+DROP TABLE IF EXISTS `team_competition`;CREATE TABLE IF NOT EXISTS  `team_competition` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `team_id` int(11) NOT NULL,
   `competition_id` int(11) NOT NULL,
@@ -1226,7 +1230,7 @@ CREATE TABLE IF NOT EXISTS `team_competition` (
 -- Table structure for table `term`
 --
 
-CREATE TABLE IF NOT EXISTS `term` (
+DROP TABLE IF EXISTS `term`;CREATE TABLE IF NOT EXISTS  `term` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `is_required` tinyint(1) NOT NULL DEFAULT '0',
   `is_checked` tinyint(1) NOT NULL DEFAULT '0',
@@ -1244,7 +1248,7 @@ CREATE TABLE IF NOT EXISTS `term` (
 -- Table structure for table `term_copy`
 --
 
-CREATE TABLE IF NOT EXISTS `term_copy` (
+DROP TABLE IF EXISTS `term_copy`;CREATE TABLE IF NOT EXISTS  `term_copy` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `term_id` int(11) NOT NULL,
   `language_id` int(11) NOT NULL,
@@ -1265,7 +1269,7 @@ CREATE TABLE IF NOT EXISTS `term_copy` (
 -- Table structure for table `user`
 --
 
-CREATE TABLE IF NOT EXISTS `user` (
+DROP TABLE IF EXISTS `user`;CREATE TABLE IF NOT EXISTS  `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(5) DEFAULT NULL,
   `first_name` varchar(30) NOT NULL,
@@ -1308,6 +1312,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 -- Constraints for table `competition`
 --
+SET FOREIGN_KEY_CHECKS = 1;
 ALTER TABLE `competition`
   ADD CONSTRAINT `competition_ibfk_1` FOREIGN KEY (`season_id`) REFERENCES `season` (`id`);
 
