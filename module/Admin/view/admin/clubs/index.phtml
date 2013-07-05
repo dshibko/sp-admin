@@ -19,7 +19,6 @@ $this->headTitle($title);
                     <tr>
                         <th><?=$this->translate('Name')?></th>
                         <th><?=$this->translate('Short Name')?></th>
-                        <th><?=$this->translate('Founded')?></th>
                         <th><?=$this->translate('Logo')?></th>
                         <th style="width: 60px"><?=$this->translate('Action')?></th>
                     </tr>
@@ -29,7 +28,6 @@ $this->headTitle($title);
                     <tr class="odd gradeX <?php echo (empty($club['logoPath']) ? ' new-item' : '');?>">
                         <td><?=$club['displayName'];?></td>
                         <td><?=$club['shortName'];?></td>
-                        <td><?=$club['founded'];?></td>
                         <td>
                             <?php if (!empty($club['logoPath'])):?>
                                 <a href="<?=$club['logoPath'];?>" target="_blank"><?php echo $this->translate('Open');?></a>
@@ -89,10 +87,12 @@ $this->headTitle($title);
         var messages = {perPage: "_MENU_ " + "<?=$this->translate('clubs per page')?>", nextLink: "<?=$this->translate('Next')?>",
             prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ clubs')?>"};
        var oTable = $('#clubs-table').dataTable({
-            "aoColumns": [null, null, null, null, {bSortable: false}],
+            "aoColumns": [null, null, null, {bSortable: false}],
            // "aaSorting": aaSorting,
            // "bFilter": false,
            "bStateSave" : true,
+           "aLengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
+           "iDisplayLength" : App.getDefaultItemsPerPage(),
            "iCookieDuration": 60 * 60 * 24 * 365 * 100,
            "fnStateLoadParams" : function(oSettings, oData){
                oData.oSearch.sSearch = '';
