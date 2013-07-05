@@ -96,8 +96,10 @@ $this->headTitle($title);
             prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ admins')?>"};
         var oTable = $('#admins-table').dataTable({
             "aoColumns": [null, null,null,null,null,{"sType" : "date"},{bSortable: false}],
-            "aLengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
             "bStateSave" : true,
+            "aLengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
+            "iDisplayLength" : App.getDefaultItemsPerPage(),
+
             "iCookieDuration": 60 * 60 * 24 * 365 * 100,
             "fnStateLoadParams" : function(oSettings, oData){
                 oData.oSearch.sSearch = '';

@@ -130,3 +130,7 @@ ul.vertical-margined li {
 .translation-error{
     border: 1px solid red;
 }
+
+.page-sidebar > ul > li a i{
+    color : #fff !important;
+}

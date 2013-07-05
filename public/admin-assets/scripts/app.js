@@ -9,6 +9,7 @@ var App = function () {
     var isIE10 = false;
     var responsiveHandlers = [];
     var layoutColorCodes = {'blue':'#4b8df8','red':'#e02222','green':'#35aa47','purple':'#852b99','grey':'#555555', 'yellow' :'#ffb848'};
+    var defaultItemsPerPage = 25;
 
     //* BEGIN:CORE HANDLERS *//
     // this function handles responsive layout on screen size resize or mobile device rotate.
@@ -594,6 +595,10 @@ var App = function () {
            } else {
                 return '';
            }
+        },
+
+        getDefaultItemsPerPage: function(){
+            return defaultItemsPerPage;
         }
 
     };

@@ -120,7 +120,7 @@ echo $this->form()->openTag($form);
                 oData.aaSorting = [];
             },
             "aLengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
-            "iDisplayLength" : 10
+            "iDisplayLength" : App.getDefaultItemsPerPage()
         });
         oTable.fnSort( [ [0,'asc'] ] );
         jQuery('#language').submit(function(){
