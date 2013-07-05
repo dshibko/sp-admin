@@ -307,4 +307,19 @@ class UserDAO extends AbstractDAO {
         }
     }
 
+    /**
+     * @param array $facebookIds
+     * @param bool $skipCache
+     * @return array
+     * @throws \Exception
+     */
+    public function getUserIdsByFacebookIds($facebookIds, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('u.id')
+            ->from($this->getRepositoryName(), 'u')
+            ->where($qb->expr()->in('u.facebookIds', ':facebookIds'))
+            ->setParameter('facebookIds', $facebookIds);
+        return $this->getQuery($qb, $skipCache)->getScalarResult();
+    }
+
 }
