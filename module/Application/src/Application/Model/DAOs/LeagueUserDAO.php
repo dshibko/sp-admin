@@ -104,12 +104,13 @@ class LeagueUserDAO extends AbstractDAO {
      * @param int $top
      * @param int $offset
      * @param array|null $facebookIds
+     * @param bool $skipCache
      * @return array
      */
     public function getLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null, $skipCache = false) {
         if ($facebookIds !== null) {
-            $userDAO = UserDAO::getInstance($this)->getServiceLocator();
-            $usersIdsArr = $userDAO->getUserIdsByFacebookIds($facebookIds);
+            $userDAO = UserDAO::getInstance($this->getServiceLocator());
+            $usersIdsArr = $userDAO->getUserIdsByFacebookIds($facebookIds, $skipCache);
             $usersIds = array();
             foreach ($usersIdsArr as $userId)
                 $usersIds [] = $userId['id'];
@@ -138,7 +139,7 @@ class LeagueUserDAO extends AbstractDAO {
                 INNER JOIN user u ON lu.user_id = u.id
                 INNER JOIN country c ON u.country_id = c.id
         ", $rsm);
-        return $this->prepareQuery($query, array($this->getRepositoryName()))->getArrayResult();
+        return $this->prepareQuery($query, array(LeagueUserPlaceDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
     }
 
     /**
