@@ -31,12 +31,6 @@ class ImageManager extends BasicManager {
 
     const CLUB_LOGO_SIZE = 110;
 
-    const PLAYER_BACKGROUND_WIDTH = 600;
-    const PLAYER_BACKGROUND_HEIGHT = 300;
-
-    const PLAYER_FOREGROUND_WIDTH = 400;
-    const PLAYER_FOREGROUND_HEIGHT = 250;
-
     const ACHIEVEMENT_ICON_WIDTH = 199;
     const ACHIEVEMENT_ICON_HEIGHT = 200;
 
