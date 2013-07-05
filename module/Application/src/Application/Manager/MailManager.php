@@ -91,8 +91,8 @@ class MailManager extends BasicManager {
             ->setName('smtp.gmail.com')
             ->setPort(587)
             ->setConnectionConfig(array(
-                'username' => '******',
-                'password' => '*********',
+                'username' => '',
+                'password' => '',
                 'ssl' => 'tls',
             ));
         $transport->setOptions($options);

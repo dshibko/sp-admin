@@ -405,10 +405,11 @@ position: relative;
 
 /***report***/
 
-.grid-layout .item.top-predicted-scorers section div {
+.lt-ie9 .grid-layout .item.top-predicted-scorers section div, .lt-ie9 .grid-layout .item.featured-player section div, .lt-ie9 .grid-layout .item.blockquote section figure   {
   filter: none!important;
-  background: url("../img/translucent-gradient.png") repeat-y left top;
+  background: url("../img/translucent-gradient.png") repeat-y right top;
 }
+
 
 .lt-ie9 .grid-layout .item.featured-player section div ul {
   background: #fff;
