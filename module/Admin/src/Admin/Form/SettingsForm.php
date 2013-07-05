@@ -117,6 +117,16 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
             ),
         ));
         $this->add(array(
+            'name' => 'ga-account-id',
+            'type'  => 'text',
+            'options' => array(
+                'label' => 'Google Analytics Account Id',
+            ),
+            'attributes' => array(
+                'required' => true
+            ),
+        ));
+        $this->add(array(
             'name' => 'send-welcome-email',
             'type'  => 'Zend\Form\Element\Checkbox',
             'options' => array(
