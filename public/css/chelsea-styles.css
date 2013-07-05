@@ -1,0 +1,128 @@
+.pink {
+  background: rgb(212,169,53);
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q0YTkzNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNjODk4MDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+  background: -moz-linear-gradient(top,  rgba(212,169,53,1) 0%, rgba(200,152,0,1) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(212,169,53,1)), color-stop(100%,rgba(200,152,0,1)));
+  background: -webkit-linear-gradient(top,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  background: -o-linear-gradient(top,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  background: -ms-linear-gradient(top,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  background: linear-gradient(to bottom,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4a935', endColorstr='#c89800',GradientType=0 );
+
+  border: 1px solid #9e8031;
+}
+
+.banner .cta, 
+.ready-try .cta, 
+aside.ready-try .cta,
+.make-prediction .make-prediction-content .buttons-block button,
+#setup-dialog footer button.pink,
+.inner-page div[role="main"] .second-column .login section .cta,
+#setup-dialog.setup-mobile.dialog footer button.pink  {
+  background: rgb(212,169,53);
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q0YTkzNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNjODk4MDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+  background: -moz-linear-gradient(top,  rgba(212,169,53,1) 0%, rgba(200,152,0,1) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(212,169,53,1)), color-stop(100%,rgba(200,152,0,1)));
+  background: -webkit-linear-gradient(top,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  background: -o-linear-gradient(top,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  background: -ms-linear-gradient(top,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  background: linear-gradient(to bottom,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4a935', endColorstr='#c89800',GradientType=0 );
+
+  width: 14.5em;
+  border: 1px solid #9e8031;
+  text-transform: uppercase;
+}
+#setup-dialog footer button.pink,
+#setup-dialog.setup-mobile.dialog footer button.pink  {
+  width: 17.5em;
+}
+
+aside.find-out-more {
+  display: none;
+}
+
+.article-image h2 {
+  color: #144a9b;
+}
+
+.lt-ie9 .main-navigation {
+  background: none;
+}
+.ie8 .main-navigation li.user-navigation summary {
+  height: 4.95em;
+}
+.main-navigation li.active, .main-navigation li:hover {
+  background: #0081c8;
+}
+.main-navigation li.active a, .main-navigation li:hover a {
+  color: #fff;
+}
+.main-navigation li.user-navigation:hover .popup-content li a, .main-navigation li.user-navigation .popup-content li a:hover   {
+  color: #202020;
+}
+.main-navigation li.user-navigation:hover .popup-content li.user-profile a, .main-navigation li.user-navigation .popup-content li.user-profile a {
+  color: #144a9b;
+}
+.main-navigation li .flag-unread-items {
+  border-top: 1.4em solid #ffca00;
+}
+.carousel-wrap>header .flag-new-prediction:before {
+  border-top: 4em solid #ffca00;
+}
+.main-navigation li .flag-unread-items span {
+  color: #000;
+}
+.carousel-wrap>header .flag-new-prediction span {
+  color: #000;
+  font-family: "ProximaNova-Bold",Helvetica,Arial;
+}
+.carousel-wrap>header {
+  background: #0a2344;
+}
+.carousel-wrap>header li {
+  background: rgb(114,169,216);
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzcyYTlkOCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMzZjg2YzYiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+  background: -moz-linear-gradient(top,  rgba(114,169,216,1) 0%, rgba(63,134,198,1) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(114,169,216,1)), color-stop(100%,rgba(63,134,198,1)));
+  background: -webkit-linear-gradient(top,  rgba(114,169,216,1) 0%,rgba(63,134,198,1) 100%);
+  background: -o-linear-gradient(top,  rgba(114,169,216,1) 0%,rgba(63,134,198,1) 100%);
+  background: -ms-linear-gradient(top,  rgba(114,169,216,1) 0%,rgba(63,134,198,1) 100%);
+  background: linear-gradient(to bottom,  rgba(114,169,216,1) 0%,rgba(63,134,198,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#72a9d8', endColorstr='#3f86c6',GradientType=0 );
+
+}
+.carousel-wrap>header li a:hover {
+  color: #a5c9e6;
+}
+
+.fixtures table tr.flag-new-prediction td.action-block div strong {
+  border-top: 1.2em solid #ffca00;
+}
+.fixtures table tr.flag-new-prediction td {
+  border-top: 1px solid #ffca00;
+}
+
+.lt-ie8  .make-prediction > header .flag-new-prediction small {
+  border-top: 4em solid #ffca00!important;
+}
+
+.lt-ie8 .carousel-wrap>header .flag-new-prediction small {
+  border-top: 4em solid #ffca00!important;
+}
+
+
+@media screen and (max-width: 767px) {
+  .main-navigation a.mobilenav {
+    background-color: #003366;
+  }
+  .main-navigation ul {
+    border-bottom: 4px solid #003366;
+  }
+  .main-navigation ul li .flag-unread-items {
+    border-top: 1.4em solid #ffca00;
+  }
+  .main-navigation ul li.user-navigation .popup-content ul {
+    margin-bottom: 4px;
+  }
+}
