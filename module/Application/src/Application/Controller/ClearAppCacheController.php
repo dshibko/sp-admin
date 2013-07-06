@@ -16,10 +16,8 @@ class ClearAppCacheController extends AbstractActionController {
     public function indexAction() {
 
         $remoteAddresses = new RemoteAddress();
-        var_dump($remoteAddresses->getIpAddress());
-        die;
-        if ($remoteAddresses->getIpAddress() !== '127.0.0.1')
-            return $this->notFoundAction();
+//        if ($remoteAddresses->getIpAddress() !== '127.0.0.1')
+//            return $this->notFoundAction();
 
         $entities = $this->params()->fromRoute('entities', '');
 
@@ -44,6 +42,7 @@ class ClearAppCacheController extends AbstractActionController {
         } catch (\Exception $e) {
             $response->setContent(self::FAIL_MESSAGE);
         }
+        $response->setContent($remoteAddresses->getIpAddress());
 
         return $response;
     }
