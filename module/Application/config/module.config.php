@@ -298,9 +298,9 @@ return array(
                 'options' => array(
                     'route'    => '/cookies2',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Content',
-                        'action'        => 'cookies',
+                        '__NAMESPACE__' => 'Opta\Controller',
+                        'controller'    => 'ClearAppCache',
+                        'action'        => 'index',
                     ),
                 ),
 //                'type' => 'segment',
