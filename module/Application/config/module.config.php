@@ -294,14 +294,23 @@ return array(
                 ),
             ),
             'clear-app-cache' => array(
-                'type' => 'segment',
+                'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/clear[/][:entities]',
+                    'route'    => '/cookies2',
                     'defaults' => array(
-                        'controller' => 'Opta\Controller\ClearAppCache',
-                        'action'     => 'index',
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'Content',
+                        'action'        => 'cookies',
                     ),
                 ),
+//                'type' => 'segment',
+//                'options' => array(
+//                    'route'    => '/clear[/][:entities]',
+//                    'defaults' => array(
+//                        'controller' => 'Opta\Controller\ClearAppCache',
+//                        'action'     => 'index',
+//                    ),
+//                ),
             ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
