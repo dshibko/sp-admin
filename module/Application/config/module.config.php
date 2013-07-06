@@ -310,21 +310,13 @@ return array(
             'clear-app-cache' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/cookies2',
+                    'route'    => '/clear-app-cache[/][:entities]',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
                         'controller'    => 'ClearAppCache',
                         'action'        => 'index',
                     ),
                 ),
-//                'type' => 'segment',
-//                'options' => array(
-//                    'route'    => '/clear[/][:entities]',
-//                    'defaults' => array(
-//                        'controller' => 'Opta\Controller\ClearAppCache',
-//                        'action'     => 'index',
-//                    ),
-//                ),
             ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new

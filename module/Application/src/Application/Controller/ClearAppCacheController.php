@@ -16,6 +16,7 @@ class ClearAppCacheController extends AbstractActionController {
     public function indexAction() {
 
         $remoteAddresses = new RemoteAddress();
+        var_dump($remoteAddresses->getIpAddress());
         if ($remoteAddresses->getIpAddress() !== '127.0.0.1')
             return $this->notFoundAction();
 
