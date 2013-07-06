@@ -13,7 +13,7 @@ return array(
             'ZfcRbac\Firewall\Route' => array(
                 array('route' => 'opta', 'roles' => Role::GUEST),
                 array('route' => 'common', 'roles' => Role::GUEST),
-                array('route' => 'clear-app-cache', 'roles' => Role::GUEST),
+                array('route' => 'clear', 'roles' => Role::GUEST),
                 array('route' => 'match', 'roles' => Role::GUEST),
                 array('route' => 'forgot', 'roles' => Role::GUEST),
                 array('route' => 'reset', 'roles' => Role::GUEST),

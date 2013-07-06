@@ -18,10 +18,11 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'clear-app-cache' => array(
-                'type' => 'segment',
+            'clear' => array(
+                'type' => 'literal',
                 'options' => array(
-                    'route'    => '/clear-app-cache[/][:entities]',
+                    'route'    => '/clear/',
+//                    'route'    => '/clear-app-cache[/][:entities]',
                     'defaults' => array(
                         'controller' => 'Opta\Controller\ClearAppCache',
                         'action'     => 'index',
