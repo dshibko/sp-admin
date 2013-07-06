@@ -296,7 +296,7 @@ return array(
             'clear-app-cache' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/clear-app-cache[/][:entities]',
+                    'route'    => '/clear[/][:entities]',
                     'defaults' => array(
                         'controller' => 'Opta\Controller\ClearAppCache',
                         'action'     => 'index',
