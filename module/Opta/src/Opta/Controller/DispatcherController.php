@@ -32,12 +32,11 @@ class DispatcherController extends AbstractActionController {
             if (!in_array($type, Feed::getAvailableTypes()))
                 throw new \Exception(sprintf(MessagesConstants::ERROR_WRONG_TYPE_SPECIFIED, $type));
 
-//            $cacheManager = CacheManager::getInstance($this->getServiceLocator());
-//            $cacheManager->clearCache();
+            $cacheManager = CacheManager::getInstance($this->getServiceLocator());
+            $cacheManager->clearCache();
 
             $optaManager = OptaManager::getInstance($this->getServiceLocator());
-            $optaManager->clearAppCache($type, $console);
-//            $optaManager->dispatchFeedsByType($type, false, $console);
+            $optaManager->dispatchFeedsByType($type, false, $console);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::ERR, $console);
