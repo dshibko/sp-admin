@@ -15,17 +15,17 @@ class ClearAppCacheController extends AbstractActionController {
 
     public function indexAction() {
 
-        $remoteAddresses = new RemoteAddress();
-        if (!in_array($remoteAddresses->getIpAddress(), ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheAllowedIps()))
-            return $this->notFoundAction();
-
-        $entities = $this->params()->fromRoute('entities', '');
-
         $response = $this->getResponse();
         $headers = $response->getHeaders();
         $headers->addHeaderLine('Content-Type', 'text/html');
 
         try {
+
+            $remoteAddresses = new RemoteAddress();
+            if (!in_array($remoteAddresses->getIpAddress(), ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheAllowedIps()))
+                return $this->notFoundAction();
+
+            $entities = $this->params()->fromRoute('entities', '');
 
             if (empty($entities))
                 CacheManager::getInstance($this->getServiceLocator())->clearCache();
