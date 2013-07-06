@@ -293,6 +293,16 @@ return array(
                     ),
                 ),
             ),
+            'clear-app-cache' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/clear-app-cache[/][:entities]',
+                    'defaults' => array(
+                        'controller' => 'Opta\Controller\ClearAppCache',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
