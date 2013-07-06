@@ -198,7 +198,12 @@ class UserManager extends BasicManager {
      * @return string
      */
     public function getUsersExportContent() {
+        $s = new \DateTime();
         $users = UserDAO::getInstance($this->getServiceLocator())->getExportUsers(true);
+        $f = new \DateTime();
+
+        var_dump($f->getTimestamp() - $s->getTimestamp());
+        var_dump(count($users));die;
 
         $facebookManager = FacebookManager::getInstance($this->getServiceLocator());
         foreach ($users as &$user) {
