@@ -600,6 +600,7 @@ class OptaManager extends BasicManager {
         $info = sprintf(MessagesConstants::LOG_FEED_IMPORT_STARTED, $feedType, $feedFilePath);
         LogManager::getInstance($this->getServiceLocator())->logOptaMessage($info, Logger::INFO);
         if ($console != null) {
+            $console->clearScreen();
             $console->writeLine("");
             $console->writeLine($info);
             $console->writeLine("");
