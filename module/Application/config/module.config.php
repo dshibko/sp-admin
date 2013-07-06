@@ -246,6 +246,20 @@ return array(
                     ),
                 ),
             ),
+//    'router' => array(
+//        'routes' => array(
+//            'clear-app-cache' => array(
+//                'type' => 'segment',
+//                'options' => array(
+//                    'route'    => '/clear-app-cache[/][:entities]',
+//                    'defaults' => array(
+//                        'controller' => 'Opta\Controller\ClearAppCache',
+//                        'action'     => 'index',
+//                    ),
+//                ),
+//            ),
+//        ),
+//    ),
 
             //Cookies Page
             'cookies' => array(
@@ -254,8 +268,8 @@ return array(
                     'route'    => '/cookies',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'Content',
-                        'action'        => 'cookies',
+                        'controller'    => 'ClearAppCache',
+                        'action'        => 'index',
                     ),
                 ),
             ),
@@ -298,7 +312,7 @@ return array(
                 'options' => array(
                     'route'    => '/cookies2',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Opta\Controller',
+                        '__NAMESPACE__' => 'Application\Controller',
                         'controller'    => 'ClearAppCache',
                         'action'        => 'index',
                     ),
@@ -375,6 +389,7 @@ return array(
             'Application\Controller\Match' => 'Application\Controller\MatchController',
             'Application\Controller\Prize' => 'Application\Controller\PrizeController',
             'Application\Controller\Common' => 'Application\Controller\CommonController',
+            'Application\Controller\ClearAppCache' => 'Application\Controller\ClearAppCacheController',
         ),
     ),
     'controller_plugins' => array(
