@@ -2,6 +2,7 @@
 
 namespace Opta\Manager;
 
+use Application\Controller\ClearAppCacheController;
 use Application\Manager\LeagueManager;
 use \Application\Manager\MatchManager;
 use Application\Manager\PlayerManager;
@@ -10,11 +11,9 @@ use \Application\Manager\SeasonManager;
 use Application\Manager\UserManager;
 use Application\Model\Entities\Season;
 use Neoco\Exception\OutOfSeasonException;
-use \Opta\Controller\ClearAppCacheController;
 use \Application\Model\DAOs\FeedDAO;
 use \Application\Model\Entities\Feed;
 use \Application\Model\DAOs\MatchGoalDAO;
-use Zend\Mvc\Application;
 use \Zend\Mvc\Controller\Plugin\FlashMessenger;
 use \Zend\Log\Logger;
 use \Application\Model\Entities\LineUpPlayer;
