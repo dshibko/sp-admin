@@ -95,6 +95,7 @@ class MessagesConstants
     const ERROR_APP_OPTA_DIR_NOT_EXISTS = 'Application opta directory does not exist.';
     const ERROR_APP_OPTA_DIR_NOT_DIR = 'Application opta directory is not a directory.';
     const ERROR_APP_CLEAR_APP_CACHE_URL_NOT_FOUND = 'Clear application cache was not found.';
+    const ERROR_APP_CLEAR_APP_CACHE_ALLOWED_IPS_NOT_FOUND = 'Clear application cache allowed ips not configured.';
     const ERROR_APP_UNKNOWN_EDITION = 'Unknown application edition configured.';
     const ERROR_APP_WRONG_OPTA_CONFIG = 'Wrong opta id configured. Must be an integer.';
     const ERROR_APP_WRONG_EDITION = 'The application is not "%s" edition.';

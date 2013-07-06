@@ -2,9 +2,9 @@
 
 namespace Application\Controller;
 
+use Application\Manager\ApplicationManager;
 use \Zend\Http\PhpEnvironment\RemoteAddress;
 use \Application\Manager\CacheManager;
-use \Application\Model\Helpers\MessagesConstants;
 use \Application\Manager\ExceptionManager;
 use \Zend\Mvc\Controller\AbstractActionController;
 
@@ -16,8 +16,8 @@ class ClearAppCacheController extends AbstractActionController {
     public function indexAction() {
 
         $remoteAddresses = new RemoteAddress();
-//        if ($remoteAddresses->getIpAddress() !== '127.0.0.1')
-//            return $this->notFoundAction();
+        if (!in_array($remoteAddresses->getIpAddress(), ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheAllowedIps()))
+            return $this->notFoundAction();
 
         $entities = $this->params()->fromRoute('entities', '');
 
@@ -42,7 +42,6 @@ class ClearAppCacheController extends AbstractActionController {
         } catch (\Exception $e) {
             $response->setContent(self::FAIL_MESSAGE);
         }
-        $response->setContent($remoteAddresses->getIpAddress());
 
         return $response;
     }
