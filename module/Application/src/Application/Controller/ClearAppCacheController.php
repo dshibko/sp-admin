@@ -1,6 +1,6 @@
 <?php
 
-namespace Opta\Controller;
+namespace Application\Controller;
 
 use \Zend\Http\PhpEnvironment\RemoteAddress;
 use \Application\Manager\CacheManager;
