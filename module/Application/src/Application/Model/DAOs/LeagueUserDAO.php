@@ -109,6 +109,7 @@ class LeagueUserDAO extends AbstractDAO {
      */
     public function getLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null, $skipCache = false) {
         if ($facebookIds !== null) {
+            if (empty($facebookIds)) return array();
             $userDAO = UserDAO::getInstance($this->getServiceLocator());
             $usersIdsArr = $userDAO->getUserIdsByFacebookIds($facebookIds, $skipCache);
             $usersIds = array();

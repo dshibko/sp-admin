@@ -175,15 +175,19 @@ class FacebookManager extends BasicManager
      * @return array
      */
     public function getFriendsUsers(User $user) {
-        $this->getFacebookAPI()->setAccessToken($user->getFacebookAccessToken());
-        $userFriendsQuery = 'SELECT uid2 FROM friend WHERE uid1 = ' . $user->getFacebookId();
-        $facebookFriends = $this->getFacebookAPI()->api(array(
-            'method' => 'fql.query',
-            'query' => $userFriendsQuery,
-        ));
-        $uids = array();
-        foreach($facebookFriends as $facebookFriend)
-            $uids [] = $facebookFriend["uid2"];
-        return $uids;
+        try {
+            $this->getFacebookAPI()->setAccessToken($user->getFacebookAccessToken());
+            $userFriendsQuery = 'SELECT uid2 FROM friend WHERE uid1 = ' . $user->getFacebookId();
+            $facebookFriends = $this->getFacebookAPI()->api(array(
+                'method' => 'fql.query',
+                'query' => $userFriendsQuery,
+            ));
+            $uids = array();
+            foreach($facebookFriends as $facebookFriend)
+                $uids [] = $facebookFriend["uid2"];
+            return $uids;
+        } catch (\Exception $e) {
+            return array();
+        }
     }
 }

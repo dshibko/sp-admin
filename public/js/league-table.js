@@ -57,7 +57,7 @@ function loadLeagueRows(offset, callback) {
         success: function(data) {
             if (callback !== undefined && typeof callback == 'function') callback();
             $("#league-table tbody").append(data);
-            if (offset >= $("#users-count").val())
+            if ($("#league-table tr").size() - 1 == $("#users-count").val())
                 $('#show-more').hide();
             else
                 $('#show-more').show();

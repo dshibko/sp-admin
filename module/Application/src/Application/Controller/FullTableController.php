@@ -18,7 +18,7 @@ use \Neoco\Controller\AbstractActionController;
 class FullTableController extends AbstractActionController {
 
     const FULL_TABLE_ROUTE = 'full-table';
-    const PER_PAGE_PLAYERS_COUNT = 20;
+    const PER_PAGE_PLAYERS_COUNT = 5;
     const AROUND_YOU_POSITIONS_NUMBER = 10;
 
     public function indexAction() {
