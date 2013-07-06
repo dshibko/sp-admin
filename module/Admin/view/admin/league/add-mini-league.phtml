@@ -118,6 +118,11 @@
                 $(this).trigger('change');
             }
         });
+        if ($("#regions").val() == '')
+            $('input[type="checkbox"]').each(function() {
+                $(this).attr('checked', 'checked');
+                $(this).trigger('change');
+            });
         App.init(); // initlayout and core plugins
     });
     function parseDate(date) {

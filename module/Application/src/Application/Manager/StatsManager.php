@@ -74,6 +74,10 @@ class StatsManager extends BasicManager {
         $sixDaysInterval = new \DateInterval('P6D');
         foreach ($perWeekRegistrations as $perWeekRegistration) {
             if ($prevLastDay !== null) {
+                if ($prevLastDay == $perWeekRegistration['last_day']) {
+                    $perWeekRegistrationsArr[count($perWeekRegistrationsArr) - 1]['registrations'] += $perWeekRegistration['number'];
+                    continue;
+                }
                 while (($firstDay = clone $prevLastDay->add($oneDayInterval)) != $perWeekRegistration['first_day']) {
                     $prevLastDay = $prevLastDay->add($sixDaysInterval);
                     $perWeekRegistrationsArr [] = array(

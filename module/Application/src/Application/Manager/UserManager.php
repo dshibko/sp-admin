@@ -200,18 +200,12 @@ class UserManager extends BasicManager {
     public function getUsersExportContent() {
         $users = UserDAO::getInstance($this->getServiceLocator())->getExportUsers(true);
         $facebookManager = FacebookManager::getInstance($this->getServiceLocator());
-        $s = new \DateTime();
         foreach ($users as &$user) {
             if (!empty($user['facebookId']) && !empty($user['facebookAccessToken'])) {
                 $facebookData = $facebookManager->getFacebookUserInfo($user['facebookAccessToken'], $user['facebookId']);
                 $user = array_merge($user, $facebookData);
             }
         }
-        $f = new \DateTime();
-
-        var_dump($f->getTimestamp() - $s->getTimestamp());
-        die;
-
 
         $exportConfig = array(
             'id' => 'number',
