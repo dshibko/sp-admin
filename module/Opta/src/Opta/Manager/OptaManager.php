@@ -851,7 +851,7 @@ class OptaManager extends BasicManager {
 
             $entitiesToBeClearedQueryString = implode(",", $entitiesToBeCleared);
             $clearAppCacheUrl = ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheUrl();
-            $clearAppCacheUrl = $clearAppCacheUrl . $entitiesToBeClearedQueryString;
+            $clearAppCacheUrl = urlencode($clearAppCacheUrl . $entitiesToBeClearedQueryString);
             var_dump($clearAppCacheUrl);
             $clearAppCacheResult = file_get_contents($clearAppCacheUrl);
             var_dump($clearAppCacheResult);
