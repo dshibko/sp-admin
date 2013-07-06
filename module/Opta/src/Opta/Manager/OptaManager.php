@@ -637,7 +637,7 @@ class OptaManager extends BasicManager {
      */
     private function doProgress($console) {
         if ($console != null) {
-            echo "\n\r";
+            echo "\n";
             $percentage = (int)((++$this->progressCounter / $this->progressLength) * 100);
             if ($percentage < 100)
                 $console->writeAt($percentage . "%", 0, 0);
