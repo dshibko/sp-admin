@@ -122,15 +122,14 @@ class PredictionManager extends BasicManager {
      */
     public function getNearestMatchWithPrediction($offset, $user, $season, $hydrate = false, $skipCache = false) {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
-        $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
         $matchData = $matchDAO->getNearestMatch($offset, $season, $skipCache);
         if (!empty($matchData)) {
             $match = $matchDAO->getMatchInfo($matchData['matchId'], $hydrate, $skipCache);
             $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
-            $homeSquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['homeId'], $matchData['competitionId'], $hydrate, $skipCache);
+            $homeSquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['homeId'], $matchData['competitionId'], $season->getId(), $hydrate, $skipCache);
             $match['homeSquad'] = $this->preparePlayers($homeSquad);
-            $awaySquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['awayId'], $matchData['competitionId'], $hydrate, $skipCache);
+            $awaySquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['awayId'], $matchData['competitionId'], $season->getId(), $hydrate, $skipCache);
             $match['awaySquad'] = $this->preparePlayers($awaySquad);
             $match['prediction'] = $predictionDAO->getUserPrediction($matchData['matchId'], $user->getId(), true, $skipCache);
             return $match;
@@ -138,13 +137,13 @@ class PredictionManager extends BasicManager {
             return null;
     }
 
-    private function getTeamSquad($hasLineUp, $matchId, $teamId, $competitionId, $hydrate, $skipCache) {
+    private function getTeamSquad($hasLineUp, $matchId, $teamId, $competitionId, $seasonId, $hydrate, $skipCache) {
         if ($hasLineUp)
             $squad = MatchDAO::getInstance($this->getServiceLocator())->getMatchTeamSquad($matchId, $teamId, $hydrate, $skipCache);
         else {
             $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquadInCompetition($teamId, $competitionId, $hydrate, $skipCache);
             if (empty($squad))
-                $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquad($teamId, $hydrate, $skipCache);
+                $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquad($teamId, $seasonId, $hydrate, $skipCache);
         }
         return $squad;
     }

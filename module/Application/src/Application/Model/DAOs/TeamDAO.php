@@ -53,15 +53,19 @@ class TeamDAO extends AbstractDAO {
 
     /**
      * @param integer $teamId
+     * @param integer $seasonId
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    function getTeamSquad($teamId, $hydrate = false, $skipCache = false) {
+    function getTeamSquad($teamId, $seasonId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p.displayName, p.position, p.shirtNumber, p.id')
             ->from('\Application\Model\Entities\Player', 'p')
+            ->join('p.competitions', 'cp', Expr\Join::WITH, 'cp.season = ' . $seasonId)
             ->where($qb->expr()->eq('p.team', $teamId))
+            ->groupBy('p.id')
+            ->having('count(cp.id) > 0')
             ->orderBy('p.position', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }

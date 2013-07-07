@@ -23,14 +23,14 @@ $(document).ready(function () {
     $('#show-more').click(function(event) {
         event.preventDefault();
         if (!blockShowMore)
-            loadLeagueRows($("#league-table tr").size() - 1);
+            loadLeagueRows(showMoreLoaderType, $("#league-table tr").size() - 1);
     });
 
     $('#league-filter').change(function() {
         var filterKey = $(this).val();
         switch (filterKey) {
             case 'everyone':
-                loadLeagueRows(0, function() {
+                loadLeagueRows(selectLoaderType, function() {
                     $("#league-table tr:not(:first)").remove();
                 });
                 break;
@@ -45,8 +45,9 @@ $(document).ready(function () {
 
 });
 
-function loadLeagueRows(offset, callback) {
+function loadLeagueRows(type, offset, callback) {
     if (activeRequest !== false) activeRequest.abort();
+    showLoaderImg(type);
     activeRequest = $.ajax({
         type: 'get',
         url: window.location.href,
@@ -63,6 +64,9 @@ function loadLeagueRows(offset, callback) {
                 $('#show-more').show();
             blockShowMore = false;
         },
+        complete: function() {
+            hideLoaderImg(type);
+        },
         beforeSend: function() {
             blockShowMore = true;
         }
@@ -71,6 +75,7 @@ function loadLeagueRows(offset, callback) {
 
 function loadAroundYouLeagueRows() {
     if (activeRequest !== false) activeRequest.abort();
+    showLoaderImg(selectLoaderType);
     activeRequest = $.ajax({
         type: 'get',
         url: window.location.href,
@@ -82,12 +87,16 @@ function loadAroundYouLeagueRows() {
             $("#league-table tr:not(:first)").remove();
             $("#league-table tbody").append(data);
             $('#show-more').hide();
+        },
+        complete: function() {
+            hideLoaderImg(selectLoaderType);
         }
     });
 }
 
 function loadYourFriendsLeagueRows() {
     if (activeRequest !== false) activeRequest.abort();
+    showLoaderImg(selectLoaderType);
     activeRequest = $.ajax({
         type: 'get',
         url: window.location.href,
@@ -99,6 +108,53 @@ function loadYourFriendsLeagueRows() {
             $("#league-table tr:not(:first)").remove();
             $("#league-table tbody").append(data);
             $('#show-more').hide();
+        },
+        complete: function() {
+            hideLoaderImg(selectLoaderType);
         }
     });
+}
+
+var loaderImgScr = '/img/ajax-loader.gif';
+var showMoreLoaderType = 'show-more';
+var selectLoaderType = 'select';
+
+function showLoaderImg(type) {
+    switch (type) {
+        case showMoreLoaderType:
+            var loaderImg = $("<img/>");
+            loaderImg.attr('src', loaderImgScr).load(function() {
+                var showMoreEl = $('p > a#show-more');
+                var loaderImgWrapper = showMoreEl.parents('p:first');
+                loaderImgWrapper.css('position', 'relative');
+                loaderImg.css('position', 'absolute');
+                loaderImg.css('top', 10);
+                loaderImgWrapper.append(loaderImg);
+                loaderImg.css('left', showMoreEl.position().left + showMoreEl.outerWidth() / 2 - this.width / 2);
+            });
+            break;
+        case selectLoaderType:
+            var loaderImg = $("<img/>");
+            loaderImg.attr('src', loaderImgScr).load(function() {
+                var selectForm = $('form#season-filter');
+                var loaderImgWrapper = selectForm.parents('header:first');
+                loaderImgWrapper.css('position', 'relative');
+                loaderImg.css('position', 'absolute');
+                loaderImgWrapper.append(loaderImg);
+                loaderImg.css('left', selectForm.position().left - this.width - 10);
+                loaderImg.css('top', 3);
+            });
+            break;
+    }
+}
+
+function hideLoaderImg(type) {
+    switch (type) {
+        case showMoreLoaderType:
+            $('p > a#show-more').parents('p:first').find('img').remove();
+            break;
+        case selectLoaderType:
+            $('form#season-filter').parents('header:first').children('img').remove();
+            break;
+    }
 }
