@@ -296,6 +296,7 @@ class UserDAO extends AbstractDAO {
                 INSERT INTO league_user (user_id, league_id, registration_date, join_date)
                 SELECT u.id, ?, u.date, ?
                 FROM user u
+                WHERE u.is_active = 1
             ', array($leagueId, $now));
         else {
             $conn->executeQuery('
@@ -303,6 +304,7 @@ class UserDAO extends AbstractDAO {
                 SELECT u.id, ?, u.date, ?
                 FROM user u
                 INNER JOIN country c ON c.id = u.country_id AND c.region_id = ?
+                WHERE u.is_active = 1
             ', array($leagueId, $now, $regionId));
         }
     }

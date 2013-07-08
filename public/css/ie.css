@@ -23,7 +23,9 @@
   min-width: 600px;
 }
 
-
+.lt-ie9 footer[role="contentinfo"] {
+  font: normal 1.4em/1.2 "ProximaNova-Reg",Helvetica,Arial!important;
+}
 
 .lt-ie9 .first-column {
   border-right: 1px solid #f4f4f4;
@@ -345,6 +347,10 @@
 }
 
 
+.lt-ie8  .make-prediction .make-prediction-content .buttons-block .buttons-wrapper {
+  width: 49%!important;
+}
+
 /***fixtures***/
 .ie8 .fixtures table {
   border-collapse: separate;
@@ -429,6 +435,17 @@ position: relative;
   width: 20em;
   margin: 0 0 0.2em;
   text-align: left;
+}
+.lt-ie9 #setup-dialog section fieldset span label {
+/*  width: 25em;*/
+  color: #363636;
+  font: normal 1.5em/1.4 "ProximaNova-Reg",Helvetica,Arial;
+}
+.lt-ie8 #setup-dialog section fieldset label + label {
+/*  width: 25em;*/
+  margin: 0 0 1em;
+  color: #363636;
+  font: normal 1.5em/1.4 "ProximaNova-Reg",Helvetica,Arial;
 }
 .lt-ie8  #setup-dialog section fieldset select {
   margin: 0 0 1.5em;
