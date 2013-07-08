@@ -14,7 +14,7 @@ class PlayerForm extends UploadableForm {
     const SQUAD_NUMBER_MAX_VALUE = 99;
 //    const AVATAR_WIDTH = 110;
 //    const AVATAR_HEIGHT = 110;
-    const BACKGROUND_WIDTH = 580;
+    const BACKGROUND_WIDTH = 570;
     const BACKGROUND_HEIGHT = 290;
 
     public function __construct() {
