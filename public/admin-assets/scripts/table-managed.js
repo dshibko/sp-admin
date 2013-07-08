@@ -40,7 +40,7 @@ var TableManaged = function () {
                     "sInfo": messages.showingLabel
                 }
             });
-            oTable.fnSort( [ [2,'desc'] ] );
+            oTable.fnSort( aaSorting );
         }
     };
 
