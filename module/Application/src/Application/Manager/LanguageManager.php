@@ -191,6 +191,7 @@ class LanguageManager extends BasicManager {
             }
            $countryDAO->flush();
            $countryDAO->clearCache();
+           LanguageDAO::getInstance($this->getServiceLocator())->clearCache();
         }
         return true;
     }
