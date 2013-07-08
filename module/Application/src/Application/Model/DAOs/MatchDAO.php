@@ -345,4 +345,14 @@ class MatchDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
+    function getHasFinishedMatches($season, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('count(m.id) as matches')
+            ->from($this->getRepositoryName(), 'm')
+            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->where($qb->expr()->eq('m.status', ':status'))
+            ->setParameter("status", Match::FULL_TIME_STATUS);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult() > 0;
+    }
+
 }

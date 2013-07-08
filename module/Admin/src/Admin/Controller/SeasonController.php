@@ -2,6 +2,7 @@
 
 namespace Admin\Controller;
 
+use Application\Manager\MatchManager;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\Entities\Season;
 use \Application\Manager\ImageManager;
@@ -107,13 +108,14 @@ class SeasonController extends AbstractActionController {
                 ));
             }
 
-            $season = SeasonManager::getInstance($this->getServiceLocator())->getSeasonById($id);
+            $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
+            $matchManager = MatchManager::getInstance($this->getServiceLocator());
+
+            $season = $seasonManager->getSeasonById($id);
             if ($season == null)
                 return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE);
 
-            $today = new \DateTime();
-            $today->setTime(0, 0, 0);
-            $editableDates = $today < $season->getStartDate();
+            $editableDates = !$matchManager->getHasFinishedMatches($season);
 
             $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
 
@@ -138,7 +140,6 @@ class SeasonController extends AbstractActionController {
                 if ($form->isValid()) {
                     try {
 
-                        $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
                         if ($editableDates) {
                             $dates = $form->get('dates')->getValue();
                             $startDate = array_shift(explode(" - ", $dates));
