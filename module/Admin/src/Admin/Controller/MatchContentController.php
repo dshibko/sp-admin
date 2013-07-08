@@ -20,7 +20,9 @@ abstract class MatchContentController extends AbstractActionController {
     abstract protected function getMatchReportType();
 
     protected function getReportContentForm($init = false) {
-        $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
+        // todo remove
+        $regions = array(RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion(true));
+//        $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
         $regionFieldsets = array();
 
         foreach ($regions as $region)
