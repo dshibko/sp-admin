@@ -113,7 +113,7 @@ class SeasonController extends AbstractActionController {
 
             $today = new \DateTime();
             $today->setTime(0, 0, 0);
-            $editableDates = $today < $season->getStartDate();
+            $editableDates = true || $today < $season->getStartDate();
 
             $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
 
