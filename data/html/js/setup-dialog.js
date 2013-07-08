@@ -6,6 +6,7 @@ $('#setup').on('submit', function(event) {
         }
     }); 
     event.preventDefault();
+    $(window).off('resize.dialog');
 });
 
 
@@ -14,7 +15,15 @@ var turnOffCustomStylePoint = 767;
 var setupOptions = {
 
   responsiveAt: turnOffCustomStylePoint,
-  disableCustom: 'button',
+  disableCustom: 'button'
+
+  // inputs: {
+  //     'term1': {
+  //         filters: 'min',
+  //         data: { min: 1 },
+  //         errors: { min: 'Check only <strong>1</strong> option.' }
+  //     }
+  //   }
 };
 
 if ($(document).width() <  turnOffCustomStylePoint)

@@ -61,7 +61,18 @@ $(document).ready(function () {
         $('body').addClass('no-scroll');
     }
 
+    function updateDialogPosition() {
+        var dialog = $('.dialog:visible');
+        if($(window).height() > dialog.outerHeight()) {
+            dialog.css('margin-top', ($(window).height() - dialog.outerHeight()) / 2);
+            console.log('asdasd')
+        } else {
+            dialog.css('margin-top', 0)
+        }
+    }
 
+    $(window).on('resize.dialog', updateDialogPosition);
+    updateDialogPosition();
 
 
     if ( navigator.userAgent.indexOf(" Safari/") != -1 && navigator.userAgent.indexOf(" Version/5") != -1) {
