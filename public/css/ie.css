@@ -23,7 +23,9 @@
   min-width: 600px;
 }
 
-
+.lt-ie9 footer[role="contentinfo"] {
+  font: normal 1.4em/1.2 "ProximaNova-Reg",Helvetica,Arial!important;
+}
 
 .lt-ie9 .first-column {
   border-right: 1px solid #f4f4f4;
