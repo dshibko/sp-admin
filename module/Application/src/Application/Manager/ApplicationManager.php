@@ -60,7 +60,8 @@ class ApplicationManager extends BasicManager {
                 else if (is_string($identity)) {
                     $this->currentUser = UserDAO::getInstance($this->getServiceLocator())->findOneByIdentity($identity, false, true);
                     // todo remove
-                    $this->currentUser->setLanguage(LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage());
+                    if ($this->currentUser !== null)
+                        $this->currentUser->setLanguage(LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage());
                 }
         }
         return $this->currentUser;
