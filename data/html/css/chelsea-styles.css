@@ -33,9 +33,17 @@ aside.ready-try .cta,
   border: 1px solid #9e8031;
   text-transform: uppercase;
 }
+.banner .cta {
+  width: 15em;
+}
+
+.banner figcaption {
+  font: bold 4.3em/1.2 Arial;
+}
+
 #setup-dialog footer button.pink,
 #setup-dialog.setup-mobile.dialog footer button.pink  {
-  width: 17.5em;
+  width: 18.5em;
 }
 
 aside.find-out-more {
@@ -75,7 +83,8 @@ aside.find-out-more {
 }
 .carousel-wrap>header .flag-new-prediction span {
   color: #000;
-  font-family: "ProximaNova-Bold",Helvetica,Arial;
+  font-family: Arial;
+  font-weight: bold;
 }
 .carousel-wrap>header {
   background: #0a2344;
@@ -110,6 +119,12 @@ aside.find-out-more {
 .lt-ie8 .carousel-wrap>header .flag-new-prediction small {
   border-top: 4em solid #ffca00!important;
 }
+
+
+.prizes .prizes-banner figcaption {
+  top: 2.3em;
+}
+
 
 
 @media screen and (max-width: 767px) {
@@ -168,31 +183,6 @@ aside.find-out-more {
 }
 
 
-
-@font-face {
-  font-family: 'ProximaNova-Reg';
-  src: url('../fonts/proximanova-reg.eot');
-  src: url('../fonts/proximanova-reg.eot?#iefix') format('embedded-opentype'), url('../fonts/proximanova-reg.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'ProximaNova-Bold';
-  src: url('../fonts/proximanova-bold.eot');
-  src: url('../fonts/proximanova-bold.eot?#iefix') format('embedded-opentype'), url('../fonts/proximanova-bold.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-.translucent-gradient {
-  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjUwJSIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgPC9saW5lYXJHcmFkaWVudD4KICA8cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2dyYWQtdWNnZy1nZW5lcmF0ZWQpIiAvPgo8L3N2Zz4=);
-  background: -moz-linear-gradient(left, rgba(0, 0, 0, 0) 0%, #000000 50%);
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(50%, #000000));
-  background: -webkit-linear-gradient(left, rgba(0, 0, 0, 0) 0%, #000000 50%);
-  background: -o-linear-gradient(left, rgba(0, 0, 0, 0) 0%, #000000 50%);
-  background: -ms-linear-gradient(left, rgba(0, 0, 0, 0) 0%, #000000 50%);
-  background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, #000000 50%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#000000', GradientType=1);
-}
 
 body {
   font-family: Arial;
@@ -270,7 +260,6 @@ footer[role="contentinfo"] > div > p a {
   font: normal 1.1em/1 Arial;
 }
 .main-navigation li.user-navigation .popup-content li.user-profile strong {
-
   font: bold 1em/1 Arial;
 }
 .main-navigation li.user-navigation .popup-content li.user-profile a {
@@ -302,7 +291,7 @@ footer[role="contentinfo"] > div > p a {
 }
 .ideal-form .buttons-block button[type="submit"],
 .ideal-form .buttons button[type="submit"] {
-  font: bold 2.5em/1 Arial;
+  font: bold 1.5em/1 Arial;
 }
 .ideal-form .ideal-error {
   font: normal 1.3em/1.3 sans-serif;
@@ -442,8 +431,7 @@ footer[role="contentinfo"] > div > p a {
     font: bold 1.8em/1 Arial;
   }
   .grid-layout .item.blockquote section figure blockquote:before {
-    margin: 0 0 0 -0.06em;
-    font: normal 2em/1 "ProximaNova-Bold", Helvetica, Arial;
+    font: bold 2em/1 Arial;
   }
   .grid-layout .item.blockquote section figure figcaption {
     margin: 0.2em 0 0 0;
@@ -670,7 +658,7 @@ aside.ready-try {
   font: bold 2.8em/1.06 Arial;
 }
 aside.ready-try .cta {
-  font: bold 0.9em/2.2 Arial;
+  font: bold 0.8em/2.2 Arial;
 }
 @media only screen and (min-width: 320px) and (max-width: 767px) {
    .article-image-left.user-content h2,
@@ -854,6 +842,7 @@ p.intro {
 .prizes .prizes-banner figcaption footer p {
   font: bold 1.7em/1.5 Arial;
 }
+}
 @media only screen and (min-width: 320px) and (max-width: 767px) {
   .prizes .prizes-banner figcaption h1 {
     font: bold 1.5em/1 Arial;
@@ -900,6 +889,7 @@ p.intro {
 .support .faqs dd:before {
   font: bold 1em/1 Arial;
 }
+
 @media only screen and (min-width: 320px) and (max-width: 767px) {
   .support .faqs dt {
     font: bold 2em/1.1 Arial;
@@ -907,9 +897,6 @@ p.intro {
   .support .faqs dd:before {
     font: bold 0.9em/1 Arial;
   }
-}
-.banner figcaption {
-  font: bold 4.3em/1.2 Arial;
 }
 
 .banner .cta,
@@ -940,14 +927,17 @@ p.intro {
     font: bold 1.7em/2.8 Arial;
   }
 }
+
 .login-area > p {
   font: normal 1.4em/1.2 Arial;
 }
 .login-area > p .login-with-facebook span {
-  font: bold 1em/2.2 Arial;
+  font: bold 0.9em/2.2 Arial;
 }
 .login-area details summary {
-  font: normal 1.5em/2 "ProximaNova-Bold", Helvetica, Arial;
+  width: 8.9em;
+  height: 2.2em;
+  font: bold 1.3em/2 Arial;
 }
 .login-area details .login-form p {
   font: normal 1.3em/1.5 Arial;
@@ -1048,11 +1038,11 @@ p.intro {
     font: normal 2em/1.2 Arial;
   }
   .inner-page div[role="main"] .second-column .login section .cta {
-    font: normal 2em/2.4 "ProximaNova-Bold", Helvetica, Arial;
+    font: bold 2em/2.4 Arial;
   }
   .inner-page div[role="main"] .second-column .facebook-invite h1 {
     padding: 0 0 0.4em;
-    font: normal 2.3em/1 "ProximaNova-Bold", Helvetica, Arial;
+    font: bold 2.3em/1 Helvetica, Arial;
   }
   .inner-page div[role="main"] .second-column .facebook-invite p {
     font: normal 2em/1.3 Arial;
