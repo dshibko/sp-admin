@@ -2,6 +2,8 @@
 
 namespace Application\Controller;
 
+use Application\Form\SettingsTermsForm;
+use Application\Manager\ContentManager;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ExceptionManager;
 use \Application\Manager\ApplicationManager;
@@ -13,7 +15,6 @@ use Application\Form\Filter\SettingsEmailFilter;
 use Application\Form\SettingsDisplayNameForm;
 use Application\Form\SettingsAvatarForm;
 use Application\Form\SettingsLanguageForm;
-use Application\Form\SettingsEmailSettingsForm;
 use Application\Form\SettingsPublicProfileForm;
 use Application\Manager\AuthenticationManager;
 
@@ -25,8 +26,8 @@ class UserController extends AbstractActionController
     const FORM_TYPE_CHANGE_DISPLAY_NAME = 'change_display_name';
     const FORM_TYPE_CHANGE_AVATAR = 'change_avatar';
     const FORM_TYPE_CHANGE_LANGUAGE = 'change_language';
-    const FORM_TYPE_CHANGE_EMAIL_SETTINGS = 'change_email_settings';
     const FORM_TYPE_CHANGE_PUBLIC_PROFILE_OPTION = 'change_public_profile';
+    const FORM_TYPE_CHANGE_TERMS = 'change_terms';
     const USER_SETTINGS_PAGE_ROUTE = 'user-settings';
     const LOGIN_PAGE_ROUTE = 'login';
 
@@ -49,10 +50,15 @@ class UserController extends AbstractActionController
             $avatarForm = new SettingsAvatarForm(self::FORM_TYPE_CHANGE_AVATAR);
             //Language Form
             $languageForm = new SettingsLanguageForm(self::FORM_TYPE_CHANGE_LANGUAGE,$this->getServiceLocator());
-            //Email Settings
-            $emailSettingsForm = new SettingsEmailSettingsForm(self::FORM_TYPE_CHANGE_EMAIL_SETTINGS, $this->getServiceLocator());
             //Public Profile
             $publicProfileForm = new SettingsPublicProfileForm(self::FORM_TYPE_CHANGE_PUBLIC_PROFILE_OPTION, $this->getServiceLocator());
+            $terms = ContentManager::getInstance($this->getServiceLocator())->getSetUpFormTerms();
+            $termsForm = null;
+            if (!empty($terms)){
+                $termsForm = new SettingsTermsForm(self::FORM_TYPE_CHANGE_TERMS,$this->getServiceLocator(), $terms);
+                $termsForm->initForm($user);
+            }
+          //  $termsForm =
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $type = $request->getPost('type');
@@ -125,13 +131,6 @@ class UserController extends AbstractActionController
                         break;
                     }
 
-                    //Change Email Settings
-                    case self::FORM_TYPE_CHANGE_EMAIL_SETTINGS : {
-                        $emailSettingsForm->setData($request->getPost());
-                        $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_NEW_EMAIL_SETTINGS_SAVED));
-                        $success = true;
-                        break;
-                    }
                     //Change Public Profile
                     case self::FORM_TYPE_CHANGE_PUBLIC_PROFILE_OPTION : {
                         $publicProfileForm->setData($request->getPost());
@@ -140,6 +139,26 @@ class UserController extends AbstractActionController
                             $success = true;
                         }else{
                             $this->formErrors($publicProfileForm, $this);
+                        }
+                        break;
+                    }
+                    case self::FORM_TYPE_CHANGE_TERMS:{
+                        $termsForm->setData($request->getPost());
+                        if ($termsForm->isValid()){
+                            $data = $termsForm->getData();
+                            if (!empty($data['terms'])){
+                                if (array_key_exists('term1', $data['terms'])){
+                                    $user->setTerm1((int)$data['terms']['term1']);
+                                }
+                                if (array_key_exists('term2', $data['terms'])){
+                                    $user->setTerm2((int)$data['terms']['term2']);
+                                }
+                            }
+                            UserManager::getInstance($this->getServiceLocator())->save($user);
+                            $this->flashMessenger()->addSuccessMessage($this->getTranslator()->translate(MessagesConstants::SUCCESS_TERMS_SETTINGS_SAVED));
+                            $success = true;
+                        }else{
+                            $this->formErrors($termsForm, $this);
                         }
                         break;
                     }
@@ -159,8 +178,8 @@ class UserController extends AbstractActionController
                 'displayNameForm' => $displayNameForm,
                 'avatarForm' => $avatarForm,
                 'languageForm' => $languageForm,
-                'emailSettingsForm' => $emailSettingsForm,
-                'publicProfileForm' => $publicProfileForm
+                'publicProfileForm' => $publicProfileForm,
+                'termsForm' => $termsForm
             );
 
         } catch (\Exception $e) {

@@ -259,15 +259,17 @@ class Module
                 },
                 'Application\Form\RegistrationForm' => function($sm){
                     $registrationForm = new RegistrationForm($sm);
-                    $terms = ContentManager::getInstance($sm)->getRegistrationFormTerms();
-                    if (!empty($terms)){
-                        $registrationForm->setTerms($terms);
-                    }
                     $registrationForm->init();
                     return $registrationForm;
                 },
                 'Application\Form\SetUpForm' => function($sm){
-                    return new \Application\Form\SetUpForm($sm);
+                    $setUpForm = new \Application\Form\SetUpForm($sm);
+                    $terms = ContentManager::getInstance($sm)->getSetUpFormTerms();
+                    if (!empty($terms)){
+                        $setUpForm->setTerms($terms);
+                    }
+                    $setUpForm->init();
+                    return $setUpForm;
                 },
                 'Application\Form\Filter\RegistrationFilter' => function($sm){
                     return new \Application\Form\Filter\RegistrationFilter($sm);

@@ -3,4 +3,43 @@
     <?php echo $this->partial('partials/setup-form', array('form'=>$this->form));?>
 </div>
 <script src="/js/setup-dialog.js"></script>
+<script>
+    (function($){
+        function checkTerms(){
+            var valid = true;
+            var form_error = $('.form-errors');
+            $('.term').each(function(){
+                if ($(this).hasClass('required')){
+                    var ul = form_error.find('ul');
+                    var error = $(this).data('error_class');
+                    if(!$(this).is(":checked")){
+                        var error_message = $(this).data('error_message');
+                        if (!ul.find('li').hasClass(error)){
+                            ul.append('<li class="'+error+'">'+error_message + '</li>');
+                        }
+                        valid = false;
+                        form_error.show();
+                    }else{
+                        ul.find('li.' + error).remove();
+                        if (!ul.find('li').length){
+                            form_error.hide();
+                        }
+                    }
 
+                }
+            });
+            return valid;
+        }
+
+        $(document).ready(function(){
+            $('#setup').submit(function(){
+                return checkTerms();
+            });
+
+        });
+        $(document).on('click', '.term', function(){
+               checkTerms();
+        })
+    }(jQuery));
+
+</script>

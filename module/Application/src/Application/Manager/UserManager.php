@@ -225,6 +225,8 @@ class UserManager extends BasicManager {
             'facebook_number_of_friends' => 'string',
             'facebook_user_likes' => 'array',
             'facebook_user_checkins' => 'array',
+            'term1' => 'number',
+            'term2' => 'number'
         );
         return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($users, $exportConfig);
     }

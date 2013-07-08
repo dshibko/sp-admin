@@ -14,12 +14,16 @@ var registerOptions = {
           }
       },
       'first_name': {
-          filters: 'required name',
-          data: {}
+          filters: 'required max',
+          data: {
+              max: 30
+          }
       },
       'last_name': {
-          filters: 'required name',
-          data: {}
+          filters: 'required max',
+          data: {
+              max: 30
+          }
       },
       'country': {
           filters: 'exclude',

@@ -893,3 +893,6 @@ msgstr "Your Facebook data will be used to create your account."
 msgid "Score Predictor"
 msgstr "Score Predictor"
 
+msgid "Terms were saved successfully."
+msgstr "Terms were saved successfully."
+

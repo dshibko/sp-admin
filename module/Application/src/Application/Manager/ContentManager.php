@@ -20,13 +20,18 @@ use \Application\Model\DAOs\RegionContentDAO;
 use \Application\Model\DAOs\MatchDAO;
 use Application\Model\Entities\Term;
 use Application\Model\Entities\TermCopy;
+use Zend\Form\Fieldset;
+use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use \Application\Model\Entities\FooterPage;
 use \Application\Model\DAOs\FooterPageDAO;
+use Zend\InputFilter\Factory as InputFactory;
 
 class ContentManager extends BasicManager {
 
+    const TERMS_FIELDSET_NAME = 'terms';
     /**
      * @var ContentManager
      */
@@ -530,7 +535,7 @@ class ContentManager extends BasicManager {
     /**
      * @return array
      */
-    public function getRegistrationFormTerms()
+    public function getSetUpFormTerms()
     {
         $language = UserManager::getInstance($this->getServiceLocator())->getCurrentUserLanguage();
         return $this->getTermsByLanguageId($language->getId(), true);
@@ -555,6 +560,51 @@ class ContentManager extends BasicManager {
     public function flushAndClearCacheDefaultReportContent() {
         DefaultReportContentDAO::getInstance($this->getServiceLocator())->flush();
         DefaultReportContentDAO::getInstance($this->getServiceLocator())->clearCache();
+    }
+
+    public function addTermsToForm(Form $form, array $terms)
+    {
+        $fieldset = new Fieldset(self::TERMS_FIELDSET_NAME);
+        $factory = new InputFactory();
+        $inputFilter = $form->getInputFilter();
+        $termsInputFilter = new InputFilter();
+        $index = 1;
+        foreach($terms as $term){
+            $name = 'term'.$index;
+            $label = 'Term ' . $index;
+            $index++;
+            $termData = array(
+                'type' => 'Zend\Form\Element\Checkbox',
+                'name' => $name,
+                'options' => array(
+                    'label' => $term['copy'],
+                    'use_hidden_element' => false,
+                    'checked_value' => 1,
+                    'unchecked_value' => 0
+                ),
+                'attributes' => array(
+                    'class' => 'term',
+                    'data-error_message' => $label . ' is required.',
+                    'data-error_class' => $name
+                )
+            );
+            if (!empty($term['isChecked'])){
+                $termData['attributes']['checked'] = 'checked';
+            }
+            if ($term['isRequired']){
+                $termData['attributes']['class'] .= ' required';
+            }
+            $termsInputFilter->add($factory->createInput(array(
+                'name'     => $name,
+                'required' => (bool)$term['isRequired']
+
+            )));
+            $fieldset->add($termData);
+        }
+
+        $inputFilter->add($termsInputFilter, self::TERMS_FIELDSET_NAME);
+        $form->setInputFilter($inputFilter);
+        $form->add($fieldset);
     }
 
 }
