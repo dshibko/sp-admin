@@ -432,19 +432,26 @@ position: relative;
   padding: 3em 0 0;
 }
 .lt-ie8  #setup-dialog section fieldset label {
-  width: 20em;
+  width: 310px;
   margin: 0 0 0.2em;
   text-align: left;
 }
+.lt-ie8  #setup-dialog section fieldset label input, .lt-ie8  #setup-dialog section fieldset label p {
+  float: left;
+  width: auto;
+}
 .lt-ie9 #setup-dialog section fieldset span label {
-/*  width: 25em;*/
+  width: 25em;
   color: #363636;
-  font: normal 1.5em/1.4 "ProximaNova-Reg",Helvetica,Arial;
+  font: normal 1em/1.4 "ProximaNova-Reg",Helvetica,Arial;
 }
 .lt-ie8 #setup-dialog section fieldset label + label {
 /*  width: 25em;*/
   margin: 0 0 1em;
   color: #363636;
+  font: normal 1em/1.4 "ProximaNova-Reg",Helvetica,Arial;
+}
+.lt-ie9 #setup-dialog section fieldset label p {
   font: normal 1.5em/1.4 "ProximaNova-Reg",Helvetica,Arial;
 }
 .lt-ie8  #setup-dialog section fieldset select {
