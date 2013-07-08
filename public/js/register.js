@@ -60,7 +60,7 @@ var registerOptions = {
       },
       'avatar': {
           filters: 'extension',
-          data: { extension: [ 'jpg', 'png' ] }
+          data: { extension: [ 'jpg', 'png', 'jpeg','gif', 'bmp' ] }
       }
   }
 };
