@@ -246,20 +246,6 @@ return array(
                     ),
                 ),
             ),
-//    'router' => array(
-//        'routes' => array(
-//            'clear-app-cache' => array(
-//                'type' => 'segment',
-//                'options' => array(
-//                    'route'    => '/clear-app-cache[/][:entities]',
-//                    'defaults' => array(
-//                        'controller' => 'Opta\Controller\ClearAppCache',
-//                        'action'     => 'index',
-//                    ),
-//                ),
-//            ),
-//        ),
-//    ),
 
             //Cookies Page
             'cookies' => array(
@@ -268,8 +254,8 @@ return array(
                     'route'    => '/cookies',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'ClearAppCache',
-                        'action'        => 'index',
+                        'controller'    => 'Content',
+                        'action'        => 'cookies',
                     ),
                 ),
             ),
