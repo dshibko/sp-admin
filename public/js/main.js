@@ -60,6 +60,23 @@ $(document).ready(function () {
     if($('.dialog:visible').length) {
         $('body').addClass('no-scroll');
     }
+    function updateDialogPosition() {
+        var dialog = $('.dialog:visible');
+        if($(window).height() > dialog.outerHeight()) {
+            dialog.css('margin-top', ($(window).height() - dialog.outerHeight()) / 2);
+        } else {
+            dialog.css('margin-top', 0)
+        }
+    }
+
+    $(window).on('resize.dialog', updateDialogPosition);
+    updateDialogPosition();
+
+
+    if ( navigator.userAgent.indexOf(" Safari/") != -1 && navigator.userAgent.indexOf(" Version/5") != -1) {
+        $('body').addClass("safari5");
+    };
+    $('#make-prediction').addClass("stack");
 
     if ( navigator.userAgent.indexOf(" Safari/") != -1 && navigator.userAgent.indexOf(" Version/5") != -1) {
         $('body').addClass("safari5");

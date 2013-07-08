@@ -11,7 +11,11 @@ $form->setAttribute('action', $this->url('setup'));?>
         <p><?php echo $this->translate('We need to know your region su we can make sure you are antered into the right league.');?></p>
         <p class="note"><?php echo $this->translate('Note: once confirmed, you will not be able to change these settings until next season');?></p>
         <?php echo $this->partial('partials/flash-messages');?>
+
         <fieldset>
+            <div class="form-errors" style="display:none;">
+                <ul></ul>
+            </div>
             <div>
                 <?php echo $this->formLabel($form->get('region'));?>
                 <?php echo $this->formSelect($form->get('region'));?>
@@ -22,8 +26,20 @@ $form->setAttribute('action', $this->url('setup'));?>
                     <?php echo $this->formSelect($form->get('language'));?>
                 </div>
             </div>
+            <?php $termsFieldset = $this->form->getTermsFieldset();?>
+            <?php if (!empty($termsFieldset)):?>
+                <div class="user-content">
+                    <?php foreach($termsFieldset->getElements() as $term):?>
+                        <label>
+                            <?php echo $this->formCheckbox($term);?>
+                            <?php echo $term->getLabel();?>
+                        </label>
+                    <?php endforeach;?>
+                </div>
+            <?php endif;?>
         </fieldset>
     </section>
+
     <footer>
         <button id="confirm" class="pink" type="submit"><?php echo $this->translate('Confirm and start playing');?></button>
     </footer>

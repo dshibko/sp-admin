@@ -1,14 +1,11 @@
 <?php
 namespace Application\Form;
 
-use Zend\Form\Fieldset;
 use Zend\Form\Form;
-use Zend\InputFilter\InputFilter;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Manager\ApplicationManager;
 use Application\Form\Filter\RegistrationFilter;
-use Zend\InputFilter\Factory as InputFactory;
 
 class RegistrationForm extends Form implements ServiceLocatorAwareInterface
 {
@@ -20,29 +17,8 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
     const DEFAULT_YEAR = 1985;
     const MALE = 'male';
     const FEMALE = 'female';
-    const TERMS_FIELDSET_NAME = 'terms';
 
     protected $serviceLocator;
-    protected $terms = array();
-
-    /**
-     * @param mixed $terms
-     * @return $this
-     */
-    public function setTerms($terms)
-    {
-        $this->terms = $terms;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTerms()
-    {
-        return $this->terms;
-    }
-
 
     private function getDays()
     {
@@ -293,41 +269,6 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
                 'label' => 'Avatar',
             ),
         ));
-        $terms = $this->getTerms();
-
-        if (!empty($terms)){
-            $fieldset = new Fieldset(self::TERMS_FIELDSET_NAME);
-            $factory = new InputFactory();
-            $inputFilter = $this->getInputFilter();
-            $termsInputFilter = new InputFilter();
-            foreach($terms as $term){
-                $name = 'term'.$term['id'];
-                $termData = array(
-                    'type' => 'Zend\Form\Element\Checkbox',
-                    'name' => $name,
-                    'options' => array(
-                        'label' => $term['copy'],
-                        'use_hidden_element' => false,
-                        'checked_value' => 1,
-                        'unchecked_value' => 0
-                    )
-                );
-                if (!empty($term['isChecked'])){
-                    $termData['attributes'] = array(
-                      'checked' => 'checked'
-                    );
-                }
-                $termsInputFilter->add($factory->createInput(array(
-                    'name'     => $name,
-                    'required' => (bool)$term['isRequired']
-
-                )));
-                $fieldset->add($termData);
-            }
-            $inputFilter->add($termsInputFilter, self::TERMS_FIELDSET_NAME);
-            $this->setInputFilter($inputFilter);
-            $this->add($fieldset);
-        }
 
         //CSRF
         $this->add(array(
@@ -351,15 +292,14 @@ class RegistrationForm extends Form implements ServiceLocatorAwareInterface
             ),
         ));
     }
-    public function __construct(ServiceLocatorInterface $serviceLocator = null, $terms = array())
+    public function __construct(ServiceLocatorInterface $serviceLocator = null)
     {
         parent::__construct('register');
 
         $this->setAttribute('method', 'post')
             ->setAttribute('enctype', 'multipart/form-data')
             ->setAttribute('autocomplete', 'off')
-            ->setServiceLocator($serviceLocator)
-            ->setTerms($terms);
+            ->setServiceLocator($serviceLocator);
 
         $inputFilter = $this->getServiceLocator()->get('Application\Form\Filter\RegistrationFilter');
         $this->setInputFilter($inputFilter->getInputFilter());

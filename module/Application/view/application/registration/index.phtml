@@ -157,22 +157,6 @@ $this->headTitle($title);
                 <?php echo $this->renderDefaultAvatars($this->default_avatar);?>
             </div>
         </section>
-        <?php if (!empty($this->terms)):?>
-            <section class="email-settings">
-                <div>
-                    <h2><?php echo $this->translate('Terms');?></h2>
-                </div>
-                <div>
-                    <?php foreach($this->terms->getElements() as $term):?>
-                        <label>
-                            <?php echo $this->formCheckbox($term);?>
-                            <?php echo $term->getLabel();?>
-                        </label>
-                    <?php endforeach;?>
-                </div>
-            </section>
-        <?php endif;?>
-
         <section class="buttons-block clearfix">
             <div>
                 <button type="submit"><?php echo $this->translate('Register');?></button>

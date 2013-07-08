@@ -98,7 +98,7 @@ msgid "Predict the score"
 msgstr "Predict the score"
 
 msgid "No more matches will be played in this season. Please join us when next season starts."
-msgstr "No more matches will be played in this season. Please join us when next season starts."
+msgstr "No more matches will be played in this season. Please join us when the new season starts."
 
 #: view/application/full-table/index.phtml:7
 msgid "League Table"
@@ -249,7 +249,7 @@ msgstr "Select scorer"
 
 #: view/application/predict/index.phtml:149
 msgid "Make prediction"
-msgstr "Make prediction"
+msgstr "Save prediction"
 
 #: view/application/predict/index.phtml:151
 msgid "Edit your prediction"
@@ -307,7 +307,7 @@ msgstr "Or choose from selection"
 
 #: view/application/registration/index.phtml:164 view/partials/footer.phtml:14
 msgid "Terms"
-msgstr "Terms"
+msgstr "Terms and conditions"
 
 #: view/application/registration/setup.phtml:10
 msgid "Set Up"
@@ -326,7 +326,7 @@ msgstr "Are these details correct?"
 #: view/application/registration/setup.phtml:40
 #: view/partials/setup-popup.phtml:14
 msgid "We need to know your region su we can make sure you are antered into the right league."
-msgstr "We need to know your region su we can make sure you are antered into the right league."
+msgstr "We need to know your region so we can make sure you are entered into the right league."
 
 #: view/application/registration/setup.phtml:41
 #: view/partials/setup-popup.phtml:15
@@ -432,7 +432,7 @@ msgstr "Your country"
 
 #: view/application/user/settings.phtml:148
 msgid "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league."
-msgstr "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league."
+msgstr "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the league."
 
 #: view/error/404.phtml:1
 msgid "Page not found"
@@ -465,7 +465,7 @@ msgstr "Additional information"
 
 #: view/error/index.phtml:1
 msgid "An error occurred"
-msgstr "An error occurred"
+msgstr " We scored an own goal and are looking to rectify the issue."
 
 #: view/error/index.phtml:11 view/error/index.phtml:35
 msgid "File"
@@ -493,11 +493,11 @@ msgstr "Dismiss"
 
 #: view/partials/footer.phtml:6
 msgid "Stay up to date with Truefan United"
-msgstr "Stay up to date with Truefan United"
+msgstr "Stay up to date with Chelsea Football Club"
 
 #: view/partials/footer.phtml:7
 msgid "See behind the scenes, match updates <br>and exclusive content"
-msgstr "See behind the scenes, match updates <br>and exclusive content"
+msgstr "With breaking news, match updates,  competitions and <br>exclusive interviews from the first team."
 
 #: view/partials/footer.phtml:17
 msgid "Contact us"
@@ -505,7 +505,7 @@ msgstr "Contact us"
 
 #: view/partials/footer.phtml:20
 msgid "Privacy"
-msgstr "Privacy"
+msgstr "Privacy policy"
 
 #: view/partials/footer.phtml:23
 msgid "Help & Support"
@@ -624,7 +624,7 @@ msgid "Input cannot be empty"
 msgstr "Input cannot be empty"
 
 msgid "Connect your account for a one click login"
-msgstr "Connect your account for a one click login"
+msgstr "Connect with Facebook for easier Login"
 
 msgid "Wrong email or password."
 msgstr "Wrong email or password."
@@ -642,7 +642,7 @@ msgid "Now you can change the password."
 msgstr "Now you can change the password."
 
 msgid "You will be redirected to website..."
-msgstr "You will be redirected to website..."
+msgstr "You will be redirected to the website..."
 
 msgid "Name"
 msgstr "Name"
@@ -714,13 +714,13 @@ msgid "Avatar"
 msgstr "Avatar"
 
 msgid "Error happened while connecting to your facebook account. Please try again later"
-msgstr "Error happened while connecting to your facebook account. Please try again later"
+msgstr " We scored an own goal! An error occurred while connecting to your Facebook account. Please try again later"
 
 msgid "Error happened while updating data. Please try again later"
-msgstr "Error happened while updating data. Please try again later"
+msgstr " We scored an own goal! An error occurred while updating data. Please try again later"
 
 msgid "Your account successfully connected to facebook"
-msgstr "Your account successfully connected to facebook"
+msgstr "Your account has successfully connected to facebook"
 
 msgid "Region"
 msgstr "Region"
@@ -771,7 +771,7 @@ msgid "Your results"
 msgstr "Your results"
 
 msgid "No matches were played in this season."
-msgstr "No matches were played in this season."
+msgstr "No matches have been played this season. Results will appear after the first match has been completed."
 
 msgid "You predicted the draw"
 msgstr "You predicted the draw"
@@ -846,7 +846,7 @@ msgid "Invalid form type"
 msgstr "Invalid form type"
 
 msgid "You can delete only yours account"
-msgstr "You can delete only yours account"
+msgstr "You can delete only your account"
 
 msgid "You have deleted your account successfully."
 msgstr "You have deleted your account successfully."
@@ -885,11 +885,14 @@ msgid "Acy"
 msgstr "Acy"
 
 msgid "Cannot connect user to facebook account because facebook email has been already taken by another user."
-msgstr "Cannot connect user to facebook account because facebook email has been already taken by another user."
+msgstr "Cannot connect user to facebook account because facebook email has already been taken by another user."
 
 msgid "Your Facebook data will be used to create your account."
 msgstr "Your Facebook data will be used to create your account."
 
 msgid "Score Predictor"
 msgstr "Score Predictor"
+
+msgid "Terms were saved successfully."
+msgstr "Terms were saved successfully."
 

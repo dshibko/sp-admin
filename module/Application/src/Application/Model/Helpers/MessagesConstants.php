@@ -118,6 +118,7 @@ class MessagesConstants
     const SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT = 'Your account successfully connected to facebook';
     const SUCCESS_NEW_LANGUAGE_SAVED  = 'New language was successfully saved.';
     const SUCCESS_NEW_EMAIL_SETTINGS_SAVED = 'New email settings were successfully saved.';
+    const SUCCESS_TERMS_SETTINGS_SAVED = 'Terms were saved successfully.';
     const SUCCESS_PUBLIC_PROFILE_OPTION_SAVED = 'Public profile option was successfully saved.';
     const SUCCESS_DELETE_ACCOUNT = 'You have deleted your account successfully.';
     const SUCCESS_HELP_AND_SUPPORT_MESSAGE_SENT = 'Your message successfully sent';

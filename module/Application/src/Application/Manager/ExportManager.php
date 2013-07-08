@@ -30,6 +30,7 @@ class ExportManager extends BasicManager {
 
     public function exportArrayToCSV(array $dataArray, array $config) {
         $rows = array();
+
         $rows [] = implode(',', array_keys($config));
         foreach ($dataArray as $dataRow) {
             $cols = array();
@@ -53,7 +54,8 @@ class ExportManager extends BasicManager {
                                 $value = "\"" . str_replace("\"", "\"\"", $dataRow[$columnName]) . "\"";
                                 break;
                             case 'number':
-                                $value = $dataRow[$columnName];
+
+                                $value = ($dataRow[$columnName] !== false) ? $dataRow[$columnName] : 0;
                                 break;
                             case 'array':
                                 $value = "\"" . str_replace("\"", "\"\"", implode(",", $dataRow[$columnName])) . "\"";

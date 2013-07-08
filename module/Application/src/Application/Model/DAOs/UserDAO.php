@@ -121,7 +121,7 @@ class UserDAO extends AbstractDAO {
      */
     public function getExportUsers($skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('u.id, u.displayName, u.email, u.date, u.facebookId, u.facebookAccessToken, count(p.id) as predictions')
+        $qb->select('u.id, u.displayName, u.email, u.date, u.facebookId, u.facebookAccessToken, count(p.id) as predictions, u.term1, u.term2')
             ->from($this->getRepositoryName(), 'u')
             ->leftJoin('u.predictions', 'p')
             ->groupBy('u.id');
