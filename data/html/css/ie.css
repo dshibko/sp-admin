@@ -430,6 +430,17 @@ position: relative;
   margin: 0 0 0.2em;
   text-align: left;
 }
+.lt-ie9 #setup-dialog section fieldset span label {
+/*  width: 25em;*/
+  color: #363636;
+  font: normal 1.5em/1.4 "ProximaNova-Reg",Helvetica,Arial;
+}
+.lt-ie8 #setup-dialog section fieldset label + label {
+/*  width: 25em;*/
+  margin: 0 0 1em;
+  color: #363636;
+  font: normal 1.5em/1.4 "ProximaNova-Reg",Helvetica,Arial;
+}
 .lt-ie8  #setup-dialog section fieldset select {
   margin: 0 0 1.5em;
   width: 26em;
