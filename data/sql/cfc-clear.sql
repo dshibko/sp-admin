@@ -1,0 +1,48 @@
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE `league_user`;
+ALTER TABLE `league_user` AUTO_INCREMENT = 1;
+TRUNCATE `season`;
+ALTER TABLE `season` AUTO_INCREMENT = 1;
+TRUNCATE `season_region`;
+ALTER TABLE `season_region` AUTO_INCREMENT = 1;
+TRUNCATE `featured_goalkeeper`;
+ALTER TABLE `featured_goalkeeper` AUTO_INCREMENT = 1;
+TRUNCATE `featured_player`;
+ALTER TABLE `featured_player` AUTO_INCREMENT = 1;
+TRUNCATE `featured_prediction`;
+ALTER TABLE `featured_prediction` AUTO_INCREMENT = 1;
+TRUNCATE `feed`;
+ALTER TABLE `feed` AUTO_INCREMENT = 1;
+TRUNCATE `league`;
+ALTER TABLE `league` AUTO_INCREMENT = 1;
+TRUNCATE `league_region`;
+ALTER TABLE `league_region` AUTO_INCREMENT = 1;
+TRUNCATE `league_user_place`;
+ALTER TABLE `league_user_place` AUTO_INCREMENT = 1;
+TRUNCATE `line_up`;
+ALTER TABLE `line_up` AUTO_INCREMENT = 1;
+TRUNCATE `match`;
+ALTER TABLE `match` AUTO_INCREMENT = 1;
+TRUNCATE `match_goal`;
+ALTER TABLE `match_goal` AUTO_INCREMENT = 1;
+TRUNCATE `match_region`;
+ALTER TABLE `match_region` AUTO_INCREMENT = 1;
+TRUNCATE `player_competition`;
+ALTER TABLE `player_competition` AUTO_INCREMENT = 1;
+TRUNCATE `prediction`;
+ALTER TABLE `prediction` AUTO_INCREMENT = 1;
+TRUNCATE `prediction_player`;
+ALTER TABLE `prediction_player` AUTO_INCREMENT = 1;
+TRUNCATE `prize`;
+ALTER TABLE `prize` AUTO_INCREMENT = 1;
+TRUNCATE `team_competition`;
+ALTER TABLE `team_competition` AUTO_INCREMENT = 1;
+SET FOREIGN_KEY_CHECKS = 1;
