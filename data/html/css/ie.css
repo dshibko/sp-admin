@@ -520,9 +520,6 @@ position: relative;
   height: 0.9em;
   background: #144a9b;
 }
-.lt-ie8 .grid-layout .item.pie-chart.top5-predicted-scores section figure ol.legend li:first-child small {
-  background: #a01749;
-}
 
 .lt-ie9 .grid-layout .pie-chart section ol.legend li:first-child + *:before, .lt-ie8 .grid-layout .pie-chart section ol.legend li:first-child + * small {
   background: #363636;
@@ -531,6 +528,9 @@ position: relative;
   background: #7f7f80;
 }
 
+.lt-ie8 .grid-layout .item.pie-chart.top5-predicted-scores section figure ol.legend li:first-child small {
+  background: #a01749;
+}
 .lt-ie9 .grid-layout .item.top5-predicted-scores section ol li:first-child + *:before, .lt-ie8 .grid-layout .item.top5-predicted-scores section ol li:first-child + * small {
   background: #b2466e;
 }
