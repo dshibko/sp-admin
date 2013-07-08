@@ -161,7 +161,6 @@ class LanguagesController extends AbstractActionController
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
-
         return array(
             'title' => 'Edit Language',
             'form' => $languageForm,

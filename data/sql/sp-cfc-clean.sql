@@ -1549,3 +1549,7 @@ ADD  `predictions_count` INT NOT NULL AFTER  `predictions_players_count`,
 ADD  `registration_date` DATETIME NOT NULL AFTER  `previous_place`;
 
 ALTER TABLE  `feed` CHANGE  `last_sync_result`  `last_sync_result` ENUM(  'Success',  'Error',  'InProgress' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+
+-- okh 08.07
+
+ALTER TABLE `user`  ADD COLUMN `term1` TINYINT(1) NULL DEFAULT NULL AFTER `last_logged_in`,  ADD COLUMN `term2` TINYINT(1) NULL DEFAULT NULL AFTER `term1`;

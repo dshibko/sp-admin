@@ -118,9 +118,8 @@ class LanguageManager extends BasicManager {
     public function savePoFileContent($poFileName, array $data)
     {
         $poFile = $this->getPoFilePath($poFileName);
-
+        $defaultLanguage = LanguageDAO::getInstance($this->getServiceLocator())->getDefaultLanguage();
         if (!file_exists($poFile)){
-            $defaultLanguage = LanguageDAO::getInstance($this->getServiceLocator())->getDefaultLanguage();
             $defaultLanguageFile = $this->getPoFilePath($defaultLanguage->getLanguageCode());
             if (!copy($defaultLanguageFile, $poFile)){
                 return false;
@@ -128,7 +127,11 @@ class LanguageManager extends BasicManager {
         }
         if (!empty($data)){
             $poParser = $this->getServiceLocator()->get('poparser');
+            $defaultData = $this->getPoFileContent($defaultLanguage->getLanguageCode());
             foreach($data as $msgid => $msgstr){
+                if ($msgstr == ''){
+                    $msgstr = (isset($defaultData[$msgid]) && $defaultData[$msgid]) != ''  ? $defaultData[$msgid] : $msgid;
+                }
                 $poParser->update_entry( $msgid, $msgstr);
             }
             $poParser->write($poFile);
