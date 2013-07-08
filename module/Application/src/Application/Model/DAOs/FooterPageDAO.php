@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use Application\Manager\LanguageManager;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -35,6 +36,8 @@ class FooterPageDAO extends AbstractDAO {
     public function getFooterPageByTypeAndLanguage($type, $languageId, $hydrate = false, $skipCache = false)
     {
 
+        $languageId = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage()->getId();
+        // todo remove
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('fp')
             ->from($this->getRepositoryName(), 'fp')

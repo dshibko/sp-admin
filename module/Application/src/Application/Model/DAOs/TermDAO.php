@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use Application\Manager\LanguageManager;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -40,6 +41,8 @@ class TermDAO extends AbstractDAO {
      */
     public function getTermsByLanguageId($languageId, $hydrate = false, $skipCache = false)
     {
+        $languageId = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage()->getId();
+        // todo remove
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('t.id,t.isRequired, t.isChecked,tc.copy')
             ->from($this->getRepositoryName(), 't')

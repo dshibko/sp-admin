@@ -51,18 +51,14 @@ class ApplicationManager extends BasicManager {
      */
     public function getCurrentUser()
     {
-        if (is_null($this->currentUser)) {
+        if ($this->currentUser === null) {
             $identity = $this->getServiceLocator()->get('AuthService')->getIdentity();
             if ($identity === null) $this->currentUser = null;
             else
                 if ($identity instanceof User)
                     $this->currentUser = $identity;
-                else if (is_string($identity)) {
+                else if (is_string($identity))
                     $this->currentUser = UserDAO::getInstance($this->getServiceLocator())->findOneByIdentity($identity, false, true);
-                    // todo remove
-                    if ($this->currentUser !== null)
-                        $this->currentUser->setLanguage(LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage());
-                }
         }
         return $this->currentUser;
     }

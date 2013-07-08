@@ -87,20 +87,18 @@ class UserManager extends BasicManager {
      */
     public function getUserLanguage()
     {
-        return LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
-        // todo remove
-//        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
-//        $isoCode = $this->getUserGeoIpIsoCode();
-//        $language = null;
-//        if ($isoCode != null) {
-//            $country = $applicationManager->getCountryByISOCode($isoCode);
-//            if (!empty($country)) {
-//                $language = $country->getLanguage();
-//            }
-//        }
-//        if ($language == null)
-//            $language = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
-//        return $language;
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $isoCode = $this->getUserGeoIpIsoCode();
+        $language = null;
+        if ($isoCode != null) {
+            $country = $applicationManager->getCountryByISOCode($isoCode);
+            if (!empty($country)) {
+                $language = $country->getLanguage();
+            }
+        }
+        if ($language == null)
+            $language = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+        return $language;
     }
 
     /**
