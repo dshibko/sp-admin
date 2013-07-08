@@ -149,7 +149,7 @@ class AvatarHelper
             ));
 
             $isImage = new Extension(array(
-                array('extension' => 'jpg,jpeg,gif,png,bmp')
+                'extension' => 'jpg,jpeg,gif,png,bmp'
             ));
             $this->getAdapter()->setValidators(array($size, $isImage), $data['name']);
             $this->getAdapter()->setFilters(array());
