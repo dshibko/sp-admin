@@ -197,6 +197,9 @@ class SeasonController extends AbstractActionController {
                     $del = $request->getPost('del', 'No');
 
                     if ($del == 'Yes') {
+                        ini_set('max_execution_time', 0);
+                        ini_set('max_input_time', -1);
+                        ini_set('memory_limit', -1);
                         $id = (int) $request->getPost('id');
                         SeasonManager::getInstance($this->getServiceLocator())->deleteSeason($id);
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_SEASON_DELETE);

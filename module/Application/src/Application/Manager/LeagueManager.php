@@ -200,7 +200,7 @@ class LeagueManager extends BasicManager {
             $league->setLeagueRegions(new ArrayCollection($leagueRegions));
         }
         $leagueDAO->save($league);
-        if ($editableLeague) {
+        if ($editableLeague && $leagueId === -1) {
             $userManager = UserManager::getInstance($this->getServiceLocator());
             foreach ($regionsData as $regionId => $regionRow)
                 $userManager->registerLeagueUsers($league, $regionId);

@@ -99,7 +99,6 @@ class LanguageManager extends BasicManager {
         if (file_exists($poFile)){
             $poParser = $this->getServiceLocator()->get('poparser');
             $content = $poParser->read($poFile);
-            //print_r($content); die;
             if (!empty($content)){
                 foreach($content as $id => $value){
                     if (!empty($id)){

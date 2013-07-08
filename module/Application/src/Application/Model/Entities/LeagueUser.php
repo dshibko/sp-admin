@@ -117,6 +117,13 @@ class LeagueUser
     private $user;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="LeagueUserPlace", mappedBy="leagueUser", cascade={"persist", "remove"})
+     */
+    private $leagueUserPlaces;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="registration_date", type="datetime", nullable=false)
@@ -369,6 +376,22 @@ class LeagueUser
     public function getRegistrationDate()
     {
         return $this->registrationDate;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $leagueUserPlaces
+     */
+    public function setLeagueUserPlaces($leagueUserPlaces)
+    {
+        $this->leagueUserPlaces = $leagueUserPlaces;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLeagueUserPlaces()
+    {
+        return $this->leagueUserPlaces;
     }
 
 }
