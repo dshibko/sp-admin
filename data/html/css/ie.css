@@ -345,6 +345,10 @@
 }
 
 
+.lt-ie8  .make-prediction .make-prediction-content .buttons-block .buttons-wrapper {
+  width: 49%!important;
+}
+
 /***fixtures***/
 .ie8 .fixtures table {
   border-collapse: separate;
