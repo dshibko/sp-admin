@@ -123,9 +123,15 @@ class OptaManager extends BasicManager {
                             if ($player->hasCompetition($competition))
                                 $player->removeCompetition($competition);
 
+                        $playerFeederIds = array();
+
                         foreach ($teamXml->Player as $playerXml) {
                             try {
                                 $playerFeederId = $this->getIdFromString($this->getXmlAttribute($playerXml, 'uID'));
+                                if (in_array($playerFeederId, $playerFeederIds))
+                                    continue;
+                                else
+                                    $playerFeederIds[] = $playerFeederId;
                                 if (empty($playerFeederId)) {
                                     $this->logMessage(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'player_id'), Logger::WARN, $console);
                                     continue;
