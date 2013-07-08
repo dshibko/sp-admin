@@ -143,20 +143,21 @@ class OptaManager extends BasicManager {
                                     $player->addCompetition($competition);
 
                                 $player->setTeam($team);
+                                $decrement = $playerXml->Stat->count() == 10 ? -1 : 0;
                                 if (!$player->getIsBlocked()) {
                                     $player->setDisplayName($playerXml->Name->__toString());
-                                    $player->setShirtNumber($this->getNodeValue($playerXml->Stat, 6));
+                                    $player->setShirtNumber($this->getNodeValue($playerXml->Stat, 6 + $decrement));
                                 }
                                 $player->setPosition($playerXml->Position->__toString());
                                 $player->setName($playerXml->Stat->{0}->__toString());
                                 $player->setSurname($playerXml->Stat->{1}->__toString());
-                                $player->setBirthDate($this->getNodeValue($playerXml->Stat, 3, 'Y-m-d'));
-                                $player->setWeight($this->getNodeValue($playerXml->Stat, 4));
-                                $player->setHeight($this->getNodeValue($playerXml->Stat, 5));
-                                $player->setRealPosition($this->getNodeValue($playerXml->Stat, 7));
-                                $player->setRealPositionSide($this->getNodeValue($playerXml->Stat, 8));
-                                $player->setJoinDate($this->getNodeValue($playerXml->Stat, 9, 'Y-m-d'));
-                                $player->setCountry($this->getNodeValue($playerXml->Stat, 10));
+                                $player->setBirthDate($this->getNodeValue($playerXml->Stat, 3 + $decrement, 'Y-m-d'));
+                                $player->setWeight($this->getNodeValue($playerXml->Stat, 4 + $decrement));
+                                $player->setHeight($this->getNodeValue($playerXml->Stat, 5 + $decrement));
+                                $player->setRealPosition($this->getNodeValue($playerXml->Stat, 7 + $decrement));
+                                $player->setRealPositionSide($this->getNodeValue($playerXml->Stat, 8 + $decrement));
+                                $player->setJoinDate($this->getNodeValue($playerXml->Stat, 9 + $decrement, 'Y-m-d'));
+                                $player->setCountry($this->getNodeValue($playerXml->Stat, 10 + $decrement));
                             } catch (\Exception $e) {
                                 ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::ERR, $console);
                             }
