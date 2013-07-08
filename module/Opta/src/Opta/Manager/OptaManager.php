@@ -149,21 +149,20 @@ class OptaManager extends BasicManager {
                                     $player->addCompetition($competition);
 
                                 $player->setTeam($team);
-                                $increment = $playerXml->Stat->count() == 10 ? -1 : 0;
                                 if (!$player->getIsBlocked()) {
                                     $player->setDisplayName($playerXml->Name->__toString());
-                                    $player->setShirtNumber($this->getNodeValue($playerXml->Stat, 6 + $increment));
+                                    $player->setShirtNumber($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'jersey_num'));
                                 }
                                 $player->setPosition($playerXml->Position->__toString());
                                 $player->setName($playerXml->Stat->{0}->__toString());
                                 $player->setSurname($playerXml->Stat->{1}->__toString());
-                                $player->setBirthDate($this->getNodeValue($playerXml->Stat, 3 + $increment, 'Y-m-d'));
-                                $player->setWeight($this->getNodeValue($playerXml->Stat, 4 + $increment));
-                                $player->setHeight($this->getNodeValue($playerXml->Stat, 5 + $increment));
-                                $player->setRealPosition($this->getNodeValue($playerXml->Stat, 7 + $increment));
-                                $player->setRealPositionSide($this->getNodeValue($playerXml->Stat, 8 + $increment));
-                                $player->setJoinDate($this->getNodeValue($playerXml->Stat, 9 + $increment, 'Y-m-d'));
-                                $player->setCountry($this->getNodeValue($playerXml->Stat, 10 + $increment));
+                                $player->setBirthDate($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'birth_date', 'Y-m-d'));
+                                $player->setWeight($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'weight'));
+                                $player->setHeight($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'height'));
+                                $player->setRealPosition($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'real_position'));
+                                $player->setRealPositionSide($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'real_position_side'));
+                                $player->setJoinDate($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'join_date', 'Y-m-d'));
+                                $player->setCountry($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'country'));
                             } catch (\Exception $e) {
                                 ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::ERR, $console);
                             }
@@ -583,6 +582,24 @@ class OptaManager extends BasicManager {
         }
         return $xmlValue;
 
+    }
+
+    /**
+     * @param \SimpleXMLElement $xmlObj
+     * @param $nodeName
+     * @param $attrName
+     * @param $value
+     * @param string|null $format
+     * @return \DateTime|string|null
+     */
+    private function getNodeByAttributeValue(\SimpleXMLElement $xmlObj, $nodeName, $attrName, $value, $format = null) {
+        $xmlNode = $xmlObj->xpath($nodeName . '[@' . $attrName . '=\'' . $value . '\']');
+        $nodeValue = !empty($xmlNode) ? $xmlNode[0]->__toString() : null;
+        if (!empty($nodeValue) && $format !== null)
+            $nodeValue = \DateTime::createFromFormat($format, $nodeValue);
+        if ($nodeValue == 'Unknown')
+            $nodeValue = null;
+        return $nodeValue;
     }
 
     private function getXmlAttribute(\SimpleXMLElement $obj, $attrName) {
