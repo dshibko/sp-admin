@@ -292,13 +292,11 @@ class ApplicationManager extends BasicManager {
      */
     public function getUserRegion(\Application\Model\Entities\User $user)
     {
-        return RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
-        // todo remove
-//        $region = $user->getCountry()->getRegion();
-//        if (is_null($region)){
-//            $region = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
-//        }
-//        return $region;
+        $region = $user->getCountry()->getRegion();
+        if (is_null($region)){
+            $region = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
+        }
+        return $region;
     }
 
     /**

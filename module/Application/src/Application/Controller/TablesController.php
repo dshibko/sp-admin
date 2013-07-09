@@ -35,9 +35,7 @@ class TablesController extends AbstractActionController {
             $globalLeague = $applicationManager->getGlobalLeague($season);
             $globalLeagueUsers = $leagueManager->getLeagueTop($globalLeague->getId(), self::TOP_PLAYERS_COUNT);
 
-            // todo remove
-            $region = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
-//            $region = $user->getCountry()->getRegion();
+            $region = $user->getCountry()->getRegion();
 //            if ($region != null) {
 //                $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
 //                $regionalLeagueUsers = $leagueManager->getLeagueTop($regionalLeague->getId(), self::TOP_PLAYERS_COUNT);

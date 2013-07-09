@@ -41,8 +41,6 @@ class LogotypeDAO extends AbstractDAO {
      */
     public function getLogotypeByLanguage($languageId, $hydrate = false, $skipCache = false)
     {
-        $languageId = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage()->getId();
-        // todo remove
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('l, e')
             ->from($this->getRepositoryName(), 'l')

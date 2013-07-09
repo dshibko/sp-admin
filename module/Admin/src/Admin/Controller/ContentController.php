@@ -85,9 +85,7 @@ class ContentController extends AbstractActionController {
                     $form->populateValues($regionContent->getArrayCopy());
             }
 
-            // todo remove
-            $regions = array(RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion(true));
-//            $regions = $regionManager->getAllRegions(true);
+            $regions = $regionManager->getAllRegions(true);
 
             $gameplayBlocks = ContentManager::getInstance($this->getServiceLocator())->getGameplayBlocks($region, true);
 
@@ -376,9 +374,7 @@ class ContentController extends AbstractActionController {
                             (is_array($messages) ? implode(", ", $messages): $messages));
             }
 
-            // todo remove
-            $regions = array(RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion(true));
-//            $regions = $regionManager->getAllRegions(true);
+            $regions = $regionManager->getAllRegions(true);
 
             $footerImages = $contentManager->getFooterImages($region, true);
 
@@ -434,9 +430,7 @@ class ContentController extends AbstractActionController {
             if ($region == null)
                 $region = $regionManager->getDefaultRegion();
 
-            // todo remove
-            $regions = array(RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion(true));
-//            $regions = $regionManager->getAllRegions(true);
+            $regions = $regionManager->getAllRegions(true);
 
             $footerSocials = $contentManager->getFooterSocials($region, true);
 
