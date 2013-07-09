@@ -69,6 +69,8 @@ if ($(document).width() <  turnOffCustomStylePoint)
   registerOptions.disableCustom = 'select';
 
 try {
-    var $register = $('#register').idealforms(registerOptions).data('idealforms');
-    $register.focusFirst();
+    if (!$('html').hasClass('lt-ie8')) {
+        var $register = $('#register').idealforms(registerOptions).data('idealforms');
+        $register.focusFirst();
+    }
 } catch (e) {}
