@@ -56,8 +56,9 @@ class LeagueStats extends AbstractHelper
                         array_unshift($this->overallLeagueUsers, $leagueUser);
                         $this->globalPoints = $leagueUser['points'];
                         $this->globalAccuracy = $leagueUser['accuracy'];
-                    } else if ($leagueUser['type'] == \Application\Model\Entities\League::REGIONAL_TYPE)
-                        array_push($this->overallLeagueUsers, $leagueUser);
+                    } /*else if ($leagueUser['type'] == \Application\Model\Entities\League::REGIONAL_TYPE)
+                        array_push($this->overallLeagueUsers, $leagueUser);*/
+                    // todo remove
                 }
         }
         return $this;
