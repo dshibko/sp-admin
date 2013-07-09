@@ -34,18 +34,22 @@ class TablesController extends AbstractActionController {
 
             $globalLeague = $applicationManager->getGlobalLeague($season);
             $globalLeagueUsers = $leagueManager->getLeagueTop($globalLeague->getId(), self::TOP_PLAYERS_COUNT);
-            $region = $user->getCountry()->getRegion();
-            if ($region != null) {
-                $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
-                $regionalLeagueUsers = $leagueManager->getLeagueTop($regionalLeague->getId(), self::TOP_PLAYERS_COUNT);
-                $temporalLeagues = $leagueManager->getTemporalLeagues($region, true);
-                foreach ($temporalLeagues as &$temporalLeague) {
-                    $temporalLeague['leagueUsers'] = $leagueManager->getLeagueTop($temporalLeague['id'], self::TOP_PLAYERS_COUNT);
-                    $leagueRegions = $temporalLeague["leagueRegions"];
-                    $leagueRegion = array_shift($leagueRegions);
-                    $temporalLeague['displayName'] = $leagueRegion['displayName'];
-                }
-            }
+
+            // todo remove
+            $region = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
+//            $region = $user->getCountry()->getRegion();
+//            if ($region != null) {
+//                $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
+//                $regionalLeagueUsers = $leagueManager->getLeagueTop($regionalLeague->getId(), self::TOP_PLAYERS_COUNT);
+//                $temporalLeagues = $leagueManager->getTemporalLeagues($region, true);
+//                foreach ($temporalLeagues as &$temporalLeague) {
+//                    $temporalLeague['leagueUsers'] = $leagueManager->getLeagueTop($temporalLeague['id'], self::TOP_PLAYERS_COUNT);
+//                    $leagueRegions = $temporalLeague["leagueRegions"];
+//                    $leagueRegion = array_shift($leagueRegions);
+//                    $temporalLeague['displayName'] = $leagueRegion['displayName'];
+//                }
+//            }
+            // todo remove
             $seasonRegion = $season->getSeasonRegionByRegionId($applicationManager->getUserRegion($user)->getId());
             return array(
                 'globalLeague' => $globalLeague,

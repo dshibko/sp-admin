@@ -39,7 +39,9 @@ class SeasonController extends AbstractActionController {
     public function addAction() {
 
         try {
-            $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
+//            $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
+            $regions = array(RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion(true));
+            // todo remove
 
             $regionFieldsets = array();
 
@@ -117,7 +119,9 @@ class SeasonController extends AbstractActionController {
 
             $editableDates = !$matchManager->getHasFinishedMatches($season);
 
-            $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
+//            $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
+            $regions = array(RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion(true));
+            // todo remove
 
             $regionFieldsets = array();
 
