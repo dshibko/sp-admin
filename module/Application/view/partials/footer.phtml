@@ -10,24 +10,35 @@
     <div>
         <nav class="clearfix">
             <ul>
-                <li>
-                    <a href="<?php echo $this->url('terms');?>"><?=$this->translate('Terms')?></a>
-                </li>
-                <li>
-                    <a href="<?php echo $this->url('contact');?>"><?=$this->translate('Contact us')?></a>
-                </li>
-                <li>
-                    <a href="<?php echo $this->url('privacy')?>"><?=$this->translate('Privacy')?></a>
-                </li>
+                <?php if ($this->hasContent(\Application\Model\Entities\FooterPage::TERMS_PAGE)):?>
+                    <li>
+                        <a href="<?php echo $this->url('terms');?>"><?=$this->translate('Terms')?></a>
+                    </li>
+                <?php endif;?>
+                <?php if ($this->hasContent(\Application\Model\Entities\FooterPage::CONTACT_US_PAGE)):?>
+                    <li>
+                        <a href="<?php echo $this->url('contact');?>"><?=$this->translate('Contact us')?></a>
+                    </li>
+                <?php endif;?>
+                <?php if ($this->hasContent(\Application\Model\Entities\FooterPage::PRIVACY_PAGE)):?>
+                    <li>
+                        <a href="<?php echo $this->url('privacy')?>"><?=$this->translate('Privacy')?></a>
+                    </li>
+                <?php endif;?>
                 <li>
                     <a href="<?php echo $this->url('help');?>"><?=$this->translate('Help & Support')?></a>
                 </li>
-                <li>
-                    <a target="_blank" href="<?php echo $this->settingsHelper()->get(\Application\Manager\SettingsManager::MAIN_SITE_LINK)?>"><?=$this->translate('Visit our main site')?></a>
-                </li>
-                <li>
-                    <a href="<?php echo $this->url('cookies');?>"><?=$this->translate('Cookies policy')?></a>
-                </li>
+                <?php $mainSiteLink = $this->settingsHelper()->get(\Application\Manager\SettingsManager::MAIN_SITE_LINK, null);?>
+                <?php if (!empty($mainSiteLink)):?>
+                    <li>
+                        <a target="_blank" href="<?php echo $mainSiteLink;?>"><?=$this->translate('Visit our main site')?></a>
+                    </li>
+                <?php endif;?>
+                <?php if ($this->hasContent(\Application\Model\Entities\FooterPage::COOKIES_PAGE)):?>
+                    <li>
+                        <a href="<?php echo $this->url('cookies');?>"><?=$this->translate('Cookies policy')?></a>
+                    </li>
+                <?php endif;?>
             </ul>
         </nav>
         <p><a href="http://www.truefan.tv" target="_blank"><img src="/img/truefan.png" alt="TRUEFAN" ><?php echo $this->translate('MADE BY');?> TRUEFAN</a></p>

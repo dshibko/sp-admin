@@ -194,7 +194,7 @@ class Module
                     $settingsHelper->setServiceLocator($sm->getServiceLocator());
                     return $settingsHelper;
                 },
-                'squadSelect' => function($sm) {
+                'squadSelect' => function() {
                     return new \Neoco\View\Helper\SquadSelect();
                 },
                 'clubLogo' => function($sm) {
@@ -203,7 +203,7 @@ class Module
                     $h->setDefaultLogo($config['default_club_logo']);
                     return $h;
                 },
-                'getUserAvatar' => function($sm) {
+                'getUserAvatar' => function() {
                     return new \Neoco\View\Helper\GetUserAvatar();
                 },
                 'getUnreadItems' => function($sm) {
@@ -228,6 +228,11 @@ class Module
                 },
                 'renderFlashMessages' => function(){
                     return new \Neoco\View\Helper\FlashMessages();
+                },
+                'hasContent' => function($sm){
+                    $footerPageContent = new \Neoco\View\Helper\FooterPageContent();
+                    $footerPageContent->setServiceLocator($sm->getServiceLocator());
+                    return $footerPageContent;
                 }
             )
         );
