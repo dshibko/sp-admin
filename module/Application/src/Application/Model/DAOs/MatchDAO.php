@@ -211,7 +211,20 @@ class MatchDAO extends AbstractDAO {
      */
     function getMatchesLeftInTheSeason(Season $season, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('m.id, m.feederId, m.status, m.startTime, m.timezone, h.displayName as homeName, h.logoPath as homeLogo, a.displayName as awayName, a.logoPath as awayLogo, c.displayName as competitionName')
+        $qb->select('
+                m.id,
+                m.feederId,
+                m.status,
+                m.startTime,
+                m.timezone,
+                h.shortName as homeShortName,
+                a.shortName as awayShortName,
+                h.displayName as homeName,
+                h.logoPath as homeLogo,
+                a.displayName as awayName,
+                a.logoPath as awayLogo,
+                c.displayName as competitionName
+            ')
             ->from($this->getRepositoryName(), 'm')
             ->join('m.homeTeam', 'h')
             ->join('m.awayTeam', 'a')

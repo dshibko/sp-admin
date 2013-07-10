@@ -29,7 +29,7 @@ aside.ready-try .cta,
   background: linear-gradient(to bottom,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4a935', endColorstr='#c89800',GradientType=0 );
 
-  width: 14.5em;
+  width: 15em;
   border: 1px solid #9e8031;
   text-transform: uppercase;
 }
@@ -119,12 +119,6 @@ aside.find-out-more {
 .lt-ie8 .carousel-wrap>header .flag-new-prediction small {
   border-top: 4em solid #ffca00!important;
 }
-
-
-.prizes .prizes-banner figcaption {
-  top: 2.3em;
-}
-
 
 
 @media screen and (max-width: 767px) {
@@ -577,7 +571,7 @@ footer[role="contentinfo"] > div > p a {
   font-weight: bold;
 }
 #setup-dialog.setup-mobile.dialog section fieldset label {
-  font: bold 1.6em/1.4 Arial;
+  font: bold 2em/1.4 Arial;
 }
 #setup-dialog.setup-mobile.dialog section fieldset label.ideal-radiocheck-label {
   font: normal 1em/1 Arial;
@@ -916,7 +910,7 @@ p.intro {
     font: bold 2.2em/1.2 Arial;
   }
   .home-page .banner figcaption .cta {
-    font: bold 0.9em/2.6 Arial;
+    font: bold 0.8em/2.6 Arial;
   }
 }
 @media screen and (min-width: 768px) and (max-width: 1024px) {
@@ -935,8 +929,6 @@ p.intro {
   font: bold 0.9em/2.2 Arial;
 }
 .login-area details summary {
-  width: 8.9em;
-  height: 2.2em;
   font: bold 1.3em/2 Arial;
 }
 .login-area details .login-form p {

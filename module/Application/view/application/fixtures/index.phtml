@@ -24,7 +24,8 @@
                                 <img src="<?=$this->clubLogo($fixture['homeLogo']);?>"  alt="<?=$fixture['homeName']?>"/>
                             </div>
                             <figcaption>
-                                <?=$fixture['homeName']?>
+                                <span><?=$fixture['homeName']?></span>
+                                <abbr title="<?=$fixture['homeName']?>"><?=$fixture['homeShortName']?></abbr>
                                 <time>
                                     <?php print $fixture['localStartTime']->format('D d M h.i a');?>
                                     <?php //print strftime('%a %e %b %I.%M %P', $fixture['localStartTime']->getTimestamp()); ?>
@@ -47,7 +48,8 @@
                                 <img src="<?=$this->clubLogo($fixture['awayLogo']);?>" alt="<?=$fixture['awayName']?>"/>
                             </div>
                             <figcaption>
-                                <?=$fixture['awayName']?>
+                                <span><?=$fixture['awayName']?></span>
+                                <abbr title="<?=$fixture['awayName']?>"><?=$fixture['awayShortName']?></abbr>
                             </figcaption>
                         </figure>
                     </td>
