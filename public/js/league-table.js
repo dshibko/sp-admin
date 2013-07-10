@@ -12,7 +12,9 @@ if ($(document).width() <  turnOffCustomStylePoint)
   seasonFilterOptions.disableCustom = 'select';
 
 try {
-    $('#season-filter').idealforms(seasonFilterOptions).data('idealforms');
+    if (!$('html').hasClass('lt-ie8')) {
+        $('#season-filter').idealforms(seasonFilterOptions).data('idealforms');
+    }
 } catch (e) {}
 
 var blockShowMore = false;

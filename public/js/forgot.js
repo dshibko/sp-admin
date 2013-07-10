@@ -16,6 +16,8 @@ if ($(document).width() <  turnOffCustomStylePoint)
     loginOptions.disableCustom = 'select';
 
 try {
-    $('#forgot').idealforms(loginOptions).data('idealforms');
+    if (!$('html').hasClass('lt-ie8')) {
+        $('#forgot').idealforms(loginOptions).data('idealforms');
+    }
 } catch (e) {}
 
