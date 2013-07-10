@@ -3,14 +3,17 @@
 namespace Neoco\Form;
 
 use \Zend\Form\Form;
-use \Zend\Form\Fieldset;
 
 abstract class UploadableForm extends Form implements \Zend\InputFilter\InputFilterProviderInterface {
 
     public function getInputFilterSpecification($inputSpec = array()) {
         foreach ($this->getElements() as $element) {
-            if ($element->getAttribute('required'))
+            $required = $element->getAttribute('required');
+            if ($required){
                 $inputSpec[$element->getName()]['required'] = true;
+            }elseif($required === false){
+                $inputSpec[$element->getName()]['required'] = false;
+            }
             if ($element->getAttribute('isImage')) {
                 $imageData = $element->getValue();
                 if (is_array($imageData) && $imageData['stored'] == 1)

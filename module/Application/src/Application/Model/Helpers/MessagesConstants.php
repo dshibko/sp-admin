@@ -44,6 +44,9 @@ class MessagesConstants
     const SUCCESS_ADMIN_UPDATED = 'Admin was successfully updated';
     const SUCCESS_ADMIN_DELETED = 'Admin was successfully deleted';
     const SUCCESS_DEFAULT_MATCH_REPORT_CONTENT_UPDATE = 'Default %s report content was successfully updated';
+    const SUCCESS_HOW_TO_PLAY_CONTENT_CREATED = '"How to play" content block was saved successfully.';
+    const SUCCESS_HOW_TO_PLAY_CONTENT_UPDATED  = '"How to play" content block was updated successfully.';
+    const SUCCESS_HOW_TO_PLAY_CONTENT_DELETED = '"How to play" content block was deleted successfully.';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -75,6 +78,9 @@ class MessagesConstants
     const ERROR_INCORRECT_CSS_COLOR = 'Incorrect CSS color';
     const ERROR_INVALID_ADMIN_ID = 'Invalid Admin id';
     const ERROR_CANNOT_FIND_ADMIN = 'Cannot find Admin';
+    const ERROR_MAX_HOW_TO_PLAY_BLOCKS_COUNT_EXCEEDED = 'Max "How to play" blocks count exceeded. Max: %s blocks';
+    const ERROR_INCORRECT_BLOCK_ID = 'Incorrect block id';
+    const ERROR_CANNOT_FIND_HOW_TO_PLAY_BLOCK = 'Cannot find "How to play" block.';
 
 //    Application Messages Constants
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";

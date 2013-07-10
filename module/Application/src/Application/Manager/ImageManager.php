@@ -77,6 +77,7 @@ class ImageManager extends BasicManager {
     public static $HERO_BACKGROUND_SIZES = array(1280 => false, 1024 => false, 600 => true, 480 => true);
     public static $HERO_FOREGROUND_SIZES = array(600 => false, 500 => false, 587 => false, 471 => false);
     public static $GAMEPLAY_FOREGROUND_SIZES = array(700 => false, 554 => false, 600 => false, 480 => false);
+    public static $HOWTOPLAY_FOREGROUND_SIZES = array(700 => false, 554 => false, 600 => false, 480 => false);
 
     public function prepareContentImage($webPath, $sizes) {
         $originalImagePath = $this->getAppPublicPath() . $webPath;

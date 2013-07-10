@@ -5,12 +5,12 @@ namespace Admin\Form;
 use \Neoco\Form\UploadableForm;
 use Zend\Form\Form;
 
-class GameplayContentForm extends UploadableForm {
+class HowToPlayContentForm extends UploadableForm {
 
     const HEADING_MAX_LENGTH = 255;
 
-    public function __construct($name = null) {
-        parent::__construct('gameplay');
+    public function __construct($name = 'how-to-play', $required = false) {
+        parent::__construct($name);
 
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
@@ -20,7 +20,7 @@ class GameplayContentForm extends UploadableForm {
             'name' => 'foregroundImage',
             'type'  => 'file',
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'isImage' => true,
                 'minWidth' => 600,
                 'hint' => 'Min image width: 600px',
@@ -37,7 +37,7 @@ class GameplayContentForm extends UploadableForm {
                 'label' => 'Heading',
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'maxlength' => self::HEADING_MAX_LENGTH
             ),
         ));
@@ -48,7 +48,7 @@ class GameplayContentForm extends UploadableForm {
                 'label' => 'Description',
             ),
             'attributes' => array(
-                'required' => true
+                'required' => $required
             ),
         ));
         $this->add(array(
@@ -58,7 +58,7 @@ class GameplayContentForm extends UploadableForm {
                 'label' => 'Order',
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'digits' => true,
             ),
         ));

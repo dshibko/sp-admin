@@ -1559,10 +1559,10 @@ ALTER TABLE `user`  ADD COLUMN `term1` TINYINT(1) NULL DEFAULT NULL AFTER `last_
 CREATE TABLE `howtoplay_content` (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`language_id` INT(11) NOT NULL,
-	`heading` VARCHAR(255) NOT NULL,
-	`description` TEXT NOT NULL,
+	`heading` VARCHAR(255) NULL,
+	`description` TEXT NULL,
 	`foreground_image_id` INT(11) NULL,
-	`order` INT(4) NOT NULL,
+	`order` INT(4) NULL,
 	PRIMARY KEY (`id`),
 	INDEX `language_id` (`language_id`),
 	INDEX `foreground_image_id` (`foreground_image_id`),
