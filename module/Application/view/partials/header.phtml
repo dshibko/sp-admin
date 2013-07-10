@@ -46,10 +46,12 @@
 <div id="wrapper">
     <?php //echo $this->partial('partials/cookie-bar');?>
     <header role="banner">
+        <div class="head">
+            <?php echo $this->renderLogotype();?>
         <?php echo $this->navigation('navigation')->menu()
         ->setPartial('partials/menu', array('attributes' => $this->attributes)); ?>
+        </div>
         <div  class="banner">
-            <?php echo $this->renderLogotype();?>
             <figure>
                 <div data-alt="" data-picture="">
                     <div data-src="/img/banner-innerpage-480.jpg"></div>
