@@ -4,6 +4,7 @@ namespace Neoco\View\Helper;
 
 use Application\Manager\ApplicationManager;
 use Application\Manager\ContentManager;
+use Application\Manager\LanguageManager;
 use Application\Manager\UserManager;
 use Zend\View\Helper\AbstractHelper;
 use Application\Manager\AvatarManager;
@@ -44,6 +45,10 @@ class Logotype extends AbstractHelper
 
         $user = $applicationManager->getCurrentUser();
         $language = !is_null($user) ? $user->getLanguage() : $userManager->getUserLanguage();
+
+        // todo remove
+        $language = LanguageManager::getInstance($this->serviceLocator)->getDefaultLanguage();
+
         $logotype = $contentManager->getLogotypeByLanguage($language->getId());
         if (is_null($logotype)){
             return $this->getDefaultLogotype();

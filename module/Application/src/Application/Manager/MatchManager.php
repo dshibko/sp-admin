@@ -715,20 +715,21 @@ class MatchManager extends BasicManager
             }
 
             //Regional League
-            $region = $user->getCountry()->getRegion();
-            if (!is_null($region)) {
-                $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
-                if(!is_null($regionalLeague)){
-                    $regionalUserLeague = $leagueUserDAO->getLeagueUser($regionalLeague->getId(), $user->getId(), true);
-                    if (!empty($regionalUserLeague)){
-                        $movement = $this->getLeagueUserMovement($regionalUserLeague, $matchId);
-                        if (!empty($movement)){
-                            $movement['name'] = $region->getDisplayName();
-                            $report['leaguesMovement']['regional'] = $movement;
-                        }
-                    }
-                }
-            }
+            // todo remove
+//            $region = $user->getCountry()->getRegion();
+//            if (!is_null($region)) {
+//                $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
+//                if(!is_null($regionalLeague)){
+//                    $regionalUserLeague = $leagueUserDAO->getLeagueUser($regionalLeague->getId(), $user->getId(), true);
+//                    if (!empty($regionalUserLeague)){
+//                        $movement = $this->getLeagueUserMovement($regionalUserLeague, $matchId);
+//                        if (!empty($movement)){
+//                            $movement['name'] = $region->getDisplayName();
+//                            $report['leaguesMovement']['regional'] = $movement;
+//                        }
+//                    }
+//                }
+//            }
         }
         return $report;
     }

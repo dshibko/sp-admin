@@ -27,20 +27,22 @@ class RegionManager extends BasicManager {
     }
 
     public function getSelectedRegion() {
-        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
-        $user = $applicationManager->getCurrentUser();
-        $country = null;
-        if ($user == null) {
-            $userManager = UserManager::getInstance($this->getServiceLocator());
-            $isoCode = $userManager->getUserGeoIpIsoCode();
-            if ($isoCode != null)
-                $country = $applicationManager->getCountryByISOCode($isoCode);
-        } else
-            $country = $user->getCountry();
-        if ($country == null || $country->getRegion() == null)
-            return $this->getDefaultRegion();
-        else
-            return $country->getRegion();
+        // todo remove
+        return $this->getDefaultRegion();
+//        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+//        $user = $applicationManager->getCurrentUser();
+//        $country = null;
+//        if ($user == null) {
+//            $userManager = UserManager::getInstance($this->getServiceLocator());
+//            $isoCode = $userManager->getUserGeoIpIsoCode();
+//            if ($isoCode != null)
+//                $country = $applicationManager->getCountryByISOCode($isoCode);
+//        } else
+//            $country = $user->getCountry();
+//        if ($country == null || $country->getRegion() == null)
+//            return $this->getDefaultRegion();
+//        else
+//            return $country->getRegion();
     }
 
     /**

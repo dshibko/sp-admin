@@ -4,6 +4,7 @@ namespace Neoco\View\Helper;
 
 use \Application\Manager\MatchManager;
 use \Application\Manager\PredictionManager;
+use Application\Manager\RegionManager;
 use \Application\Manager\SettingsManager;
 use \Application\Manager\ApplicationManager;
 use Zend\View\Helper\AbstractHelper;
@@ -45,7 +46,11 @@ class LeagueStats extends AbstractHelper
             $this->currentSeason = ApplicationManager::getInstance($this->serviceLocator)->getCurrentSeason();
             if ($this->currentSeason === null) return $this;
             $user = ApplicationManager::getInstance($this->serviceLocator)->getCurrentUser();
-            $region = $user->getCountry()->getRegion();
+
+            // todo remove
+//            $region = $user->getCountry()->getRegion();
+            $region = RegionManager::getInstance($this->serviceLocator)->getDefaultRegion();
+
             $leagueUsers = $leagueUserDAO->getUserLeagues($user, $this->currentSeason, $region, true);
             $this->overallLeagueUsers = $this->temporalLeagueUsers = array();
             foreach ($leagueUsers as $leagueUser)

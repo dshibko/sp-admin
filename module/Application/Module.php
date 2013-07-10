@@ -11,6 +11,7 @@ namespace Application;
 
 use Application\Form\RegistrationForm;
 use Application\Manager\ContentManager;
+use Application\Manager\LanguageManager;
 use \Application\Manager\UserManager;
 use \Application\Manager\ApplicationManager;
 use \DoctrineModule\Authentication\Adapter\ObjectRepository;
@@ -55,6 +56,10 @@ class Module
             $language = $userManager->getUserLanguage()->getLanguageCode();
         } else
             $language = $user->getLanguage()->getLanguageCode();
+
+        // todo remove
+        $language = LanguageManager::getInstance($e->getApplication()->getServiceManager())->getDefaultLanguage()->getLanguageCode();
+
         $translator->setLocale($language);
         $matches = $e->getRouteMatch();
         $detect = new \Neoco\Mobile\Detect();

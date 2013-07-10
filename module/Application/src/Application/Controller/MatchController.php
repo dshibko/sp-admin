@@ -47,11 +47,12 @@ class MatchController extends AbstractActionController {
                 }
             }
             // region detection
-            $isCode = $userManager->getUserGeoIpIsoCode();
-            if (!empty($isCode) && ($country = $applicationManager->getCountryByISOCode($isCode)) !== null &&
-                $country->getRegion() !== null)
-                $region = $country->getRegion();
-            else
+            // todo remove
+//            $isCode = $userManager->getUserGeoIpIsoCode();
+//            if (!empty($isCode) && ($country = $applicationManager->getCountryByISOCode($isCode)) !== null &&
+//                $country->getRegion() !== null)
+//                $region = $country->getRegion();
+//            else
                 $region = $regionManager->getDefaultRegion();
 
             $isPreMatchReport = ($match['status'] !== Match::FULL_TIME_STATUS);
