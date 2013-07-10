@@ -99,10 +99,12 @@ $(document).ready(function () {
     $('a.mobilenav').click(function(e){
         if( $('nav.main-navigation > ul').height() > 0 ){
             $('nav.main-navigation > ul').animate({height: 0},200);
+            $('a.logo').animate({marginTop: 0},200);
             $('a.mobilenav').css('background-position', '12px 12px');
         } else {
             $('nav.main-navigation > ul').animate({height: offset},200);
-            $('a.mobilenav').css('background-position', '12px -24px');         
+            $('a.mobilenav').css('background-position', '12px -24px');  
+            $('a.logo').animate({marginTop: offset},200);       
         }
         return false;
     });
