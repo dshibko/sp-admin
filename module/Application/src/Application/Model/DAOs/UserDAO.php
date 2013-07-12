@@ -347,7 +347,7 @@ class UserDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('u.id')
             ->from($this->getRepositoryName(), 'u')
-            ->where($qb->expr()->in('u.facebookIds', ':facebookIds'))
+            ->where($qb->expr()->in('u.facebookId', ':facebookIds'))
             ->setParameter('facebookIds', $facebookIds);
         return $this->getQuery($qb, $skipCache)->getScalarResult();
     }
