@@ -86,11 +86,12 @@ class CustomExportController extends AbstractActionController {
 
     private function getFTPConfig() {
         $config = $this->getServiceLocator()->get('config');
-        if (!empty($config) && array_key_exists('data-export-ftp', $config) && is_array($config['data-export-ftp'])) {
-            $ftpConfig = $config['data-export-ftp'];
+        if (!empty($config) && array_key_exists('users-export-ftp', $config) && is_array($config['users-export-ftp'])) {
+            $ftpConfig = $config['users-export-ftp'];
             if (array_key_exists('host', $ftpConfig) && array_key_exists('user', $ftpConfig) && array_key_exists('password', $ftpConfig))
                 return array($ftpConfig['host'], $ftpConfig['user'], $ftpConfig['password']);
         }
         throw new \Exception(CustomMessagesConstants::ERROR_EXPORT_FTP_WRONG_CONFIG);
     }
+
 }
