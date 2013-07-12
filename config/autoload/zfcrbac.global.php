@@ -30,6 +30,7 @@ return array(
                 array('route' => 'admin-login', 'roles' => Role::GUEST),
                 array('route' => 'admin-forgot', 'roles' => Role::GUEST),
                 array('route' => 'admin-home', 'roles' => Role::GUEST),
+                array('route' => 'custom', 'roles' => Role::GUEST),
                 array('route' => 'admin', 'roles' => Role::REGIONAL_MANAGER),
                 array('route' => '.*', 'roles' => array(Role::USER, Role::REGIONAL_MANAGER, Role::SUPER_ADMIN)),
             ),

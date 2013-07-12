@@ -9,7 +9,8 @@ return array(
         'Application',
         'Admin',
         'Opta',
-        'ZfcRbac'
+        'ZfcRbac',
+        'Custom'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

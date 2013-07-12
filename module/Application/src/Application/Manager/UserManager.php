@@ -232,6 +232,27 @@ class UserManager extends BasicManager {
     }
 
     /**
+     * @param array $aliasConfig
+     * @return string
+     */
+    public function getUsersExportContentWithoutFacebookData(array $aliasConfig = array()) {
+        $users = UserDAO::getInstance($this->getServiceLocator())->getExportUsersWithoutFacebookData();
+
+        $exportConfig = array(
+            'title' => 'string',
+            'first_name' => 'string',
+            'last_name' => 'string',
+            'email' => 'string',
+            'date' => array('date' => 'd/m/Y'),
+            'birthday' => array('date' => 'd/m/Y'),
+            'country' => 'string',
+            'term1' => 'string',
+            'term2' => 'string'
+        );
+        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($users, $exportConfig, $aliasConfig);
+    }
+
+    /**
      * Process change password form on settings page
      * @param \Application\Form\SettingsPasswordForm $form
      * @return bool

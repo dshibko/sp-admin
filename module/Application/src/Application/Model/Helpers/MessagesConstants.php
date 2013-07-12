@@ -81,6 +81,9 @@ class MessagesConstants
     const ERROR_MAX_HOW_TO_PLAY_BLOCKS_COUNT_EXCEEDED = 'Max "How to play" blocks count exceeded. Max: %s blocks';
     const ERROR_INCORRECT_BLOCK_ID = 'Incorrect block id';
     const ERROR_CANNOT_FIND_HOW_TO_PLAY_BLOCK = 'Cannot find "How to play" block.';
+    const ERROR_FTP_CANNOT_CONNECT_TO_THE_HOST = 'Cannot connect to FTP host "%s".';
+    const ERROR_FTP_CANNOT_LOGIN_TO_THE_HOST = 'Cannot login to FTP host "%s" using username "%s".';
+    const ERROR_FTP_CANNOT_CONFIGURE_PASSIVE_MODE = 'Cannot configure passive mode to FTP host "%s".';
 
 //    Application Messages Constants
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
