@@ -57,7 +57,7 @@ class CustomExportController extends AbstractActionController {
 
             $remoteFilePath = $usersExportFileName;
 
-            list($ftpHost, $ftpUser, $ftpPassword) = $this->getFTPConfig();
+            list($ftpHost, $ftpUser, $ftpPassword) = $this->getUsersFTPConfig();
 
             $uploadSuccess = $ftpManager->sendFile($usersExportFilePath, $remoteFilePath, $ftpHost, $ftpUser, $ftpPassword);
 
@@ -84,7 +84,7 @@ class CustomExportController extends AbstractActionController {
         return $console;
     }
 
-    private function getFTPConfig() {
+    private function getUsersFTPConfig() {
         $config = $this->getServiceLocator()->get('config');
         if (!empty($config) && array_key_exists('users-export-ftp', $config) && is_array($config['users-export-ftp'])) {
             $ftpConfig = $config['users-export-ftp'];
