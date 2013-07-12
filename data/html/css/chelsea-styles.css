@@ -135,6 +135,20 @@ aside.find-out-more {
     margin-bottom: 4px;
   }
 }
+@media screen and (max-width: 1024px) and (orientation: portrait) {
+  .main-navigation a.mobilenav {
+    background-color: #003366;
+  }
+  .main-navigation ul {
+    border-bottom: 4px solid #003366;
+  }
+  .main-navigation ul li .flag-unread-items {
+    border-top: 1.4em solid #ffca00;
+  }
+  .main-navigation ul li.user-navigation .popup-content ul {
+    margin-bottom: 4px;
+  }
+}
 
 
 

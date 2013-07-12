@@ -65,7 +65,6 @@ $(document).ready(function () {
         var dialog = $('.dialog:visible');
         if($(window).height() > dialog.outerHeight()) {
             dialog.css('margin-top', ($(window).height() - dialog.outerHeight()) / 2);
-            console.log('asdasd')
         } else {
             dialog.css('margin-top', 0)
         }
@@ -86,28 +85,53 @@ $(document).ready(function () {
 //
 //nav
 //
-    var $breakpoint = 767;
+    var $breakpoint = 1023;
     var $window = $(window);
 
     var burgerHeight = parseInt($('a.mobilenav').css('height'));
+    var navList = $('nav.main-navigation > ul');
     $('nav.main-navigation > ul').height('auto');
-    var navHeight = $('nav.main-navigation > ul').height();
-    $('nav.main-navigation > ul').height(0);
+    var navHeight = navList.height();
+    navList.height(0);
     var border = 4;
     var offset = navHeight - border;
 
+    function hideNav() {
+        navList.animate({height: 0},200);
+        $('a.logo').animate({marginTop: 0},200);
+        $('a.mobilenav').css('background-position', '12px 12px');
+    }
+
+    function showNav() {
+        navList.animate({height: offset},200);
+        $('a.mobilenav').css('background-position', '12px -24px');  
+        $('a.logo').animate({marginTop: offset},200);      
+    }
+
     $('a.mobilenav').click(function(e){
-        if( $('nav.main-navigation > ul').height() > 0 ){
-            $('nav.main-navigation > ul').animate({height: 0},200);
-            $('a.logo').animate({marginTop: 0},200);
-            $('a.mobilenav').css('background-position', '12px 12px');
+        if( navList.height() > 0 ){
+            hideNav();
         } else {
-            $('nav.main-navigation > ul').animate({height: offset},200);
-            $('a.mobilenav').css('background-position', '12px -24px');  
-            $('a.logo').animate({marginTop: offset},200);       
+            showNav();
         }
         return false;
     });
+
+    function updateOffset() {
+        var currentHeight = navList.height();
+        navList.css('height', 'auto');
+        var newOffset = navList.height() - border;
+        console.log(offset, newOffset)
+        if(offset !== newOffset) {
+            offset = newOffset;
+            $('a.logo').css({marginTop: currentHeight - border});
+        }
+        navList.height(currentHeight);
+    }
+
+    $window.on('resize', updateOffset);
+    $window.on('orientationchange', updateOffset);
+
 //
 //
 //
