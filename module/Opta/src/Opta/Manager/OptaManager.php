@@ -482,6 +482,7 @@ class OptaManager extends BasicManager {
                     ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::EMERG, $console);
                 }
 
+                $match->setIsBlocked(true);
                 $match->setStatus(Match::FULL_TIME_STATUS);
                 $matchDAO->save($match);
 

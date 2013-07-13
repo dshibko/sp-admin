@@ -180,7 +180,6 @@ class MatchDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'm')
             ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
             ->where($qb->expr()->eq('m.status', ':status'))
-            ->andWhere($qb->expr()->eq('m.isBlocked', 1))
             ->setParameter("status", Match::FULL_TIME_STATUS);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
