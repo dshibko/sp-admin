@@ -61,7 +61,7 @@ class FeaturedPredictionFieldset extends RegionFieldset
     {
         $region = $this->getRegion();
         foreach ($match->getMatchRegions() as $matchRegion) {
-            if ($matchRegion->getRegion()->getId() == $region['id']) {
+            if ($matchRegion->getLanguage()->getId() == $region['id']) {
                 $featuredPrediction = $matchRegion->getFeaturedPrediction();
                 //Featured Prediction
                 if ($featuredPrediction) {

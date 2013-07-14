@@ -57,7 +57,7 @@ class PostMatchReportFieldset extends RegionFieldset
     {
         $region = $this->getRegion();
         foreach ($match->getMatchRegions() as $matchRegion) {
-            if ($matchRegion->getRegion()->getId() == $region['id']) {
+            if ($matchRegion->getLanguage()->getId() == $region['id']) {
                 $this->get('post_match_report_title')->setValue($matchRegion->getPostMatchReportTitle());
                 $this->get('post_match_report_intro')->setValue($matchRegion->getPostMatchReportIntro());
                 $this->get('post_match_report_header_image')->setValue($matchRegion->getPostMatchReportHeaderImagePath());

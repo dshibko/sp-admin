@@ -14,7 +14,7 @@ use \Application\Manager\TeamManager;
 use \Application\Model\Entities\Match;
 use \Application\Manager\UserManager;
 use \Application\Manager\ExportManager;
-use \Application\Manager\RegionManager;
+use \Application\Manager\LanguageManager;
 use \Application\Manager\ImageManager;
 use \Application\Manager\PlayerManager;
 use \Admin\Form\FeaturedPlayerForm;
@@ -109,7 +109,7 @@ class FixturesController extends AbstractActionController
         $isFullTime = false;
         $matchManager = MatchManager::getInstance($this->serviceLocator);
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
-        $regionManager = RegionManager::getInstance($this->getServiceLocator());
+        $regionManager = LanguageManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
 
         $form = null;
@@ -128,17 +128,17 @@ class FixturesController extends AbstractActionController
             $teamIds = array($appClub);
             $playerPositions = array(PlayerManager::DEFENDER_POSITION, PlayerManager::MIDFIELDER_POSITION, PlayerManager::FORWARD_POSITION);
             $goalkeeperPositions = array(PlayerManager::GOALKEEPER_POSITION);
-            $featuredPlayerRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedPlayerFieldset');
+            $featuredPlayerRegions = $regionManager->getLanguagesFieldsets('\Admin\Form\FeaturedPlayerFieldset');
 
             $featuredPlayerRegions = $matchManager->getFieldsetWithPlayers($featuredPlayerRegions,$teamIds , $playerPositions, 'featured_player');
 
-            $featuredGoalkeeperRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedGoalkeeperFieldset');
+            $featuredGoalkeeperRegions = $regionManager->getLanguagesFieldsets('\Admin\Form\FeaturedGoalkeeperFieldset');
             $featuredGoalkeeperRegions = $matchManager->getFieldsetWithPlayers($featuredGoalkeeperRegions,$teamIds , $goalkeeperPositions, 'featured_goalkeeper');
 
-            $featuredPredictionRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedPredictionFieldset');
+            $featuredPredictionRegions = $regionManager->getLanguagesFieldsets('\Admin\Form\FeaturedPredictionFieldset');
 
-            $preMatchReportRegions = $regionManager->getRegionsFieldsets('\Admin\Form\PreMatchReportFieldset');
-            $postMatchReportRegions = $regionManager->getRegionsFieldsets('\Admin\Form\PostMatchReportFieldset');
+            $preMatchReportRegions = $regionManager->getLanguagesFieldsets('\Admin\Form\PreMatchReportFieldset');
+            $postMatchReportRegions = $regionManager->getLanguagesFieldsets('\Admin\Form\PostMatchReportFieldset');
 
             $form = new FixtureForm($teamManager->getTeamsSelectOptions(), self::FIXTURE_FORM_TYPE);
             $featuredPlayerForm = new FeaturedPlayerForm($featuredPlayerRegions, self::FEATURED_PLAYER_FORM_TYPE);

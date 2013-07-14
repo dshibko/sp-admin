@@ -215,7 +215,7 @@ class Match extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="MatchRegion", mappedBy="match", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="MatchLanguage", mappedBy="match", cascade={"remove"})
      */
     protected $matchRegions;
 

@@ -11,7 +11,7 @@ use \Neoco\Manager\BasicManager;
 use \Application\Manager\UserManager;
 use \Application\Manager\LanguageManager;
 use \Application\Manager\PredictionManager;
-use \Application\Model\DAOs\MatchRegionDAO;
+use \Application\Model\DAOs\MatchLanguageDAO;
 use \Application\Model\Entities\FeaturedPlayer;
 use \Application\Model\DAOs\FeaturedGoalkeeperDAO;
 use \Application\Model\DAOs\FeaturedPlayerDAO;
@@ -207,7 +207,7 @@ class MatchManager extends BasicManager
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
         $matchDAO->save($match, false, false);
 
-        $matchRegionDAO = \Application\Model\DAOs\MatchRegionDAO::getInstance($this->getServiceLocator());
+        $matchRegionDAO = \Application\Model\DAOs\MatchLanguageDAO::getInstance($this->getServiceLocator());
         $featuredPlayerDAO = FeaturedPlayerDAO::getInstance($this->getServiceLocator());
         $featuredGoalkeeperDAO = FeaturedGoalkeeperDAO::getInstance($this->getServiceLocator());
         $featuredPredictionDAO = FeaturedPredictionDAO::getInstance($this->getServiceLocator());
@@ -216,7 +216,7 @@ class MatchManager extends BasicManager
 
         if (!empty($regionsData)) {
             foreach ($regionsData as $id => $regionRow) {
-                $region = RegionManager::getInstance($this->getServiceLocator())->getNonHydratedRegionFromArray($id);
+                $region = LanguageManager::getInstance($this->getServiceLocator())->getLanguageById($id);
                 if (!$region) {
                     continue;
                 }
@@ -227,16 +227,16 @@ class MatchManager extends BasicManager
                 //Check if region has already exist
                 if (!$matchRegions->exists(
                     function ($key, $element) use ($regionId, &$reportKey) {
-                        if ($element->getRegion()->getId() == $regionId) {
+                        if ($element->getLanguage()->getId() == $regionId) {
                             $reportKey = $key;
                             return true;
                         }
                         return false;
                     })
                 ) {
-                    $matchRegion = new \Application\Model\Entities\MatchRegion();
+                    $matchRegion = new \Application\Model\Entities\MatchLanguage();
                     $matchRegion->setMatch($match)
-                        ->setRegion($region);
+                        ->setLanguage($region);
 
                 } else {
                     $matchRegion = $matchRegions->get($reportKey);
@@ -415,8 +415,8 @@ class MatchManager extends BasicManager
     public function getPreMatchRegionReport($matchId, $regionId)
     {
         $report = array();
-        $matchRegionDAO = MatchRegionDAO::getInstance($this->getServiceLocator());
-        $matchRegion = $matchRegionDAO->getMatchRegionByMatchIdAndRegionId($matchId, $regionId);
+        $matchRegionDAO = MatchLanguageDAO::getInstance($this->getServiceLocator());
+        $matchRegion = $matchRegionDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $regionId);
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
 
@@ -590,8 +590,8 @@ class MatchManager extends BasicManager
     public function getPostMatchRegionReport($matchId, $regionId)
     {
         $report = array();
-        $matchRegionDAO = MatchRegionDAO::getInstance($this->getServiceLocator());
-        $matchRegion = $matchRegionDAO->getPostMatchRegionByMatchIdAndRegionId($matchId, $regionId);
+        $matchRegionDAO = MatchLanguageDAO::getInstance($this->getServiceLocator());
+        $matchRegion = $matchRegionDAO->getPostMatchLanguageByMatchIdAndLanguageId($matchId, $regionId);
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());

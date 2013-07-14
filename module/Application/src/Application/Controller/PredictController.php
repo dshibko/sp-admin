@@ -72,7 +72,7 @@ class PredictController extends AbstractActionController {
                 return $this->notFoundAction();
 
             //Match report
-            $region = $applicationManager->getUserRegion($user);
+            $region = $applicationManager->getUserLanguage($user);
             $matchReport = $matchManager->getPreMatchRegionReport($currentMatch['id'], $region->getId());
 
             $utcTime = new \DateTime();

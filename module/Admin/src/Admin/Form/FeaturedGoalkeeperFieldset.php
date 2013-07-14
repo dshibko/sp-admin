@@ -121,7 +121,7 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
     {
         $region = $this->getRegion();
         foreach ($match->getMatchRegions() as $matchRegion) {
-            if ($matchRegion->getRegion()->getId() == $region['id']) {
+            if ($matchRegion->getLanguage()->getId() == $region['id']) {
                 $featuredGoalkeeper = $matchRegion->getFeaturedGoalkeeper();
                 //Featured Goalkeeper
                 if ($featuredGoalkeeper && $featuredGoalkeeper->getPlayer()) {

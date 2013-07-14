@@ -1212,3 +1212,42 @@ ALTER TABLE `term_copy`  CHANGE COLUMN `copy` `copy` TEXT NULL AFTER `language_i
 ALTER TABLE `footer_image`  DROP INDEX `region_id`,  DROP FOREIGN KEY `footer_image_ibfk_1`;
 ALTER TABLE `footer_image`  CHANGE COLUMN `region_id` `language_id` INT(11) NOT NULL AFTER `id`,  ADD INDEX `language_id` (`language_id`);
 ALTER TABLE `footer_image`  ADD CONSTRAINT `FK_footer_image_language` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`);
+
+--dsh 22.07
+
+CREATE TABLE IF NOT EXISTS `match_language` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `match_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL,
+  `featured_player_id` int(11) DEFAULT NULL,
+  `featured_goalkeeper_id` int(11) DEFAULT NULL,
+  `featured_prediction_id` int(11) DEFAULT NULL,
+  `pre_match_report_title` varchar(255) DEFAULT NULL,
+  `pre_match_report_intro` text,
+  `pre_match_report_header_image_path` varchar(255) DEFAULT NULL,
+  `post_match_report_title` varchar(255) DEFAULT NULL,
+  `post_match_report_intro` text,
+  `post_match_report_header_image_path` varchar(255) DEFAULT NULL,
+  `display_featured_player` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `match_id` (`match_id`),
+  KEY `featured_player_id` (`featured_player_id`),
+  KEY `featured_goalkeeper_id` (`featured_goalkeeper_id`),
+  KEY `featured_prediction_id` (`featured_prediction_id`),
+  KEY `language_id` (`language_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `match_language`
+  ADD CONSTRAINT `FK_match_region_featured_goalkeeper` FOREIGN KEY (`featured_goalkeeper_id`) REFERENCES `featured_goalkeeper` (`id`),
+  ADD CONSTRAINT `FK_match_region_featured_player` FOREIGN KEY (`featured_player_id`) REFERENCES `featured_player` (`id`),
+  ADD CONSTRAINT `FK_match_region_featured_prediction` FOREIGN KEY (`featured_prediction_id`) REFERENCES `featured_prediction` (`id`),
+  ADD CONSTRAINT `match_language_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `match` (`id`),
+  ADD CONSTRAINT `match_language_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`);
+
+INSERT INTO match_language( `id`, `match_id`, `language_id`, `featured_player_id`, `featured_goalkeeper_id`, `featured_prediction_id`, `pre_match_report_title`, `pre_match_report_intro`, `pre_match_report_header_image_path`, `post_match_report_title`, `post_match_report_intro`, `post_match_report_header_image_path`, `display_featured_player` )
+SELECT  `match_region`.`id` ,  `match_region`.`match_id` ,  `match_region`.`region_id` AS language_id,  `match_region`.`featured_player_id` ,  `match_region`.`featured_goalkeeper_id` ,  `match_region`.`featured_prediction_id` , `match_region`.`pre_match_report_title` ,  `match_region`.`pre_match_report_intro` ,  `match_region`.`pre_match_report_header_image_path` ,  `match_region`.`post_match_report_title` ,  `match_region`.`post_match_report_intro` , `match_region`.`post_match_report_header_image_path` ,  `match_region`.`display_featured_player`
+FROM  `match_region`
+INNER JOIN  `match` ON  `match`.`id` =  `match_region`.`match_id`
+INNER JOIN  `language` ON  `language`.`id` =  `match_region`.`region_id`
+
+DROP tABLE `match_region`

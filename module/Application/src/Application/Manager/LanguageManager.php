@@ -212,5 +212,124 @@ class LanguageManager extends BasicManager {
         return $fieldsets;
     }
 
+    /**
+     * @param array $regionFieldsets
+     * @return array
+     */
+    public function getFeaturedPlayerRegionsData(array $regionFieldsets)
+    {
+        $regionsData = array();
+        //Prepare regions data
+        foreach ($regionFieldsets as $fieldset) {
+            $region = $fieldset->getRegion();
+            $regionsData[$region['id']] = array(
+                'featured_player' => array(
+                    'id' => $fieldset->get('featured_player')->getValue(),
+                    'goals' => $fieldset->get('player_goals')->getValue(),
+                    'matches_played' => $fieldset->get('player_matches_played')->getValue(),
+                    'match_starts' => $fieldset->get('player_match_starts')->getValue(),
+                    'minutes_played' => $fieldset->get('player_minutes_played')->getValue(),
+                ),
+            );
+        }
+        return $regionsData;
+    }
+
+    /**
+     * @param array $regionFieldsets
+     * @return array
+     */
+    public function getFeaturedGoalkeeperRegionsData(array $regionFieldsets)
+    {
+        $regionsData = array();
+        //Prepare regions data
+        foreach ($regionFieldsets as $fieldset) {
+            $region = $fieldset->getRegion();
+            $regionsData[$region['id']] = array(
+                'featured_goalkeeper' => array(
+                    'id' => $fieldset->get('featured_goalkeeper')->getValue(),
+                    'saves' => $fieldset->get('goalkeeper_saves')->getValue(),
+                    'matches_played' => $fieldset->get('goalkeeper_matches_played')->getValue(),
+                    'penalty_saves' => $fieldset->get('goalkeeper_penalty_saves')->getValue(),
+                    'clean_sheets'  => $fieldset->get('goalkeeper_clean_sheets')->getValue()
+                ),
+            );
+        }
+        return $regionsData;
+    }
+
+    /**
+     * @param array $regionFieldsets
+     * @return array
+     */
+    public function getFeaturedPredictionRegionsData(array $regionFieldsets)
+    {
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        $regionsData = array();
+        //Prepare regions data
+        foreach ($regionFieldsets as $fieldset) {
+            $region = $fieldset->getRegion();
+            $regionsData[$region['id']] = array(
+                'featured_prediction' => array(
+                    'name' => $fieldset->get('prediction_name')->getValue(),
+                    'copy' => $fieldset->get('prediction_copy')->getValue(),
+                )
+            );
+            $predictionImage = $fieldset->get('prediction_image')->getValue();
+            $pImage = ($predictionImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('prediction_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
+            if ($pImage){
+                $regionsData[$region['id']]['featured_prediction']['image'] = $pImage;
+            }
+        }
+        return $regionsData;
+    }
+
+    /**
+     * @param array $regionFieldsets
+     * @return array
+     */
+    public function getPreMatchReportRegionsData(array $regionFieldsets)
+    {
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        $regionsData = array();
+        //Prepare regions data
+        foreach ($regionFieldsets as $fieldset) {
+            $region = $fieldset->getRegion();
+            $regionsData[$region['id']] = array(
+                'pre_match_report' => array(
+                    'title' => $fieldset->get('pre_match_report_title')->getValue(),
+                    'intro' => $fieldset->get('pre_match_report_intro')->getValue(),
+                )
+            );
+            $headerImage = $fieldset->get('pre_match_report_header_image')->getValue();
+            $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('pre_match_report_header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
+            if ($hImage){
+                $regionsData[$region['id']]['pre_match_report']['header_image_path'] = $hImage;
+            }
+        }
+        return $regionsData;
+    }
+
+    public function getPostMatchReportRegionsData(array $regionFieldsets)
+    {
+        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+        $regionsData = array();
+        //Prepare regions data
+        foreach ($regionFieldsets as $fieldset) {
+            $region = $fieldset->getRegion();
+            $regionsData[$region['id']] = array(
+                'post_match_report' => array(
+                    'title' => $fieldset->get('post_match_report_title')->getValue(),
+                    'intro' => $fieldset->get('post_match_report_intro')->getValue(),
+                )
+            );
+            $headerImage = $fieldset->get('post_match_report_header_image')->getValue();
+            $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('post_match_report_header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
+            if ($hImage){
+                $regionsData[$region['id']]['post_match_report']['header_image_path'] = $hImage;
+            }
+        }
+        return $regionsData;
+    }
 
 }

@@ -58,7 +58,7 @@ class PreMatchReportFieldset extends RegionFieldset
     {
         $region = $this->getRegion();
         foreach ($match->getMatchRegions() as $matchRegion) {
-            if ($matchRegion->getRegion()->getId() == $region['id']) {
+            if ($matchRegion->getLanguage()->getId() == $region['id']) {
                 $this->get('pre_match_report_title')->setValue($matchRegion->getPreMatchReportTitle());
                 $this->get('pre_match_report_intro')->setValue($matchRegion->getPreMatchReportIntro());
                 $this->get('pre_match_report_header_image')->setValue($matchRegion->getPreMatchReportHeaderImagePath());

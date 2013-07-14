@@ -115,7 +115,7 @@ class FeaturedPlayerFieldset extends RegionFieldset
     {
         $region = $this->getRegion();
         foreach ($match->getMatchRegions() as $matchRegion) {
-            if ($matchRegion->getRegion()->getId() == $region['id']) {
+            if ($matchRegion->getLanguage()->getId() == $region['id']) {
                 $featuredPlayer = $matchRegion->getFeaturedPlayer();
                 //Featured Player
                 if ($featuredPlayer && $featuredPlayer->getPlayer()) {

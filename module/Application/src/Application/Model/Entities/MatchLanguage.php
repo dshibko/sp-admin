@@ -5,12 +5,12 @@ namespace Application\Model\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * MatchRegion
+ * MatchLanguage
  *
- * @ORM\Table(name="match_region")
+ * @ORM\Table(name="match_language")
  * @ORM\Entity
  */
-class MatchRegion
+class MatchLanguage
 {
     /**
      * @var string
@@ -74,14 +74,14 @@ class MatchRegion
     private $match;
 
     /**
-     * @var Region
+     * @var Language
      *
-     * @ORM\ManyToOne(targetEntity="Region")
+     * @ORM\ManyToOne(targetEntity="Language")
      * @ORM\JoinColumns({
-     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      * })
      */
-    private $region;
+    private $language;
 
     /**
      * @var FeaturedPlayer
@@ -130,7 +130,7 @@ class MatchRegion
 
     /**
      * @param \Application\Model\Entities\Match $match
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setMatch($match)
     {
@@ -147,26 +147,26 @@ class MatchRegion
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
-     * @return \Application\Model\Entities\MatchRegion
+     * @param \Application\Model\Entities\Language $language
+     * @return \Application\Model\Entities\MatchLanguage
      */
-    public function setRegion($region)
+    public function setLanguage($language)
     {
-        $this->region = $region;
+        $this->language = $language;
         return $this;
     }
 
     /**
-     * @return \Application\Model\Entities\Region
+     * @return \Application\Model\Entities\Language
      */
-    public function getRegion()
+    public function getLanguage()
     {
-        return $this->region;
+        return $this->language;
     }
 
     /**
      * @param \Application\Model\Entities\FeaturedPlayer $featuredPlayer
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setFeaturedPlayer($featuredPlayer)
     {
@@ -184,7 +184,7 @@ class MatchRegion
 
     /**
      * @param \Application\Model\Entities\FeaturedGoalkeeper $featuredGoalKeeper
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setFeaturedGoalKeeper($featuredGoalKeeper)
     {
@@ -202,7 +202,7 @@ class MatchRegion
 
     /**
      * @param \Application\Model\Entities\FeaturedPrediction $featuredPrediction
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setFeaturedPrediction($featuredPrediction)
     {
@@ -220,7 +220,7 @@ class MatchRegion
 
     /**
      * @param boolean $displayFeaturedPlayer
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setDisplayFeaturedPlayer($displayFeaturedPlayer)
     {
@@ -238,7 +238,7 @@ class MatchRegion
 
     /**
      * @param string $postMatchReportHeaderImagePath
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setPostMatchReportHeaderImagePath($postMatchReportHeaderImagePath)
     {
@@ -256,7 +256,7 @@ class MatchRegion
 
     /**
      * @param string $postMatchReportIntro
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setPostMatchReportIntro($postMatchReportIntro)
     {
@@ -274,7 +274,7 @@ class MatchRegion
 
     /**
      * @param string $postMatchReportTitle
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setPostMatchReportTitle($postMatchReportTitle)
     {
@@ -292,7 +292,7 @@ class MatchRegion
 
     /**
      * @param string $preMatchReportHeaderImagePath
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setPreMatchReportHeaderImagePath($preMatchReportHeaderImagePath)
     {
@@ -310,7 +310,7 @@ class MatchRegion
 
     /**
      * @param string $preMatchReportIntro
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setPreMatchReportIntro($preMatchReportIntro)
     {
@@ -328,7 +328,7 @@ class MatchRegion
 
     /**
      * @param string $preMatchReportTitle
-     * @return \Application\Model\Entities\MatchRegion
+     * @return \Application\Model\Entities\MatchLanguage
      */
     public function setPreMatchReportTitle($preMatchReportTitle)
     {
