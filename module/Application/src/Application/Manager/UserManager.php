@@ -488,11 +488,11 @@ class UserManager extends BasicManager {
      */
     public function getCurrentUserLanguage()
     {
-        // todo remove
-        return LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
-//        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-//        $language = !is_null($user) ? $user->getLanguage() : $this->getUserLanguage();
-//        return $language;
+//        // todo remove
+//        return LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+        $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
+        $language = !is_null($user) ? $user->getLanguage() : $this->getUserLanguage();
+        return $language;
     }
 
     public function updateUserLastLoggedIn(\Application\Model\Entities\User $user = null)
