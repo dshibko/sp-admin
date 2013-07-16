@@ -121,9 +121,11 @@ $(document).ready(function () {
         var currentHeight = navList.height();
         navList.css('height', 'auto');
         var newOffset = navList.height() - border;
-        if(offset !== newOffset) {
+        if (offset !== newOffset) {
             offset = newOffset;
-            currentHeight = newOffset + border;
+            if (currentHeight !== 0) {
+                currentHeight = newOffset + border;
+            }
             $('a.logo').css({marginTop: currentHeight - border});
         }
         navList.height(currentHeight);

@@ -309,6 +309,9 @@
 .lt-ie8 .make-prediction > header {
   height: 4.4em;
 }
+.lt-ie8 .make-prediction-content {
+  background: #f0f4fb;
+}
 .lt-ie8 .make-prediction-content .home-team  {
   float: left;
   margin: 0 2em 0;
