@@ -80,10 +80,10 @@ class Permission extends BasicObject {
     /**
      * Add roles
      *
-     * @param \Role $roles
+     * @param Role $roles
      * @return Permission
      */
-    public function addRole(\Role $roles)
+    public function addRole(Role $roles)
     {
         $this->roles[] = $roles;
     
@@ -93,9 +93,9 @@ class Permission extends BasicObject {
     /**
      * Remove roles
      *
-     * @param \Role $roles
+     * @param Role $roles
      */
-    public function removeRole(\Role $roles)
+    public function removeRole(Role $roles)
     {
         $this->roles->removeElement($roles);
     }
