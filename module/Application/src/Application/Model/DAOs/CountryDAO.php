@@ -71,8 +71,9 @@ class CountryDAO extends AbstractDAO {
                   {$order} name ASC
 
             ", $rsm);
-        return $query->getArrayResult();
+        return $this->prepareQuery($query, array($this->getRepositoryName()))->getArrayResult();
     }
+
     /**
      * @param bool $isoCode
      * @param bool $hydrate
