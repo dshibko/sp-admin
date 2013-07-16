@@ -634,5 +634,4 @@ class ContentController extends AbstractActionController {
         return $this->redirect()->toRoute(self::ADMIN_FOOTER_SOCIALS_ROUTE);
 
     }
-
 }

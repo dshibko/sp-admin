@@ -99,7 +99,6 @@ class LanguageManager extends BasicManager {
         if (file_exists($poFile)){
             $poParser = $this->getServiceLocator()->get('poparser');
             $content = $poParser->read($poFile);
-            //print_r($content); die;
             if (!empty($content)){
                 foreach($content as $id => $value){
                     if (!empty($id)){
@@ -119,9 +118,8 @@ class LanguageManager extends BasicManager {
     public function savePoFileContent($poFileName, array $data)
     {
         $poFile = $this->getPoFilePath($poFileName);
-
-        if (!file_exists($poFile)){
             $defaultLanguage = LanguageDAO::getInstance($this->getServiceLocator())->getDefaultLanguage();
+        if (!file_exists($poFile)){
             $defaultLanguageFile = $this->getPoFilePath($defaultLanguage->getLanguageCode());
             if (!copy($defaultLanguageFile, $poFile)){
                 return false;
@@ -129,7 +127,11 @@ class LanguageManager extends BasicManager {
         }
         if (!empty($data)){
             $poParser = $this->getServiceLocator()->get('poparser');
+            $defaultData = $this->getPoFileContent($defaultLanguage->getLanguageCode());
             foreach($data as $msgid => $msgstr){
+                if ($msgstr == ''){
+                    $msgstr = (isset($defaultData[$msgid]) && $defaultData[$msgid]) != ''  ? $defaultData[$msgid] : $msgid;
+                }
                 $poParser->update_entry( $msgid, $msgstr);
             }
             $poParser->write($poFile);
@@ -189,6 +191,7 @@ class LanguageManager extends BasicManager {
             }
            $countryDAO->flush();
            $countryDAO->clearCache();
+           LanguageDAO::getInstance($this->getServiceLocator())->clearCache();
         }
         return true;
     }

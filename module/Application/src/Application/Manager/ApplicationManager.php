@@ -22,7 +22,7 @@ class ApplicationManager extends BasicManager {
     const DEFAULT_COUNTRY_ISO_CODE = 'GB';
     const CLUB_EDITION = 'club';
     const COMPETITION_EDITION = 'competition';
-    const USER_CLUB_ID = 3;
+
     /**
      * @var ApplicationManager
      */
@@ -51,7 +51,7 @@ class ApplicationManager extends BasicManager {
      */
     public function getCurrentUser()
     {
-        if (is_null($this->currentUser)) {
+        if ($this->currentUser === null) {
             $identity = $this->getServiceLocator()->get('AuthService')->getIdentity();
             if ($identity === null) $this->currentUser = null;
             else
@@ -176,6 +176,14 @@ class ApplicationManager extends BasicManager {
     }
 
     /**
+     * @return mixed
+     */
+    public function getClearAppCacheAllowedIps() {
+        $appConfig = $this->getAppConfig();
+        return $appConfig[self::CLEAR_APP_CACHE_ALLOWED_IPS];
+    }
+
+    /**
      * @var array
      */
     private $appConfig;
@@ -184,6 +192,7 @@ class ApplicationManager extends BasicManager {
     const OPTA_ID_KEY = 'opta_id';
     const OPTA_DIR_PATH_KEY = 'opta_dir_path';
     const CLEAR_APP_CACHE_URL_KEY = 'clear_app_cache_url';
+    const CLEAR_APP_CACHE_ALLOWED_IPS = 'clear_app_cache_allowed_ips';
 
     /**
      * @return array
@@ -214,12 +223,17 @@ class ApplicationManager extends BasicManager {
                 throw new \Exception(MessagesConstants::ERROR_APP_OPTA_DIR_NOT_DIR);
             if (!array_key_exists(self::CLEAR_APP_CACHE_URL_KEY, $appConfig))
                 throw new \Exception(MessagesConstants::ERROR_APP_CLEAR_APP_CACHE_URL_NOT_FOUND);
+            if (!array_key_exists(self::CLEAR_APP_CACHE_ALLOWED_IPS, $appConfig) ||
+                !is_array($appConfig[self::CLEAR_APP_CACHE_ALLOWED_IPS]))
+                throw new \Exception(MessagesConstants::ERROR_APP_CLEAR_APP_CACHE_ALLOWED_IPS_NOT_FOUND);
             $clearAppCacheUrl = $appConfig[self::CLEAR_APP_CACHE_URL_KEY];
+            $clearAppCacheAllowedIps = $appConfig[self::CLEAR_APP_CACHE_ALLOWED_IPS];
             $this->appConfig = array(
                 self::EDITION_KEY => $edition,
                 self::OPTA_ID_KEY => $optaId,
                 self::OPTA_DIR_PATH_KEY => $optaDirPath,
                 self::CLEAR_APP_CACHE_URL_KEY => $clearAppCacheUrl,
+                self::CLEAR_APP_CACHE_ALLOWED_IPS => $clearAppCacheAllowedIps,
             );
         }
         return $this->appConfig;

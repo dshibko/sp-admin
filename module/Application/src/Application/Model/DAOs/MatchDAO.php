@@ -211,7 +211,20 @@ class MatchDAO extends AbstractDAO {
      */
     function getMatchesLeftInTheSeason(Season $season, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('m.id, m.feederId, m.status, m.startTime, m.timezone, h.displayName as homeName, h.logoPath as homeLogo, a.displayName as awayName, a.logoPath as awayLogo, c.displayName as competitionName')
+        $qb->select('
+                m.id,
+                m.feederId,
+                m.status,
+                m.startTime,
+                m.timezone,
+                h.shortName as homeShortName,
+                a.shortName as awayShortName,
+                h.displayName as homeName,
+                h.logoPath as homeLogo,
+                a.displayName as awayName,
+                a.logoPath as awayLogo,
+                c.displayName as competitionName
+            ')
             ->from($this->getRepositoryName(), 'm')
             ->join('m.homeTeam', 'h')
             ->join('m.awayTeam', 'a')
@@ -343,6 +356,16 @@ class MatchDAO extends AbstractDAO {
             ->setParameter("status", Match::FULL_TIME_STATUS)
             ->setParameter("fromTime", $fromTime);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    function getHasFinishedMatches($season, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('count(m.id) as matches')
+            ->from($this->getRepositoryName(), 'm')
+            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->where($qb->expr()->eq('m.status', ':status'))
+            ->setParameter("status", Match::FULL_TIME_STATUS);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult() > 0;
     }
 
 }

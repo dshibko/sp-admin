@@ -4,6 +4,7 @@ namespace Application\Manager;
 
 use \Application\Model\DAOs\DefaultReportContentDAO;
 use Application\Model\DAOs\EmblemDAO;
+use Application\Model\DAOs\HowToPlayContentDAO;
 use Application\Model\DAOs\LogotypeDAO;
 use Application\Model\DAOs\TermCopyDAO;
 use Application\Model\DAOs\TermDAO;
@@ -12,6 +13,8 @@ use \Application\Model\Entities\FooterSocial;
 use \Application\Model\DAOs\FooterSocialDAO;
 use \Application\Model\Entities\FooterImage;
 use \Application\Model\DAOs\FooterImageDAO;
+use Application\Model\Entities\HowToPlayContent;
+use Application\Model\Entities\Language;
 use Application\Model\Entities\Logotype;
 use \Application\Model\Entities\RegionGameplayContent;
 use \Application\Model\DAOs\RegionGameplayContentDAO;
@@ -20,13 +23,18 @@ use \Application\Model\DAOs\RegionContentDAO;
 use \Application\Model\DAOs\MatchDAO;
 use Application\Model\Entities\Term;
 use Application\Model\Entities\TermCopy;
+use Zend\Form\Fieldset;
+use Zend\Form\Form;
+use Zend\InputFilter\InputFilter;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use \Application\Model\Entities\FooterPage;
 use \Application\Model\DAOs\FooterPageDAO;
+use Zend\InputFilter\Factory as InputFactory;
 
 class ContentManager extends BasicManager {
 
+    const TERMS_FIELDSET_NAME = 'terms';
     /**
      * @var ContentManager
      */
@@ -460,9 +468,8 @@ class ContentManager extends BasicManager {
     public function getFooterPageContent($pageType)
     {
         $userManager = UserManager::getInstance($this->getServiceLocator());
-        $contentManager = ContentManager::getInstance($this->getServiceLocator());
         $language = $userManager->getCurrentUserLanguage();
-        $footerPage = $contentManager->getFooterPageByTypeAndLanguage($pageType, $language->getId());
+        $footerPage = $this->getFooterPageByTypeAndLanguage($pageType, $language->getId());
         if (!is_null($footerPage)){
             return $footerPage->getContent();
         }
@@ -530,7 +537,7 @@ class ContentManager extends BasicManager {
     /**
      * @return array
      */
-    public function getRegistrationFormTerms()
+    public function getSetUpFormTerms()
     {
         $language = UserManager::getInstance($this->getServiceLocator())->getCurrentUserLanguage();
         return $this->getTermsByLanguageId($language->getId(), true);
@@ -555,6 +562,119 @@ class ContentManager extends BasicManager {
     public function flushAndClearCacheDefaultReportContent() {
         DefaultReportContentDAO::getInstance($this->getServiceLocator())->flush();
         DefaultReportContentDAO::getInstance($this->getServiceLocator())->clearCache();
+    }
+
+    /**
+     * @param Form $form
+     * @param array $terms
+     */
+    public function addTermsToForm(Form $form, array $terms)
+    {
+        $fieldset = new Fieldset(self::TERMS_FIELDSET_NAME);
+        $factory = new InputFactory();
+        $inputFilter = $form->getInputFilter();
+        $termsInputFilter = new InputFilter();
+        $index = 1;
+        foreach($terms as $term){
+            $name = 'term'.$index;
+            $label = 'Term ' . $index;
+            $index++;
+            $termData = array(
+                'type' => 'Zend\Form\Element\Checkbox',
+                'name' => $name,
+                'options' => array(
+                    'label' => $term['copy'],
+                    'use_hidden_element' => false,
+                    'checked_value' => 1,
+                    'unchecked_value' => 0
+                ),
+                'attributes' => array(
+                    'class' => 'term',
+                    'data-error_message' => $label . ' is required.',
+                    'data-error_class' => $name
+                )
+            );
+            if (!empty($term['isChecked'])){
+                $termData['attributes']['checked'] = 'checked';
+            }
+            if ($term['isRequired']){
+                $termData['attributes']['class'] .= ' required';
+            }
+            $termsInputFilter->add($factory->createInput(array(
+                'name'     => $name,
+                'required' => (bool)$term['isRequired']
+
+            )));
+            $fieldset->add($termData);
+        }
+
+        $inputFilter->add($termsInputFilter, self::TERMS_FIELDSET_NAME);
+        $form->setInputFilter($inputFilter);
+        $form->add($fieldset);
+    }
+
+
+    /**
+     * @param Language $language
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getLanguageHowToPlayBlocks(Language $language, $hydrate = false, $skipCache = false)
+    {
+        return HowToPlayContentDAO::getInstance($this->getServiceLocator())->getLanguageHowToPlayBlocks($language, $hydrate , $skipCache);
+    }
+
+    /**
+     * @param HowToPlayContent $howToPlayContent
+     */
+    public function saveHowToPlayContent(HowToPlayContent $howToPlayContent)
+    {
+        HowToPlayContentDAO::getInstance($this->getServiceLocator())->save($howToPlayContent);
+    }
+
+    /**
+     * @param $blockId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return HowToPlayContent
+     */
+    public function getHowToPlayContentById($blockId, $hydrate = false, $skipCache = false)
+    {
+        return HowToPlayContentDAO::getInstance($this->getServiceLocator())->findOneById($blockId, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param HowToPlayContent $block
+     */
+    public function deleteHowToPlayContentBlock(HowToPlayContent $block) {
+        ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($block->getForegroundImage());
+        HowToPlayContentDAO::getInstance($this->getServiceLocator())->remove($block);
+    }
+
+    /**
+     * @param array $a
+     * @param array $b
+     * @return array
+     */
+    public function extendContent(array $a, array $b)
+    {
+        foreach($b as $k=>$v) {
+            if( is_array($v) ) {
+                if( !isset($a[$k]) ) {
+                    if (!empty($v)){
+                        $a[$k] = $v;
+                    }
+                } else {
+                    $a[$k] = $this->extendContent($a[$k], $v);
+                }
+            } else {
+                if (!empty($v)){
+                    $a[$k] = $v;
+                }
+            }
+        }
+        return $a;
     }
 
 }

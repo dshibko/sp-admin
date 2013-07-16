@@ -2,6 +2,7 @@
 
 namespace Opta\Controller;
 
+use Application\Manager\CacheManager;
 use \Application\Manager\MatchManager;
 use \Application\Manager\SeasonManager;
 use \Application\Manager\ApplicationManager;
@@ -30,6 +31,9 @@ class DispatcherController extends AbstractActionController {
 
             if (!in_array($type, Feed::getAvailableTypes()))
                 throw new \Exception(sprintf(MessagesConstants::ERROR_WRONG_TYPE_SPECIFIED, $type));
+
+            $cacheManager = CacheManager::getInstance($this->getServiceLocator());
+            $cacheManager->clearCache();
 
             $optaManager = OptaManager::getInstance($this->getServiceLocator());
             $optaManager->dispatchFeedsByType($type, false, $console);

@@ -4,6 +4,7 @@ namespace Neoco\View\Helper;
 
 use \Application\Manager\MatchManager;
 use \Application\Manager\PredictionManager;
+use Application\Manager\RegionManager;
 use \Application\Manager\SettingsManager;
 use \Application\Manager\ApplicationManager;
 use Zend\View\Helper\AbstractHelper;

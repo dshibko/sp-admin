@@ -132,6 +132,21 @@ return array(
                     ),
                 ),
             ),
+            'admin-content-how-to-play' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/how-to-play/[:language][/:action][/:block]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'language' => '[0-9]+',
+                        'block' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\HowToPlay',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'admin-content-reports' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -369,6 +384,7 @@ return array(
             'Admin\Controller\Logotype' => 'Admin\Controller\LogotypeController',
             'Admin\Controller\Terms' => 'Admin\Controller\TermsController',
             'Admin\Controller\Stats' => 'Admin\Controller\StatsController',
+            'Admin\Controller\HowToPlay' => 'Admin\Controller\HowToPlayController',
         ),
     ),
     'view_manager' => array(
@@ -391,6 +407,7 @@ return array(
             'admin/fixtures/add' => __DIR__ . '/../view/admin/fixtures/edit.phtml',
             'admin/terms/add' => __DIR__ . '/../view/admin/terms/edit.phtml',
             'admin/user/edit-admin' => __DIR__ . '/../view/admin/user/add-admin.phtml',
+            'admin/how-to-play/edit' => __DIR__ . '/../view/admin/how-to-play/add.phtml',
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -610,6 +627,32 @@ return array(
                                         'label' => 'icon-minus',
                                         'route' => 'admin-content-landing',
                                         'action' => 'deleteBlock',
+                                    ),
+                                ),
+                            ),
+                            'how-to-play' => array(
+                                'title' => 'How to play',
+                                'label' => 'icon-play',
+                                'route' => 'admin-content-how-to-play',
+                                'useRouteMatch' => true,
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Add Block',
+                                        'label' => 'icon-plus',
+                                        'route' => 'admin-content-how-to-play',
+                                        'action' => 'add',
+                                    ),
+                                    array(
+                                        'title' => 'Edit Block',
+                                        'label' => 'icon-edit',
+                                        'route' => 'admin-content-how-to-play',
+                                        'action' => 'edit',
+                                    ),
+                                    array(
+                                        'title' => 'Delete Block',
+                                        'label' => 'icon-minus',
+                                        'route' => 'admin-content-how-to-play',
+                                        'action' => 'delete',
                                     ),
                                 ),
                             ),

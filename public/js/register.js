@@ -14,12 +14,16 @@ var registerOptions = {
           }
       },
       'first_name': {
-          filters: 'required name',
-          data: {}
+          filters: 'required max',
+          data: {
+              max: 30
+          }
       },
       'last_name': {
-          filters: 'required name',
-          data: {}
+          filters: 'required max',
+          data: {
+              max: 30
+          }
       },
       'country': {
           filters: 'exclude',
@@ -56,7 +60,7 @@ var registerOptions = {
       },
       'avatar': {
           filters: 'extension',
-          data: { extension: [ 'jpg', 'png' ] }
+          data: { extension: [ 'jpg', 'png', 'jpeg','gif', 'bmp' ] }
       }
   }
 };
@@ -65,6 +69,8 @@ if ($(document).width() <  turnOffCustomStylePoint)
   registerOptions.disableCustom = 'select';
 
 try {
+    if (!$('html').hasClass('lt-ie8')) {
     var $register = $('#register').idealforms(registerOptions).data('idealforms');
     $register.focusFirst();
+    }
 } catch (e) {}

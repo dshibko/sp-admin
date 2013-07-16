@@ -2,6 +2,8 @@
 
 namespace Application\Form;
 
+use Application\Manager\ContentManager;
+use Neoco\Form\TermsForm;
 use Zend\Form\Form;
 use Application\Manager\ApplicationManager;
 use Application\Manager\LanguageManager;
@@ -10,7 +12,10 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 use Application\Form\Filter\SetUpFormFilter;
 
 
-class SetUpForm extends Form implements ServiceLocatorAwareInterface{
+class SetUpForm extends TermsForm implements ServiceLocatorAwareInterface{
+
+
+    protected $serviceLocator;
 
     public function getServiceLocator ()
     {
@@ -22,13 +27,8 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
         $this->serviceLocator = $serviceLocator;
         return $this;
     }
-
-    public function __construct(ServiceLocatorInterface $serviceLocator = null) {
-        parent::__construct('setup');
-        $this->setAttribute('method', 'post');
-        $this->setServiceLocator($serviceLocator)
-             ->setInputFilter(new SetUpFormFilter());
-
+    public function init()
+    {
         //Language
         $this->add(array(
             'name' => 'language',
@@ -40,7 +40,6 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
             'attributes' => array(
                 'value' => ''
             )
-
         ));
 
         //Region
@@ -55,8 +54,14 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
             'attributes' => array(
                 'value' => ''
             )
-
         ));
+
+        //Terms
+        $terms = $this->getTerms();
+        if (!empty($terms)){
+            ContentManager::getInstance($this->getServiceLocator())->addTermsToForm($this, $terms);
+        }
+
         //CSRF
         /*$this->add(array(
             'type' => 'Zend\Form\Element\Csrf',
@@ -75,5 +80,12 @@ class SetUpForm extends Form implements ServiceLocatorAwareInterface{
                 'id' => 'submitbutton',
             ),
         ));
+    }
+    public function __construct(ServiceLocatorInterface $serviceLocator = null, $terms = array()) {
+        parent::__construct('setup');
+        $this->setAttribute('method', 'post');
+        $this->setServiceLocator($serviceLocator)
+             ->setTerms($terms)
+             ->setInputFilter(new SetUpFormFilter());
     }
 }

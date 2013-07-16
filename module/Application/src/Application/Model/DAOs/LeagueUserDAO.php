@@ -4,6 +4,7 @@ namespace Application\Model\DAOs;
 
 use \Application\Model\Entities\League;
 use Application\Model\DAOs\AbstractDAO;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\Query\Expr;
@@ -91,40 +92,55 @@ class LeagueUserDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('lu.id'))
             ->from($this->getRepositoryName(), 'lu')
-            ->where($qb->expr()->eq('lu.league', $leagueId));
+            ->where($qb->expr()->isNotNull('lu.place'))
+            ->andWhere($qb->expr()->eq('lu.league', $leagueId));
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
-//        return $this->getQuery($qb, $skipCache)->getSingleScalarResult() * 7;
     }
+
+    // todo refactoring asap
 
     /**
      * @param int $leagueId
      * @param int $top
      * @param int $offset
      * @param array|null $facebookIds
+     * @param bool $skipCache
      * @return array
      */
-    public function getLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null) {
-        $query = $this->getEntityManager()->createQuery('
-            SELECT
-                lu.points, lu.accuracy, lu.place, lu.previousPlace, u.displayName, c.flagImage, c.name as country, u.id as userId
-            FROM
-               '.$this->getRepositoryName().' as lu
-            INNER JOIN lu.user u
-            INNER JOIN u.country c
-            WHERE lu.league = ' . $leagueId . ' AND lu.place is not null' . ($facebookIds !== null ? ' AND u.facebookId IN (' . implode(",", $facebookIds) . ')' : '') . '
-            ORDER BY lu.place ASC
-        ');
+    public function getLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null, $skipCache = false) {
+        if ($facebookIds !== null) {
+            if (empty($facebookIds)) return array();
+            $userDAO = UserDAO::getInstance($this->getServiceLocator());
+            $usersIdsArr = $userDAO->getUserIdsByFacebookIds($facebookIds, $skipCache);
+            $usersIds = array();
+            foreach ($usersIdsArr as $userId)
+                $usersIds [] = $userId['id'];
+            $facebookCondition = ' AND lu.user_id IN (' . implode(",", $usersIds) . ')';
+        } else $facebookCondition = '';
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('points','points');
+        $rsm->addScalarResult('accuracy','accuracy');
+        $rsm->addScalarResult('place','place');
+        $rsm->addScalarResult('previous_place','previousPlace');
+        $rsm->addScalarResult('display_name','displayName');
+        $rsm->addScalarResult('flag_image','flagImage');
+        $rsm->addScalarResult('country','country');
+        $rsm->addScalarResult('user_id','userId');
+        $limit = '';
         if ($top > 0)
-            $query->setMaxResults($top);
-        if ($offset > 0)
-            $query->setFirstResult($offset);
-        return $query->getArrayResult();
-//        $arr = $query->getArrayResult();
-//        $arr = array_merge($arr, $arr, $arr, $arr, $arr, $arr, $arr);
-//        $i = 0;
-//        foreach ($arr as $k => $v)
-//            $arr[$k]['place'] = ++$i;
-//        return array_slice($arr, $offset, $top);
+            $limit = "LIMIT $offset, $top";
+        $query = $this->getEntityManager()->createNativeQuery("
+            SELECT
+                lu.points, lu.accuracy, lu.place, lu.previous_place, u.display_name, c.flag_image, c.name as country, u.id as user_id
+            FROM
+               (SELECT * FROM league_user lu
+               WHERE lu.league_id = $leagueId AND lu.place IS NOT NULL $facebookCondition
+            ORDER BY lu.place ASC
+                $limit) as lu
+                INNER JOIN user u ON lu.user_id = u.id
+                INNER JOIN country c ON u.country_id = c.id
+        ", $rsm);
+        return $this->prepareQuery($query, array(LeagueUserPlaceDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
     }
 
     /**

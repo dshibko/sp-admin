@@ -54,6 +54,13 @@ var startTime;
 
 $(document).ready(function () {
 
+    if (isEditMode)
+        $("button[type='submit']").on('click', enableEditMode);
+
+    $("div.away-team section, div.home-team section").each(function(i, obj) {
+        if ($(obj).find('select').size() > 0) $(obj).find('span.ideal-field, select').hide();
+    });
+
     $(window).resize(resizeFix);
     resizeFix();
 
@@ -123,6 +130,16 @@ $(document).ready(function () {
 
 });
 
+function enableEditMode(event) {
+    event.preventDefault();
+    $(this).html($(this).find('div').html());
+    $("#home-team-score, #away-team-score").removeAttr('disabled');
+    $("div.home-team-scorers, div.away-team-scorers").html('');
+    $("div.home-team section, div.away-team section").find('span.ideal-field, select').show();
+    $("button[type='submit']").off('click', enableEditMode);
+    renderScorersLabel();
+}
+
 var prevPeriods;
 
 function initCountdown() {
@@ -134,6 +151,15 @@ function initCountdown() {
         success : function(data) {
             var now = new Date();
             now.setTime(data * 1000);
+            showCountdown(now);
+        },
+        error : function(data) {
+            showCountdown(new Date());
+        }
+    });
+}
+
+function showCountdown(now) {
             var cdEl = $("<strong></strong>");
             cdEl.countdown({
                 until: startTime,
@@ -158,8 +184,6 @@ function initCountdown() {
             });
             $('aside.competition-countdown p').prepend(cdEl);
         }
-    });
-}
 
 function getDateFromPeriods(periods) {
     var date = new Date();

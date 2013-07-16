@@ -23,7 +23,9 @@
   min-width: 600px;
 }
 
-
+.lt-ie9 footer[role="contentinfo"] {
+  font: normal 1.4em/1.2 "ProximaNova-Reg",Helvetica,Arial!important;
+}
 
 .lt-ie9 .first-column {
   border-right: 1px solid #f4f4f4;
@@ -46,6 +48,22 @@
 
 
 /***article-image***/
+.lt-ie8 .article-image {
+  *zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild( document.createElement("small") ).className="before"
+         );
+}
+.lt-ie8 .article-image small {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 2.5em;
+
+  background: url(../img/article-image-shadow.png) repeat-x left bottom;
+}
 .lt-ie8 .article-image.article-image-left figure {
     float: none;
     display: block;
@@ -99,6 +117,31 @@
 .lt-ie8 .inner-page div[role="main"] .second-column .wrap .league th, .lt-ie8 .inner-page div[role="main"] .second-column .wrap .league td {
   border-bottom: 1px solid #CCCCCC;
 }
+
+.lt-ie9 .inner-page div[role="main"] .second-column .login section p {
+  font: normal 1.4em/1.2 "ProximaNova-Reg",Helvetica,Arial!important;
+}
+.lt-ie9 .inner-page div[role="main"] .second-column .login section .cta {
+  font: normal 1.8em/2.4 "ProximaNova-Bold",Helvetica,Arial!important;
+}
+
+.lt-ie8 .inner-page div[role="main"] .second-column .facebook-invite a.facebook {
+*zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild( document.createElement("small") ).className="before"
+         );
+}
+.lt-ie8 .inner-page div[role="main"] .second-column .facebook-invite a.facebook small {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 20%;
+  height: 100%;
+  border-right: 2px solid #3f5598;
+  background: url("../img/icons/facebook.png") no-repeat scroll center center transparent;
+}
+
 
 /***registration***/
 .lt-ie8  .registration form div {
@@ -247,9 +290,27 @@
 }
 
 
+
+.lt-ie9  #setup-dialog .ideal-form footer button.pink {
+  font: normal 2em/2.1 "ProximaNova-Bold",Helvetica,Arial;
+}
+.ie8  #setup-dialog .ideal-form footer button.pink {
+  margin: 1em 0;
+}
+.ie8 .dialog {
+  height: 600px;
+}
+.ie8  #setup-dialog .ideal-form section fieldset {
+  width: 100%;
+}
+
+
 /***make-prediction-content***/
 .lt-ie8 .make-prediction > header {
   height: 4.4em;
+}
+.lt-ie8 .make-prediction-content {
+  background: #f0f4fb;
 }
 .lt-ie8 .make-prediction-content .home-team  {
   float: left;
@@ -283,11 +344,31 @@
   margin: 0 0 1em;
 }
 .lt-ie8  .make-prediction > header .flag-new-prediction {
-  background: #de1012;
+  /*background: #de1012;*/
   height: 3em;
   bottom: -3em;
+  *zoom: expression( 
+          this.runtimeStyle.zoom="1",
+          this.appendChild( document.createElement("small") ).className="before"
+         );
+}
+.lt-ie8  .make-prediction > header .flag-new-prediction small {
+  position: absolute;
+  top: 0;
+  left:0;
+  z-index: 1;
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 8em solid transparent;
+  border-right: 8em solid transparent;
+  border-top: 4em solid #de1012;
 }
 
+
+.lt-ie8  .make-prediction .make-prediction-content .buttons-block .buttons-wrapper {
+  width: 49%!important;
+}
 
 /***fixtures***/
 .ie8 .fixtures table {
@@ -370,9 +451,27 @@ position: relative;
   padding: 3em 0 0;
 }
 .lt-ie8  #setup-dialog section fieldset label {
-  width: 20em;
+  width: 310px;
   margin: 0 0 0.2em;
   text-align: left;
+}
+.lt-ie8  #setup-dialog section fieldset label input, .lt-ie8  #setup-dialog section fieldset label p {
+  float: left;
+  width: auto;
+}
+.lt-ie9 #setup-dialog section fieldset span label {
+  width: 25em;
+  color: #363636;
+  font: normal 1em/1.4 "ProximaNova-Reg",Helvetica,Arial;
+}
+.lt-ie8 #setup-dialog section fieldset label + label {
+/*  width: 25em;*/
+  margin: 0 0 1em;
+  color: #363636;
+  font: normal 1em/1.4 "ProximaNova-Reg",Helvetica,Arial;
+}
+.lt-ie9 #setup-dialog section fieldset label p {
+  font: normal 1.5em/1.4 "ProximaNova-Reg",Helvetica,Arial;
 }
 .lt-ie8  #setup-dialog section fieldset select {
   margin: 0 0 1.5em;
@@ -440,9 +539,6 @@ position: relative;
   height: 0.9em;
   background: #144a9b;
 }
-.lt-ie8 .grid-layout .item.pie-chart.top5-predicted-scores section figure ol.legend li:first-child small {
-  background: #a01749;
-}
 
 .lt-ie9 .grid-layout .pie-chart section ol.legend li:first-child + *:before, .lt-ie8 .grid-layout .pie-chart section ol.legend li:first-child + * small {
   background: #363636;
@@ -451,6 +547,9 @@ position: relative;
   background: #7f7f80;
 }
 
+.lt-ie8 .grid-layout .item.pie-chart.top5-predicted-scores section figure ol.legend li:first-child small {
+  background: #a01749;
+}
 .lt-ie9 .grid-layout .item.top5-predicted-scores section ol li:first-child + *:before, .lt-ie8 .grid-layout .item.top5-predicted-scores section ol li:first-child + * small {
   background: #b2466e;
 }

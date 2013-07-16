@@ -23,25 +23,6 @@ class RegistrationFilter implements InputFilterAwareInterface
     protected $inputFilter;
     protected $repository;
     protected $serviceLocator;
-    protected $terms;
-
-    /**
-     * @param mixed $terms
-     * @return $this
-     */
-    public function setTerms($terms)
-    {
-        $this->terms = $terms;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTerms()
-    {
-        return $this->terms;
-    }
 
     public function __construct(ServiceLocatorInterface $serviceLocator){
           $this->setServiceLocator($serviceLocator);
@@ -149,7 +130,7 @@ class RegistrationFilter implements InputFilterAwareInterface
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'),
-                    array('name' => 'StringTrim'),
+                    array('name' => 'StringTrim')
                 ),
                 'validators' => array(
                     array(

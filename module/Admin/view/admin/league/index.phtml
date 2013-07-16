@@ -139,7 +139,7 @@ $this->headTitle($title);
         var messages = {perPage: "_MENU_ " + "<?=$this->translate('leagues per page')?>", nextLink: "<?=$this->translate('Next')?>",
             prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ leagues')?>"};
        var oTable = $('#leagues-table').dataTable({
-            "aoColumns": [null, null, null, null, null, {bSortable: false}],
+            "aoColumns": [null, null, null, {"sType" : "date"}, null, {bSortable: false}],
             "aaSorting": [[3,"desc"]],
            // "bFilter": false,
            "bStateSave" : true,
@@ -159,6 +159,7 @@ $this->headTitle($title);
                 "sInfo": messages.showingLabel
             }
         });
+        oTable.fnSort( [ [3,"desc"] ] );
         $('#leagues-type-filter, #leagues-season-filter, #leagues-time-filter').change(function(){
             oTable.fnDraw();
         });

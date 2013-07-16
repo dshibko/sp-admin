@@ -164,6 +164,21 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
     }
 
     /**
+     * @param \Doctrine\ORM\AbstractQuery $query
+     * @param array $involvedEntities
+     * @param bool $skipCache
+     * @return \Doctrine\ORM\Query
+     */
+    protected function prepareQuery(\Doctrine\ORM\AbstractQuery $query, array $involvedEntities, $skipCache = false) {
+        $cacheKey = $this->getCacheManager()->generateCacheKey();
+        $allEntities = $involvedEntities;
+        if (!($skipCache = $this->getCacheManager()->getSkipCache($skipCache)) && !$this->getCacheManager()->getCacheProvider()->contains($cacheKey))
+            foreach ($allEntities as $entity)
+                $this->getCacheManager()->addCacheKeyToEntity($cacheKey, $entity);
+        return $query->useResultCache(!$skipCache, null, $cacheKey);
+    }
+
+    /**
      * @param \Doctrine\ORM\QueryBuilder $qb
      * @return array
      */

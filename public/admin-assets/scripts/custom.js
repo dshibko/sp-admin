@@ -1,6 +1,9 @@
 var elements = [];
 
-$(document).on('ready', bindInputs);
+
+$(document).on('ready', function(){
+    bindInputs();
+});
 
 function bindInputs() {
     $("form").find('input, textarea, select').each(function(i, obj) {

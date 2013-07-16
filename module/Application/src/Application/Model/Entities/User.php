@@ -194,6 +194,20 @@ class User extends BasicObject {
     protected $leagueUsers;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="term1", type="boolean")
+     */
+    protected $term1;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="term2", type="boolean")
+     */
+    protected $term2;
+
+    /**
      * Set title
      *
      * @param string $title
@@ -704,6 +718,37 @@ class User extends BasicObject {
     }
 
     /**
+     * @param $term1
+     */
+    public function setTerm1($term1)
+    {
+        $this->term1 = $term1;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getTerm1()
+    {
+        return $this->term1;
+    }
+
+    /**
+     * @param $term2
+     */
+    public function setTerm2($term2)
+    {
+        $this->term2 = $term2;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getTerm2()
+    {
+        return $this->term2;
+    }
+    /**
      * @param array $data
      */
     public function populate(array $data = array()){
@@ -762,6 +807,13 @@ class User extends BasicObject {
         if (isset($data['is_public'])){
             $this->setIsPublic($data['is_public']);
         }
+
+        if (array_key_exists('term1', $data)){
+            $this->setTerm1((int)$data['term1']);
+        }
+        if (array_key_exists('term2', $data)){
+            $this->setTerm2((int)$data['term2']);
+        }
     }
 
     /**
@@ -782,6 +834,9 @@ class User extends BasicObject {
         return $this->lastLoggedIn;
     }
 
+    /**
+     * @return bool
+     */
     public function isAdmin()
     {
         $role = $this->getRole();

@@ -121,7 +121,7 @@ class UserDAO extends AbstractDAO {
      */
     public function getExportUsers($skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('u.id, u.displayName, u.email, u.date, u.facebookId, u.facebookAccessToken, count(p.id) as predictions')
+        $qb->select('u.id, u.displayName, u.email, u.date, u.facebookId, u.facebookAccessToken, count(p.id) as predictions, u.term1, u.term2')
             ->from($this->getRepositoryName(), 'u')
             ->leftJoin('u.predictions', 'p')
             ->groupBy('u.id');
@@ -294,8 +294,9 @@ class UserDAO extends AbstractDAO {
         if ($regionId === null)
             $conn->executeQuery('
                 INSERT INTO league_user (user_id, league_id, registration_date, join_date)
-                SELECT id, ?, u.date, ?
-                FROM user
+                SELECT u.id, ?, u.date, ?
+                FROM user u
+                WHERE u.is_active = 1
             ', array($leagueId, $now));
         else {
             $conn->executeQuery('
@@ -303,8 +304,24 @@ class UserDAO extends AbstractDAO {
                 SELECT u.id, ?, u.date, ?
                 FROM user u
                 INNER JOIN country c ON c.id = u.country_id AND c.region_id = ?
+                WHERE u.is_active = 1
             ', array($leagueId, $now, $regionId));
         }
+    }
+
+    /**
+     * @param array $facebookIds
+     * @param bool $skipCache
+     * @return array
+     * @throws \Exception
+     */
+    public function getUserIdsByFacebookIds($facebookIds, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('u.id')
+            ->from($this->getRepositoryName(), 'u')
+            ->where($qb->expr()->in('u.facebookIds', ':facebookIds'))
+            ->setParameter('facebookIds', $facebookIds);
+        return $this->getQuery($qb, $skipCache)->getScalarResult();
     }
 
 }

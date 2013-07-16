@@ -2,6 +2,7 @@
 
 namespace Application\Model\Entities;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use \Neoco\Model\BasicObject;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,21 +19,21 @@ class Language extends BasicObject {
      *
      * @ORM\Column(name="is_default", type="boolean")
      */
-    private $isDefault = false;
+    protected $isDefault = false;
 
     /**
      * @var string
      *
      * @ORM\Column(name="language_code", type="string", length=5, nullable=false)
      */
-    private $languageCode;
+    protected $languageCode;
 
     /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=40, nullable=false)
      */
-    private $displayName;
+    protected $displayName;
 
     /**
      * @var integer
@@ -41,9 +42,57 @@ class Language extends BasicObject {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
 
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="User", mappedBy="language")
+     */
+    protected $users;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="Country", mappedBy="language", cascade={"persist"})
+     */
+    protected $countries;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="HowToPlayContent", mappedBy="language")
+     */
+    protected $howToPlayBlocks;
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+        $this->countries = new ArrayCollection();
+        $this->howToPlayBlocks = new ArrayCollection();
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $howToPlayBlocks
+     * @return $this
+     */
+    public function setHowToPlayBlocks($howToPlayBlocks)
+    {
+        $this->howToPlayBlocks = $howToPlayBlocks;
+        return $this;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getHowToPlayBlocks()
+    {
+        return $this->howToPlayBlocks;
+    }
     /**
      * Set languageCode
      *
@@ -99,29 +148,6 @@ class Language extends BasicObject {
     {
         return $this->id;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="User", mappedBy="language")
-     */
-    private $users;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="Country", mappedBy="language", cascade={"persist"})
-     */
-    private $countries;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->countries = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
     /**
      * Add users
      *

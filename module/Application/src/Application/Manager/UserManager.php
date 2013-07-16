@@ -61,16 +61,25 @@ class UserManager extends BasicManager {
         if (null === $this->userGeoIpCountry){
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $isoCode = $this->getUserGeoIpIsoCode();
-            if (empty($isoCode)){
+            if (empty($isoCode))
                 $isoCode = ApplicationManager::DEFAULT_COUNTRY_ISO_CODE;
-            }
-            $applicationManager->getCountryByISOCode($isoCode);
-            if (empty($country)){
+            $country = $applicationManager->getCountryByISOCode($isoCode);
+            if (empty($country))
                 $country =  $applicationManager->getDefaultCountry();
-            }
             $this->userGeoIpCountry = $country;
         }
         return $this->userGeoIpCountry;
+    }
+
+    /**
+     * @return \Application\Model\Entities\Country
+     */
+    public function getGeoIpCountry()
+    {
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $isoCode = $this->getUserGeoIpIsoCode();
+        if (empty($isoCode)) return null;
+        return $applicationManager->getCountryByISOCode($isoCode);
     }
 
     /**
@@ -190,10 +199,9 @@ class UserManager extends BasicManager {
      */
     public function getUsersExportContent() {
         $users = UserDAO::getInstance($this->getServiceLocator())->getExportUsers(true);
-
         $facebookManager = FacebookManager::getInstance($this->getServiceLocator());
         foreach ($users as &$user) {
-            if (!empty($user['facebookId'])) {
+            if (!empty($user['facebookId']) && !empty($user['facebookAccessToken'])) {
                 $facebookData = $facebookManager->getFacebookUserInfo($user['facebookAccessToken'], $user['facebookId']);
                 $user = array_merge($user, $facebookData);
             }
@@ -217,6 +225,8 @@ class UserManager extends BasicManager {
             'facebook_number_of_friends' => 'string',
             'facebook_user_likes' => 'array',
             'facebook_user_checkins' => 'array',
+            'term1' => 'number',
+            'term2' => 'number'
         );
         return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($users, $exportConfig);
     }

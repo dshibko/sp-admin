@@ -160,50 +160,50 @@ $this->headTitle($title);
                 <button type="submit"><?php echo $this->translate('Save changes');?></button>
             </div>
         </section>
-        <section class="bn">
-            <div>
-                <h2><?php echo $this->translate('Delete Account');?></h2>
-            </div>
-            <div class="buttons">
-                <a href="<?php echo $this->url('delete-account');?>"><?php echo $this->translate('Delete Account');?></a>
-            </div>
-        </section>
         <?php
         echo $this->formHidden($this->languageForm->get('type'));
         echo $this->form()->closeTag();
         ?>
-    <!--REGIONAL SETTINGS FORM END-->
-
-    <!--EMAIL SETTINGS FORM START-->
-        <?php/*
-        $this->emailSettingsForm->prepare();
-        $this->emailSettingsForm->setAttribute('action', $this->url('user-settings'));
-        echo $this->form()->openTag($this->emailSettingsForm);
+    <!--TERMS FORM START-->
+    <?php if (!is_null($this->termsForm)):?>
+        <?php
+        $this->termsForm->prepare();
+        $this->termsForm->setAttribute('action', $this->url('user-settings'));
+        echo $this->form()->openTag($this->termsForm);
         ?>
-
+        <?php $termsFieldset = $this->termsForm->getTermsFieldset();?>
+        <?php if (!empty($termsFieldset)):?>
         <section class="email-settings">
             <div>
-                <h2><?php echo $this->translate('Email Settings');?></h2>
+                    <h2><?php echo $this->translate('Terms');?></h2>
             </div>
             <div>
+                    <?php foreach($termsFieldset->getElements() as $term):?>
                 <label>
-                    <?php echo $this->formElement($this->emailSettingsForm->get('term1'));?>
-                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy </span>
+                            <?php echo $this->formCheckbox($term);?>
+                            <?php echo $term->getLabel();?>
                 </label>
-                <label>
-                    <?php echo $this->formElement($this->emailSettingsForm->get('term2'));?>
-                    <span>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor</span>
-                </label>
+                    <?php endforeach;?>
             </div>
             <div class="buttons">
                 <button type="submit"><?php echo $this->translate('Save changes');?></button>
             </div>
         </section>
+        <?php endif;?>
         <?php
-        echo $this->formHidden($this->emailSettingsForm->get('type'));
-        echo $this->form()->closeTag()*/;
+        echo $this->formHidden($this->termsForm->get('type'));
+        echo $this->form()->closeTag();
         ?>
-    <!--EMAIL SETTINGS FORM END-->
+    <?php endif;?>
+    <!--TERMS FORM END-->
+    <section class="bn ideal-form">
+        <div class="ideal-wrap ideal-full-width">
+            <h2><?php echo $this->translate('Delete Account');?></h2>
+        </div>
+        <div class="buttons">
+            <a href="<?php echo $this->url('delete-account');?>"><?php echo $this->translate('Delete Account');?></a>
+        </div>
+    </section>
    </div>
     <?php echo $this->partial('partials/right-column');?>
 </div>
@@ -277,7 +277,7 @@ $this->headTitle($title);
         inputs: {
             'avatar': {
                 filters: 'extension',
-                data: { extension: [ 'jpg', 'png' ] }
+                data: { extension: [ 'jpg', 'png', 'jpeg','gif', 'bmp'] }
             }
         }
     };
@@ -328,7 +328,7 @@ $this->headTitle($title);
         $('#settings-change-language').idealforms(languageOptions).data('idealforms');
     } catch (e) {}
     try {
-        $('#settings-change-email-settings').idealforms(emailSettingsOptions).data('idealforms');
+        $('#settings-change-terms').idealforms(emailSettingsOptions).data('idealforms');
     } catch (e) {}
    // $('#settings-change-public-profile').idealforms(publicProfileOptions).data('idealforms');
 

@@ -293,6 +293,17 @@ return array(
                     ),
                 ),
             ),
+            'clear-app-cache' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/clear-app-cache[/][:entities]',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Application\Controller',
+                        'controller'    => 'ClearAppCache',
+                        'action'        => 'index',
+                    ),
+                ),
+            ),
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
@@ -356,6 +367,7 @@ return array(
             'Application\Controller\Match' => 'Application\Controller\MatchController',
             'Application\Controller\Prize' => 'Application\Controller\PrizeController',
             'Application\Controller\Common' => 'Application\Controller\CommonController',
+            'Application\Controller\ClearAppCache' => 'Application\Controller\ClearAppCacheController',
         ),
     ),
     'controller_plugins' => array(

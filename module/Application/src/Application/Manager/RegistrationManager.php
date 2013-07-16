@@ -84,14 +84,15 @@ class RegistrationManager extends BasicManager
      */
     public function setUp(array $data)
     {
-
+        if (!empty($data['terms'])){
+            $data = array_merge($data, $data['terms']);
+            unset($data['terms']);
+        }
         $country = CountryDAO::getInstance($this->getServiceLocator())->findOneById($data['region']);
         $data['active'] = self::ACTIVE_USER_STATUS;
         $data['language'] = LanguageDAO::getInstance($this->getServiceLocator())->findOneById($data['language']);
         $data['country'] = $country;
-
         $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-
         if (!$user) {
             throw new \Exception('Cannot get current user. Please Login');
         }
@@ -114,6 +115,7 @@ class RegistrationManager extends BasicManager
                 $leagueUser = new LeagueUser();
                 $leagueUser->setUser($user);
                 $leagueUser->setJoinDate(new \DateTime());
+                $leagueUser->setRegistrationDate($user->getDate());
                 $leagueUser->setLeague($globalLeague);
                 $globalLeague->addLeagueUser($leagueUser);
                 $leagueDAO->save($globalLeague, false, false);

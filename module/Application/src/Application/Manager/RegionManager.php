@@ -44,11 +44,12 @@ class RegionManager extends BasicManager {
     }
 
     /**
+     * @param bool $hydrate
      * @return \Application\Model\Entities\Region
      */
-    public function getDefaultRegion()
+    public function getDefaultRegion($hydrate = false)
     {
-        return RegionDAO::getInstance($this->getServiceLocator())->getDefaultRegion();
+        return RegionDAO::getInstance($this->getServiceLocator())->getDefaultRegion($hydrate);
     }
 
     public function getRegionById($id, $hydrate = false, $skipCache = false) {

@@ -3,21 +3,24 @@
 namespace Neoco\Form;
 
 use \Zend\Form\Form;
-use \Zend\Form\Fieldset;
 
 abstract class UploadableForm extends Form implements \Zend\InputFilter\InputFilterProviderInterface {
 
     public function getInputFilterSpecification($inputSpec = array()) {
         foreach ($this->getElements() as $element) {
-            if ($element->getAttribute('required'))
+            $required = $element->getAttribute('required');
+            if ($required){
                 $inputSpec[$element->getName()]['required'] = true;
+            }elseif($required === false){
+                $inputSpec[$element->getName()]['required'] = false;
+            }
             if ($element->getAttribute('isImage')) {
                 $imageData = $element->getValue();
                 if (is_array($imageData) && $imageData['stored'] == 1)
                     $validators = array('required' => false);
                 else {
                     $validators['validators'] = array(
-                        array('name' => 'fileisimage')
+                        array('name' => 'fileextension', 'options' => array('extension' => 'jpg,jpeg,gif,png,bmp')),
                     );
                     $sizes = array();
                     $minWidth = $element->getAttribute('minWidth');
@@ -35,6 +38,8 @@ abstract class UploadableForm extends Form implements \Zend\InputFilter\InputFil
                     if (!empty($sizes))
                         $validators['validators'][] = array('name' => 'fileimagesize', 'options' => $sizes);
                 }
+                if (!$element->getAttribute('required'))
+                    $validators['required'] = false;
                 $inputSpec[$element->getName()] = $validators;
             }
             if ($element->getAttribute('maxlength')){

@@ -5,6 +5,7 @@ namespace Application\Manager;
 use \Application\Model\DAOs\TeamDAO;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\DAOs\PlayerDAO;
+use Neoco\Exception\OutOfSeasonException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 
@@ -54,10 +55,16 @@ class PlayerManager extends BasicManager
     public function getCurrentClubPlayers($hydrate = false, $skipCache = false)
     {
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $season = $applicationManager->getCurrentSeason();
+        if ($season === null)
+            throw new OutOfSeasonException();
         if ($applicationManager->getAppEdition() == $applicationManager::CLUB_EDITION) {
             $clubFeederId = $applicationManager->getAppOptaId();
-            $currentTeam = TeamDAO::getInstance($this->getServiceLocator())->getRepository()->findOneByFeederId($clubFeederId);
-            return PlayerDAO::getInstance($this->getServiceLocator())->getAllClubPlayers($currentTeam->getId(), $hydrate, $skipCache);
+            $currentTeam = TeamDAO::getInstance($this->getServiceLocator())->findOneByFeederId($clubFeederId);
+            if ($currentTeam === null)
+                return array();
+            else
+                return PlayerDAO::getInstance($this->getServiceLocator())->getAllClubPlayers($currentTeam->getId(), $season->getId(), $hydrate, $skipCache);
         } else
             throw new \Exception(sprintf(MessagesConstants::ERROR_APP_WRONG_EDITION, $applicationManager::CLUB_EDITION));
     }

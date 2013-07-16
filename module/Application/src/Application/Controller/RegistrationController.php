@@ -26,10 +26,7 @@ class RegistrationController extends AbstractActionController
         try {
             $terms = null;
             $form = $this->getServiceLocator()->get('Application\Form\RegistrationForm');
-            $fieldsets = $form->getFieldsets();
-            if (!empty($fieldsets['terms'])) {
-                $terms = $fieldsets['terms'];
-            }
+
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
             $registrationManager = RegistrationManager::getInstance($this->getServiceLocator());
             //if member - redirect to dashboard
@@ -51,20 +48,22 @@ class RegistrationController extends AbstractActionController
                     $data = $form->getData();
                     $defaultAvatarId = !empty($post['default_avatar']) ? $post['default_avatar'] : null;
                     $data['avatar'] = UserManager::getInstance($this->getServiceLocator())->getUserAvatar($form, $defaultAvatarId);
-
                     if (!empty($data['avatar'])) {
                         $registrationManager->register($data);
                         //Login registered user
                         AuthenticationManager::getInstance($this->getServiceLocator())->signIn($data['email']);
                         return $this->redirect()->toRoute(self::SETUP_PAGE_ROUTE);
                     }
-                } else {
-                    $this->formErrors($form, $this);
                 }
+                $this->formErrors($form, $this);
             }
+
+            $getIpCountry = UserManager::getInstance($this->getServiceLocator())->getGeoIpCountry();
+            if ($getIpCountry !== null)
+                $form->get('country')->setValue($getIpCountry->getId());
+
             $viewModel = new ViewModel(array(
                 'form' => $form,
-                'terms' => $terms,
                 'default_avatar' => $this->getRequest()->getPost('default_avatar', null)
             ));
 
@@ -80,7 +79,6 @@ class RegistrationController extends AbstractActionController
 
     public function setUpAction()
     {
-
         try {
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
 
@@ -94,7 +92,7 @@ class RegistrationController extends AbstractActionController
             }
             $form = $this->getServiceLocator()->get('Application\Form\SetUpForm');
             $userManager = UserManager::getInstance($this->getServiceLocator());
-            $country = $user->getCountry();
+            $country = $user->getFacebookId() !== null ? $userManager->getUserGeoIpCountry() : $user->getCountry();
             $language = $userManager->getUserLanguage();
             $form->get('region')->setValue($country->getId());
             $form->get('language')->setValue($language->getId());

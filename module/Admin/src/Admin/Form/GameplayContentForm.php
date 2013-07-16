@@ -41,7 +41,6 @@ class GameplayContentForm extends UploadableForm {
                 'maxlength' => self::HEADING_MAX_LENGTH
             ),
         ));
-
         $this->add(array(
             'name' => 'description',
             'type'  => 'textarea',
@@ -52,7 +51,6 @@ class GameplayContentForm extends UploadableForm {
                 'required' => true
             ),
         ));
-
         $this->add(array(
             'name' => 'order',
             'type'  => 'number',
@@ -64,7 +62,6 @@ class GameplayContentForm extends UploadableForm {
                 'digits' => true,
             ),
         ));
-
         $this->add(array(
             'name' => 'submit',
             'type'  => 'submit',

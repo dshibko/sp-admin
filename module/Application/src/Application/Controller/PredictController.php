@@ -27,8 +27,6 @@ class PredictController extends AbstractActionController {
 
         try {
 
-//            UserManager::getInstance($this->getServiceLocator())->registerLeagueUsers(LeagueManager::getInstance($this->getServiceLocator())->getLeagueById(2), 1);
-//die('ok');
             $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
@@ -49,7 +47,7 @@ class PredictController extends AbstractActionController {
             if (!$user->getIsActive()){
                 $userManager = UserManager::getInstance($this->getServiceLocator());
                 $setUpForm = $this->getServiceLocator()->get('Application\Form\SetUpForm');
-                $country = $user->getCountry();
+                $country = $user->getFacebookId() !== null ? $userManager->getUserGeoIpCountry() : $user->getCountry();
                 $language = $userManager->getUserLanguage();
                 $setUpForm ->get('region')->setValue($country->getId());
                 $setUpForm ->get('language')->setValue($language->getId());

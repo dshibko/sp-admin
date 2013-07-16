@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use Application\Manager\LanguageManager;
 use Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 

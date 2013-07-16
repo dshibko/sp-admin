@@ -55,7 +55,7 @@ class LanguageFormFilter extends InputFilter implements InputFilterAwareInterfac
                 )
 
             )));
-            $inputFilter->add($factory->createInput(array(
+            /*$inputFilter->add($factory->createInput(array(
                 'name'     => 'strings',
                 'required' => true,
                 'validators' => array(
@@ -68,7 +68,7 @@ class LanguageFormFilter extends InputFilter implements InputFilterAwareInterfac
                         )
                     ),
                 )
-            )));
+            )));*/
             $this->inputFilter = $inputFilter;
         }
 

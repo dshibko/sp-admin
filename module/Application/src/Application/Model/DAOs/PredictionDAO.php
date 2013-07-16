@@ -610,8 +610,8 @@ class PredictionDAO extends AbstractDAO {
         $query = $this->getEntityManager()
             ->createNativeQuery('
              SELECT p.id, p.user_id, p.home_team_score, p.away_team_score, GROUP_CONCAT(IFNULL(pp.player_id, "") ORDER BY pp.order SEPARATOR \',\') players, GROUP_CONCAT(IFNULL(pp.team_id, "") ORDER BY pp.order SEPARATOR \',\') teams
-             FROM `prediction2` p
-             LEFT OUTER JOIN `prediction_player2` pp ON pp.prediction_id = p.id
+             FROM `prediction` p
+             LEFT OUTER JOIN `prediction_player` pp ON pp.prediction_id = p.id
              WHERE p.match_id = ' . $matchId . '
              GROUP BY p.id', $rsm);
         return $query->getArrayResult();

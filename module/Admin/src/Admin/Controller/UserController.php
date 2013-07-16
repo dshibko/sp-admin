@@ -67,6 +67,10 @@ class UserController extends AbstractActionController
 
         try {
 
+            ini_set('max_execution_time', 0);
+            ini_set('max_input_time', -1);
+            ini_set('memory_limit', -1);
+
             $content = UserManager::getInstance($this->getServiceLocator())->getUsersExportContent();
 
             $response = $this->getResponse();
@@ -117,7 +121,7 @@ class UserController extends AbstractActionController
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $post = $request->getPost();
-                $post = isset($post['email']) ? strtolower($post['email']) : null;
+                $post['email'] = isset($post['email']) ? strtolower($post['email']) : null;
                 $form->setData($post);
                 $form->setInputFilter($this->getServiceLocator()->get('adminFormFilter'));
                 if ($form->isValid()) {

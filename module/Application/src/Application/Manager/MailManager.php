@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use Zend\Log\Logger;
 use \Zend\Mail\Transport\SmtpOptions;
 use \Zend\Mail\Transport\Smtp;
 use \Zend\Mail\Transport\Sendmail;
@@ -13,14 +14,23 @@ use \Neoco\Manager\BasicManager;
 
 class MailManager extends BasicManager {
 
+    const ADMINS_CONFIG_KEY = 'admins_emails';
+
     const PASSWORD_RECOVERY_TEMPLATE = 'recovery';
     const PASSWORD_RECOVERY_EMAIL_SUBJECT = 'Password reset request for %s';
+
     const WELCOME_EMAIL_SUBJECT = 'Welcome to %s';
     const WELCOME_EMAIL_TEMPLATE = 'welcome';
+
     const HELP_AND_SUPPORT_EMAIL_TEMPLATE = 'help_and_support';
     const HELP_AND_SUPPORT_EMAIL_SUBJECT = 'Support Email';
+
     const NEW_ADMIN_EMAIL_SUBJECT = 'New Admin Account';
     const NEW_ADMIN_EMAIL_TEMPLATE = 'new_admin';
+
+    const EXCEPTION_EMAIL_SUBJECT = 'Opta Exception [%s]';
+    const EXCEPTION_EMAIL_TEMPLATE = 'exception';
+
     /**
      * @var MailManager
      */
@@ -46,16 +56,14 @@ class MailManager extends BasicManager {
         return $this->sendEmail($email, sprintf(self::PASSWORD_RECOVERY_EMAIL_SUBJECT, $this->getAppName()), self::PASSWORD_RECOVERY_TEMPLATE, array('url' => $url));
     }
 
-    public function sendWelcomeEmail($email, $userName)
-    {
+    public function sendWelcomeEmail($email, $userName) {
         return $this->sendEmail($email, sprintf(self::WELCOME_EMAIL_SUBJECT, $this->getAppName()), self::WELCOME_EMAIL_TEMPLATE, array(
             'appName' => $this->getAppName(),
             'userName' => $userName
         ));
     }
 
-    public function sendHelpAndSupportEmail($userEmail, $userName,$userMessage)
-    {
+    public function sendHelpAndSupportEmail($userEmail, $userName,$userMessage) {
         $helpAndSupportEmailAddress = $this->getHelpAndSupportEmailAddress();
         if (!empty($helpAndSupportEmailAddress)){
            $this->sendEmail($helpAndSupportEmailAddress,self::HELP_AND_SUPPORT_EMAIL_SUBJECT, self::HELP_AND_SUPPORT_EMAIL_TEMPLATE, array(
@@ -67,14 +75,36 @@ class MailManager extends BasicManager {
         return true;
     }
 
-    public function sendNewAdminEmail($email, $password)
-    {   $router = $this->getServiceLocator()->get('router');
+    public function sendNewAdminEmail($email, $password) {
+        $router = $this->getServiceLocator()->get('router');
         $this->sendEmail($email,self::NEW_ADMIN_EMAIL_SUBJECT, self::NEW_ADMIN_EMAIL_TEMPLATE, array(
             'password' => $password,
             'email'    => $email,
             'link'   => $router->assemble(array(),array('name' => 'admin-login', 'force_canonical' => true))
         ));
     }
+
+    public function sendExceptionEmail(\Exception $e, $priority = Logger::ERR) {
+        $config = $this->getServiceLocator()->get('config');
+        if (array_key_exists(self::ADMINS_CONFIG_KEY, $config) && is_array($config[self::ADMINS_CONFIG_KEY])) {
+            switch ($priority) {
+                case Logger::EMERG:
+                    $priority = 'Emergency';
+                    break;
+                case Logger::CRIT:
+                    $priority = 'Critical';
+                    break;
+                default:
+                    $priority = 'Error';
+            }
+            $this->sendEmail($config[self::ADMINS_CONFIG_KEY], sprintf(self::EXCEPTION_EMAIL_SUBJECT, $priority), self::EXCEPTION_EMAIL_TEMPLATE, array(
+                'priority' => $priority,
+                'message'    => $e->getMessage(),
+                'trace'   => $e->getTraceAsString(),
+            ));
+        }
+    }
+
     private function sendEmail($to, $subject, $template, $params = array()) {
         $content = $this->prepareContent($template, $params);
         $message = $this->prepareMessage($to, $subject, $content);
@@ -110,10 +140,13 @@ class MailManager extends BasicManager {
         $body->setParts(array($html));
 
         $message->addFrom($config['fromEmail'], $config['fromName'])
-            ->addTo($to)
             ->setSubject($subject)
             ->setBody($body)
             ->setEncoding("UTF-8");
+        if (!is_array($to)) $to = array($to);
+        foreach ($to as $t)
+            $message->addTo($t);
+
         return $message;
     }
 

@@ -21,12 +21,12 @@ if (empty($this->twitterShareCopy))
                 <ul class="direction-nav">
                     <?php if ($this->ahead > 0) : ?>
                         <li class="prev-match">
-                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead != 1 ? $this->ahead - 1 : null));?>"><?=$this->translate('Prev')?> <span><?=$this->translate('match')?></span></a>
+                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead != 1 ? $this->ahead - 1 : null));?>"><span><?=$this->translate('Prev')?> <?=$this->translate('match')?></span></a>
                         </li>
                     <?php endif; ?>
                     <?php if ($this->ahead < $this->maxAhead + $this->liveMatches - 1) : ?>
                         <li class="next-match">
-                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead + 1));?>"><?=$this->translate('Next')?> <span><?=$this->translate('match')?></span></a>
+                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead + 1));?>"><span><?=$this->translate('Next')?> <?=$this->translate('match')?></span></a>
                         </li>
                     <?php endif; ?>
                 </ul>
@@ -105,7 +105,7 @@ if (empty($this->twitterShareCopy))
                                         </figcaption>
                                     </figure>
                                 </label>
-                                <input type="text" class="required" maxlength="2" name="home-team-score" id="home-team-score" value="<?=$this->current['prediction']['homeTeamScore']?>">
+                                <input <?=!empty($this->current['prediction']) ? 'disabled="disabled"' : ''?> type="text" class="required" maxlength="2" name="home-team-score" id="home-team-score" value="<?=$this->current['prediction']['homeTeamScore']?>">
                             </fieldset>
                             <section>
                                 <?php
@@ -117,9 +117,11 @@ if (empty($this->twitterShareCopy))
                         </div>
 
                         <div class="league-logo">
-                            <img src="/img/league-logo.png" alt="">
+                            <img style="visibility: hidden;" src="/img/league-logo.png" alt="">
                             <em><?=$this->translate('VS')?></em>
-                            <span <?=(empty($this->current['prediction']) || (empty($this->current['prediction']['homeScorers']) && empty($this->current['prediction']['awayScorers']))) ? 'style="display:none"': ''?>><?=$this->translate('Scorers')?></span>
+                            <span style="display:none">
+                                <?=$this->translate('Scorers')?>
+                            </span>
                         </div>
 
                         <div class="away-team">
@@ -132,7 +134,7 @@ if (empty($this->twitterShareCopy))
                                         </figcaption>
                                     </figure>
                                 </label>
-                                <input type="text" class="required" maxlength="2" name="away-team-score" id="away-team-score" value="<?=$this->current['prediction']['awayTeamScore']?>">
+                                <input <?=!empty($this->current['prediction']) ? 'disabled="disabled"' : ''?> type="text" class="required" maxlength="2" name="away-team-score" id="away-team-score" value="<?=$this->current['prediction']['awayTeamScore']?>">
                             </fieldset>
                             <section>
                                 <?php
@@ -143,17 +145,63 @@ if (empty($this->twitterShareCopy))
                             </section>
                         </div>
 
-                        <div class="buttons-block">
+                        <div class="buttons-block clearfix">
+                            <?php if (!empty($this->current['prediction'])): ?>
+                                <div class="home-team-scorers">
+                                    <?php if(!empty($this->current['prediction']['homeScorers'])): ?>
+                                        <h4><?=$this->translate('Scorers')?></h4>
+                                        <ul>
+                                            <?php
+                                            foreach ($this->current['prediction']['homeScorers'] as $order => $scorer) {
+                                                $scorerData = null;
+                                                foreach ($this->current['homeSquad'] as $player)
+                                                    if ($scorer['playerId'] == $player['id']) {
+                                                        $scorerData = $player;
+                                                        break;
+                                                    }
+                                                $scorerStr = $scorerData !== null ?
+                                                    (!empty($scorerData['shirtNumber']) ? $scorerData['shirtNumber'] : '&ndash;') . ' - ' . $scorerData['displayName'] :
+                                                    '---'; ?>
+                                                <li><?=$scorerStr?></li><?php
+                                            }
+                                            ?>
+                                        </ul>
+                                    <?php endif;?>
+                                </div>
+                                <div class="away-team-scorers">
+                                    <?php if(!empty($this->current['prediction']['awayScorers'])): ?>
+                                        <h4><?=$this->translate('Scorers')?></h4>
+                                        <ul>
+                                            <?php
+                                                foreach ($this->current['prediction']['awayScorers'] as $order => $scorer) {
+                                                    $scorerData = null;
+                                                    foreach ($this->current['awaySquad'] as $player)
+                                                        if ($scorer['playerId'] == $player['id']) {
+                                                            $scorerData = $player;
+                                                            break;
+                                                        }
+                                                    $scorerStr = $scorerData !== null ?
+                                                        (!empty($scorerData['shirtNumber']) ? $scorerData['shirtNumber'] : '&ndash;') . ' - ' . $scorerData['displayName'] :
+                                                        '---'; ?>
+                                                    <li><?=$scorerStr?></li><?php
+                                                }
+                                            ?>
+                                        </ul>
+                                    <?php endif;?>
+                                </div>
+                                <div class="buttons-wrapper">
+                            <?php endif; ?>
+                                <div>
                             <button type="submit">
                                 <?php if (empty($this->current['prediction'])) : ?>
                                     <?=$this->translate('Make prediction')?>
                                 <?php else: ?>
                                     <?=$this->translate('Edit your prediction')?>
+                                            <div style="display: none">
+                                                <?=$this->translate('Make prediction')?>
+                                            </div>
                                 <?php endif; ?>
                             </button>
-                        </div>
-                        <input type="hidden" name="check_key" value="<?=$this->securityKey?>"/>
-                    </form>
                     <aside class="competition-countdown" style="display: none">
                         <h4><?=$this->translate('Time left')?></h4>
                         <p>
@@ -161,6 +209,13 @@ if (empty($this->twitterShareCopy))
                             <?=$this->translate('days hours mins secs')?>
                         </p>
                     </aside>
+                                </div>
+                            <?php if (!empty($this->current['prediction'])): ?>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <input type="hidden" name="check_key" value="<?=$this->securityKey?>"/>
+                    </form>
                     <?php print $this->squadSelect('home-team-scorer', $this->current['homeSquad'], $this->translate('Select scorer'), 'style="display: none"'); ?>
                     <?php print $this->squadSelect('away-team-scorer', $this->current['awaySquad'], $this->translate('Select scorer'), 'style="display: none"'); ?>
                 </div>
@@ -181,6 +236,7 @@ if (empty($this->twitterShareCopy))
 <?php endif;?>
 
 <script type="text/javascript">
+    var isEditMode = <?=!empty($this->current['prediction']) ? 'true' : 'false'?>;
     var liveMatchRedirect = '<?=$this->url('predict', array('ahead' => $this->ahead > 0 ? $this->ahead : null))?>';
     var savedHomeScore = <?=!empty($this->current['prediction']) ? $this->current['prediction']['homeTeamScore'] : -1 ?>;
     var savedAwayScore = <?=!empty($this->current['prediction']) ? $this->current['prediction']['awayTeamScore'] : -1 ?>;

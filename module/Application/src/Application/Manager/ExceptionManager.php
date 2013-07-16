@@ -44,6 +44,7 @@ class ExceptionManager extends BasicManager {
      */
     public function handleOptaException(\Exception $e, $priority = Logger::ERR, $console = null) {
         LogManager::getInstance($this->getServiceLocator())->logOptaException($e, $priority);
+        MailManager::getInstance($this->getServiceLocator())->sendExceptionEmail($e, $priority);
         if ($console != null) {
             $console->writeLine("");
             $console->writeLine($e->getMessage());

@@ -1180,3 +1180,25 @@ ADD  `predictions_count` INT NOT NULL AFTER  `predictions_players_count`,
 ADD  `registration_date` DATETIME NOT NULL AFTER  `previous_place`;
 
 ALTER TABLE  `feed` CHANGE  `last_sync_result`  `last_sync_result` ENUM(  'Success',  'Error',  'InProgress' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+-- okh 08.07
+
+ALTER TABLE `user`  ADD COLUMN `term1` TINYINT(1) NULL DEFAULT NULL AFTER `last_logged_in`,  ADD COLUMN `term2` TINYINT(1) NULL DEFAULT NULL AFTER `term1`;
+
+-- okh 09.07
+
+CREATE TABLE `howtoplay_content` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
+  `language_id` INT(11) NOT NULL,
+  `heading` VARCHAR(255) NULL,
+  `description` TEXT NULL,
+  `foreground_image_id` INT(11) NULL,
+  `order` INT(4) NULL,
+  PRIMARY KEY (`id`),
+  INDEX `language_id` (`language_id`),
+  INDEX `foreground_image_id` (`foreground_image_id`),
+  CONSTRAINT `FK_howtoplay_content_language` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`),
+  CONSTRAINT `FK_howtoplay_content_content_image` FOREIGN KEY (`foreground_image_id`) REFERENCES `content_image` (`id`)
+)
+  COLLATE='utf8_general_ci'
+  ENGINE=InnoDB
+  ROW_FORMAT=DEFAULT;

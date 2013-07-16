@@ -105,10 +105,10 @@ class PredictionManager extends BasicManager {
         $numberOfPredictions = PredictionDAO::getInstance($this->getServiceLocator())->getPredictionsCount($season->getId());
         $numberOfFinishedMatches = MatchDAO::getInstance($this->getServiceLocator())->getBlockedFinishedMatchesInTheSeasonNumber($season);
         $numberOfLiveMatches = MatchDAO::getInstance($this->getServiceLocator())->getLiveMatchesNumber(new \DateTime(), $season);
+        $numberOfMatchesLeftThisSeason = MatchDAO::getInstance($this->getServiceLocator())->getMatchesLeftInTheSeasonNumber(new \DateTime(), $season);
         $numberOfPredictableMatches = SettingsManager::getInstance($this->getServiceLocator())->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
-        $avgNumberOfPrediction = $numberOfPredictions / ($numberOfFinishedMatches + $numberOfLiveMatches + $numberOfPredictableMatches);
-//        $avgNumberOfPrediction = PredictionDAO::getInstance($this->getServiceLocator())->getAvgNumberOfPredictions($season);
-        $avgNumberOfPrediction = number_format(ceil($avgNumberOfPrediction * 100) / 100, 2);
+        $avgNumberOfPrediction = $numberOfPredictions / ($numberOfFinishedMatches + $numberOfLiveMatches + min($numberOfMatchesLeftThisSeason, $numberOfPredictableMatches));
+        $avgNumberOfPrediction = number_format(round($avgNumberOfPrediction * 100) / 100, 2);
         return $avgNumberOfPrediction;
     }
 
@@ -122,15 +122,14 @@ class PredictionManager extends BasicManager {
      */
     public function getNearestMatchWithPrediction($offset, $user, $season, $hydrate = false, $skipCache = false) {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
-        $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
         $matchData = $matchDAO->getNearestMatch($offset, $season, $skipCache);
         if (!empty($matchData)) {
             $match = $matchDAO->getMatchInfo($matchData['matchId'], $hydrate, $skipCache);
             $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
-            $homeSquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['homeId'], $matchData['competitionId'], $hydrate, $skipCache);
+            $homeSquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['homeId'], $matchData['competitionId'], $season->getId(), $hydrate, $skipCache);
             $match['homeSquad'] = $this->preparePlayers($homeSquad);
-            $awaySquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['awayId'], $matchData['competitionId'], $hydrate, $skipCache);
+            $awaySquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['awayId'], $matchData['competitionId'], $season->getId(), $hydrate, $skipCache);
             $match['awaySquad'] = $this->preparePlayers($awaySquad);
             $match['prediction'] = $predictionDAO->getUserPrediction($matchData['matchId'], $user->getId(), true, $skipCache);
             return $match;
@@ -138,13 +137,13 @@ class PredictionManager extends BasicManager {
             return null;
     }
 
-    private function getTeamSquad($hasLineUp, $matchId, $teamId, $competitionId, $hydrate, $skipCache) {
+    private function getTeamSquad($hasLineUp, $matchId, $teamId, $competitionId, $seasonId, $hydrate, $skipCache) {
         if ($hasLineUp)
             $squad = MatchDAO::getInstance($this->getServiceLocator())->getMatchTeamSquad($matchId, $teamId, $hydrate, $skipCache);
         else {
             $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquadInCompetition($teamId, $competitionId, $hydrate, $skipCache);
             if (empty($squad))
-                $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquad($teamId, $hydrate, $skipCache);
+                $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquad($teamId, $seasonId, $hydrate, $skipCache);
         }
         return $squad;
     }

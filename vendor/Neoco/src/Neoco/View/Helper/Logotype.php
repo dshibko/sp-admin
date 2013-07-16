@@ -4,6 +4,7 @@ namespace Neoco\View\Helper;
 
 use Application\Manager\ApplicationManager;
 use Application\Manager\ContentManager;
+use Application\Manager\LanguageManager;
 use Application\Manager\UserManager;
 use Zend\View\Helper\AbstractHelper;
 use Application\Manager\AvatarManager;

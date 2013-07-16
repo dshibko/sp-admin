@@ -100,7 +100,7 @@ class FacebookManager extends BasicManager
     public function registerUser(array $data)
     {
         $data['avatar'] = AvatarDAO::getInstance($this->getServiceLocator())->findOneById(RegistrationManager::DEFAULT_AVATAR_ID); //set default avatar
-        $data['country'] = ApplicationManager::DEFAULT_COUNTRY_ID;  //set default country
+        $data['country'] = UserManager::getInstance($this->getServiceLocator())->getUserGeoIpCountry();
         return RegistrationManager::getInstance($this->getServiceLocator())->register($data);
     }
 
@@ -175,6 +175,7 @@ class FacebookManager extends BasicManager
      * @return array
      */
     public function getFriendsUsers(User $user) {
+        try {
         $this->getFacebookAPI()->setAccessToken($user->getFacebookAccessToken());
         $userFriendsQuery = 'SELECT uid2 FROM friend WHERE uid1 = ' . $user->getFacebookId();
         $facebookFriends = $this->getFacebookAPI()->api(array(
@@ -185,5 +186,8 @@ class FacebookManager extends BasicManager
         foreach($facebookFriends as $facebookFriend)
             $uids [] = $facebookFriend["uid2"];
         return $uids;
+        } catch (\Exception $e) {
+            return array();
+        }
     }
 }

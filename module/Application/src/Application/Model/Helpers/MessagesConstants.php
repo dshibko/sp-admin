@@ -44,6 +44,9 @@ class MessagesConstants
     const SUCCESS_ADMIN_UPDATED = 'Admin was successfully updated';
     const SUCCESS_ADMIN_DELETED = 'Admin was successfully deleted';
     const SUCCESS_DEFAULT_MATCH_REPORT_CONTENT_UPDATE = 'Default %s report content was successfully updated';
+    const SUCCESS_HOW_TO_PLAY_CONTENT_CREATED = '"How to play" content block was saved successfully.';
+    const SUCCESS_HOW_TO_PLAY_CONTENT_UPDATED  = '"How to play" content block was updated successfully.';
+    const SUCCESS_HOW_TO_PLAY_CONTENT_DELETED = '"How to play" content block was deleted successfully.';
 
     const ERROR_FOOTER_SOCIAL_NOT_DELETED = "A footer social wasn't deleted.";
     const ERROR_FOOTER_IMAGE_NOT_DELETED = "A footer image wasn't deleted.";
@@ -75,6 +78,9 @@ class MessagesConstants
     const ERROR_INCORRECT_CSS_COLOR = 'Incorrect CSS color';
     const ERROR_INVALID_ADMIN_ID = 'Invalid Admin id';
     const ERROR_CANNOT_FIND_ADMIN = 'Cannot find Admin';
+    const ERROR_MAX_HOW_TO_PLAY_BLOCKS_COUNT_EXCEEDED = 'Max "How to play" blocks count exceeded. Max: %s blocks';
+    const ERROR_INCORRECT_BLOCK_ID = 'Incorrect block id';
+    const ERROR_CANNOT_FIND_HOW_TO_PLAY_BLOCK = 'Cannot find "How to play" block.';
 
 //    Application Messages Constants
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
@@ -95,6 +101,7 @@ class MessagesConstants
     const ERROR_APP_OPTA_DIR_NOT_EXISTS = 'Application opta directory does not exist.';
     const ERROR_APP_OPTA_DIR_NOT_DIR = 'Application opta directory is not a directory.';
     const ERROR_APP_CLEAR_APP_CACHE_URL_NOT_FOUND = 'Clear application cache was not found.';
+    const ERROR_APP_CLEAR_APP_CACHE_ALLOWED_IPS_NOT_FOUND = 'Clear application cache allowed ips not configured.';
     const ERROR_APP_UNKNOWN_EDITION = 'Unknown application edition configured.';
     const ERROR_APP_WRONG_OPTA_CONFIG = 'Wrong opta id configured. Must be an integer.';
     const ERROR_APP_WRONG_EDITION = 'The application is not "%s" edition.';
@@ -117,6 +124,7 @@ class MessagesConstants
     const SUCCESS_CONNECT_TO_FACEBOOK_ACCOUNT = 'Your account successfully connected to facebook';
     const SUCCESS_NEW_LANGUAGE_SAVED  = 'New language was successfully saved.';
     const SUCCESS_NEW_EMAIL_SETTINGS_SAVED = 'New email settings were successfully saved.';
+    const SUCCESS_TERMS_SETTINGS_SAVED = 'Terms were saved successfully.';
     const SUCCESS_PUBLIC_PROFILE_OPTION_SAVED = 'Public profile option was successfully saved.';
     const SUCCESS_DELETE_ACCOUNT = 'You have deleted your account successfully.';
     const SUCCESS_HELP_AND_SUPPORT_MESSAGE_SENT = 'Your message successfully sent';

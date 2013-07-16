@@ -2,6 +2,7 @@
 
 namespace Application\Controller;
 
+use Application\Manager\LanguageManager;
 use Application\Manager\MailManager;
 use Application\Model\Helpers\MessagesConstants;
 use \Neoco\Controller\AbstractActionController;
@@ -118,8 +119,27 @@ class ContentController extends AbstractActionController
         return $view;
     }
 
+
     public function howToPlayAction()
     {
-        return array();
+        $userManager = UserManager::getInstance($this->getServiceLocator());
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+        $contentManager = ContentManager::getInstance($this->getServiceLocator());
+        try{
+            $language = $userManager->getCurrentUserLanguage();
+            $defaultLanguage = $languageManager->getDefaultLanguage();
+            $blocks = $contentManager->getLanguageHowToPlayBlocks($language, true);
+            if ($language->getId() !== $defaultLanguage->getId()){
+                $defaultBlocks = $contentManager->getLanguageHowToPlayBlocks($defaultLanguage, true);
+                $blocks = $contentManager->extendContent($defaultBlocks, $blocks);
+            }
+            return array(
+                'blocks' => $blocks,
+                'title' => 'Help & Support'
+            );
+        }catch(\Exception $e){
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
+        }
     }
 }

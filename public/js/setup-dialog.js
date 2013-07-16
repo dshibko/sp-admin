@@ -23,6 +23,8 @@ if ($(document).width() <  turnOffCustomStylePoint)
   setupOptions.disableCustom = 'select';
 
 try {
+    if (!$('html').hasClass('lt-ie8')) {
     var $setup = $('#setup').idealforms(setupOptions).data('idealforms');
     $setup.focusFirst();
+    }
 } catch (e) {}

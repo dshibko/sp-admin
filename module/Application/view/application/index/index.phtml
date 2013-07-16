@@ -29,7 +29,6 @@
 <div id="wrapper">
     <header role="banner">
         <div  class="banner">
-            <?php echo $this->renderLogotype();?>
             <div data-alt="FCBARCELONA Score Predictor Banner" data-picture="">
                 <div data-src="<?=$this->content['heroBackgroundImage']['width480']?>"></div>
                 <div data-media="(min-width: 480px)" data-src="<?=$this->content['heroBackgroundImage']['width480']?>"></div>
@@ -65,7 +64,8 @@
 <!--                <span>--><?//=$this->translate('Find out more')?><!--</span>-->
 <!--            </aside>-->
         </div>
-
+        <div class="head">
+            <?php echo $this->renderLogotype();?>
         <div class="login-area clearfix">
             <p>
                 <span><?=$this->translate('Already a member?')?></span>
@@ -100,6 +100,7 @@
                     <button class="close popup-close"><?php echo $this->translate('Close');?></button>
                 </div>
             </details>
+        </div>
         </div>
 
     </header>

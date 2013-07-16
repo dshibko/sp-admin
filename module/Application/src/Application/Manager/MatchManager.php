@@ -35,6 +35,20 @@ class MatchManager extends BasicManager
     private static $instance;
 
     /**
+     * @static
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
+     * @return MatchManager
+     */
+    public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface)
+    {
+        if (self::$instance == null) {
+            self::$instance = new MatchManager();
+            self::$instance->setServiceLocator($serviceLocatorInterface);
+        }
+        return self::$instance;
+    }
+
+    /**
      * @param $a
      * @param $b
      * @return int
@@ -49,6 +63,7 @@ class MatchManager extends BasicManager
         }
         return $a['percentage'] < $b['percentage'] ? 1 : -1;
     }
+
     /**
      * @param array $leagueUser
      * @param int $matchId
@@ -74,20 +89,6 @@ class MatchManager extends BasicManager
             );
         }
         return $movement;
-    }
-
-    /**
-     * @static
-     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return MatchManager
-     */
-    public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface)
-    {
-        if (self::$instance == null) {
-            self::$instance = new MatchManager();
-            self::$instance->setServiceLocator($serviceLocatorInterface);
-        }
-        return self::$instance;
     }
 
     /**
@@ -795,6 +796,10 @@ class MatchManager extends BasicManager
         $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS, true);
         $matches = array_slice($matchesLeft, 0, $maxAhead + $liveMatchesNumber);
         return $matches;
+    }
+
+    public function getHasFinishedMatches($season, $skipCache = false) {
+        return MatchDAO::getInstance($this->getServiceLocator())->getHasFinishedMatches($season, $skipCache);
     }
 
 }

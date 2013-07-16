@@ -9,8 +9,10 @@ class FormErrors extends AbstractPlugin
     {
         $translator = $controller->getServiceLocator()->get('translator');
         foreach ($form->getMessages() as $el => $messages) {
-            $label = $translator->translate($form->get($el)->getLabel());
-
+            $label = $form->get($el)->getLabel();
+            if (!empty($label)){
+                $label = $translator->translate($label);
+            }
             $error = '';
             if(is_array($messages)){
                 foreach($messages as $message){
@@ -33,6 +35,7 @@ class FormErrors extends AbstractPlugin
             }else{
                 $error = $messages;
             }
+
             $controller->flashMessenger()->addErrorMessage( (!empty($label) ? $label . ": " : '' ) . $translator->translate($error));
         }
 

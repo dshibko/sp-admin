@@ -16,7 +16,7 @@ var Login = function () {
 	                password: {
 	                    required: true
 	                },
-	                remember: {
+	                rememberme: {
 	                    required: false
 	                }
 	            },

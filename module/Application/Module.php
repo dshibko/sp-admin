@@ -11,6 +11,7 @@ namespace Application;
 
 use Application\Form\RegistrationForm;
 use Application\Manager\ContentManager;
+use Application\Manager\LanguageManager;
 use \Application\Manager\UserManager;
 use \Application\Manager\ApplicationManager;
 use \DoctrineModule\Authentication\Adapter\ObjectRepository;
@@ -194,7 +195,7 @@ class Module
                     $settingsHelper->setServiceLocator($sm->getServiceLocator());
                     return $settingsHelper;
                 },
-                'squadSelect' => function($sm) {
+                'squadSelect' => function() {
                     return new \Neoco\View\Helper\SquadSelect();
                 },
                 'clubLogo' => function($sm) {
@@ -203,7 +204,7 @@ class Module
                     $h->setDefaultLogo($config['default_club_logo']);
                     return $h;
                 },
-                'getUserAvatar' => function($sm) {
+                'getUserAvatar' => function() {
                     return new \Neoco\View\Helper\GetUserAvatar();
                 },
                 'getUnreadItems' => function($sm) {
@@ -228,6 +229,11 @@ class Module
                 },
                 'renderFlashMessages' => function(){
                     return new \Neoco\View\Helper\FlashMessages();
+                },
+                'hasContent' => function($sm){
+                    $footerPageContent = new \Neoco\View\Helper\FooterPageContent();
+                    $footerPageContent->setServiceLocator($sm->getServiceLocator());
+                    return $footerPageContent;
                 }
             )
         );
@@ -259,15 +265,17 @@ class Module
                 },
                 'Application\Form\RegistrationForm' => function($sm){
                     $registrationForm = new RegistrationForm($sm);
-                    $terms = ContentManager::getInstance($sm)->getRegistrationFormTerms();
-                    if (!empty($terms)){
-                        $registrationForm->setTerms($terms);
-                    }
                     $registrationForm->init();
                     return $registrationForm;
                 },
                 'Application\Form\SetUpForm' => function($sm){
-                    return new \Application\Form\SetUpForm($sm);
+                    $setUpForm = new \Application\Form\SetUpForm($sm);
+                    $terms = ContentManager::getInstance($sm)->getSetUpFormTerms();
+                    if (!empty($terms)){
+                        $setUpForm->setTerms($terms);
+                    }
+                    $setUpForm->init();
+                    return $setUpForm;
                 },
                 'Application\Form\Filter\RegistrationFilter' => function($sm){
                     return new \Application\Form\Filter\RegistrationFilter($sm);
