@@ -535,7 +535,7 @@ class OptaManager extends BasicManager {
                 }
             }
 
-            if ($type == 'Latest' && ($period == 'FirstHalf' || $period == 'HalfTime' && $period == 'SecondHalf') && $match != null && $match->getStatus() == Match::PRE_MATCH_STATUS) {
+            if ($type == 'Latest' && ($period == 'FirstHalf' || $period == 'HalfTime' || $period == 'SecondHalf') && $match != null && $match->getStatus() == Match::PRE_MATCH_STATUS) {
                 $match->setStatus(Match::LIVE_STATUS);
                 $matchDAO->save($match);
             }
