@@ -1,6 +1,6 @@
 <?php
 $children = $this->viewModel()->getCurrent()->getChildren();
-$child = $children[0];
+$child = !empty($children) ? $children[0] : null;
 $attributes = !empty($child) && property_exists($child, 'attributes') ? $child->attributes : array();
 echo $this->partial('partials/header', array('attributes' => $attributes));
 echo $this->content;
