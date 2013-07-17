@@ -879,14 +879,16 @@ class OptaManager extends BasicManager {
                     break;
             }
 
-            $entitiesToBeClearedQueryString = implode(",", $entitiesToBeCleared);
-            $clearAppCacheUrl = ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheUrl();
-            $clearAppCacheUrl = $clearAppCacheUrl . urlencode($entitiesToBeClearedQueryString);
-            $clearAppCacheResult = file_get_contents($clearAppCacheUrl);
-            if ($clearAppCacheResult == ClearAppCacheController::OK_MESSAGE)
-                $this->logMessage(MessagesConstants::APP_CACHE_CLEARED, Logger::INFO, $console);
-            else
-                $this->logMessage(MessagesConstants::APP_CACHE_NOT_CLEARED, Logger::WARN, $console);
+            if (!empty($entitiesToBeCleared)) {
+                $entitiesToBeClearedQueryString = implode(",", $entitiesToBeCleared);
+                $clearAppCacheUrl = ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheUrl();
+                $clearAppCacheUrl = $clearAppCacheUrl . urlencode($entitiesToBeClearedQueryString);
+                $clearAppCacheResult = file_get_contents($clearAppCacheUrl);
+                if ($clearAppCacheResult == ClearAppCacheController::OK_MESSAGE)
+                    $this->logMessage(MessagesConstants::APP_CACHE_CLEARED, Logger::INFO, $console);
+                else
+                    $this->logMessage(MessagesConstants::APP_CACHE_NOT_CLEARED, Logger::WARN, $console);
+            }
         }
     }
 
