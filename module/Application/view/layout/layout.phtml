@@ -1,7 +1,7 @@
 <?php
 $children = $this->viewModel()->getCurrent()->getChildren();
 $child = $children[0];
-$attributes = property_exists($child, 'attributes') ? $child->attributes : array();
+$attributes = !empty($child) && property_exists($child, 'attributes') ? $child->attributes : array();
 echo $this->partial('partials/header', array('attributes' => $attributes));
 echo $this->content;
 echo $this->inlineScript();
