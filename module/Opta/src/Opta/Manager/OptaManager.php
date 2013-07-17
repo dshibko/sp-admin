@@ -381,10 +381,10 @@ class OptaManager extends BasicManager {
             $type = $this->getXmlAttribute($xml->SoccerDocument, 'Type');
             $match = $matchDAO->findOneByFeederId($matchFeederId);
 
-            if (/*$type == 'Result' && */$match != null &&
+            if ($type == 'Result' && $match != null &&
                 $match->getStatus() != Match::FULL_TIME_STATUS) {
 
-//                $result = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo->Result, 'Type');
+                $result = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo->Result, 'Type');
 
                 $teamData1 = $xml->SoccerDocument->MatchData->TeamData->{0};
                 $teamData2 = $xml->SoccerDocument->MatchData->TeamData->{1};
@@ -400,49 +400,49 @@ class OptaManager extends BasicManager {
                     $awayTeamData = $teamData2;
                 }
 
-//                if ($result == 'NormalResult') {
+                if ($result == 'NormalResult') {
                     $match->setHomeTeamFullTimeScore($this->getXmlAttribute($homeTeamData, 'Score'));
                     $match->setAwayTeamFullTimeScore($this->getXmlAttribute($awayTeamData, 'Score'));
-//                } else {
-//                    $homeScore = $this->getXmlAttribute($homeTeamData, 'Score');
-//                    $awayScore = $this->getXmlAttribute($awayTeamData, 'Score');
-//                    $homeExtraScore = $awayExtraScore = null;
-//                    $homeShootoutScore = $awayShootoutScore = null;
-//
-//                    foreach ($homeTeamData->Goal as $goalData) {
-//                        $period = $this->getXmlAttribute($goalData, 'Period');
-//                        if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
-//                            $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
-//                            $homeScore--;
-//                            $homeExtraScore = $homeExtraScore == null ? 1 : $homeExtraScore + 1;
-//                        }
-//                        if ($period == MatchGoal::SHOOTOUT_PERIOD) {
-//                            $homeExtraScore = $homeExtraScore == null ? 0 : $homeExtraScore;
-//                            $homeShootoutScore =  $homeShootoutScore == null ? 1 : $homeShootoutScore + 1;
-//                        }
-//                    }
-//
-//                    foreach ($awayTeamData->Goal as $goalData) {
-//                        $period = $this->getXmlAttribute($goalData, 'Period');
-//                        if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
-//                            $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
-//                            $awayScore--;
-//                            $awayExtraScore = $awayExtraScore == null ? 1 : $awayExtraScore + 1;
-//                        }
-//                        if ($period == MatchGoal::SHOOTOUT_PERIOD) {
-//                            $awayExtraScore = $awayExtraScore == null ? 0 : $awayExtraScore;
-//                            $awayShootoutScore =  $awayShootoutScore == null ? 1 : $awayShootoutScore + 1;
-//                        }
-//                    }
-//
-//                    $match->setHomeTeamFullTimeScore($homeScore);
-//                    $match->setAwayTeamFullTimeScore($awayScore);
-//                    $match->setHomeTeamExtraTimeScore($homeExtraScore);
-//                    $match->setAwayTeamExtraTimeScore($awayExtraScore);
-//                    $match->setHomeTeamShootoutScore($homeShootoutScore);
-//                    $match->setAwayTeamShootoutScore($awayShootoutScore);
-//
-//                }
+                } else {
+                    $homeScore = $this->getXmlAttribute($homeTeamData, 'Score');
+                    $awayScore = $this->getXmlAttribute($awayTeamData, 'Score');
+                    $homeExtraScore = $awayExtraScore = null;
+                    $homeShootoutScore = $awayShootoutScore = null;
+
+                    foreach ($homeTeamData->Goal as $goalData) {
+                        $period = $this->getXmlAttribute($goalData, 'Period');
+                        if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
+                            $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
+                            $homeScore--;
+                            $homeExtraScore = $homeExtraScore == null ? 1 : $homeExtraScore + 1;
+                        }
+                        if ($period == MatchGoal::SHOOTOUT_PERIOD) {
+                            $homeExtraScore = $homeExtraScore == null ? 0 : $homeExtraScore;
+                            $homeShootoutScore =  $homeShootoutScore == null ? 1 : $homeShootoutScore + 1;
+                        }
+                    }
+
+                    foreach ($awayTeamData->Goal as $goalData) {
+                        $period = $this->getXmlAttribute($goalData, 'Period');
+                        if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
+                            $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
+                            $awayScore--;
+                            $awayExtraScore = $awayExtraScore == null ? 1 : $awayExtraScore + 1;
+                        }
+                        if ($period == MatchGoal::SHOOTOUT_PERIOD) {
+                            $awayExtraScore = $awayExtraScore == null ? 0 : $awayExtraScore;
+                            $awayShootoutScore =  $awayShootoutScore == null ? 1 : $awayShootoutScore + 1;
+                        }
+                    }
+
+                    $match->setHomeTeamFullTimeScore($homeScore);
+                    $match->setAwayTeamFullTimeScore($awayScore);
+                    $match->setHomeTeamExtraTimeScore($homeExtraScore);
+                    $match->setAwayTeamExtraTimeScore($awayExtraScore);
+                    $match->setHomeTeamShootoutScore($homeShootoutScore);
+                    $match->setAwayTeamShootoutScore($awayShootoutScore);
+
+                }
 
                 $playerDAO = PlayerDAO::getInstance($this->getServiceLocator());
                 $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
