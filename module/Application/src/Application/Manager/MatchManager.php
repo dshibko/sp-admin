@@ -354,23 +354,22 @@ class MatchManager extends BasicManager
                 'users' => array()
             ) //Percentage of users with prefect result (list of these users)
         );
-        $predictionIds = $match->getPredictionIds();
+        $totalNumberOfPredictions = $predictionManager->getMatchPredictionsCount($match->getId());
 
-        if (!empty($predictionIds)) {
-            $totalNumberOfPredictions = count($predictionIds);
+        if ($totalNumberOfPredictions) {
             $registeredUsersCount = $userManager->getRegisteredUsersNumber();
-            $topScorers = $predictionManager->getTopScorers($predictionIds, self::TOP_SCORERS_NUMBER, true);
-            $topScores = $predictionManager->getTopScores($predictionIds, self::TOP_SCORES_NUMBER, true);
-            $numberOfPredictionsPerHour = $predictionManager->getNumberOfPredictionsPerHour($predictionIds, self::HOURS_FROM_NOW);
+            $topScorers = $predictionManager->getTopScorers($match->getId(), self::TOP_SCORERS_NUMBER, true);
+            $topScores = $predictionManager->getTopScores($match->getId(), self::TOP_SCORES_NUMBER, true);
+            $numberOfPredictionsPerHour = $predictionManager->getNumberOfPredictionsPerHour($match->getId(), self::HOURS_FROM_NOW);
 
             //Match full time analytics
             if ($match->getStatus() == Match::FULL_TIME_STATUS) {
-                $correctResultCount = $predictionManager->getUsersCountWithCorrectResult($predictionIds);
-                $correctScoreCount = $predictionManager->getPredictionsCorrectScoreCount($predictionIds);
-                $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
-                $scorersSum = $predictionManager->getPredictionCorrectScorersSum($predictionIds);
-                $scorersOrderSum = $predictionManager->getPredictionCorrectScorersOrderSum($predictionIds, true);
-                $usersWithPerfectResult = $predictionManager->getUsersWithPerfectResult($predictionIds);
+                $correctResultCount = $predictionManager->getUsersCountWithCorrectResult($match->getId());
+                $correctScoreCount = $predictionManager->getPredictionsCorrectScoreCount($match->getId());
+                $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($match->getId());
+                $scorersSum = $predictionManager->getPredictionCorrectScorersSum($match->getId());
+                $scorersOrderSum = $predictionManager->getPredictionCorrectScorersOrderSum($match->getId(), true);
+                $usersWithPerfectResult = $predictionManager->getUsersWithPerfectResult($match->getId());
 
                 if ($totalNumberOfPredictions) {
                     //Percentage of users with correct score
@@ -514,14 +513,12 @@ class MatchManager extends BasicManager
         if (is_null($match)){
             $match = MatchManager::getInstance($this->getServiceLocator())->getMatchById($matchId);
         }
-        $predictionIds = $match->getPredictionIds();
-        if (!empty($predictionIds)){
-            $totalNumberOfPredictions = count($predictionIds);
-
+        $totalNumberOfPredictions = $predictionManager->getMatchPredictionsCount($match->getId());
+        if ($totalNumberOfPredictions){
             if ($applicationManager->getAppEdition() == ApplicationManager::CLUB_EDITION) {
                 //Match report top predicted scorers
-                $topScorers = $predictionManager->getTopScorers($predictionIds, self::ALL_SCORERS, true);
-                $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
+                $topScorers = $predictionManager->getTopScorers($match->getId(), self::ALL_SCORERS, true);
+                $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($match->getId());
                 if (!empty($topScorers) && $matchPredictionPlayersCount){
                     $appClub = $applicationManager->getAppClub();
                     $scorers = array();
@@ -550,8 +547,8 @@ class MatchManager extends BasicManager
                 }
             }
             //Match report top predicted scores
-            $topScores = $predictionManager->getTopScores($predictionIds, self::TOP_SCORES_NUMBER, true);
-            if (!empty($topScores) && $totalNumberOfPredictions){
+            $topScores = $predictionManager->getTopScores($match->getId(), self::TOP_SCORES_NUMBER, true);
+            if (!empty($topScores)){
                 $scores = array();
                 foreach($topScores as $score){
                     $scores[$score['home_team_score'] . '-' . $score['away_team_score']]  = round( ($score['scores_count'] / $totalNumberOfPredictions) * 100 );
@@ -621,12 +618,11 @@ class MatchManager extends BasicManager
             $match = MatchManager::getInstance($this->getServiceLocator())->getMatchById($matchId);
         }
 
-        $predictionIds = $match->getPredictionIds();
+        $totalNumberOfPredictions = $predictionManager->getMatchPredictionsCount($match->getId());
 
-        if (!empty($predictionIds)){
-            $totalNumberOfPredictions = count($predictionIds);
+        if ($totalNumberOfPredictions){
             //Match report top predicted scores
-            $topScores = $predictionManager->getTopScores($predictionIds, self::POST_MATCH_REPORT_TOP_SCORES_NUMBER, true);
+            $topScores = $predictionManager->getTopScores($match->getId(), self::POST_MATCH_REPORT_TOP_SCORES_NUMBER);
             if (!empty($topScores[0])){//Get top predicted score
                 $report['topScore'] = $topScores[0];
             }
@@ -642,8 +638,8 @@ class MatchManager extends BasicManager
                     }
                     if (!empty($correctScorersIds)){
                         $appClub = $applicationManager->getAppClub();
-                        $scorersPredictionsCount = $predictionManager->getCorrectScorersPredictionsCount($predictionIds, $correctScorersIds, true);
-                        $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($predictionIds);
+                        $scorersPredictionsCount = $predictionManager->getCorrectScorersPredictionsCount($match->getId(), $correctScorersIds, true);
+                        $matchPredictionPlayersCount = $predictionManager->getPredictionPlayersCount($match->getId());
 
                         if (!empty($scorersPredictionsCount)){
                             $scorers = array();
@@ -678,8 +674,8 @@ class MatchManager extends BasicManager
 
             //Match report correctly predicted result
             if ($totalNumberOfPredictions){
-                $correctScoreCount = $predictionManager->getPredictionsCorrectScoreCount($predictionIds);
-                $report['correctScore'] = round( ($correctScoreCount / $totalNumberOfPredictions) * 100);
+                $correctResultCount = $predictionManager->getUsersCountWithCorrectResult($match->getId());
+                $report['correctResult'] = round( ($correctResultCount / $totalNumberOfPredictions) * 100);
             }
         }
 
@@ -730,6 +726,7 @@ class MatchManager extends BasicManager
                 }
             }
         }
+
         return $report;
     }
 
@@ -801,5 +798,4 @@ class MatchManager extends BasicManager
     public function getHasFinishedMatches($season, $skipCache = false) {
         return MatchDAO::getInstance($this->getServiceLocator())->getHasFinishedMatches($season, $skipCache);
     }
-
 }

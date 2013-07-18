@@ -193,110 +193,96 @@ class PredictionManager extends BasicManager {
     }
 
     /**
-     * @param array $predictionIds
+     * @param int $matchId
      * @param int $limit
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getTopScorers(array $predictionIds, $limit = 5, $hydrate = false, $skipCache = false)
+    public function getTopScorers($matchId, $limit = 5, $hydrate = false, $skipCache = false)
     {
-        $scorers = array();
-        if (!empty($predictionIds)){
-            $scorers = PredictionDAO::getInstance($this->getServiceLocator())->getTopScorers($predictionIds, $limit, $hydrate, $skipCache);
-        }
-        return $scorers;
+        return PredictionDAO::getInstance($this->getServiceLocator())->getTopScorers($matchId, $limit, $hydrate, $skipCache);
     }
 
     /**
-     * @param array $predictionIds
+     * @param $matchId
      * @param int $limit
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getTopScores(array $predictionIds, $limit = 5, $hydrate = false, $skipCache = false)
+    public function getTopScores($matchId, $limit = 5, $hydrate = false, $skipCache = false)
     {
-        $scores = array();
-        if (!empty($predictionIds)){
-            $scores = PredictionDAO::getInstance($this->getServiceLocator())->getTopScores($predictionIds, $limit, $hydrate, $skipCache);
-        }
-        return $scores;
+        return PredictionDAO::getInstance($this->getServiceLocator())->getTopScores($matchId, $limit, $hydrate, $skipCache);
     }
 
     /**
-     * @param array $predictionIds
-     * @param bool $hydrate
+     * @param $matchId
      * @param bool $skipCache
      * @return mixed
      */
-    public function getUsersCountWithCorrectResult(array $predictionIds, $skipCache = false)
+    public function getUsersCountWithCorrectResult($matchId, $skipCache = false)
     {
-        return PredictionDAO::getInstance($this->getServiceLocator())->getUsersCountWithCorrectResult($predictionIds, $skipCache);
+        return PredictionDAO::getInstance($this->getServiceLocator())->getUsersCountWithCorrectResult($matchId, $skipCache);
     }
 
     /**
-     * @param array $predictionIds
-     * @param bool $hydrate
+     * @param $matchId
      * @param bool $skipCache
      * @return mixed
      */
-    public function getPredictionsCorrectScoreCount(array $predictionIds, $skipCache = false)
+    public function getPredictionsCorrectScoreCount($matchId, $skipCache = false)
     {
-        return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionsCorrectScoreCount($predictionIds, $skipCache);
+        return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionsCorrectScoreCount($matchId, $skipCache);
     }
 
     /**
-     * @param array $predictionIds
+     * @param $matchId
      * @return mixed
      */
-    public function getUsersWithPerfectResult(array $predictionIds)
+    public function getUsersWithPerfectResult($matchId)
     {
-        return PredictionDAO::getInstance($this->getServiceLocator())->getUsersWithPerfectResult($predictionIds);
+        return PredictionDAO::getInstance($this->getServiceLocator())->getUsersWithPerfectResult($matchId);
     }
 
     /**
-     * @param array $predictionIds
+     * @param int $matchId
      * @param int $hoursFromNow
-     * @param bool $hydrate
-     * @param bool $skipCache
      * @return array
      */
-    public function getNumberOfPredictionsPerHour(array $predictionIds, $hoursFromNow = 12)
+    public function getNumberOfPredictionsPerHour($matchId, $hoursFromNow = 12)
     {
-        return PredictionDAO::getInstance($this->getServiceLocator())->getNumberOfPredictionsPerHour($predictionIds, $hoursFromNow);
+        return PredictionDAO::getInstance($this->getServiceLocator())->getNumberOfPredictionsPerHour($matchId, $hoursFromNow);
     }
 
     /**
-     * @param array $predictionIds
-     * @param bool $hydrate
+     * @param $matchId
      * @param bool $skipCache
      * @return mixed
      */
-    public function getPredictionPlayersCount(array $predictionIds, $skipCache = false)
+    public function getPredictionPlayersCount($matchId, $skipCache = false)
     {
-        return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionPlayersCount($predictionIds, $skipCache);
+        return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionPlayersCount($matchId, $skipCache);
     }
 
     /**
-     * @param array $predictionIds
-     * @param bool $hydrate
+     * @param $matchId
      * @param bool $skipCache
      * @return mixed
      */
-    public function getPredictionCorrectScorersSum(array $predictionIds, $skipCache = false)
+    public function getPredictionCorrectScorersSum($matchId, $skipCache = false)
     {
-        return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionCorrectScorersSum($predictionIds, $skipCache);
+        return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionCorrectScorersSum($matchId, $skipCache);
     }
 
     /**
-     * @param array $predictionIds
+     * @param $matchId
      * @param bool $skipCache
      * @return mixed
      */
-    public function getPredictionCorrectScorersOrderSum(array $predictionIds, $skipCache = false)
+    public function getPredictionCorrectScorersOrderSum($matchId, $skipCache = false)
     {
-        return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionCorrectScorersOrderSum($predictionIds, $skipCache);
+        return PredictionDAO::getInstance($this->getServiceLocator())->getPredictionCorrectScorersOrderSum($matchId, $skipCache);
     }
 
     /**
@@ -322,9 +308,16 @@ class PredictionManager extends BasicManager {
         $predictionDAO->save($prediction);
     }
 
-    public function getCorrectScorersPredictionsCount(array $predictionIds, array $scorersIds, $hydrate = true, $skipCache = false)
+    /**
+     * @param $matchId
+     * @param array $scorersIds
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getCorrectScorersPredictionsCount($matchId, array $scorersIds, $hydrate = true, $skipCache = false)
     {
-        return PredictionDAO::getInstance($this->getServiceLocator())->getCorrectScorersPredictionsCount($predictionIds, $scorersIds,$hydrate ,$skipCache);
+        return PredictionDAO::getInstance($this->getServiceLocator())->getCorrectScorersPredictionsCount($matchId, $scorersIds,$hydrate ,$skipCache);
     }
 
     public function getUserPredictionsNumber($season, $user) {
@@ -346,4 +339,8 @@ class PredictionManager extends BasicManager {
         return $predictionDAO->getUserPrediction($matchId, $userId, $hydrate, $skipCache);
     }
 
+    public function getMatchPredictionsCount($matchId, $skipCache = false)
+    {
+        return PredictionDAO::getInstance($this->getServiceLocator())->getMatchPredictionsCount($matchId, $skipCache);
+    }
 }
