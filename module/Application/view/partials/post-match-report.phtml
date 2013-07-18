@@ -66,7 +66,7 @@
             <?php endif;?>
         <!--CORRECT SCORERS BLOCK ENDS-->
         <!--CORRECT SCORE BLOCK STARTS-->
-        <?php if (isset($this->report['correctScore'])):?>
+        <?php if (isset($this->report['correctResult'])):?>
             <div class="item col1 summary left">
                 <section>
                     <figure class="clearfix">
@@ -77,8 +77,8 @@
             </div>
             <script type="text/javascript">
                 var communityPredictedData = [
-                    {color : '#144a9b', data: <?php echo (!empty($this->report['correctScore']) ? $this->report['correctScore'] : 0.00001);?>, label:  '<?php echo (int)$this->report['correctScore'] . '%';?>'},
-                    {color : '#90b1d4', data: <?php echo (100 - $this->report['correctScore']);?>, label: ''}
+                    {color : '#144a9b', data: <?php echo (!empty($this->report['correctResult']) ? $this->report['correctResult'] : 0.00001);?>, label:  '<?php echo (int)$this->report['correctResult'] . '%';?>'},
+                    {color : '#90b1d4', data: <?php echo (100 - $this->report['correctResult']);?>, label: ''}
 
                 ];
             </script>

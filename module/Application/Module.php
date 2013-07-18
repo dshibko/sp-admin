@@ -57,8 +57,8 @@ class Module
         } else
             $language = $user->getLanguage()->getLanguageCode();
 
-        // todo remove
-        $language = LanguageManager::getInstance($e->getApplication()->getServiceManager())->getDefaultLanguage()->getLanguageCode();
+//        // todo remove
+//        $language = LanguageManager::getInstance($e->getApplication()->getServiceManager())->getDefaultLanguage()->getLanguageCode();
 
         $translator->setLocale($language);
         $matches = $e->getRouteMatch();

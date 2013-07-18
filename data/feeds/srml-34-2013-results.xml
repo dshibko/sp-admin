@@ -2,12 +2,12 @@
 <!-- Copyright 2001-2013 Opta Sportsdata Ltd. All rights reserved. -->
 
 <!-- PRODUCTION HEADER
-     produced on:        valde-jobq-a01.nexus.opta.net
-     production time:    20130630T080230,206Z
+     produced on:        valde-jobq-a04.nexus.opta.net
+     production time:    20130718T095741,174Z
      production module:  Opta::Feed::XML::Soccer::F1
 -->
 <SoccerFeed>
-  <SoccerDocument Type="RESULTS Latest" competition_code="IG_CF" competition_id="34" competition_name="Friendly" game_system_id="1" season_id="2013" season_name="Season 2013/2014" timestamp="2013-06-30 09-02-30">
+  <SoccerDocument Type="RESULTS Latest" competition_code="IG_CF" competition_id="34" competition_name="Friendly" game_system_id="1" season_id="2013" season_name="Season 2013/2014" timestamp="2013-07-18 10-57-41">
     <MatchData detail_id="1" last_modified="2013-05-24T04:09:19+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g691748">
       <MatchInfo MatchType="Regular" MatchWinner="t43" Period="FullTime" Venue_id="8807">
         <Date>2013-05-24 01:30:00</Date>
@@ -48,57 +48,89 @@
       </TeamData>
     </MatchData>
     <MatchData detail_id="1" last_modified="2013-06-27T12:26:22+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701276">
-      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="2763">
-        <Date TBC="1">2013-07-06 15:00:00</Date>
+      <MatchInfo MatchType="Regular" MatchWinner="t215" Period="FullTime" Venue_id="2763">
+        <Date>2013-07-06 15:00:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">glücksgas Stadion</Stat>
       <Stat Type="City">Dresden</Stat>
-      <TeamData Side="Home" TeamRef="t945" />
-      <TeamData Side="Away" TeamRef="t215" />
+      <TeamData HalfScore="0" Score="0" Side="Home" TeamRef="t945" />
+      <TeamData HalfScore="2" Score="3" Side="Away" TeamRef="t215">
+        <Goal Period="FirstHalf" PlayerRef="p80607" Type="Goal" />
+        <Goal Period="FirstHalf" PlayerRef="p80607" Type="Goal" />
+        <Goal Period="SecondHalf" PlayerRef="p77932" Type="Goal" />
+      </TeamData>
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:11:07+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701277">
-      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="120">
-        <Date>2013-07-09 19:00:00</Date>
+    <MatchData detail_id="1" last_modified="2013-07-08T11:46:17+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701277">
+      <MatchInfo MatchType="Regular" MatchWinner="t204" Period="FullTime" Venue_id="120">
+        <Date>2013-07-09 18:00:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">Philips Stadion</Stat>
       <Stat Type="City">Eindhoven</Stat>
-      <TeamData Side="Home" TeamRef="t204" />
-      <TeamData Side="Away" TeamRef="t1444" />
+      <TeamData HalfScore="2" Score="3" Side="Home" TeamRef="t204">
+        <Goal Period="FirstHalf" PlayerRef="p48562" Type="Goal" />
+        <Goal Period="FirstHalf" PlayerRef="p48562" Type="Goal" />
+        <Goal Period="SecondHalf" PlayerRef="p106757" Type="Goal" />
+      </TeamData>
+      <TeamData HalfScore="0" Score="0" Side="Away" TeamRef="t1444" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:11:23+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701278">
-      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="7266">
-        <Date>2013-07-13 12:30:00</Date>
+    <MatchData detail_id="1" last_modified="2013-07-10T12:09:31+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701278">
+      <MatchInfo MatchType="Regular" MatchWinner="t80" Period="FullTime" Venue_id="7266">
+        <Date>2013-07-13 11:30:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">Kyocera Stadion</Stat>
       <Stat Type="City">The Hague</Stat>
-      <TeamData Side="Home" TeamRef="t701" />
-      <TeamData Side="Away" TeamRef="t80" />
+      <TeamData HalfScore="0" Score="0" Side="Home" TeamRef="t701" />
+      <TeamData HalfScore="1" Score="1" Side="Away" TeamRef="t80">
+        <Goal Period="FirstHalf" PlayerRef="p11829" Type="Goal" />
+      </TeamData>
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:11:41+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701279">
-      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="121">
-        <Date>2013-07-13 16:00:00</Date>
+    <MatchData detail_id="1" last_modified="2013-07-10T12:10:04+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701279">
+      <MatchInfo MatchType="Regular" MatchWinner="t215" Period="FullTime" Venue_id="121">
+        <Date>2013-07-13 15:00:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
-      <Stat Type="Venue">Mandemakers</Stat>
-      <Stat Type="City">Capelle</Stat>
-      <TeamData Side="Home" TeamRef="t321" />
-      <TeamData Side="Away" TeamRef="t215" />
+      <Stat Type="Venue">Mandemakers Stadion</Stat>
+      <Stat Type="City">Waalwijk</Stat>
+      <TeamData HalfScore="1" Score="1" Side="Home" TeamRef="t321">
+        <Goal Period="FirstHalf" PlayerRef="p39035" Type="Goal" />
+      </TeamData>
+      <TeamData HalfScore="4" Score="5" Side="Away" TeamRef="t215">
+        <Goal Period="FirstHalf" PlayerRef="p32020" Type="Goal" />
+        <Goal Period="FirstHalf" PlayerRef="p96109" Type="Goal" />
+        <Goal Period="FirstHalf" PlayerRef="p32020" Type="Goal" />
+        <Goal Period="FirstHalf" PlayerRef="p32020" Type="Goal" />
+        <Goal Period="SecondHalf" PlayerRef="p165977" Type="Goal" />
+      </TeamData>
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-05-15T17:08:09+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g691750">
-      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="2760">
-        <Date>2013-07-17 14:00:00</Date>
+    <MatchData detail_id="1" last_modified="2013-07-16T12:20:57+00:00" timestamp_accuracy_id="1" timing_id="4" uID="g709082">
+      <MatchInfo MatchType="Regular" MatchWinner="t1058" Period="FullTime" Venue_id="4131">
+        <Date>2013-07-14 14:00:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
-      <Stat Type="Venue">Rajamangala National Stadium</Stat>
-      <TeamData Side="Home" TeamRef="t8658" />
-      <TeamData Side="Away" TeamRef="t8" />
+      <Stat Type="Venue">Super Stadium</Stat>
+      <Stat Type="City">Atteridgeville</Stat>
+      <TeamData HalfScore="0" Score="2" Side="Home" TeamRef="t1058">
+        <Goal Period="SecondHalf" PlayerRef="p45056" Type="Goal" />
+        <Goal Period="SecondHalf" PlayerRef="p52317" Type="Goal" />
+      </TeamData>
+      <TeamData HalfScore="0" Score="0" Side="Away" TeamRef="t43" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:12:29+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701280">
+    <MatchData detail_id="1" last_modified="2013-07-16T12:21:19+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g709083">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="3757">
+        <Date>2013-07-18 19:00:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Princess Magogo Stadium</Stat>
+      <Stat Type="City">Durban</Stat>
+      <TeamData Side="Home" TeamRef="t2603" />
+      <TeamData Side="Away" TeamRef="t43" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-10T12:17:58+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701280">
       <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="1380">
-        <Date>2013-07-19 20:15:00</Date>
+        <Date>2013-07-19 19:15:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">Weserstadion</Stat>
@@ -106,39 +138,69 @@
       <TeamData Side="Home" TeamRef="t171" />
       <TeamData Side="Away" TeamRef="t215" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:13:11+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701281">
+    <MatchData detail_id="1" last_modified="2013-07-10T12:19:11+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701281">
       <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="2117">
-        <Date>2013-07-20 19:30:00</Date>
+        <Date>2013-07-20 18:30:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
-      <Stat Type="Venue">GN Bouw</Stat>
+      <Stat Type="Venue">GN Bouw Stadion</Stat>
       <Stat Type="City">Dordrecht</Stat>
       <TeamData Side="Home" TeamRef="t697" />
       <TeamData Side="Away" TeamRef="t198" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-05-15T17:08:42+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g691751">
-      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="4089">
-        <Date>2013-07-21 14:45:00</Date>
+    <MatchData detail_id="1" last_modified="2013-07-10T18:36:36+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708304">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="7367">
+        <Date>2013-07-20 19:30:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
-      <Stat Type="Venue">Shah Alam Stadium</Stat>
-      <Stat Type="City">Penang</Stat>
-      <TeamData Side="Home" TeamRef="t2878" />
-      <TeamData Side="Away" TeamRef="t8" />
+      <Stat Type="Venue">PGE Arena</Stat>
+      <Stat Type="City">Gdansk</Stat>
+      <TeamData Side="Home" TeamRef="t3047" />
+      <TeamData Side="Away" TeamRef="t178" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:13:36+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701282">
+    <MatchData detail_id="1" last_modified="2013-07-10T18:37:37+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708305">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="2726">
+        <Date>2013-07-20 19:30:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Ullevaal Stadion</Stat>
+      <Stat Type="City">Oslo</Stat>
+      <TeamData Side="Home" TeamRef="t311" />
+      <TeamData Side="Away" TeamRef="t178" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-10T18:05:33+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708296">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="2734">
+        <Date>2013-07-21 19:45:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Seward Stadium</Stat>
+      <Stat Type="City">Bournemouth</Stat>
+      <TeamData Side="Home" TeamRef="t91" />
+      <TeamData Side="Away" TeamRef="t186" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-17T17:50:01+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g709813">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="3649">
+        <Date>2013-07-22 11:30:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Toyota Stadium</Stat>
+      <Stat Type="City">Toyota</Stat>
+      <TeamData Side="Home" TeamRef="t406" />
+      <TeamData Side="Away" TeamRef="t3" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-10T12:19:27+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701282">
       <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="124">
-        <Date>2013-07-23 19:30:00</Date>
+        <Date>2013-07-23 18:30:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">De Grolsch Veste</Stat>
-      <Stat Type="City">Enschende</Stat>
+      <Stat Type="City">Enschede</Stat>
       <TeamData Side="Home" TeamRef="t324" />
       <TeamData Side="Away" TeamRef="t450" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:13:47+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701283">
+    <MatchData detail_id="1" last_modified="2013-07-10T12:27:26+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701283">
       <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="4120">
-        <Date>2013-07-23 19:30:00</Date>
+        <Date>2013-07-23 18:30:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">Cambuur Stadion</Stat>
@@ -146,23 +208,43 @@
       <TeamData Side="Home" TeamRef="t314" />
       <TeamData Side="Away" TeamRef="t181" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:15:02+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701285">
+    <MatchData detail_id="1" last_modified="2013-07-10T17:50:51+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708294">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="1309">
+        <Date>2013-07-24 20:00:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Stade de Gerland</Stat>
+      <Stat Type="City">Lyon</Stat>
+      <TeamData Side="Home" TeamRef="t143" />
+      <TeamData Side="Away" TeamRef="t186" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-16T11:05:42+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701285">
       <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="3210">
-        <Date>2013-07-24 14:30:00</Date>
+        <Date>2013-07-24 13:30:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">Hong Kong Stadium</Stat>
       <TeamData Side="Home" TeamRef="t43" />
       <TeamData Side="Away" TeamRef="t8743" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:16:19+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701284">
+    <MatchData detail_id="1" last_modified="2013-07-16T11:05:08+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701284">
       <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="3210">
-        <Date>2013-07-24 12:00:00</Date>
+        <Date>2013-07-24 11:00:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">Hong Kong Stadium</Stat>
       <TeamData Side="Home" TeamRef="t6" />
       <TeamData Side="Away" TeamRef="t56" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-15T12:43:42+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708640">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="1344">
+        <Date>2013-07-24 19:30:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Marc&#39;Antonio Bentegodi</Stat>
+      <Stat Type="City">Verona</Stat>
+      <TeamData Side="Home" TeamRef="t126" />
+      <TeamData Side="Away" TeamRef="t198" />
     </MatchData>
     <MatchData detail_id="1" last_modified="2013-06-26T18:09:38+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g691752">
       <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="3078">
@@ -174,9 +256,19 @@
       <TeamData Side="Home" TeamRef="t8659" />
       <TeamData Side="Away" TeamRef="t8" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:15:23+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701286">
+    <MatchData detail_id="1" last_modified="2013-07-15T12:44:12+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708641">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="125">
+        <Date>2013-07-25 18:00:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Nieuw Galgenwaard</Stat>
+      <Stat Type="City">Utrecht</Stat>
+      <TeamData Side="Home" TeamRef="t325" />
+      <TeamData Side="Away" TeamRef="t2422" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-10T12:27:56+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701286">
       <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="3284">
-        <Date>2013-07-26 20:00:00</Date>
+        <Date>2013-07-26 19:00:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">Polman Stadion</Stat>
@@ -184,9 +276,19 @@
       <TeamData Side="Home" TeamRef="t2038" />
       <TeamData Side="Away" TeamRef="t1450" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:15:43+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701287">
+    <MatchData detail_id="1" last_modified="2013-07-10T17:59:19+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708295">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="2711">
+        <Date>2013-07-27 19:00:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Ullevi Stadium</Stat>
+      <Stat Type="City">Gothenburg</Stat>
+      <TeamData Side="Home" TeamRef="t186" />
+      <TeamData Side="Away" TeamRef="t149" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-10T12:28:13+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701287">
       <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="126">
-        <Date>2013-07-27 15:30:00</Date>
+        <Date>2013-07-27 14:30:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">Gelredome</Stat>
@@ -194,15 +296,65 @@
       <TeamData Side="Home" TeamRef="t232" />
       <TeamData Side="Away" TeamRef="t164" />
     </MatchData>
-    <MatchData detail_id="1" last_modified="2013-06-26T18:16:05+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701288">
+    <MatchData detail_id="1" last_modified="2013-07-17T15:33:55+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708642">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="117">
+        <Date>2013-07-27 18:30:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Abe Lenstra Stadion</Stat>
+      <Stat Type="City">Heerenveen</Stat>
+      <TeamData Side="Home" TeamRef="t318" />
+      <TeamData Side="Away" TeamRef="t450" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-10T12:28:26+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g701288">
       <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="114">
-        <Date>2013-07-28 16:30:00</Date>
+        <Date>2013-07-28 15:30:00</Date>
         <TZ>BST</TZ>
       </MatchInfo>
       <Stat Type="Venue">De Kuip</Stat>
       <Stat Type="City">Rotterdam</Stat>
       <TeamData Side="Home" TeamRef="t198" />
       <TeamData Side="Away" TeamRef="t1450" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-12T17:57:59+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708411">
+      <MatchInfo MatchType="Cup Short" Period="PreMatch" RoundType="Final" Venue_id="1349">
+        <Date>2013-08-02 20:30:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Camp Nou</Stat>
+      <Stat Type="City">Barcelona</Stat>
+      <TeamData Side="Home" TeamRef="t178" />
+      <TeamData Side="Away" TeamRef="t1303" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-10T18:13:23+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708297">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="8964">
+        <Date>2013-08-10 19:00:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Edward Jones Dome</Stat>
+      <Stat Type="City">Saint Louis</Stat>
+      <TeamData Side="Home" TeamRef="t186" />
+      <TeamData Side="Away" TeamRef="t127" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-18T10:51:24+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g709968">
+      <MatchInfo MatchType="Regular" Period="PreMatch" Venue_id="2644">
+        <Date>2013-08-11 01:00:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">RFK Stadium</Stat>
+      <Stat Type="City">Washington D.C</Stat>
+      <TeamData Side="Home" TeamRef="t8" />
+      <TeamData Side="Away" TeamRef="t121" />
+    </MatchData>
+    <MatchData detail_id="1" last_modified="2013-07-12T17:56:24+00:00" timestamp_accuracy_id="1" timing_id="1" uID="g708410">
+      <MatchInfo MatchType="Cup Short" Period="PreMatch" RoundType="Final" Venue_id="1360">
+        <Date>2013-08-22 21:30:00</Date>
+        <TZ>BST</TZ>
+      </MatchInfo>
+      <Stat Type="Venue">Santiago Bernabéu</Stat>
+      <Stat Type="City">Madrid</Stat>
+      <TeamData Side="Home" TeamRef="t186" />
+      <TeamData Side="Away" TeamRef="t1362" />
     </MatchData>
     <TimingTypes>
       <DetailTypes>
@@ -230,20 +382,14 @@
         <TimingType name="Post Match (24 hours+)" timestamp_accuracy_id="4" />
       </TimingType>
     </TimingTypes>
-    <Team uID="t697">
-      <Name>FC Dordrecht</Name>
+    <Team uID="t127">
+      <Name>Internazionale</Name>
     </Team>
     <Team uID="t204">
       <Name>PSV</Name>
     </Team>
-    <Team uID="t181">
-      <Name>Mallorca</Name>
-    </Team>
-    <Team uID="t2878">
-      <Name>Malaysia Select XI</Name>
-    </Team>
-    <Team uID="t1444">
-      <Name>Eindhoven</Name>
+    <Team uID="t2422">
+      <Name>Differdange 03</Name>
     </Team>
     <Team uID="t198">
       <Name>Feyenoord</Name>
@@ -251,35 +397,20 @@
     <Team uID="t80">
       <Name>Swansea City</Name>
     </Team>
-    <Team uID="t314">
-      <Name>SC Cambuur Leeuwarden</Name>
-    </Team>
-    <Team uID="t8743">
-      <Name>South China</Name>
-    </Team>
     <Team uID="t324">
       <Name>FC Twente</Name>
     </Team>
-    <Team uID="t701">
-      <Name>ADO Den Haag</Name>
+    <Team uID="t3047">
+      <Name>Lechia Gdansk</Name>
     </Team>
-    <Team uID="t8658">
-      <Name>Singha All Star</Name>
+    <Team uID="t186">
+      <Name>Real Madrid</Name>
     </Team>
     <Team uID="t2038">
       <Name>Heracles Almelo</Name>
     </Team>
-    <Team uID="t6">
-      <Name>Tottenham Hotspur</Name>
-    </Team>
     <Team uID="t8659">
-      <Name>BNI Indonesia All Star</Name>
-    </Team>
-    <Team uID="t1450">
-      <Name>Getafe</Name>
-    </Team>
-    <Team uID="t8">
-      <Name>Chelsea</Name>
+      <Name>BNI Indonesia All-Stars</Name>
     </Team>
     <Team uID="t215">
       <Name>Ajax</Name>
@@ -287,20 +418,92 @@
     <Team uID="t450">
       <Name>Osasuna</Name>
     </Team>
+    <Team uID="t232">
+      <Name>Vitesse</Name>
+    </Team>
+    <Team uID="t178">
+      <Name>Barcelona</Name>
+    </Team>
+    <Team uID="t697">
+      <Name>FC Dordrecht</Name>
+    </Team>
+    <Team uID="t1362">
+      <Name>Al-Sadd</Name>
+    </Team>
+    <Team uID="t1058">
+      <Name>Supersport United</Name>
+    </Team>
+    <Team uID="t181">
+      <Name>Mallorca</Name>
+    </Team>
+    <Team uID="t1444">
+      <Name>Eindhoven</Name>
+    </Team>
+    <Team uID="t91">
+      <Name>Bournemouth</Name>
+    </Team>
+    <Team uID="t314">
+      <Name>SC Cambuur Leeuwarden</Name>
+    </Team>
+    <Team uID="t121">
+      <Name>Roma</Name>
+    </Team>
+    <Team uID="t143">
+      <Name>Lyon</Name>
+    </Team>
+    <Team uID="t8743">
+      <Name>South China</Name>
+    </Team>
+    <Team uID="t701">
+      <Name>ADO Den Haag</Name>
+    </Team>
+    <Team uID="t318">
+      <Name>sc Heerenveen</Name>
+    </Team>
+    <Team uID="t1303">
+      <Name>Santos</Name>
+    </Team>
+    <Team uID="t325">
+      <Name>FC Utrecht</Name>
+    </Team>
+    <Team uID="t126">
+      <Name>Verona</Name>
+    </Team>
+    <Team uID="t149">
+      <Name>Paris Saint Germain</Name>
+    </Team>
+    <Team uID="t6">
+      <Name>Tottenham Hotspur</Name>
+    </Team>
+    <Team uID="t3">
+      <Name>Arsenal</Name>
+    </Team>
+    <Team uID="t406">
+      <Name>Nagoya Grampus Eight</Name>
+    </Team>
+    <Team uID="t1450">
+      <Name>Getafe</Name>
+    </Team>
+    <Team uID="t8">
+      <Name>Chelsea</Name>
+    </Team>
+    <Team uID="t2603">
+      <Name>AmaZulu FC</Name>
+    </Team>
     <Team uID="t56">
       <Name>Sunderland</Name>
     </Team>
     <Team uID="t164">
       <Name>Bayer 04 Leverkusen</Name>
     </Team>
-    <Team uID="t232">
-      <Name>Vitesse</Name>
-    </Team>
     <Team uID="t321">
       <Name>RKC Waalwijk</Name>
     </Team>
     <Team uID="t43">
       <Name>Manchester City</Name>
+    </Team>
+    <Team uID="t311">
+      <Name>Valerenga</Name>
     </Team>
     <Team uID="t171">
       <Name>SV Werder Bremen</Name>

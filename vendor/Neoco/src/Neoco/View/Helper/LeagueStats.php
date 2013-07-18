@@ -47,9 +47,9 @@ class LeagueStats extends AbstractHelper
             if ($this->currentSeason === null) return $this;
             $user = ApplicationManager::getInstance($this->serviceLocator)->getCurrentUser();
 
-            // todo remove
-//            $region = $user->getCountry()->getRegion();
-            $region = RegionManager::getInstance($this->serviceLocator)->getDefaultRegion();
+//            // todo remove
+            $region = $user->getCountry()->getRegion();
+//            $region = RegionManager::getInstance($this->serviceLocator)->getDefaultRegion();
 
             $leagueUsers = $leagueUserDAO->getUserLeagues($user, $this->currentSeason, $region, true);
             $this->overallLeagueUsers = $this->temporalLeagueUsers = array();

@@ -28,10 +28,22 @@ class ExportManager extends BasicManager {
         return self::$instance;
     }
 
-    public function exportArrayToCSV(array $dataArray, array $config) {
+    /**
+     * @param array $dataArray
+     * @param array $config
+     * @param array $aliasConfig
+     * @return string
+     */
+    public function exportArrayToCSV(array $dataArray, array $config, array $aliasConfig = array()) {
         $rows = array();
 
-        $rows [] = implode(',', array_keys($config));
+        $columns = array();
+        foreach (array_keys($config) as $column)
+            if (array_key_exists($column, $aliasConfig))
+                $columns [] = $aliasConfig[$column];
+            else
+                $columns [] = $column;
+        $rows [] = implode(',', $columns);
         foreach ($dataArray as $dataRow) {
             $cols = array();
             foreach ($config as $columnName => $columnType) {
@@ -67,6 +79,19 @@ class ExportManager extends BasicManager {
             $rows [] = implode(",", $cols);
         }
         return implode("\n", $rows);
+    }
+
+    /**
+     * @param string $fileName
+     * @param string $fileContent
+     * @return bool
+     */
+    public function saveExportFile($fileName, $fileContent) {
+
+        $exportDir = getcwd() . DIRECTORY_SEPARATOR . 'data'  . DIRECTORY_SEPARATOR . 'export'  . DIRECTORY_SEPARATOR;
+
+        return file_put_contents($exportDir . $fileName, $fileContent) !== false ? $exportDir . $fileName : false;
+
     }
 
 }

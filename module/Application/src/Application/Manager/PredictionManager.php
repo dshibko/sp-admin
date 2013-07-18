@@ -7,6 +7,7 @@ use \Application\Model\Entities\Match;
 use \Application\Model\DAOs\TeamDAO;
 use \Application\Model\DAOs\PlayerDAO;
 use \Application\Model\Entities\PredictionPlayer;
+use Application\Model\Entities\Season;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\DAOs\MatchDAO;
 use \Application\Model\Entities\Prediction;
@@ -98,7 +99,7 @@ class PredictionManager extends BasicManager {
     }
 
     /**
-     * @param $season
+     * @param Season $season
      * @return int|string
      */
     public function getAvgNumberOfPredictions($season) {

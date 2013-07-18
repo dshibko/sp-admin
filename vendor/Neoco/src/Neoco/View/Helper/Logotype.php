@@ -46,8 +46,8 @@ class Logotype extends AbstractHelper
         $user = $applicationManager->getCurrentUser();
         $language = !is_null($user) ? $user->getLanguage() : $userManager->getUserLanguage();
 
-        // todo remove
-        $language = LanguageManager::getInstance($this->serviceLocator)->getDefaultLanguage();
+//        // todo remove
+//        $language = LanguageManager::getInstance($this->serviceLocator)->getDefaultLanguage();
 
         $logotype = $contentManager->getLogotypeByLanguage($language->getId());
         if (is_null($logotype)){

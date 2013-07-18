@@ -55,4 +55,21 @@ class ExceptionManager extends BasicManager {
         }
     }
 
+    /**
+     * @param \Exception $e
+     * @param int $priority
+     * @param \Zend\Console\Adapter\AdapterInterface $console
+     */
+    public function handleCustomException(\Exception $e, $priority = Logger::ERR, $console = null) {
+        LogManager::getInstance($this->getServiceLocator())->logCustomException($e, $priority);
+        if ($console != null) {
+            $console->writeLine("");
+            $console->writeLine($e->getMessage());
+        } else {
+            $flashMessenger = $this->getServiceLocator()->get('ControllerPluginManager')->get('FlashMessenger');
+            $flashMessenger->addErrorMessage($e->getMessage());
+            $flashMessenger->addErrorMessage($e->getTraceAsString());
+        }
+    }
+
 }

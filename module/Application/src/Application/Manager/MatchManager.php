@@ -673,9 +673,10 @@ class MatchManager extends BasicManager
             }
 
             //Match report correctly predicted result
-            $correctScoreCount = $predictionManager->getPredictionsCorrectScoreCount($match->getId());
-                $report['correctScore'] = round( ($correctScoreCount / $totalNumberOfPredictions) * 100);
-
+            if ($totalNumberOfPredictions){
+                $correctResultCount = $predictionManager->getUsersCountWithCorrectResult($predictionIds);
+                $report['correctResult'] = round( ($correctResultCount / $totalNumberOfPredictions) * 100);
+            }
         }
 
         if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
