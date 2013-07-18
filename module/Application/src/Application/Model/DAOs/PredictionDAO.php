@@ -76,18 +76,14 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param array $predictionIds
+     * @param int $matchId
      * @param int $limit
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
-     * @throws \Exception
      */
-    public function getTopScorers(array $predictionIds, $limit = 5, $hydrate = false, $skipCache = false)
+    public function getTopScorers($matchId, $limit = 5, $hydrate = false, $skipCache = false)
     {
-        if (empty($predictionIds)){
-            throw new \Exception('Empty prediction ids');
-        }
         $qb = $this->getEntityManager()->createQueryBuilder();
 
         $qb->select('
@@ -99,9 +95,10 @@ class PredictionDAO extends AbstractDAO {
             pl.imagePath
         ');
         $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
+        $qb->join('pp.prediction', 'p');
         $qb->join('pp.player','pl');
         $qb->join('pl.team','t');
-        $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
+        $qb->where($qb->expr()->eq('p.match',':id'))->setParameter('id', $matchId);
         $qb->andWhere($qb->expr()->isNotNull('pp.playerId'));
         $qb->groupBy('pp.playerId');
         $qb->orderBy('scorers_count','DESC');
@@ -109,22 +106,19 @@ class PredictionDAO extends AbstractDAO {
             $qb->setMaxResults($limit);
         }
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+
     }
 
 
     /**
-     * @param array $predictionIds
+     * @param $matchId
      * @param int $limit
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
-     * @throws \Exception
      */
-    public function getTopScores(array $predictionIds, $limit = 5, $hydrate = false, $skipCache = false)
+    public function getTopScores($matchId, $limit = 5, $hydrate = false, $skipCache = false)
     {
-        if (empty($predictionIds)){
-            throw new \Exception('Empty prediction ids');
-        }
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('
             p.homeTeamScore as home_team_score,
@@ -132,7 +126,7 @@ class PredictionDAO extends AbstractDAO {
             count(p.id) as scores_count
         ');
         $qb->from($this->getRepositoryName(),'p');
-        $qb->where($qb->expr()->in('p.id',':ids'))->setParameter('ids', $predictionIds);
+        $qb->where($qb->expr()->eq('p.match',':id'))->setParameter('id', $matchId);
         $qb->groupBy('p.homeTeamScore, p.awayTeamScore');
         $qb->orderBy('scores_count','DESC');
         $qb->setMaxResults($limit);
@@ -140,57 +134,45 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param array $predictionIds
+     * @param $matchId
      * @param bool $skipCache
-     * @throws \Exception
      * @return mixed
      */
-    public function getUsersCountWithCorrectResult(array $predictionIds, $skipCache = false)
+    public function getUsersCountWithCorrectResult($matchId, $skipCache = false)
     {
-        if (empty($predictionIds)){
-            throw new \Exception('Empty prediction ids');
-        }
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('
             COUNT(p.id) as user_count
         ');
         $qb->from($this->getRepositoryName(),'p');
-        $qb->where($qb->expr()->in('p.id',':ids'))->setParameter('ids', $predictionIds);
+        $qb->where($qb->expr()->eq('p.match',':id'))->setParameter('id', $matchId);
         $qb->andWhere('p.isCorrectResult = 1');
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
     /**
-     * @param array $predictionIds
+     * @param int $matchId
      * @param bool $skipCache
      * @return mixed
-     * @throws \Exception
      */
-    public function getPredictionsCorrectScoreCount(array $predictionIds, $skipCache = false)
+    public function getPredictionsCorrectScoreCount($matchId, $skipCache = false)
     {
-        if (empty($predictionIds)){
-            throw new \Exception('Empty prediction ids');
-        }
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('
             COUNT(p.id) as user_count
         ');
         $qb->from($this->getRepositoryName(),'p');
-        $qb->where($qb->expr()->in('p.id',':ids'))->setParameter('ids', $predictionIds);
+        $qb->where($qb->expr()->in('p.match',':id'))->setParameter('id', $matchId);
         $qb->andWhere('p.isCorrectScore = 1');
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
     /**
-     * @param array $predictionIds
+     * @param $matchId
      * @return array
-     * @throws \Exception
      */
-    public function getUsersWithPerfectResult(array $predictionIds)
+    public function getUsersWithPerfectResult($matchId)
     {
-        if (empty($predictionIds)){
-            throw new \Exception('Empty prediction ids');
-        }
         $rsm = new ResultSetMappingBuilder($this->getEntityManager());
         $rsm->addRootEntityFromClassMetadata('\Application\Model\Entities\User', 'u');
         $rsm->addEntityResult('\Application\Model\Entities\User', 'u');
@@ -200,13 +182,17 @@ class PredictionDAO extends AbstractDAO {
 	                  u.id,
 	                  u.display_name
                   FROM
-	                  prediction as p
+	                  `prediction` as p
                   INNER JOIN
-	                  user as u
+	                  `user` as u
 	              ON
 	                  u.id = p.user_id
+	              INNER JOIN
+	                  `match` as m
+	              ON
+	                    m.id = p.match_id
                   WHERE
-                      p.id in ('.implode(',', $predictionIds).')
+                      m.id = '.(int)$matchId.'
                   AND
 	                  p.is_correct_result = 1
 	              AND
@@ -229,98 +215,83 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param array $predictionIds
+     * @param int $matchId
      * @param int $hoursFromNow
      * @return array
-     * @throws \Exception
      */
-    public function getNumberOfPredictionsPerHour(array $predictionIds, $hoursFromNow = 12)
+    public function getNumberOfPredictionsPerHour($matchId, $hoursFromNow = 12)
     {
-        if (empty($predictionIds)){
-            throw new \Exception('Empty prediction ids');
-        }
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('number','number');
         $rsm->addScalarResult('date','date');
+
         $query = $this->getEntityManager()
             ->createNativeQuery('
                   SELECT
-                      count(id) as number,
-                      creation_date as date
+                      count(p.id) as number,
+                      p.creation_date as date
                   FROM
-                      prediction
+                      `prediction` as p
+                  INNER JOIN
+                      `match` as m ON m.id = p.match_id
                   WHERE
-                      id in ('.implode(',', $predictionIds).')
+                      m.id = '.(int)$matchId.'
                   AND
-                      creation_date > DATE_SUB(NOW(), INTERVAL '.$hoursFromNow.' HOUR)
+                      p.creation_date > DATE_SUB(NOW(), INTERVAL '.$hoursFromNow.' HOUR)
                   GROUP BY
-                      HOUR(creation_date)
+                      HOUR(p.creation_date)
             ', $rsm);
         return $query->getArrayResult();
     }
 
     /**
-     * @param array $predictionIds
+     * @param $matchId
      * @param bool $skipCache
      * @return mixed
-     * @throws \Exception
      */
-    public function getPredictionPlayersCount(array $predictionIds, $skipCache = false)
+    public function getPredictionPlayersCount($matchId, $skipCache = false)
     {
-        if (empty($predictionIds)){
-            throw new \Exception('Empty prediction ids');
-        }
-
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('
             COUNT(pp.playerId) as players_count
         ');
         $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
-        $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
+        $qb->join('pp.prediction','p');
+        $qb->where($qb->expr()->eq('p.match',':id'))->setParameter('id', $matchId);
         $qb->andWhere($qb->expr()->isNotNull('pp.playerId'));
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
     /**
-     * @param array $predictionIds
+     * @param $matchId
      * @param bool $skipCache
      * @return mixed
-     * @throws \Exception
      */
-    public function getPredictionCorrectScorersSum(array $predictionIds, $skipCache = false)
+    public function getPredictionCorrectScorersSum($matchId, $skipCache = false)
     {
-        if (empty($predictionIds)){
-            throw new \Exception('Empty prediction ids');
-        }
-
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('
             SUM(p.correctScorers) as correct_scorers
         ');
         $qb->from($this->getRepositoryName(),'p');
-        $qb->where($qb->expr()->in('p.id',':ids'))->setParameter('ids', $predictionIds);
+        $qb->where($qb->expr()->in('p.match',':id'))->setParameter('id', $matchId);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
 
     /**
-     * @param array $predictionIds
+     * @param $matchId
      * @param bool $skipCache
      * @return mixed
-     * @throws \Exception
      */
-    public function getPredictionCorrectScorersOrderSum(array $predictionIds, $skipCache = false)
+    public function getPredictionCorrectScorersOrderSum($matchId, $skipCache = false)
     {
-        if (empty($predictionIds)){
-            throw new \Exception('Empty prediction ids');
-        }
-
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('
             SUM(p.correctScorersOrder) as correct_scorers_order
         ');
         $qb->from($this->getRepositoryName(),'p');
-        $qb->where($qb->expr()->in('p.id',':ids'))->setParameter('ids', $predictionIds);
+        $qb->where($qb->expr()->eq('p.match',':id'))->setParameter('id', $matchId);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
@@ -349,14 +320,15 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
-     * @param array $predictionIds
+     * @param $matchId
      * @param array $scorersIds
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getCorrectScorersPredictionsCount(array $predictionIds, array $scorersIds, $hydrate = true, $skipCache = false)
+    public function getCorrectScorersPredictionsCount($matchId, array $scorersIds, $hydrate = true, $skipCache = false)
     {
+
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('
             COUNT(pp.prediction) as predictions_count,
@@ -366,9 +338,10 @@ class PredictionDAO extends AbstractDAO {
             pl.imagePath
         ');
         $qb->from('\Application\Model\Entities\PredictionPlayer','pp');
+        $qb->join('pp.prediction','p');
         $qb->join('pp.player','pl');
         $qb->join('pl.team','t');
-        $qb->where($qb->expr()->in('pp.prediction',':ids'))->setParameter('ids', $predictionIds);
+        $qb->where($qb->expr()->in('p.match',':id'))->setParameter('id', $matchId);
         $qb->andWhere($qb->expr()->in('pp.player',':playerIds'))->setParameter('playerIds', $scorersIds);
         $qb->groupBy('pp.player');
         $qb->orderBy('predictions_count', 'DESC');
@@ -637,5 +610,16 @@ class PredictionDAO extends AbstractDAO {
 
     public function commitPredictionsUpdate() {
         $this->getEntityManager()->getConnection()->commit();
+    }
+
+    public function getMatchPredictionsCount($matchId, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('
+            COUNT(p.id) as predictions
+        ');
+        $qb->from($this->getRepositoryName(),'p');
+        $qb->where($qb->expr()->eq('p.match',':id'))->setParameter('id', $matchId);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 }
