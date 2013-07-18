@@ -239,9 +239,6 @@ class UserManager extends BasicManager {
         $users = UserDAO::getInstance($this->getServiceLocator())->getExportUsersWithoutFacebookData();
 
         $exportConfig = array(
-            'title' => 'string',
-            'first_name' => 'string',
-            'last_name' => 'string',
             'email' => 'string',
             'date' => array('date' => 'd/m/Y'),
             'birthday' => array('date' => 'd/m/Y'),

@@ -34,9 +34,6 @@ class CustomExportController extends AbstractActionController {
             $console->writeLine(CustomMessagesConstants::INFO_USERS_EXPORT_STARTED);
 
             $aliasConfig = array(
-                'title' => 'Title',
-                'first_name' => 'Forename',
-                'last_name' => 'Surname',
                 'email' => 'Email',
                 'date' => 'SPG_EntryDate',
                 'birthday' => 'DateofBirth',

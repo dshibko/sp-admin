@@ -134,9 +134,6 @@ class UserDAO extends AbstractDAO {
      */
     public function getExportUsersWithoutFacebookData() {
         $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('title', 'title');
-        $rsm->addScalarResult('first_name', 'first_name');
-        $rsm->addScalarResult('last_name', 'last_name');
         $rsm->addScalarResult('email', 'email');
         $rsm->addScalarResult('date', 'date', 'datetime');
         $rsm->addScalarResult('birthday', 'birthday', 'date');
@@ -144,7 +141,7 @@ class UserDAO extends AbstractDAO {
         $rsm->addScalarResult('term1','term1', 'string');
         $rsm->addScalarResult('term2','term2', 'string');
         $query = $this->getEntityManager()->createNativeQuery(
-            'SELECT u.title, u.first_name, u.last_name, u.email, u.date, u.birthday, c.name as country,
+            'SELECT u.email, u.date, u.birthday, c.name as country,
             (CASE u.term1
                 WHEN 1 THEN "Y"
             ELSE "N" END) term1,
