@@ -263,7 +263,7 @@ class MatchDAO extends AbstractDAO {
      */
     function getMatchGoals($matchId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('mg.order, t.id teamId, p.id as playerId, p.displayName')
+        $qb->select('mg.order, t.id teamId, p.id as playerId, p.displayName, mg.type')
             ->from('\Application\Model\Entities\MatchGoal', 'mg')
             ->join('mg.player', 'p')
             ->join('mg.team', 't')
