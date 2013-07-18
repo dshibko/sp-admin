@@ -674,7 +674,7 @@ class MatchManager extends BasicManager
 
             //Match report correctly predicted result
             if ($totalNumberOfPredictions){
-                $correctResultCount = $predictionManager->getUsersCountWithCorrectResult($predictionIds);
+                $correctResultCount = $predictionManager->getUsersCountWithCorrectResult($match->getId());
                 $report['correctResult'] = round( ($correctResultCount / $totalNumberOfPredictions) * 100);
             }
         }
