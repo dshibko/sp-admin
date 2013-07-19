@@ -1202,3 +1202,13 @@ CREATE TABLE `howtoplay_content` (
   COLLATE='utf8_general_ci'
   ENGINE=InnoDB
   ROW_FORMAT=DEFAULT;
+
+
+-- okh 19.07
+
+ALTER TABLE `footer_page`  CHANGE COLUMN `content` `content` TEXT NULL AFTER `type`;
+ALTER TABLE `logotype`  CHANGE COLUMN `logotype_image_path` `logotype_image_path` VARCHAR(255) NULL AFTER `emblem_id`;
+ALTER TABLE `term_copy`  CHANGE COLUMN `copy` `copy` TEXT NULL AFTER `language_id`;
+ALTER TABLE `footer_image`  DROP INDEX `region_id`,  DROP FOREIGN KEY `footer_image_ibfk_1`;
+ALTER TABLE `footer_image`  CHANGE COLUMN `region_id` `language_id` INT(11) NOT NULL AFTER `id`,  ADD INDEX `language_id` (`language_id`);
+ALTER TABLE `footer_image`  ADD CONSTRAINT `FK_footer_image_language` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`);

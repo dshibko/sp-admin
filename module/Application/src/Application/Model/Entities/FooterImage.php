@@ -31,12 +31,12 @@ class FooterImage extends BasicObject
     protected $id;
 
     /**
-     * @var Region
+     * @var Language
      *
-     * @ORM\OneToOne(targetEntity="Region")
-     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="Language")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
-    protected $region;
+    protected $language;
 
     /**
      * @param string $footerImage
@@ -71,19 +71,19 @@ class FooterImage extends BasicObject
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      */
-    public function setRegion($region)
+    public function setLanguage($language)
     {
-        $this->region = $region;
+        $this->language = $language;
     }
 
     /**
-     * @return \Application\Model\Entities\Region
+     * @return \Application\Model\Entities\Language
      */
-    public function getRegion()
+    public function getLanguage()
     {
-        return $this->region;
+        return $this->language;
     }
 
 }

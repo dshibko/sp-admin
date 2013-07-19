@@ -6,6 +6,7 @@ use Application\Manager\ApplicationManager;
 use Application\Manager\ContentManager;
 use Application\Manager\LanguageManager;
 use Application\Manager\UserManager;
+use Application\Model\Entities\Language;
 use Zend\View\Helper\AbstractHelper;
 use Application\Manager\AvatarManager;
 
@@ -39,20 +40,38 @@ class Logotype extends AbstractHelper
 
     public function __invoke()
     {
-        $applicationManager = ApplicationManager::getInstance($this->serviceLocator);
+        $languageManager = LanguageManager::getInstance($this->serviceLocator);
         $userManager = UserManager::getInstance($this->serviceLocator);
         $contentManager = ContentManager::getInstance($this->serviceLocator);
 
-        $user = $applicationManager->getCurrentUser();
-        $language = !is_null($user) ? $user->getLanguage() : $userManager->getUserLanguage();
-        $logotype = $contentManager->getLogotypeByLanguage($language->getId());
-        if (is_null($logotype)){
-            return $this->getDefaultLogotype();
+        $userLanguage = $userManager->getCurrentUserLanguage();
+        $defaultLanguage = $languageManager->getDefaultLanguage();
+
+        if ($defaultLanguage instanceof Language){
+            $logotype = $contentManager->getLogotypeByLanguage($defaultLanguage->getId(), true);
+            if (!empty($logotype) && is_array($logotype)){
+
+                if ($userLanguage instanceof Language && $userLanguage->getId() !== $defaultLanguage->getId()){
+                    $userLogotype = $contentManager->getLogotypeByLanguage($userLanguage->getId(), true);
+                    if (!empty($userLogotype) && is_array($userLogotype)){
+                        $logotype = $contentManager->extendContent($logotype, $userLogotype);
+                    }
+                }
+
+                if (empty($logotype['emblem']['path']) || empty($logotype['logotype'])){
+                    return $this->getDefaultLogotype();
+                }
+
+                $html = $this->getOpenTag();
+                $html .= '<img src="'.$logotype['emblem']['path'].'" alt=""/>';
+                $html .= '<img src="'.$logotype['logotype'].'" alt=""/>';
+                $html .= $this->getCloseTag();
+                return $html;
+            }
         }
-        $html = $this->getOpenTag();
-        $html .= '<img src="'.$logotype->getEmblem()->getPath().'" alt=""/>';
-        $html .= '<img src="'.$logotype->getLogotype().'" alt=""/>';
-        $html .= $this->getCloseTag();
-        return $html;
+
+        return $this->getDefaultLogotype();
+
+
     }
 }

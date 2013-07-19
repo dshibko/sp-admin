@@ -136,10 +136,14 @@ class LanguagesController extends AbstractActionController
                     $data = $languageForm->getData();
 
                     $oldErrorReporting = error_reporting(E_ERROR);
+                    if (!is_array($data['strings'])){
+                        throw new \Exception(MessagesConstants::ERROR_UPDATE_PO_FILE_FAILED);
+                    }
                     //Update Po file content
                     if (!$languageManager->savePoFileContent($language->getLanguageCode(), $data['strings'])) {
                         throw new \Exception(MessagesConstants::ERROR_UPDATE_PO_FILE_FAILED);
                     }
+
                     //Generate Mo from Po file
                     if (!$languageManager->convertPoToMo($language->getLanguageCode())) {
                         throw new \Exception(MessagesConstants::ERROR_CONVERTING_PO_FILE_TO_MO_FAILED);

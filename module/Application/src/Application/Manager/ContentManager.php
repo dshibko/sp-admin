@@ -164,24 +164,24 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getFooterImages($region, $hydrate = false, $skipCache = false) {
-        return FooterImageDAO::getInstance($this->getServiceLocator())->getFooterImages($region, $hydrate, $skipCache);
+    public function getFooterImages(Language $language, $hydrate = false, $skipCache = false) {
+        return FooterImageDAO::getInstance($this->getServiceLocator())->getFooterImages($language, $hydrate, $skipCache);
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
-     * @param string $footerImagePath
+     * @param \Application\Model\Entities\Language $language
+     * @param $footerImagePath
      */
-    public function addFooterImage($region, $footerImagePath) {
+    public function addFooterImage(Language $language, $footerImagePath) {
         $imageManager = ImageManager::getInstance($this->getServiceLocator());
         $imageManager->resizeImage($footerImagePath, ImageManager::FOOTER_IMAGE_WIDTH, ImageManager::FOOTER_IMAGE_HEIGHT);
         $footerImage = new FooterImage();
-        $footerImage->setRegion($region);
+        $footerImage->setLanguage($language);
         $footerImage->setFooterImage($footerImagePath);
         FooterImageDAO::getInstance($this->getServiceLocator())->save($footerImage);
     }
@@ -304,10 +304,19 @@ class ContentManager extends BasicManager {
             $imageManager = ImageManager::getInstance($this->getServiceLocator());
             $emblem = $imageManager->saveUploadedImage($form->get('emblem'), ImageManager::IMAGE_TYPE_LOGOTYPE);
             $data['emblem'] = $emblem;
+
             foreach($form->getFieldsets() as $fieldset){
                 $language = $fieldset->getData();
+                $logotypePath = '';
+                $logotype = $fieldset->get('logotype');
+                $value = $logotype->getValue();
+                if (isset($value['error']) && $value['error'] == UPLOAD_ERR_OK){
+                    $logotypePath = $imageManager->saveUploadedImage($logotype, ImageManager::IMAGE_TYPE_LOGOTYPE);
+                }elseif(isset($value['stored']) && $value['stored']){
+                    $logotypePath = null;
+                }
                 $data['languages'][$language['id']] = array(
-                    'logotype' => $imageManager->saveUploadedImage($fieldset->get('logotype'), ImageManager::IMAGE_TYPE_LOGOTYPE)
+                    'logotype' => $logotypePath
                 );
             }
         }
@@ -368,13 +377,15 @@ class ContentManager extends BasicManager {
                 $language = $languageManager->getLanguageById($id);
                 $logotype->setLanguage($language);
                 $logotype->setEmblem($emblem);
-                if (!empty($languageData['logotype'])){
+
+                if (!is_null($languageData['logotype'])){
                     $oldLogotype = $logotype->getLogotype();
                     if (!empty($oldLogotype)){
                         $imageManager->deleteImage($oldLogotype);
                     }
                     $logotype->setLogotype($languageData['logotype']);
                 }
+
                 $logotypeDAO->save($logotype, false, false);
             }
 
@@ -468,12 +479,26 @@ class ContentManager extends BasicManager {
     public function getFooterPageContent($pageType)
     {
         $userManager = UserManager::getInstance($this->getServiceLocator());
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+
         $language = $userManager->getCurrentUserLanguage();
-        $footerPage = $this->getFooterPageByTypeAndLanguage($pageType, $language->getId());
+        $defaultLanguage = $languageManager->getDefaultLanguage();
+        $footerPage = $this->getFooterPageByTypeAndLanguage($pageType, $defaultLanguage->getId());
+
+        $content = '';
         if (!is_null($footerPage)){
-            return $footerPage->getContent();
+            $content = $footerPage->getContent();
         }
-        return false;
+        if ($defaultLanguage->getId() !== $language->getId()){
+            $userLanguageFooterPage = $this->getFooterPageByTypeAndLanguage($pageType, $language->getId());
+            if(!is_null($userLanguageFooterPage)){
+                $userContent = $userLanguageFooterPage->getContent();
+                if (!empty($userContent)){
+                    $content = $userContent;
+                }
+            }
+        }
+        return $content;
     }
 
     /**
@@ -539,8 +564,20 @@ class ContentManager extends BasicManager {
      */
     public function getSetUpFormTerms()
     {
-        $language = UserManager::getInstance($this->getServiceLocator())->getCurrentUserLanguage();
-        return $this->getTermsByLanguageId($language->getId(), true);
+        $userManager = UserManager::getInstance($this->getServiceLocator());
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+        $userLanguage = $userManager->getCurrentUserLanguage();
+        $defaultLanguage = $languageManager->getDefaultLanguage();
+        $terms = array();
+        if ($defaultLanguage instanceof Language){
+            $terms = $this->getTermsByLanguageId($defaultLanguage->getId(), true);
+            if ($userLanguage instanceof Language && $userLanguage->getId() !== $defaultLanguage->getId()){
+                $userTerms = $this->getTermsByLanguageId($userLanguage->getId(), true);
+                $terms = $this->extendContent($terms, $userTerms);
+            }
+        }
+
+        return $terms;
 
     }
 

@@ -284,10 +284,10 @@ return array(
             'admin-content-footer-images' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/content/footer-images/[region-:region][/:action][/image-:image]',
+                    'route'    => '/admin/content/footer-images/[language-:language][/:action][/image-:image]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'region' => '[0-9]+',
+                        'language' => '[0-9]+',
                         'image' => '[0-9]+',
                     ),
                     'defaults' => array(

@@ -17,6 +17,7 @@ class LogotypeController extends AbstractActionController {
         $form = null;
         $lanaguageManager = LanguageManager::getInstance($this->getServiceLocator());
         $contentManager = ContentManager::getInstance($this->getServiceLocator());
+        $logotypes = null;
         try {
             $logotypeLanguageFieldsets = $lanaguageManager->getLanguagesFieldsets('\Admin\Form\LogotypeFieldset');
             $form = new LogotypeForm($logotypeLanguageFieldsets);
@@ -38,11 +39,11 @@ class LogotypeController extends AbstractActionController {
                 }
             }
 
-            $form->initForm($logotypes);
+
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
-
+        $form->initForm($logotypes);
         return array(
             'title' => 'Logotype',
             'form' => $form,

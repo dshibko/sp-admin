@@ -4,6 +4,7 @@ namespace Admin\Controller;
 
 use \Admin\Form\FooterImageForm;
 use \Admin\Form\FooterSocialForm;
+use Application\Manager\LanguageManager;
 use \Application\Model\Helpers\MessagesConstants;
 use \Admin\Form\GameplayContentForm;
 use \Application\Manager\ContentManager;
@@ -336,18 +337,19 @@ class ContentController extends AbstractActionController {
     public function footerImagesAction() {
 
         $form = new FooterImageForm();
-
-        $regionManager = RegionManager::getInstance($this->getServiceLocator());
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
         $contentManager = ContentManager::getInstance($this->getServiceLocator());
 
         try {
 
-            $regionId = (string) $this->params()->fromRoute('region', '');
-            $region = null;
-            if (!empty($regionId))
-                $region = $regionManager->getRegionById($regionId);
-            if ($region == null)
-                $region = $regionManager->getDefaultRegion();
+            $languageId = (string) $this->params()->fromRoute('language', '');
+            $language = null;
+            if (!empty($languageId)){
+                $language = $languageManager->getLanguageById($languageId);
+            }
+            if ($language == null){
+                $language = $languageManager->getDefaultLanguage();
+            }
 
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -360,11 +362,13 @@ class ContentController extends AbstractActionController {
                     try {
 
                         $imageManager = ImageManager::getInstance($this->getServiceLocator());
+
                         $footerImagePath = $imageManager->saveUploadedImage($form->get('footerImage'), ImageManager::IMAGE_TYPE_CONTENT);
-                        $contentManager->addFooterImage($region, $footerImagePath);
+                        $contentManager->addFooterImage($language, $footerImagePath);
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FOOTER_IMAGE_ADDED);
-                        return $this->redirect()->toRoute(self::ADMIN_FOOTER_IMAGES_ROUTE, array('region' => $region->getId()));
+
+                        return $this->redirect()->toRoute(self::ADMIN_FOOTER_IMAGES_ROUTE, array('language' => $language->getId()));
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
                     }
@@ -374,15 +378,15 @@ class ContentController extends AbstractActionController {
                             (is_array($messages) ? implode(", ", $messages): $messages));
             }
 
-            $regions = $regionManager->getAllRegions(true);
+            $languages = $languageManager->getAllLanguages(true);
 
-            $footerImages = $contentManager->getFooterImages($region, true);
+            $footerImages = $contentManager->getFooterImages($language, true);
 
         } catch(\Exception $e) {
-            if (empty($regions))
-                $regions = array();
-            if (empty($region))
-                $region = $regionManager->getDefaultRegion();
+            if (empty($languages))
+                $languages = array();
+            if (empty($language))
+                $language = $languageManager->getDefaultLanguage();
             if (empty($footerImages))
                 $footerImages = array();
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -390,9 +394,9 @@ class ContentController extends AbstractActionController {
 
         return array(
             'form' => $form,
-            'regions' => $regions,
+            'languages' => $languages,
             'footerImages' => $footerImages,
-            'activeRegion' => $region,
+            'activeLanguage' => $language,
         );
 
     }

@@ -3,7 +3,7 @@
 namespace Application\Model\DAOs;
 
 use Application\Model\DAOs\AbstractDAO;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Application\Model\Entities\Language;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class FooterImageDAO extends AbstractDAO {
@@ -34,16 +34,16 @@ class FooterImageDAO extends AbstractDAO {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getFooterImages($region, $hydrate = false, $skipCache = false) {
+    public function getFooterImages(Language $language, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('f')
             ->from($this->getRepositoryName(), 'f')
-            ->where($qb->expr()->eq('f.region', $region->getId()))
+            ->where($qb->expr()->eq('f.language', ':language'))->setParameter('language', $language->getId())
             ->orderBy("f.id", "ASC");
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
