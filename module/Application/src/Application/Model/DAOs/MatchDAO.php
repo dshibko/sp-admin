@@ -180,7 +180,6 @@ class MatchDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'm')
             ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
             ->where($qb->expr()->eq('m.status', ':status'))
-            ->andWhere($qb->expr()->eq('m.isBlocked', 1))
             ->setParameter("status", Match::FULL_TIME_STATUS);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
@@ -264,7 +263,7 @@ class MatchDAO extends AbstractDAO {
      */
     function getMatchGoals($matchId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('mg.order, t.id teamId, p.id as playerId, p.displayName')
+        $qb->select('mg.order, t.id teamId, p.id as playerId, p.displayName, mg.type')
             ->from('\Application\Model\Entities\MatchGoal', 'mg')
             ->join('mg.player', 'p')
             ->join('mg.team', 't')

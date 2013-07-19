@@ -98,7 +98,7 @@ class ResultsController extends AbstractActionController {
                     foreach ($currentMatch['goals'][$side] as $goal)
                         if ($goal['type'] != MatchGoal::OWN_TYPE) {
                             $scorerId = $goal['playerId'];
-                            if (array_key_exists($scorerId, $goalScorers))
+                            if (!array_key_exists($scorerId, $goalScorers))
                                 $goalScorers[$scorerId] = 0;
                             $predictGoals = array();
                             foreach ($currentMatch['prediction'][$side] as $predictGoal)

@@ -9,6 +9,8 @@ use Application\Manager\PlayerManager;
 use Application\Manager\RegionManager;
 use \Application\Manager\SeasonManager;
 use Application\Manager\UserManager;
+use Application\Model\DAOs\LeagueUserDAO;
+use Application\Model\DAOs\PredictionDAO;
 use Application\Model\Entities\Season;
 use Neoco\Exception\OutOfSeasonException;
 use \Application\Model\DAOs\FeedDAO;
@@ -378,13 +380,13 @@ class OptaManager extends BasicManager {
 
             $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
             $matchFeederId = $this->getIdFromString($this->getXmlAttribute($xml->SoccerDocument, 'uID'));
-            $type = $this->getXmlAttribute($xml->SoccerDocument, 'Type');
+            $period = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo, 'Period');
             $match = $matchDAO->findOneByFeederId($matchFeederId);
 
-            if ($type == 'Result' && $match != null &&
-                $match->getStatus() != Match::FULL_TIME_STATUS) {
+            $cacheClearArr = array();
 
-                $result = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo->Result, 'Type');
+            if ($period == 'FullTime' && $match != null &&
+                $match->getStatus() != Match::FULL_TIME_STATUS) {
 
                 $teamData1 = $xml->SoccerDocument->MatchData->TeamData->{0};
                 $teamData2 = $xml->SoccerDocument->MatchData->TeamData->{1};
@@ -400,10 +402,6 @@ class OptaManager extends BasicManager {
                     $awayTeamData = $teamData2;
                 }
 
-                if ($result == 'NormalResult') {
-                    $match->setHomeTeamFullTimeScore($this->getXmlAttribute($homeTeamData, 'Score'));
-                    $match->setAwayTeamFullTimeScore($this->getXmlAttribute($awayTeamData, 'Score'));
-                } else {
                     $homeScore = $this->getXmlAttribute($homeTeamData, 'Score');
                     $awayScore = $this->getXmlAttribute($awayTeamData, 'Score');
                     $homeExtraScore = $awayExtraScore = null;
@@ -441,8 +439,6 @@ class OptaManager extends BasicManager {
                     $match->setAwayTeamExtraTimeScore($awayExtraScore);
                     $match->setHomeTeamShootoutScore($homeShootoutScore);
                     $match->setAwayTeamShootoutScore($awayShootoutScore);
-
-                }
 
                 $playerDAO = PlayerDAO::getInstance($this->getServiceLocator());
                 $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
@@ -482,6 +478,12 @@ class OptaManager extends BasicManager {
                     ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::EMERG, $console);
                 }
 
+                $cacheClearArr[] = $matchDAO->getRepositoryName();
+                $cacheClearArr[] = MatchGoalDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                $cacheClearArr[] = PredictionDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                $cacheClearArr[] = LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+
+                $match->setIsBlocked(true);
                 $match->setStatus(Match::FULL_TIME_STATUS);
                 $matchDAO->save($match);
 
@@ -489,9 +491,7 @@ class OptaManager extends BasicManager {
 
             }
 
-            $period = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo, 'Period');
-
-            if ($type == 'Latest' && $period == 'PreMatch' && $match != null && !$match->getHasLineUp() &&
+            if ($period == 'PreMatch' && $match != null && !$match->getHasLineUp() &&
                 $match->getStatus() == Match::PRE_MATCH_STATUS) {
                 $teamData = $xml->SoccerDocument->MatchData->TeamData;
                 if ($teamData != null) {
@@ -532,16 +532,20 @@ class OptaManager extends BasicManager {
                         LineUpPlayerDAO::getInstance($this->getServiceLocator())->clearCache();
                     }
                 }
+                $cacheClearArr[] = $matchDAO->getRepositoryName();
+                $cacheClearArr[] = MatchGoalDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                $cacheClearArr[] = LineUpPlayerDAO::getInstance($this->getServiceLocator())->getRepositoryName();
             }
 
-            if ($type == 'Latest' && ($period == 'FirstHalf' || $period == 'HalfTime' && $period == 'SecondHalf') && $match != null && $match->getStatus() == Match::PRE_MATCH_STATUS) {
+            if (($period == 'FirstHalf' || $period == 'HalfTime' || $period == 'SecondHalf') && $match != null && $match->getStatus() == Match::PRE_MATCH_STATUS) {
                 $match->setStatus(Match::LIVE_STATUS);
                 $matchDAO->save($match);
+                $cacheClearArr[] = $matchDAO->getRepositoryName();
             }
 
             $this->finishProgress($console, 'F7', $filePath);
 
-            return true;
+            return $cacheClearArr;
 
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::CRIT, $console);
@@ -732,6 +736,7 @@ class OptaManager extends BasicManager {
                     $matchManager = MatchManager::getInstance($this->getServiceLocator());
                     $unfinishedAndPredictableMatches = $matchManager->getUnfinishedAndPredictableMatches($currentSeason, true, true);
                     $processingStarted = false;
+                    $clearCacheApp = array();
                     foreach ($unfinishedAndPredictableMatches as $match) {
                         $seasonOptaId = $currentSeason->getFeederId();
                         $matchFeeds = $this->filterFeedsByParameters($feeds, $type, array(
@@ -744,12 +749,16 @@ class OptaManager extends BasicManager {
                                 $this->processingStarted($matchFeed, $type);
                                 $this->saveFeedsChanges();
                                 $success = $this->parseF7Feed($matchFeed, $console);
+                                if ($success !== false && is_array($success)) {
+                                    $clearCacheApp = array_merge($clearCacheApp, $success);
+                                    $success = true;
+                                }
                                 $this->processingCompleted($matchFeed, $type, $success);
                                 $this->saveFeedsChanges();
                             }
                     }
                     if ($processingStarted)
-                        $this->clearAppCache($type, $console);
+                        $this->clearAppCache($type, $console, array_unique($clearCacheApp));
                 }
                 break;
 
@@ -849,7 +858,7 @@ class OptaManager extends BasicManager {
         $feedDAO->clearCache();
     }
 
-    public function clearAppCache($type, $console) {
+    public function clearAppCache($type, $console, $options = array()) {
         if ($console !== null) {
             $entitiesToBeCleared = array();
             switch ($type) {
@@ -860,9 +869,7 @@ class OptaManager extends BasicManager {
                     break;
 
                 case Feed::F7_TYPE:
-                    $entitiesToBeCleared[] = MatchDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                    $entitiesToBeCleared[] = MatchGoalDAO::getInstance($this->getServiceLocator())->getRepositoryName();
-                    $entitiesToBeCleared[] = LineUpPlayerDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared = $options;
                     break;
 
                 case Feed::F40_TYPE:
@@ -872,6 +879,7 @@ class OptaManager extends BasicManager {
                     break;
             }
 
+            if (!empty($entitiesToBeCleared)) {
             $entitiesToBeClearedQueryString = implode(",", $entitiesToBeCleared);
             $clearAppCacheUrl = ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheUrl();
             $clearAppCacheUrl = $clearAppCacheUrl . urlencode($entitiesToBeClearedQueryString);
@@ -881,6 +889,7 @@ class OptaManager extends BasicManager {
             else
                 $this->logMessage(MessagesConstants::APP_CACHE_NOT_CLEARED, Logger::WARN, $console);
         }
+    }
     }
 
 }

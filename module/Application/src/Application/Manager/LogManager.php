@@ -42,6 +42,11 @@ class LogManager extends BasicManager {
      */
     private $optaLogger;
 
+    /**
+     * @var \Zend\Log\Logger
+     */
+    private $customLogger;
+
     private function initLoggers() {
 
         $logDir = getcwd() . DIRECTORY_SEPARATOR . 'data'  . DIRECTORY_SEPARATOR . 'log'  . DIRECTORY_SEPARATOR;
@@ -55,6 +60,11 @@ class LogManager extends BasicManager {
         $optaErrorLogWriter = new Stream($optaErrorLogPath);
         $this->optaLogger = new Logger();
         $this->optaLogger->addWriter($optaErrorLogWriter);
+
+        $customErrorLogPath = $logDir . 'custom' . DIRECTORY_SEPARATOR . 'custom.log';
+        $customErrorLogWriter = new Stream($customErrorLogPath);
+        $this->customLogger = new Logger();
+        $this->customLogger->addWriter($customErrorLogWriter);
 
     }
 
@@ -71,6 +81,10 @@ class LogManager extends BasicManager {
         $this->optaLogger->log($priority, $e->getMessage(), array($e->getTraceAsString()));
     }
 
+    public function logCustomException(\Exception $e, $priority = Logger::ERR) {
+        $this->customLogger->log($priority, $e->getMessage(), array($e->getTraceAsString()));
+    }
+
     /**
      * @param $message
      * @param int $priority
@@ -81,6 +95,10 @@ class LogManager extends BasicManager {
 
     public function logOptaInfo($info) {
         $this->optaLogger->log(Logger::INFO, $info);
+    }
+
+    public function logCustomMessage($message, $priority = Logger::INFO) {
+        $this->customLogger->log($priority, $message);
     }
 
 }

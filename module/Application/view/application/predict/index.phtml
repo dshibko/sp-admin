@@ -241,7 +241,7 @@ if (empty($this->twitterShareCopy))
     var savedHomeScore = <?=!empty($this->current['prediction']) ? $this->current['prediction']['homeTeamScore'] : -1 ?>;
     var savedAwayScore = <?=!empty($this->current['prediction']) ? $this->current['prediction']['awayTeamScore'] : -1 ?>;
     var pageUnloadCopy = "<?=$this->translate('You didn\'t save the prediction.')?>";
-    var utcTimeUrl = '<?= $this->url('common', array('action' => 'utcTime')); ?>';
+    var utcTimeUrl = '<?= $this->url('common', array('action' => 'utcTime')) . '?' . time(); ?>';
 </script>
 <script type="text/javascript" src="/js/vendor/jquery.countdown.js"></script>
 <script type="text/javascript" src="/js/make-prediction.js"></script>

@@ -129,7 +129,32 @@ class UserDAO extends AbstractDAO {
     }
 
     /**
-     * @param bigint $facebook_id
+     * @return array
+     * @throws \Exception
+     */
+    public function getExportUsersWithoutFacebookData() {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('email', 'email');
+        $rsm->addScalarResult('date', 'date', 'datetime');
+        $rsm->addScalarResult('birthday', 'birthday', 'date');
+        $rsm->addScalarResult('country', 'country');
+        $rsm->addScalarResult('term1','term1', 'string');
+        $rsm->addScalarResult('term2','term2', 'string');
+        $query = $this->getEntityManager()->createNativeQuery(
+            'SELECT u.email, u.date, u.birthday, c.name as country,
+            (CASE u.term1
+                WHEN 1 THEN "Y"
+            ELSE "N" END) term1,
+            (CASE u.term2
+                WHEN 1 THEN "Y"
+            ELSE "N" END) term2
+            FROM `user` u
+            INNER JOIN country c ON c.id = u.country_id', $rsm);
+        return $query->getArrayResult();
+    }
+
+    /**
+     * @param int $facebook_id
      * @param bool $hydrate
      * @param bool $skipCache
      * @return \Application\Model\Entities\User
@@ -319,7 +344,7 @@ class UserDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('u.id')
             ->from($this->getRepositoryName(), 'u')
-            ->where($qb->expr()->in('u.facebookIds', ':facebookIds'))
+            ->where($qb->expr()->in('u.facebookId', ':facebookIds'))
             ->setParameter('facebookIds', $facebookIds);
         return $this->getQuery($qb, $skipCache)->getScalarResult();
     }
