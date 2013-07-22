@@ -115,8 +115,7 @@ class SeasonController extends AbstractActionController {
             if ($season == null)
                 return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE);
 
-            $editableDates = true;
-//            $editableDates = !$matchManager->getHasFinishedMatches($season);
+            $editableDates = !$matchManager->getHasFinishedMatches($season);
 
             $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
 
