@@ -175,7 +175,7 @@ class SeasonController extends AbstractActionController {
                 'id' => $id,
                 'form' => $form,
                 'action' => 'edit',
-                'editableDates' => $editableDates,
+                'editableDates' => true,
             );
 
         } catch (\Exception $e) {
