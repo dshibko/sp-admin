@@ -580,9 +580,10 @@ class PredictionDAO extends AbstractDAO {
         $rsm->addScalarResult('away_team_score', 'away_team_score');
         $rsm->addScalarResult('players', 'players');
         $rsm->addScalarResult('teams', 'teams');
+        $rsm->addScalarResult('orders', 'orders');
         $query = $this->getEntityManager()
             ->createNativeQuery('
-             SELECT p.id, p.user_id, p.home_team_score, p.away_team_score, GROUP_CONCAT(IFNULL(pp.player_id, "") ORDER BY pp.order SEPARATOR \',\') players, GROUP_CONCAT(IFNULL(pp.team_id, "") ORDER BY pp.order SEPARATOR \',\') teams
+             SELECT p.id, p.user_id, p.home_team_score, p.away_team_score, GROUP_CONCAT(IFNULL(pp.player_id, "") ORDER BY pp.order, pp.team_id SEPARATOR \',\') players, GROUP_CONCAT(IFNULL(pp.team_id, "") ORDER BY pp.order, pp.team_id SEPARATOR \',\') teams, GROUP_CONCAT(IFNULL(pp.order, "") ORDER BY pp.order, pp.team_id SEPARATOR \',\') orders
              FROM `prediction` p
              LEFT OUTER JOIN `prediction_player` pp ON pp.prediction_id = p.id
              WHERE p.match_id = ' . $matchId . '

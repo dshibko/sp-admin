@@ -52,13 +52,14 @@ class ScoringManager extends BasicManager {
             $awayTeamScore = (int)$prediction['away_team_score'];
             $playersArr = explode(",", $prediction['players']);
             $teamsArr = explode(",", $prediction['teams']);
+            $ordersArr = explode(",", $prediction['orders']);
             $predictionsGoals = array();
             $predictionsPlayersCount = 0;
             foreach ($playersArr as $order => $playerId) {
                 $predictionsGoals[] = array(
-                    'order' => $order + 1,
                     'player_id' => !empty($playerId) ? (int)$playerId : null,
                     'team_id' => (int)$teamsArr[$order],
+                    'order' => (int)$ordersArr[$order],
                 );
                 if (!empty($playerId)) $predictionsPlayersCount++;
             }
