@@ -703,27 +703,29 @@ class OptaManager extends BasicManager {
             // export TZ=UTC;
             case Feed::F1_TYPE: // 10 10 * * * cd <APP_ROOT>; php public/index.php opta F1
             case Feed::F40_TYPE: // 0 0,12 * * * cd <APP_ROOT>; php public/index.php opta F40
-                $feeds = $this->getUploadedFeedsByType($type);
-                if (!empty($feeds)) {
-                    $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
-                    $currentSeason = $applicationManager->getCurrentSeason();
-                    if ($currentSeason === null)
-                        throw new OutOfSeasonException();
-                    $processingStarted = false;
-                    $seasonFeeds = $this->filterFeedsByParameters($feeds, $type, array('season_id' => $currentSeason->getFeederId()));
-                    foreach ($seasonFeeds as $seasonFeed)
-                        if ($force || $this->hasToBeProcessed($seasonFeed)) {
-                            $processingStarted = true;
-                            $this->processingStarted($seasonFeed, $type);
-                            $this->saveFeedsChanges();
-                            $success = $type == Feed::F1_TYPE ? $this->parseF1Feed($seasonFeed, $currentSeason, $console) :
-                                ($type == Feed::F40_TYPE ? $this->parseF40Feed($seasonFeed, $currentSeason, $console) : false);
-                            $this->processingCompleted($seasonFeed, $type, $success);
-                            $this->saveFeedsChanges();
-                        }
-                    if ($processingStarted)
-                        $this->clearAppCache($type, $console);
-                }
+//                $feeds = $this->getUploadedFeedsByType($type);
+//                if (!empty($feeds)) {
+//                    $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+//                    $currentSeason = $applicationManager->getCurrentSeason();
+//                    if ($currentSeason === null)
+//                        throw new OutOfSeasonException();
+//                    $processingStarted = false;
+//                    $seasonFeeds = $this->filterFeedsByParameters($feeds, $type, array('season_id' => $currentSeason->getFeederId()));
+//                    foreach ($seasonFeeds as $seasonFeed)
+//                        if ($force || $this->hasToBeProcessed($seasonFeed)) {
+//                            $processingStarted = true;
+//                            $this->processingStarted($seasonFeed, $type);
+//                            $this->saveFeedsChanges();
+//                            $success = $type == Feed::F1_TYPE ? $this->parseF1Feed($seasonFeed, $currentSeason, $console) :
+//                                ($type == Feed::F40_TYPE ? $this->parseF40Feed($seasonFeed, $currentSeason, $console) : false);
+//                            $this->processingCompleted($seasonFeed, $type, $success);
+//                            $this->saveFeedsChanges();
+//                        }
+//                    if ($processingStarted)
+//                        $this->clearAppCache($type, $console);
+//                }
+                $match = MatchManager::getInstance($this->getServiceLocator())->getMatchById(2);
+                ScoringManager::getInstance($this->getServiceLocator())->calculateMatchScores($match);
                 break;
 
             case Feed::F7_TYPE: // */5 * * * * cd <APP_ROOT>; php public/index.php opta F7
