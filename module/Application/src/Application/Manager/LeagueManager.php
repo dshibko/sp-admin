@@ -89,7 +89,7 @@ class LeagueManager extends BasicManager {
                                 $divider = 4;
                             }
                             $userRow['accuracy'] /= $divider;
-                            $userRow['points'] = $prediction['points'];
+                            $userRow['points'] = $prediction['points'] + ($prevPrediction !== null ? $prevPrediction['points'] : 0);
 //                            if ($userRow['points'] === null)
 //                                $userRow['points'] = $prediction['points'];
 //                            else

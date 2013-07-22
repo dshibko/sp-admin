@@ -604,9 +604,10 @@ class PredictionDAO extends AbstractDAO {
         $rsm->addScalarResult('correct_scorers', 'correct_scorers');
         $rsm->addScalarResult('correct_scorers_order', 'correct_scorers_order');
         $rsm->addScalarResult('predictions_players_count', 'predictions_players_count');
+        $rsm->addScalarResult('points', 'points');
         $query = $this->getEntityManager()
             ->createNativeQuery('
-             SELECT p.id, p.user_id, p.is_correct_result, p.is_correct_score, p.correct_scorers, p.correct_scorers_order, count(pp.id) predictions_players_count
+             SELECT p.id, p.user_id, p.is_correct_result, p.is_correct_score, p.correct_scorers, p.correct_scorers_order, p.points, count(pp.id) predictions_players_count
              FROM `prediction` p
              LEFT OUTER JOIN `prediction_player` pp ON pp.prediction_id = p.id
              WHERE p.match_id = ' . $matchId . '
