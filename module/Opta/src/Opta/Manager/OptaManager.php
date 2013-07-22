@@ -10,6 +10,7 @@ use Application\Manager\RegionManager;
 use \Application\Manager\SeasonManager;
 use Application\Manager\UserManager;
 use Application\Model\DAOs\LeagueUserDAO;
+use Application\Model\DAOs\LeagueUserPlaceDAO;
 use Application\Model\DAOs\PredictionDAO;
 use Application\Model\Entities\Season;
 use Neoco\Exception\OutOfSeasonException;
@@ -482,6 +483,7 @@ class OptaManager extends BasicManager {
                 $cacheClearArr[] = MatchGoalDAO::getInstance($this->getServiceLocator())->getRepositoryName();
                 $cacheClearArr[] = PredictionDAO::getInstance($this->getServiceLocator())->getRepositoryName();
                 $cacheClearArr[] = LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                $cacheClearArr[] = LeagueUserPlaceDAO::getInstance($this->getServiceLocator())->getRepositoryName();
 
                 $match->setIsBlocked(true);
                 $match->setStatus(Match::FULL_TIME_STATUS);

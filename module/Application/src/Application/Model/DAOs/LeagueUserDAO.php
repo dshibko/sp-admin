@@ -140,7 +140,7 @@ class LeagueUserDAO extends AbstractDAO {
                 INNER JOIN user u ON lu.user_id = u.id
                 INNER JOIN country c ON u.country_id = c.id
         ", $rsm);
-        return $this->prepareQuery($query, array(LeagueUserPlaceDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
+        return $this->prepareQuery($query, array(LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
     }
 
     /**
