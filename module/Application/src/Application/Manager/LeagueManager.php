@@ -3,6 +3,7 @@
 namespace Application\Manager;
 
 use \Application\Model\DAOs\LeagueUserPlaceDAO;
+use Application\Model\DAOs\PredictionDAO;
 use \Application\Model\Entities\LeagueUserPlace;
 use \Application\Model\Entities\LeagueUser;
 use \Doctrine\Common\Collections\ArrayCollection;
@@ -52,6 +53,12 @@ class LeagueManager extends BasicManager {
             $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
             $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
 
+            $prevPredictions = PredictionDAO::getInstance($this->getServiceLocator())->getPredictionsByMatchId(1);
+            $prevPredictionsArr = array();
+
+            foreach($prevPredictions as $prevPrediction)
+                $prevPredictionsArr[$prevPrediction['user_id']] = $prevPrediction;
+
             $leagueUserDAO->beginLeagueUsersUpdate();
 
             foreach ($season->getLeagues() as $league)
@@ -62,12 +69,19 @@ class LeagueManager extends BasicManager {
                     foreach ($usersData as $userRow) {
                         if (array_key_exists($userRow['user_id'], $predictions)) {
                             $prediction = $predictions[$userRow['user_id']];
-                            $userRow['predictions_players_count'] += $prediction['predictions_players_count'];
-                            $userRow['predictions_count']++;
-                            $userRow['correct_results'] += $prediction['is_correct_result'];
-                            $userRow['correct_scores'] += $prediction['is_correct_score'];
-                            $userRow['correct_scorers'] += $prediction['correct_scorers'];
-                            $userRow['correct_scorers_order'] += $prediction['correct_scorers_order'];
+                            $prevPrediction = array_key_exists($userRow['user_id'], $prevPredictionsArr) ? $prevPredictionsArr[$userRow['user_id']] : null;
+                            $userRow['predictions_players_count'] = $prediction['predictions_players_count'] + ($prevPrediction !== null ? $prevPrediction['predictions_players_count'] : 0);
+                            $userRow['predictions_count'] = 1 + ($prevPrediction !== null ? 1 : 0);
+                            $userRow['correct_results'] = $prediction['is_correct_result'] + ($prevPrediction !== null ? $prevPrediction['is_correct_result'] : 0);
+                            $userRow['correct_scores'] = $prediction['is_correct_score'] + ($prevPrediction !== null ? $prevPrediction['is_correct_score'] : 0);
+                            $userRow['correct_scorers'] = $prediction['correct_scorers'] + ($prevPrediction !== null ? $prevPrediction['correct_scorers'] : 0);
+                            $userRow['correct_scorers_order'] = $prediction['correct_scorers_order'] + ($prevPrediction !== null ? $prevPrediction['correct_scorers_order'] : 0);
+//                            $userRow['predictions_players_count'] += $prediction['predictions_players_count'];
+//                            $userRow['predictions_count']++;
+//                            $userRow['correct_results'] += $prediction['is_correct_result'];
+//                            $userRow['correct_scores'] += $prediction['is_correct_score'];
+//                            $userRow['correct_scorers'] += $prediction['correct_scorers'];
+//                            $userRow['correct_scorers_order'] += $prediction['correct_scorers_order'];
                             $userRow['accuracy'] = $userRow['correct_results'] / $userRow['predictions_count'] + $userRow['correct_scores'] / $userRow['predictions_count'];
                             $divider = 2;
                             if ($userRow['predictions_players_count'] > 0) {
@@ -75,10 +89,11 @@ class LeagueManager extends BasicManager {
                                 $divider = 4;
                             }
                             $userRow['accuracy'] /= $divider;
-                            if ($userRow['points'] === null)
-                                $userRow['points'] = $prediction['points'];
-                            else
-                                $userRow['points'] += $prediction['points'];
+                            $userRow['points'] = $prediction['points'];
+//                            if ($userRow['points'] === null)
+//                                $userRow['points'] = $prediction['points'];
+//                            else
+//                                $userRow['points'] += $prediction['points'];
                         }
                         $userRow['date'] = new \DateTime($userRow['registration_date']);
                         if ($userRow['points'] !== null)

@@ -591,6 +591,29 @@ class PredictionDAO extends AbstractDAO {
         return $query->getArrayResult();
     }
 
+    /**
+     * @param int $matchId
+     * @return mixed
+     */
+    public function getPredictionsByMatchId($matchId) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('user_id', 'user_id');
+        $rsm->addScalarResult('is_correct_result', 'is_correct_result');
+        $rsm->addScalarResult('is_correct_score', 'is_correct_score');
+        $rsm->addScalarResult('correct_scorers', 'correct_scorers');
+        $rsm->addScalarResult('correct_scorers_order', 'correct_scorers_order');
+        $rsm->addScalarResult('predictions_players_count', 'predictions_players_count');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+             SELECT p.id, p.user_id, p.is_correct_result, p.is_correct_score, p.correct_scorers, p.correct_scorers_order, count(pp.id) predictions_players_count
+             FROM `prediction` p
+             LEFT OUTER JOIN `prediction_player` pp ON pp.prediction_id = p.id
+             WHERE p.match_id = ' . $matchId . '
+             GROUP BY p.id', $rsm);
+        return $query->getArrayResult();
+    }
+
     public function beginPredictionsUpdate() {
         $this->getEntityManager()->getConnection()->beginTransaction();
     }
