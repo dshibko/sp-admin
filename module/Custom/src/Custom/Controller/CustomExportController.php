@@ -6,6 +6,7 @@ use Application\Manager\ExportManager;
 use Application\Manager\FTPManager;
 use Application\Manager\LogManager;
 use Application\Manager\UserManager;
+use Custom\Manager\CustomExportManager;
 use Custom\Model\Helper\CustomMessagesConstants;
 use \Zend\Log\Logger;
 use \Application\Model\Helpers\MessagesConstants;
@@ -70,6 +71,51 @@ class CustomExportController extends AbstractActionController {
 
     }
 
+    public function maillistAction() {
+
+        error_reporting(E_ERROR | E_PARSE);
+
+        $console = $this->getConsole();
+
+        try {
+
+            $logManager = LogManager::getInstance($this->getServiceLocator());
+            $customExportManager = CustomExportManager::getInstance($this->getServiceLocator());
+            $ftpManager = FTPManager::getInstance($this->getServiceLocator());
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $logManager->logCustomMessage(CustomMessagesConstants::INFO_MAILLIST_EXPORT_STARTED);
+            $console->writeLine("");
+            $console->writeLine(CustomMessagesConstants::INFO_MAILLIST_EXPORT_STARTED);
+
+            $maillistExportContent = $customExportManager->getMaillistExportContent();
+
+            $maillistExportFileName = 'maillist_' . date('dmY') . '.csv';
+            $maillistExportFilePath = $exportManager->saveExportFile($maillistExportFileName, $maillistExportContent);
+            if ($maillistExportFilePath === false)
+                throw new \Exception(CustomMessagesConstants::ERROR_MAILLIST_EXPORT_FILE_SAVING_FAILED);
+
+            $logManager->logCustomMessage(CustomMessagesConstants::INFO_MAILLIST_EXPORT_FILE_SAVED_SUCCESSFULLY);
+            $console->writeLine(CustomMessagesConstants::INFO_MAILLIST_EXPORT_FILE_SAVED_SUCCESSFULLY);
+
+            $remoteFilePath = $maillistExportFileName;
+
+            list($ftpHost, $ftpUser, $ftpPassword) = $this->getMaillistFTPConfig();
+
+            $uploadSuccess = $ftpManager->sendFile($maillistExportFilePath, $remoteFilePath, $ftpHost, $ftpUser, $ftpPassword);
+
+            if ($uploadSuccess === false)
+                throw new \Exception(CustomMessagesConstants::ERROR_MAILLIST_EXPORT_FILE_UPLOAD_FAILED);
+
+            $logManager->logCustomMessage(CustomMessagesConstants::INFO_MAILLIST_EXPORT_FILE_UPLOADED_SUCCESSFULLY);
+            $console->writeLine(CustomMessagesConstants::INFO_MAILLIST_EXPORT_FILE_UPLOADED_SUCCESSFULLY);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleCustomException($e, Logger::ERR, $console);
+        }
+
+    }
+
     /**
      * @return \Zend\Console\Adapter\AdapterInterface
      * @throws \Zend\Console\Exception\RuntimeException
@@ -85,6 +131,16 @@ class CustomExportController extends AbstractActionController {
         $config = $this->getServiceLocator()->get('config');
         if (!empty($config) && array_key_exists('users-export-ftp', $config) && is_array($config['users-export-ftp'])) {
             $ftpConfig = $config['users-export-ftp'];
+            if (array_key_exists('host', $ftpConfig) && array_key_exists('user', $ftpConfig) && array_key_exists('password', $ftpConfig))
+                return array($ftpConfig['host'], $ftpConfig['user'], $ftpConfig['password']);
+        }
+        throw new \Exception(CustomMessagesConstants::ERROR_EXPORT_FTP_WRONG_CONFIG);
+    }
+
+    private function getMaillistFTPConfig() {
+        $config = $this->getServiceLocator()->get('config');
+        if (!empty($config) && array_key_exists('maillist-export-ftp', $config) && is_array($config['maillist-export-ftp'])) {
+            $ftpConfig = $config['maillist-export-ftp'];
             if (array_key_exists('host', $ftpConfig) && array_key_exists('user', $ftpConfig) && array_key_exists('password', $ftpConfig))
                 return array($ftpConfig['host'], $ftpConfig['user'], $ftpConfig['password']);
         }

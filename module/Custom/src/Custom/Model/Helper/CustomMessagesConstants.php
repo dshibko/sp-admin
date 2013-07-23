@@ -15,9 +15,14 @@ class CustomMessagesConstants {
     const INFO_USERS_EXPORT_STARTED = "Users export has been started.";
     const INFO_USERS_EXPORT_FILE_SAVED_SUCCESSFULLY = "Users export file has been saved successfully.";
     const INFO_USERS_EXPORT_FILE_UPLOADED_SUCCESSFULLY = "Users export file has been uploaded successfully.";
+    const INFO_MAILLIST_EXPORT_STARTED = "Maillist export has been started.";
+    const INFO_MAILLIST_EXPORT_FILE_SAVED_SUCCESSFULLY = "Maillist export file has been saved successfully.";
+    const INFO_MAILLIST_EXPORT_FILE_UPLOADED_SUCCESSFULLY = "Ьaillist export file has been uploaded successfully.";
 
     const ERROR_USERS_EXPORT_FILE_SAVING_FAILED = "Users export file saving failed.";
     const ERROR_USERS_EXPORT_FILE_UPLOAD_FAILED = "Users export file upload failed.";
+    const ERROR_MAILLIST_EXPORT_FILE_SAVING_FAILED = "Maillist export file saving failed.";
+    const ERROR_MAILLIST_EXPORT_FILE_UPLOAD_FAILED = "Maillist export file upload failed.";
     const ERROR_EXPORT_FTP_WRONG_CONFIG = "FTP was configured incorrectly.";
 
 }
