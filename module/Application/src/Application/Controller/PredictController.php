@@ -16,7 +16,7 @@ use \Application\Manager\RegistrationManager;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ApplicationManager;
 use \Application\Manager\ContentManager;
-use \Application\Manager\RegionManager;
+use \Application\Manager\LanguageManager;
 use \Application\Manager\UserManager;
 
 class PredictController extends AbstractActionController {
@@ -49,7 +49,7 @@ class PredictController extends AbstractActionController {
                 $setUpForm = $this->getServiceLocator()->get('Application\Form\SetUpForm');
                 $country = $user->getFacebookId() !== null ? $userManager->getUserGeoIpCountry() : $user->getCountry();
                 $language = $userManager->getUserLanguage();
-                $setUpForm ->get('region')->setValue($country->getId());
+                $setUpForm ->get('regionLanguage')->setValue($country->getId());
                 $setUpForm ->get('language')->setValue($language->getId());
             }
 
@@ -72,8 +72,8 @@ class PredictController extends AbstractActionController {
                 return $this->notFoundAction();
 
             //Match report
-            $region = $applicationManager->getUserLanguage($user);
-            $matchReport = $matchManager->getPreMatchRegionReport($currentMatch['id'], $region->getId());
+            $regionLanguage = $applicationManager->getUserLanguage($user);
+            $matchReport = $matchManager->getPreMatchLanguageReport($currentMatch['id'], $regionLanguage->getId());
 
             $utcTime = new \DateTime();
             $startUtcTime = $currentMatch['startTime'];

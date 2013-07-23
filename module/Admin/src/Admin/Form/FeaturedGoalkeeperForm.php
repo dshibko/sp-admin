@@ -24,9 +24,9 @@ class FeaturedGoalkeeperForm extends RegionalisedForm {
     {
         return $this->type;
     }
-    public function __construct($regionFieldsets, $type = 'featured_goalkeeper') {
+    public function __construct($languageFieldsets, $type = 'featured_goalkeeper') {
 
-        parent::__construct($regionFieldsets, 'featured-goalkeeper');
+        parent::__construct($languageFieldsets, 'featured-goalkeeper');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
         $this->setType($type);

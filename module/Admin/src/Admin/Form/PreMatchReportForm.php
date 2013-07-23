@@ -26,9 +26,9 @@ class PreMatchReportForm extends RegionalisedForm {
         return $this->type;
     }
 
-    public function __construct($regionFieldsets, $type = 'match_report') {
+    public function __construct($languageFieldsets, $type = 'match_report') {
 
-        parent::__construct($regionFieldsets, 'match-report');
+        parent::__construct($languageFieldsets, 'match-report');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
         $this->setType($type);

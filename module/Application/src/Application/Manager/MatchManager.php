@@ -9,6 +9,7 @@ use \Application\Model\DAOs\MatchDAO;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use \Application\Manager\UserManager;
+use \Application\Manager\ContentManager;
 use \Application\Manager\LanguageManager;
 use \Application\Manager\PredictionManager;
 use \Application\Model\DAOs\MatchLanguageDAO;
@@ -199,131 +200,131 @@ class MatchManager extends BasicManager
 
     /**
      * @param \Application\Model\Entities\Match $match
-     * @param array $regionsData
+     * @param array $languagesData
      * @return \Application\Model\Entities\Match
      */
-    public function save(\Application\Model\Entities\Match $match, array $regionsData = array())
+    public function save(\Application\Model\Entities\Match $match, array $languagesData = array())
     {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
         $matchDAO->save($match, false, false);
 
-        $matchRegionDAO = \Application\Model\DAOs\MatchLanguageDAO::getInstance($this->getServiceLocator());
+        $matchLanguageDAO = \Application\Model\DAOs\MatchLanguageDAO::getInstance($this->getServiceLocator());
         $featuredPlayerDAO = FeaturedPlayerDAO::getInstance($this->getServiceLocator());
         $featuredGoalkeeperDAO = FeaturedGoalkeeperDAO::getInstance($this->getServiceLocator());
         $featuredPredictionDAO = FeaturedPredictionDAO::getInstance($this->getServiceLocator());
 
         $imageManager = ImageManager::getInstance($this->getServiceLocator());
 
-        if (!empty($regionsData)) {
-            foreach ($regionsData as $id => $regionRow) {
-                $region = LanguageManager::getInstance($this->getServiceLocator())->getLanguageById($id);
-                if (!$region) {
+        if (!empty($languagesData)) {
+            foreach ($languagesData as $id => $languageRow) {
+                $language = LanguageManager::getInstance($this->getServiceLocator())->getLanguageById($id);
+                if (!$language) {
                     continue;
                 }
-                $matchRegions = $match->getMatchRegions();
-                $regionId = $region->getId();
+                $matchLanguages = $match->getMatchLanguages();
+                $languageid = $language->getId();
                 $reportKey = null;
 
-                //Check if region has already exist
-                if (!$matchRegions->exists(
-                    function ($key, $element) use ($regionId, &$reportKey) {
-                        if ($element->getLanguage()->getId() == $regionId) {
+                //Check if language has already exist
+                if (!$matchLanguages->exists(
+                    function ($key, $element) use ($languageid, &$reportKey) {
+                        if ($element->getLanguage()->getId() == $languageid) {
                             $reportKey = $key;
                             return true;
                         }
                         return false;
                     })
                 ) {
-                    $matchRegion = new \Application\Model\Entities\MatchLanguage();
-                    $matchRegion->setMatch($match)
-                        ->setLanguage($region);
+                    $matchLanguage = new \Application\Model\Entities\MatchLanguage();
+                    $matchLanguage->setMatch($match)
+                        ->setLanguage($language);
 
                 } else {
-                    $matchRegion = $matchRegions->get($reportKey);
+                    $matchLanguage = $matchLanguages->get($reportKey);
                 }
 
                 //Set pre match report
-                if (!empty($regionRow['pre_match_report'])){
-                    $matchRegion->setPreMatchReportTitle($regionRow['pre_match_report']['title'])
-                        ->setPreMatchReportIntro($regionRow['pre_match_report']['intro']);
+                if (!empty($languageRow['pre_match_report'])){
+                    $matchLanguage->setPreMatchReportTitle($languageRow['pre_match_report']['title'])
+                        ->setPreMatchReportIntro($languageRow['pre_match_report']['intro']);
                     //Set header image
-                    if (!empty($regionRow['pre_match_report']['header_image_path'])) {
-                        $imageManager->deleteImage($matchRegion->getPreMatchReportHeaderImagePath());
-                        $matchRegion->setPreMatchReportHeaderImagePath($regionRow['pre_match_report']['header_image_path']);
+                    if (!empty($languageRow['pre_match_report']['header_image_path'])) {
+                        $imageManager->deleteImage($matchLanguage->getPreMatchReportHeaderImagePath());
+                        $matchLanguage->setPreMatchReportHeaderImagePath($languageRow['pre_match_report']['header_image_path']);
                     }
                 }
 
                 //Set post match report
-                if (!empty($regionRow['post_match_report'])){
-                    $matchRegion->setPostMatchReportTitle($regionRow['post_match_report']['title'])
-                        ->setPostMatchReportIntro($regionRow['post_match_report']['intro']);
+                if (!empty($languageRow['post_match_report'])){
+                    $matchLanguage->setPostMatchReportTitle($languageRow['post_match_report']['title'])
+                        ->setPostMatchReportIntro($languageRow['post_match_report']['intro']);
                     //Set header image
-                    if (!empty($regionRow['post_match_report']['header_image_path'])) {
-                        $imageManager->deleteImage($matchRegion->getPostMatchReportHeaderImagePath());
-                        $matchRegion->setPostMatchReportHeaderImagePath($regionRow['post_match_report']['header_image_path']);
+                    if (!empty($languageRow['post_match_report']['header_image_path'])) {
+                        $imageManager->deleteImage($matchLanguage->getPostMatchReportHeaderImagePath());
+                        $matchLanguage->setPostMatchReportHeaderImagePath($languageRow['post_match_report']['header_image_path']);
                     }
                 }
 
                 //Set Featured Player
-                if (!empty($regionRow['featured_player'])) {
-                    $featuredPlayer = $matchRegion->getFeaturedPlayer();
+                if (!empty($languageRow['featured_player'])) {
+                    $featuredPlayer = $matchLanguage->getFeaturedPlayer();
                     if (is_null($featuredPlayer)) {
                         $featuredPlayer = new \Application\Model\Entities\FeaturedPlayer();
                     }
 
-                    $player = PlayerManager::getInstance($this->getServiceLocator())->getPlayerById($regionRow['featured_player']['id']);
+                    $player = PlayerManager::getInstance($this->getServiceLocator())->getPlayerById($languageRow['featured_player']['id']);
 
                     $featuredPlayer->setPlayer($player)
-                        ->setMatchesPlayed((int)$regionRow['featured_player']['matches_played'])
-                        ->setGoals((int)$regionRow['featured_player']['goals'])
-                        ->setMatchStarts((int)$regionRow['featured_player']['match_starts'])
-                        ->setMinutesPlayed((int)$regionRow['featured_player']['minutes_played']);
+                        ->setMatchesPlayed((int)$languageRow['featured_player']['matches_played'])
+                        ->setGoals((int)$languageRow['featured_player']['goals'])
+                        ->setMatchStarts((int)$languageRow['featured_player']['match_starts'])
+                        ->setMinutesPlayed((int)$languageRow['featured_player']['minutes_played']);
                     $featuredPlayerDAO->save($featuredPlayer, false, false);
-                    $matchRegion->setFeaturedPlayer($featuredPlayer);
+                    $matchLanguage->setFeaturedPlayer($featuredPlayer);
                 }
 
                 //Set Featured Goalkeeper
-                if (!empty($regionRow['featured_goalkeeper'])) {
+                if (!empty($languageRow['featured_goalkeeper'])) {
                     //$featuredGoalkeeperDAO->get
-                    $featuredGoalkeeper = $matchRegion->getFeaturedGoalKeeper();
+                    $featuredGoalkeeper = $matchLanguage->getFeaturedGoalKeeper();
                     if (is_null($featuredGoalkeeper)) {
                         $featuredGoalkeeper = new \Application\Model\Entities\FeaturedGoalkeeper();
                     }
-                    $player = PlayerManager::getInstance($this->getServiceLocator())->getPlayerById($regionRow['featured_goalkeeper']['id']);
+                    $player = PlayerManager::getInstance($this->getServiceLocator())->getPlayerById($languageRow['featured_goalkeeper']['id']);
                     $featuredGoalkeeper->setPlayer($player)
-                        ->setSaves((int)$regionRow['featured_goalkeeper']['saves'])
-                        ->setMatchesPlayed((int)$regionRow['featured_goalkeeper']['matches_played'])
-                        ->setPenaltySaves((int)$regionRow['featured_goalkeeper']['penalty_saves'])
-                        ->setCleanSheets((int)$regionRow['featured_goalkeeper']['clean_sheets']);
+                        ->setSaves((int)$languageRow['featured_goalkeeper']['saves'])
+                        ->setMatchesPlayed((int)$languageRow['featured_goalkeeper']['matches_played'])
+                        ->setPenaltySaves((int)$languageRow['featured_goalkeeper']['penalty_saves'])
+                        ->setCleanSheets((int)$languageRow['featured_goalkeeper']['clean_sheets']);
                     $featuredGoalkeeperDAO->save($featuredGoalkeeper, false, false);
 
-                    $matchRegion->setFeaturedGoalKeeper($featuredGoalkeeper);
+                    $matchLanguage->setFeaturedGoalKeeper($featuredGoalkeeper);
 
                 }
 
                 //Set Featured Prediction
-                if (!empty($regionRow['featured_prediction'])) {
-                    $featuredPrediction = $matchRegion->getFeaturedPrediction();
+                if (!empty($languageRow['featured_prediction'])) {
+                    $featuredPrediction = $matchLanguage->getFeaturedPrediction();
                     if (is_null($featuredPrediction)) {
                         $featuredPrediction = new \Application\Model\Entities\FeaturedPrediction();
                     }
-                    $featuredPrediction->setName($regionRow['featured_prediction']['name'])
-                        ->setCopy($regionRow['featured_prediction']['copy']);
-                    if (!empty($regionRow['featured_prediction']['image'])) {
+                    $featuredPrediction->setName($languageRow['featured_prediction']['name'])
+                        ->setCopy($languageRow['featured_prediction']['copy']);
+                    if (!empty($languageRow['featured_prediction']['image'])) {
                         $imageManager->deleteImage($featuredPrediction->getImagePath());
-                        $featuredPrediction->setImagePath($regionRow['featured_prediction']['image']);
+                        $featuredPrediction->setImagePath($languageRow['featured_prediction']['image']);
                     }
                     $featuredPredictionDAO->save($featuredPrediction, false, false);
-                    $matchRegion->setFeaturedPrediction($featuredPrediction);
+                    $matchLanguage->setFeaturedPrediction($featuredPrediction);
                 }
-                $matchRegionDAO->save($matchRegion, false, false);
+                $matchLanguageDAO->save($matchLanguage, false, false);
             }
 
         }
 
         $matchDAO->flush();
         $matchDAO->clearCache();
-        $matchRegionDAO->clearCache();
+        $matchLanguageDAO->clearCache();
         $featuredPredictionDAO->clearCache();
         $featuredPlayerDAO->clearCache();
         $featuredPredictionDAO->clearCache();
@@ -409,33 +410,41 @@ class MatchManager extends BasicManager
 
     /**
      * @param $matchId
-     * @param $regionId
+     * @param $languageId
      * @return array
      */
-    public function getPreMatchRegionReport($matchId, $regionId)
+    public function getPreMatchLanguageReport($matchId, $languageId)
     {
         $report = array();
-        $matchRegionDAO = MatchLanguageDAO::getInstance($this->getServiceLocator());
-        $matchRegion = $matchRegionDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $regionId);
+        $dafaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+        $matchLanguageDAO = MatchLanguageDAO::getInstance($this->getServiceLocator());
+        $matchLanguage = $matchLanguageDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $languageId);
+        $defaultMatchLanguage = $matchLanguageDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $dafaultLanguage->getId());
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $contentManager = ContentManager::getInstance($this->getServiceLocator());
+
+        $preMatchData = $contentManager->extendContent($defaultMatchLanguage->getArrayCopy(), $matchLanguage->getArrayCopy());
 
         $match = null;
-        if (!is_null($matchRegion)) {
+        if (!is_null($matchLanguage)) {
             //Match report title
-            $title = $matchRegion->getPreMatchReportTitle();
-            $report['title'] = !empty($title) ? $title : '';
+            $title = $preMatchData['preMatchReportTitle'];
+            $report['title'] = !empty($preMatchData['preMatchReportTitle']) ? $title : '';
 
             //Match report intro
-            $intro = $matchRegion->getPreMatchReportIntro();
+            $intro = $preMatchData['preMatchReportIntro'];
             $report['intro'] = !empty($intro) ? $intro : '';
 
             //Match report header image
-            $headerImage =  $matchRegion->getPreMatchReportHeaderImagePath();
+            $headerImage =  $preMatchData['preMatchReportHeaderImagePath'];
             $report['headerImage'] = !empty($headerImage) ? $headerImage : '';
 
             //Match report featured player
-            $featuredPlayer = $matchRegion->getFeaturedPlayer();
+            $featuredPlayer = $matchLanguage->getFeaturedPlayer();
+            if (!$featuredPlayer->getPlayer()){
+                $featuredPlayer = $defaultMatchLanguage->getFeaturedPlayer();
+            }
             if (!is_null($featuredPlayer) && $featuredPlayer->getPlayer()){
                 $report['featuredPlayer'] = array(
                     'displayName' => $featuredPlayer->getPlayer()->getDisplayName(),
@@ -448,7 +457,10 @@ class MatchManager extends BasicManager
             }
 
             //Match report featured goalkeeper
-            $featuredGoalkeeper = $matchRegion->getFeaturedGoalKeeper();
+            $featuredGoalkeeper = $matchLanguage->getFeaturedGoalKeeper();
+            if (!$featuredGoalkeeper->getPlayer()){
+                $featuredGoalkeeper = $defaultMatchLanguage->getFeaturedGoalKeeper();
+            }
             if (!is_null($featuredGoalkeeper) && $featuredGoalkeeper->getPlayer()){
                 $report['featuredGoalkeeper'] = array(
                     'displayName' => $featuredGoalkeeper->getPlayer()->getDisplayName(),
@@ -461,7 +473,10 @@ class MatchManager extends BasicManager
             }
 
             //Match report featured prediction
-            $featuredPrediction = $matchRegion->getFeaturedPrediction();
+            $featuredPrediction = $matchLanguage->getFeaturedPrediction();
+            if (is_null($featuredPrediction)){
+                $featuredPrediction = $defaultMatchLanguage->getFeaturedPrediction();
+            }
             if (!is_null($featuredPrediction)){
                 $report['featuredPrediction'] = array(
                     'name' => $featuredPrediction->getName(),
@@ -470,27 +485,27 @@ class MatchManager extends BasicManager
                 );
              }
 
-            $match = $matchRegion->getMatch();
+            $match = $matchLanguage->getMatch();
 
             //Check featured player or goalkeeper to display
-            if (is_null($matchRegion->getDisplayFeaturedPlayer())){
+            if (is_null($matchLanguage->getDisplayFeaturedPlayer())){
                 if (!empty($report['featuredGoalkeeper']) && !empty($report['featuredPlayer'])){
                     $displayFeaturedPlayer = rand(0,1);
-                    $matchRegions = $match->getMatchRegions();
-                    foreach($matchRegions as $mRegion){
-                        $mRegion->setDisplayFeaturedPlayer($displayFeaturedPlayer);
-                        $matchRegionDAO->save($mRegion, false,false);
+                    $matchLanguages = $match->getMatchLanguages();
+                    foreach($matchLanguages as $mLanguage){
+                        $mLanguage->setDisplayFeaturedPlayer($displayFeaturedPlayer);
+                        $matchLanguageDAO->save($mLanguage, false,false);
                     }
-                    $matchRegionDAO->flush();
-                    $matchRegionDAO->clearCache();
+                    $matchLanguageDAO->flush();
+                    $matchLanguageDAO->clearCache();
                 }
             }
             //Display only featured player or featured goalkeeper
-            if ($matchRegion->getDisplayFeaturedPlayer()){
+            if ($matchLanguage->getDisplayFeaturedPlayer()){
                   if (isset($report['featuredGoalkeeper'])){
                       unset($report['featuredGoalkeeper']);
                   }
-            }elseif (!is_null($matchRegion->getDisplayFeaturedPlayer())){
+            }elseif (!is_null($matchLanguage->getDisplayFeaturedPlayer())){
                 if (isset($report['featuredPlayer'])){
                     unset($report['featuredPlayer']);
                 }
@@ -499,7 +514,7 @@ class MatchManager extends BasicManager
 
         if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
-            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($regionId, DefaultReportContent::PRE_MATCH_TYPE);
+            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($languageId, DefaultReportContent::PRE_MATCH_TYPE);
             if ($defaultReportContent !== null) {
                 if (empty($report['title']))
                     $report['title'] = $defaultReportContent->getTitle();
@@ -584,34 +599,34 @@ class MatchManager extends BasicManager
 
     /**
      * @param $matchId
-     * @param $regionId
+     * @param $languageId
      * @return array
      */
-    public function getPostMatchRegionReport($matchId, $regionId)
+    public function getPostMatchLanguageReport($matchId, $languageId)
     {
         $report = array();
-        $matchRegionDAO = MatchLanguageDAO::getInstance($this->getServiceLocator());
-        $matchRegion = $matchRegionDAO->getPostMatchLanguageByMatchIdAndLanguageId($matchId, $regionId);
+        $matchLanguageDAO = MatchLanguageDAO::getInstance($this->getServiceLocator());
+        $matchLanguage = $matchLanguageDAO->getPostMatchLanguageByMatchIdAndLanguageId($matchId, $languageId);
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
 
         $match = null;
-        if (!is_null($matchRegion)) {
+        if (!is_null($matchLanguage)) {
 
             //Match report title
-            $title = $matchRegion->getPostMatchReportTitle();
+            $title = $matchLanguage->getPostMatchReportTitle();
             $report['title'] = !empty($title) ? $title : '';
 
             //Match report intro
-            $intro = $matchRegion->getPostMatchReportIntro();
+            $intro = $matchLanguage->getPostMatchReportIntro();
             $report['intro'] = !empty($intro) ? $intro : '';
 
             //Match report header image
-            $headerImage =  $matchRegion->getPostMatchReportHeaderImagePath();
+            $headerImage =  $matchLanguage->getPostMatchReportHeaderImagePath();
             $report['headerImage'] = !empty($headerImage) ? $headerImage : '';
 
-            $match = $matchRegion->getMatch();
+            $match = $matchLanguage->getMatch();
         }
 
         if (is_null($match)){
@@ -681,7 +696,7 @@ class MatchManager extends BasicManager
 
         if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
-            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($regionId, DefaultReportContent::POST_MATCH_TYPE);
+            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($languageId, DefaultReportContent::POST_MATCH_TYPE);
             if ($defaultReportContent !== null) {
                 if (empty($report['title']))
                     $report['title'] = $defaultReportContent->getTitle();

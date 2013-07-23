@@ -26,7 +26,7 @@ abstract class LanguageFieldset extends UploadableFieldset implements  FieldsetO
         return $this->data;
     }
 
-    public function __construct(array $data) {
+    public function __construct($data) {
 
         $this->setData($data);
         parent::__construct(str_replace(" ", "_", $data['displayName']));

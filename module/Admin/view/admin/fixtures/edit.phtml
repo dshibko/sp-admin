@@ -91,13 +91,13 @@ $this->headTitle($this->title);
                         <a class="<?php echo !empty($errors) ?  'collapse' : 'expand';?>" href="javascript:;"></a>
                     </div>
                 </div>
-                <div class="portlet-body" style="display:<?php echo !empty($errors) ?  'block' : 'none';?>;">
+                <div class="portlet-body" style="display:<?php echo !empty($errors) ?  'block' : 'block';?>;">
                     <?php
                     $this->featuredPlayerForm->prepare();
                     $this->featuredPlayerForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
                         echo $this->form()->openTag($this->featuredPlayerForm);
                     ?>
-                        <?php echo $this->renderRegionFieldsets($this->featuredPlayerForm->getFieldsets(), $this->params['action'] == 'add', 'player');?>
+                        <?php echo $this->renderLanguageFieldsets($this->featuredPlayerForm->getFieldsets(), $this->params['action'] == 'add', 'player');?>
                     <?php echo $this->formHidden($this->featuredPlayerForm->get('type'));?>
                     <div class="form-actions">
                         <button type="submit" class="btn blue"><?=$this->translate($this->featuredPlayerForm->get('submit')->getValue());?></button>
@@ -107,7 +107,7 @@ $this->headTitle($this->title);
                 </div>
             </div>
         <!--FEATURED PLAYER ENDS-->
-    <?php endif;?>
+    <?php  endif;?>
     <?php if (!empty($this->featuredGoalkeeperForm)):?>
         <?php $errors  = $this->featuredGoalkeeperForm->getInputFilter()->getMessages();?>
         <!--FEATURED GOALKEEPER STARTS-->
@@ -124,7 +124,7 @@ $this->headTitle($this->title);
                 $this->featuredGoalkeeperForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
                 echo $this->form()->openTag($this->featuredGoalkeeperForm);
                 ?>
-                <?php echo $this->renderRegionFieldsets($this->featuredGoalkeeperForm->getFieldsets(), $this->params['action'] == 'add', 'goalkeeper');?>
+                <?php echo $this->renderLanguageFieldsets($this->featuredGoalkeeperForm->getFieldsets(), $this->params['action'] == 'add', 'goalkeeper');?>
                 <?php echo $this->formHidden($this->featuredGoalkeeperForm->get('type'));?>
                 <div class="form-actions">
                     <button type="submit" class="btn blue"><?=$this->translate($this->featuredGoalkeeperForm->get('submit')->getValue());?></button>
@@ -151,7 +151,7 @@ $this->headTitle($this->title);
                 $this->featuredPredictionForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
                 echo $this->form()->openTag($this->featuredPredictionForm);
                 ?>
-                <?php echo $this->renderRegionFieldsets($this->featuredPredictionForm->getFieldsets(), $this->params['action'] == 'add', 'prediction');?>
+                <?php echo $this->renderLanguageFieldsets($this->featuredPredictionForm->getFieldsets(), $this->params['action'] == 'add', 'prediction');?>
                 <?php echo $this->formHidden($this->featuredPredictionForm->get('type'));?>
                 <div class="form-actions">
                     <button type="submit" class="btn blue"><?=$this->translate($this->featuredPredictionForm->get('submit')->getValue());?></button>
@@ -178,7 +178,7 @@ $this->headTitle($this->title);
                 $this->preMatchReportForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
                 echo $this->form()->openTag($this->preMatchReportForm);
                 ?>
-                <?php echo $this->renderRegionFieldsets($this->preMatchReportForm->getFieldsets(), $this->params['action'] == 'add', 'pre-match-report');?>
+                <?php echo $this->renderLanguageFieldsets($this->preMatchReportForm->getFieldsets(), $this->params['action'] == 'add', 'pre-match-report');?>
                 <?php echo $this->formHidden($this->preMatchReportForm->get('type'));?>
                 <div class="form-actions">
                     <button type="submit" class="btn blue"><?=$this->translate($this->preMatchReportForm->get('submit')->getValue());?></button>
@@ -205,7 +205,7 @@ $this->headTitle($this->title);
             $this->postMatchReportForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
             echo $this->form()->openTag($this->postMatchReportForm);
             ?>
-            <?php echo $this->renderRegionFieldsets($this->postMatchReportForm->getFieldsets(), $this->params['action'] == 'add', 'post-match-report');?>
+            <?php echo $this->renderLanguageFieldsets($this->postMatchReportForm->getFieldsets(), $this->params['action'] == 'add', 'post-match-report');?>
             <?php echo $this->formHidden($this->postMatchReportForm->get('type'));?>
             <div class="form-actions">
                 <button type="submit" class="btn blue"><?=$this->translate($this->postMatchReportForm->get('submit')->getValue());?></button>

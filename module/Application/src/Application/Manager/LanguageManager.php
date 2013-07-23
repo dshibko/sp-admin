@@ -203,26 +203,27 @@ class LanguageManager extends BasicManager {
     public function getLanguagesFieldsets($fieldsetClassName)
     {
         $languages = $this->getAllLanguages(true);
+        $defaultLanguage = $this->getDefaultLanguage();
         $fieldsets = array();
         foreach ($languages as $language){
             if (class_exists($fieldsetClassName)){
-                $fieldsets[] = new $fieldsetClassName($language);
+                $fieldsets[] = new $fieldsetClassName($language, $language['isDefault']);
             }
         }
         return $fieldsets;
     }
 
     /**
-     * @param array $regionFieldsets
+     * @param array $languageFieldsets
      * @return array
      */
-    public function getFeaturedPlayerRegionsData(array $regionFieldsets)
+    public function getFeaturedPlayerLanguagesData(array $languageFieldsets)
     {
-        $regionsData = array();
+        $languagesData = array();
         //Prepare regions data
-        foreach ($regionFieldsets as $fieldset) {
-            $region = $fieldset->getRegion();
-            $regionsData[$region['id']] = array(
+        foreach ($languageFieldsets as $fieldset) {
+            $language = $fieldset->getData();
+            $languagesData[$language['id']] = array(
                 'featured_player' => array(
                     'id' => $fieldset->get('featured_player')->getValue(),
                     'goals' => $fieldset->get('player_goals')->getValue(),
@@ -232,20 +233,20 @@ class LanguageManager extends BasicManager {
                 ),
             );
         }
-        return $regionsData;
+        return $languagesData;
     }
 
     /**
-     * @param array $regionFieldsets
+     * @param array $languageFieldsets
      * @return array
      */
-    public function getFeaturedGoalkeeperRegionsData(array $regionFieldsets)
+    public function getFeaturedGoalkeeperLanguagesData(array $languageFieldsets)
     {
-        $regionsData = array();
+        $languagesData = array();
         //Prepare regions data
-        foreach ($regionFieldsets as $fieldset) {
-            $region = $fieldset->getRegion();
-            $regionsData[$region['id']] = array(
+        foreach ($languageFieldsets as $fieldset) {
+            $language = $fieldset->getData();
+            $languagesData[$language['id']] = array(
                 'featured_goalkeeper' => array(
                     'id' => $fieldset->get('featured_goalkeeper')->getValue(),
                     'saves' => $fieldset->get('goalkeeper_saves')->getValue(),
@@ -255,21 +256,21 @@ class LanguageManager extends BasicManager {
                 ),
             );
         }
-        return $regionsData;
+        return $languagesData;
     }
 
     /**
-     * @param array $regionFieldsets
+     * @param array $languageFieldsets
      * @return array
      */
-    public function getFeaturedPredictionRegionsData(array $regionFieldsets)
+    public function getFeaturedPredictionLanguagesData(array $languageFieldsets)
     {
         $imageManager = ImageManager::getInstance($this->getServiceLocator());
-        $regionsData = array();
+        $languagesData = array();
         //Prepare regions data
-        foreach ($regionFieldsets as $fieldset) {
-            $region = $fieldset->getRegion();
-            $regionsData[$region['id']] = array(
+        foreach ($languageFieldsets as $fieldset) {
+            $language = $fieldset->getData();
+            $languagesData[$language['id']] = array(
                 'featured_prediction' => array(
                     'name' => $fieldset->get('prediction_name')->getValue(),
                     'copy' => $fieldset->get('prediction_copy')->getValue(),
@@ -278,24 +279,24 @@ class LanguageManager extends BasicManager {
             $predictionImage = $fieldset->get('prediction_image')->getValue();
             $pImage = ($predictionImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('prediction_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
             if ($pImage){
-                $regionsData[$region['id']]['featured_prediction']['image'] = $pImage;
+                $languagesData[$language['id']]['featured_prediction']['image'] = $pImage;
             }
         }
-        return $regionsData;
+        return $languagesData;
     }
 
     /**
-     * @param array $regionFieldsets
+     * @param array $languageFieldsets
      * @return array
      */
-    public function getPreMatchReportRegionsData(array $regionFieldsets)
+    public function getPreMatchReportLanguagesData(array $languageFieldsets)
     {
         $imageManager = ImageManager::getInstance($this->getServiceLocator());
-        $regionsData = array();
+        $languagesData = array();
         //Prepare regions data
-        foreach ($regionFieldsets as $fieldset) {
-            $region = $fieldset->getRegion();
-            $regionsData[$region['id']] = array(
+        foreach ($languageFieldsets as $fieldset) {
+            $language = $fieldset->getData();
+            $languagesData[$language['id']] = array(
                 'pre_match_report' => array(
                     'title' => $fieldset->get('pre_match_report_title')->getValue(),
                     'intro' => $fieldset->get('pre_match_report_intro')->getValue(),
@@ -304,20 +305,20 @@ class LanguageManager extends BasicManager {
             $headerImage = $fieldset->get('pre_match_report_header_image')->getValue();
             $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('pre_match_report_header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
             if ($hImage){
-                $regionsData[$region['id']]['pre_match_report']['header_image_path'] = $hImage;
+                $languagesData[$language['id']]['pre_match_report']['header_image_path'] = $hImage;
             }
         }
-        return $regionsData;
+        return $languagesData;
     }
 
-    public function getPostMatchReportRegionsData(array $regionFieldsets)
+    public function getPostMatchReportLanguagesData(array $languageFieldsets)
     {
         $imageManager = ImageManager::getInstance($this->getServiceLocator());
-        $regionsData = array();
+        $languagesData = array();
         //Prepare regions data
-        foreach ($regionFieldsets as $fieldset) {
-            $region = $fieldset->getRegion();
-            $regionsData[$region['id']] = array(
+        foreach ($languageFieldsets as $fieldset) {
+            $language = $fieldset->getData();
+            $languagesData[$language['id']] = array(
                 'post_match_report' => array(
                     'title' => $fieldset->get('post_match_report_title')->getValue(),
                     'intro' => $fieldset->get('post_match_report_intro')->getValue(),
@@ -326,10 +327,10 @@ class LanguageManager extends BasicManager {
             $headerImage = $fieldset->get('post_match_report_header_image')->getValue();
             $hImage = ($headerImage['error'] != UPLOAD_ERR_NO_FILE) ? $imageManager->saveUploadedImage($fieldset->get('post_match_report_header_image'), ImageManager::IMAGE_TYPE_REPORT) : null;
             if ($hImage){
-                $regionsData[$region['id']]['post_match_report']['header_image_path'] = $hImage;
+                $languagesData[$language['id']]['post_match_report']['header_image_path'] = $hImage;
             }
         }
-        return $regionsData;
+        return $languagesData;
     }
 
 }

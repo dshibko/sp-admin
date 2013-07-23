@@ -25,9 +25,9 @@ class FeaturedPlayerForm extends RegionalisedForm {
         return $this->type;
     }
 
-    public function __construct($regionFieldsets, $type = 'featured_player') {
+    public function __construct($languageFieldsets, $type = 'featured_player') {
 
-        parent::__construct($regionFieldsets, 'featured-player');
+        parent::__construct($languageFieldsets, 'featured-player');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
         $this->setType($type);

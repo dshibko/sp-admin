@@ -10,7 +10,7 @@
 namespace Admin;
 
 use \Admin\View\Helpers\RegionFieldsetsRenderer;
-use \Admin\View\Helpers\FieldsetsRenderer;
+use \Admin\View\Helpers\LanguageFieldsetsRenderer;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
@@ -82,9 +82,9 @@ class Module
                     $h->setTranslator($translator);
                     return $h;
                 },
-                'renderFieldsets' => function($sm) {
+                'renderLanguageFieldsets' => function($sm) {
                     $translator = $sm->getServiceLocator()->get('translator');
-                    $h = new FieldsetsRenderer();
+                    $h = new LanguageFieldsetsRenderer();
                     $h->setTranslator($translator);
                     return $h;
                 }

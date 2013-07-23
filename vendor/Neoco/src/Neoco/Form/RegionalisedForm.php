@@ -39,7 +39,7 @@ abstract class RegionalisedForm extends Form {
     public function initForm($dataObject) {
         $this->initFormByObject($dataObject);
         foreach ($this->getFieldsets() as $fieldset)
-            if ($fieldset instanceof RegionFieldset)
+            if ($fieldset instanceof RegionFieldset || $fieldset instanceof LanguageFieldset)
                 $fieldset->initFieldsetByObject($dataObject);
     }
 

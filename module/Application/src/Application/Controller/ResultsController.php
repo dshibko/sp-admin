@@ -58,8 +58,8 @@ class ResultsController extends AbstractActionController {
                 return $this->notFoundAction();
 
             //Match report
-            $region = $applicationManager->getUserRegion($user);
-            $matchReport = $matchManager->getPostMatchRegionReport($currentMatch['id'], $region->getId());
+            $regionLanguage = $applicationManager->getUserRegion($user);
+            $matchReport = $matchManager->getPostMatchLanguageReport($currentMatch['id'], $regionLanguage->getId());
 
             $predictionPlayers = $currentMatch['prediction']['predictionPlayers'];
             $predictionPlayersCount = 0;

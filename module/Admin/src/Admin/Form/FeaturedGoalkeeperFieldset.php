@@ -2,9 +2,9 @@
 
 namespace Admin\Form;
 
-use \Neoco\Form\RegionFieldset;
+use Neoco\Form\LanguageFieldset;
 
-class FeaturedGoalkeeperFieldset extends RegionFieldset
+class FeaturedGoalkeeperFieldset extends LanguageFieldset
 {
     const MAX_MATCH_STATS_VALUE = 999;
     const MIN_MATCH_STATS_VALUE = 0;
@@ -18,16 +18,16 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
     const MAX_SEASON_PENALTIES_INPUT_LENGTH = 6;
 
 
-    public function __construct($region)
+    public function __construct($language, $required = 0)
     {
 
-        parent::__construct($region);
+        parent::__construct($language);
 
         //Featured Goalkeeper
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
-                //'required' => 'required',
+                'required' => $required,
                 'class' => 'chosen',
                 'tabindex' => 6,
                 'style' => 'width:247px',
@@ -48,6 +48,7 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
             'name' => 'goalkeeper_saves',
             'type' => 'text',
             'attributes' => array(
+                'required' => $required,
                 'between' => array(
                     'min' => self::MIN_MATCH_STATS_VALUE,
                     'max' => self::MAX_SEASON_SAVES
@@ -64,6 +65,7 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
             'name' => 'goalkeeper_matches_played',
             'type' => 'text',
             'attributes' => array(
+                'required' => $required,
                 'maxlength' => self::MAX_INPUT_LENGTH,
                 'between' => array(
                     'min' => self::MIN_MATCH_STATS_VALUE,
@@ -81,6 +83,7 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
             'name' => 'goalkeeper_penalty_saves',
             'type' => 'text',
             'attributes' => array(
+                'required' => $required,
                 'maxlength' => self::MAX_SEASON_PENALTIES_INPUT_LENGTH,
                 'between' => array(
                     'min' => self::MIN_MATCH_STATS_VALUE,
@@ -98,6 +101,7 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
             'name' => 'goalkeeper_clean_sheets',
             'type' => 'text',
             'attributes' => array(
+                'required' => $required,
                 'maxlength' => self::MAX_INPUT_LENGTH,
                 'between' => array(
                     'min' => self::MIN_MATCH_STATS_VALUE,
@@ -119,10 +123,10 @@ class FeaturedGoalkeeperFieldset extends RegionFieldset
      */
     function initFieldsetByObject($match)
     {
-        $region = $this->getRegion();
-        foreach ($match->getMatchRegions() as $matchRegion) {
-            if ($matchRegion->getLanguage()->getId() == $region['id']) {
-                $featuredGoalkeeper = $matchRegion->getFeaturedGoalkeeper();
+        $language = $this->getData();
+        foreach ($match->getMatchLanguages() as $matchLanguage) {
+            if ($matchLanguage->getLanguage()->getId() == $language['id']) {
+                $featuredGoalkeeper = $matchLanguage->getFeaturedGoalkeeper();
                 //Featured Goalkeeper
                 if ($featuredGoalkeeper && $featuredGoalkeeper->getPlayer()) {
                     $this->get('featured_goalkeeper')->setValue($featuredGoalkeeper->getPlayer()->getId());

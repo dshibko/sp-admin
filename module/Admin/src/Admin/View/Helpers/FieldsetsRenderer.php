@@ -3,44 +3,44 @@
 namespace Admin\View\Helpers;
 
 use Zend\View\Helper\AbstractHelper;
-use \Zend\Mvc\Controller\Plugin\FlashMessenger;
 
-class FieldsetsRenderer extends AbstractHelper
+abstract class FieldsetsRenderer extends AbstractHelper
 {
+    abstract function getName($regionFieldset);
 
     protected $translator;
 
     /**
-     * @param $fieldsets
+     * @param $regionFieldsets
      * @param bool $add
      * @param string $uniqueName
      * @return string
      */
-    public function __invoke($fieldsets, $add = true, $uniqueName = '')
+    public function __invoke($regionFieldsets, $add = true, $uniqueName = '')
     {
         $html = '<div class="row-fluid form-vertical">
                <div class="span12">
                   <div class="tabbable tabbable-custom boxless">
                      <ul class="nav nav-tabs">';
         $i = 0;
-        foreach ($fieldsets as $fieldset) {
-            $data = $fieldset->getData();
-            $html .= '<li' . ($i == 0 ? ' class="active"' : '') . '><a href="#tab_' . $uniqueName . (++$i) . '" data-toggle="tab">' . $data['displayName'] . '</a></li>';
+        foreach ($regionFieldsets as $regionFieldset) {
+            $displayName = $this->getName($regionFieldset);
+            $html .= '<li' . ($i == 0 ? ' class="active"' : '') . '><a href="#tab_' . $uniqueName . (++$i) . '" data-toggle="tab">' . $displayName['displayName'] . '</a></li>';
         }
         $html .= '</ul><div class="tab-content">';
         $i = 0;
-        foreach ($fieldsets as $fieldset) {
+        foreach ($regionFieldsets as $regionFieldset) {
             $html .= '<div class="tab-pane' . ($i == 0 ? ' active' : '') . '" id="tab_' . $uniqueName . (++$i) . '">';
-            $html .= $this->renderFieldset($fieldset, $add);
+            $html .= $this->renderRegionFieldset($regionFieldset, $add);
             $html .= '</div>';
         }
         $html .= '</div></div></div></div>';
-        return $html;
+        print $html;
     }
 
-    private function renderFieldset($fieldset, $add = true) {
+    private function renderRegionFieldset($regionFieldset, $add = true) {
         $html = '';
-        foreach ($fieldset->getElements() as $element) {
+        foreach ($regionFieldset->getElements() as $element) {
             $type = $element->getAttribute('type');
             $hint = $element->getAttribute('hint');
             $maxlength = $element->getAttribute('maxlength');
@@ -49,13 +49,7 @@ class FieldsetsRenderer extends AbstractHelper
     <div class="controls">';
             switch($type) {
                 case 'textarea':
-                    $editorType = $element->getAttribute('editor');
-                    if (!empty($editorType) && $editorType['type'] == 'ckeditor'){
-                        $html .=  '<textarea class="span12 ckeditor m-wrap" name="' . $element->getAttribute('name') . '" rows="10">' . $element->getValue() . '</textarea>';
-                    }else{
-                        $html .= '<div class="input-prepend"><textarea class="span12 wysihtml5 m-wrap" rows="6" name="' . $element->getAttribute('name') . '" '.(!empty($maxlength) ? 'maxlength="'.$maxlength.'"' : '').'>' . $element->getValue() . '</textarea></div>';
-                    }
-
+                    $html .=  '<textarea class="span12 ckeditor m-wrap" name="' . $element->getAttribute('name') . '" rows="10">' . $element->getValue() . '</textarea>';
                     break;
                 case 'file':
                     $image = $add ? '': (is_string($element->getValue()) ? $element->getValue() : '');
@@ -81,18 +75,18 @@ class FieldsetsRenderer extends AbstractHelper
                     $html .= '<div class="input-prepend"><span class="add-on"><i class="icon-tag"></i></span><input class="m-wrap medium" type="' . $type . '" name="' . $element->getAttribute('name') . '" value="' . $element->getValue() . '" '.(!empty($maxlength) ? 'maxlength="'.$maxlength.'"' : '').'/></div>';
             }
             if (!empty($hint)){
-               $html .= '<span class="help-inline">'.$hint.'</span>';
+                $html .= '<span class="help-inline">'.$hint.'</span>';
             }
-        $html .= '</div>
+            $html .= '</div>
                 </div>';
         }
         return $html;
     }
 
-
     public function setTranslator($translator)
     {
         $this->translator = $translator;
     }
+
 
 }

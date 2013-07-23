@@ -3,6 +3,7 @@
 namespace Application\Model\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Neoco\Model\BasicObject;
 
 /**
  * MatchLanguage
@@ -10,49 +11,49 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="match_language")
  * @ORM\Entity
  */
-class MatchLanguage
+class MatchLanguage extends BasicObject
 {
     /**
      * @var string
      *
      * @ORM\Column(name="pre_match_report_title", type="string", length=255, nullable=true)
      */
-    private $preMatchReportTitle;
+    protected $preMatchReportTitle;
 
     /**
      * @var string
      *
      * @ORM\Column(name="pre_match_report_intro", type="text", nullable=true)
      */
-    private $preMatchReportIntro;
+    protected $preMatchReportIntro;
 
     /**
      * @var string
      *
      * @ORM\Column(name="pre_match_report_header_image_path", type="string", length=255, nullable=true)
      */
-    private $preMatchReportHeaderImagePath;
+    protected $preMatchReportHeaderImagePath;
 
     /**
      * @var string
      *
      * @ORM\Column(name="post_match_report_title", type="string", length=255, nullable=true)
      */
-    private $postMatchReportTitle;
+    protected $postMatchReportTitle;
 
     /**
      * @var string
      *
      * @ORM\Column(name="post_match_report_intro", type="text", nullable=true)
      */
-    private $postMatchReportIntro;
+    protected $postMatchReportIntro;
 
     /**
      * @var string
      *
      * @ORM\Column(name="post_match_report_header_image_path", type="string", length=255, nullable=true)
      */
-    private $postMatchReportHeaderImagePath;
+    protected $postMatchReportHeaderImagePath;
 
     /**
      * @var integer
@@ -61,7 +62,7 @@ class MatchLanguage
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var Match
@@ -71,7 +72,7 @@ class MatchLanguage
      * @ORM\JoinColumn(name="match_id", referencedColumnName="id")
      * })
      */
-    private $match;
+    protected $match;
 
     /**
      * @var Language
@@ -81,7 +82,7 @@ class MatchLanguage
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      * })
      */
-    private $language;
+    protected $language;
 
     /**
      * @var FeaturedPlayer
@@ -91,7 +92,7 @@ class MatchLanguage
      * @ORM\JoinColumn(name="featured_player_id", referencedColumnName="id")
      * })
      */
-    private $featuredPlayer;
+    protected $featuredPlayer;
 
     /**
      * @var FeaturedGoalkeeper
@@ -101,7 +102,7 @@ class MatchLanguage
      * @ORM\JoinColumn(name="featured_goalkeeper_id", referencedColumnName="id")
      * })
      */
-    private $featuredGoalKeeper;
+    protected $featuredGoalKeeper;
 
     /**
      * @var FeaturedPrediction
@@ -111,14 +112,14 @@ class MatchLanguage
      * @ORM\JoinColumn(name="featured_prediction_id", referencedColumnName="id")
      * })
      */
-    private $featuredPrediction;
+    protected $featuredPrediction;
 
     /**
      * @var bool
      *
      * @ORM\Column(name="display_featured_player", type="boolean")
      */
-    private $displayFeaturedPlayer;
+    protected $displayFeaturedPlayer;
 
     /**
      * @return int
