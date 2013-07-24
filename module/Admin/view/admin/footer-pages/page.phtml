@@ -5,7 +5,7 @@
             $this->form->setAttribute('action', $this->url('admin-content-footer-pages', $this->params));
             echo $this->form()->openTag($this->form);
             ?>
-            <?php echo $this->renderFieldsets($this->form->getFieldsets(), false);?>
+            <?php echo $this->renderLanguageFieldsets($this->form->getFieldsets(), false);?>
             <div class="form-actions">
                 <button type="submit" class="btn blue"><?=$this->translate($this->form->get('submit')->getValue());?></button>
             </div>

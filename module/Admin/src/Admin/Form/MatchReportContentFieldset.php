@@ -2,15 +2,16 @@
 
 namespace Admin\Form;
 
-use \Neoco\Form\RegionFieldset;
+use Neoco\Form\LanguageFieldset;
 
-class MatchReportContentFieldset extends RegionFieldset {
+class MatchReportContentFieldset extends LanguageFieldset
+{
 
     const TITLE_MAX_LENGTH = 255;
 
-    public function __construct($region) {
+    public function __construct($language) {
 
-        parent::__construct($region);
+        parent::__construct($language);
 
         $this->add(array(
             'name' => 'title',
@@ -50,11 +51,11 @@ class MatchReportContentFieldset extends RegionFieldset {
     }
 
     /**
-     * @param array $regionContent
+     * @param array $languageContent
      */
-    function initFieldsetByObject($regionContent) {
-        $region = $this->getRegion();
-        $reportContent = $regionContent[$region['id']];
+    function initFieldsetByObject($languageContent) {
+        $language = $this->getData();
+        $reportContent = $languageContent[$language['id']];
         foreach ($this->getElements() as $element) {
             $getter = 'get' . ucfirst($element->getName());
             if (method_exists($reportContent, $getter)) {
