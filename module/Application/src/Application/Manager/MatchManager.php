@@ -424,6 +424,7 @@ class MatchManager extends BasicManager
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
         $contentManager = ContentManager::getInstance($this->getServiceLocator());
 
+        $matchLanguage = !empty($matchLanguage) ? $matchLanguage : $defaultMatchLanguage;
         $preMatchData = $contentManager->extendContent($defaultMatchLanguage->getArrayCopy(), $matchLanguage->getArrayCopy());
 
         $match = null;
@@ -440,9 +441,15 @@ class MatchManager extends BasicManager
             $headerImage =  $preMatchData['preMatchReportHeaderImagePath'];
             $report['headerImage'] = !empty($headerImage) ? $headerImage : '';
 
+            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageId, DefaultReportContent::PRE_MATCH_TYPE, true);
+
+            if (!empty($defaultReportContent)){
+                $report = $contentManager->extendContent($report, $defaultReportContent);
+            }
+
             //Match report featured player
             $featuredPlayer = $matchLanguage->getFeaturedPlayer();
-            if (!$featuredPlayer->getPlayer()){
+            if (empty($featuredPlayer) || !$featuredPlayer->getPlayer()){
                 $featuredPlayer = $defaultMatchLanguage->getFeaturedPlayer();
             }
             if (!is_null($featuredPlayer) && $featuredPlayer->getPlayer()){
@@ -458,7 +465,7 @@ class MatchManager extends BasicManager
 
             //Match report featured goalkeeper
             $featuredGoalkeeper = $matchLanguage->getFeaturedGoalKeeper();
-            if (!$featuredGoalkeeper->getPlayer()){
+            if (empty($featuredGoalkeeper) || !$featuredGoalkeeper->getPlayer()){
                 $featuredGoalkeeper = $defaultMatchLanguage->getFeaturedGoalKeeper();
             }
             if (!is_null($featuredGoalkeeper) && $featuredGoalkeeper->getPlayer()){
@@ -511,10 +518,10 @@ class MatchManager extends BasicManager
                 }
             }
         }
-
+/*
         if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
-            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($languageId, DefaultReportContent::PRE_MATCH_TYPE);
+            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageId, DefaultReportContent::PRE_MATCH_TYPE);
             if ($defaultReportContent !== null) {
                 if (empty($report['title']))
                     $report['title'] = $defaultReportContent->getTitle();
@@ -524,7 +531,7 @@ class MatchManager extends BasicManager
                     $report['headerImage'] = $defaultReportContent->getHeaderImage();
             }
         }
-
+*/
         if (is_null($match)){
             $match = MatchManager::getInstance($this->getServiceLocator())->getMatchById($matchId);
         }
@@ -696,7 +703,7 @@ class MatchManager extends BasicManager
 
         if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
-            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($languageId, DefaultReportContent::POST_MATCH_TYPE);
+            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageId, DefaultReportContent::POST_MATCH_TYPE);
             if ($defaultReportContent !== null) {
                 if (empty($report['title']))
                     $report['title'] = $defaultReportContent->getTitle();

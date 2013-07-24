@@ -582,14 +582,14 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param $regionId
+     * @param $languageId
      * @param $type
      * @param bool $hydrate
      * @param bool $skipCache
      * @return \Application\Model\Entities\DefaultReportContent|array
      */
-    public function getDefaultReportContentByTypeAndRegion($regionId, $type, $hydrate = false, $skipCache = false) {
-        return DefaultReportContentDAO::getInstance($this->getServiceLocator())->getDefaultReportContentByTypeAndRegion($regionId, $type, $hydrate, $skipCache);
+    public function getDefaultReportContentByTypeAndLanguage($languageId, $type, $hydrate = false, $skipCache = false) {
+        return DefaultReportContentDAO::getInstance($this->getServiceLocator())->getDefaultReportContentByTypeAndLanguage($languageId, $type, $hydrate, $skipCache);
     }
 
     public function saveDefaultReportContent($defaultReportContent, $flush = true, $clearCache = true) {

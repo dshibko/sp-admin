@@ -33,19 +33,19 @@ class DefaultReportContentDAO extends AbstractDAO {
     }
 
     /**
-     * @param $regionId
+     * @param $languageId
      * @param $type
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      * @throws \Exception
      */
-    public function getDefaultReportContentByTypeAndRegion($regionId, $type, $hydrate = false, $skipCache = false) {
+    public function getDefaultReportContentByTypeAndLanguage($languageId, $type, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('drc')
             ->from($this->getRepositoryName(), 'drc')
             ->where($qb->expr()->eq('drc.reportType', ':type'))->setParameter('type', $type)
-            ->andWhere($qb->expr()->eq('drc.region', ':region'))->setParameter('region', $regionId);
+            ->andWhere($qb->expr()->eq('drc.language', ':language'))->setParameter('language', $languageId);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
 

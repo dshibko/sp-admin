@@ -7,6 +7,7 @@ use \Application\Model\Entities\DefaultReportContent;
 use \Application\Manager\ImageManager;
 use \Admin\Form\MatchReportContentFieldset;
 use \Application\Manager\RegionManager;
+use \Application\Manager\LanguageManager;
 use \Admin\Form\MatchReportContentForm;
 use \Zend\View\Model\ViewModel;
 use \Application\Model\Helpers\MessagesConstants;
@@ -20,18 +21,18 @@ abstract class MatchContentController extends AbstractActionController {
     abstract protected function getMatchReportType();
 
     protected function getReportContentForm($init = false) {
-        $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
-        $regionFieldsets = array();
+        $languages = LanguageManager::getInstance($this->getServiceLocator())->getAllLanguages(true);
+        $languageFieldsets = array();
 
-        foreach ($regions as $region)
-            $regionFieldsets [] = new MatchReportContentFieldset($region);
-        $form = new MatchReportContentForm($regionFieldsets);
+        foreach ($languages as $language)
+            $languageFieldsets [] = new MatchReportContentFieldset($language);
+        $form = new MatchReportContentForm($languageFieldsets);
         if ($init) {
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
-            $regionsData = array();
-            foreach ($regions as $region)
-                $regionsData[$region['id']] = $contentManager->getDefaultReportContentByTypeAndRegion($region['id'], $this->getMatchReportType());
-            $form->initForm($regionsData);
+            $languagesData = array();
+            foreach ($languages as $language)
+                $languagesData[$language['id']] = $contentManager->getDefaultReportContentByTypeAndLanguage($language['id'], $this->getMatchReportType());
+            $form->initForm($languagesData);
         }
         return $form;
     }
@@ -51,20 +52,20 @@ abstract class MatchContentController extends AbstractActionController {
                 if ($form->isValid()) {
 
                     $imageManager = ImageManager::getInstance($this->getServiceLocator());
-                    $regionManager = RegionManager::getInstance($this->getServiceLocator());
+                    $languageManager = LanguageManager::getInstance($this->getServiceLocator());
                     $contentManager = ContentManager::getInstance($this->getServiceLocator());
 
-                    foreach ($form->getFieldsets() as $regionFieldset) {
-                        $regionData = $regionFieldset->getRegion();
-                        $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndRegion($regionData['id'], $this->getMatchReportType());
+                    foreach ($form->getFieldsets() as $languageFieldset) {
+                        $languageData = $languageFieldset->getData();
+                        $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageData['id'], $this->getMatchReportType());
                         if ($defaultReportContent === null) {
                             $defaultReportContent = new DefaultReportContent();
-                            $defaultReportContent->setRegion($regionManager->getRegionById($regionData['id']));
+                            $defaultReportContent->setLanguage($languageManager->getLanguageById($languageData['id']));
                             $defaultReportContent->setReportType($this->getMatchReportType());
                         }
-                        $defaultReportContent->setTitle($regionFieldset->get('title')->getValue());
-                        $defaultReportContent->setIntro($regionFieldset->get('intro')->getValue());
-                        $headerImage = $regionFieldset->get('headerImage');
+                        $defaultReportContent->setTitle($languageFieldset->get('title')->getValue());
+                        $defaultReportContent->setIntro($languageFieldset->get('intro')->getValue());
+                        $headerImage = $languageFieldset->get('headerImage');
                         $headerImagePath = $imageManager->saveUploadedImage($headerImage, ImageManager::IMAGE_TYPE_REPORT);
                         if (!empty($headerImagePath)) {
                             $oldHeaderImage = $defaultReportContent->getHeaderImage();

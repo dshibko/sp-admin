@@ -91,7 +91,7 @@ $this->headTitle($this->title);
                         <a class="<?php echo !empty($errors) ?  'collapse' : 'expand';?>" href="javascript:;"></a>
                     </div>
                 </div>
-                <div class="portlet-body" style="display:<?php echo !empty($errors) ?  'block' : 'block';?>;">
+                <div class="portlet-body" style="display:<?php echo !empty($errors) ?  'block' : 'none';?>;">
                     <?php
                     $this->featuredPlayerForm->prepare();
                     $this->featuredPlayerForm->setAttribute('action', $this->url('admin-fixtures', $this->params));
