@@ -58,6 +58,23 @@ class LanguageManager extends BasicManager {
         return LanguageDAO::getInstance($this->getServiceLocator())->getAllLanguages($hydrate, $skipCache);
     }
 
+    public function getSelectedLanguage() {
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $user = $applicationManager->getCurrentUser();
+        $country = null;
+        if ($user == null) {
+            $userManager = UserManager::getInstance($this->getServiceLocator());
+            $isoCode = $userManager->getUserGeoIpIsoCode();
+            if ($isoCode != null)
+                $country = $applicationManager->getCountryByISOCode($isoCode);
+        } else
+            $country = $user->getCountry();
+        if ($country == null || $country->getLanguage() == null)
+            return $this->getDefaultLanguage();
+        else
+            return $country->getLanguage();
+    }
+
     /**
      * @param \Application\Model\Entities\Language $language
      */

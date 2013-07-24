@@ -29,6 +29,13 @@ class Language extends BasicObject {
     protected $languageCode;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="FooterSocial", mappedBy="language")
+     */
+    protected $footerSocials;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=40, nullable=false)
@@ -228,6 +235,32 @@ class Language extends BasicObject {
     public function getIsDefault()
     {
         return $this->isDefault;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $footerSocials
+     */
+    public function setFooterSocials($footerSocials)
+    {
+        $this->footerSocials = $footerSocials;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFooterSocials()
+    {
+        return $this->footerSocials;
+    }
+
+    /**
+     * @param $order
+     * @return \Application\Model\Entities\FooterSocial
+     */
+    public function getFooterSocialByOrder($order) {
+        return $this->getFooterSocials()->filter(function (FooterSocial $footerSocial) use ($order) {
+            return $order == $footerSocial->getOrder();
+        })->first();
     }
 
 }

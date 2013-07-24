@@ -34,16 +34,16 @@ class FooterSocialDAO extends AbstractDAO {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getFooterSocials($region, $hydrate = false, $skipCache = false) {
+    public function getFooterSocials($language, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('f')
             ->from($this->getRepositoryName(), 'f')
-            ->where($qb->expr()->eq('f.region', $region->getId()))
+            ->where($qb->expr()->eq('f.language', $language->getId()))
             ->orderBy("f.order", "ASC");
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }

@@ -299,10 +299,10 @@ return array(
             'admin-content-footer-socials' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/content/footer-socials/[region-:region][/:action][/social-:social]',
+                    'route'    => '/admin/content/footer-socials/[language-:language][/:action][/social-:social]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'region' => '[0-9]+',
+                        'language' => '[0-9]+',
                         'social' => '[0-9]+',
                     ),
                     'defaults' => array(

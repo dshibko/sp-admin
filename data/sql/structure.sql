@@ -1277,3 +1277,27 @@ INNER JOIN  `language` ON  `language`.`id` =  `default_report_content`.`region_i
 DROP tABLE `default_report_content`;
 
 RENAME TABLE  `default_report_content_tmp` TO  `default_report_content` ;
+
+CREATE TABLE IF NOT EXISTS `footer_social_tmp` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `language_id` int(11) NOT NULL,
+  `url` varchar(500) NOT NULL,
+  `copy` varchar(100) NOT NULL,
+  `icon` varchar(255) NOT NULL,
+  `order` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `language_id` (`language_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE  `footer_social_tmp` ADD FOREIGN KEY (  `language_id` ) REFERENCES  `language` (
+`id`
+) ON DELETE RESTRICT ON UPDATE RESTRICT ;
+
+INSERT INTO `footer_social_tmp` ( `id`, `language_id`, `url`, `copy`, `icon`, `order`)
+SELECT  `footer_social`.`id` ,  `footer_social`.`region_id` AS language_id,  `footer_social`.`url` ,  `footer_social`.`copy` ,  `footer_social`.`icon` ,  `footer_social`.`order`
+FROM  `footer_social`
+INNER JOIN  `language` ON  `language`.`id` =  `footer_social`.`region_id`;
+
+DROP tABLE `footer_social`;
+
+RENAME TABLE  `footer_social_tmp` TO  `footer_social` ;

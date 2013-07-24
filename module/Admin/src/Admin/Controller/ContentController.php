@@ -422,60 +422,60 @@ class ContentController extends AbstractActionController {
 
     public function footerSocialsAction() {
 
-        $regionManager = RegionManager::getInstance($this->getServiceLocator());
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
         $contentManager = ContentManager::getInstance($this->getServiceLocator());
 
         try {
 
-            $regionId = (string) $this->params()->fromRoute('region', '');
-            $region = null;
-            if (!empty($regionId))
-                $region = $regionManager->getRegionById($regionId);
-            if ($region == null)
-                $region = $regionManager->getDefaultRegion();
+            $languageId = (string) $this->params()->fromRoute('language', '');
+            $language = null;
+            if (!empty($languageId))
+                $language = $languageManager->getLanguageById($languageId);
+            if ($language == null)
+                $language = $languageManager->getDefaultLanguage();
 
-            $regions = $regionManager->getAllRegions(true);
+            $languages = $languageManager->getAllLanguages(true);
 
-            $footerSocials = $contentManager->getFooterSocials($region, true);
+            $footerSocials = $contentManager->getFooterSocials($language, true);
 
         } catch(\Exception $e) {
-            if (empty($regions))
-                $regions = array();
-            if (empty($region))
-                $region = $regionManager->getDefaultRegion();
+            if (empty($languages))
+                $languages = array();
+            if (empty($language))
+                $language = $languageManager->getDefaultLanguage();
             if (empty($footerSocials))
                 $footerSocials = array();
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
         return array(
-            'regions' => $regions,
+            'languages' => $languages,
             'footerSocials' => $footerSocials,
-            'activeRegion' => $region,
+            'activeLanguage' => $language,
         );
 
     }
 
     public function addFooterSocialAction() {
 
-        $region = null;
+        $language = null;
 
         try {
 
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
+            $languageManager = LanguageManager::getInstance($this->getServiceLocator());
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
 
-            $regionId = (string) $this->params()->fromRoute('region', '');
-            $region = null;
-            if (!empty($regionId))
-                $region = $regionManager->getRegionById($regionId);
-            if ($region == null)
-                $region = $regionManager->getDefaultRegion();
+            $languageId = (string) $this->params()->fromRoute('language', '');
+            $language = null;
+            if (!empty($languageId))
+                $language = $languageManager->getLanguageById($languageId);
+            if ($language == null)
+                $language = $languageManager->getDefaultLanguage();
 
             $parentTitle = $this->getActivePage()->getParent()->getTitle();
-            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $region->getDisplayName()));
+            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $language->getDisplayName()));
 
-            $footerSocialsCount = count($contentManager->getFooterSocials($region));
+            $footerSocialsCount = count($contentManager->getFooterSocials($language));
 
             $form = new FooterSocialForm();
 
@@ -493,14 +493,14 @@ class ContentController extends AbstractActionController {
                         $iconPath = $imageManager->saveUploadedImage($form->get('icon'), ImageManager::IMAGE_TYPE_CONTENT);
 
                         if ($footerSocialsCount + 1 != $form->get('order')->getValue())
-                            ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsFromOrder($region, $form->get('order')->getValue(), $footerSocialsCount + 1);
+                            ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsFromOrder($language, $form->get('order')->getValue(), $footerSocialsCount + 1);
 
                         ContentManager::getInstance($this->getServiceLocator())->
-                            saveFooterSocial($region, $iconPath, $form->get('url')->getValue(), $form->get('copy')->getValue(), $form->get('order')->getValue());
+                            saveFooterSocial($language, $iconPath, $form->get('url')->getValue(), $form->get('copy')->getValue(), $form->get('order')->getValue());
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FOOTER_SOCIAL_CREATED);
 
-                        return $this->redirect()->toRoute(self::ADMIN_FOOTER_SOCIALS_ROUTE, array('region' => $region->getId()));
+                        return $this->redirect()->toRoute(self::ADMIN_FOOTER_SOCIALS_ROUTE, array('language' => $language->getId()));
 
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
@@ -512,7 +512,7 @@ class ContentController extends AbstractActionController {
             }
 
             return array(
-                'activeRegion' => $region,
+                'activeLanguage' => $language,
                 'form' => $form,
                 'order' => $footerSocialsCount + 1,
                 'action' => 'addFooterSocial',
@@ -520,7 +520,7 @@ class ContentController extends AbstractActionController {
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            $routeParams = $region == null ? array() : array('region' => $region->getId());
+            $routeParams = $language == null ? array() : array('language' => $language->getId());
             return $this->redirect()->toRoute(self::ADMIN_FOOTER_SOCIALS_ROUTE, $routeParams);
         }
 
@@ -528,30 +528,30 @@ class ContentController extends AbstractActionController {
 
     public function editFooterSocialAction() {
 
-        $region = null;
+        $language = null;
 
         try {
 
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
+            $languageManager = LanguageManager::getInstance($this->getServiceLocator());
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
 
-            $regionId = (string) $this->params()->fromRoute('region', '');
-            if (!empty($regionId))
-                $region = $regionManager->getRegionById($regionId);
-            if (empty($region))
-                $region = $regionManager->getDefaultRegion();
+            $languageId = (string) $this->params()->fromRoute('language', '');
+            if (!empty($languageId))
+                $language = $languageManager->getLanguageById($languageId);
+            if (empty($language))
+                $language = $languageManager->getDefaultLanguage();
 
             $parentTitle = $this->getActivePage()->getParent()->getTitle();
-            $this->getActivePage()->getParent()->setParams(array('action' => null, 'social' => null, 'customTitle' => $parentTitle . " - " . $region->getDisplayName()));
+            $this->getActivePage()->getParent()->setParams(array('action' => null, 'social' => null, 'customTitle' => $parentTitle . " - " . $language->getDisplayName()));
 
             $socialOrder = (int) $this->params()->fromRoute('social', -1);
 
-            $social = ($socialOrder != -1) ? $region->getFooterSocialByOrder($socialOrder) : null;
+            $social = ($socialOrder != -1) ? $language->getFooterSocialByOrder($socialOrder) : null;
 
             if ($social == null)
                 throw new \Exception(MessagesConstants::ERROR_SOCIAL_NOT_FOUND);
 
-            $footerSocialsCount = count($contentManager->getFooterSocials($region));
+            $footerSocialsCount = count($contentManager->getFooterSocials($language));
 
             $form = new FooterSocialForm();
 
@@ -575,16 +575,16 @@ class ContentController extends AbstractActionController {
                         $newOrder = $form->get('order')->getValue();
                         if ($socialOrder != $newOrder)
                             if ($newOrder > $socialOrder)
-                                ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsToOrder($region, $socialOrder, $newOrder);
+                                ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsToOrder($language, $socialOrder, $newOrder);
                             else
-                                ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsFromOrder($region, $newOrder, $socialOrder);
+                                ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsFromOrder($language, $newOrder, $socialOrder);
 
                         ContentManager::getInstance($this->getServiceLocator())->
-                            saveFooterSocial($region, $iconPath, $form->get('url')->getValue(), $form->get('copy')->getValue(), $form->get('order')->getValue(), $social);
+                            saveFooterSocial($language, $iconPath, $form->get('url')->getValue(), $form->get('copy')->getValue(), $form->get('order')->getValue(), $social);
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FOOTER_SOCIAL_UPDATED);
 
-                        return $this->redirect()->toRoute(self::ADMIN_FOOTER_SOCIALS_ROUTE, array('region' => $region->getId()));
+                        return $this->redirect()->toRoute(self::ADMIN_FOOTER_SOCIALS_ROUTE, array('language' => $language->getId()));
 
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
@@ -597,7 +597,7 @@ class ContentController extends AbstractActionController {
                 $form->populateValues($social->getArrayCopy());
 
             return new ViewModel(array(
-                'activeRegion' => $region,
+                'activeLanguage' => $language,
                 'form' => $form,
                 'order' => $footerSocialsCount,
                 'action' => 'editFooterSocial',
@@ -605,7 +605,7 @@ class ContentController extends AbstractActionController {
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            $routeParams = $region == null ? array() : array('region' => $region->getId());
+            $routeParams = $language == null ? array() : array('language' => $language->getId());
             return $this->redirect()->toRoute(self::ADMIN_FOOTER_SOCIALS_ROUTE, $routeParams);
         }
 
@@ -614,17 +614,17 @@ class ContentController extends AbstractActionController {
     public function deleteFooterSocialAction() {
 
         try {
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
+            $languageManager = LanguageManager::getInstance($this->getServiceLocator());
             $footerSocialOrder = (int) $this->params()->fromRoute('social', -1);
-            $regionId = (string) $this->params()->fromRoute('region', '');
-            $region = null;
-            if (!empty($regionId))
-                $region = $regionManager->getRegionById($regionId);
-            if ($region == null)
-                $region = $regionManager->getDefaultRegion();
+            $languageId = (string) $this->params()->fromRoute('language', '');
+            $language = null;
+            if (!empty($languageId))
+                $language = $languageManager->getLanguageById($languageId);
+            if ($language == null)
+                $language = $languageManager->getDefaultLanguage();
 
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
-            $footerSocial = $region->getFooterSocialByOrder($footerSocialOrder);
+            $footerSocial = $language->getFooterSocialByOrder($footerSocialOrder);
             if ($footerSocial != null) {
                 $contentManager->deleteFooterSocial($footerSocial);
                 $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FOOTER_SOCIAL_DELETED);

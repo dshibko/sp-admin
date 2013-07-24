@@ -3,7 +3,7 @@
 namespace Neoco\View\Helper;
 
 use \Application\Manager\ContentManager;
-use \Application\Manager\RegionManager;
+use \Application\Manager\LanguageManager;
 use Zend\View\Helper\AbstractHelper;
 
 class FooterSocials extends AbstractHelper
@@ -27,8 +27,8 @@ class FooterSocials extends AbstractHelper
      */
     public function __invoke()
     {
-        $region = RegionManager::getInstance($this->serviceLocator)->getSelectedRegion();
-        $footerSocials = ContentManager::getInstance($this->serviceLocator)->getFooterSocials($region, true);
+        $language = LanguageManager::getInstance($this->serviceLocator)->getSelectedLanguage();
+        $footerSocials = ContentManager::getInstance($this->serviceLocator)->getFooterSocials($language, true);
         if (!empty($footerSocials)) {
             $footerSocialHtml = '<ul>';
             foreach ($footerSocials as $footerSocial)

@@ -202,27 +202,27 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getFooterSocials($region, $hydrate = false, $skipCache = false) {
-        return FooterSocialDAO::getInstance($this->getServiceLocator())->getFooterSocials($region, $hydrate, $skipCache);
+    public function getFooterSocials($language, $hydrate = false, $skipCache = false) {
+        return FooterSocialDAO::getInstance($this->getServiceLocator())->getFooterSocials($language, $hydrate, $skipCache);
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param \Application\Model\Entities\ContentImage $icon
      * @param $url
      * @param $copy
      * @param $order
      * @param \Application\Model\Entities\FooterSocial|null $footerSocial
      */
-    public function saveFooterSocial($region, $icon, $url, $copy, $order, $footerSocial = null) {
+    public function saveFooterSocial($language, $icon, $url, $copy, $order, $footerSocial = null) {
         if ($footerSocial == null) {
             $footerSocial = new FooterSocial();
-            $footerSocial->setRegion($region);
+            $footerSocial->setLanguage($language);
         } elseif ($icon != null)
             ImageManager::getInstance($this->getServiceLocator())->deleteImage($footerSocial->getIcon());
         if ($icon != null)
@@ -234,14 +234,14 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param $fromOrder
      * @param $lastOrder
      */
-    public function swapFooterSocialsFromOrder($region, $fromOrder, $lastOrder) {
+    public function swapFooterSocialsFromOrder($language, $fromOrder, $lastOrder) {
         $footerSocialDAO = FooterSocialDAO::getInstance($this->getServiceLocator());
         for ($i = $fromOrder; $i < $lastOrder; $i++) {
-            $footerSocial = $region->getFooterSocialByOrder($i);
+            $footerSocial = $language->getFooterSocialByOrder($i);
             $footerSocial->setOrder($i + 1);
             $footerSocialDAO->save($footerSocial, false, false);
         }
@@ -250,14 +250,14 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param $toOrder
      * @param $lastOrder
      */
-    public function swapFooterSocialsToOrder($region, $toOrder, $lastOrder) {
+    public function swapFooterSocialsToOrder($language, $toOrder, $lastOrder) {
         $footerSocialDAO = FooterSocialDAO::getInstance($this->getServiceLocator());
         for ($i = $lastOrder; $i > $toOrder; $i--) {
-            $footerSocial = $region->getFooterSocialByOrder($i);
+            $footerSocial = $language->getFooterSocialByOrder($i);
             $footerSocial->setOrder($i - 1);
             $footerSocialDAO->save($footerSocial, false, false);
         }
@@ -271,7 +271,7 @@ class ContentManager extends BasicManager {
      */
     public function deleteFooterSocial($footerSocial) {
         ImageManager::getInstance($this->getServiceLocator())->deleteImage($footerSocial->getIcon());
-        ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsToOrder($footerSocial->getRegion(), $footerSocial->getOrder(), $footerSocial->getRegion()->getFooterSocials()->count());
+        ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsToOrder($footerSocial->getLanguage(), $footerSocial->getOrder(), $footerSocial->getLanguage()->getFooterSocials()->count());
         FooterSocialDAO::getInstance($this->getServiceLocator())->remove($footerSocial);
     }
 
