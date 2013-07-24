@@ -1284,9 +1284,8 @@ CREATE TABLE IF NOT EXISTS `footer_social_tmp` (
   `copy` varchar(100) NOT NULL,
   `icon` varchar(255) NOT NULL,
   `order` tinyint(4) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `language_id` (`language_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 ALTER TABLE  `footer_social_tmp` ADD FOREIGN KEY (  `language_id` ) REFERENCES  `language` (
 `id`
