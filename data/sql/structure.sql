@@ -1261,8 +1261,7 @@ CREATE TABLE IF NOT EXISTS `default_report_content_tmp` (
   `header_image` varchar(255) NOT NULL,
   `language_id` int(11) NOT NULL,
   `report_type` enum('Pre-Match','Post-Match') NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `FK_default_report_content_language` (`language_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 ALTER TABLE  `default_report_content_tmp` ADD FOREIGN KEY (  `language_id` ) REFERENCES  `language` (
