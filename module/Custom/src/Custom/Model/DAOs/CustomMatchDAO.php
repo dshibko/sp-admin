@@ -3,6 +3,7 @@
 namespace Custom\Model\DAOs;
 
 use Application\Model\DAOs\MatchDAO;
+use Application\Model\DAOs\PredictionDAO;
 use Application\Model\Entities\Match;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\Query\Expr;
@@ -43,6 +44,18 @@ class CustomMatchDAO extends MatchDAO {
             ->setFirstResult(1)
             ->setMaxResults(1);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    public function getMatchPredictions($matchId, $excludeUsersIds = null, $hydrate = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('p')
+            ->from(PredictionDAO::getInstance($this->getServiceLocator())->getRepositoryName(), 'p')
+            ->where($qb->expr()->eq('p.match', ":match"))
+            ->setParameter("match", $matchId);
+        if ($excludeUsersIds !== null)
+            $qb->andWhere($qb->expr()->notIn('p.user', ":exclude"))
+                ->setParameter("exclude", $excludeUsersIds);
+        return $qb->getQuery()->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
 }

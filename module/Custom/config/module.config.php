@@ -12,12 +12,21 @@ return array(
                         ),
                     ),
                 ),
+                'custom-hot-fix' => array(
+                    'options' => array(
+                        'route'    => 'hot-fix <action>',
+                        'defaults' => array(
+                            'controller' => 'Custom\Controller\HotFix',
+                        ),
+                    ),
+                ),
             ),
         ),
     ),
     'controllers' => array(
         'invokables' => array(
             'Custom\Controller\Export' => 'Custom\Controller\CustomExportController',
+            'Custom\Controller\HotFix' => 'Custom\Controller\CustomHotFixController',
         ),
     ),
 );
