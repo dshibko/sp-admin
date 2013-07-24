@@ -17,7 +17,7 @@ class CustomMessagesConstants {
     const INFO_USERS_EXPORT_FILE_UPLOADED_SUCCESSFULLY = "Users export file has been uploaded successfully.";
     const INFO_MAILLIST_EXPORT_STARTED = "Maillist export has been started.";
     const INFO_MAILLIST_EXPORT_FILE_SAVED_SUCCESSFULLY = "Maillist export file has been saved successfully.";
-    const INFO_MAILLIST_EXPORT_FILE_UPLOADED_SUCCESSFULLY = "Ьaillist export file has been uploaded successfully.";
+    const INFO_MAILLIST_EXPORT_FILE_UPLOADED_SUCCESSFULLY = "Maillist export file has been uploaded successfully.";
 
     const ERROR_USERS_EXPORT_FILE_SAVING_FAILED = "Users export file saving failed.";
     const ERROR_USERS_EXPORT_FILE_UPLOAD_FAILED = "Users export file upload failed.";
