@@ -1244,13 +1244,13 @@ ALTER TABLE `match_language`
   ADD CONSTRAINT `match_language_ibfk_1` FOREIGN KEY (`match_id`) REFERENCES `match` (`id`),
   ADD CONSTRAINT `match_language_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `language` (`id`);
 
-INSERT INTO `match_language` ( `id`, `match_id`, `language_id`, `featured_player_id`, `featured_goalkeeper_id`, `featured_prediction_id`, `pre_match_report_title`, `pre_match_report_intro`, `pre_match_report_header_image_path`, `post_match_report_title`, `post_match_report_intro`, `post_match_report_header_image_path`, `display_featured_player` )
+INSERT INTO match_language( `id`, `match_id`, `language_id`, `featured_player_id`, `featured_goalkeeper_id`, `featured_prediction_id`, `pre_match_report_title`, `pre_match_report_intro`, `pre_match_report_header_image_path`, `post_match_report_title`, `post_match_report_intro`, `post_match_report_header_image_path`, `display_featured_player` )
 SELECT  `match_region`.`id` ,  `match_region`.`match_id` ,  `match_region`.`region_id` AS language_id,  `match_region`.`featured_player_id` ,  `match_region`.`featured_goalkeeper_id` ,  `match_region`.`featured_prediction_id` , `match_region`.`pre_match_report_title` ,  `match_region`.`pre_match_report_intro` ,  `match_region`.`pre_match_report_header_image_path` ,  `match_region`.`post_match_report_title` ,  `match_region`.`post_match_report_intro` , `match_region`.`post_match_report_header_image_path` ,  `match_region`.`display_featured_player`
 FROM  `match_region`
 INNER JOIN  `match` ON  `match`.`id` =  `match_region`.`match_id`
-INNER JOIN  `language` ON  `language`.`id` =  `match_region`.`region_id`;
+INNER JOIN  `language` ON  `language`.`id` =  `match_region`.`region_id`
 
-DROP tABLE `match_region`;
+DROP TABLE `match_region`;
 
 --dsh 24.07
 
@@ -1261,8 +1261,7 @@ CREATE TABLE IF NOT EXISTS `default_report_content_tmp` (
   `header_image` varchar(255) NOT NULL,
   `language_id` int(11) NOT NULL,
   `report_type` enum('Pre-Match','Post-Match') NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `FK_default_report_content_language` (`language_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 ALTER TABLE  `default_report_content_tmp` ADD FOREIGN KEY (  `language_id` ) REFERENCES  `language` (
