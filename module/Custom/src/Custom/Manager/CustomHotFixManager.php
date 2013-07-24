@@ -48,26 +48,25 @@ class CustomHotFixManager extends BasicManager {
         foreach ($correctMatchPredictions as $correctMatchPrediction)
             $correctMatchPredictionsUsersIds [] = $correctMatchPrediction->getUser()->getId();
         $incorrectMatchPredictions = $customMatchDAO->getMatchPredictions($incorrectMatch->getId(), $correctMatchPredictionsUsersIds);
-        var_dump(count($incorrectMatchPredictions));
-//        foreach($incorrectMatchPredictions as $incorrectMatchPrediction) {
-//            $prediction = new Prediction();
-//            $prediction->setMatch($correctMatch);
-//            $prediction->setHomeTeamScore($incorrectMatchPrediction->getAwayTeamScore());
-//            $prediction->setAwayTeamScore($incorrectMatchPrediction->getHomeTeamScore());
-//            $prediction->setLastUpdateDate(new \DateTime());
-//            $prediction->setCreationDate(new \DateTime());
-//            $prediction->setUser($incorrectMatchPrediction->getUser());
-//            foreach ($incorrectMatchPrediction->getPredictionPlayers() as $player) {
-//                $pp = new PredictionPlayer();
-//                $pp->setTeam($player->getTeam());
-//                $pp->setOrder($player->getOrder());
-//                $pp->setPlayer($player->getPlayer());
-//                $pp->setPrediction($prediction);
-//                $prediction->addPredictionPlayer($pp);
-//            }
-//            $predictionDAO->save($prediction, false, false);
-//        }
-//        $predictionDAO->flush();
+        foreach($incorrectMatchPredictions as $incorrectMatchPrediction) {
+            $prediction = new Prediction();
+            $prediction->setMatch($correctMatch);
+            $prediction->setHomeTeamScore($incorrectMatchPrediction->getAwayTeamScore());
+            $prediction->setAwayTeamScore($incorrectMatchPrediction->getHomeTeamScore());
+            $prediction->setLastUpdateDate(new \DateTime());
+            $prediction->setCreationDate(new \DateTime());
+            $prediction->setUser($incorrectMatchPrediction->getUser());
+            foreach ($incorrectMatchPrediction->getPredictionPlayers() as $player) {
+                $pp = new PredictionPlayer();
+                $pp->setTeam($player->getTeam());
+                $pp->setOrder($player->getOrder());
+                $pp->setPlayer($player->getPlayer());
+                $pp->setPrediction($prediction);
+                $prediction->addPredictionPlayer($pp);
+            }
+            $predictionDAO->save($prediction, false, false);
+        }
+        $predictionDAO->flush();
     }
 
 }
