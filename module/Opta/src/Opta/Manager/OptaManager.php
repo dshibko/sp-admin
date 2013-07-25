@@ -420,7 +420,6 @@ class OptaManager extends BasicManager {
                                     $playerObj->setSurname($lastName);
                                     $playerObj->setDisplayName($firstName . ' ' . $lastName);
                                     $playerObj->setPosition($this->getXmlAttribute($player, 'Position'));
-                                    $playerObj->setPosition($this->getXmlAttribute($player, 'Position'));
                                     $playerObj->setShirtNumber($this->getXmlAttribute($player, 'ShirtNumber'));
                                     $playerObj->addCompetition($match->getCompetition());
                                     $playerDAO->save($playerObj, false, false);
