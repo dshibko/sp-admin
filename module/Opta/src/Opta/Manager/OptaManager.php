@@ -386,6 +386,54 @@ class OptaManager extends BasicManager {
 
             $cacheClearArr = array();
 
+            if ($match->getStatus() != Match::FULL_TIME_STATUS) {
+                $teamData = $xml->SoccerDocument->MatchData->TeamData;
+                if ($teamData != null) {
+                    $playerDAO = PlayerDAO::getInstance($this->getServiceLocator());
+                    $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
+                    $homeTeamData = $teamData->{0};
+                    $awayTeamData = $teamData->{1};
+                    if (empty($homeTeamData) || empty($awayTeamData))
+                        throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'team_id'));
+                    $teamsData = array($homeTeamData, $awayTeamData);
+                    $updated = false;
+                    foreach ($teamsData as $teamData) {
+                        $teamFeederId = $this->getIdFromString($this->getXmlAttribute($teamData, 'TeamRef'));
+                        $teamObj = $teamDAO->findOneByFeederId($teamFeederId);
+                        if ($teamObj != null && $teamData->PlayerLineUp != null && $teamObj->getPlayers()->count() == 0) {
+                            $updated = true;
+                            $squad = $teamData->PlayerLineUp->MatchPlayer;
+                            if ($squad != null)
+                                foreach ($squad as $player) {
+                                    $playerFeederId = $this->getIdFromString($this->getXmlAttribute($player, 'PlayerRef'));
+                                    $playerObj = $playerDAO->findOneByFeederId($playerFeederId);
+                                    if ($playerObj === null) {
+                                        $playerObj = new Player();
+                                        $playerObj->setFeederId($playerFeederId);
+                                    }
+                                    $playerObj->setTeam($teamObj);
+                                    $playerDomObj = $xml->xpath('SoccerDocument/Team[@uID=\'t' . $teamFeederId . '\']/Player[@uID=\'p' . $playerFeederId . '\']');
+                                    if (empty($playerDomObj)) continue;
+                                    $firstName = $playerDomObj[0]->PersonName->First;
+                                    $lastName = $playerDomObj[0]->PersonName->Last;
+                                    $playerObj->setName($firstName);
+                                    $playerObj->setSurname($lastName);
+                                    $playerObj->setDisplayName($firstName . ' ' . $lastName);
+                                    $playerObj->setPosition($this->getXmlAttribute($player, 'Position'));
+                                    $playerObj->setPosition($this->getXmlAttribute($player, 'Position'));
+                                    $playerObj->setShirtNumber($this->getXmlAttribute($player, 'ShirtNumber'));
+                                    $playerObj->addCompetition($match->getCompetition());
+                                    $playerDAO->save($playerObj, false, false);
+                                }
+                        }
+                    }
+                    if ($updated) {
+                        $playerDAO->flush();
+                        $playerDAO->clearCache();
+                    }
+                }
+            }
+
             if ($period == 'FullTime' && $match != null &&
                 $match->getStatus() != Match::FULL_TIME_STATUS) {
 
@@ -517,6 +565,7 @@ class OptaManager extends BasicManager {
                                     $lineUpPlayer = new LineUpPlayer();
                                     $playerFeederId = $this->getIdFromString($this->getXmlAttribute($player, 'PlayerRef'));
                                     $playerObj = $playerDAO->findOneByFeederId($playerFeederId);
+                                    if ($playerObj === null) continue;
                                     $lineUpPlayer->setPlayer($playerObj);
                                     $lineUpPlayer->setMatch($match);
                                     $lineUpPlayer->setTeam($teamObj);
@@ -531,7 +580,6 @@ class OptaManager extends BasicManager {
                         $lineUpPlayerDAO->clearCache();
                         $match->setHasLineUp(true);
                         $matchDAO->save($match);
-                        LineUpPlayerDAO::getInstance($this->getServiceLocator())->clearCache();
                     }
                 }
                 $cacheClearArr[] = $matchDAO->getRepositoryName();
