@@ -467,8 +467,7 @@ class UserManager extends BasicManager {
             return null;
         if (null === $this->userGeoIpIsoCode){
             $remoteAddresses = new RemoteAddress();
-            $this->userGeoIpIsoCode = geoip_country_code_by_name('87.252.230.59');
-//            $this->userGeoIpIsoCode = geoip_country_code_by_name($remoteAddresses->getIpAddress());
+            $this->userGeoIpIsoCode = geoip_country_code_by_name($remoteAddresses->getIpAddress());
         }
         return $this->userGeoIpIsoCode;
     }
