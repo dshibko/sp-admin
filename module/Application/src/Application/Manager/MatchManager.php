@@ -429,7 +429,9 @@ class MatchManager extends BasicManager
 
         $match = null;
         if (!is_null($matchLanguage)) {
-            $preMatchData = $contentManager->extendContent($defaultMatchLanguage->getArrayCopy(), $matchLanguage->getArrayCopy());
+            $preMatchData = $defaultMatchLanguage->getId() != $matchLanguage->getId() ?
+                $contentManager->extendContent($defaultMatchLanguage->getArrayCopy(), $matchLanguage->getArrayCopy()) :
+                $defaultMatchLanguage->getArrayCopy();
 
             //Match report title
             $title = $preMatchData['preMatchReportTitle'];
@@ -517,15 +519,15 @@ class MatchManager extends BasicManager
 
         $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageId, DefaultReportContent::PRE_MATCH_TYPE, true);
 
-        if (!empty($defaultReportContent)){
-            $report = $contentManager->extendContent($report, $defaultReportContent);
+        if (!empty($defaultReportContent)) {
+            $report = $contentManager->extendContent($defaultReportContent, $report);
         }
 
-        if (is_null($match)){
+        if (is_null($match)) {
             $match = MatchManager::getInstance($this->getServiceLocator())->getMatchById($matchId);
         }
         $totalNumberOfPredictions = $predictionManager->getMatchPredictionsCount($match->getId());
-        if ($totalNumberOfPredictions){
+        if ($totalNumberOfPredictions) {
             if ($applicationManager->getAppEdition() == ApplicationManager::CLUB_EDITION) {
                 //Match report top predicted scorers
                 $topScorers = $predictionManager->getTopScorers($match->getId(), self::ALL_SCORERS, true);
@@ -559,9 +561,9 @@ class MatchManager extends BasicManager
             }
             //Match report top predicted scores
             $topScores = $predictionManager->getTopScores($match->getId(), self::TOP_SCORES_NUMBER, true);
-            if (!empty($topScores)){
+            if (!empty($topScores)) {
                 $scores = array();
-                foreach($topScores as $score){
+                foreach($topScores as $score) {
                     $scores[$score['home_team_score'] . '-' . $score['away_team_score']]  = round( ($score['scores_count'] / $totalNumberOfPredictions) * 100 );
                 }
                 $report['topScores'] = $scores;

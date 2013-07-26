@@ -300,19 +300,6 @@ class ApplicationManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\User $user
-     * @return \Application\Model\Entities\Language
-     */
-    public function getUserLanguage(\Application\Model\Entities\User $user)
-    {
-        $region = $user->getCountry()->getLanguage();
-        if (is_null($region)){
-            $region = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
-        }
-        return $region;
-    }
-
-    /**
      * @return mixed
      */
     public function getAppClub()

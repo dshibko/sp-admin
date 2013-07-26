@@ -72,7 +72,7 @@ class MatchLanguage extends BasicObject
      * @ORM\JoinColumn(name="match_id", referencedColumnName="id")
      * })
      */
-    protected $match;
+    private $match;
 
     /**
      * @var Language
@@ -82,7 +82,7 @@ class MatchLanguage extends BasicObject
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      * })
      */
-    protected $language;
+    private $language;
 
     /**
      * @var FeaturedPlayer
@@ -92,7 +92,7 @@ class MatchLanguage extends BasicObject
      * @ORM\JoinColumn(name="featured_player_id", referencedColumnName="id")
      * })
      */
-    protected $featuredPlayer;
+    private $featuredPlayer;
 
     /**
      * @var FeaturedGoalkeeper
@@ -102,7 +102,7 @@ class MatchLanguage extends BasicObject
      * @ORM\JoinColumn(name="featured_goalkeeper_id", referencedColumnName="id")
      * })
      */
-    protected $featuredGoalKeeper;
+    private $featuredGoalKeeper;
 
     /**
      * @var FeaturedPrediction
@@ -112,7 +112,7 @@ class MatchLanguage extends BasicObject
      * @ORM\JoinColumn(name="featured_prediction_id", referencedColumnName="id")
      * })
      */
-    protected $featuredPrediction;
+    private $featuredPrediction;
 
     /**
      * @var bool

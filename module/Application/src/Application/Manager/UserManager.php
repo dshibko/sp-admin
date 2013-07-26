@@ -467,7 +467,8 @@ class UserManager extends BasicManager {
             return null;
         if (null === $this->userGeoIpIsoCode){
             $remoteAddresses = new RemoteAddress();
-            $this->userGeoIpIsoCode = geoip_country_code_by_name($remoteAddresses->getIpAddress());
+            $this->userGeoIpIsoCode = geoip_country_code_by_name('87.252.230.59');
+//            $this->userGeoIpIsoCode = geoip_country_code_by_name($remoteAddresses->getIpAddress());
         }
         return $this->userGeoIpIsoCode;
     }
@@ -486,7 +487,7 @@ class UserManager extends BasicManager {
     public function getCurrentUserLanguage()
     {
         $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
-        $language = !is_null($user) ? $user->getCountry()->getLanguage() : $this->getUserLanguage();
+        $language = !is_null($user) ? $user->getLanguage() : $this->getUserLanguage();
         return $language;
     }
 
