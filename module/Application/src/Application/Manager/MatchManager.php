@@ -416,10 +416,11 @@ class MatchManager extends BasicManager
     public function getPreMatchLanguageReport($matchId, $languageId)
     {
         $report = array();
-        $dafaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+        $defaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
         $matchLanguageDAO = MatchLanguageDAO::getInstance($this->getServiceLocator());
         $matchLanguage = $matchLanguageDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $languageId);
-        $defaultMatchLanguage = $matchLanguageDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $dafaultLanguage->getId());
+        $defaultMatchLanguage = $matchLanguageDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $defaultLanguage->getId());
+
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
         $contentManager = ContentManager::getInstance($this->getServiceLocator());

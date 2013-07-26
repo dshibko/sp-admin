@@ -239,7 +239,7 @@ class LanguageManager extends BasicManager {
         $languagesData = array();
         //Prepare regions data
         foreach ($languageFieldsets as $fieldset) {
-            $language = $fieldset->getData();
+            $language = $fieldset->getLanguage();
             $languagesData[$language['id']] = array(
                 'featured_player' => array(
                     'id' => $fieldset->get('featured_player')->getValue(),
@@ -262,7 +262,7 @@ class LanguageManager extends BasicManager {
         $languagesData = array();
         //Prepare regions data
         foreach ($languageFieldsets as $fieldset) {
-            $language = $fieldset->getData();
+            $language = $fieldset->getLanguage();
             $languagesData[$language['id']] = array(
                 'featured_goalkeeper' => array(
                     'id' => $fieldset->get('featured_goalkeeper')->getValue(),
@@ -286,7 +286,7 @@ class LanguageManager extends BasicManager {
         $languagesData = array();
         //Prepare regions data
         foreach ($languageFieldsets as $fieldset) {
-            $language = $fieldset->getData();
+            $language = $fieldset->getLanguage();
             $languagesData[$language['id']] = array(
                 'featured_prediction' => array(
                     'name' => $fieldset->get('prediction_name')->getValue(),
@@ -312,7 +312,7 @@ class LanguageManager extends BasicManager {
         $languagesData = array();
         //Prepare regions data
         foreach ($languageFieldsets as $fieldset) {
-            $language = $fieldset->getData();
+            $language = $fieldset->getLanguage();
             $languagesData[$language['id']] = array(
                 'pre_match_report' => array(
                     'title' => $fieldset->get('pre_match_report_title')->getValue(),
@@ -334,7 +334,7 @@ class LanguageManager extends BasicManager {
         $languagesData = array();
         //Prepare regions data
         foreach ($languageFieldsets as $fieldset) {
-            $language = $fieldset->getData();
+            $language = $fieldset->getLanguage();
             $languagesData[$language['id']] = array(
                 'post_match_report' => array(
                     'title' => $fieldset->get('post_match_report_title')->getValue(),

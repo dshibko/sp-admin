@@ -1334,15 +1334,13 @@ CREATE TABLE IF NOT EXISTS `language_gameplay_content` (
   `description` text NOT NULL,
   `foreground_image_id` int(11) DEFAULT NULL,
   `order` tinyint(4) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `language_id` (`language_id`),
-  KEY `foreground_image_id` (`foreground_image_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
 
-ALTER TABLE  `language_gameplay_content` ADD FOREIGN KEY (  `language_id` ) REFERENCES  `sp_loc`.`language` (
+ALTER TABLE  `language_gameplay_content` ADD FOREIGN KEY (  `language_id` ) REFERENCES  `language` (
 `id`
 ) ON DELETE RESTRICT ON UPDATE RESTRICT ;
-ALTER TABLE  `language_gameplay_content` ADD FOREIGN KEY (  `foreground_image_id` ) REFERENCES  `sp_loc`.`content_image` (
+ALTER TABLE  `language_gameplay_content` ADD FOREIGN KEY (  `foreground_image_id` ) REFERENCES  `content_image` (
 `id`
 ) ON DELETE RESTRICT ON UPDATE RESTRICT ;
 
