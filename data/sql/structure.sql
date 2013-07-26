@@ -1352,3 +1352,24 @@ FROM  `region_gameplay_content`
 INNER JOIN  `language` ON  `language`.`id` =  `region_gameplay_content`.`region_id`;
 
 DROP TABLE `region_gameplay_content`;
+
+-- oko  26.07
+
+CREATE TABLE `season_language` (
+	id INT AUTO_INCREMENT NOT NULL,
+	season_id INT NOT NULL,
+	language_id INT NOT NULL,
+	display_name VARCHAR(100) NOT NULL,
+	terms text NOT NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `season_language` ADD FOREIGN KEY (season_id) REFERENCES `season`(id);
+ALTER TABLE `season_language` ADD FOREIGN KEY (language_id) REFERENCES `language`(id);
+
+INSERT INTO season_language( `id`, `season_id`, `language_id`, `display_name`, `terms`)
+SELECT  s.`id`, s.`season_id`, s.`region_id`, s.`display_name`, s.`terms`
+FROM  `season_region` s
+INNER JOIN  `season` ON  `season`.`id` =  s.`season_id`
+INNER JOIN  `language` ON  `language`.`id` =  s.`region_id`;
+
+DROP TABLE `season_region`;
