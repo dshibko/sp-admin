@@ -26,7 +26,7 @@ class FooterPageFieldset extends LanguageFieldset
         ));
     }
     public function initFieldsetByObject($pageData){
-        $data = $this->getData();
+        $data = $this->getLanguage();
         foreach ($pageData as $page) {
             if ($page->getLanguage()->getId() == $data['id']){
                 $this->get('content')->setValue($page->getContent());

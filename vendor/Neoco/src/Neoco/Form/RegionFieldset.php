@@ -2,13 +2,13 @@
 
 namespace Neoco\Form;
 
-abstract class RegionFieldset extends UploadableFieldset {
+abstract class RegionFieldset extends UploadableFieldset implements  FieldsetObjectInterface {
 
     private $region;
 
     public function __construct($region) {
 
-        $this->region = $region;
+        $this->setRegion($region);
 
         parent::__construct(str_replace(" ", "_", $region['displayName']));
 
@@ -32,11 +32,18 @@ abstract class RegionFieldset extends UploadableFieldset {
         return $this->get($name);
     }
 
+    /**
+     * @param int|null|string $region
+     */
+    public function setRegion($region)
+    {
+        $this->region = $region;
+    }
+
+
     public function getRegion()
     {
         return $this->region;
     }
-
-    abstract function initFieldsetByObject($dataObject);
 
 }

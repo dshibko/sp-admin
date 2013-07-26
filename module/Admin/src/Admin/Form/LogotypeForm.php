@@ -2,9 +2,9 @@
 
 namespace Admin\Form;
 
-use \Neoco\Form\FieldsetsForm;
+use Neoco\Form\RegionalisedForm;
 
-class LogotypeForm extends FieldsetsForm
+class LogotypeForm extends RegionalisedForm
 {
 
     public function __construct($fieldsets) {

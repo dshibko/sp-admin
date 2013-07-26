@@ -6,7 +6,7 @@ use \Application\Manager\ExceptionManager;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ApplicationManager;
 use \Application\Manager\ContentManager;
-use \Application\Manager\RegionManager;
+use \Application\Manager\LanguageManager;
 use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController {
@@ -27,11 +27,17 @@ class IndexController extends AbstractActionController {
                     return $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
 
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
-            $region = $regionManager->getSelectedRegion();
+            $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+            $language = $languageManager->getSelectedLanguage();
+            $defaultLanguage = $languageManager->getDefaultLanguage();
 
-            $content = $contentManager->getRegionContent($region, true);
-            $gameplayBlocks = $contentManager->getGameplayBlocks($region, true);
+            $content = $contentManager->getLanguageContent($language, true);
+            $defaultContent = $contentManager->getLanguageContent($defaultLanguage, true);
+            $gameplayBlocks = $contentManager->getGameplayBlocks($language, true);
+            $defaultGameplayBlocks = $contentManager->getGameplayBlocks($defaultLanguage, true);
+
+            $content = $contentManager->extendContent($defaultContent, $content);
+            $gameplayBlocks = $contentManager->extendContent($defaultGameplayBlocks, $gameplayBlocks);
 
             $viewModel = new ViewModel(array(
                 'content' => $content,

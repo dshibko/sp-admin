@@ -1299,3 +1299,30 @@ INNER JOIN  `language` ON  `language`.`id` =  `footer_social`.`region_id`;
 DROP tABLE `footer_social`;
 
 RENAME TABLE  `footer_social_tmp` TO  `footer_social` ;
+
+CREATE TABLE IF NOT EXISTS `language_content` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `language_id` int(11) NOT NULL,
+  `headline_copy` varchar(255) DEFAULT NULL,
+  `register_button_copy` varchar(50) DEFAULT NULL,
+  `hero_background_image_id` int(11) DEFAULT NULL,
+  `hero_foreground_image_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+ALTER TABLE  `language_content` ADD FOREIGN KEY (  `language_id` ) REFERENCES  `language` (
+`id`
+) ON DELETE RESTRICT ON UPDATE RESTRICT ;
+ALTER TABLE  `language_content` ADD FOREIGN KEY (  `hero_background_image_id` ) REFERENCES  `content_image` (
+`id`
+) ON DELETE RESTRICT ON UPDATE RESTRICT ;
+ALTER TABLE  `language_content` ADD FOREIGN KEY (  `hero_foreground_image_id` ) REFERENCES  `content_image` (
+`id`
+) ON DELETE RESTRICT ON UPDATE RESTRICT ;
+
+INSERT INTO `language_content` ( `id`, `language_id`, `headline_copy`, `register_button_copy`, `hero_background_image_id`, `hero_foreground_image_id`)
+SELECT  `region_content`.`id` ,  `region_content`.`region_id` AS language_id,  `region_content`.`headline_copy` ,  `region_content`.`register_button_copy` ,  `region_content`.`hero_background_image_id` ,  `region_content`.`hero_foreground_image_id`
+FROM  `region_content`
+INNER JOIN  `language` ON  `language`.`id` =  `region_content`.`region_id`;
+
+DROP tABLE `region_content`;

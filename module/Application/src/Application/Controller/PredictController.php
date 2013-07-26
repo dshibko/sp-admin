@@ -49,7 +49,7 @@ class PredictController extends AbstractActionController {
                 $setUpForm = $this->getServiceLocator()->get('Application\Form\SetUpForm');
                 $country = $user->getFacebookId() !== null ? $userManager->getUserGeoIpCountry() : $user->getCountry();
                 $language = $userManager->getUserLanguage();
-                $setUpForm ->get('regionLanguage')->setValue($country->getId());
+                $setUpForm ->get('region')->setValue($country->getId());
                 $setUpForm ->get('language')->setValue($language->getId());
             }
 

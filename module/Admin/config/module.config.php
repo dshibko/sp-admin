@@ -120,10 +120,10 @@ return array(
             'admin-content-landing' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/content/landing/[region-:region][/:action][/block-:block]',
+                    'route'    => '/admin/content/landing/[language-:language][/:action][/block-:block]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'region' => '[0-9]+',
+                        'language' => '[0-9]+',
                         'block' => '[0-9]+',
                     ),
                     'defaults' => array(

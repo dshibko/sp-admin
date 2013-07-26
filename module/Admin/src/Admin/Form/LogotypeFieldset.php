@@ -24,7 +24,7 @@ class LogotypeFieldset extends LanguageFieldset
         ));
     }
     public function initFieldsetByObject($logotypes){
-        $data = $this->getData();
+        $data = $this->getLanguage();
         foreach ($logotypes as $logotype) {
             if ($logotype->getLanguage()->getId() == $data['id']){
                 $this->get('logotype')->setValue($logotype->getLogotype());

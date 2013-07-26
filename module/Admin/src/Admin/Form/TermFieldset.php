@@ -26,7 +26,7 @@ class TermFieldset extends LanguageFieldset
         ));
     }
     public function initFieldsetByObject($term){
-        $data = $this->getData();
+        $data = $this->getLanguage();
         foreach ($term->getTermCopies() as $termCopy) {
             if ($termCopy->getLanguage()->getId() == $data['id']){
                 $this->get('copy')->setValue($termCopy->getCopy());

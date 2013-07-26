@@ -18,8 +18,8 @@ use Application\Model\Entities\Language;
 use Application\Model\Entities\Logotype;
 use \Application\Model\Entities\RegionGameplayContent;
 use \Application\Model\DAOs\RegionGameplayContentDAO;
-use \Application\Model\Entities\RegionContent;
-use \Application\Model\DAOs\RegionContentDAO;
+use \Application\Model\Entities\LanguageContent;
+use \Application\Model\DAOs\LanguageContentDAO;
 use \Application\Model\DAOs\MatchDAO;
 use Application\Model\Entities\Term;
 use Application\Model\Entities\TermCopy;
@@ -54,40 +54,40 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Region $language
      * @param $heroBackgroundImage
      * @param $heroForegroundImage
      * @param $headlineCopy
      * @param $registerButtonCopy
      */
-    public function saveRegionContent($region, $heroBackgroundImage, $heroForegroundImage, $headlineCopy, $registerButtonCopy) {
-        $regionContent = ContentManager::getInstance($this->getServiceLocator())->getRegionContent($region);
-        if ($regionContent == null) {
-            $regionContent = new RegionContent();
-            $regionContent->setRegion($region);
+    public function saveLanguageContent($language, $heroBackgroundImage, $heroForegroundImage, $headlineCopy, $registerButtonCopy) {
+        $languageContent = ContentManager::getInstance($this->getServiceLocator())->getLanguageContent($language);
+        if ($languageContent == null) {
+            $languageContent = new LanguageContent();
+            $languageContent->setLanguage($language);
         } else {
             if ($heroBackgroundImage != null)
-                ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($regionContent->getHeroBackgroundImage());
+                ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($languageContent->getHeroBackgroundImage());
             if ($heroForegroundImage != null)
-                ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($regionContent->getHeroForegroundImage());
+                ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($languageContent->getHeroForegroundImage());
         }
         if ($heroBackgroundImage != null)
-            $regionContent->setHeroBackgroundImage($heroBackgroundImage);
+            $languageContent->setHeroBackgroundImage($heroBackgroundImage);
         if ($heroForegroundImage != null)
-            $regionContent->setHeroForegroundImage($heroForegroundImage);
-        $regionContent->setHeadlineCopy($headlineCopy);
-        $regionContent->setRegisterButtonCopy($registerButtonCopy);
-        RegionContentDAO::getInstance($this->getServiceLocator())->save($regionContent);
+            $languageContent->setHeroForegroundImage($heroForegroundImage);
+        $languageContent->setHeadlineCopy($headlineCopy);
+        $languageContent->setRegisterButtonCopy($registerButtonCopy);
+        LanguageContentDAO::getInstance($this->getServiceLocator())->save($languageContent);
     }
 
     /**
-     * @param $region
+     * @param $language
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return \Application\Model\Entities\RegionContent|array
+     * @return \Application\Model\Entities\LanguageContent|array
      */
-    public function getRegionContent($region, $hydrate = false, $skipCache = false) {
-        return RegionContentDAO::getInstance($this->getServiceLocator())->getRegionContent($region, $hydrate, $skipCache);
+    public function getLanguageContent($language, $hydrate = false, $skipCache = false) {
+        return LanguageContentDAO::getInstance($this->getServiceLocator())->getLanguageContent($language, $hydrate, $skipCache);
     }
 
     /**
@@ -150,7 +150,7 @@ class ContentManager extends BasicManager {
     public function deleteRegionGameplayContent(RegionGameplayContent $block) {
         ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($block->getForegroundImage());
         ContentManager::getInstance($this->getServiceLocator())->swapRegionGameplayContentToOrder($block->getRegion(), $block->getOrder(), $block->getRegion()->getRegionGameplayBlocks()->count());
-        RegionContentDAO::getInstance($this->getServiceLocator())->remove($block);
+        LanguageContentDAO::getInstance($this->getServiceLocator())->remove($block);
     }
 
     /**
@@ -284,7 +284,7 @@ class ContentManager extends BasicManager {
         $data = array();
         if (!empty($fieldsets)){
             foreach($fieldsets as $fieldset){
-                $language = $fieldset->getData();
+                $language = $fieldset->getLanguage();
                 $data[$language['id']] = array(
                     'content' => $fieldset->get('content')->getValue()
                 );
@@ -306,7 +306,7 @@ class ContentManager extends BasicManager {
             $data['emblem'] = $emblem;
 
             foreach($form->getFieldsets() as $fieldset){
-                $language = $fieldset->getData();
+                $language = $fieldset->getLanguage();
                 $logotypePath = '';
                 $logotype = $fieldset->get('logotype');
                 $value = $logotype->getValue();
@@ -333,7 +333,7 @@ class ContentManager extends BasicManager {
         if (!empty($form)){
             $formData = $form->getData();
             foreach($form->getFieldsets() as $fieldset){
-                $language = $fieldset->getData();
+                $language = $fieldset->getLanguage();
                 $data[$language['id']] = array(
                     'required' => (bool)$formData['required'],
                     'checked'  => (bool)$formData['checked'],

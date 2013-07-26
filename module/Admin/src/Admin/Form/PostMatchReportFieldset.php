@@ -58,7 +58,7 @@ class PostMatchReportFieldset extends LanguageFieldset
      */
     function initFieldsetByObject($match)
     {
-        $language = $this->getData();
+        $language = $this->getLanguage();
         foreach ($match->getMatchLanguages() as $matchLanguage) {
             if ($matchLanguage->getLanguage()->getId() == $language['id']) {
                 $this->get('post_match_report_title')->setValue($matchLanguage->getPostMatchReportTitle());

@@ -54,7 +54,7 @@ class MatchReportContentFieldset extends LanguageFieldset
      * @param array $languageContent
      */
     function initFieldsetByObject($languageContent) {
-        $language = $this->getData();
+        $language = $this->getLanguage();
         $reportContent = $languageContent[$language['id']];
         foreach ($this->getElements() as $element) {
             $getter = 'get' . ucfirst($element->getName());

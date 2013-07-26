@@ -6,9 +6,8 @@ use Zend\Form\Form;
 
 abstract class RegionalisedForm extends Form {
 
-    public function __construct($regionFieldsets, $name) {
+    public function __construct($regionFieldsets, $name = null) {
         parent::__construct($name);
-
         foreach ($regionFieldsets as $regionFieldset)
             $this->add($regionFieldset);
 
@@ -39,7 +38,7 @@ abstract class RegionalisedForm extends Form {
     public function initForm($dataObject) {
         $this->initFormByObject($dataObject);
         foreach ($this->getFieldsets() as $fieldset)
-            if ($fieldset instanceof RegionFieldset || $fieldset instanceof LanguageFieldset)
+            if ($fieldset instanceof FieldsetObjectInterface)
                 $fieldset->initFieldsetByObject($dataObject);
     }
 

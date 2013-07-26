@@ -29,17 +29,18 @@ class ContentController extends AbstractActionController {
 
     public function landingAction() {
 
-        $regionManager = RegionManager::getInstance($this->getServiceLocator());
-        $form = new LandingContentForm();
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
 
         try {
 
-            $regionId = (string) $this->params()->fromRoute('region', '');
-            $region = null;
-            if (!empty($regionId))
-                $region = $regionManager->getRegionById($regionId);
-            if ($region == null)
-                $region = $regionManager->getDefaultRegion();
+            $languageId = (string) $this->params()->fromRoute('language', '');
+            $language = null;
+            if (!empty($languageId))
+                $language = $languageManager->getLanguageById($languageId);
+            if ($language == null)
+                $language = $languageManager->getDefaultLanguage();
+
+            $form = new LandingContentForm(null, $language->getIsDefault());
 
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -53,25 +54,25 @@ class ContentController extends AbstractActionController {
 
                         $imageManager = ImageManager::getInstance($this->getServiceLocator());
                         $heroBackgroundImageValue = $form->get('heroBackgroundImage')->getValue();
-                        if (!array_key_exists('stored', $heroBackgroundImageValue) || $heroBackgroundImageValue['stored'] == 0) {
+                        if ((!array_key_exists('stored', $heroBackgroundImageValue) || $heroBackgroundImageValue['stored'] == 0) && $heroBackgroundImageValue['error'] != 4) {
                             $heroBackgroundImagePath = $imageManager->saveUploadedImage($form->get('heroBackgroundImage'), ImageManager::IMAGE_TYPE_CONTENT);
                             $heroBackgroundImage = $imageManager->prepareContentImage($heroBackgroundImagePath, ImageManager::$HERO_BACKGROUND_SIZES);
                         } else
                             $heroBackgroundImage = null;
 
                         $heroForegroundImageValue = $form->get('heroForegroundImage')->getValue();
-                        if (!array_key_exists('stored', $heroForegroundImageValue) || $heroForegroundImageValue['stored'] == 0) {
+                        if ((!array_key_exists('stored', $heroForegroundImageValue) || $heroForegroundImageValue['stored'] == 0) && $heroForegroundImageValue['error'] != 4) {
                             $heroForegroundImagePath = $imageManager->saveUploadedImage($form->get('heroForegroundImage'), ImageManager::IMAGE_TYPE_CONTENT);
                             $heroForegroundImage = $imageManager->prepareContentImage($heroForegroundImagePath, ImageManager::$HERO_FOREGROUND_SIZES);
                         } else
                             $heroForegroundImage = null;
 
                         ContentManager::getInstance($this->getServiceLocator())->
-                            saveRegionContent($region, $heroBackgroundImage, $heroForegroundImage, $form->get('headlineCopy')->getValue(), $form->get('registerButtonCopy')->getValue());
+                            saveLanguageContent($language, $heroBackgroundImage, $heroForegroundImage, $form->get('headlineCopy')->getValue(), $form->get('registerButtonCopy')->getValue());
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_LANDING_UPDATED);
 
-                        return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, array('region' => $region->getId()));
+                        return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, array('language' => $language->getId()));
 
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
@@ -81,24 +82,25 @@ class ContentController extends AbstractActionController {
                         $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " .
                             (is_array($messages) ? implode(", ", $messages): $messages));
             } else {
-                $regionContent = ContentManager::getInstance($this->getServiceLocator())->getRegionContent($region);
-                if ($regionContent != null)
-                    $form->populateValues($regionContent->getArrayCopy());
+                $languageContent = ContentManager::getInstance($this->getServiceLocator())->getLanguageContent($language);
+                if ($languageContent != null)
+                    $form->populateValues($languageContent->getArrayCopy());
+
             }
 
-            $regions = $regionManager->getAllRegions(true);
+            $languages = $languageManager->getAllLanguages(true);
 
-            $gameplayBlocks = ContentManager::getInstance($this->getServiceLocator())->getGameplayBlocks($region, true);
+            $gameplayBlocks = ContentManager::getInstance($this->getServiceLocator())->getGameplayBlocks($language, true);
 
         } catch(\Exception $e) {
-            $regions = $gameplayBlocks = array();
-            $region = new Region();
+            $languages = $gameplayBlocks = array();
+            $language = new Language();
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
 
         return new ViewModel(array(
-            'regions' => $regions,
-            'activeRegion' => $region,
+            'languages' => $languages,
+            'activeLanguage' => $language,
             'form' => $form,
             'gameplayBlocks' => $gameplayBlocks,
             'maxBlocks' => self::MAX_GAMEPLAY_BLOCKS_NUMBER,

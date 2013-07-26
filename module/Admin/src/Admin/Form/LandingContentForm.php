@@ -9,7 +9,7 @@ class LandingContentForm extends UploadableForm {
     const HEADLINE_MAX_LENGTH = 255;
     const REGISTER_BUTTON_COPY_MAX_LENGTH = 50;
 
-    public function __construct($name = null) {
+    public function __construct($name = null, $required = 0) {
         parent::__construct('landing');
 
         $this->setAttribute('method', 'post');
@@ -20,7 +20,7 @@ class LandingContentForm extends UploadableForm {
             'name' => 'heroBackgroundImage',
             'type'  => 'file',
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'isImage' => true,
                 'minWidth' => 1280,
                 'hint' => 'Min image width: 1280px',
@@ -34,7 +34,7 @@ class LandingContentForm extends UploadableForm {
             'name' => 'heroForegroundImage',
             'type'  => 'file',
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'isImage' => true,
                 'minWidth' => 600,
                 'hint' => 'Min image width: 600px',
@@ -51,7 +51,7 @@ class LandingContentForm extends UploadableForm {
                 'label' => 'Headline Copy',
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'maxlength' => self::HEADLINE_MAX_LENGTH
             ),
         ));
@@ -63,7 +63,7 @@ class LandingContentForm extends UploadableForm {
                 'label' => 'Register Button Copy',
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'maxlength' => self::REGISTER_BUTTON_COPY_MAX_LENGTH
             ),
         ));
