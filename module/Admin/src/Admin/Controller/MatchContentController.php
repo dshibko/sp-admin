@@ -55,7 +55,7 @@ abstract class MatchContentController extends AbstractActionController {
                     $contentManager = ContentManager::getInstance($this->getServiceLocator());
 
                     foreach ($form->getFieldsets() as $languageFieldset) {
-                        $languageData = $languageFieldset->getData();
+                        $languageData = $languageFieldset->getLanguage();
                         $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageData['id'], $this->getMatchReportType());
                         if ($defaultReportContent === null) {
                             $defaultReportContent = new DefaultReportContent();

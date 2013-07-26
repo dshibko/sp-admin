@@ -425,11 +425,12 @@ class MatchManager extends BasicManager
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
         $contentManager = ContentManager::getInstance($this->getServiceLocator());
 
-        $matchLanguage = !empty($matchLanguage) ? $matchLanguage : $defaultMatchLanguage;
-        $preMatchData = $contentManager->extendContent($defaultMatchLanguage->getArrayCopy(), $matchLanguage->getArrayCopy());
+        $matchLanguage = !is_null($matchLanguage) ? $matchLanguage : $defaultMatchLanguage;
 
         $match = null;
         if (!is_null($matchLanguage)) {
+            $preMatchData = $contentManager->extendContent($defaultMatchLanguage->getArrayCopy(), $matchLanguage->getArrayCopy());
+
             //Match report title
             $title = $preMatchData['preMatchReportTitle'];
             $report['title'] = !empty($preMatchData['preMatchReportTitle']) ? $title : '';
@@ -441,12 +442,6 @@ class MatchManager extends BasicManager
             //Match report header image
             $headerImage =  $preMatchData['preMatchReportHeaderImagePath'];
             $report['headerImage'] = !empty($headerImage) ? $headerImage : '';
-
-            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageId, DefaultReportContent::PRE_MATCH_TYPE, true);
-
-            if (!empty($defaultReportContent)){
-                $report = $contentManager->extendContent($report, $defaultReportContent);
-            }
 
             //Match report featured player
             $featuredPlayer = $matchLanguage->getFeaturedPlayer();
@@ -519,20 +514,13 @@ class MatchManager extends BasicManager
                 }
             }
         }
-/*
-        if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
-            $contentManager = ContentManager::getInstance($this->getServiceLocator());
-            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageId, DefaultReportContent::PRE_MATCH_TYPE);
-            if ($defaultReportContent !== null) {
-                if (empty($report['title']))
-                    $report['title'] = $defaultReportContent->getTitle();
-                if (empty($report['intro']))
-                    $report['intro'] = $defaultReportContent->getIntro();
-                if (empty($report['headerImage']))
-                    $report['headerImage'] = $defaultReportContent->getHeaderImage();
-            }
+
+        $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageId, DefaultReportContent::PRE_MATCH_TYPE, true);
+
+        if (!empty($defaultReportContent)){
+            $report = $contentManager->extendContent($report, $defaultReportContent);
         }
-*/
+
         if (is_null($match)){
             $match = MatchManager::getInstance($this->getServiceLocator())->getMatchById($matchId);
         }
@@ -613,25 +601,33 @@ class MatchManager extends BasicManager
     public function getPostMatchLanguageReport($matchId, $languageId)
     {
         $report = array();
+        $defaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
         $matchLanguageDAO = MatchLanguageDAO::getInstance($this->getServiceLocator());
-        $matchLanguage = $matchLanguageDAO->getPostMatchLanguageByMatchIdAndLanguageId($matchId, $languageId);
+        $matchLanguage = $matchLanguageDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $languageId);
+        $defaultMatchLanguage = $matchLanguageDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $defaultLanguage->getId());
+
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
-        $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $contentManager = ContentManager::getInstance($this->getServiceLocator());
+
+        $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
+
+        $matchLanguage = !is_null($matchLanguage) ? $matchLanguage : $defaultMatchLanguage;
 
         $match = null;
         if (!is_null($matchLanguage)) {
+            $preMatchData = $contentManager->extendContent($defaultMatchLanguage->getArrayCopy(), $matchLanguage->getArrayCopy());
 
             //Match report title
-            $title = $matchLanguage->getPostMatchReportTitle();
-            $report['title'] = !empty($title) ? $title : '';
+            $title = $preMatchData['postMatchReportTitle'];
+            $report['title'] = !empty($preMatchData['postMatchReportTitle']) ? $title : '';
 
             //Match report intro
-            $intro = $matchLanguage->getPostMatchReportIntro();
+            $intro = $preMatchData['postMatchReportIntro'];
             $report['intro'] = !empty($intro) ? $intro : '';
 
             //Match report header image
-            $headerImage =  $matchLanguage->getPostMatchReportHeaderImagePath();
+            $headerImage =  $preMatchData['postMatchReportHeaderImagePath'];
             $report['headerImage'] = !empty($headerImage) ? $headerImage : '';
 
             $match = $matchLanguage->getMatch();
