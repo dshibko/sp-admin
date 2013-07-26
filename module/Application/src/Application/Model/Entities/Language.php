@@ -73,6 +73,13 @@ class Language extends BasicObject {
      * @ORM\OneToMany(targetEntity="HowToPlayContent", mappedBy="language")
      */
     protected $howToPlayBlocks;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="LanguageGameplayContent", mappedBy="language")
+     */
+    protected $languageGameplayBlocks;
     /**
      * Constructor
      */
@@ -91,6 +98,32 @@ class Language extends BasicObject {
     {
         $this->howToPlayBlocks = $howToPlayBlocks;
         return $this;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $languageGameplayBlocks
+     */
+    public function setLanguageGameplayBlocks($languageGameplayBlocks)
+    {
+        $this->languageGameplayBlocks = $languageGameplayBlocks;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLanguageGameplayBlocks()
+    {
+        return $this->languageGameplayBlocks;
+    }
+
+    /**
+     * @param $order
+     * @return \Application\Model\Entities\LanguageGameplayContent
+     */
+    public function getLanguageGameplayBlockByOrder($order) {
+        return $this->getLanguageGameplayBlocks()->filter(function (LanguageGameplayContent $languageGameplayContent) use ($order) {
+            return $order == $languageGameplayContent->getOrder();
+        })->first();
     }
 
     /**

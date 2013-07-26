@@ -1273,7 +1273,7 @@ SELECT  `default_report_content`.`id` ,  `default_report_content`.`title`,  `def
 FROM  `default_report_content`
 INNER JOIN  `language` ON  `language`.`id` =  `default_report_content`.`region_id`;
 
-DROP tABLE `default_report_content`;
+DROP TABLE `default_report_content`;
 
 RENAME TABLE  `default_report_content_tmp` TO  `default_report_content` ;
 
@@ -1296,7 +1296,7 @@ SELECT  `footer_social`.`id` ,  `footer_social`.`region_id` AS language_id,  `fo
 FROM  `footer_social`
 INNER JOIN  `language` ON  `language`.`id` =  `footer_social`.`region_id`;
 
-DROP tABLE `footer_social`;
+DROP TABLE `footer_social`;
 
 RENAME TABLE  `footer_social_tmp` TO  `footer_social` ;
 
@@ -1325,4 +1325,30 @@ SELECT  `region_content`.`id` ,  `region_content`.`region_id` AS language_id,  `
 FROM  `region_content`
 INNER JOIN  `language` ON  `language`.`id` =  `region_content`.`region_id`;
 
-DROP tABLE `region_content`;
+DROP TABLE `region_content`;
+
+CREATE TABLE IF NOT EXISTS `language_gameplay_content` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `language_id` int(11) NOT NULL,
+  `heading` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `foreground_image_id` int(11) DEFAULT NULL,
+  `order` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `language_id` (`language_id`),
+  KEY `foreground_image_id` (`foreground_image_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+
+ALTER TABLE  `language_gameplay_content` ADD FOREIGN KEY (  `language_id` ) REFERENCES  `sp_loc`.`language` (
+`id`
+) ON DELETE RESTRICT ON UPDATE RESTRICT ;
+ALTER TABLE  `language_gameplay_content` ADD FOREIGN KEY (  `foreground_image_id` ) REFERENCES  `sp_loc`.`content_image` (
+`id`
+) ON DELETE RESTRICT ON UPDATE RESTRICT ;
+
+INSERT INTO `language_gameplay_content` ( `id`, `language_id`, `heading`, `description`, `foreground_image_id`, `order`)
+SELECT  `region_gameplay_content`.`id` ,  `region_gameplay_content`.`region_id` AS language_id,  `region_gameplay_content`.`heading` ,  `region_gameplay_content`.`description` ,  `region_gameplay_content`.`foreground_image_id` ,  `region_gameplay_content`.`order`
+FROM  `region_gameplay_content`
+INNER JOIN  `language` ON  `language`.`id` =  `region_gameplay_content`.`region_id`;
+
+DROP TABLE `region_gameplay_content`;

@@ -3,7 +3,6 @@
 namespace Admin\Controller;
 
 use \Admin\Form\MatchReportContentFieldset;
-use \Application\Manager\RegionManager;
 use \Admin\Form\MatchReportContentForm;
 use \Application\Model\Entities\ShareCopy;
 use \Admin\Form\PreMatchReportCopyForm;

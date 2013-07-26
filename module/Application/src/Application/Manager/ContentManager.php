@@ -16,8 +16,8 @@ use \Application\Model\DAOs\FooterImageDAO;
 use Application\Model\Entities\HowToPlayContent;
 use Application\Model\Entities\Language;
 use Application\Model\Entities\Logotype;
-use \Application\Model\Entities\RegionGameplayContent;
-use \Application\Model\DAOs\RegionGameplayContentDAO;
+use \Application\Model\Entities\LanguageGameplayContent;
+use \Application\Model\DAOs\LanguageGameplayContentDAO;
 use \Application\Model\Entities\LanguageContent;
 use \Application\Model\DAOs\LanguageContentDAO;
 use \Application\Model\DAOs\MatchDAO;
@@ -54,7 +54,7 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $language
+     * @param \Application\Model\Entities\Language $language
      * @param $heroBackgroundImage
      * @param $heroForegroundImage
      * @param $headlineCopy
@@ -91,76 +91,76 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param \Application\Model\Entities\ContentImage $foregroundImage
      * @param $heading
      * @param $description
      * @param $order
-     * @param RegionGameplayContent|null $regionGameplayContent
+     * @param LanguageGameplayContent|null $languageGameplayBlock
      */
-    public function saveRegionGameplayContent($region, $foregroundImage, $heading, $description, $order, $regionGameplayContent = null) {
-        if ($regionGameplayContent == null) {
-            $regionGameplayContent = new RegionGameplayContent();
-            $regionGameplayContent->setRegion($region);
+    public function saveLanguageGameplayContent($language, $foregroundImage, $heading, $description, $order, $languageGameplayBlock = null) {
+        if ($languageGameplayBlock == null) {
+            $languageGameplayBlock = new LanguageGameplayContent();
+            $languageGameplayBlock->setLanguage($language);
         } elseif ($foregroundImage != null)
-            ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($regionGameplayContent->getForegroundImage());
+            ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($languageGameplayBlock->getForegroundImage());
         if ($foregroundImage != null)
-            $regionGameplayContent->setForegroundImage($foregroundImage);
-        $regionGameplayContent->setHeading($heading);
-        $regionGameplayContent->setDescription($description);
-        $regionGameplayContent->setOrder($order);
-        RegionGameplayContentDAO::getInstance($this->getServiceLocator())->save($regionGameplayContent);
+            $languageGameplayBlock->setForegroundImage($foregroundImage);
+        $languageGameplayBlock->setHeading($heading);
+        $languageGameplayBlock->setDescription($description);
+        $languageGameplayBlock->setOrder($order);
+        LanguageGameplayContentDAO::getInstance($this->getServiceLocator())->save($languageGameplayBlock);
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param $fromOrder
      * @param $lastOrder
      */
-    public function swapRegionGameplayContentFromOrder($region, $fromOrder, $lastOrder) {
-        $regionGameplayContentDAO = RegionGameplayContentDAO::getInstance($this->getServiceLocator());
+    public function swapLanguageGameplayContentFromOrder($language, $fromOrder, $lastOrder) {
+        $languageGameplayContentDAO = LanguageGameplayContentDAO::getInstance($this->getServiceLocator());
         for ($i = $fromOrder; $i < $lastOrder; $i++) {
-            $regionGameplayBlock = $region->getRegionGameplayBlockByOrder($i);
-            $regionGameplayBlock->setOrder($i + 1);
-            $regionGameplayContentDAO->save($regionGameplayBlock, false, false);
+            $languageGameplayBlock = $language->getLanguageGameplayBlockByOrder($i);
+            $languageGameplayBlock->setOrder($i + 1);
+            $languageGameplayContentDAO->save($languageGameplayBlock, false, false);
         }
-        $regionGameplayContentDAO->flush();
-        $regionGameplayContentDAO->clearCache();
+        $languageGameplayContentDAO->flush();
+        $languageGameplayContentDAO->clearCache();
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param $toOrder
      * @param $lastOrder
      */
-    public function swapRegionGameplayContentToOrder($region, $toOrder, $lastOrder) {
-        $regionGameplayContentDAO = RegionGameplayContentDAO::getInstance($this->getServiceLocator());
+    public function swapLanguageGameplayContentToOrder($language, $toOrder, $lastOrder) {
+        $languageGameplayContentDAO = LanguageGameplayContentDAO::getInstance($this->getServiceLocator());
         for ($i = $lastOrder; $i > $toOrder; $i--) {
-            $regionGameplayBlock = $region->getRegionGameplayBlockByOrder($i);
-            $regionGameplayBlock->setOrder($i - 1);
-            $regionGameplayContentDAO->save($regionGameplayBlock, false, false);
+            $languageGameplayBlock = $language->getLanguageGameplayBlockByOrder($i);
+            $languageGameplayBlock->setOrder($i - 1);
+            $languageGameplayContentDAO->save($languageGameplayBlock, false, false);
         }
-        $regionGameplayContentDAO->flush();
-        $regionGameplayContentDAO->clearCache();
+        $languageGameplayContentDAO->flush();
+        $languageGameplayContentDAO->clearCache();
     }
 
     /**
-     * @param \Application\Model\Entities\RegionGameplayContent $block
+     * @param \Application\Model\Entities\LanguageGameplayContent $block
      */
-    public function deleteRegionGameplayContent(RegionGameplayContent $block) {
+    public function deleteLanguageGameplayContent(LanguageGameplayContent $block) {
         ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($block->getForegroundImage());
-        ContentManager::getInstance($this->getServiceLocator())->swapRegionGameplayContentToOrder($block->getRegion(), $block->getOrder(), $block->getRegion()->getRegionGameplayBlocks()->count());
+        ContentManager::getInstance($this->getServiceLocator())->swapLanguageGameplayContentToOrder($block->getLanguage(), $block->getOrder(), $block->getLanguage()->getLanguageGameplayBlocks()->count());
         LanguageContentDAO::getInstance($this->getServiceLocator())->remove($block);
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getGameplayBlocks($region, $hydrate = false, $skipCache = false) {
-        return RegionGameplayContentDAO::getInstance($this->getServiceLocator())->getRegionGameplayBlocks($region, $hydrate, $skipCache);
+    public function getGameplayBlocks($language, $hydrate = false, $skipCache = false) {
+        return LanguageGameplayContentDAO::getInstance($this->getServiceLocator())->getLanguageGameplayBlocks($language, $hydrate, $skipCache);
     }
 
     /**

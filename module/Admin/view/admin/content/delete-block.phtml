@@ -12,7 +12,7 @@ $this->headTitle($title);
     </div>
 </div>
 <?php
-$url = $this->url('admin-content-landing', array('action' => 'deleteBlock', 'block' => $this->block->getOrder(), 'region' => $this->activeRegion->getId()));
+$url = $this->url('admin-content-landing', array('action' => 'deleteBlock', 'block' => $this->block->getOrder(), 'language' => $this->activeLanguage->getId()));
 ?>
 <form action="<?php echo $url; ?>" method="post">
     <div class="form-actions">

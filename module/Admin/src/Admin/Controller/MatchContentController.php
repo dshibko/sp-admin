@@ -6,7 +6,6 @@ use \Application\Manager\ContentManager;
 use \Application\Model\Entities\DefaultReportContent;
 use \Application\Manager\ImageManager;
 use \Admin\Form\MatchReportContentFieldset;
-use \Application\Manager\RegionManager;
 use \Application\Manager\LanguageManager;
 use \Admin\Form\MatchReportContentForm;
 use \Zend\View\Model\ViewModel;

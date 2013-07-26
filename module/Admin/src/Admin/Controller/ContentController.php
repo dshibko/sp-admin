@@ -10,9 +10,7 @@ use \Admin\Form\GameplayContentForm;
 use \Application\Manager\ContentManager;
 use \Application\Manager\ImageManager;
 use \Admin\Form\LandingContentForm;
-use \Application\Model\Entities\Region;
 use \Application\Manager\ExceptionManager;
-use \Application\Manager\RegionManager;
 use \Neoco\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -110,26 +108,26 @@ class ContentController extends AbstractActionController {
 
     public function addBlockAction() {
 
-        $region = null;
+        $language = null;
 
         try {
 
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
+            $languageManager = LanguageManager::getInstance($this->getServiceLocator());
 
-            $regionId = (string) $this->params()->fromRoute('region', '');
-            $region = null;
-            if (!empty($regionId))
-                $region = $regionManager->getRegionById($regionId);
-            if ($region == null)
-                $region = $regionManager->getDefaultRegion();
+            $languageId = (string) $this->params()->fromRoute('language', '');
+            $language = null;
+            if (!empty($languageId))
+                $language = $languageManager->getLanguageById($languageId);
+            if ($language == null)
+                $language = $languageManager->getDefaultLanguage();
 
             $parentTitle = $this->getActivePage()->getParent()->getTitle();
-            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $region->getDisplayName()));
+            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $language->getDisplayName()));
 
-            $regionGameplayBlocksCount = $region->getRegionGameplayBlocks()->count();
-            if ($regionGameplayBlocksCount >= self::MAX_GAMEPLAY_BLOCKS_NUMBER) {
+            $languageGameplayBlocksCount = $language->getLanguageGameplayBlocks()->count();
+            if ($languageGameplayBlocksCount >= self::MAX_GAMEPLAY_BLOCKS_NUMBER) {
                 $this->flashMessenger()->addErrorMessage(sprintf(MessagesConstants::ERROR_MAX_GAMEPLAY_BLOCKS_NUMBER, self::MAX_GAMEPLAY_BLOCKS_NUMBER));
-                return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, array('region' => $region->getId()));
+                return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, array('language' => $language->getId()));
             }
 
             $form = new GameplayContentForm();
@@ -148,15 +146,15 @@ class ContentController extends AbstractActionController {
                         $foregroundImagePath = $imageManager->saveUploadedImage($form->get('foregroundImage'), ImageManager::IMAGE_TYPE_CONTENT);
                         $foregroundImage = $imageManager->prepareContentImage($foregroundImagePath, ImageManager::$GAMEPLAY_FOREGROUND_SIZES);
 
-                        if ($regionGameplayBlocksCount + 1 != $form->get('order')->getValue())
-                            ContentManager::getInstance($this->getServiceLocator())->swapRegionGameplayContentFromOrder($region, $form->get('order')->getValue(), $regionGameplayBlocksCount + 1);
+                        if ($languageGameplayBlocksCount + 1 != $form->get('order')->getValue())
+                            ContentManager::getInstance($this->getServiceLocator())->swapLanguageGameplayContentFromOrder($language, $form->get('order')->getValue(), $languageGameplayBlocksCount + 1);
 
                         ContentManager::getInstance($this->getServiceLocator())->
-                            saveRegionGameplayContent($region, $foregroundImage, $form->get('heading')->getValue(), $form->get('description')->getValue(), $form->get('order')->getValue());
+                            saveLanguageGameplayContent($language, $foregroundImage, $form->get('heading')->getValue(), $form->get('description')->getValue(), $form->get('order')->getValue());
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_GAMEPLAY_BLOCK_CREATED);
 
-                        return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, array('region' => $region->getId()));
+                        return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, array('language' => $language->getId()));
 
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
@@ -168,15 +166,15 @@ class ContentController extends AbstractActionController {
             }
 
             return new ViewModel(array(
-                'activeRegion' => $region,
+                'activeLanguage' => $language,
                 'form' => $form,
-                'order' => $regionGameplayBlocksCount + 1,
+                'order' => $languageGameplayBlocksCount + 1,
                 'action' => 'addBlock',
             ));
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            $routeParams = $region == null ? array() : array('region' => $region->getId());
+            $routeParams = $language == null ? array() : array('language' => $language->getId());
             return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, $routeParams);
         }
 
@@ -184,30 +182,30 @@ class ContentController extends AbstractActionController {
 
     public function editBlockAction() {
 
-        $region = null;
+        $language = null;
 
         try {
 
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
+            $languageManager = LanguageManager::getInstance($this->getServiceLocator());
 
-            $regionId = (string) $this->params()->fromRoute('region', '');
-            $region = null;
-            if (!empty($regionId))
-                $region = $regionManager->getRegionById($regionId);
-            if ($region == null)
-                $region = $regionManager->getDefaultRegion();
+            $languageId = (string) $this->params()->fromRoute('language', '');
+            $language = null;
+            if (!empty($languageId))
+                $language = $languageManager->getLanguageById($languageId);
+            if ($language == null)
+                $language = $languageManager->getDefaultLanguage();
 
             $parentTitle = $this->getActivePage()->getParent()->getTitle();
-            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $region->getDisplayName()));
+            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $language->getDisplayName()));
 
             $blockOrder = (int) $this->params()->fromRoute('block', -1);
 
-            $block = ($blockOrder != -1) ? $region->getRegionGameplayBlockByOrder($blockOrder) : null;
+            $block = ($blockOrder != -1) ? $language->getLanguageGameplayBlockByOrder($blockOrder) : null;
 
             if ($block == null)
                 throw new \Exception(MessagesConstants::ERROR_GAMEPLAY_BLOCK_NOT_FOUND);
 
-            $regionGameplayBlocksCount = $region->getRegionGameplayBlocks()->count();
+            $languageGameplayBlocksCount = $language->getLanguageGameplayBlocks()->count();
 
             $form = new GameplayContentForm();
 
@@ -231,16 +229,16 @@ class ContentController extends AbstractActionController {
                         $newOrder = $form->get('order')->getValue();
                         if ($blockOrder != $newOrder)
                             if ($newOrder > $blockOrder)
-                                ContentManager::getInstance($this->getServiceLocator())->swapRegionGameplayContentFromOrder($region, $blockOrder, $newOrder);
+                                ContentManager::getInstance($this->getServiceLocator())->swapLanguageGameplayContentFromOrder($language, $blockOrder, $newOrder);
                             else
-                                ContentManager::getInstance($this->getServiceLocator())->swapRegionGameplayContentFromOrder($region, $newOrder, $blockOrder);
+                                ContentManager::getInstance($this->getServiceLocator())->swapLanguageGameplayContentFromOrder($language, $newOrder, $blockOrder);
 
                         ContentManager::getInstance($this->getServiceLocator())->
-                            saveRegionGameplayContent($region, $foregroundImage, $form->get('heading')->getValue(), $form->get('description')->getValue(), $form->get('order')->getValue(), $block);
+                            saveLanguageGameplayContent($language, $foregroundImage, $form->get('heading')->getValue(), $form->get('description')->getValue(), $form->get('order')->getValue(), $block);
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_GAMEPLAY_BLOCK_UPDATED);
 
-                        return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, array('region' => $region->getId()));
+                        return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, array('language' => $language->getId()));
 
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
@@ -253,15 +251,15 @@ class ContentController extends AbstractActionController {
                 $form->populateValues($block->getArrayCopy());
 
             return new ViewModel(array(
-                'activeRegion' => $region,
+                'activeLanguage' => $language,
                 'form' => $form,
-                'order' => $regionGameplayBlocksCount,
+                'order' => $languageGameplayBlocksCount,
                 'action' => 'editBlock',
             ));
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            $routeParams = $region == null ? array() : array('region' => $region->getId());
+            $routeParams = $language == null ? array() : array('language' => $language->getId());
             return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, $routeParams);
         }
 
@@ -269,25 +267,25 @@ class ContentController extends AbstractActionController {
 
     public function deleteBlockAction() {
 
-        $region = null;
+        $language = null;
 
         try {
 
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
+            $languageManager = LanguageManager::getInstance($this->getServiceLocator());
 
-            $regionId = (string) $this->params()->fromRoute('region', '');
-            $region = null;
-            if (!empty($regionId))
-                $region = $regionManager->getRegionById($regionId);
-            if ($region == null)
-                $region = $regionManager->getDefaultRegion();
+            $languageId = (string) $this->params()->fromRoute('language', '');
+            $language = null;
+            if (!empty($languageId))
+                $language = $languageManager->getLanguageById($languageId);
+            if ($language == null)
+                $language = $languageManager->getDefaultLanguage();
 
             $parentTitle = $this->getActivePage()->getParent()->getTitle();
-            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $region->getDisplayName()));
+            $this->getActivePage()->getParent()->setParams(array('action' => null, 'block' => null, 'customTitle' => $parentTitle . " - " . $language->getDisplayName()));
 
             $blockOrder = (int) $this->params()->fromRoute('block', -1);
 
-            $block = ($blockOrder != -1) ? $region->getRegionGameplayBlockByOrder($blockOrder) : null;
+            $block = ($blockOrder != -1) ? $language->getLanguageGameplayBlockByOrder($blockOrder) : null;
 
             if ($block == null)
                 throw new \Exception(MessagesConstants::ERROR_GAMEPLAY_BLOCK_NOT_FOUND);
@@ -299,7 +297,7 @@ class ContentController extends AbstractActionController {
                     $del = $request->getPost('del', 'No');
 
                     if ($del == 'Yes') {
-                        ContentManager::getInstance($this->getServiceLocator())->deleteRegionGameplayContent($block);
+                        ContentManager::getInstance($this->getServiceLocator())->deleteLanguageGameplayContent($block);
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_GAMEPLAY_BLOCK_DELETED);
                     }
 
@@ -307,18 +305,18 @@ class ContentController extends AbstractActionController {
                     ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
                 }
 
-                $routeParams = $region == null ? array() : array('region' => $region->getId());
+                $routeParams = $language == null ? array() : array('language' => $language->getId());
                 return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, $routeParams);
             }
 
             return new ViewModel(array(
-                'activeRegion' => $region,
+                'activeLanguage' => $language,
                 'block' => $block,
             ));
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
-            $routeParams = $region == null ? array() : array('region' => $region->getId());
+            $routeParams = $language == null ? array() : array('language' => $language->getId());
             return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, $routeParams);
         }
     }

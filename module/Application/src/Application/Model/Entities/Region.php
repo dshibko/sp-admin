@@ -77,12 +77,6 @@ class Region extends BasicObject {
      */
     private $leagues;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="RegionGameplayContent", mappedBy="region")
-     */
-    protected $regionGameplayBlocks;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -139,31 +133,7 @@ class Region extends BasicObject {
         return $this->countries;
     }
 
-    /**
-     * @param \Doctrine\Common\Collections\Collection $regionGameplayBlocks
-     */
-    public function setRegionGameplayBlocks($regionGameplayBlocks)
-    {
-        $this->regionGameplayBlocks = $regionGameplayBlocks;
-    }
 
-    /**
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRegionGameplayBlocks()
-    {
-        return $this->regionGameplayBlocks;
-    }
-
-    /**
-     * @param $order
-     * @return \Application\Model\Entities\RegionGameplayContent
-     */
-    public function getRegionGameplayBlockByOrder($order) {
-        return $this->getRegionGameplayBlocks()->filter(function (RegionGameplayContent $regionGameplayContent) use ($order) {
-            return $order == $regionGameplayContent->getOrder();
-        })->first();
-    }
 
     /**
      * @param \Doctrine\Common\Collections\Collection $footerSocials
