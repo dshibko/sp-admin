@@ -1327,6 +1327,8 @@ INNER JOIN  `language` ON  `language`.`id` =  `region_content`.`region_id`;
 
 DROP TABLE `region_content`;
 
+--dsh 26.07
+
 CREATE TABLE IF NOT EXISTS `language_gameplay_content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `language_id` int(11) NOT NULL,
