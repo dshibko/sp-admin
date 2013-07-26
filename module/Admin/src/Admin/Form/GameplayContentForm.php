@@ -9,7 +9,7 @@ class GameplayContentForm extends UploadableForm {
 
     const HEADING_MAX_LENGTH = 255;
 
-    public function __construct($name = null) {
+    public function __construct($name = null, $required = 0) {
         parent::__construct('gameplay');
 
         $this->setAttribute('method', 'post');
@@ -20,7 +20,7 @@ class GameplayContentForm extends UploadableForm {
             'name' => 'foregroundImage',
             'type'  => 'file',
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'isImage' => true,
                 'minWidth' => 600,
                 'hint' => 'Min image width: 600px',
@@ -37,7 +37,7 @@ class GameplayContentForm extends UploadableForm {
                 'label' => 'Heading',
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'maxlength' => self::HEADING_MAX_LENGTH
             ),
         ));
@@ -48,7 +48,7 @@ class GameplayContentForm extends UploadableForm {
                 'label' => 'Description',
             ),
             'attributes' => array(
-                'required' => true
+                'required' => $required
             ),
         ));
         $this->add(array(
@@ -58,7 +58,7 @@ class GameplayContentForm extends UploadableForm {
                 'label' => 'Order',
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'digits' => true,
             ),
         ));

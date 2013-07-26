@@ -130,7 +130,7 @@ class ContentController extends AbstractActionController {
                 return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE, array('language' => $language->getId()));
             }
 
-            $form = new GameplayContentForm();
+            $form = new GameplayContentForm(null, $language->getIsDefault());
 
             $request = $this->getRequest();
             if ($request->isPost()) {
@@ -207,7 +207,7 @@ class ContentController extends AbstractActionController {
 
             $languageGameplayBlocksCount = $language->getLanguageGameplayBlocks()->count();
 
-            $form = new GameplayContentForm();
+            $form = new GameplayContentForm(null, $language->getIsDefault());
 
             $request = $this->getRequest();
             if ($request->isPost()) {
