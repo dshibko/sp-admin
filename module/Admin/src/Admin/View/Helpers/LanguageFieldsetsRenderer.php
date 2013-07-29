@@ -6,7 +6,8 @@ use \Zend\Mvc\Controller\Plugin\FlashMessenger;
 
 class LanguageFieldsetsRenderer extends FieldsetsRenderer
 {
-    public function getName($regionFieldset) {
-        return $regionFieldset->getLanguage();
+    public function getName($languageFieldset) {
+        $language = $languageFieldset->getLanguage();
+        return $language['displayName'];
     }
 }

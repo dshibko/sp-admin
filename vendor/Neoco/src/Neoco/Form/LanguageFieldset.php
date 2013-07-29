@@ -4,7 +4,7 @@ namespace Neoco\Form;
 
 use \Neoco\Form\FieldsetObjectInterface;
 
-abstract class LanguageFieldset extends UploadableFieldset implements  FieldsetObjectInterface{
+abstract class LanguageFieldset extends UploadableFieldset implements  FieldsetObjectInterface {
 
     protected $language;
 

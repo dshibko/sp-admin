@@ -1359,8 +1359,8 @@ CREATE TABLE `season_language` (
 	id INT AUTO_INCREMENT NOT NULL,
 	season_id INT NOT NULL,
 	language_id INT NOT NULL,
-	display_name VARCHAR(100) NOT NULL,
-	terms text NOT NULL,
+	display_name VARCHAR(255) NULL,
+	terms text NULL,
 	PRIMARY KEY (id)
 ) ENGINE = InnoDB;
 ALTER TABLE `season_language` ADD FOREIGN KEY (season_id) REFERENCES `season`(id);
@@ -1373,3 +1373,38 @@ INNER JOIN  `season` ON  `season`.`id` =  s.`season_id`
 INNER JOIN  `language` ON  `language`.`id` =  s.`region_id`;
 
 DROP TABLE `season_region`;
+
+CREATE TABLE `league_language` (
+	id INT AUTO_INCREMENT NOT NULL,
+	league_id INT NOT NULL,
+	language_id INT NOT NULL,
+	display_name VARCHAR(255) NULL,
+	prize_title VARCHAR(50) NULL,
+	prize_description text NULL,
+	prize_image VARCHAR(255) NULL,
+	post_win_title VARCHAR(50) NULL,
+	post_win_description text NULL,
+	post_win_image VARCHAR(255) NULL,
+	PRIMARY KEY (id)
+) ENGINE = InnoDB;
+ALTER TABLE `league_language` ADD FOREIGN KEY (league_id) REFERENCES `league`(id);
+ALTER TABLE `league_language` ADD FOREIGN KEY (language_id) REFERENCES `language`(id);
+
+INSERT INTO `league_language`( `league_id`, `language_id`)
+SELECT  l.`id`, la.`id`
+FROM  `league` l
+INNER JOIN  `language` la;
+
+UPDATE `league_language` ll
+INNER JOIN `prize` p ON p.league_id = ll.league_id and ll.language_id = p.region_id
+SET ll.`prize_description` = p.`prize_description`,
+ll.`prize_title` = p.`prize_title`, ll.`prize_image` = p.`prize_image`, ll.`post_win_title` = p.`post_win_title`,
+ll.`post_win_description` = p.`post_win_description`, ll.`post_win_image` = p.`post_win_image`;
+
+UPDATE `league_language` ll
+INNER JOIN `league` l ON ll.league_id = l.id
+SET ll.`display_name` = l.type;
+
+DROP TABLE `prize`;
+
+ALTER TABLE `league_region` DROP `display_name`;

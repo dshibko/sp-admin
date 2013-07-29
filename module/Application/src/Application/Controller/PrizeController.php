@@ -16,6 +16,8 @@ class PrizeController extends AbstractActionController {
 
         try {
 
+            // todo seasons prizes
+
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
 
             $user = $applicationManager->getCurrentUser();
@@ -25,7 +27,7 @@ class PrizeController extends AbstractActionController {
 
             $region = $applicationManager->getUserRegion($user);
             $globalLeague = $applicationManager->getGlobalLeague($season);
-            $grandPrize = $globalLeague->getPrizeByRegionId($region->getId());
+            $grandPrize = $globalLeague->getLeagueLanguageByLanguageId($region->getId());
 
             return array(
                 'grandPrize' => $grandPrize,

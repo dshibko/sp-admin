@@ -14,18 +14,18 @@ abstract class FieldsetsRenderer extends AbstractHelper
      * @param $regionFieldsets
      * @param bool $add
      * @param string $uniqueName
+     * @param bool $horizontalTabs
      * @return string
      */
-    public function __invoke($regionFieldsets, $add = true, $uniqueName = '')
+    public function __invoke($regionFieldsets, $add = true, $uniqueName = '', $horizontalTabs = true)
     {
         $html = '<div class="row-fluid form-vertical">
                <div class="span12">
-                  <div class="tabbable tabbable-custom boxless">
-                     <ul class="nav nav-tabs">';
+                  <div class="tabbable tabbable-custom ' . ($horizontalTabs ? 'boxless' : 'tabs-left') . '">
+                     <ul class="nav nav-tabs' . ($horizontalTabs ? '' : ' tabs-left') . '">';
         $i = 0;
         foreach ($regionFieldsets as $regionFieldset) {
-            $displayName = $this->getName($regionFieldset);
-            $html .= '<li' . ($i == 0 ? ' class="active"' : '') . '><a href="#tab_' . $uniqueName . (++$i) . '" data-toggle="tab">' . $displayName['displayName'] . '</a></li>';
+            $html .= '<li' . ($i == 0 ? ' class="active"' : '') . '><a href="#tab_' . $uniqueName . (++$i) . '" data-toggle="tab">' . $this->getName($regionFieldset) . '</a></li>';
         }
         $html .= '</ul><div class="tab-content">';
         $i = 0;
@@ -35,10 +35,10 @@ abstract class FieldsetsRenderer extends AbstractHelper
             $html .= '</div>';
         }
         $html .= '</div></div></div></div>';
-        print $html;
+        return $html;
     }
 
-    private function renderRegionFieldset($regionFieldset, $add = true) {
+    protected function renderRegionFieldset($regionFieldset, $add = true) {
         $html = '';
         foreach ($regionFieldset->getElements() as $element) {
             $type = $element->getAttribute('type');
@@ -88,5 +88,9 @@ abstract class FieldsetsRenderer extends AbstractHelper
         $this->translator = $translator;
     }
 
+    public function getTranslator()
+    {
+        return $this->translator;
+    }
 
 }

@@ -65,7 +65,7 @@ class FullTableController extends AbstractActionController {
             }
 
             $season = $seasonManager->getSeasonById($league['season']['id']);
-            $seasonName = $season->getSeasonRegionByRegionId($applicationManager->getUserRegion($user)->getId())->getDisplayName();
+            $seasonName = $season->getSeasonLanguageByLanguageId($user->getLanguage()->getId())->getDisplayName();
 
             $offset = (int) $this->params()->fromQuery('offset', 0);
             $leagueUsersCount = $leagueManager->getLeagueUsersCount($league['id']);

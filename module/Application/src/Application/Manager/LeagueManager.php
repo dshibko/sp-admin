@@ -7,7 +7,7 @@ use \Application\Model\Entities\LeagueUserPlace;
 use \Application\Model\Entities\LeagueUser;
 use \Doctrine\Common\Collections\ArrayCollection;
 use \Application\Model\Entities\LeagueRegion;
-use \Application\Model\Entities\Prize;
+use \Application\Model\Entities\LeagueLanguage;
 use \Application\Model\DAOs\RegionDAO;
 use \Application\Model\Entities\League;
 use \Application\Model\Helpers\MessagesConstants;
@@ -161,27 +161,30 @@ class LeagueManager extends BasicManager {
         $league->setType(League::MINI_TYPE);
         $league->setDisplayName($displayName);
         $regionDAO = RegionDAO::getInstance($this->getServiceLocator());
+
+        // todo seasons prizes
+
         $prizes = array();
         $leagueRegions = array();
         foreach ($regionsData as $regionId => $regionRow) {
             $region = $regionDAO->findOneById($regionId);
             if ($region != null) {
                 if (!$editableLeague)
-                    $prize = $league->getPrizeByRegionId($regionId);
+                    $prize = $league->getLeagueLanguageByLanguageId($regionId);
                 else
-                    $prize = new Prize();
+                    $prize = new LeagueLanguage();
                 if (empty($regionRow['prizeImagePath']))
-                    $regionRow['prizeImagePath'] = $league->getPrizeByRegionId($regionId)->getPrizeImage();
+                    $regionRow['prizeImagePath'] = $league->getLeagueLanguageByLanguageId($regionId)->getPrizeImage();
                 $prize->setPrizeImage($regionRow['prizeImagePath']);
                 $prize->setPrizeDescription($regionRow['prizeDescription']);
                 $prize->setPrizeTitle($regionRow['prizeTitle']);
                 if (empty($regionRow['postWinImagePath']))
-                    $regionRow['postWinImagePath'] = $league->getPrizeByRegionId($regionId)->getPostWinImage();
+                    $regionRow['postWinImagePath'] = $league->getLeagueLanguageByLanguageId($regionId)->getPostWinImage();
                 $prize->setPostWinImage($regionRow['postWinImagePath']);
                 $prize->setPostWinDescription($regionRow['postWinDescription']);
                 $prize->setPostWinTitle($regionRow['postWinTitle']);
                 $prize->setLeague($league);
-                $prize->setRegion($region);
+                $prize->setLanguage($region);
                 $prizes [] = $prize;
                 if (!$editableLeague)
                     $leagueRegion = $league->getLeagueRegionByRegionId($regionId);
@@ -194,8 +197,8 @@ class LeagueManager extends BasicManager {
             }
         }
         if ($editableLeague) {
-            $league->getPrizes()->clear();
-            $league->setPrizes(new ArrayCollection($prizes));
+            $league->getLeagueLanguages()->clear();
+            $league->setLeagueLanguages(new ArrayCollection($prizes));
             $league->getLeagueRegions()->clear();
             $league->setLeagueRegions(new ArrayCollection($leagueRegions));
         }

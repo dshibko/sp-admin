@@ -33,7 +33,9 @@ class FixturesController extends AbstractActionController {
             if ($season == null)
                 throw new OutOfSeasonException();
 
-            $seasonRegion = $season->getSeasonRegionByRegionId($regionManager->getSelectedRegion()->getId());
+            $user = $applicationManager->getCurrentUser();
+
+            $seasonRegion = $season->getSeasonLanguageByLanguageId($user->getLanguage()->getId());
             $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
             $matchesLeft = $matchManager->getMatchesLeftInTheSeason($season, true);
             if (empty($matchesLeft))

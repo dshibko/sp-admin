@@ -90,6 +90,22 @@ class LanguageManager extends BasicManager {
             $languageDAO->clearCache();
         }
     }
+
+    private $nonHydratedLanguages;
+
+    /**
+     * @param $id
+     * @return bool|\Application\Model\Entities\Language
+     */
+    public function getNonHydratedLanguageFromArray($id) {
+        if ($this->nonHydratedLanguages == null)
+            $this->nonHydratedLanguages = $this->getAllLanguages(false);
+        foreach ($this->nonHydratedLanguages as $region)
+            if ($region->getId() == $id)
+                return $region;
+        return false;
+    }
+
     /**
      * @param $fileName
      * @return string
@@ -220,7 +236,6 @@ class LanguageManager extends BasicManager {
     public function getLanguagesFieldsets($fieldsetClassName)
     {
         $languages = $this->getAllLanguages(true);
-        $defaultLanguage = $this->getDefaultLanguage();
         $fieldsets = array();
         foreach ($languages as $language){
             if (class_exists($fieldsetClassName)){

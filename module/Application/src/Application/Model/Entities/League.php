@@ -138,7 +138,7 @@ class League extends BasicObject {
         $this->users = new \Doctrine\Common\Collections\ArrayCollection();
         $this->leagueRegions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->leagueUsers = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->prizes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->leagueLanguages = new \Doctrine\Common\Collections\ArrayCollection();
         $this->regions = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -455,41 +455,41 @@ class League extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Prize", mappedBy="league", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="LeagueLanguage", mappedBy="league", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $prizes;
+    private $leagueLanguages;
 
     /**
-     * Add prizes
+     * Add leagueLanguage
      *
-     * @param Prize $prizes
+     * @param LeagueLanguage $leagueLanguage
      * @return League
      */
-    public function addPrize(Prize $prizes)
+    public function addLeagueLanguage(LeagueLanguage $leagueLanguage)
     {
-        $this->prizes[] = $prizes;
+        $this->leagueLanguages[] = $leagueLanguage;
 
         return $this;
     }
 
     /**
-     * Remove prizes
+     * Remove leagueLanguage
      *
-     * @param Prize $prizes
+     * @param LeagueLanguage $leagueLanguage
      */
-    public function removePrize(Prize $prizes)
+    public function removeLeagueLanguage(LeagueLanguage $leagueLanguage)
     {
-        $this->prizes->removeElement($prizes);
+        $this->leagueLanguages->removeElement($leagueLanguage);
     }
 
     /**
-     * Get prizes
+     * Get leagueLanguage
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getPrizes()
+    public function getLeagueLanguages()
     {
-        return $this->prizes;
+        return $this->leagueLanguages;
     }
 
     /**
@@ -531,21 +531,21 @@ class League extends BasicObject {
         $this->regions->removeElement($regions);
     }
 
-    private $prizesByRegion = array();
+    private $leagueLanguagesByLanguage = array();
 
     /**
      * @param $id
-     * @return \Application\Model\Entities\Prize
+     * @return \Application\Model\Entities\LeagueLanguage
      */
-    public function getPrizeByRegionId($id)
+    public function getLeagueLanguageByLanguageId($id)
     {
-        if (!array_key_exists($id, $this->prizesByRegion))
-            foreach ($this->getPrizes() as $prize)
-                if ($prize->getRegion()->getId() == $id) {
-                    $this->prizesByRegion[$id] = $prize;
+        if (!array_key_exists($id, $this->leagueLanguagesByLanguage))
+            foreach ($this->getLeagueLanguages() as $prize)
+                if ($prize->getLanguage()->getId() == $id) {
+                    $this->leagueLanguagesByLanguage[$id] = $prize;
                     break;
                 }
-        return $this->prizesByRegion[$id];
+        return $this->leagueLanguagesByLanguage[$id];
     }
 
     /**
@@ -580,7 +580,7 @@ class League extends BasicObject {
     /**
      * Add leagueRegion
      *
-     * @param LeagueRegion $leagueRegions
+     * @param LeagueRegion $leagueRegion
      * @return League
      */
     public function addLeagueRegion(LeagueRegion $leagueRegion)
@@ -601,11 +601,11 @@ class League extends BasicObject {
     }
 
     /**
-     * @param \Doctrine\Common\Collections\Collection $prizes
+     * @param \Doctrine\Common\Collections\Collection $leagueLanguages
      */
-    public function setPrizes($prizes)
+    public function setLeagueLanguages($leagueLanguages)
     {
-        $this->prizes = $prizes;
+        $this->leagueLanguages = $leagueLanguages;
     }
 
     /**

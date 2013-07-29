@@ -97,8 +97,6 @@ class LeagueUserDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
-    // todo refactoring asap
-
     /**
      * @param int $leagueId
      * @param int $top

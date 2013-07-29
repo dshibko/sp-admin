@@ -5,12 +5,12 @@ namespace Application\Model\Entities;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * SeasonRegion
+ * SeasonLanguage
  *
- * @ORM\Table(name="season_region")
+ * @ORM\Table(name="season_language")
  * @ORM\Entity
  */
-class SeasonRegion
+class SeasonLanguage
 {
     /**
      * @var string
@@ -46,21 +46,21 @@ class SeasonRegion
     private $season;
 
     /**
-     * @var Region
+     * @var Language
      *
-     * @ORM\ManyToOne(targetEntity="Region")
+     * @ORM\ManyToOne(targetEntity="Language")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="region_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      * })
      */
-    private $region;
+    private $language;
 
 
     /**
      * Set displayName
      *
      * @param string $displayName
-     * @return SeasonRegion
+     * @return SeasonLanguage
      */
     public function setDisplayName($displayName)
     {
@@ -83,7 +83,7 @@ class SeasonRegion
      * Set terms
      *
      * @param string $terms
-     * @return SeasonRegion
+     * @return SeasonLanguage
      */
     public function setTerms($terms)
     {
@@ -116,7 +116,7 @@ class SeasonRegion
      * Set season
      *
      * @param Season $season
-     * @return SeasonRegion
+     * @return SeasonLanguage
      */
     public function setSeason(Season $season = null)
     {
@@ -136,25 +136,25 @@ class SeasonRegion
     }
 
     /**
-     * Set region
+     * Set language
      *
-     * @param Region $region
-     * @return SeasonRegion
+     * @param Language $language
+     * @return SeasonLanguage
      */
-    public function setRegion(Region $region = null)
+    public function setLanguage(Language $language = null)
     {
-        $this->region = $region;
+        $this->language = $language;
     
         return $this;
     }
 
     /**
-     * Get region
+     * Get language
      *
-     * @return Region
+     * @return Language
      */
-    public function getRegion()
+    public function getLanguage()
     {
-        return $this->region;
+        return $this->language;
     }
 }

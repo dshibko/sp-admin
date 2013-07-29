@@ -196,10 +196,10 @@ class LeagueDAO extends AbstractDAO {
 
     public function findOneById($id, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('l, lr, p, s')
+        $qb->select('l, lr, ll, s')
             ->from($this->getRepositoryName(), 'l')
             ->leftJoin('l.leagueRegions', 'lr')
-            ->leftJoin('l.prizes', 'p')
+            ->leftJoin('l.leagueLanguages', 'll')
             ->join('l.season', 's')
             ->where($qb->expr()->eq('l.id', $id));
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);

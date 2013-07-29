@@ -7,6 +7,7 @@ use \Zend\Mvc\Controller\Plugin\FlashMessenger;
 class RegionFieldsetsRenderer extends FieldsetsRenderer
 {
     public function getName($regionFieldset) {
-        return $regionFieldset->getRegion();
+        $region = $regionFieldset->getRegion();
+        return $region['displayName'];
     }
 }

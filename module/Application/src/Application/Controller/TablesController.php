@@ -46,7 +46,7 @@ class TablesController extends AbstractActionController {
                     $temporalLeague['displayName'] = $leagueRegion['displayName'];
                 }
             }
-            $seasonRegion = $season->getSeasonRegionByRegionId($applicationManager->getUserRegion($user)->getId());
+            $seasonRegion = $season->getSeasonLanguageByLanguageId($user->getLanguage()->getId());
             return array(
                 'globalLeague' => $globalLeague,
                 'globalTopUsers' => $globalLeagueUsers,

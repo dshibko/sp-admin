@@ -220,55 +220,59 @@ class Season extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="SeasonRegion", mappedBy="season", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="SeasonLanguage", mappedBy="season", cascade={"persist", "remove"})
      */
-    private $seasonRegions;
+    private $seasonLanguages;
 
 
     /**
-     * Get seasonRegions
+     * Get seasonLanguages
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getSeasonRegions()
+    public function getSeasonLanguages()
     {
-        return $this->seasonRegions;
+        return $this->seasonLanguages;
     }
 
     /**
-     * Add seasonRegions
+     * Add seasonLanguage
      *
-     * @param SeasonRegion $seasonRegions
+     * @param SeasonLanguage $seasonLanguage
      * @return Season
      */
-    public function addSeasonRegion(SeasonRegion $seasonRegions)
+    public function addSeasonLanguage(SeasonLanguage $seasonLanguage)
     {
-        $this->seasonRegions[] = $seasonRegions;
+        $this->seasonLanguages[] = $seasonLanguage;
 
         return $this;
     }
 
     /**
-     * Remove seasonRegions
+     * Remove seasonLanguage
      *
-     * @param SeasonRegion $seasonRegions
+     * @param SeasonLanguage $seasonLanguage
      */
-    public function removeSeasonRegion(SeasonRegion $seasonRegions)
+    public function removeSeasonLanguage(SeasonLanguage $seasonLanguage)
     {
-        $this->seasonRegions->removeElement($seasonRegions);
+        $this->seasonLanguages->removeElement($seasonLanguage);
     }
 
-    private $seasonRegionsByRegion = array();
+    private $seasonLanguagesByLanguage = array();
 
-    public function getSeasonRegionByRegionId($id)
+    /**
+     * @param $id
+     * @return SeasonLanguage
+     */
+    public function getSeasonLanguageByLanguageId($id)
     {
-        if (!array_key_exists($id, $this->seasonRegionsByRegion))
-            foreach ($this->getSeasonRegions() as $seasonRegion)
-                if ($seasonRegion->getRegion()->getId() == $id) {
-                    $this->seasonRegionsByRegion[$id] = $seasonRegion;
+        if (!array_key_exists($id, $this->seasonLanguagesByLanguage))
+            foreach ($this->getSeasonLanguages() as $seasonLanguage)
+                if ($seasonLanguage->getLanguage()->getId() == $id) {
+                    $this->seasonLanguagesByLanguage[$id] = $seasonLanguage;
                     break;
                 }
-        return $this->seasonRegionsByRegion[$id];
+        return $this->seasonLanguagesByLanguage[$id];
     }
 
     private $regionalLeagueByRegion = array();

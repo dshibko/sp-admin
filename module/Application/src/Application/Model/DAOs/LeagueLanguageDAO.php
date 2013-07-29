@@ -6,21 +6,21 @@ use \Application\Model\DAOs\AbstractDAO;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class PrizeDAO extends AbstractDAO {
+class LeagueLanguageDAO extends AbstractDAO {
 
     /**
-     * @var PrizeDAO
+     * @var LeagueLanguageDAO
      */
     private static $instance;
 
     /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return PrizeDAO
+     * @return LeagueLanguageDAO
      */
     public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
         if (self::$instance == null) {
-            self::$instance = new PrizeDAO();
+            self::$instance = new LeagueLanguageDAO();
             self::$instance->setServiceLocator($serviceLocatorInterface);
         }
         return self::$instance;
@@ -30,7 +30,7 @@ class PrizeDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return '\Application\Model\Entities\Prize';
+        return '\Application\Model\Entities\LeagueLanguage';
     }
 
 }

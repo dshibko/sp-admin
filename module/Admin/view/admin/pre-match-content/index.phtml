@@ -18,7 +18,7 @@ $this->headTitle($title);
                         $elements = $form->getElements();
                         $form->prepare();
                         echo $this->form()->openTag($form);
-                        $this->renderLanguageFieldsets($form->getFieldsets(), false); ?>
+                        echo $this->renderLanguageFieldsets($form->getFieldsets(), false); ?>
                         <div class="form-actions">
                             <button type="submit" class="btn blue"><i class="icon-ok"></i> <?=$this->translate($elements['submit']->getValue())?></button>
                             <button type="button" class="btn">Cancel</button>

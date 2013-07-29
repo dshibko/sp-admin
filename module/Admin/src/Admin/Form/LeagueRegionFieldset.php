@@ -108,7 +108,7 @@ class LeagueRegionFieldset extends RegionFieldset {
                 $this->get('displayName')->setValue($leagueRegion->getDisplayName());
                 break;
             }
-        foreach ($league->getPrizes() as $prize)
+        foreach ($league->getLeagueLanguages() as $prize)
             if ($prize->getRegion()->getId() == $region['id']) {
                 foreach ($this->getElements() as $element) {
                     $getter = 'get' . ucfirst($element->getName());

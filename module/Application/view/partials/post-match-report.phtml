@@ -89,10 +89,10 @@
             <?php if (!empty($leaguesMovement['global'])):?>
                   <?php echo $this->renderUserLeagueMovement($leaguesMovement['global']);?>
             <?php endif;?>
-            <?php if (/*todo remove*/false && !empty($leaguesMovement['regional'])):?>
+            <?php if (!empty($leaguesMovement['regional'])):?>
                 <?php echo $this->renderUserLeagueMovement($leaguesMovement['regional']);?>
-                <?php endif;?>
             <?php endif;?>
+        <?php endif;?>
         <!--REGIONAL LEAGUE MOVEMENT ENDS-->
     </div>
 </section>
