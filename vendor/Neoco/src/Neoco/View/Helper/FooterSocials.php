@@ -29,6 +29,11 @@ class FooterSocials extends AbstractHelper
     {
         $language = LanguageManager::getInstance($this->serviceLocator)->getSelectedLanguage();
         $footerSocials = ContentManager::getInstance($this->serviceLocator)->getFooterSocials($language, true);
+        if (empty($footerSocials)) {
+            $defaultLanguage = LanguageManager::getInstance($this->serviceLocator)->getDefaultLanguage();
+            $footerSocials = ContentManager::getInstance($this->serviceLocator)->getFooterSocials($defaultLanguage, true);
+        }
+
         if (!empty($footerSocials)) {
             $footerSocialHtml = '<ul>';
             foreach ($footerSocials as $footerSocial)
