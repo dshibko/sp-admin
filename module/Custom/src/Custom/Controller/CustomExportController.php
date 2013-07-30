@@ -55,9 +55,9 @@ class CustomExportController extends AbstractActionController {
 
             $remoteFilePath = $usersExportFileName;
 
-            list($ftpHost, $ftpUser, $ftpPassword) = $this->getUsersFTPConfig();
+            list($ftpHost, $ftpUser, $ftpPassword, $ftpPath) = $this->getUsersFTPConfig();
 
-            $uploadSuccess = $ftpManager->sendFile($usersExportFilePath, $remoteFilePath, $ftpHost, $ftpUser, $ftpPassword);
+            $uploadSuccess = $ftpManager->sendFile($usersExportFilePath, $ftpPath . $remoteFilePath, $ftpHost, $ftpUser, $ftpPassword);
 
             if ($uploadSuccess === false)
                 throw new \Exception(CustomMessagesConstants::ERROR_USERS_EXPORT_FILE_UPLOAD_FAILED);
@@ -100,9 +100,9 @@ class CustomExportController extends AbstractActionController {
 
             $remoteFilePath = $maillistExportFileName;
 
-            list($ftpHost, $ftpUser, $ftpPassword) = $this->getMaillistFTPConfig();
+            list($ftpHost, $ftpUser, $ftpPassword, $ftpPath) = $this->getMaillistFTPConfig();
 
-            $uploadSuccess = $ftpManager->sendFile($maillistExportFilePath, $remoteFilePath, $ftpHost, $ftpUser, $ftpPassword);
+            $uploadSuccess = $ftpManager->sendFile($maillistExportFilePath, $ftpPath. $remoteFilePath, $ftpHost, $ftpUser, $ftpPassword);
 
             if ($uploadSuccess === false)
                 throw new \Exception(CustomMessagesConstants::ERROR_MAILLIST_EXPORT_FILE_UPLOAD_FAILED);
@@ -128,21 +128,19 @@ class CustomExportController extends AbstractActionController {
     }
 
     private function getUsersFTPConfig() {
-        $config = $this->getServiceLocator()->get('config');
-        if (!empty($config) && array_key_exists('users-export-ftp', $config) && is_array($config['users-export-ftp'])) {
-            $ftpConfig = $config['users-export-ftp'];
-            if (array_key_exists('host', $ftpConfig) && array_key_exists('user', $ftpConfig) && array_key_exists('password', $ftpConfig))
-                return array($ftpConfig['host'], $ftpConfig['user'], $ftpConfig['password']);
-        }
-        throw new \Exception(CustomMessagesConstants::ERROR_EXPORT_FTP_WRONG_CONFIG);
+        return $this->getFTPConfig('users-export-ftp');
     }
 
     private function getMaillistFTPConfig() {
+        return $this->getFTPConfig('maillist-export-ftp');
+    }
+
+    private function getFTPConfig($key) {
         $config = $this->getServiceLocator()->get('config');
-        if (!empty($config) && array_key_exists('maillist-export-ftp', $config) && is_array($config['maillist-export-ftp'])) {
-            $ftpConfig = $config['maillist-export-ftp'];
-            if (array_key_exists('host', $ftpConfig) && array_key_exists('user', $ftpConfig) && array_key_exists('password', $ftpConfig))
-                return array($ftpConfig['host'], $ftpConfig['user'], $ftpConfig['password']);
+        if (!empty($config) && array_key_exists($key, $config) && is_array($config[$key])) {
+            $ftpConfig = $config[$key];
+            if (array_key_exists('host', $ftpConfig) && array_key_exists('user', $ftpConfig) && array_key_exists('password', $ftpConfig) && array_key_exists('path', $ftpConfig))
+                return array($ftpConfig['host'], $ftpConfig['user'], $ftpConfig['password'], $ftpConfig['path']);
         }
         throw new \Exception(CustomMessagesConstants::ERROR_EXPORT_FTP_WRONG_CONFIG);
     }
