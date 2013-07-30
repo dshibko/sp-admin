@@ -25,6 +25,7 @@ class Module
 
     const SETUP_PAGE_ROUTE = 'setup';
     const PREDICT_PAGE_ROUTE = 'predict';
+    const ERROR_500_PAGE_ROUTE = '500';
     const LOGIN_PAGE_ROUTE = 'login';
 
     public function onBootstrap(MvcEvent $e)
@@ -36,6 +37,7 @@ class Module
         $sharedEvents = $eventManager->getSharedManager();
         $sharedEvents->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, array($this, 'onAppDispatch'), 100);
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onAppDispatchError'), -1);
+        $eventManager->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'onRenderError'), -1);
         $eventManager->attach(MvcEvent::EVENT_FINISH, array($this, 'onFinish'), 500);
     }
 
@@ -102,6 +104,10 @@ class Module
             }
         }
         return true;
+    }
+
+    public function onRenderError(\Zend\Mvc\MvcEvent $e) {
+        return $this->redirect(self::ERROR_500_PAGE_ROUTE, $e);
     }
 
     /**
