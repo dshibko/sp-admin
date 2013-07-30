@@ -5,7 +5,7 @@ namespace Application\Manager;
 use Application\Model\DAOs\LeagueUserDAO;
 use \Application\Model\Entities\LeagueLanguage;
 use \Application\Model\DAOs\LeagueLanguageDAO;
-use \Application\Model\DAOs\SeasonRegionDAO;
+use \Application\Model\DAOs\SeasonLanguageDAO;
 use \Application\Model\Entities\SeasonLanguage;
 use \Application\Model\DAOs\LeagueDAO;
 use \Application\Model\Entities\League;
@@ -114,7 +114,7 @@ class SeasonManager extends BasicManager {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         $leagueDAO->save($globalLeague, false, false);
 
-        $seasonRegionDAO = SeasonRegionDAO::getInstance($this->getServiceLocator());
+        $seasonLanguageDAO = SeasonLanguageDAO::getInstance($this->getServiceLocator());
         $leagueLanguageDAO = LeagueLanguageDAO::getInstance($this->getServiceLocator());
 
         $regionalLeagues = array();
@@ -156,7 +156,7 @@ class SeasonManager extends BasicManager {
 
         $seasonDAO->clearCache();
         $leagueDAO->clearCache();
-        $seasonRegionDAO->clearCache();
+        $seasonLanguageDAO->clearCache();
         $leagueLanguageDAO->clearCache();
         LeagueUserDAO::getInstance($this->getServiceLocator())->clearCache();
 
@@ -210,14 +210,15 @@ class SeasonManager extends BasicManager {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         $leagueDAO->save($globalLeague, false, false);
 
-        $seasonRegionDAO = SeasonRegionDAO::getInstance($this->getServiceLocator());
+        $seasonLanguageDAO = SeasonLanguageDAO::getInstance($this->getServiceLocator());
         $leagueLanguageDAO = LeagueLanguageDAO::getInstance($this->getServiceLocator());
 
         foreach ($regionalLeaguesData as $regionId => $regionRow) {
             $regionalLeague = $season->getRegionalLeagueByRegionId($regionId);
-            if ($regionalLeague !== null) continue;
+            if ($regionalLeague === null) continue;
 
             foreach ($regionRow as $languageId => $languageRow) {
+
                 $language = LanguageManager::getInstance($this->getServiceLocator())->getNonHydratedLanguageFromArray($languageId);
                 if (!$language) continue;
                 $regionalLeagueLanguage = $regionalLeague->getLeagueLanguageByLanguageId($languageId);
@@ -240,7 +241,7 @@ class SeasonManager extends BasicManager {
 
         $seasonDAO->clearCache();
         $leagueDAO->clearCache();
-        $seasonRegionDAO->clearCache();
+        $seasonLanguageDAO->clearCache();
         $leagueLanguageDAO->clearCache();
 
         return $season;
@@ -291,6 +292,17 @@ class SeasonManager extends BasicManager {
     public function getCurrentAndFutureSeasons($hydrate = false, $skipCache = false)
     {
         return SeasonDAO::getInstance($this->getServiceLocator())->getCurrentAndFutureSeasons($hydrate, $skipCache);
+    }
+
+    public function getSeasonDisplayName($seasonId) {
+        $seasonLanguageDAO = SeasonLanguageDAO::getInstance($this->getServiceLocator());
+        $language = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser()->getLanguage();
+        $displayName = $seasonLanguageDAO->getSeasonDisplayName($seasonId, $language->getId());
+        if (empty($displayName) && !$language->getIsDefault()) {
+            $defaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+            $displayName = $seasonLanguageDAO->getSeasonDisplayName($seasonId, $defaultLanguage->getId());
+        }
+        return $displayName;
     }
 
 }

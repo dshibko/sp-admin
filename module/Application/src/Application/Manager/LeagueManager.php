@@ -2,6 +2,7 @@
 
 namespace Application\Manager;
 
+use Application\Model\DAOs\LeagueLanguageDAO;
 use \Application\Model\DAOs\LeagueUserPlaceDAO;
 use \Application\Model\Entities\LeagueUserPlace;
 use \Application\Model\Entities\LeagueUser;
@@ -41,6 +42,17 @@ class LeagueManager extends BasicManager {
             self::$instance->setServiceLocator($serviceLocatorInterface);
         }
         return self::$instance;
+    }
+
+    public function getLeagueDisplayName($leagueId) {
+        $leagueLanguageDAO = LeagueLanguageDAO::getInstance($this->getServiceLocator());
+        $language = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser()->getLanguage();
+        $displayName = $leagueLanguageDAO->getLeagueDisplayName($leagueId, $language->getId());
+        if (empty($displayName) && !$language->getIsDefault()) {
+            $defaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+            $displayName = $leagueLanguageDAO->getLeagueDisplayName($leagueId, $defaultLanguage->getId());
+        }
+        return $displayName;
     }
 
     public function recalculateLeaguesTables(\Application\Model\Entities\Match $match, array $predictions) {

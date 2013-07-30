@@ -36,7 +36,7 @@ class UserLeagueMovement extends AbstractHelper
             switch($league['direction']){
                 case LeagueManager::USER_LEAGUE_MOVEMENT_SAME : {
                     $html .='<div class="your-place no-dynamic"><p><strong>&ndash;</strong></p></div>';
-                    $html .= '<figcaption>'.sprintf($translator->translate('You didn\'t move on the %s league this match'),$league['name']).'</figcaption>';
+                    $html .= '<figcaption>'.sprintf($translator->translate('You didn\'t move on the %s league this match'),'"' . $league['name'] . '"').'</figcaption>';
                     break;
                 }
                 case LeagueManager::USER_LEAGUE_MOVEMENT_UP:{
@@ -44,7 +44,7 @@ class UserLeagueMovement extends AbstractHelper
                     $html .=     '<img src="'.$config['move_up_image_source'].'" class="up" title="Moved Up" alt="Moved Up">';
                     $html .=     '<p><strong>'.$league['places'].'</strong> '.$translator->translate('places').'</p>';
                     $html .= '</div>';
-                    $html .= '<figcaption>'.sprintf($translator->translate('You moved up %s place(s) on the %s league this match'), $league['places'], $league['name']).'</figcaption>';
+                    $html .= '<figcaption>'.sprintf($translator->translate('You moved up %s place(s) on the %s league this match'), $league['places'], '"' . $league['name'] . '"').'</figcaption>';
                     break;
                 }
                 case LeagueManager::USER_LEAGUE_MOVEMENT_DOWN:{
@@ -52,7 +52,7 @@ class UserLeagueMovement extends AbstractHelper
                     $html .=     '<p><strong>'.$league['places'].'</strong> '.$translator->translate('places').'</p>';
                     $html .=     '<img src="'.$config['move_down_image_source'].'" class="down" title="Moved Down" alt="Moved Down">';
                     $html .= '</div>';
-                    $html .= '<figcaption>'.sprintf($translator->translate('You moved down %s place(s) on the %s league this match'), $league['places'], $league['name']).'</figcaption>';
+                    $html .= '<figcaption>'.sprintf($translator->translate('You moved down %s place(s) on the %s league this match'), $league['places'], '"' . $league['name'] . '"').'</figcaption>';
                     break;
                 }
             }
@@ -60,7 +60,5 @@ class UserLeagueMovement extends AbstractHelper
         }
         return $html;
     }
-
-
 
 }

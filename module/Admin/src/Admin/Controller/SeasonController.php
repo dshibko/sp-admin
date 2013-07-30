@@ -152,22 +152,14 @@ class SeasonController extends AbstractActionController {
             $fakeGlobalRegion->setDisplayName(League::GLOBAL_TYPE);
             $fakeGlobalRegion->setIsDefault(true);
             $globalRegionLanguageFieldsets = array();
-            foreach ($languages as $language) {
-                $seasonLanguageFieldset = new SeasonLanguageFieldset($language, $language['isDefault']);
-                if ($language['isDefault'])
-                    $seasonLanguageFieldset->get('leagueDisplayName')->setValue('Global League');
-                $globalRegionLanguageFieldsets [] = $seasonLanguageFieldset;
-            }
+            foreach ($languages as $language)
+                $globalRegionLanguageFieldsets [] = new SeasonLanguageFieldset($language, $language['isDefault']);
             $globalFieldset = new SeasonRegionLanguageFieldset($fakeGlobalRegion->getArrayCopy(), $globalRegionLanguageFieldsets);
 
             foreach ($regions as $region) {
                 $languageFieldsets = array();
-                foreach ($languages as $language) {
-                    $leagueLanguageFieldset = new LeagueLanguageFieldset($language);
-                    if ($language['isDefault'])
-                        $leagueLanguageFieldset->get('leagueDisplayName')->setValue($region['displayName'] . ' League');
-                    $languageFieldsets [] = $leagueLanguageFieldset;
-                }
+                foreach ($languages as $language)
+                    $languageFieldsets [] = new LeagueLanguageFieldset($language);
                 $regionFieldsets [] = new SeasonRegionLanguageFieldset($region, $languageFieldsets);
             }
 
@@ -182,6 +174,7 @@ class SeasonController extends AbstractActionController {
                     $request->getFiles()->toArray()
                 );
                 $form->setData($post);
+                $this->setRequiredFormFieldsets($form, $regionFieldsets);
                 if (!$editableDates)
                     $form->getInputFilter()->get('dates')->setRequired(false);
                 if ($form->isValid()) {

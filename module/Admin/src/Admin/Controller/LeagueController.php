@@ -2,6 +2,9 @@
 
 namespace Admin\Controller;
 
+use Admin\Form\LeagueLanguageFieldset;
+use Admin\Form\LeagueRegionLanguageFieldset;
+use Application\Manager\LanguageManager;
 use \Application\Model\Entities\League;
 use \Application\Manager\ImageManager;
 use \Admin\Form\MiniLeagueForm;
@@ -38,7 +41,7 @@ class LeagueController extends AbstractActionController {
 
     }
 
-    public function viewTableAction() {
+    public final function viewTableAction() {
 
         try {
             $id = (int) $this->params()->fromRoute('id', 0);
@@ -65,16 +68,21 @@ class LeagueController extends AbstractActionController {
 
     }
 
-    public function addMiniLeagueAction() {
+    public final function addMiniLeagueAction() {
 
         try {
             $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
+            $languages = LanguageManager::getInstance($this->getServiceLocator())->getAllLanguages(true);
             $notFinishedSeasons = SeasonManager::getInstance($this->getServiceLocator())->getAllNotFinishedSeasons(true);
 
             $regionFieldsets = array();
 
+            $languageFieldsets = array();
+            foreach ($languages as $language)
+                $languageFieldsets [] = new LeagueLanguageFieldset($language, $language['isDefault']);
+
             foreach ($regions as $region)
-                $regionFieldsets [] = new LeagueRegionFieldset($region);
+                $regionFieldsets [] = new LeagueRegionLanguageFieldset($region, $languageFieldsets);
 
             $form = new MiniLeagueForm($regionFieldsets);
 
@@ -142,7 +150,7 @@ class LeagueController extends AbstractActionController {
 
     }
 
-    public function editMiniLeagueAction() {
+    public final function editMiniLeagueAction() {
 
         try {
             $id = (int) $this->params()->fromRoute('id', 0);
@@ -231,7 +239,7 @@ class LeagueController extends AbstractActionController {
 
     }
 
-    public function deleteMiniLeagueAction() {
+    public final function deleteMiniLeagueAction() {
 
         try {
             $id = (int) $this->params()->fromRoute('id', 0);

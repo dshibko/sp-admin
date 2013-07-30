@@ -719,14 +719,17 @@ class MatchManager extends BasicManager
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
         $globalLeague = $applicationManager->getGlobalLeague($season);
 
+        $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
+
         if ($user !== null) {
             //Global League
             $globalUserLeague = $leagueUserDAO->getLeagueUser($globalLeague->getId(), $user->getId(), true);
 
-            if (!empty($globalUserLeague)){
+            if (!empty($globalUserLeague)) {
                 $movement = $this->getLeagueUserMovement($globalUserLeague, $matchId);
-                if (!empty($movement)){
-                    $movement['name'] = LeagueManager::GLOBAL_LEAGUE_NAME;
+
+                if (!empty($movement)) {
+                    $movement['name'] = $leagueManager->getLeagueDisplayName($globalLeague->getId());
                     $report['leaguesMovement']['global'] = $movement;
                 }
             }
@@ -735,12 +738,12 @@ class MatchManager extends BasicManager
             $region = $user->getCountry()->getRegion();
             if (!is_null($region)) {
                 $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
-                if(!is_null($regionalLeague)){
+                if(!is_null($regionalLeague)) {
                     $regionalUserLeague = $leagueUserDAO->getLeagueUser($regionalLeague->getId(), $user->getId(), true);
-                    if (!empty($regionalUserLeague)){
+                    if (!empty($regionalUserLeague)) {
                         $movement = $this->getLeagueUserMovement($regionalUserLeague, $matchId);
-                        if (!empty($movement)){
-                            $movement['name'] = $region->getDisplayName();
+                        if (!empty($movement)) {
+                            $movement['name'] = $leagueManager->getLeagueDisplayName($regionalLeague->getId());
                             $report['leaguesMovement']['regional'] = $movement;
                         }
                     }

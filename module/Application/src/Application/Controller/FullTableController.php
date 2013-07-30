@@ -32,11 +32,10 @@ class FullTableController extends AbstractActionController {
             $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
             $facebookManager = FacebookManager::getInstance($this->getServiceLocator());
 
             $leagueUsers = array();
-            $leagueName = '';
+            $leagueName = $leagueManager->getLeagueDisplayName($leagueId);
 
             $user = $applicationManager->getCurrentUser();
 
@@ -44,28 +43,7 @@ class FullTableController extends AbstractActionController {
             if ($league === null)
                 return $this->notFoundAction();
 
-            switch ($league['type']) {
-                case League::GLOBAL_TYPE:
-                    $leagueName = $this->getTranslator()->translate($league['type']);
-                    break;
-                case League::REGIONAL_TYPE:
-                    $regionId = $league['leagueRegions'][0]['regionId'];
-                    $region = $regionManager->getRegionById($regionId, true);
-                    $leagueName = $region['displayName'];
-                    break;
-                case League::MINI_TYPE:
-                    $region = $user->getCountry()->getRegion();
-                    if ($region == null) return $this->notFoundAction();
-                    foreach ($league['leagueRegions'] as $leagueRegion)
-                        if ($leagueRegion['regionId'] == $region->getId()) {
-                            $leagueName = $leagueRegion['displayName'];
-                            break;
-                        }
-                    break;
-            }
-
-            $season = $seasonManager->getSeasonById($league['season']['id']);
-            $seasonName = $season->getSeasonLanguageByLanguageId($user->getLanguage()->getId())->getDisplayName();
+            $seasonName = $seasonManager->getSeasonDisplayName($league['season']['id']);
 
             $offset = (int) $this->params()->fromQuery('offset', 0);
             $leagueUsersCount = $leagueManager->getLeagueUsersCount($league['id']);

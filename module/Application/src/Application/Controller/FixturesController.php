@@ -2,6 +2,7 @@
 
 namespace Application\Controller;
 
+use Application\Manager\SeasonManager;
 use \Neoco\Exception\OutOfSeasonException;
 use \Neoco\Exception\InfoException;
 use \Application\Manager\UserManager;
@@ -26,16 +27,14 @@ class FixturesController extends AbstractActionController {
 
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
+            $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
             $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
 
             $season = $applicationManager->getCurrentSeason();
             if ($season == null)
                 throw new OutOfSeasonException();
 
-            $user = $applicationManager->getCurrentUser();
-
-            $seasonRegion = $season->getSeasonLanguageByLanguageId($user->getLanguage()->getId());
+            $seasonName = $seasonManager->getSeasonDisplayName($season->getId());
             $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
             $matchesLeft = $matchManager->getMatchesLeftInTheSeason($season, true);
             if (empty($matchesLeft))
@@ -43,7 +42,7 @@ class FixturesController extends AbstractActionController {
 
             return array(
                 'fixtures' => $matchesLeft,
-                'seasonRegion' => $seasonRegion,
+                'seasonName' => $seasonName,
                 'maxAhead' => $maxAhead,
             );
 

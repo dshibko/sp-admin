@@ -3,6 +3,7 @@
 namespace Application\Model\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Neoco\Model\BasicObject;
 
 /**
  * Prize
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="league_language")
  * @ORM\Entity
  */
-class LeagueLanguage
+class LeagueLanguage extends BasicObject
 {
 
     /**
@@ -20,7 +21,7 @@ class LeagueLanguage
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var League
@@ -70,49 +71,49 @@ class LeagueLanguage
      *
      * @ORM\Column(name="display_name", type="string", length=255, nullable=false)
      */
-    private $displayName;
+    protected $displayName;
 
     /**
      * @var string
      *
      * @ORM\Column(name="prize_title", type="string", length=50, nullable=false)
      */
-    private $prizeTitle;
+    protected $prizeTitle;
 
     /**
      * @var string
      *
      * @ORM\Column(name="prize_description", type="text", nullable=false)
      */
-    private $prizeDescription;
+    protected $prizeDescription;
 
     /**
      * @var string
      *
      * @ORM\Column(name="prize_image", type="string", length=255, nullable=false)
      */
-    private $prizeImage;
+    protected $prizeImage;
 
     /**
      * @var string
      *
      * @ORM\Column(name="post_win_title", type="string", length=50, nullable=false)
      */
-    private $postWinTitle;
+    protected $postWinTitle;
 
     /**
      * @var string
      *
      * @ORM\Column(name="post_win_description", type="text", nullable=false)
      */
-    private $postWinDescription;
+    protected $postWinDescription;
 
     /**
      * @var string
      *
      * @ORM\Column(name="post_win_image", type="string", length=255, nullable=false)
      */
-    private $postWinImage;
+    protected $postWinImage;
 
     /**
      * @var Language

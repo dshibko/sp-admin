@@ -28,7 +28,7 @@ msgstr "Sign In"
 
 #: view/application/auth/login.phtml:14 view/application/index/index.phtml:73
 msgid "Login with Facebook"
-msgstr "Login with Facebook"
+msgstr "Facebook login"
 
 #: view/application/auth/login.phtml:25
 msgid "Enter Your Credentials"
@@ -196,7 +196,7 @@ msgstr "days hours mins secs"
 
 #: view/application/predict/index.phtml:1
 msgid "Predict at"
-msgstr "Predict at"
+msgstr "Predict the"
 
 #: view/application/predict/index.phtml:15
 #: view/application/results/index.phtml:15
@@ -331,7 +331,7 @@ msgstr "We need to know your region so we can make sure you are entered into the
 #: view/application/registration/setup.phtml:41
 #: view/partials/setup-popup.phtml:15
 msgid "Note: once confirmed, you will not be able to change these settings until next season"
-msgstr "Note: once confirmed, you will not be able to change these settings until next season"
+msgstr "Note: once you have confirmed your region you will not be able to change this setting until next season"
 
 #: view/application/registration/setup.phtml:57
 #: view/partials/setup-popup.phtml:31
@@ -795,7 +795,7 @@ msgid "You were %s accurate in your prediction"
 msgstr "You were %s accurate in your prediction"
 
 msgid "Community correctly predicted the results"
-msgstr "Community correctly predicted the results"
+msgstr "Community correctly predicted the result"
 
 msgid "You didn't move on the %s league this match"
 msgstr "You didn't move on the %s league this match"

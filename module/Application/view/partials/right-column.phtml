@@ -41,7 +41,7 @@
                                 <?php foreach($overallLeagueUsers as $leagueUser) : ?>
                                     <tr>
                                         <th>
-                                            <?=$leagueUser['type'] == \Application\Model\Entities\League::GLOBAL_TYPE ? 'Global' : 'Local'?>
+                                            <?=$leagueUser['displayName']?>
                                         </th>
                                         <td class="movement">
                                             <?php if ($leagueUser['previousPlace'] != null) : ?>

@@ -8,8 +8,6 @@ use \Neoco\Manager\BasicManager;
 use \Application\Model\Entities\Language;
 use \Application\Model\DAOs\CountryDAO;
 
-require_once getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'mogenerator' .DIRECTORY_SEPARATOR .'php-mo.php';
-
 class LanguageManager extends BasicManager {
 
     const LANGUAGE_FILES_DIRECTORY = 'module/Application/language/';
@@ -130,6 +128,7 @@ class LanguageManager extends BasicManager {
         $data = array();
         $poFile = $this->getPoFilePath($fileName);
         if (file_exists($poFile)){
+            include_once getcwd() . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'mogenerator' .DIRECTORY_SEPARATOR .'php-mo.php';
             $poParser = $this->getServiceLocator()->get('poparser');
             $content = $poParser->read($poFile);
             if (!empty($content)){

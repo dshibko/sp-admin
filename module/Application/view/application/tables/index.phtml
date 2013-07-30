@@ -1,6 +1,6 @@
 <?php
     $title = $this->translate('League Tables');
-    $this->headTitle($title . ' - ' . $this->seasonRegion->getDisplayName());
+    $this->headTitle($title . ' - ' . $this->seasonName);
 ?>
 <div role="main" class="two-column-section clearfix">
     <div class="first-column league-tables">
@@ -8,16 +8,7 @@
 
         <div class="league">
             <header class="clearfix">
-                <h2><?=$this->translate('Global league')?></h2>
-
-<!--                <form id="season-filter">-->
-<!--                    <div>-->
-<!--                        <select>-->
-<!--                            <option value="default">&ndash; Select season &ndash;</option>-->
-<!--                            <option value="">1</option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                </form>-->
+                <h2><?=$this->globalLeagueName?></h2>
             </header>
 
             <section>
@@ -48,27 +39,13 @@
                     </table>
                 </div>
                 <footer class="clearfix">
-<!--                    <h4>Share this</h4>-->
-<!--                    <ul class="social-links">-->
-<!--                        <li><a href="">Like</a></li>-->
-<!--                        <li><a href="">Tweet</a></li>-->
-<!--                    </ul>-->
                     <a href="<?=$this->url('full-table', array('table' => $this->globalLeague->getId()))?>" class="more-info"><?=$this->translate('View full table')?></a>
                 </footer>
             </section>
 
             <?php if ($this->regionalLeague !== null) : ?>
                 <header class="clearfix">
-                    <h2><?=$this->region->getDisplayName() . ' ' . $this->translate('league')?></h2>
-
-    <!--                <form id="season-filter">-->
-    <!--                    <div>-->
-    <!--                        <select>-->
-    <!--                            <option value="default">&ndash; Select season &ndash;</option>-->
-    <!--                            <option value="">1</option>-->
-    <!--                        </select>-->
-    <!--                    </div>-->
-    <!--                </form>-->
+                    <h2><?=$this->regionalLeagueName?></h2>
                 </header>
 
                 <section>
@@ -99,11 +76,6 @@
                         </table>
                     </div>
                     <footer class="clearfix">
-    <!--                    <h4>Share this</h4>-->
-    <!--                    <ul class="social-links">-->
-    <!--                        <li><a href="">Like</a></li>-->
-    <!--                        <li><a href="">Tweet</a></li>-->
-    <!--                    </ul>-->
                         <a href="<?=$this->url('full-table', array('table' => $this->regionalLeague->getId()))?>" class="more-info"><?=$this->translate('View full table')?></a>
                     </footer>
                 </section>
@@ -150,4 +122,3 @@
     </div>
     <?php echo $this->partial('partials/right-column'); ?>
 </div>
-<!--<script src="/js/filter.js"></script>-->

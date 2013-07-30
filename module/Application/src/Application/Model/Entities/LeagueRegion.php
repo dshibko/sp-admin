@@ -49,29 +49,6 @@ class LeagueRegion
     private $regionId;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="display_name", type="string", nullable=true)
-     */
-    private $displayName;
-
-    /**
-     * @param string $displayName
-     */
-    public function setDisplayName($displayName)
-    {
-        $this->displayName = $displayName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDisplayName()
-    {
-        return $this->displayName;
-    }
-
-    /**
      * @param int $id
      */
     public function setId($id)

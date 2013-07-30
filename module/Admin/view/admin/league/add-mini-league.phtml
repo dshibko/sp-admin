@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <?php echo $this->renderRegionFieldsets($form->getFieldsets(), $this->action == 'add'); ?>
+        <?php echo $this->renderRegionLanguageFieldsets($form->getFieldsets(), $this->action == 'add'); ?>
         <div class="form-actions">
             <button type="submit" class="btn blue"><i class="icon-ok"></i> <?=$this->translate($elements['submit']->getValue())?></button>
             <button type="button" class="btn">Cancel</button>
@@ -87,8 +87,8 @@
             e.preventDefault();
             this.form.reset();
         });
-        $('div.form').children('div.row-fluid:last').find('ul.nav-tabs li').hide();
-        $('div.form').children('div.row-fluid:last').find('div.tab-pane').addClass('hidden');
+        $('div.form').children('div.row-fluid:last').find('ul.nav-tabs:first li').hide();
+        $('div.form').children('div.row-fluid:last').find('div.tab-content:first').children('div.tab-pane').addClass('hidden');
         $("input[type='checkbox']").change(function() {
             var regionId = $(this).val();
             var tabsContainer = $('div.form').children('div.row-fluid:last');
@@ -118,11 +118,13 @@
                 $(this).trigger('change');
             }
         });
-        if ($("#regions").val() == '')
+        if ($("#regions").val() == '') {
             $('input[type="checkbox"]').each(function() {
                 $(this).attr('checked', 'checked');
                 $(this).trigger('change');
             });
+            $('div.form').children('div.row-fluid:last').find('ul.nav-tabs li a:first').click();
+        }
         App.init(); // initlayout and core plugins
     });
     function parseDate(date) {

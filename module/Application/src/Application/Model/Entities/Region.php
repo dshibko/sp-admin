@@ -90,7 +90,7 @@ class Region extends BasicObject {
      *
      * @ORM\OneToMany(targetEntity="Country", mappedBy="region")
      */
-    protected $countries;
+    private $countries;
 
     /**
      * Constructor
