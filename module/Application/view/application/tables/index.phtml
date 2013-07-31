@@ -81,7 +81,7 @@
                 </section>
             <?php endif; ?>
             <?php foreach($this->temporalLeagues as $temporalLeague) : ?>
-                <?php if (!empty($temporalLeague['leagueUsers'])) : ?>
+                <?php //if (!empty($temporalLeague['leagueUsers'])) : ?>
                     <header class="clearfix">
                         <h2><?=$temporalLeague['displayName']?></h2>
                     </header>
@@ -116,7 +116,7 @@
                             <a href="<?=$this->url('full-table', array('table' => $temporalLeague['id']))?>" class="more-info"><?=$this->translate('View full table')?></a>
                         </footer>
                     </section>
-                <?php endif; ?>
+                <?php //endif; ?>
             <?php endforeach;?>
         </div>
     </div>

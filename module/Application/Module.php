@@ -13,6 +13,7 @@ use Application\Form\RegistrationForm;
 use Application\Manager\ContentManager;
 use Application\Manager\ExceptionManager;
 use Application\Manager\LanguageManager;
+use Application\Manager\LogManager;
 use \Application\Manager\UserManager;
 use \Application\Manager\ApplicationManager;
 use \DoctrineModule\Authentication\Adapter\ObjectRepository;

@@ -75,16 +75,11 @@ class LeagueController extends AbstractActionController {
             $languages = LanguageManager::getInstance($this->getServiceLocator())->getAllLanguages(true);
             $notFinishedSeasons = SeasonManager::getInstance($this->getServiceLocator())->getAllNotFinishedSeasons(true);
 
-            $regionFieldsets = array();
-
             $languageFieldsets = array();
             foreach ($languages as $language)
-                $languageFieldsets [] = new LeagueLanguageFieldset($language, $language['isDefault']);
+                $languageFieldsets [] = new LeagueLanguageFieldset($language);
 
-            foreach ($regions as $region)
-                $regionFieldsets [] = new LeagueRegionLanguageFieldset($region, $languageFieldsets);
-
-            $form = new MiniLeagueForm($regionFieldsets);
+            $form = new MiniLeagueForm($languageFieldsets);
 
             $request = $this->getRequest();
 
@@ -93,12 +88,10 @@ class LeagueController extends AbstractActionController {
                     $request->getPost()->toArray(),
                     $request->getFiles()->toArray()
                 );
-                $form->setData($post);
 
-                $selectedRegions = explode(",",$post['regions']);
-                foreach ($regions as $region)
-                    if (!in_array($region['id'], $selectedRegions))
-                        $form->remove(str_replace(" ", "_", $region['displayName']));
+                $form->setData($post);
+                $this->setRequiredFormFieldsets($form, $form->getFieldsets());
+
                 if ($form->isValid()) {
                     try {
 
@@ -113,8 +106,9 @@ class LeagueController extends AbstractActionController {
                         if (!$leagueManager->checkDates($startDate, $endDate, $seasonId))
                             throw new \Exception(MessagesConstants::ERROR_LEAGUE_DATES_ARE_NOT_AVAILABLE);
 
-                        list($displayName, $regionsData) = $this->prepareMiniLeagueUpdateData($form);
-                        $leagueManager->saveMiniLeague($displayName, $seasonId, $startDate, $endDate, $regionsData);
+                        list($displayName, $regionsArr, $languagesData) = $this->prepareMiniLeagueUpdateData($form);
+
+                        $leagueManager->saveMiniLeague($displayName, $seasonId, $startDate, $endDate, $regionsArr, $languagesData);
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_LEAGUE_CREATED);
 
@@ -126,7 +120,6 @@ class LeagueController extends AbstractActionController {
                     }
                 } else {
                     $form->handleErrorMessages($form->getMessages(), $this->flashMessenger());
-                    return $this->redirect()->toRoute(self::LEAGUES_INDEX_ROUTE, array('action' => 'addMiniLeague'));
                 }
             }
 
@@ -171,13 +164,13 @@ class LeagueController extends AbstractActionController {
             $editableLeague = $today < $league->getStartDate();
 
             $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
+            $languages = LanguageManager::getInstance($this->getServiceLocator())->getAllLanguages(true);
 
-            $regionFieldsets = array();
+            $languageFieldsets = array();
+            foreach ($languages as $language)
+                $languageFieldsets [] = new LeagueLanguageFieldset($language);
 
-            foreach ($regions as $region)
-                $regionFieldsets [] = new LeagueRegionFieldset($region);
-
-            $form = new MiniLeagueForm($regionFieldsets);
+            $form = new MiniLeagueForm($languageFieldsets);
             $form->remove('season');
 
             $request = $this->getRequest();
@@ -189,12 +182,11 @@ class LeagueController extends AbstractActionController {
                 );
                 $form->setData($post);
 
-                $selectedRegions = explode(",",$post['regions']);
-                foreach ($regions as $region)
-                    if (!in_array($region['id'], $selectedRegions))
-                        $form->remove(str_replace(" ", "_", $region['displayName']));
                 if (!$editableLeague)
                     $form->getInputFilter()->get('dates')->setRequired(false);
+
+                $this->setRequiredFormFieldsets($form, $form->getFieldsets());
+
                 if ($form->isValid()) {
                     try {
                         if ($editableLeague) {
@@ -208,8 +200,8 @@ class LeagueController extends AbstractActionController {
                         } else
                             $startDate = $endDate = null;
 
-                        list($displayName, $regionsData) = $this->prepareMiniLeagueUpdateData($form);
-                        $leagueManager->saveMiniLeague($displayName, $league->getSeason()->getId(), $startDate, $endDate, $regionsData, $id, $editableLeague);
+                        list($displayName, $regionsArr, $languagesData) = $this->prepareMiniLeagueUpdateData($form);
+                        $leagueManager->saveMiniLeague($displayName, $league->getSeason()->getId(), $startDate, $endDate, $regionsArr, $languagesData, $id, $editableLeague);
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_LEAGUE_UPDATED);
 
@@ -268,30 +260,84 @@ class LeagueController extends AbstractActionController {
     private function prepareMiniLeagueUpdateData($form) {
         $imageManager = ImageManager::getInstance($this->getServiceLocator());
         $displayName = $form->get('displayName')->getValue();
+        $regions = $form->get('regions')->getValue();
+        $regionsArr = explode(",", $regions);
 
-        $regionFieldsets = $form->getFieldsets();
-        $regionsData = array();
-        foreach ($regionFieldsets as $regionFieldset) {
-            $regionData = array();
-
-            $regionData['displayName'] = $regionFieldset->get('displayName')->getValue();
-            $prizeImage = $regionFieldset->get('prizeImage');
-            $prizeImagePath = $imageManager->saveUploadedImage($prizeImage, ImageManager::IMAGE_TYPE_LEAGUE);
-            $regionData['prizeImagePath'] = $prizeImagePath;
-            $regionData['prizeTitle'] = $regionFieldset->get('prizeTitle')->getValue();
-            $regionData['prizeDescription'] = $regionFieldset->get('prizeDescription')->getValue();
-
-            $postWinImage = $regionFieldset->get('postWinImage');
-            $postWinImagePath = $imageManager->saveUploadedImage($postWinImage, ImageManager::IMAGE_TYPE_LEAGUE);
-            $regionData['postWinImagePath'] = $postWinImagePath;
-            $regionData['postWinTitle'] = $regionFieldset->get('postWinTitle')->getValue();
-            $regionData['postWinDescription'] = $regionFieldset->get('postWinDescription')->getValue();
-            $regionData['region'] = $regionFieldset->getRegion();
-
-            $regionsData[$regionData['region']['id']] = $regionData;
+        $languagesData = array();
+        foreach ($form->getFieldsets() as $languageFieldset) {
+            $language = $languageFieldset->getLanguage();
+            $leagueData = $this->fillInLeagueData($languageFieldset, $imageManager);
+            $languagesData[$language['id']] = $leagueData;
         }
 
-        return array($displayName, $regionsData);
+        return array($displayName, $regionsArr, $languagesData);
+    }
+
+    protected function fillInLeagueData($languageFieldset, $imageManager) {
+        $leagueData = array();
+        $leagueData['leagueDisplayName'] = $languageFieldset->get('leagueDisplayName')->getValue();
+        $prizeImage = $languageFieldset->get('prizeImage');
+        $prizeImagePath = $imageManager->saveUploadedImage($prizeImage, ImageManager::IMAGE_TYPE_PRIZES);
+        $leagueData['prizeImagePath'] = $prizeImagePath;
+        $leagueData['prizeTitle'] = $languageFieldset->get('prizeTitle')->getValue();
+        $leagueData['prizeDescription'] = $languageFieldset->get('prizeDescription')->getValue();
+
+        $postWinImage = $languageFieldset->get('postWinImage');
+        $postWinImagePath = $imageManager->saveUploadedImage($postWinImage, ImageManager::IMAGE_TYPE_PRIZES);
+        $leagueData['postWinImagePath'] = $postWinImagePath;
+        $leagueData['postWinTitle'] = $languageFieldset->get('postWinTitle')->getValue();
+        $leagueData['postWinDescription'] = $languageFieldset->get('postWinDescription')->getValue();
+        return $leagueData;
+    }
+
+    protected function setRequiredFormFieldsets($form, $languageFieldsets, $regionFieldsetName = null) {
+        foreach($languageFieldsets as $languageFieldset) {
+            $language = $languageFieldset->getLanguage();
+            $isDefault = $language['isDefault'];
+            foreach($languageFieldset->getElements() as $element)
+                if ($element->getName() != 'leagueDisplayName') {
+
+                    $value = $element->getValue();
+
+                    //Check image value
+                    if ($element->getAttribute('isImage') &&
+                        !$value['stored'] && $value['error'] == UPLOAD_ERR_NO_FILE)
+                        $value = false;
+
+                    if (!empty($value)) {
+                        if ($isDefault)
+                            $targetLanguageFieldset = $languageFieldset;
+                        else {
+                            foreach($languageFieldsets as $aLanguageFieldset) {
+                                $aLanguage = $aLanguageFieldset->getLanguage();
+                                if ($aLanguage['isDefault']) {
+                                    $targetLanguageFieldset = $aLanguageFieldset;
+                                    break;
+                                }
+                            }
+                        }
+                        if (isset($targetLanguageFieldset))
+                            foreach($targetLanguageFieldset->getElements() as $anElement) {
+                                $aValue = $anElement->getValue();
+                                if (!$anElement->getAttribute('isImage') || (!$aValue['stored'] && $anElement->getAttribute('isImage')))
+                                    $this->setElementRequired($form, array($regionFieldsetName, $targetLanguageFieldset->getName(), $anElement->getName()));
+                            }
+                        break 2;
+                    }
+                } else {
+                    if ($isDefault)
+                        $this->setElementRequired($form, array($regionFieldsetName, $languageFieldset->getName(), $element->getName()));
+                }
+
+        }
+    }
+
+    protected function setElementRequired($form, array $elementKeys) {
+        $filter = $form->getInputFilter();
+        foreach ($elementKeys as $elementKey)
+            if ($elementKey !== null && $filter->has($elementKey))
+                $filter = $filter->get($elementKey);
+        $filter->setRequired(true)->setAllowEmpty(false);
     }
 
 }

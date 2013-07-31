@@ -156,7 +156,7 @@ class LeagueManager extends BasicManager {
         $leagueDAO->remove($league);
     }
 
-    public function saveMiniLeague($displayName, $seasonId, $startDate, $endDate, $regionsData, $leagueId = -1, $editableLeague = true) {
+    public function saveMiniLeague($displayName, $seasonId, $startDate, $endDate, $regionsArr, $languagesData, $leagueId = -1, $editableLeague = true) {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         if ($leagueId == -1) {
             $league = new League();
@@ -172,53 +172,59 @@ class LeagueManager extends BasicManager {
         }
         $league->setType(League::MINI_TYPE);
         $league->setDisplayName($displayName);
-        $regionDAO = RegionDAO::getInstance($this->getServiceLocator());
 
-        // todo seasons prizes
+        if ($editableLeague) {
+            foreach ($league->getLeagueRegions() as $leagueRegion)
+                if (!in_array($leagueRegion->getRegion()->getId(), $regionsArr))
+                    $league->removeLeagueRegion($leagueRegion);
 
-        $prizes = array();
-        $leagueRegions = array();
-        foreach ($regionsData as $regionId => $regionRow) {
-            $region = $regionDAO->findOneById($regionId);
-            if ($region != null) {
-                if (!$editableLeague)
-                    $prize = $league->getLeagueLanguageByLanguageId($regionId);
-                else
-                    $prize = new LeagueLanguage();
-                if (empty($regionRow['prizeImagePath']))
-                    $regionRow['prizeImagePath'] = $league->getLeagueLanguageByLanguageId($regionId)->getPrizeImage();
-                $prize->setPrizeImage($regionRow['prizeImagePath']);
-                $prize->setPrizeDescription($regionRow['prizeDescription']);
-                $prize->setPrizeTitle($regionRow['prizeTitle']);
-                if (empty($regionRow['postWinImagePath']))
-                    $regionRow['postWinImagePath'] = $league->getLeagueLanguageByLanguageId($regionId)->getPostWinImage();
-                $prize->setPostWinImage($regionRow['postWinImagePath']);
-                $prize->setPostWinDescription($regionRow['postWinDescription']);
-                $prize->setPostWinTitle($regionRow['postWinTitle']);
-                $prize->setLeague($league);
-                $prize->setLanguage($region);
-                $prizes [] = $prize;
-                if (!$editableLeague)
+            foreach ($regionsArr as $regionId) {
+                $region = RegionManager::getInstance($this->getServiceLocator())->getNonHydratedRegionFromArray($regionId);
+                if ($region) {
                     $leagueRegion = $league->getLeagueRegionByRegionId($regionId);
-                else
-                    $leagueRegion = new LeagueRegion();
-                $leagueRegion->setDisplayName($regionRow['displayName']);
-                $leagueRegion->setLeague($league);
-                $leagueRegion->setRegion($region);
-                $leagueRegions [] = $leagueRegion;
+                    if ($leagueRegion === null) {
+                        $leagueRegion = new LeagueRegion();
+                        $leagueRegion->setLeague($league);
+                        $leagueRegion->setRegion($region);
+                        $league->addLeagueRegion($leagueRegion);
+                    }
+                }
             }
         }
-        if ($editableLeague) {
-            $league->getLeagueLanguages()->clear();
-            $league->setLeagueLanguages(new ArrayCollection($prizes));
-            $league->getLeagueRegions()->clear();
-            $league->setLeagueRegions(new ArrayCollection($leagueRegions));
+
+        foreach ($league->getLeagueLanguages() as $leagueLanguage)
+            if (!array_key_exists($leagueLanguage->getLanguage()->getId(), $languagesData))
+                $league->removeLeagueLanguage($leagueLanguage);
+
+        foreach ($languagesData as $languageId => $languageRow) {
+            $language = LanguageManager::getInstance($this->getServiceLocator())->getNonHydratedLanguageFromArray($languageId);
+            if (!$language) continue;
+            $leagueLanguage = $league->getLeagueLanguageByLanguageId($languageId);
+            $add = false;
+            if ($leagueLanguage === null) {
+                $leagueLanguage = new LeagueLanguage();
+                $leagueLanguage->setLeague($league);
+                $leagueLanguage->setLanguage($language);
+                $add = true;
+            }
+            $leagueLanguage->setDisplayName($languageRow['leagueDisplayName']);
+            if (!empty($languageRow['prizeImagePath']))
+                $leagueLanguage->setPrizeImage($languageRow['prizeImagePath']);
+            $leagueLanguage->setPrizeDescription($languageRow['prizeDescription']);
+            $leagueLanguage->setPrizeTitle($languageRow['prizeTitle']);
+            if (!empty($languageRow['postWinImagePath']))
+                $leagueLanguage->setPostWinImage($languageRow['postWinImagePath']);
+            $leagueLanguage->setPostWinDescription($languageRow['postWinDescription']);
+            $leagueLanguage->setPostWinTitle($languageRow['postWinTitle']);
+            if ($add)
+                $league->addLeagueLanguage($leagueLanguage);
         }
+
         $leagueDAO->save($league);
         if ($editableLeague && $leagueId === -1) {
             $userManager = UserManager::getInstance($this->getServiceLocator());
-            foreach ($regionsData as $regionId => $regionRow)
-                $userManager->registerLeagueUsers($league, $regionId);
+            foreach ($league->getLeagueRegions() as $leagueRegion)
+                $userManager->registerLeagueUsers($league, $leagueRegion->getRegion()->getId());
         }
     }
 

@@ -19,7 +19,7 @@ use \Application\Manager\ExceptionManager;
 use \Neoco\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class SeasonController extends AbstractActionController {
+class SeasonController extends LeagueController {
 
     const SEASONS_INDEX_ROUTE = 'admin-seasons';
 
@@ -81,9 +81,11 @@ class SeasonController extends AbstractActionController {
                     $request->getPost()->toArray(),
                     $request->getFiles()->toArray()
                 );
+
                 $form->setData($post);
                 $this->setRequiredFormFieldsets($form, $regionFieldsets);
                 if ($form->isValid()) {
+                    die('valid');
                     try {
                         $dates = $form->get('dates')->getValue();
                         $startDate = array_shift(explode(" - ", $dates));
@@ -107,6 +109,7 @@ class SeasonController extends AbstractActionController {
 
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
+                        return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE, array('action' => 'add'));
                     }
                 } else
                     $form->handleErrorMessages($form->getMessages(), $this->flashMessenger());
@@ -265,56 +268,9 @@ class SeasonController extends AbstractActionController {
         }
     }
 
-    private function setRequiredFormFieldsets($form, $regionFieldsets) {
-        foreach($regionFieldsets as $regionFieldset) {
-            foreach($regionFieldset->getFieldsets() as $languageFieldset) {
-                $language = $languageFieldset->getLanguage();
-                $isDefault = $language['isDefault'];
-                foreach($languageFieldset->getElements() as $element)
-                    if ($element->getName() != 'leagueDisplayName') {
-
-                        $value = $element->getValue();
-
-                        //Check image value
-                        if ($element->getAttribute('isImage') &&
-                            !$value['stored'] && $value['error'] == UPLOAD_ERR_NO_FILE)
-                                $value = false;
-
-                        if (!empty($value)) {
-                            if ($isDefault)
-                                $targetLanguageFieldset = $languageFieldset;
-                            else {
-                                foreach($regionFieldset->getFieldsets() as $aLanguageFieldset) {
-                                    $aLanguage = $aLanguageFieldset->getLanguage();
-                                    if ($aLanguage['isDefault']) {
-                                        $targetLanguageFieldset = $aLanguageFieldset;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (isset($targetLanguageFieldset))
-                                foreach($targetLanguageFieldset->getElements() as $anElement) {
-                                    $aValue = $anElement->getValue();
-                                    if (!$anElement->getAttribute('isImage') || (!$aValue['stored'] && $anElement->getAttribute('isImage')))
-                                        $this->setElementRequired($form, $regionFieldset->getName(), $languageFieldset->getName(), $anElement->getName());
-                                }
-                            break 2;
-                        }
-                    } else {
-                        if ($isDefault)
-                            $this->setElementRequired($form, $regionFieldset->getName(), $languageFieldset->getName(), $element->getName());
-                    }
-
-            }
-        }
-    }
-
-    private function setElementRequired($form, $regionName, $languageName, $elementName) {
-        $form->getInputFilter()
-            ->get($regionName)
-            ->get($languageName)
-            ->get($elementName)
-            ->setRequired(true)->setAllowEmpty(false);
+    protected function setRequiredFormFieldsets($form, $regionFieldsets) {
+        foreach($regionFieldsets as $regionFieldset)
+            parent::setRequiredFormFieldsets($form, $regionFieldset->getFieldsets(), $regionFieldset->getName());
     }
 
     private function prepareUpdateData($form, $globalFieldset, $regionFieldsets, $imageManager) {
@@ -338,20 +294,7 @@ class SeasonController extends AbstractActionController {
                     $seasonData [$language['id']] = $seasonLanguageData;
                 }
 
-                $leagueData = array();
-                $leagueData['leagueDisplayName'] = $languageFieldset->get('leagueDisplayName')->getValue();
-                $prizeImage = $languageFieldset->get('prizeImage');
-                $prizeImagePath = $imageManager->saveUploadedImage($prizeImage, ImageManager::IMAGE_TYPE_PRIZES);
-                $leagueData['prizeImagePath'] = $prizeImagePath;
-                $leagueData['prizeTitle'] = $languageFieldset->get('prizeTitle')->getValue();
-                $leagueData['prizeDescription'] = $languageFieldset->get('prizeDescription')->getValue();
-
-                $postWinImage = $languageFieldset->get('postWinImage');
-                $postWinImagePath = $imageManager->saveUploadedImage($postWinImage, ImageManager::IMAGE_TYPE_PRIZES);
-                $leagueData['postWinImagePath'] = $postWinImagePath;
-                $leagueData['postWinTitle'] = $languageFieldset->get('postWinTitle')->getValue();
-                $leagueData['postWinDescription'] = $languageFieldset->get('postWinDescription')->getValue();
-                $leagueData['region'] = $region;
+                $leagueData = $this->fillInLeagueData($languageFieldset, $imageManager);
 
                 if ($region['id'] === null) {
                     $globalLeagueData[$language['id']] = $leagueData;
