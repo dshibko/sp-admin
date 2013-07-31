@@ -11,6 +11,7 @@ namespace Application;
 
 use Application\Form\RegistrationForm;
 use Application\Manager\ContentManager;
+use Application\Manager\ExceptionManager;
 use Application\Manager\LanguageManager;
 use \Application\Manager\UserManager;
 use \Application\Manager\ApplicationManager;
@@ -107,7 +108,14 @@ class Module
     }
 
     public function onRenderError(\Zend\Mvc\MvcEvent $e) {
-        return $this->redirect(self::ERROR_500_PAGE_ROUTE, $e);
+        ExceptionManager::getInstance($e->getApplication()->getServiceManager())->handleFatalException($e->getParam('exception'));
+        $headers = new \Zend\Http\Headers();
+        $url = new \Zend\View\Helper\Url();
+        $url->setRouter($e->getApplication()->getServiceManager()->get('router'));
+        $headers->addHeaderLine("Location", $url->__invoke(self::ERROR_500_PAGE_ROUTE));
+        $response = $e->getResponse();
+        $response->setHeaders($headers);
+        $response->send();
     }
 
     /**

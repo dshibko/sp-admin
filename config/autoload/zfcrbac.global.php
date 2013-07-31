@@ -15,6 +15,7 @@ return array(
                 array('route' => 'common', 'roles' => Role::GUEST),
                 array('route' => 'clear-app-cache', 'roles' => Role::GUEST),
                 array('route' => 'match', 'roles' => Role::GUEST),
+                array('route' => '500', 'roles' => Role::GUEST),
                 array('route' => 'forgot', 'roles' => Role::GUEST),
                 array('route' => 'reset', 'roles' => Role::GUEST),
                 array('route' => 'facebook', 'roles' => Role::GUEST),
@@ -65,6 +66,7 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'standard_identity' => function ($sm) use ($anonymousRole) {
+
                 $identity = $sm->get('AuthService')->getIdentity();
                 if ($identity == null) return $anonymousRole;
                 else {
