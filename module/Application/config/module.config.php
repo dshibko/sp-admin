@@ -20,16 +20,6 @@ return array(
                     ),
                 ),
             ),
-            '500' => array(
-                'type' => 'Literal',
-                'options' => array(
-                    'route'    => '/500',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Common',
-                        'action'     => 'error500',
-                    ),
-                ),
-            ),
             'predict' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -290,6 +280,16 @@ return array(
                         '__NAMESPACE__' => 'Application\Controller',
                         'controller'    => 'Content',
                         'action'        => 'contact',
+                    ),
+                ),
+            ),
+            '500' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/500',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Common',
+                        'action'     => 'error500',
                     ),
                 ),
             ),

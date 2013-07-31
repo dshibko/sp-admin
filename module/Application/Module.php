@@ -18,6 +18,7 @@ use \Application\Manager\UserManager;
 use \Application\Manager\ApplicationManager;
 use \DoctrineModule\Authentication\Adapter\ObjectRepository;
 use \Zend\Authentication\AuthenticationService;
+use Zend\Log\Logger;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Crypt\Password\Bcrypt;
@@ -53,14 +54,19 @@ class Module
     }
 
     public function onAppDispatch(\Zend\Mvc\MvcEvent $e) {
-        $translator = $e->getApplication()->getServiceManager()->get('translator');
-        $user = ApplicationManager::getInstance($e->getApplication()->getServiceManager())->getCurrentUser();
-        if ($user == null) {
-            $userManager = UserManager::getInstance($e->getApplication()->getServiceManager());
-            $language = $userManager->getUserLanguage()->getLanguageCode();
-        } else
-            $language = $user->getLanguage()->getLanguageCode();
-        $translator->setLocale($language);
+        try {
+            $translator = $e->getApplication()->getServiceManager()->get('translator');
+            $user = ApplicationManager::getInstance($e->getApplication()->getServiceManager())->getCurrentUser();
+            if ($user == null) {
+                $userManager = UserManager::getInstance($e->getApplication()->getServiceManager());
+                $language = $userManager->getUserLanguage()->getLanguageCode();
+            } else
+                $language = $user->getLanguage()->getLanguageCode();
+            $translator->setLocale($language);
+        } catch (\Exception $ex) {
+            LogManager::getInstance($e->getApplication()->getServiceManager())->logAppException($ex, Logger::WARN);
+            $user = null;
+        }
         $matches = $e->getRouteMatch();
         $detect = new \Neoco\Mobile\Detect();
 
