@@ -12,6 +12,7 @@ namespace Application;
 use Application\Form\RegistrationForm;
 use Application\Manager\ContentManager;
 use Application\Manager\LanguageManager;
+use Application\Manager\LogManager;
 use \Application\Manager\UserManager;
 use \Application\Manager\ApplicationManager;
 use \DoctrineModule\Authentication\Adapter\ObjectRepository;
@@ -107,6 +108,9 @@ class Module
     }
 
     public function onRenderError(\Zend\Mvc\MvcEvent $e) {
+        $ex = $e->getParam('exception');
+        $obj = $e->getApplication()->getServiceManager()->get('renderLogotype');
+        var_dump($obj === null);die;
         return $this->redirect(self::ERROR_500_PAGE_ROUTE, $e);
     }
 

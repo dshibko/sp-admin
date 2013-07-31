@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <?php echo $this->renderRegionLanguageFieldsets($form->getFieldsets(), $this->action == 'add'); ?>
+        <?php echo $this->renderLanguageFieldsets($form->getFieldsets(), $this->action == 'add'); ?>
         <div class="form-actions">
             <button type="submit" class="btn blue"><i class="icon-ok"></i> <?=$this->translate($elements['submit']->getValue())?></button>
             <button type="button" class="btn">Cancel</button>
@@ -87,27 +87,27 @@
             e.preventDefault();
             this.form.reset();
         });
-        $('div.form').children('div.row-fluid:last').find('ul.nav-tabs:first li').hide();
-        $('div.form').children('div.row-fluid:last').find('div.tab-content:first').children('div.tab-pane').addClass('hidden');
+//        $('div.form').children('div.row-fluid:last').find('ul.nav-tabs:first li').hide();
+//        $('div.form').children('div.row-fluid:last').find('div.tab-content:first').children('div.tab-pane').addClass('hidden');
         $("input[type='checkbox']").change(function() {
             var regionId = $(this).val();
-            var tabsContainer = $('div.form').children('div.row-fluid:last');
-            var tab = tabsContainer.find('ul.nav-tabs li:has(a[href="#tab_' + regionId + '"])');
-            var tabContainer = tabsContainer.find('div.tab-pane[id="tab_' + regionId + '"]');
+//            var tabsContainer = $('div.form').children('div.row-fluid:last');
+//            var tab = tabsContainer.find('ul.nav-tabs li:has(a[href="#tab_' + regionId + '"])');
+//            var tabContainer = tabsContainer.find('div.tab-pane[id="tab_' + regionId + '"]');
             var regions = $("#regions").val().split(',');
             if (regions.length == 1 && regions[0] == '') regions = [];
             if ($(this).attr('checked')) {
                 if (regions.indexOf(regionId) == -1)
                     regions[regions.length] = regionId;
-                tab.show();
-                tabContainer.removeClass('hidden');
-                tab.find('a').click();
+//                tab.show();
+//                tabContainer.removeClass('hidden');
+//                tab.find('a').click();
             } else {
                 if (regions.indexOf(regionId) != -1)
                     regions.splice(regions.indexOf(regionId), 1);
-                tab.hide();
-                tabsContainer.find('ul.nav-tabs li:visible:first a').click();
-                tabContainer.addClass('hidden');
+//                tab.hide();
+//                tabsContainer.find('ul.nav-tabs li:visible:first a').click();
+//                tabContainer.addClass('hidden');
             }
             $("#regions").val(regions.join(","));
         });

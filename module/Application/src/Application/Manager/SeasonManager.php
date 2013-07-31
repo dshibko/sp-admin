@@ -277,12 +277,12 @@ class SeasonManager extends BasicManager {
         foreach ($season->getLeagues() as $league) {
             if ($league->getLogoPath() != null)
                 $imageManager->deleteImage($league->getLogoPath());
-            if ($league->getPrizes() != null && is_array($league->getPrizes()) && count($league->getPrizes()) > 0) {
-                foreach ($league->getPrizes() as $prize) {
-                    if ($prize->getPrizeImage() != null)
-                        $imageManager->deleteImage($prize->getPrizeImage());
-                    if ($prize->getPostWinImage() != null)
-                        $imageManager->deleteImage($prize->getPostWinImage());
+            if ($league->getLeagueLanguages() != null && is_array($league->getLeagueLanguages()) && count($league->getLeagueLanguages()) > 0) {
+                foreach ($league->getLeagueLanguages() as $leagueLanguage) {
+                    if ($leagueLanguage->getPrizeImage() != null)
+                        $imageManager->deleteImage($leagueLanguage->getPrizeImage());
+                    if ($leagueLanguage->getPostWinImage() != null)
+                        $imageManager->deleteImage($leagueLanguage->getPostWinImage());
                 }
             }
         }
