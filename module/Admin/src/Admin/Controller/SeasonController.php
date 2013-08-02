@@ -85,7 +85,6 @@ class SeasonController extends LeagueController {
                 $form->setData($post);
                 $this->setRequiredFormFieldsets($form, $regionFieldsets);
                 if ($form->isValid()) {
-                    die('valid');
                     try {
                         $dates = $form->get('dates')->getValue();
                         $startDate = array_shift(explode(" - ", $dates));
