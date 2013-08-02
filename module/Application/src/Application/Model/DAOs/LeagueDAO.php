@@ -183,12 +183,12 @@ class LeagueDAO extends AbstractDAO {
         $startDate->setTime(0, 0, 0);
         $endDate->setTime(0, 0, 0);
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select($qb->expr()->count('s.id'))
-            ->from($this->getRepositoryName(), 's')
+        $qb->select($qb->expr()->count('l.id'))
+            ->from($this->getRepositoryName(), 'l')
             ->where($qb->expr()->andX(
-            $qb->expr()->andX($qb->expr()->lte('s.startDate', ":startDate"), $qb->expr()->gte('s.endDate', ":startDate")),
-            $qb->expr()->andX($qb->expr()->lte('s.startDate', ":endDate"), $qb->expr()->gte('s.endDate', ":endDate"))))
-            ->andWhere($qb->expr()->eq('s.id', $seasonId))
+            $qb->expr()->andX($qb->expr()->lte('l.startDate', ":startDate"), $qb->expr()->gte('l.endDate', ":startDate")),
+            $qb->expr()->andX($qb->expr()->lte('l.startDate', ":endDate"), $qb->expr()->gte('l.endDate', ":endDate"))))
+            ->andWhere($qb->expr()->eq('l.season', $seasonId))
             ->setParameter("startDate", $startDate)
             ->setParameter("endDate", $endDate);
         return $this->getQuery($qb, false)->getSingleScalarResult() > 0;
