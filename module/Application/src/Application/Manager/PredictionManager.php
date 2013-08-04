@@ -139,13 +139,13 @@ class PredictionManager extends BasicManager {
     }
 
     private function getTeamSquad($hasLineUp, $matchId, $teamId, $competitionId, $seasonId, $hydrate, $skipCache) {
-        if ($hasLineUp)
-            $squad = MatchDAO::getInstance($this->getServiceLocator())->getMatchTeamSquad($matchId, $teamId, $hydrate, $skipCache);
-        else {
+//        if ($hasLineUp)
+//            $squad = MatchDAO::getInstance($this->getServiceLocator())->getMatchTeamSquad($matchId, $teamId, $hydrate, $skipCache);
+//        else {
             $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquadInCompetition($teamId, $competitionId, $hydrate, $skipCache);
             if (empty($squad))
                 $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquad($teamId, $seasonId, $hydrate, $skipCache);
-        }
+//        }
         return $squad;
     }
 
