@@ -148,6 +148,25 @@ class LeagueDAO extends AbstractDAO {
     }
 
     /**
+     * @param int $userId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getPrivateLeagues($userId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.leagueUsers','lu', Expr\Join::WITH, 'lu.user = ' . $userId)
+            ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::PRIVATE_TYPE)
+            ->andWhere($qb->expr()->lte('l.startDate', ':today'))->setParameter('today', $today)
+            ->orderBy('l.endDate', 'DESC');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
      * @param \Application\Model\Entities\Region $region
      * @param bool $hydrate
      * @param bool $skipCache

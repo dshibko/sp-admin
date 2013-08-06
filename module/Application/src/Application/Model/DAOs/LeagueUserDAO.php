@@ -145,6 +145,40 @@ class LeagueUserDAO extends AbstractDAO {
 
     /**
      * @param int $leagueId
+     * @param int $top
+     * @param int $offset
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getPrivateLeagueTop($leagueId, $top = 0, $offset = 0, $skipCache = false) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('points','points');
+        $rsm->addScalarResult('accuracy','accuracy');
+        $rsm->addScalarResult('place','place');
+        $rsm->addScalarResult('previous_place','previousPlace');
+        $rsm->addScalarResult('display_name','displayName');
+        $rsm->addScalarResult('flag_image','flagImage');
+        $rsm->addScalarResult('country','country');
+        $rsm->addScalarResult('user_id','userId');
+        $limit = '';
+        if ($top > 0)
+            $limit = "LIMIT $offset, $top";
+        $query = $this->getEntityManager()->createNativeQuery("
+            SELECT
+                0 points, lu.accuracy, lu.place, lu.previous_place, u.display_name, c.flag_image, c.name as country, u.id as user_id
+            FROM
+               league_user lu
+                INNER JOIN user u ON lu.user_id = u.id
+                INNER JOIN country c ON u.country_id = c.id
+                WHERE lu.league_id = $leagueId
+                ORDER BY u.display_name
+                $limit
+        ", $rsm);
+        return $this->prepareQuery($query, array(LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
+    }
+
+    /**
+     * @param int $leagueId
      * @param int $userId
      * @return array
      */

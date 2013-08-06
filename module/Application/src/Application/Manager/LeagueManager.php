@@ -233,6 +233,17 @@ class LeagueManager extends BasicManager {
     }
 
     /**
+     * @param int $userId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getPrivateLeagues($userId, $hydrate = false, $skipCache = false) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getPrivateLeagues($userId, $hydrate, $skipCache);
+    }
+
+    /**
      * @param \Application\Model\Entities\Region $region
      * @param bool $hydrate
      * @param bool $skipCache
@@ -241,6 +252,22 @@ class LeagueManager extends BasicManager {
     public function getTemporalLeagues($region, $hydrate = false, $skipCache = false) {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         return $leagueDAO->getTemporalLeagues($region, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param int $leagueId
+     * @param int $top
+     * @param int $offset
+     * @param array|null $facebookIds
+     * @return array
+     */
+    public function getPrivateLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null) {
+        $leagueTop = $this->getLeagueTop($leagueId, $top, $offset, $facebookIds);
+        if (empty($leagueTop)) {
+            $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
+            $leagueTop = $leagueUserDAO->getPrivateLeagueTop($leagueId, $top, $offset);
+        }
+        return $leagueTop;
     }
 
     /**

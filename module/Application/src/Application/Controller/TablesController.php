@@ -37,17 +37,24 @@ class TablesController extends AbstractActionController {
             $globalLeague = $applicationManager->getGlobalLeague($season);
             $globalLeagueName = $leagueManager->getLeagueDisplayName($globalLeague->getId());
             $globalLeagueUsers = $leagueManager->getLeagueTop($globalLeague->getId(), self::TOP_PLAYERS_COUNT);
+
             $region = $user->getCountry()->getRegion();
             if ($region != null) {
                 $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
                 $regionalLeagueName = $leagueManager->getLeagueDisplayName($regionalLeague->getId());
                 $regionalLeagueUsers = $leagueManager->getLeagueTop($regionalLeague->getId(), self::TOP_PLAYERS_COUNT);
+
                 $temporalLeagues = $leagueManager->getTemporalLeagues($region, true);
                 foreach ($temporalLeagues as &$temporalLeague) {
                     $temporalLeague['leagueUsers'] = $leagueManager->getLeagueTop($temporalLeague['id'], self::TOP_PLAYERS_COUNT);
                     $temporalLeague['displayName'] = $leagueManager->getLeagueDisplayName($temporalLeague['id']);
                 }
             }
+
+            $privateLeagues = $leagueManager->getPrivateLeagues($user->getId(), true);
+            foreach ($privateLeagues as &$privateLeague)
+                $privateLeague['leagueUsers'] = $leagueManager->getPrivateLeagueTop($privateLeague['id'], self::TOP_PLAYERS_COUNT);
+
             $seasonName = $seasonManager->getSeasonDisplayName($season->getId());
             return array(
                 'globalLeague' => $globalLeague,
@@ -57,6 +64,7 @@ class TablesController extends AbstractActionController {
                 'regionalLeagueName' => $regionalLeagueName,
                 'regionalTopUsers' => $regionalLeagueUsers,
                 'temporalLeagues' => $temporalLeagues,
+                'privateLeagues' => $privateLeagues,
                 'seasonName' => $seasonName,
                 'region' => $region,
             );

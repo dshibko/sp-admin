@@ -25,7 +25,7 @@ class PrivateLeagueController extends AbstractActionController {
     const JOIN_PRIVATE_LEAGUE_ROUTE = 'join-private-league';
 
     const DISPLAY_NAME_MIN_LENGTH = 5;
-    const DISPLAY_NAME_MAX_LENGTH = 15;
+    const DISPLAY_NAME_MAX_LENGTH = 25;
 
     public function createAction() {
 
