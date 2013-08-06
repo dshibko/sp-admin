@@ -50,6 +50,26 @@ return array(
                     ),
                 ),
             ),
+            'create-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/create-private-league',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'create',
+                    ),
+                ),
+            ),
+            'join-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => 'join-private-league',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'join',
+                    ),
+                ),
+            ),
             'prizes' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -378,6 +398,7 @@ return array(
             'Application\Controller\Prize' => 'Application\Controller\PrizeController',
             'Application\Controller\Common' => 'Application\Controller\CommonController',
             'Application\Controller\ClearAppCache' => 'Application\Controller\ClearAppCacheController',
+            'Application\Controller\PrivateLeague' => 'Application\Controller\PrivateLeagueController',
         ),
     ),
     'controller_plugins' => array(

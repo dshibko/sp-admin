@@ -896,3 +896,22 @@ msgstr "Score Predictor"
 msgid "Terms were saved successfully."
 msgstr "Terms were saved successfully."
 
+# private leagues
+
+msgid "Unknown private league"
+msgstr "Unknown private league"
+
+msgid "You joined the league earlier"
+msgstr "You joined the league earlier"
+
+msgid "You are not a member of this private league"
+msgstr "You are not a member of this private league"
+
+msgid "Create a private league"
+msgstr "Create a private league"
+
+msgid "Join a private league"
+msgstr "Join a private league"
+
+msgid "Create"
+msgstr "Create"

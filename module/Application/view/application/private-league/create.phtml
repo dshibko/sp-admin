@@ -1,0 +1,37 @@
+<div role="main" class="two-column-section clearfix">
+    <div class="first-column registration">
+        <h1>
+            <?=$this->translate('Create a private league')?>
+        </h1>
+        <form action="<?=$this->url('create-private-league')?>" method="post" id="create-private-league">
+            <section>
+<!--                <div>-->
+<!--                    <h2>Title</h2>-->
+<!--                </div>-->
+                <div>
+                    <label for="display-name"><?=$this->translate('Display Name')?></label>
+                    <input name="display-name" type="text" maxlength="<?=$this->maxLength?>" class="required" id="display-name" value="">
+                </div>
+                <div class="buttons">
+                    <button type="submit"><?=$this->translate('Create')?></button>
+                </div>
+                <input type="hidden" name="check_key" value="<?=$this->securityKey?>"/>
+            </section>
+        </form>
+    </div>
+    <?php echo $this->partial('partials/right-column');?>
+</div>
+<script type="text/javascript">
+    var displayNameOptions = {
+        onFail: function(){},
+        onSuccess: function(){},
+        inputs: {
+            'display-name': {
+                filters: 'required max min',
+                data: { max: <?=$this->maxLength?>, min: <?=$this->minLength?> }
+            }
+        }
+    };
+    if (!$('html').hasClass('lt-ie8'))
+        $('#create-private-league').idealforms(displayNameOptions).data('idealforms');
+</script>
