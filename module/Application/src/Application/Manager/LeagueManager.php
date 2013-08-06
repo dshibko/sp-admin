@@ -272,24 +272,42 @@ class LeagueManager extends BasicManager {
 
     /**
      * @param int $leagueId
+     * @param string $type
      * @param int $top
      * @param int $offset
      * @param array|null $facebookIds
      * @return array
      */
-    public function getLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null) {
+    public function getLeagueTop($leagueId, $type, $top = 0, $offset = 0, $facebookIds = null) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-        return $leagueUserDAO->getLeagueTop($leagueId, $top, $offset, $facebookIds);
+        if ($type != League::PRIVATE_TYPE)
+            $leagueTop = $leagueUserDAO->getLeagueTop($leagueId, $top, $offset, $facebookIds);
+        else {
+            if ($leagueUserDAO->getHasPlacedUsers($leagueId))
+                $leagueTop = $leagueUserDAO->getLeagueTop($leagueId, $top, $offset, $facebookIds);
+            else
+                $leagueTop = $leagueUserDAO->getPrivateLeagueTop($leagueId, $top, $offset, $facebookIds);
+        }
+        return $leagueTop;
     }
 
     /**
      * @param int $leagueId
+     * @param string $type
      * @param bool $skipCache
      * @return int
      */
-    public function getLeagueUsersCount($leagueId, $skipCache = false) {
+    public function getLeagueUsersCount($leagueId, $type, $skipCache = false) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-        return $leagueUserDAO->getLeagueUsersCount($leagueId, $skipCache);
+        if ($type != League::PRIVATE_TYPE)
+            $userCount = $leagueUserDAO->getLeagueUsersCount($leagueId, true, $skipCache);
+        else {
+            if ($leagueUserDAO->getHasPlacedUsers($leagueId))
+                $userCount = $leagueUserDAO->getLeagueUsersCount($leagueId, true, $skipCache);
+            else
+                $userCount = $leagueUserDAO->getLeagueUsersCount($leagueId, false, $skipCache);
+        }
+        return $userCount;
     }
 
     /**
@@ -306,6 +324,7 @@ class LeagueManager extends BasicManager {
      * @param string $name
      * @param Season $season
      * @param User $creator
+     * @return string
      * @throws \Exception
      */
     public function createPrivateLeague($name, $season, $creator) {

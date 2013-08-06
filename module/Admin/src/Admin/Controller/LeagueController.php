@@ -54,7 +54,7 @@ class LeagueController extends AbstractActionController {
             if ($league == null)
                 return $this->redirect()->toRoute(self::LEAGUES_INDEX_ROUTE);
 
-            $leagueUsers = $leagueManager->getLeagueTop($id, 20);
+            $leagueUsers = $leagueManager->getLeagueTop($id, $league->getType(), 20);
 
             return array(
                 'leagueUsers' => $leagueUsers,

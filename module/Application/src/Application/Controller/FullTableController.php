@@ -34,42 +34,45 @@ class FullTableController extends AbstractActionController {
             $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
             $facebookManager = FacebookManager::getInstance($this->getServiceLocator());
 
-            $leagueUsers = array();
-            $leagueName = $leagueManager->getLeagueDisplayName($leagueId);
-
-            $user = $applicationManager->getCurrentUser();
-
-            $league = $leagueManager->getLeagueById($leagueId, true);
+            $league = $leagueManager->getLeagueById($leagueId);
             if ($league === null)
                 return $this->notFoundAction();
 
-            $seasonName = $seasonManager->getSeasonDisplayName($league['season']['id']);
+            $leagueUsers = array();
+            if ($league->getType() != League::PRIVATE_TYPE)
+                $leagueName = $leagueManager->getLeagueDisplayName($leagueId);
+            else
+                $leagueName = $league->getDisplayName();
+
+            $user = $applicationManager->getCurrentUser();
+
+            $seasonName = $seasonManager->getSeasonDisplayName($league->getSeason()->getId());
 
             $offset = (int) $this->params()->fromQuery('offset', 0);
-            $leagueUsersCount = $leagueManager->getLeagueUsersCount($league['id']);
+            $leagueUsersCount = $leagueManager->getLeagueUsersCount($league->getId(), $league->getType());
             if ($offset < 0) $offset = 0;
             if ($leagueUsersCount > $offset) {
                 $aroundYou = (boolean) $this->params()->fromQuery('aroundYou', false);
                 $yourFriends = (boolean) $this->params()->fromQuery('yourFriends', false);
                 if ($aroundYou) {
-                    $yourPlaceInLeague = $leagueManager->getYourPlaceInLeague($league['id'], $user->getId());
+                    $yourPlaceInLeague = $leagueManager->getYourPlaceInLeague($league->getId(), $user->getId());
                     if ($yourPlaceInLeague > 0) {
                         if ($yourPlaceInLeague > self::AROUND_YOU_POSITIONS_NUMBER)
                             $showRowsBefore = self::AROUND_YOU_POSITIONS_NUMBER + 1;
                         else
                             $showRowsBefore = $yourPlaceInLeague;
-                        $leagueUsers = $leagueManager->getLeagueTop($league['id'], $showRowsBefore, $yourPlaceInLeague - $showRowsBefore);
+                        $leagueUsers = $leagueManager->getLeagueTop($league->getId(), $league->getType(), $showRowsBefore, $yourPlaceInLeague - $showRowsBefore);
                         if ($yourPlaceInLeague + self::AROUND_YOU_POSITIONS_NUMBER > $leagueUsersCount)
                             $showRowsAfter = $yourPlaceInLeague + self::AROUND_YOU_POSITIONS_NUMBER - $leagueUsersCount;
                         else
                             $showRowsAfter = self::AROUND_YOU_POSITIONS_NUMBER;
-                        $leagueUsers = array_merge($leagueUsers, $leagueManager->getLeagueTop($league['id'], $showRowsAfter, $yourPlaceInLeague));
+                        $leagueUsers = array_merge($leagueUsers, $leagueManager->getLeagueTop($league->getId(), $league->getType(), $showRowsAfter, $yourPlaceInLeague));
                     }
                 } else if ($yourFriends) {
                     $friendsFacebookIds = $facebookManager->getFriendsUsers($user);
-                    $leagueUsers = $leagueManager->getLeagueTop($league['id'], 0, 0, $friendsFacebookIds);
+                    $leagueUsers = $leagueManager->getLeagueTop($league->getId(), $league->getType(), 0, 0, $friendsFacebookIds);
                 } else
-                    $leagueUsers = $leagueManager->getLeagueTop($league['id'], self::PER_PAGE_PLAYERS_COUNT, $offset);
+                    $leagueUsers = $leagueManager->getLeagueTop($league->getId(), $league->getType(), self::PER_PAGE_PLAYERS_COUNT, $offset);
             }
 
             $onlyRows = (boolean) $this->params()->fromQuery('onlyRows', false);
@@ -80,6 +83,7 @@ class FullTableController extends AbstractActionController {
                 'leagueName' => $leagueName,
                 'leagueUsers' => $leagueUsers,
                 'leagueUsersCount' => $leagueUsersCount,
+                'league' => $league,
                 'onlyRows' => $onlyRows,
                 'perPage' => self::PER_PAGE_PLAYERS_COUNT,
             ));

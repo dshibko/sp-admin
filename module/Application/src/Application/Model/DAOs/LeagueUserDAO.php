@@ -87,15 +87,17 @@ class LeagueUserDAO extends AbstractDAO {
 
     /**
      * @param int $leagueId
+     * @param bool $placed
      * @param bool $skipCache
      * @return int
      */
-    public function getLeagueUsersCount($leagueId, $skipCache = false) {
+    public function getLeagueUsersCount($leagueId, $placed = true, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('lu.id'))
             ->from($this->getRepositoryName(), 'lu')
-            ->where($qb->expr()->isNotNull('lu.place'))
-            ->andWhere($qb->expr()->eq('lu.league', $leagueId));
+            ->where($qb->expr()->eq('lu.league', $leagueId));
+        if ($placed)
+            $qb->andWhere($qb->expr()->isNotNull('lu.place'));
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
@@ -145,12 +147,42 @@ class LeagueUserDAO extends AbstractDAO {
 
     /**
      * @param int $leagueId
+     * @param bool $skipCache
+     * @return bool
+     */
+    public function getHasPlacedUsers($leagueId, $skipCache = false) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('users','users');
+        $query = $this->getEntityManager()->createNativeQuery("
+            SELECT
+                1 points
+            FROM
+               league_user lu
+               WHERE lu.league_id = $leagueId AND lu.place IS NOT NULL
+               GROUP BY lu.league_id
+        ", $rsm);
+        $result = $this->prepareQuery($query, array(LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
+        return !empty($result);
+    }
+
+    /**
+     * @param int $leagueId
      * @param int $top
      * @param int $offset
+     * @param array|null $facebookIds
      * @param bool $skipCache
      * @return array
      */
-    public function getPrivateLeagueTop($leagueId, $top = 0, $offset = 0, $skipCache = false) {
+    public function getPrivateLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds, $skipCache = false) {
+        if ($facebookIds !== null) {
+            if (empty($facebookIds)) return array();
+            $userDAO = UserDAO::getInstance($this->getServiceLocator());
+            $usersIdsArr = $userDAO->getUserIdsByFacebookIds($facebookIds, $skipCache);
+            $usersIds = array();
+            foreach ($usersIdsArr as $userId)
+                $usersIds [] = $userId['id'];
+            $facebookCondition = ' AND lu.user_id IN (' . implode(",", $usersIds) . ')';
+        } else $facebookCondition = '';
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('points','points');
         $rsm->addScalarResult('accuracy','accuracy');
@@ -168,10 +200,10 @@ class LeagueUserDAO extends AbstractDAO {
                 0 points, lu.accuracy, lu.place, lu.previous_place, u.display_name, c.flag_image, c.name as country, u.id as user_id
             FROM
                league_user lu
-                INNER JOIN user u ON lu.user_id = u.id
-                INNER JOIN country c ON u.country_id = c.id
-                WHERE lu.league_id = $leagueId
-                ORDER BY u.display_name
+               INNER JOIN user u ON lu.user_id = u.id
+               INNER JOIN country c ON u.country_id = c.id
+               WHERE lu.league_id = $leagueId $facebookCondition
+               ORDER BY u.display_name ASC
                 $limit
         ", $rsm);
         return $this->prepareQuery($query, array(LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
