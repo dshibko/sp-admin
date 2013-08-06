@@ -898,8 +898,8 @@ msgstr "Terms were saved successfully."
 
 # private leagues
 
-msgid "Unknown private league"
-msgstr "Unknown private league"
+msgid "A private league with the league code %s hasn't been not found"
+msgstr "A private league with the league code %s hasn't been not found"
 
 msgid "You joined the league earlier"
 msgstr "You joined the league earlier"
@@ -916,8 +916,17 @@ msgstr "Join a private league"
 msgid "Create"
 msgstr "Create"
 
-msgid "Invalid display name"
-msgstr "Invalid display name"
+msgid "Join"
+msgstr "Join"
+
+msgid "Invalid private league display name"
+msgstr "Invalid private league display name"
+
+msgid "Invalid private league code"
+msgstr "Invalid private league code"
 
 msgid "Private league was created successfully. Now you can invite your friends using league code %s."
 msgstr "Private league was created successfully. Now you can invite your friends using league code %s."
+
+msgid "You have joined the private league successfully"
+msgstr "You have joined the private league successfully"

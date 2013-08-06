@@ -334,7 +334,7 @@ class LeagueManager extends BasicManager {
 
         $privateLeague = $leagueDAO->getPrivateLeagueByHash($hash, $season->getId());
         if ($privateLeague === null)
-            throw new \Exception(MessagesConstants::ERROR_UNKNOWN_PRIVATE_LEAGUE);
+            throw new \Exception(sprintf(MessagesConstants::ERROR_UNKNOWN_PRIVATE_LEAGUE, $hash));
 
         if ($leagueDAO->getIsUserInLeague($privateLeague, $user))
             throw new \Exception(MessagesConstants::ERROR_YOU_JOINED_LEAGUE_EARLIER);

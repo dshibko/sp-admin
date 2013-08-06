@@ -63,7 +63,7 @@ return array(
             'join-private-league' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => 'join-private-league',
+                    'route'    => '/join-private-league',
                     'defaults' => array(
                         'controller' => 'Application\Controller\PrivateLeague',
                         'action'     => 'join',
