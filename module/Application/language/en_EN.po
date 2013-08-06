@@ -915,3 +915,9 @@ msgstr "Join a private league"
 
 msgid "Create"
 msgstr "Create"
+
+msgid "Invalid display name"
+msgstr "Invalid display name"
+
+msgid "Private league was created successfully. Now you can invite your friends using league code %s."
+msgstr "Private league was created successfully. Now you can invite your friends using league code %s."

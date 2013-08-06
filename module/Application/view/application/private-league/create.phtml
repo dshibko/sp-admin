@@ -4,10 +4,8 @@
             <?=$this->translate('Create a private league')?>
         </h1>
         <form action="<?=$this->url('create-private-league')?>" method="post" id="create-private-league">
+            <?php echo $this->partial('partials/flash-messages');?>
             <section>
-<!--                <div>-->
-<!--                    <h2>Title</h2>-->
-<!--                </div>-->
                 <div>
                     <label for="display-name"><?=$this->translate('Display Name')?></label>
                     <input name="display-name" type="text" maxlength="<?=$this->maxLength?>" class="required" id="display-name" value="">

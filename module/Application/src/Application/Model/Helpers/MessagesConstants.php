@@ -135,6 +135,7 @@ class MessagesConstants
     const SUCCESS_PUBLIC_PROFILE_OPTION_SAVED = 'Public profile option was successfully saved.';
     const SUCCESS_DELETE_ACCOUNT = 'You have deleted your account successfully.';
     const SUCCESS_HELP_AND_SUPPORT_MESSAGE_SENT = 'Your message successfully sent';
+    const SUCCESS_PRIVATE_LEAGUE_CREATED = 'Private league was created successfully. Now you can invite your friends using league code %s.';
 
     const INFO_LOGGED_OUT = "You've been logged out.";
     const INFO_OUT_OF_SEASON = "There is no season in play";
