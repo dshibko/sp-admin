@@ -115,6 +115,9 @@ class MessagesConstants
     const ERROR_INVALID_SETTING_FORM_TYPE = 'Invalid form type';
     const ERROR_INVALID_OLD_PASSWORD = 'Invalid old password';
     const ERROR_CANNOT_CONNECT_TO_FACEBOOK_ACCOUNT = 'Cannot connect user to facebook account because facebook email has been already taken by another user.';
+    const ERROR_UNKNOWN_PRIVATE_LEAGUE = 'Unknown private league';
+    const ERROR_YOU_JOINED_LEAGUE_EARLIER = 'You joined the league earlier';
+    const ERROR_NOT_MEMBER_OF_LEAGUE = 'You are not a member of this private league';
 
     const SUCCESS_RECOVERY_LINK_SENT = "Recovery link was sent to your email. The link is active for 3 hours.";
     const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to your email. The link is active for 60 minutes';

@@ -4,6 +4,7 @@ namespace Application\Model\DAOs;
 
 use \Application\Model\Entities\League;
 use Application\Model\DAOs\AbstractDAO;
+use Application\Model\Entities\LeagueUser;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -83,6 +84,7 @@ class LeagueUserDAO extends AbstractDAO {
         ')->setParameter('nowTime', $nowTime)->setParameter('types', $types);
         return $this->prepareQuery($query, array(LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
     }
+
     /**
      * @param int $leagueId
      * @param bool $skipCache
@@ -160,7 +162,7 @@ class LeagueUserDAO extends AbstractDAO {
      * @param int $userId
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return array
+     * @return LeagueUser|array
      */
     public function getLeagueUser($leagueId, $userId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -208,5 +210,13 @@ class LeagueUserDAO extends AbstractDAO {
 
     public function commitLeagueUsersUpdate() {
         $this->getEntityManager()->getConnection()->commit();
+    }
+
+    public function moveUpLeagueUserPlaces($league, $fromPlace) {
+        $this->getEntityManager()->getConnection()->executeQuery("
+            UPDATE league_user lu
+            SET lu.place = lu.place - 1
+            WHERE lu.place > $fromPlace and lu.league_id = {$league->getId()};
+        ");
     }
 }

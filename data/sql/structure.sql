@@ -1408,3 +1408,13 @@ SET ll.`display_name` = l.type;
 DROP TABLE `prize`;
 
 ALTER TABLE `league_region` DROP `display_name`;
+
+-- oko 05.08
+
+CREATE TABLE `private_league` (
+`id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`league_id` INT NOT NULL ,
+`unique_hash` VARCHAR(10) NOT NULL
+) ENGINE = InnoDB;
+ALTER TABLE `private_league` ADD FOREIGN KEY (league_id) REFERENCES `league`(id);
+ALTER TABLE `private_league` ADD UNIQUE INDEX `unique_hash` (`unique_hash`);

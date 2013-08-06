@@ -131,6 +131,13 @@ class League extends BasicObject {
     private $users;
 
     /**
+     * @var PrivateLeague
+     *
+     * @ORM\OneToOne(targetEntity="PrivateLeague", mappedBy="league", cascade={"persist", "remove"})
+     */
+    protected $privateLeague;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -614,6 +621,22 @@ class League extends BasicObject {
     public function setLeagueUsers($leagueUsers)
     {
         $this->leagueUsers = $leagueUsers;
+    }
+
+    /**
+     * @param \Application\Model\Entities\PrivateLeague $privateLeague
+     */
+    public function setPrivateLeague($privateLeague)
+    {
+        $this->privateLeague = $privateLeague;
+    }
+
+    /**
+     * @return \Application\Model\Entities\PrivateLeague
+     */
+    public function getPrivateLeague()
+    {
+        return $this->privateLeague;
     }
 
     /**

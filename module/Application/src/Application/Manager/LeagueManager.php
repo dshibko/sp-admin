@@ -4,8 +4,12 @@ namespace Application\Manager;
 
 use Application\Model\DAOs\LeagueLanguageDAO;
 use \Application\Model\DAOs\LeagueUserPlaceDAO;
+use Application\Model\DAOs\PrivateLeagueDAO;
 use \Application\Model\Entities\LeagueUserPlace;
 use \Application\Model\Entities\LeagueUser;
+use Application\Model\Entities\PrivateLeague;
+use Application\Model\Entities\Season;
+use Application\Model\Entities\User;
 use \Doctrine\Common\Collections\ArrayCollection;
 use \Application\Model\Entities\LeagueRegion;
 use \Application\Model\Entities\LeagueLanguage;
@@ -269,6 +273,103 @@ class LeagueManager extends BasicManager {
     public function getYourPlaceInLeague($leagueId, $userId) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
         return $leagueUserDAO->getYourPlaceInLeague($leagueId, $userId);
+    }
+
+    /**
+     * @param string $name
+     * @param Season $season
+     * @param User $creator
+     * @throws \Exception
+     */
+    public function createPrivateLeague($name, $season, $creator) {
+
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        $privateLeagueDAO = PrivateLeagueDAO::getInstance($this->getServiceLocator());
+
+        $hash = $this->generatePrivateLeagueKey($creator);
+
+        $league = new League();
+        $league->setDisplayName($name);
+        $league->setSeason($season);
+        $league->setCreator($creator);
+        $league->setCreationDate(new \DateTime());
+        $today = new \DateTime();
+        $league->setStartDate($today->setTime(0, 0, 0));
+        $league->setEndDate($season->getEndDate());
+        $league->setType(League::PRIVATE_TYPE);
+
+        $leagueUser = new LeagueUser();
+        $leagueUser->setUser($creator);
+        $leagueUser->setJoinDate(new \DateTime());
+        $leagueUser->setRegistrationDate($creator->getDate());
+        $leagueUser->setLeague($league);
+        $league->addLeagueUser($leagueUser);
+
+        $privateLeague = new PrivateLeague();
+        $privateLeague->setLeague($league);
+        $privateLeague->setUniqueHash($hash);
+        $league->setPrivateLeague($privateLeague);
+
+        $leagueDAO->save($league, true, false);
+        $privateLeagueDAO->clearCache();
+
+        return $hash;
+
+    }
+
+    private function generatePrivateLeagueKey($user) {
+        return (string) hash('crc32', microtime() . $user->getId());
+    }
+
+    /**
+     * @param string $hash
+     * @param Season $season
+     * @param User $user
+     * @throws \Exception
+     */
+    public function joinPrivateLeague($hash, $season, $user) {
+
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        $privateLeagueDAO = PrivateLeagueDAO::getInstance($this->getServiceLocator());
+
+        $privateLeague = $leagueDAO->getPrivateLeagueByHash($hash, $season->getId());
+        if ($privateLeague === null)
+            throw new \Exception(MessagesConstants::ERROR_UNKNOWN_PRIVATE_LEAGUE);
+
+        if ($leagueDAO->getIsUserInLeague($privateLeague, $user))
+            throw new \Exception(MessagesConstants::ERROR_YOU_JOINED_LEAGUE_EARLIER);
+
+        $leagueUser = new LeagueUser();
+        $leagueUser->setUser($user);
+        $leagueUser->setJoinDate(new \DateTime());
+        $leagueUser->setRegistrationDate($user->getDate());
+        $leagueUser->setLeague($privateLeague);
+        $privateLeague->addLeagueUser($leagueUser);
+
+        $leagueDAO->save($privateLeague, true, false);
+        $privateLeagueDAO->clearCache();
+
+    }
+
+    /**
+     * @param League $league
+     * @param User $user
+     * @throws \Exception
+     */
+    public function leavePrivateLeague($league, $user) {
+
+        $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
+
+        $leagueUser = $leagueUserDAO->getLeagueUser($league->getId(), $user->getId());
+        if ($leagueUser === null)
+            throw new \Exception(MessagesConstants::ERROR_NOT_MEMBER_OF_LEAGUE);
+
+        $fromPlace = $leagueUser->getPlace();
+
+        $leagueUserDAO->remove($leagueUser);
+
+        $leagueUserDAO->moveUpLeagueUserPlaces($league, $fromPlace);
+
     }
 
 }

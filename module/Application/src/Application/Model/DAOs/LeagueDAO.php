@@ -205,4 +205,14 @@ class LeagueDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    public function getPrivateLeagueByHash($hash, $seasonId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.privateLeague', 'pl')
+            ->where($qb->expr()->eq('pl.uniqueHash', ':hash'))->setParameter('hash', $hash)
+            ->andWhere($qb->expr()->eq('l.season', ':seasonId'))->setParameter('seasonId', $seasonId);
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
 }
