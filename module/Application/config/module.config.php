@@ -50,26 +50,6 @@ return array(
                     ),
                 ),
             ),
-            'create-private-league' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route'    => '/create-private-league',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\PrivateLeague',
-                        'action'     => 'create',
-                    ),
-                ),
-            ),
-            'join-private-league' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route'    => '/join-private-league',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\PrivateLeague',
-                        'action'     => 'join',
-                    ),
-                ),
-            ),
             'prizes' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -107,6 +87,56 @@ return array(
                     'defaults' => array(
                         'controller' => 'Application\Controller\Match',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'create-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/create-private-league',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'create',
+                    ),
+                ),
+            ),
+            'join-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/join-private-league',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'join',
+                    ),
+                ),
+            ),
+            'delete-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/delete-private-league/:code',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'delete',
+                    ),
+                ),
+            ),
+            'leave-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/leave-private-league/:code',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'leave',
+                    ),
+                ),
+            ),
+            'remove-user-from-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/remove-user-from-private-league/:code/:id',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'removeUser',
                     ),
                 ),
             ),

@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\Manager\LeagueManager;
+use Application\Manager\UserManager;
 use \Neoco\Exception\OutOfSeasonException;
 use \Neoco\Exception\InfoException;
 use \Application\Manager\ShareManager;
@@ -23,6 +24,8 @@ class PrivateLeagueController extends AbstractActionController {
 
     const CREATE_PRIVATE_LEAGUE_ROUTE = 'create-private-league';
     const JOIN_PRIVATE_LEAGUE_ROUTE = 'join-private-league';
+    const LEAGUE_TABLES_ROUTE = 'tables';
+    const FULL_LEAGUE_TABLES_ROUTE = 'full-table';
 
     const DISPLAY_NAME_MIN_LENGTH = 5;
     const DISPLAY_NAME_MAX_LENGTH = 25;
@@ -101,7 +104,7 @@ class PrivateLeagueController extends AbstractActionController {
                     $leagueCode = $post['league-code'];
                     try {
                         $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
-                        $leagueManager->joinPrivateLeague($leagueCode, $season, $user);
+                        $leagueManager->joinPrivateLeague($leagueCode, $user);
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_JOINED_PRIVATE_LEAGUE);
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
@@ -119,6 +122,115 @@ class PrivateLeagueController extends AbstractActionController {
 
         } catch (InfoException $e) {
             return $this->infoAction($e);
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
+        }
+
+    }
+
+    public function deleteAction() {
+
+        try {
+
+            $leagueCode = $this->params()->fromRoute('code', '');
+            if (empty($leagueCode))
+                return $this->notFoundAction();
+
+            $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+
+            $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
+            $league = $leagueManager->getPrivateLeagueByCode($leagueCode);
+            if (empty($league))
+                return $this->notFoundAction();
+
+            $user = $applicationManager->getCurrentUser();
+
+            if ($league->getCreator()->getId() == $user->getId()) {
+                $leagueManager->deleteLeague($league);
+                $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_DELETED_PRIVATE_LEAGUE);
+            } else
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_ADMIN_DELETES_PRIVATE_LEAGUE);
+
+            return $this->redirect()->toRoute(self::LEAGUE_TABLES_ROUTE);
+
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
+        }
+
+    }
+
+    public function leaveAction() {
+
+        try {
+
+            $leagueCode = $this->params()->fromRoute('code', '');
+            if (empty($leagueCode))
+                return $this->notFoundAction();
+
+            $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+
+            $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
+            $league = $leagueManager->getPrivateLeagueByCode($leagueCode);
+            if (empty($league))
+                return $this->notFoundAction();
+
+            $user = $applicationManager->getCurrentUser();
+
+            if (!$leagueManager->getIsUserInLeague($league, $user))
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_NOT_MEMBER_OF_LEAGUE);
+            else if ($league->getCreator()->getId() == $user->getId())
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_ADMIN_CANNOT_LEAVE_PRIVATE_LEAGUE);
+            else {
+                $leagueManager->leavePrivateLeague($league, $user);
+                $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_LEFT_PRIVATE_LEAGUE);
+            }
+
+            return $this->redirect()->toRoute(self::LEAGUE_TABLES_ROUTE);
+
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->errorAction($e);
+        }
+
+    }
+
+    public function removeUserAction() {
+
+        try {
+
+            $leagueCode = $this->params()->fromRoute('code', '');
+            $userId = $this->params()->fromRoute('id', 0);
+            if (empty($leagueCode) || empty($userId))
+                return $this->notFoundAction();
+
+            $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+            $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
+            $userManager = UserManager::getInstance($this->getServiceLocator());
+
+            $league = $leagueManager->getPrivateLeagueByCode($leagueCode);
+            if (empty($league))
+                return $this->notFoundAction();
+
+            $user = $applicationManager->getCurrentUser();
+            $targetUser = $userManager->getUserById($userId);
+            if (empty($targetUser))
+                return $this->notFoundAction();
+
+            if ($league->getCreator()->getId() != $user->getId())
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_ADMIN_REMOVES_USERS_FROM_PRIVATE_LEAGUE);
+            else if ($league->getCreator()->getId() != $user->getId())
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_ADMIN_CANNOT_LEAVE_PRIVATE_LEAGUE);
+            else if (!$leagueManager->getIsUserInLeague($league, $targetUser))
+                $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_NOT_MEMBER_OF_LEAGUE);
+            else {
+                $leagueManager->leavePrivateLeague($league, $targetUser);
+                $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_REMOVED_USER_FROM_PRIVATE_LEAGUE);
+            }
+
+            return $this->redirect()->toRoute(self::FULL_LEAGUE_TABLES_ROUTE, array('table' => $league->getId()));
+
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
             return $this->errorAction($e);

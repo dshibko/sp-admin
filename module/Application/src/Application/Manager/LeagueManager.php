@@ -320,6 +320,11 @@ class LeagueManager extends BasicManager {
         return $leagueUserDAO->getYourPlaceInLeague($leagueId, $userId);
     }
 
+    public function getIsUserInLeague($league, $user) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getIsUserInLeague($league, $user);
+    }
+
     /**
      * @param string $name
      * @param Season $season
@@ -369,16 +374,15 @@ class LeagueManager extends BasicManager {
 
     /**
      * @param string $hash
-     * @param Season $season
      * @param User $user
      * @throws \Exception
      */
-    public function joinPrivateLeague($hash, $season, $user) {
+    public function joinPrivateLeague($hash, $user) {
 
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         $privateLeagueDAO = PrivateLeagueDAO::getInstance($this->getServiceLocator());
 
-        $privateLeague = $leagueDAO->getPrivateLeagueByHash($hash, $season->getId());
+        $privateLeague = $leagueDAO->getPrivateLeagueByHash($hash);
         if ($privateLeague === null)
             throw new \Exception(sprintf(MessagesConstants::ERROR_UNKNOWN_PRIVATE_LEAGUE, $hash));
 
@@ -416,6 +420,17 @@ class LeagueManager extends BasicManager {
 
         $leagueUserDAO->moveUpLeagueUserPlaces($league, $fromPlace);
 
+    }
+
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @param string $hash
+     * @return League|array
+     */
+    public function getPrivateLeagueByCode($hash, $hydrate = false, $skipCache = false) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getPrivateLeagueByHash($hash, $hydrate, $skipCache);
     }
 
 }

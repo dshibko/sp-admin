@@ -919,6 +919,15 @@ msgstr "Create"
 msgid "Join"
 msgstr "Join"
 
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "League Code"
+msgstr "League Code"
+
 msgid "Invalid private league display name"
 msgstr "Invalid private league display name"
 
@@ -933,3 +942,21 @@ msgstr "You have joined the private league successfully"
 
 msgid "You can't use bad words in private league display name"
 msgstr "You can't use bad words in private league display name"
+
+msgid "You have deleted the private league successfully"
+msgstr "You have deleted the private league successfully"
+
+msgid "Only admin can delete the private league"
+msgstr "Only admin can delete the private league"
+
+msgid "Are you sure that you want to delete the league?"
+msgstr "Are you sure that you want to delete the league?"
+
+msgid "Are you sure you want to be removed permanently from this private league?"
+msgstr "Are you sure you want to be removed permanently from this private league?"
+
+msgid "Are you sure you want to remove the user permanently from this private league?"
+msgstr "Are you sure you want to remove the user permanently from this private league?"
+
+msgid "Admin can't leave the private league"
+msgstr "Admin can't leave the private league"

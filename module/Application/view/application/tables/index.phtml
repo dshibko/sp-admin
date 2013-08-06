@@ -7,12 +7,11 @@
     <div class="first-column league-tables">
         <a href="<?=$this->url('create-private-league')?>" class="more-info private-league-button"><?=$this->translate('Create a private league')?></a>
         <h1><?=$title;?></h1>
-
+        <?php echo $this->partial('partials/flash-messages');?>
         <div class="league">
             <header class="clearfix">
                 <h2><?=$this->globalLeagueName?></h2>
             </header>
-
             <section>
                 <div class="block">
                     <table>
