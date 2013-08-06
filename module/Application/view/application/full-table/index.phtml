@@ -1,9 +1,12 @@
 <?php
 $this->headTitle($this->leagueName . ' - ' . $this->seasonName);
 ?>
+<link rel="stylesheet" href="/css/private-league.css">
 <?php if (!$this->onlyRows) : ?>
     <div role="main" class="two-column-section clearfix">
         <div class="first-column league-tables">
+            <a href="" class="more-info private-league-button"><?=$this->translate('Edit private league')?></a>
+            <a href="" class="more-info private-league-button"><?=$this->translate('Join private league')?></a>
             <h1><?=$this->translate('League Table')?></h1>
             <div class="league">
                 <header class="clearfix">
@@ -38,7 +41,7 @@ $this->headTitle($this->leagueName . ' - ' . $this->seasonName);
                                     <?=$user['place'] !== null ? $user['place'] : '&ndash;'?>
                                     <?php if ($isActive) : ?></span><?php endif;?>
                                 </td>
-                                <td class="player"><?=$user['displayName']?></td>
+                                <td class="player"><?=$user['displayName']?>&nbsp;<a class="remove-player">X</a></td>
                                 <td class="nationality"><img src="<?=$user['flagImage']?>" itemprop="nationality" alt="<?=$user['country']?>"></td>
                                 <td class="points">
                                     <?php if ($isActive) : ?><span><?php endif;?>

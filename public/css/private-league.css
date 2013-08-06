@@ -1,0 +1,9 @@
+.more-info.private-league-button {
+    float: right;
+    margin: .4em 1em 3.3em 0;
+}
+
+.remove-player {
+    text-decoration: none;
+    cursor: pointer;
+}
