@@ -930,3 +930,6 @@ msgstr "Private league was created successfully. Now you can invite your friends
 
 msgid "You have joined the private league successfully"
 msgstr "You have joined the private league successfully"
+
+msgid "You can't use bad words in private league display name"
+msgstr "You can't use bad words in private league display name"

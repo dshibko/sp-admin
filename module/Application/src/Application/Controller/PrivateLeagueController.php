@@ -6,6 +6,7 @@ use Application\Manager\LeagueManager;
 use \Neoco\Exception\OutOfSeasonException;
 use \Neoco\Exception\InfoException;
 use \Application\Manager\ShareManager;
+use Neoco\Validator\BadWordValidator;
 use \Opta\Manager\ScoringManager;
 use \Application\Manager\MatchManager;
 use \Application\Model\Entities\Match;
@@ -45,14 +46,19 @@ class PrivateLeagueController extends AbstractActionController {
                 if (array_key_exists('display-name', $post) && !empty($post['display-name']) &&
                     strlen($post['display-name']) >= self::DISPLAY_NAME_MIN_LENGTH && strlen($post['display-name']) <= self::DISPLAY_NAME_MAX_LENGTH) {
                     $displayName = $post['display-name'];
-                    // todo bad words validation
-                    try {
-                        $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
-                        $leagueCode = $leagueManager->createPrivateLeague($displayName, $season, $user);
-                        $this->flashMessenger()->addSuccessMessage(sprintf(MessagesConstants::SUCCESS_PRIVATE_LEAGUE_CREATED, $leagueCode));
-                    } catch (\Exception $e) {
-                        $this->flashMessenger()->addErrorMessage($e->getMessage());
-                    }
+
+                    $badWordsValidator = new BadWordValidator();
+                    $badWordsValidator->setServiceLocator($this->getServiceLocator());
+                    if ($badWordsValidator->isValid($displayName)) {
+                        try {
+                            $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
+                            $leagueCode = $leagueManager->createPrivateLeague($displayName, $season, $user);
+                            $this->flashMessenger()->addSuccessMessage(sprintf(MessagesConstants::SUCCESS_PRIVATE_LEAGUE_CREATED, $leagueCode));
+                        } catch (\Exception $e) {
+                            $this->flashMessenger()->addErrorMessage($e->getMessage());
+                        }
+                    } else
+                        $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_DISPLAY_NAME_BAD_WORDS);
                 } else
                     $this->flashMessenger()->addErrorMessage(MessagesConstants::ERROR_INVALID_DISPLAY_NAME);
                 return $this->redirect()->toRoute(self::CREATE_PRIVATE_LEAGUE_ROUTE);

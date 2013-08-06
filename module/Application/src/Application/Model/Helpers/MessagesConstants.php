@@ -120,6 +120,7 @@ class MessagesConstants
     const ERROR_NOT_MEMBER_OF_LEAGUE = 'You are not a member of this private league';
     const ERROR_INVALID_DISPLAY_NAME = 'Invalid private league display name';
     const ERROR_INVALID_LEAGUE_CODE = 'Invalid private league code';
+    const ERROR_DISPLAY_NAME_BAD_WORDS = "You can't use bad words in private league display name";
 
     const SUCCESS_RECOVERY_LINK_SENT = "Recovery link was sent to your email. The link is active for 3 hours.";
     const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to your email. The link is active for 60 minutes';
