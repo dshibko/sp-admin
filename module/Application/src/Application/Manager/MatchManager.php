@@ -518,7 +518,9 @@ class MatchManager extends BasicManager
         }
 
         $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageId, DefaultReportContent::PRE_MATCH_TYPE, true);
+        $defaultLanguageReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($defaultLanguage->getId(), DefaultReportContent::PRE_MATCH_TYPE, true);
 
+        $defaultReportContent = $contentManager->extendContent($defaultLanguageReportContent, $defaultReportContent);
         if (!empty($defaultReportContent)) {
             $report = $contentManager->extendContent($defaultReportContent, $report);
         }
@@ -618,7 +620,9 @@ class MatchManager extends BasicManager
 
         $match = null;
         if (!is_null($matchLanguage)) {
-            $preMatchData = $contentManager->extendContent($defaultMatchLanguage->getArrayCopy(), $matchLanguage->getArrayCopy());
+            $preMatchData = $defaultMatchLanguage->getId() != $matchLanguage->getId() ?
+                $contentManager->extendContent($defaultMatchLanguage->getArrayCopy(), $matchLanguage->getArrayCopy()) :
+                $defaultMatchLanguage->getArrayCopy();
 
             //Match report title
             $title = $preMatchData['postMatchReportTitle'];
@@ -700,17 +704,12 @@ class MatchManager extends BasicManager
             }
         }
 
-        if (empty($report['title']) || empty($report['intro']) || empty($report['headerImage'])) {
-            $contentManager = ContentManager::getInstance($this->getServiceLocator());
-            $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageId, DefaultReportContent::POST_MATCH_TYPE);
-            if ($defaultReportContent !== null) {
-                if (empty($report['title']))
-                    $report['title'] = $defaultReportContent->getTitle();
-                if (empty($report['intro']))
-                    $report['intro'] = $defaultReportContent->getIntro();
-                if (empty($report['headerImage']))
-                    $report['headerImage'] = $defaultReportContent->getHeaderImage();
-            }
+        $defaultReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($languageId, DefaultReportContent::POST_MATCH_TYPE, true);
+        $defaultLanguageReportContent = $contentManager->getDefaultReportContentByTypeAndLanguage($defaultLanguage->getId(), DefaultReportContent::POST_MATCH_TYPE, true);
+
+        $defaultReportContent = $contentManager->extendContent($defaultLanguageReportContent, $defaultReportContent);
+        if (!empty($defaultReportContent)) {
+            $report = $contentManager->extendContent($defaultReportContent, $report);
         }
 
         //Leagues Positions
