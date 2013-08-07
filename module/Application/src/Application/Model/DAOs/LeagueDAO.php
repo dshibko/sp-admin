@@ -166,9 +166,10 @@ class LeagueDAO extends AbstractDAO {
 
     public function getAllLeagues($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('l.id, l.type, l.displayName, l.startDate, l.endDate, s.displayName as seasonName, s.id as seasonId')
+        $qb->select('l.id, l.type, l.displayName, l.startDate, l.endDate, s.displayName as seasonName, s.id as seasonId, lr.regionId')
             ->from($this->getRepositoryName(), 'l')
             ->join('l.season', 's')
+            ->leftJoin('l.leagueRegions', 'lr')
             ->orderBy('l.startDate', 'DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
