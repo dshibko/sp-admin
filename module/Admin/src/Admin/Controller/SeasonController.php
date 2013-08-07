@@ -161,7 +161,7 @@ class SeasonController extends LeagueController {
 
             $activeTab = 0;
             foreach ($regions as $k=>$region) {
-                $activeTab = $region['id'] == $activeRegionId ? ++$k : $activeTab;
+                $activeTab = $region['id'] == $activeRegionId ? ($k+1) : $activeTab;
                 $languageFieldsets = array();
                 foreach ($languages as $language)
                     $languageFieldsets [] = new LeagueLanguageFieldset($language);
