@@ -51,7 +51,7 @@ class LeagueUserDAO extends AbstractDAO {
         $nowTime->setTime(0, 0, 0);
         $query = $this->getEntityManager()->createQuery('
             SELECT
-                lu.points, lu.accuracy, lu.place, lu.previousPlace, l.type, ll.displayName, ldl.displayName defaultDisplayName
+                lu.points, lu.accuracy, lu.place, lu.previousPlace, l.type, ll.displayName, ldl.displayName defaultDisplayName, l.displayName internalName
             FROM
                '.$this->getRepositoryName().' as lu
             INNER JOIN lu.league l WITH l.season = ' . $season->getId() . '
@@ -155,7 +155,7 @@ class LeagueUserDAO extends AbstractDAO {
         $rsm->addScalarResult('users','users');
         $query = $this->getEntityManager()->createNativeQuery("
             SELECT
-                1 points
+                1 users
             FROM
                league_user lu
                WHERE lu.league_id = $leagueId AND lu.place IS NOT NULL

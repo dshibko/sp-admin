@@ -34,6 +34,7 @@ class LeagueStats extends AbstractHelper
     private $wasInitialized = false;
     private $overallLeagueUsers;
     private $temporalLeagueUsers;
+    private $privateLeagueUsers;
     private $globalPoints = 0;
     private $globalAccuracy = 0;
     private $currentSeason;
@@ -52,19 +53,28 @@ class LeagueStats extends AbstractHelper
             $language = $user->getLanguage();
             $defaultLanguage = LanguageManager::getInstance($this->serviceLocator)->getDefaultLanguage();
             $leagueUsers = $leagueUserDAO->getUserLeagues($user, $this->currentSeason, $language->getId(), $defaultLanguage->getId());
-            $this->overallLeagueUsers = $this->temporalLeagueUsers = array();
+            $this->overallLeagueUsers = $this->temporalLeagueUsers = $this->privateLeagueUsers = array();
             foreach ($leagueUsers as $leagueUser)
                 if ($leagueUser['place'] != null) {
                     if (empty($leagueUser['displayName']) && !$language->getIsDefault())
                         $leagueUser['displayName'] = $leagueUser['defaultDisplayName'];
-                    if ($leagueUser['type'] == League::MINI_TYPE)
-                        $this->temporalLeagueUsers [] = $leagueUser;
-                    else if ($leagueUser['type'] == League::GLOBAL_TYPE) {
-                        array_unshift($this->overallLeagueUsers, $leagueUser);
-                        $this->globalPoints = $leagueUser['points'];
-                        $this->globalAccuracy = $leagueUser['accuracy'];
-                    } else if ($leagueUser['type'] == League::REGIONAL_TYPE)
-                        array_push($this->overallLeagueUsers, $leagueUser);
+                    switch($leagueUser['type']) {
+                        case League::MINI_TYPE:
+                            $this->temporalLeagueUsers [] = $leagueUser;
+                            break;
+                        case League::PRIVATE_TYPE:
+                            $leagueUser['displayName'] = $leagueUser['internalName'];
+                            $this->privateLeagueUsers [] = $leagueUser;
+                            break;
+                        case League::GLOBAL_TYPE:
+                            array_unshift($this->overallLeagueUsers, $leagueUser);
+                            $this->globalPoints = $leagueUser['points'];
+                            $this->globalAccuracy = $leagueUser['accuracy'];
+                            break;
+                        case League::REGIONAL_TYPE:
+                            array_push($this->overallLeagueUsers, $leagueUser);
+                            break;
+                    }
                 }
         }
         return $this;
@@ -86,6 +96,11 @@ class LeagueStats extends AbstractHelper
     public function getTemporalLeagueUsers()
     {
         return $this->temporalLeagueUsers;
+    }
+
+    public function getPrivateLeagueUsers()
+    {
+        return $this->privateLeagueUsers;
     }
 
     public function getCurrentSeason()
