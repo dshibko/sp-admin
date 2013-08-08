@@ -896,8 +896,6 @@ msgstr "Score Predictor"
 msgid "Terms were saved successfully."
 msgstr "Terms were saved successfully."
 
-# private leagues
-
 msgid "A private league with the league code %s hasn't been not found"
 msgstr "A private league with the league code %s hasn't been not found"
 
@@ -960,3 +958,4 @@ msgstr "Admin can't leave the private league"
 
 msgid "Unique league code"
 msgstr "Unique league code"
+
