@@ -9,7 +9,7 @@ class MatchReportContentFieldset extends LanguageFieldset
 
     const TITLE_MAX_LENGTH = 255;
 
-    public function __construct($language) {
+    public function __construct($language, $required = 0) {
 
         parent::__construct($language);
 
@@ -17,7 +17,7 @@ class MatchReportContentFieldset extends LanguageFieldset
             'name' => 'title',
             'type'  => 'text',
             'attributes' => array(
-                'required' => 'required',
+                'required' => $required,
                 'maxlength' => self::TITLE_MAX_LENGTH
             ),
             'options' => array(
@@ -29,7 +29,7 @@ class MatchReportContentFieldset extends LanguageFieldset
             'name' => 'intro',
             'type'  => 'textarea',
             'attributes' => array(
-                'required' => 'required'
+                'required' => $required
             ),
             'options' => array(
                 'label' => 'Intro',
@@ -40,7 +40,7 @@ class MatchReportContentFieldset extends LanguageFieldset
             'name' => 'headerImage',
             'type'  => 'file',
             'attributes' => array(
-                'required' => 'required',
+                'required' => $required,
                 'isImage' => true,
             ),
             'options' => array(

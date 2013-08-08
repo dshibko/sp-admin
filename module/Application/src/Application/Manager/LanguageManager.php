@@ -66,7 +66,7 @@ class LanguageManager extends BasicManager {
             if ($isoCode != null)
                 $country = $applicationManager->getCountryByISOCode($isoCode);
         } else
-            $country = $user->getCountry();
+            return $user->getLanguage();
         if ($country == null || $country->getLanguage() == null)
             return $this->getDefaultLanguage();
         else

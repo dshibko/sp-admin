@@ -65,7 +65,7 @@ $this->headTitle($title);
                                 <?php
                                     $url = $league['type'] == \Application\Model\Entities\League::MINI_TYPE  ?
                                         $this->url('admin-leagues', array('action' => 'editMiniLeague', 'id' => $league['id'])) :
-                                        $this->url('admin-seasons', array('action' => 'edit', 'id' => $league['seasonId']));
+                                        $this->url('admin-seasons', array('action' => 'edit', 'id' => $league['seasonId'], 'regionId' => $league['regionId']));
                                 ?>
                                 <a href="<?=$url?>" class="btn mini blue">
                                     <i class="icon-edit"></i>

@@ -80,10 +80,11 @@ return array(
             'admin-seasons' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/admin/seasons[/][:action][/:id]',
+                    'route'    => '/admin/seasons[/][:action][/:id][/:regionId]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
+                        'regionId'=> '[0-9]*',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'Admin\Controller',

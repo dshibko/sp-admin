@@ -1409,6 +1409,10 @@ DROP TABLE `prize`;
 
 ALTER TABLE `league_region` DROP `display_name`;
 
+--dsh 06.08
+
+ALTER TABLE  `default_report_content` CHANGE  `header_image`  `header_image` VARCHAR( 255 ) CHARACTER SET utf8 NULL
+
 -- oko 05.08
 
 CREATE TABLE `private_league` (

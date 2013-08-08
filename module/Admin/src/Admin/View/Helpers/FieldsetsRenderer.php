@@ -17,7 +17,7 @@ abstract class FieldsetsRenderer extends AbstractHelper
      * @param bool $horizontalTabs
      * @return string
      */
-    public function __invoke($regionFieldsets, $add = true, $uniqueName = '', $horizontalTabs = true)
+    public function __invoke($regionFieldsets, $add = true, $uniqueName = '', $horizontalTabs = true, $activeTab = 0)
     {
         $html = '<div class="row-fluid form-vertical">
                <div class="span12">
@@ -25,12 +25,12 @@ abstract class FieldsetsRenderer extends AbstractHelper
                      <ul class="nav nav-tabs' . ($horizontalTabs ? '' : ' tabs-left') . '">';
         $i = 0;
         foreach ($regionFieldsets as $regionFieldset) {
-            $html .= '<li' . ($i == 0 ? ' class="active"' : '') . '><a href="#tab_' . $uniqueName . (++$i) . '" data-toggle="tab">' . $this->getName($regionFieldset) . '</a></li>';
+            $html .= '<li' . ($i == $activeTab ? ' class="active"' : '') . '><a href="#tab_' . $uniqueName . (++$i) . '" data-toggle="tab">' . $this->getName($regionFieldset) . '</a></li>';
         }
         $html .= '</ul><div class="tab-content">';
         $i = 0;
         foreach ($regionFieldsets as $regionFieldset) {
-            $html .= '<div class="tab-pane' . ($i == 0 ? ' active' : '') . '" id="tab_' . $uniqueName . (++$i) . '">';
+            $html .= '<div class="tab-pane' . ($i == $activeTab ? ' active' : '') . '" id="tab_' . $uniqueName . (++$i) . '">';
             $html .= $this->renderRegionFieldset($regionFieldset, $add);
             $html .= '</div>';
         }

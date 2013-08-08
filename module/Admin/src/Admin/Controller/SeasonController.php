@@ -108,7 +108,6 @@ class SeasonController extends LeagueController {
 
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
-                        return $this->redirect()->toRoute(self::SEASONS_INDEX_ROUTE, array('action' => 'add'));
                     }
                 } else
                     $form->handleErrorMessages($form->getMessages(), $this->flashMessenger());
@@ -136,6 +135,8 @@ class SeasonController extends LeagueController {
                 ));
             }
 
+            $activeRegionId = (int) $this->params()->fromRoute('regionId', 0);
+
             $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
 
@@ -158,7 +159,9 @@ class SeasonController extends LeagueController {
                 $globalRegionLanguageFieldsets [] = new SeasonLanguageFieldset($language, $language['isDefault']);
             $globalFieldset = new SeasonRegionLanguageFieldset($fakeGlobalRegion->getArrayCopy(), $globalRegionLanguageFieldsets);
 
-            foreach ($regions as $region) {
+            $activeTab = 0;
+            foreach ($regions as $k=>$region) {
+                $activeTab = $region['id'] == $activeRegionId ? ($k+1) : $activeTab;
                 $languageFieldsets = array();
                 foreach ($languages as $language)
                     $languageFieldsets [] = new LeagueLanguageFieldset($language);
@@ -215,6 +218,7 @@ class SeasonController extends LeagueController {
 
             return array(
                 'id' => $id,
+                'activeTab' => $activeTab,
                 'form' => $form,
                 'action' => 'edit',
                 'editableDates' => $editableDates,

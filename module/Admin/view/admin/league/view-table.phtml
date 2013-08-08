@@ -24,7 +24,7 @@
                             <?php foreach ($this->leagueUsers as $user) : ?>
                                 <tr>
                                     <td><?=$user['place']?></td>
-                                    <td><?=$user['displayName']?></td>
+                                    <td><a href="<?=$this->url('admin-users', array('action' => 'view', 'id' => $user['userId']));?>"><?=$user['displayName']?></a></td>
                                     <td><img src="<?=$user['flagImage']?>" itemprop="nationality" alt="<?=$user['country']?>"></td>
                                     <td><?=$user['accuracy']?></td>
                                     <td><?=$user['points']?></td>
