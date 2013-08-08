@@ -8,7 +8,6 @@ $this->headTitle($this->leagueName . ' - ' . $this->seasonName);
                 <link rel="stylesheet" href="/css/private-league.css">
                 <?php if ($this->league->getCreator()->getId() == $this->getCurrentUser()->getId()) : ?>
                     <div style="display: none" id="private-league-code"><?=$this->league->getPrivateLeague()->getUniqueHash()?></div>
-                    <a href="#" id="league-code-button" class="more-info private-league-button"><?=$this->translate('League Code')?></a>
                     <a href="#" id="league-edit-button" class="more-info private-league-button"><?=$this->translate('Edit')?></a>
                     <a href="<?=$this->url('delete-private-league', array('code' => $this->league->getPrivateLeague()->getUniqueHash()))?>"
                        id="league-delete-button" style="display: none" class="more-info private-league-button"
