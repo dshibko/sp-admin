@@ -67,10 +67,12 @@ $this->headTitle($title);
                                         $this->url('admin-leagues', array('action' => 'editMiniLeague', 'id' => $league['id'])) :
                                         $this->url('admin-seasons', array('action' => 'edit', 'id' => $league['seasonId'], 'regionId' => $league['regionId']));
                                 ?>
-                                <a href="<?=$url?>" class="btn mini blue">
-                                    <i class="icon-edit"></i>
-                                    <?=$this->translate('Edit')?>
-                                </a>
+                                <?php if ($league['type'] != \Application\Model\Entities\League::PRIVATE_TYPE) : ?>
+                                    <a href="<?=$url?>" class="btn mini blue">
+                                        <i class="icon-edit"></i>
+                                        <?=$this->translate('Edit')?>
+                                    </a>
+                                <?php endif; ?>
                                 <a href="<?=$this->url('admin-leagues', array('action' => 'viewTable', 'id' => $league['id']))?>" class="btn mini green">
                                     <i class="icon-eye-open"></i>
                                     <?=$this->translate('Table')?>
