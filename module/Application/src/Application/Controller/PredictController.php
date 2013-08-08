@@ -75,11 +75,6 @@ class PredictController extends AbstractActionController {
             $userLanguage = $user->getLanguage();
             $matchReport = $matchManager->getPreMatchLanguageReport($currentMatch['id'], $userLanguage->getId());
 
-            $utcTime = new \DateTime();
-            $startUtcTime = $currentMatch['startTime'];
-            if ($startUtcTime < $utcTime)
-                $currentMatch['status'] = Match::LIVE_STATUS;
-
             if ($currentMatch['status'] == Match::PRE_MATCH_STATUS) {
 
                 $securityKey = $this->generateSecurityKey(array($currentMatch['id'], $currentMatch['homeId'], $currentMatch['awayId']));

@@ -127,10 +127,14 @@ class PredictionManager extends BasicManager {
         $matchData = $matchDAO->getNearestMatch($offset, $season, $skipCache);
         if (!empty($matchData)) {
             $match = $matchDAO->getMatchInfo($matchData['matchId'], $hydrate, $skipCache);
+            $utcTime = new \DateTime();
+            $startUtcTime = $match['startTime'];
+            if ($startUtcTime < $utcTime)
+                $currentMatch['status'] = Match::LIVE_STATUS;
             $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
-            $homeSquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['homeId'], $matchData['competitionId'], $season->getId(), $hydrate, $skipCache);
+            $homeSquad = $this->getTeamSquad($match['status'] == Match::PRE_MATCH_STATUS && $match['hasLineUp'], $matchData['matchId'], $match['homeId'], $matchData['competitionId'], $season->getId(), $hydrate, $skipCache);
             $match['homeSquad'] = $this->preparePlayers($homeSquad);
-            $awaySquad = $this->getTeamSquad($match['hasLineUp'], $matchData['matchId'], $match['awayId'], $matchData['competitionId'], $season->getId(), $hydrate, $skipCache);
+            $awaySquad = $this->getTeamSquad($match['status'] == Match::PRE_MATCH_STATUS && $match['hasLineUp'], $matchData['matchId'], $match['awayId'], $matchData['competitionId'], $season->getId(), $hydrate, $skipCache);
             $match['awaySquad'] = $this->preparePlayers($awaySquad);
             $match['prediction'] = $predictionDAO->getUserPrediction($matchData['matchId'], $user->getId(), true, $skipCache);
             return $match;

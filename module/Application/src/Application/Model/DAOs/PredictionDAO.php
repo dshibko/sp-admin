@@ -580,9 +580,34 @@ class PredictionDAO extends AbstractDAO {
         $rsm->addScalarResult('away_team_score', 'away_team_score');
         $rsm->addScalarResult('players', 'players');
         $rsm->addScalarResult('teams', 'teams');
+        $rsm->addScalarResult('orders', 'orders');
         $query = $this->getEntityManager()
             ->createNativeQuery('
-             SELECT p.id, p.user_id, p.home_team_score, p.away_team_score, GROUP_CONCAT(IFNULL(pp.player_id, "") ORDER BY pp.order SEPARATOR \',\') players, GROUP_CONCAT(IFNULL(pp.team_id, "") ORDER BY pp.order SEPARATOR \',\') teams
+             SELECT p.id, p.user_id, p.home_team_score, p.away_team_score, GROUP_CONCAT(IFNULL(pp.player_id, "") ORDER BY pp.order, pp.team_id SEPARATOR \',\') players, GROUP_CONCAT(IFNULL(pp.team_id, "") ORDER BY pp.order, pp.team_id SEPARATOR \',\') teams, GROUP_CONCAT(IFNULL(pp.order, "") ORDER BY pp.order, pp.team_id SEPARATOR \',\') orders
+             FROM `prediction` p
+             LEFT OUTER JOIN `prediction_player` pp ON pp.prediction_id = p.id
+             WHERE p.match_id = ' . $matchId . '
+             GROUP BY p.id', $rsm);
+        return $query->getArrayResult();
+    }
+
+    /**
+     * @param int $matchId
+     * @return mixed
+     */
+    public function getPredictionsByMatchId($matchId) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('user_id', 'user_id');
+        $rsm->addScalarResult('is_correct_result', 'is_correct_result');
+        $rsm->addScalarResult('is_correct_score', 'is_correct_score');
+        $rsm->addScalarResult('correct_scorers', 'correct_scorers');
+        $rsm->addScalarResult('correct_scorers_order', 'correct_scorers_order');
+        $rsm->addScalarResult('predictions_players_count', 'predictions_players_count');
+        $rsm->addScalarResult('points', 'points');
+        $query = $this->getEntityManager()
+            ->createNativeQuery('
+             SELECT p.id, p.user_id, p.is_correct_result, p.is_correct_score, p.correct_scorers, p.correct_scorers_order, p.points, count(pp.id) predictions_players_count
              FROM `prediction` p
              LEFT OUTER JOIN `prediction_player` pp ON pp.prediction_id = p.id
              WHERE p.match_id = ' . $matchId . '

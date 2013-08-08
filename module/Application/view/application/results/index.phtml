@@ -48,7 +48,7 @@ if (empty($this->twitterShareCopy))
                                 <ul>
                                     <?php foreach ($this->current['goals']['homeScorers'] as $scorer) :?>
                                         <li>
-                                            <?=$scorer['displayName']?>
+                                            <?=$scorer['displayName']?> <?=$scorer['type'] == \Application\Model\Entities\MatchGoal::OWN_TYPE ? '(o.g.)' : ''?>
                                         </li>
                                     <?php endforeach; ?>
                                 </ul>
@@ -74,7 +74,7 @@ if (empty($this->twitterShareCopy))
                                 <ul>
                                     <?php foreach ($this->current['goals']['awayScorers'] as $scorer) :?>
                                     <li>
-                                        <?=$scorer['displayName']?>
+                                        <?=$scorer['displayName']?> <?=$scorer['type'] == \Application\Model\Entities\MatchGoal::OWN_TYPE ? '(o.g.)' : ''?>
                                     </li>
                                     <?php endforeach; ?>
                                 </ul>

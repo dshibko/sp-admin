@@ -27,7 +27,7 @@
 <section class="grid-layout">
     <div id="container" class="clearfix masonry centered fluid">
         <!--MOST POPULAR SCORE STARTS-->
-        <?php if (!empty($this->report['topScore']['home_team_score']) && !empty($this->report['topScore']['away_team_score'])):?>
+        <?php if ($this->report['topScore']['home_team_score'] !== null && $this->report['topScore']['away_team_score'] !== null ):?>
             <div class="item col1 summary">
                 <section>
                     <p>
