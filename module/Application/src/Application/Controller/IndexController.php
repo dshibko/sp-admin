@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use \Application\Manager\ExceptionManager;
+use Application\Manager\UserManager;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ApplicationManager;
 use \Application\Manager\ContentManager;
@@ -19,9 +20,10 @@ class IndexController extends AbstractActionController {
 
         try {
 
+            $userManager = UserManager::getInstance($this->getServiceLocator());
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
             if ($user != null)
-                if (!$user->getIsActive())
+                if (!$userManager->getIsUserActive($user))
                     return $this->redirect()->toRoute(self::SETUP_PAGE_ROUTE);
                 else
                     return $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);

@@ -31,6 +31,7 @@ class PredictController extends AbstractActionController {
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
+            $userManager = UserManager::getInstance($this->getServiceLocator());
 
             $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
 
@@ -44,8 +45,7 @@ class PredictController extends AbstractActionController {
             $facebookShareCopy = $twitterShareCopy = $securityKey = '';
 
             //Get setup form
-            if (!$user->getIsActive()){
-                $userManager = UserManager::getInstance($this->getServiceLocator());
+            if (!$userManager->getIsUserActive($user)) {
                 $setUpForm = $this->getServiceLocator()->get('Application\Form\SetUpForm');
                 $country = $user->getFacebookId() !== null ? $userManager->getUserGeoIpCountry() : $user->getCountry();
                 $language = $userManager->getUserLanguage();

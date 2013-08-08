@@ -4,6 +4,8 @@ namespace Application\Manager;
 
 use Application\Model\DAOs\AccountRemovalDAO;
 use Application\Model\Entities\AccountRemoval;
+use Application\Model\Entities\League;
+use Application\Model\Entities\User;
 use Zend\Authentication\Storage\Session;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
@@ -41,6 +43,12 @@ class UserManager extends BasicManager {
             self::$instance->setServiceLocator($serviceLocatorInterface);
         }
         return self::$instance;
+    }
+
+    public function getIsUserActive(User $user) {
+        $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+        return ($season == null) ? true :
+            UserDAO::getInstance($this->getServiceLocator())->getIsUserActive($user->getId(), $season->getGlobalLeague()->getId());
     }
 
     /**
@@ -513,10 +521,12 @@ class UserManager extends BasicManager {
         }
     }
 
-    public function registerLeagueUsers($league, $regionId = null)
+    public function registerMiniLeagueUsers(League $league, $regionId)
     {
         $userDAO = UserDAO::getInstance($this->getServiceLocator());
-        $userDAO->registerLeagueUsers($league->getId(), $regionId);
+        $regionalLeague = $league->getSeason()->getRegionalLeagueByRegionId($regionId);
+        if ($regionalLeague != null)
+            $userDAO->registerMiniLeagueUsers($league->getId(), $regionalLeague->getId());
     }
 
 }

@@ -149,11 +149,6 @@ class SeasonManager extends BasicManager {
 
         $seasonDAO->flush();
 
-        $userManager = UserManager::getInstance($this->getServiceLocator());
-        $userManager->registerLeagueUsers($globalLeague);
-        foreach ($regionalLeagues as $regionId => $regionalLeague)
-            $userManager->registerLeagueUsers($regionalLeague, $regionId);
-
         $seasonDAO->clearCache();
         $leagueDAO->clearCache();
         $seasonLanguageDAO->clearCache();

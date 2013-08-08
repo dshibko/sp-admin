@@ -142,14 +142,19 @@ class StatsManager extends BasicManager {
     }
 
     /**
+     * @throws \Neoco\Exception\InfoException
      * @return string
      */
     public function getIncompleteRegistrationsContent() {
         $userDAO = UserDAO::getInstance($this->getServiceLocator());
 
+        $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+        if ($season === null || $season->getGlobalLeague() == null)
+            throw new InfoException(MessagesConstants::INFO_ADMIN_OUT_OF_SEASON);
+
         $data = array(
             array(
-                'incomplete' => $userDAO->getIncompleteUsersNumber(),
+                'incomplete' => $userDAO->getIncompleteUsersNumber($season->getGlobalLeague()->getId()),
             ),
         );
 

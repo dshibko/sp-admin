@@ -228,7 +228,7 @@ class LeagueManager extends BasicManager {
         if ($editableLeague && $leagueId === -1) {
             $userManager = UserManager::getInstance($this->getServiceLocator());
             foreach ($league->getLeagueRegions() as $leagueRegion)
-                $userManager->registerLeagueUsers($league, $leagueRegion->getRegion()->getId());
+                $userManager->registerMiniLeagueUsers($league, $leagueRegion->getRegion()->getId());
         }
     }
 

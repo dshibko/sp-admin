@@ -73,7 +73,8 @@ class Module
         if ($matches != null) {
             if ($user != null) {
                 $routeName = $matches->getMatchedRouteName();
-                if (!$user->getIsActive()) {
+                $userManager = UserManager::getInstance($e->getApplication()->getServiceManager());
+                if (!$userManager->getIsUserActive($user)) {
                     if ($detect->isMobile() || $detect->isTablet()){
                         if ($routeName != self::SETUP_PAGE_ROUTE){
                             return $this->redirect(self::SETUP_PAGE_ROUTE, $e);
