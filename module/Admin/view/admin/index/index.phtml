@@ -119,6 +119,42 @@ $this->headTitle($title);
                 </a>
             </div>
         </div>
+        <div class="span4 responsive" data-tablet="span6 fix-offset" data-desktop="span4 fix-offset">
+            <div class="dashboard-stat purple">
+                <div class="visual">
+                    <i class="icon-briefcase m-icon-white"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <?=$this->privateLeaguesCount?>
+                    </div>
+                    <div class="desc">
+                        <?=$this->translate('Private Leagues')?>
+                    </div>
+                </div>
+                <a class="more" href="#">
+                    <?=$this->translate('View more')?> <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="span4 responsive" data-tablet="span6" data-desktop="span4">
+            <div class="dashboard-stat green">
+                <div class="visual">
+                    <i class="icon-user"></i>
+                </div>
+                <div class="details">
+                    <div class="number">
+                        <?=$this->privateLeaguesUsersCount?>
+                    </div>
+                    <div class="desc">
+                        <?=$this->translate('Private Leagues Players')?>
+                    </div>
+                </div>
+                <a class="more" href="#">
+                    <?=$this->translate('View more')?> <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
     </div>
     <!-- END DASHBOARD STATS -->
     <div class="clearfix"></div>

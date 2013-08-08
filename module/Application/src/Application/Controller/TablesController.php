@@ -45,14 +45,14 @@ class TablesController extends AbstractActionController {
                 $regionalLeagueName = $leagueManager->getLeagueDisplayName($regionalLeague->getId());
                 $regionalLeagueUsers = $leagueManager->getLeagueTop($regionalLeague->getId(), League::REGIONAL_TYPE, self::TOP_PLAYERS_COUNT);
 
-                $temporalLeagues = $leagueManager->getTemporalLeagues($region, true);
+                $temporalLeagues = $leagueManager->getTemporalLeagues($region, $season, true);
                 foreach ($temporalLeagues as &$temporalLeague) {
                     $temporalLeague['leagueUsers'] = $leagueManager->getLeagueTop($temporalLeague['id'], League::MINI_TYPE, self::TOP_PLAYERS_COUNT);
                     $temporalLeague['displayName'] = $leagueManager->getLeagueDisplayName($temporalLeague['id']);
                 }
             }
 
-            $privateLeagues = $leagueManager->getPrivateLeagues($user->getId(), true);
+            $privateLeagues = $leagueManager->getPrivateLeagues($user->getId(), $season->getId(), true);
             foreach ($privateLeagues as &$privateLeague)
                 $privateLeague['leagueUsers'] = $leagueManager->getLeagueTop($privateLeague['id'], League::PRIVATE_TYPE, self::TOP_PLAYERS_COUNT);
 

@@ -7,7 +7,6 @@ $this->headTitle($this->leagueName . ' - ' . $this->seasonName);
             <?php if ($this->league->getType() == \Application\Model\Entities\League::PRIVATE_TYPE) : ?>
                 <link rel="stylesheet" href="/css/private-league.css">
                 <?php if ($this->league->getCreator()->getId() == $this->getCurrentUser()->getId()) : ?>
-
                     <a href="#" id="league-edit-button" class="more-info private-league-button"><?=$this->translate('Edit')?></a>
                     <a href="<?=$this->url('delete-private-league', array('code' => $this->league->getPrivateLeague()->getUniqueHash()))?>"
                        id="league-delete-button" style="display: none" class="more-info private-league-button"
@@ -19,8 +18,9 @@ $this->headTitle($this->leagueName . ' - ' . $this->seasonName);
                 <?php endif; ?>
             <?php endif; ?>
             <h1><?=$this->translate('League Table')?></h1>
-            <?php if ($this->league->getType() == \Application\Model\Entities\League::PRIVATE_TYPE) : ?>
-                <span class="private-league-code"><?=$this->translate('Unique league code:').' '.$this->league->getPrivateLeague()->getUniqueHash(); ?></span>
+            <?php if ($this->league->getType() == \Application\Model\Entities\League::PRIVATE_TYPE &&
+                        $this->league->getCreator()->getId() == $this->getCurrentUser()->getId()) : ?>
+                <span class="private-league-code"><?=$this->translate('Unique league code').': '.$this->league->getPrivateLeague()->getUniqueHash(); ?></span>
             <?php endif; ?>
             <div class="league">
                 <header class="clearfix">

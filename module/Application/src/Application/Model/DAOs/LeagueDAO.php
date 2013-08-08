@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use Application\Model\Entities\Season;
 use \Doctrine\ORM\Query\ResultSetMapping;
 use \Application\Model\Entities\League;
 use \Application\Model\DAOs\AbstractDAO;
@@ -149,11 +150,12 @@ class LeagueDAO extends AbstractDAO {
 
     /**
      * @param int $userId
+     * @param int $seasonId
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getPrivateLeagues($userId, $hydrate = false, $skipCache = false) {
+    public function getPrivateLeagues($userId, $seasonId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $today = new \DateTime();
         $today->setTime(0, 0, 0);
@@ -162,23 +164,55 @@ class LeagueDAO extends AbstractDAO {
             ->join('l.leagueUsers','lu', Expr\Join::WITH, 'lu.user = ' . $userId)
             ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::PRIVATE_TYPE)
             ->andWhere($qb->expr()->lte('l.startDate', ':today'))->setParameter('today', $today)
+            ->andWhere($qb->expr()->eq('l.season', ':seasonId'))->setParameter('seasonId', $seasonId)
             ->orderBy('l.endDate', 'DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
     /**
+     * @param int $seasonId
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getPrivateLeaguesCount($seasonId, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('l.id'))
+            ->from($this->getRepositoryName(), 'l')
+            ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::PRIVATE_TYPE)
+            ->andWhere($qb->expr()->eq('l.season', ':seasonId'))->setParameter('seasonId', $seasonId);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @param int $seasonId
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getPrivateLeaguesUsersCount($seasonId, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('distinct lu.user'))
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.leagueUsers', 'lu')
+            ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::PRIVATE_TYPE)
+            ->andWhere($qb->expr()->eq('l.season', ':seasonId'))->setParameter('seasonId', $seasonId);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
      * @param \Application\Model\Entities\Region $region
+     * @param Season $season
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getTemporalLeagues($region, $hydrate = false, $skipCache = false) {
+    public function getTemporalLeagues($region, $season, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('l, lr')
             ->from($this->getRepositoryName(), 'l')
             ->join('l.leagueRegions','lr', Expr\Join::WITH, 'lr.region = ' . $region->getId())
             ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::MINI_TYPE)
             ->andWhere($qb->expr()->lte('l.startDate', ':now'))->setParameter('now', new \DateTime())
+            ->andWhere($qb->expr()->eq('l.season', ':seasonId'))->setParameter('seasonId', $season->getId())
             ->orderBy('l.endDate', 'DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }

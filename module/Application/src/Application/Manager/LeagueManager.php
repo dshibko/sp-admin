@@ -234,24 +234,46 @@ class LeagueManager extends BasicManager {
 
     /**
      * @param int $userId
+     * @param int $seasonId
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getPrivateLeagues($userId, $hydrate = false, $skipCache = false) {
+    public function getPrivateLeagues($userId, $seasonId, $hydrate = false, $skipCache = false) {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
-        return $leagueDAO->getPrivateLeagues($userId, $hydrate, $skipCache);
+        return $leagueDAO->getPrivateLeagues($userId, $seasonId, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param int $seasonId
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getPrivateLeaguesCount($seasonId, $skipCache = false) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getPrivateLeaguesCount($seasonId, $skipCache);
+    }
+
+    /**
+     * @param int $seasonId
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getPrivateLeaguesUsersCount($seasonId, $skipCache = false) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getPrivateLeaguesUsersCount($seasonId, $skipCache);
     }
 
     /**
      * @param \Application\Model\Entities\Region $region
+     * @param Season $season
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getTemporalLeagues($region, $hydrate = false, $skipCache = false) {
+    public function getTemporalLeagues($region, $season, $hydrate = false, $skipCache = false) {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
-        return $leagueDAO->getTemporalLeagues($region, $hydrate, $skipCache);
+        return $leagueDAO->getTemporalLeagues($region, $season, $hydrate, $skipCache);
     }
 
     /**

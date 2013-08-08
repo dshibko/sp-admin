@@ -957,3 +957,6 @@ msgstr "Are you sure you want to remove the user permanently from this private l
 
 msgid "Admin can't leave the private league"
 msgstr "Admin can't leave the private league"
+
+msgid "Unique league code"
+msgstr "Unique league code"
