@@ -45,11 +45,6 @@ $(document).ready(function () {
         }
     });
 
-    $("#league-code-button").click(function(e) {
-        e.preventDefault();
-        alertDialog($("#private-league-code").html());
-    });
-
     $("#league-edit-button").click(function(e) {
         e.preventDefault();
         $("#league-edit-button").hide();
@@ -183,8 +178,4 @@ function hideLoaderImg(type) {
             $('form#season-filter').parents('header:first').children('img').remove();
             break;
     }
-}
-
-function alertDialog(text) {
-    alert(text);
 }
