@@ -65,11 +65,13 @@ $(document).ready(function () {
     resizeFix();
 
     var countdown = $('aside.competition-countdown');
-    var untilTime = countdown.find('strong').text();
-    startTime = new Date(parseInt(untilTime) * 1000);
-    countdown.find('strong').remove();
-    initCountdown();
-    countdown.show();
+    if (countdown.length > 0) {
+        var untilTime = countdown.find('strong').text();
+        startTime = new Date(parseInt(untilTime) * 1000);
+        countdown.find('strong').remove();
+        initCountdown();
+        countdown.show();
+    }
 
     $("#home-team-score, #away-team-score").blur(function() {
         if ($(this).val() == '' && !$(this).attr('disabled'))
@@ -160,30 +162,30 @@ function initCountdown() {
 }
 
 function showCountdown(now) {
-            var cdEl = $("<strong></strong>");
-            cdEl.countdown({
-                until: startTime,
-                format: "DHMS",
-                layout: "{dnn} {hnn} {mnn} {snn}",
-                serverSync: function() {
-                    return now;
-                },
-                onTick: function (periods) {
-                    if (prevPeriods !== null) {
-                        var prevDate = getDateFromPeriods(prevPeriods);
-                        var newDate = getDateFromPeriods(periods);
-                        var timeDif = prevDate.getTime() - newDate.getTime();
-                        if (timeDif < 0 || timeDif > 1000) {
-                            $('aside.competition-countdown p strong').countdown('destroy').remove();
-                            initCountdown();
-                        }
-                    }
-                    prevPeriods = periods;
-                },
-                expiryUrl: liveMatchRedirect
-            });
-            $('aside.competition-countdown p').prepend(cdEl);
-        }
+    var cdEl = $("<strong></strong>");
+    cdEl.countdown({
+        until: startTime,
+        format: "DHMS",
+        layout: "{dnn} {hnn} {mnn} {snn}",
+        serverSync: function() {
+            return now;
+        },
+        onTick: function (periods) {
+            if (prevPeriods !== null) {
+                var prevDate = getDateFromPeriods(prevPeriods);
+                var newDate = getDateFromPeriods(periods);
+                var timeDif = prevDate.getTime() - newDate.getTime();
+                if (timeDif < 0 || timeDif > 1000) {
+                    $('aside.competition-countdown p strong').countdown('destroy').remove();
+                    initCountdown();
+                }
+            }
+            prevPeriods = periods;
+        },
+        expiryUrl: liveMatchRedirect
+    });
+    $('aside.competition-countdown p').prepend(cdEl);
+}
 
 function getDateFromPeriods(periods) {
     var date = new Date();
