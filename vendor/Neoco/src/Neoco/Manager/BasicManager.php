@@ -31,7 +31,7 @@ abstract class BasicManager implements ServiceLocatorAwareInterface {
     /**
      * @static
      * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
-     * @return AuthenticationManager
+     * @return BasicManager
      */
     abstract static function getInstance(ServiceLocatorInterface $serviceLocatorInterface);
 

@@ -13,12 +13,8 @@ try {
     $application = Zend\Mvc\Application::init(require 'config/application.config.php');
     $application->run();
 } catch (\Exception $e) {
-    if (isset($application))
-        \Application\Manager\ExceptionManager::getInstance($application->getServiceManager())->handleFatalException($e);
-    else {
-        $logManager = new \Application\Manager\LogManager();
-        $logManager->logAppException($e, \Zend\Log\Logger::CRIT);
-    }
+    $logManager = new \Application\Manager\LogManager();
+    $logManager->logAppException($e, \Zend\Log\Logger::CRIT);
     header('HTTP/1.1 500 Internal Server Error');
     require 'module/Application/view/error/500.php';
 }
