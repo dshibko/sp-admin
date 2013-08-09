@@ -6,7 +6,6 @@ use Application\Model\Entities\Season;
 use \Doctrine\ORM\Query\ResultSetMapping;
 use \Application\Model\Entities\League;
 use \Application\Model\DAOs\AbstractDAO;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\Query\Expr;
 
@@ -207,12 +206,14 @@ class LeagueDAO extends AbstractDAO {
      */
     public function getTemporalLeagues($region, $season, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
+        $nowTime = new \DateTime();
+        $nowTime->setTime(0, 0, 0);
         $qb->select('l, lr')
             ->from($this->getRepositoryName(), 'l')
             ->join('l.leagueRegions','lr', Expr\Join::WITH, 'lr.region = ' . $region->getId())
             ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::MINI_TYPE)
-            ->andWhere($qb->expr()->lte('l.startDate', ':now'))->setParameter('now', new \DateTime())
-            ->andWhere($qb->expr()->gte('l.endDate', ':now'))->setParameter('now', new \DateTime())
+            ->andWhere($qb->expr()->lte('l.startDate', ':now'))->setParameter('now', $nowTime)
+            ->andWhere($qb->expr()->gte('l.endDate', ':now'))->setParameter('now', $nowTime)
             ->andWhere($qb->expr()->eq('l.season', ':seasonId'))->setParameter('seasonId', $season->getId())
             ->orderBy('l.endDate', 'DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);

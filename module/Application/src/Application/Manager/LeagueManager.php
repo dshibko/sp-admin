@@ -405,10 +405,10 @@ class LeagueManager extends BasicManager {
             throw new \Exception(MessagesConstants::ERROR_NOT_MEMBER_OF_LEAGUE);
 
         $fromPlace = $leagueUser->getPlace();
+        if (!empty($fromPlace))
+            $leagueUserDAO->moveUpLeagueUserPlaces($league, $fromPlace);
 
         $leagueUserDAO->remove($leagueUser);
-
-        $leagueUserDAO->moveUpLeagueUserPlaces($league, $fromPlace);
 
     }
 

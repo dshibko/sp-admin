@@ -138,8 +138,10 @@
             var currentDates = dates.val();
             var datePickerOptions = {format: 'dd/MM/yyyy'};
             if (currentDates == '') {
-                var fromDate = Date.today().add({days: 1});
-                var toDate = Date.today().add({days: 31});
+                var fromDate = Date.today();
+                var toDate = Date.today().add({days: 30});
+//                var fromDate = Date.today().add({days: 1});
+//                var toDate = Date.today().add({days: 31});
             } else {
                 var fromDate = parseDate($.trim(currentDates.split("-")[0]));
                 var toDate = parseDate($.trim(currentDates.split("-")[1]));
@@ -168,7 +170,8 @@
                     separator: ' - ',
                     startDate: fromDate,
                     endDate: toDate,
-                    minDate: tomorrow.clone(),
+                    minDate: Date.today(),
+//                    minDate: tomorrow.clone(),
                     maxDate: tomorrow.clone().add({years: 2}),
                     locale: {
                         applyLabel: 'Submit',

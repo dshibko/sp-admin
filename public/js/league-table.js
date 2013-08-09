@@ -83,6 +83,8 @@ function loadLeagueRows(type, offset, callback) {
                 $('#show-more').hide();
             else
                 $('#show-more').show();
+            if ($('#league-delete-button:visible').length > 0)
+                $("#league-table").find("td.player a.remove-player").show();
             blockShowMore = false;
         },
         complete: function() {
@@ -108,6 +110,8 @@ function loadAroundYouLeagueRows() {
             $("#league-table tr:not(:first)").remove();
             $("#league-table tbody").append(data);
             $('#show-more').hide();
+            if ($('#league-delete-button:visible').length > 0)
+                $("#league-table").find("td.player a.remove-player").show();
         },
         complete: function() {
             hideLoaderImg(selectLoaderType);
@@ -129,6 +133,8 @@ function loadYourFriendsLeagueRows() {
             $("#league-table tr:not(:first)").remove();
             $("#league-table tbody").append(data);
             $('#show-more').hide();
+            if ($('#league-delete-button:visible').length > 0)
+                $("#league-table").find("td.player a.remove-player").show();
         },
         complete: function() {
             hideLoaderImg(selectLoaderType);

@@ -139,7 +139,7 @@ class LeagueUserDAO extends AbstractDAO {
             FROM
                (SELECT * FROM league_user lu
                WHERE lu.league_id = $leagueId $placeIsNull $facebookCondition
-            ORDER BY lu.place is not null DESC, lu.place ASC, lu.join_date DESC
+            ORDER BY lu.place is not null DESC, lu.place ASC, lu.join_date ASC
                 $limit) as lu
                 INNER JOIN user u ON lu.user_id = u.id
                 INNER JOIN country c ON u.country_id = c.id
