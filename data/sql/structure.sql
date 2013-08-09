@@ -1422,3 +1422,6 @@ CREATE TABLE `private_league` (
 ) ENGINE = InnoDB;
 ALTER TABLE `private_league` ADD FOREIGN KEY (league_id) REFERENCES `league`(id);
 ALTER TABLE `private_league` ADD UNIQUE INDEX `unique_hash` (`unique_hash`);
+
+-- oko 09.08
+ALTER TABLE `user` DROP `is_active`;

@@ -16,13 +16,6 @@ class User extends BasicObject {
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_active", type="boolean")
-     */
-    protected $isActive = false;
-
-    /**
-     * @var bool
-     *
      * @ORM\Column(name="is_public", type="boolean")
      */
     protected $isPublic = true;
@@ -615,23 +608,6 @@ class User extends BasicObject {
     public function getLeagueUsers()
     {
         return $this->leagueUsers;
-    }
-
-    /**
-     * @param boolean $active
-     */
-    public function setIsActive($active)
-    {
-        $this->isActive = $active;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
     }
 
     /**
