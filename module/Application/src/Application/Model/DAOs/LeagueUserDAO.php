@@ -103,13 +103,14 @@ class LeagueUserDAO extends AbstractDAO {
 
     /**
      * @param int $leagueId
+     * @param bool $placeIsNotNull
      * @param int $top
      * @param int $offset
      * @param array|null $facebookIds
      * @param bool $skipCache
      * @return array
      */
-    public function getLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null, $skipCache = false) {
+    public function getLeagueTop($leagueId, $placeIsNotNull = true, $top = 0, $offset = 0, $facebookIds = null, $skipCache = false) {
         if ($facebookIds !== null) {
             if (empty($facebookIds)) return array();
             $userDAO = UserDAO::getInstance($this->getServiceLocator());
@@ -131,38 +132,19 @@ class LeagueUserDAO extends AbstractDAO {
         $limit = '';
         if ($top > 0)
             $limit = "LIMIT $offset, $top";
+        $placeIsNull = $placeIsNotNull ? 'AND lu.place IS NOT NULL' : '';
         $query = $this->getEntityManager()->createNativeQuery("
             SELECT
-                lu.points, lu.accuracy, lu.place, lu.previous_place, u.display_name, c.flag_image, c.name as country, u.id as user_id
+                IFNULL(lu.points, 0) points, lu.accuracy, lu.place, lu.previous_place, u.display_name, c.flag_image, c.name as country, u.id as user_id
             FROM
                (SELECT * FROM league_user lu
-               WHERE lu.league_id = $leagueId AND lu.place IS NOT NULL $facebookCondition
-            ORDER BY lu.place ASC
+               WHERE lu.league_id = $leagueId $placeIsNull $facebookCondition
+            ORDER BY lu.place is not null DESC, lu.place ASC, lu.join_date DESC
                 $limit) as lu
                 INNER JOIN user u ON lu.user_id = u.id
                 INNER JOIN country c ON u.country_id = c.id
         ", $rsm);
         return $this->prepareQuery($query, array(LeagueUserPlaceDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
-    }
-
-    /**
-     * @param int $leagueId
-     * @param bool $skipCache
-     * @return bool
-     */
-    public function getHasPlacedUsers($leagueId, $skipCache = false) {
-        $rsm = new ResultSetMapping();
-        $rsm->addScalarResult('users','users');
-        $query = $this->getEntityManager()->createNativeQuery("
-            SELECT
-                1 users
-            FROM
-               league_user lu
-               WHERE lu.league_id = $leagueId AND lu.place IS NOT NULL
-               GROUP BY lu.league_id
-        ", $rsm);
-        $result = $this->prepareQuery($query, array(LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
-        return !empty($result);
     }
 
     /**

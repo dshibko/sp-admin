@@ -278,22 +278,6 @@ class LeagueManager extends BasicManager {
 
     /**
      * @param int $leagueId
-     * @param int $top
-     * @param int $offset
-     * @param array|null $facebookIds
-     * @return array
-     */
-    public function getPrivateLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null) {
-        $leagueTop = $this->getLeagueTop($leagueId, $top, $offset, $facebookIds);
-        if (empty($leagueTop)) {
-            $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-            $leagueTop = $leagueUserDAO->getPrivateLeagueTop($leagueId, $top, $offset);
-        }
-        return $leagueTop;
-    }
-
-    /**
-     * @param int $leagueId
      * @param string $type
      * @param int $top
      * @param int $offset
@@ -302,15 +286,7 @@ class LeagueManager extends BasicManager {
      */
     public function getLeagueTop($leagueId, $type, $top = 0, $offset = 0, $facebookIds = null) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-        if ($type != League::PRIVATE_TYPE)
-            $leagueTop = $leagueUserDAO->getLeagueTop($leagueId, $top, $offset, $facebookIds);
-        else {
-            if ($leagueUserDAO->getHasPlacedUsers($leagueId))
-                $leagueTop = $leagueUserDAO->getLeagueTop($leagueId, $top, $offset, $facebookIds);
-            else
-                $leagueTop = $leagueUserDAO->getPrivateLeagueTop($leagueId, $top, $offset, $facebookIds);
-        }
-        return $leagueTop;
+        return $leagueUserDAO->getLeagueTop($leagueId, ($type != League::PRIVATE_TYPE), $top, $offset, $facebookIds);
     }
 
     /**
@@ -321,15 +297,7 @@ class LeagueManager extends BasicManager {
      */
     public function getLeagueUsersCount($leagueId, $type, $skipCache = false) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-        if ($type != League::PRIVATE_TYPE)
-            $userCount = $leagueUserDAO->getLeagueUsersCount($leagueId, true, $skipCache);
-        else {
-            if ($leagueUserDAO->getHasPlacedUsers($leagueId))
-                $userCount = $leagueUserDAO->getLeagueUsersCount($leagueId, true, $skipCache);
-            else
-                $userCount = $leagueUserDAO->getLeagueUsersCount($leagueId, false, $skipCache);
-        }
-        return $userCount;
+        return $leagueUserDAO->getLeagueUsersCount($leagueId, $type != League::PRIVATE_TYPE, $skipCache);
     }
 
     /**

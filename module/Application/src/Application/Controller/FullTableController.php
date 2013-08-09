@@ -38,13 +38,16 @@ class FullTableController extends AbstractActionController {
             if ($league === null)
                 return $this->notFoundAction();
 
+            $user = $applicationManager->getCurrentUser();
+
+            if (!$leagueManager->getIsUserInLeague($league, $user))
+                return $this->notFoundAction();
+
             $leagueUsers = array();
             if ($league->getType() != League::PRIVATE_TYPE)
                 $leagueName = $leagueManager->getLeagueDisplayName($leagueId);
             else
                 $leagueName = $league->getDisplayName();
-
-            $user = $applicationManager->getCurrentUser();
 
             $seasonName = $seasonManager->getSeasonDisplayName($league->getSeason()->getId());
 
