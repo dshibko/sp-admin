@@ -231,7 +231,7 @@ if (empty($this->twitterShareCopy))
 
 </div>
 
-<?php if (!$this->getCurrentUser()->getIsActive()):?>
+<?php if (!empty($this->setUpForm)):?>
     <?php echo $this->partial('partials/setup-popup', array('form'=>$this->setUpForm));?>
 <?php endif;?>
 

@@ -32,6 +32,7 @@ class LeagueStats extends AbstractHelper
     }
 
     private $wasInitialized = false;
+    private $isActive = false;
     private $overallLeagueUsers;
     private $temporalLeagueUsers;
     private $privateLeagueUsers;
@@ -53,6 +54,7 @@ class LeagueStats extends AbstractHelper
             $language = $user->getLanguage();
             $defaultLanguage = LanguageManager::getInstance($this->serviceLocator)->getDefaultLanguage();
             $leagueUsers = $leagueUserDAO->getUserLeagues($user, $this->currentSeason, $language->getId(), $defaultLanguage->getId());
+            $this->isActive = !empty($leagueUsers);
             $this->overallLeagueUsers = $this->temporalLeagueUsers = $this->privateLeagueUsers = array();
             foreach ($leagueUsers as $leagueUser)
                 if ($leagueUser['place'] != null) {
@@ -106,6 +108,11 @@ class LeagueStats extends AbstractHelper
     public function getCurrentSeason()
     {
         return $this->currentSeason;
+    }
+
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 
 }

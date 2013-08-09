@@ -283,6 +283,7 @@ class Module
                     $authService = new AuthenticationService();
                     $authService->setAdapter($doctrineAuthAdapter);
                     $authService->setStorage($sm->get('AuthStorage'));
+//                    $authService->getStorage()->write('mads739@hotmail.com');
                     return $authService;
                 },
                 'Application\Form\RegistrationForm' => function($sm){

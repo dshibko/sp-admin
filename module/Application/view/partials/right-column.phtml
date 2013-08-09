@@ -13,7 +13,7 @@
                 <h1 itemprop="name"><?=$this->getCurrentUser()->getDisplayName()?></h1>
             </section>
 
-            <?php if ($this->getCurrentUser()->getIsActive() && $this->getLeagueStats()->getCurrentSeason() !== null) : ?>
+            <?php if ($this->getLeagueStats()->getCurrentSeason() !== null && $this->getLeagueStats()->getIsActive()) : ?>
                 <section class="block total-points">
                     <table>
                         <thead>
@@ -125,7 +125,7 @@
                 <?php endif; ?>
 
             <?php endif; ?>
-            <?php if ($this->getCurrentUser()->getIsActive() && $this->getLeagueStats()->getCurrentSeason() !== null) : ?>
+            <?php if ($this->getLeagueStats()->getCurrentSeason() !== null && $this->getLeagueStats()->getIsActive()) : ?>
                 <p class="full"><a href="<?=$this->url('tables')?>"><?=$this->translate('View full league tables')?></a></p>
             <?php endif;?>
         </div>

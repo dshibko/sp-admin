@@ -795,9 +795,6 @@ class User extends BasicObject {
         if (isset($data['role']) && $data['role'] instanceof \Application\Model\Entities\Role){
             $this->setRole($data['role']);
         }
-        if (isset($data['active'])){
-            $this->setIsActive($data['active']);
-        }
         if (isset($data['facebook_id'])){
             $this->setFacebookId($data['facebook_id']);
         }
