@@ -55,7 +55,7 @@ class PrivateLeagueController extends AbstractActionController {
                     if ($badWordsValidator->isValid($displayName)) {
                         try {
                             $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
-                            $leagueCode = $leagueManager->createPrivateLeague($displayName, $season, $user);
+                            $leagueCode = $leagueManager->createPrivateLeague(htmlspecialchars($displayName), $season, $user);
                             $this->flashMessenger()->addSuccessMessage(sprintf(MessagesConstants::SUCCESS_PRIVATE_LEAGUE_CREATED, $leagueCode));
                         } catch (\Exception $e) {
                             $this->flashMessenger()->addErrorMessage($e->getMessage());
