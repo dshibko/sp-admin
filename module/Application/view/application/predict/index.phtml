@@ -21,12 +21,12 @@ if (empty($this->twitterShareCopy))
                 <ul class="direction-nav">
                     <?php if ($this->ahead > 0) : ?>
                         <li class="prev-match">
-                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead != 1 ? $this->ahead - 1 : null));?>"><span><?=$this->translate('Prev')?> <?=$this->translate('match')?></span></a>
+                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead != 1 ? $this->ahead - 1 : null));?>"><?=$this->translate('Prev')?> <span><?=$this->translate('match')?></span></a>
                         </li>
                     <?php endif; ?>
                     <?php if ($this->ahead < $this->maxAhead + $this->liveMatches - 1) : ?>
                         <li class="next-match">
-                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead + 1));?>"><span><?=$this->translate('Next')?> <?=$this->translate('match')?></span></a>
+                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead + 1));?>"><?=$this->translate('Next')?> <span><?=$this->translate('match')?></span></a>
                         </li>
                     <?php endif; ?>
                 </ul>

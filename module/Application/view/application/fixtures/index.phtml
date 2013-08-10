@@ -6,9 +6,8 @@
     <div class="first-column fixtures">
         <hgroup>
             <h1><?=$title;?></h1>
-            <h2><?=$this->seasonName?></h2>
+            <h2><?=$this->seasonRegion != null ? $this->seasonRegion->getDisplayName() : ''?></h2>
         </hgroup>
-        <form>
         <table>
             <?php
                 $predictableCount = 0;
@@ -25,17 +24,17 @@
                                 <img src="<?=$this->clubLogo($fixture['homeLogo']);?>"  alt="<?=$fixture['homeName']?>"/>
                             </div>
                             <figcaption>
-                                    <span><?=$fixture['homeName']?></span>
-                                    <abbr title="<?=$fixture['homeName']?>"><?=$fixture['homeShortName']?></abbr>
+                                <span><?=$fixture['homeName']?></span>
+                                <abbr title="<?=$fixture['homeName']?>"><?=$fixture['homeShortName']?></abbr>
+                                <time>
+                                    <?php print $fixture['localStartTime']->format('D d M h.i a');?>
+                                    <?php //print strftime('%a %e %b %I.%M %P', $fixture['localStartTime']->getTimestamp()); ?>
+                                </time>
                             </figcaption>
                         </figure>
                     </td>
                     <td class="action-block">
                         <div>
-                                <time>
-                                    <?php print $fixture['localStartTime']->format('D d M h.i a');?>
-                                    <?php //print strftime('%a %e %b %I.%M %P', $fixture['localStartTime']->getTimestamp()); ?>
-                                </time>
                             <span><?=$fixture['competitionName']?></span>
                             <em><?=$this->translate('VS')?></em>
                             <?php if ($predictable) : ?>
@@ -49,16 +48,14 @@
                                 <img src="<?=$this->clubLogo($fixture['awayLogo']);?>" alt="<?=$fixture['awayName']?>"/>
                             </div>
                             <figcaption>
-                                    <span><?=$fixture['awayName']?></span>
-                                    <abbr title="<?=$fixture['awayName']?>"><?=$fixture['awayShortName']?></abbr>
+                                <span><?=$fixture['awayName']?></span>
+                                <abbr title="<?=$fixture['awayName']?>"><?=$fixture['awayShortName']?></abbr>
                             </figcaption>
                         </figure>
                     </td>
                 </tr>
             <?php endforeach; ?>
         </table>
-        </form>
     </div>
-
     <?php echo $this->partial('partials/right-column'); ?>
 </div>
