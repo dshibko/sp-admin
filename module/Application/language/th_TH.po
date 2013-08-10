@@ -1,0 +1,961 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2013-06-20 21:01+0300\n"
+"PO-Revision-Date: 2013-06-20 21:14+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;translate\n"
+"X-Poedit-Basepath: e:\\MyProjects\\scorepredictor\\tru002\\module"
+"\\Application\\\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: view/application/auth/forgot.phtml:2
+msgid "Forgot Password?"
+msgstr "ลืมรหัสผ่าน?"
+
+#: view/application/auth/forgot.phtml:24 view/application/auth/reset.phtml:29
+msgid "Submit"
+msgstr "ส่ง"
+
+#: view/application/auth/login.phtml:2 view/application/auth/login.phtml:42
+msgid "Sign In"
+msgstr "เข้าสู่ระบบ"
+
+#: view/application/auth/login.phtml:14 view/application/index/index.phtml:73
+msgid "Login with Facebook"
+msgstr "เข้าสู่ระบบผ่านเฟซบุ้ค"
+
+#: view/application/auth/login.phtml:25
+msgid "Enter Your Credentials"
+msgstr "กรุณากรอกข้อมูลของคุณ"
+
+#: view/application/auth/login.phtml:37 view/application/index/index.phtml:89
+msgid "Remember me"
+msgstr "จดจำฉันไว้"
+
+#: view/application/auth/login.phtml:45 view/application/index/index.phtml:95
+msgid "Forgotten password"
+msgstr "ลืมรหัสผ่าน"
+
+#: view/application/auth/login.phtml:48 view/application/index/index.phtml:97
+msgid "Not a member?"
+msgstr "ยังไม่ได้เป็นสมาชิก?"
+
+#: view/application/auth/login.phtml:49 view/application/index/index.phtml:98
+#: view/application/registration/index.phtml:179
+msgid "Register"
+msgstr "ลงทะเบียน"
+
+#: view/application/auth/reset.phtml:2
+msgid "Reset Password"
+msgstr "ตั้งรหัสผ่านใหม่"
+
+#: view/application/auth/reset.phtml:38
+msgid "Reset Password Page"
+msgstr "หน้าตั้งรหัสผ่านใหม่"
+
+#: view/application/content/help.phtml:9
+msgid "We would like to hear from you - any comments or suggestions or any questions you may have. Just use the form below."
+msgstr "เราต้องการทราบความเห็นของคุณ - มีความเห็น ข้อเสนอแนะ หรือคำถาม สามารถกรอกได้ในฟอร์มด้านล่าง"
+
+#: view/application/content/help.phtml:19
+msgid "Enter Your Contact Info and Message"
+msgstr "กรอกข้อมูลในการติดต่อและข้อความของคุณ"
+
+#: view/application/content/help.phtml:36
+msgid "Send"
+msgstr "ส่ง"
+
+#: view/application/content/help.phtml:37
+msgid "Reset"
+msgstr "ตั้งใหม่"
+
+#: view/application/content/help.phtml:42
+msgid "FAQs"
+msgstr "คำถามที่พบบ่อย"
+
+msgid "How to play"
+msgstr "วิธีการเล่น"
+
+msgid "Fixtures"
+msgstr "โปรแกรมการแข่ง"
+
+#: view/application/fixtures/index.phtml:39
+#: view/application/match/index.phtml:41 view/application/match/index.phtml:81
+#: view/application/predict/index.phtml:64
+#: view/application/predict/index.phtml:121
+#: view/application/results/index.phtml:60
+msgid "VS"
+msgstr "พบ"
+
+#: view/application/fixtures/index.phtml:41
+msgid "Predict the score"
+msgstr "ทำนายสกอร์"
+
+msgid "No more matches will be played in this season. Please join us when next season starts."
+msgstr "ฤดูกาลนี้ไม่มีเกมแข่งแล้ว กรุณากลับมาใหม่ในฤดูกาลหน้า"
+
+#: view/application/full-table/index.phtml:7
+msgid "League Table"
+msgstr "ตารางคะแนนลีก"
+
+#: view/application/full-table/index.phtml:14
+msgid "Everyone"
+msgstr "ทุกคน"
+
+#: view/application/full-table/index.phtml:16
+msgid "Your friends"
+msgstr "เพื่อนของคุณ"
+
+#: view/application/full-table/index.phtml:18
+msgid "You and around you"
+msgstr "คุณและรอบๆ ตัวคุณ"
+
+#: view/application/full-table/index.phtml:31
+#: view/application/tables/index.phtml:30
+#: view/application/tables/index.phtml:81
+#: view/application/tables/index.phtml:123
+msgid "pts"
+msgstr "คะแนน"
+
+#: view/application/full-table/index.phtml:57
+msgid "Show more"
+msgstr "แสดงเพิ่มเติม"
+
+#: view/application/index/index.phtml:72
+msgid "Already a member?"
+msgstr "เป็นสมาชิกแล้ว?"
+
+#: view/application/index/index.phtml:76
+msgid "Regular Login"
+msgstr "เข้ามาสม่ำเสมอ"
+
+#: view/application/index/index.phtml:80
+msgid "Email"
+msgstr "อีเมล์"
+
+#: view/application/index/index.phtml:84
+msgid "Password"
+msgstr "รหัสผ่าน"
+
+#: view/application/index/index.phtml:92
+msgid "Sign in"
+msgstr "เข้าสู่ระบบ"
+
+#: view/application/index/index.phtml:101
+msgid "Close"
+msgstr "ปิด"
+
+#: view/application/index/index.phtml:130
+msgid "Ready to try?"
+msgstr "พร้อมเล่นหรือยัง?"
+
+#: view/application/match/index.phtml:1 view/application/match/index.phtml:3
+#: view/application/match/index.phtml:4 view/application/predict/index.phtml:1
+#: view/application/predict/index.phtml:4
+#: view/application/predict/index.phtml:6
+#: view/application/results/index.phtml:1
+#: view/application/results/index.phtml:4
+#: view/application/results/index.phtml:6
+msgid "vs"
+msgstr "พบ"
+
+#: view/application/match/index.phtml:1 view/application/match/index.phtml:3
+#: view/application/match/index.phtml:4 view/application/predict/index.phtml:4
+#: view/application/predict/index.phtml:6
+#: view/application/results/index.phtml:4
+#: view/application/results/index.phtml:6
+msgid "Match Report"
+msgstr "รายงานผลการแข่ง"
+
+#: view/application/match/index.phtml:17 view/application/match/index.phtml:68
+msgid "Public Report"
+msgstr "รายงานสาธารณะ"
+
+#: view/application/match/index.phtml:42
+#: view/application/predict/index.phtml:65
+#: view/application/predict/index.phtml:122
+#: view/application/results/index.phtml:61
+msgid "Scorers"
+msgstr "ผู้ทำประตู"
+
+#: view/application/match/index.phtml:95
+#: view/application/predict/index.phtml:158
+msgid "Time left"
+msgstr "เวลาที่เหลือ"
+
+#: view/application/match/index.phtml:98
+#: view/application/predict/index.phtml:161
+msgid "days hours mins secs"
+msgstr "วัน ชั่วโมง นาที วินาที"
+
+#: view/application/predict/index.phtml:1
+msgid "Predict at"
+msgstr "ทำนายผล"
+
+#: view/application/predict/index.phtml:15
+#: view/application/results/index.phtml:15
+msgid "New"
+msgstr "ใหม่"
+
+#: view/application/predict/index.phtml:24
+#: view/application/results/index.phtml:24
+msgid "Prev"
+msgstr "การแข่งขันก่อนหน้า"
+
+#: view/application/predict/index.phtml:24
+#: view/application/predict/index.phtml:29
+#: view/application/results/index.phtml:24
+#: view/application/results/index.phtml:29
+msgid "match"
+msgstr "match"
+
+#: view/application/predict/index.phtml:29
+#: view/application/results/index.phtml:29
+msgid "Next"
+msgstr "การแข่งขันถัดไป"
+
+#: view/application/predict/index.phtml:37
+msgid "Match in progress"
+msgstr "การแข่งขันที่แข่งอยู่"
+
+#: view/application/predict/index.phtml:41
+msgid "You predicted"
+msgstr "การทายผลของคุณ"
+
+#: view/application/predict/index.phtml:87
+msgid "This game is currently being played... check back soon for the results"
+msgstr "เกมนี้กำลังแข่งอยู่ กรุณากลับมาใหม่เพื่อเช็คผลบอล"
+
+#: view/application/predict/index.phtml:89
+msgid "or"
+msgstr "หรือ"
+
+#: view/application/predict/index.phtml:90
+msgid "predict the next game"
+msgstr "ทำนายผลเกมถัดไป"
+
+#: view/application/predict/index.phtml:114
+#: view/application/predict/index.phtml:141
+#: view/application/predict/index.phtml:164
+#: view/application/predict/index.phtml:165
+msgid "Select scorer"
+msgstr "เลือกผู้ทำประตู"
+
+#: view/application/predict/index.phtml:149
+msgid "Make prediction"
+msgstr "บันทึกการทายผล"
+
+#: view/application/predict/index.phtml:151
+msgid "Edit your prediction"
+msgstr "แก้ไขการทายผล"
+
+#: view/application/predict/index.phtml:187
+msgid "You didn't save the prediction."
+msgstr "คุณไม่ได้บันทึกการทายผล"
+
+msgid "Prizes"
+msgstr "รางวัน"
+
+#: view/application/registration/index.phtml:2
+msgid "Registration"
+msgstr "ทะเบียน"
+
+#: view/application/registration/index.phtml:15
+#: view/application/user/settings.phtml:14
+msgid "Connect with Facebook"
+msgstr "เชื่อมต่อสู่เฟซบุ้ค"
+
+#: view/application/registration/index.phtml:26
+msgid "Enter Personal Info"
+msgstr "กรอกข้อมูลส่วนตัว"
+
+msgid "Gender"
+msgstr "เพศ"
+
+msgid "Male"
+msgstr "ชาย"
+
+msgid "Female"
+msgstr "หญิง"
+
+#: view/application/registration/index.phtml:85
+msgid "Enter Email Addresses"
+msgstr "กรอกอีเมล์ของคุณ"
+
+#: view/application/registration/index.phtml:108
+msgid "Enter Your Password"
+msgstr "กรอกรหัสผ่าน"
+
+#: view/application/registration/index.phtml:131
+msgid "Enter Your Display Name"
+msgstr "กรอกชื่อที่คุณจะใช้"
+
+#: view/application/registration/index.phtml:145
+msgid "Enter Your Avatar"
+msgstr "กรุณาใส่รูปภาพที่จะใช้"
+
+#: view/application/registration/index.phtml:157
+#: view/application/user/settings.phtml:120
+msgid "Or choose from selection"
+msgstr "หรือเลือกจากตัวเลือก"
+
+#: view/application/registration/index.phtml:164 view/partials/footer.phtml:14
+msgid "Terms"
+msgstr "ข้อตกลงและเงื่อนไข"
+
+#: view/application/registration/setup.phtml:10
+msgid "Set Up"
+msgstr "สร้าง"
+
+#: view/application/registration/setup.phtml:36
+#: view/partials/setup-popup.phtml:9
+msgid "Just one more thing"
+msgstr "อีกอย่างนึง"
+
+#: view/application/registration/setup.phtml:39
+#: view/partials/setup-popup.phtml:13
+msgid "Are these details correct?"
+msgstr "ข้อมูลเหล่านี้ถูกต้องหรือไม่?"
+
+#: view/application/registration/setup.phtml:40
+#: view/partials/setup-popup.phtml:14
+msgid "We need to know your region su we can make sure you are antered into the right league."
+msgstr "เราต้องการทราบถึงเขตที่อยู่ของคุณเพื่อที่จะแน่ใจว่าคุณได้เล่นลีกที่ถูกต้อง"
+
+#: view/application/registration/setup.phtml:41
+#: view/partials/setup-popup.phtml:15
+msgid "Note: once confirmed, you will not be able to change these settings until next season"
+msgstr "หมายเหตุ: เมื่อคุณยืนยันแล้วจะไม่สามารถเปลี่ยนแปลงการตั้งค่านี้ได้"
+
+#: view/application/registration/setup.phtml:57
+#: view/partials/setup-popup.phtml:31
+msgid "Confirm and start playing"
+msgstr "ยืนยันและเริ่มเล่น"
+
+#: view/application/results/index.phtml:1
+msgid "Your Results of"
+msgstr "ผลของคุณจาก"
+
+#: view/application/results/index.phtml:98
+msgid "Total"
+msgstr "รวม"
+
+#: view/application/results/index.phtml:99
+msgid "PTS"
+msgstr "คะแนน"
+
+msgid "League Tables"
+msgstr "ตารางคะแนนลีก"
+
+#: view/application/tables/index.phtml:11
+msgid "Global league"
+msgstr "ลีกทั่วโลก"
+
+#: view/application/tables/index.phtml:28
+#: view/application/tables/index.phtml:79
+#: view/application/tables/index.phtml:121
+msgid "Top 4"
+msgstr "ท็อป 4 "
+
+#: view/application/tables/index.phtml:56
+#: view/application/tables/index.phtml:107
+#: view/application/tables/index.phtml:144
+msgid "View full table"
+msgstr "ดูตารางทั้งหมด"
+
+#: view/application/tables/index.phtml:62
+msgid "league"
+msgstr "ลีก"
+
+#: view/application/user/delete.phtml:2
+#: view/application/user/settings.phtml:164
+msgid "Delete Account"
+msgstr "ลบบัญชีผู้ใช้"
+
+#: view/application/user/delete.phtml:11
+msgid "Are you sure you want to delete your account?"
+msgstr "คุณแน่ใจว่าคุณต้องการลบบัญชีใช้งานของคุณ?"
+
+#: view/application/user/delete.phtml:12
+msgid "<strong>Note:</strong> all data associated with your account will be lost and non-recoverable."
+msgstr "ข้อมูลเกี่ยวกับคุณทั้งหมดจะหายไปและไม่สามารถกู้คืนได้"
+
+#: view/application/user/delete.phtml:14
+msgid "Confirm and delete account"
+msgstr "ยืนยันและลบบัญชีผู้ใช้"
+
+#: view/application/user/settings.phtml:2 view/partials/menu.phtml:30
+msgid "Settings"
+msgstr "ปรับตั้งค่า"
+
+#: view/application/user/settings.phtml:25
+msgid "Change your Password"
+msgstr "เปลี่ยนรหัสผ่าน"
+
+#: view/application/user/settings.phtml:40
+#: view/application/user/settings.phtml:69
+#: view/application/user/settings.phtml:94
+#: view/application/user/settings.phtml:124
+#: view/application/user/settings.phtml:156
+msgid "Save changes"
+msgstr "บันทึกการเปลี่ยนแปลง"
+
+#: view/application/user/settings.phtml:58
+msgid "Change Your Email Addresses"
+msgstr "เปลี่ยนอีเมล์"
+
+#: view/application/user/settings.phtml:87
+msgid "Change Your Display Name"
+msgstr "เปลี่ยนชื่อของคุณ"
+
+#: view/application/user/settings.phtml:112
+msgid "Change Your Avatar"
+msgstr "เปลี่ยนรูปภาพของคุณ"
+
+#: view/application/user/settings.phtml:115
+msgid "User avatar"
+msgstr "รูปภาพผู้ใช้งาน"
+
+#: view/application/user/settings.phtml:142
+msgid "Regional Settings"
+msgstr "การตั้งค่า"
+
+#: view/application/user/settings.phtml:145
+msgid "Your country"
+msgstr "ประเทศของคุณ"
+
+#: view/application/user/settings.phtml:148
+msgid "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league."
+msgstr "คุณไม่สามารถเปลี่ยนประเทศของคุณในระหว่างการแข่งขัน เราจะเตือนคุณอีกครั้งให้ยืนยันข้อมูลของคุณอีกหนตอนเริ่มต้นลีก"
+
+#: view/error/404.phtml:1
+msgid "Page not found"
+msgstr "ไม่พบหน้าที่ต้องการ"
+
+#: view/error/404.phtml:4
+msgid "Whoops!"
+msgstr "แย่แล้ว!"
+
+#: view/error/404.phtml:7 view/error/500.phtml:7 view/error/index.phtml:15
+#: view/error/index.phtml:39
+msgid "Message"
+msgstr "ข้อความ"
+
+#: view/error/404.phtml:8
+msgid "Sorry, the page you requested could not be found"
+msgstr "ขออภัย ไม่พบหน้าที่คุณต้องการ"
+
+#: view/error/500.phtml:1 view/error/500.phtml:4
+msgid "Server Error"
+msgstr "เซอร์เวอร์ผิดพลาด"
+
+#: view/error/500.phtml:8
+msgid "Sorry, you can't see the page. We are aware of it and doing all our best to fix the problem."
+msgstr "ขออภัย คุณไม่สามารถดูหน้านี้ได้ เราทราบถึงปัญหาแล้วและกำลังแก้ไข"
+
+#: view/error/500.phtml:15 view/error/index.phtml:8
+msgid "Additional information"
+msgstr "ข้อมูลเพิ่มเติม"
+
+#: view/error/index.phtml:1
+msgid "An error occurred"
+msgstr "เกิดความผิดพลาดขึ้น"
+
+#: view/error/index.phtml:11 view/error/index.phtml:35
+msgid "File"
+msgstr "ไฟล์"
+
+#: view/error/index.phtml:19 view/error/index.phtml:43
+msgid "Stack trace"
+msgstr "เกิดความผิดพลาดขึ้น"
+
+#: view/error/index.phtml:29
+msgid "Previous exceptions"
+msgstr "การตอบรับสัญญานที่แล้ว "
+
+#: view/error/index.phtml:58
+msgid "No Exception available"
+msgstr "มีความผิดพลาดเกิดขึ้น ไม่มีการตอบรับสัญญานโค้ด"
+
+#: view/error/info.phtml:2 view/error/info.phtml:7
+msgid "Info Page"
+msgstr "หน้าข้อมูล"
+
+#: view/partials/cookie-bar.phtml:3
+msgid "Dismiss"
+msgstr "ละทิ้ง"
+
+#: view/partials/footer.phtml:6
+msgid "Stay up to date with Truefan United"
+msgstr "ติดตามความเคลื่อนไหวของสโมสรฟุตบอลเชลซี"
+
+#: view/partials/footer.phtml:7
+msgid "See behind the scenes, match updates <br>and exclusive content"
+msgstr "ข่าวสารล่าสุด, ผลการแข่งขัน, กิจกรรมต่างๆ และสัมภาษณ์พิเศษจากทีมชุดใหญ่"
+
+#: view/partials/footer.phtml:17
+msgid "Contact us"
+msgstr "ติดต่อเรา"
+
+#: view/partials/footer.phtml:20
+msgid "Privacy"
+msgstr "นโยบายความเป็นส่วนตัว"
+
+#: view/partials/footer.phtml:23
+msgid "Help & Support"
+msgstr "ความช่วยเหลือ"
+
+#: view/partials/footer.phtml:26
+msgid "Visit our main site"
+msgstr "ไปที่หน้าเวปหลัก"
+
+#: view/partials/footer.phtml:29
+msgid "Cookies policy"
+msgstr "นโยบายเกี่ยวกับคุ๊กกี้"
+
+#: view/partials/footer.phtml:33
+msgid "MADE BY"
+msgstr "ทำโดย"
+
+msgid "Invite friends to Score Predictor"
+msgstr "ชวนเพื่อนร่วมเล่นเกมทายผล"
+
+#: view/partials/menu.phtml:21
+msgid "User Navigation"
+msgstr "คำแนะนำผู้ใช้"
+
+#: view/partials/menu.phtml:36
+msgid "Sign out"
+msgstr "ออกจากระบบ"
+
+#: view/partials/post-match-report.phtml:9
+#: view/partials/pre-match-report.phtml:9
+msgid "Share this"
+msgstr "แบ่งปัน"
+
+#: view/partials/post-match-report.phtml:34
+msgid "Was the most popular prediction this match"
+msgstr "เป็นการทายที่นิยมที่สุดในเกมนี้"
+
+#: view/partials/post-match-report.phtml:48
+msgid "Correct scorer predictions"
+msgstr "แก้ไขการทายผล"
+
+#: view/partials/pre-match-report.phtml:37
+msgid "Featured Player"
+msgstr "นักเตะที่ลงแข่ง"
+
+#: view/partials/pre-match-report.phtml:43
+msgid "Goals this season"
+msgstr "จำนวนประตูฤดูนี้"
+
+#: view/partials/pre-match-report.phtml:47
+#: view/partials/pre-match-report.phtml:82
+msgid "Matches played"
+msgstr "เกมที่แข่งไปแล้ว"
+
+#: view/partials/pre-match-report.phtml:51
+msgid "Match"
+msgstr "การแข่งขัน"
+
+#: view/partials/pre-match-report.phtml:51
+msgid "starts"
+msgstr "เริ่มต้น "
+
+#: view/partials/pre-match-report.phtml:55
+msgid "Mins"
+msgstr "นาที"
+
+#: view/partials/pre-match-report.phtml:55
+msgid "played"
+msgstr "เล่น"
+
+#: view/partials/pre-match-report.phtml:72
+msgid "GOAL KEEPER"
+msgstr "ผู้รักษาประตู"
+
+#: view/partials/pre-match-report.phtml:78
+msgid "Saves this season"
+msgstr "บันทึกฤดูกาลนี้"
+
+#: view/partials/pre-match-report.phtml:86
+msgid "Penalty saves"
+msgstr "เซฟจุดโทษ"
+
+#: view/partials/pre-match-report.phtml:90
+msgid "Clean sheets"
+msgstr "คลีนชีท"
+
+#: view/partials/pre-match-report.phtml:107
+msgid "Draw"
+msgstr "เสมอ"
+
+#: view/partials/pre-match-report.phtml:162
+msgid "Top predicted scorers"
+msgstr "ผู้ทำประตูที่มีการทายมากที่สุด"
+
+#: view/partials/pre-match-report.phtml:189
+msgid "Top 5 predicted scores"
+msgstr "5 อันดับสกอร์ที่มีการทายสูงสุด"
+
+#: view/partials/right-column.phtml:111
+msgid "+ Invite your friends"
+msgstr "\"+ ชวนเพื่อนของคุณ"
+
+msgid "Value is required and can't be empty"
+msgstr "ต้องกรอกจำนวน ไม่สามารถเว้นว่างได้"
+
+msgid "Recovery link was sent to your email. The link is active for 60 minutes"
+msgstr "ลิงค์กู้ได้ถูกส่งไปยังอีเมล์ของคุณ ซึ่งจะใช้งานได้ 60 นาที "
+
+msgid "Please use Facebook Connect Button to log in."
+msgstr "กรุณาใช้ปุ่มเชื่อมต่อกับเฟซบุ๊คเพื่อเข้าใช้งาน"
+
+msgid "The email you input is not registered."
+msgstr "อีเมล์ที่คุณกรอกนั้นไม่ได้เปิดใช้งาน"
+
+msgid "Input cannot be empty"
+msgstr "ไม่สามารถเว้นว่างไว้ได้"
+
+msgid "Connect your account for a one click login"
+msgstr "เชื่อมต่อสู่เฟซบุ้คเพื่อง่ายต่อการเข้าระบบ"
+
+msgid "Wrong email or password."
+msgstr "อีเมล์หรือรหัสผ่านผิด"
+
+msgid "Confirm Password"
+msgstr "ยืนยันรหัสผ่าน"
+
+msgid "Your password was successfully changed. Now you can login using it."
+msgstr "รหัสผ่านของคุณได้ทำการเปลี่ยนแล้ว คุณสามารถเข้าสู่ระบบโดยรหัสผ่านใหม่"
+
+msgid "The form submitted did not originate from the expected site"
+msgstr "แบบฟอร์มที่คุณกรอกนั้นไม่ได้มาจากหน้าที่กำหนด"
+
+msgid "Now you can change the password."
+msgstr "คุณสามารถเปลี่ยนรหัสผ่านได้ตอนนี้"
+
+msgid "You will be redirected to website..."
+msgstr "กำลังนำคุณไปสู่หน้าเวปไซต์"
+
+msgid "Name"
+msgstr "ชื่อจริง"
+
+msgid "Your message successfully sent"
+msgstr "ข้อความของคุณได้ถูกส่งเรียบร้อยแล้ว"
+
+msgid "Please select"
+msgstr "กรุณาเลือก"
+
+msgid "Title"
+msgstr "คำนำหน้า"
+
+msgid "First Name"
+msgstr "ชื่อจริง"
+
+msgid "Last Name"
+msgstr "นามสกุล"
+
+msgid "Date of Birth"
+msgstr "วันเกิด"
+
+msgid "Country"
+msgstr "ประเทศ"
+
+msgid "January"
+msgstr "มกราคม"
+
+msgid "February"
+msgstr "กุมภาพันธ์"
+
+msgid "March"
+msgstr "มีนาคม"
+
+msgid "April"
+msgstr "เมษายน"
+
+msgid "May"
+msgstr "พฤษภาคม"
+
+msgid "June"
+msgstr "มิถุนายน"
+
+msgid "July"
+msgstr "กรกฎาคม"
+
+msgid "August"
+msgstr "สิงหาคม"
+
+msgid "September"
+msgstr "กันยายน"
+
+msgid "October"
+msgstr "ตุลาคม"
+
+msgid "November"
+msgstr "พฤศจิกายน"
+
+msgid "December"
+msgstr "ธันวาคม"
+
+msgid "Confirm Email"
+msgstr "ยืนยันอีเมล์"
+
+msgid "Display Name"
+msgstr "ชื่อของคุณ"
+
+msgid "Avatar"
+msgstr "อวตาร์"
+
+msgid "Error happened while connecting to your facebook account. Please try again later"
+msgstr "มีการผิดพลาดในการเชื่อมต่อกับเฟซบุ้ค กรุณาลองใหม่อีกครั้ง"
+
+msgid "Error happened while updating data. Please try again later"
+msgstr "มีการผิดพลาดในการอัพเดทข้อมูล กรุณาลองใหม่อีกครั้งภายหลัง"
+
+msgid "Your account successfully connected to facebook"
+msgstr "บัญชีผู้ใช้งานของคุณเชื่อมต่อกับเฟซบุ๊คเรียบร้อยแล้ว"
+
+msgid "Region"
+msgstr "ศาสนา"
+
+msgid "Language"
+msgstr "ภาษา"
+
+msgid "You can't predict on this match. You can predict just on %s matches in the future."
+msgstr "คุณไม่สามารถทายผลเกมนี้ได้ คุณได้เล่นทายมาเพียง %s "
+
+msgid "Predict"
+msgstr "ทำนายผล"
+
+msgid "Results"
+msgstr "ผลการแข่ง"
+
+msgid "Full Table"
+msgstr "ตารางแข่ง"
+
+msgid "All time head-to-head results"
+msgstr "สถิติการพบกันทั้งหมดของทั้งสองทีม"
+
+msgid "Total goals this season"
+msgstr "รวมประตูฤดูกาลนี้"
+
+msgid "Global"
+msgstr "ทั่วโลก"
+
+msgid "Local"
+msgstr "ท้องถิ่น"
+
+msgid "View full league tables"
+msgstr "ดูตารางคะแนนลีกทั้งหมด"
+
+msgid "Play against your mates"
+msgstr "เล่นแข่งกับเพื่อนของคุณ"
+
+msgid "Create your own social league against your Facebook friends to find out who's top of the league"
+msgstr "สร้างลีกของคุณขึ้นมาเองเพื่อแข่งกับเพื่อนในเฟซบุ๊คเพื่อหาว่าใครได้คะแนนสูงสุดในลีก"
+
+msgid "Overall League"
+msgstr "ลีกทั้งหมด"
+
+msgid "Temporal Leagues"
+msgstr "ลีกชั่วคราว"
+
+msgid "Your results"
+msgstr "ผลของคุณ"
+
+msgid "No matches were played in this season."
+msgstr "ไม่มีเกมแข่งในฤดูกาลนี้"
+
+msgid "You predicted the draw"
+msgstr "คุณทายว่าเสมอ"
+
+msgid "You predicted the winner would be %s"
+msgstr "คุณทายว่าผู้ชนะคือ %s"
+
+msgid "You predicted the score would be %s"
+msgstr "คุณทายว่าสกอร์จะเป็น %s"
+
+msgid "You predicted the scorer(s) would be %s"
+msgstr "คุณทายว่าสกอร์จะเป็น %s"
+
+msgid "You predicted that %s will score goal number %s of %s"
+msgstr "คุณทายว่า %s จะยิงประตูที่ %s ของ %s"
+
+msgid "This is double points match"
+msgstr "เกมนี้มีแต้มเบิ้ล"
+
+msgid "You were %s accurate in your prediction"
+msgstr "คุณทายได้ถูก %s ในการทายผลของคุณ"
+
+msgid "Community correctly predicted the results"
+msgstr "ผู้ที่ทำนายได้ถูกต้อง"
+
+msgid "You didn't move on the %s league this match"
+msgstr "คุณไม่ได้เพิ่ม %s ลีกในเกมนี้"
+
+msgid "You moved up %s place(s) on the %s league this match"
+msgstr "อันดับของคุณขยับขึ้น %s และ %s ในลีกจากเกมนี้"
+
+msgid "You moved down %s place(s) on the %s league this match"
+msgstr "คุณไม่ได้ลด %s ลงในเกมนี้ "
+
+msgid "Old password"
+msgstr "รหัสผ่านเดิม"
+
+msgid "New password"
+msgstr "รหัสผ่านใหม่"
+
+msgid "Retype new password"
+msgstr "พิมพ์รหัสผ่านใหม่"
+
+msgid "Upload a new avatar"
+msgstr "อัพโหลดอวตาร์ใหม่"
+
+msgid "Please sign in to access this page"
+msgstr "กรุณาลงชื่อเข้าใช้งาน"
+
+msgid "New password was successfully saved."
+msgstr "รหัสผ่านใหม่ได้ถูกบันทึกแล้ว"
+
+msgid "New email was successfully saved."
+msgstr "อีเมล์ใหม่ได้ถูกบันทึกแล้ว"
+
+msgid "New display name was successfully saved."
+msgstr "ชื่อที่ใช้ได้บันทึกแล้ว"
+
+msgid "New avatar was successfully saved."
+msgstr "อวตาร์ใหม่ได้บันทึกแล้ว"
+
+msgid "New language was successfully saved."
+msgstr "ภาษาใหม่ได้ถูกบันทึกแล้ว"
+
+msgid "New email settings were successfully saved."
+msgstr "การตั้งค่าอีเมล์ใหม่สำเร็จแล้ว"
+
+msgid "Public profile option was successfully saved."
+msgstr "ตัวเลือกตั้งโปรไฟล์สาธารณะได้ถูกบันทึกแล้ว"
+
+msgid "Invalid form type"
+msgstr "ไม่ถูกต้องตามประเภท"
+
+msgid "You can delete only yours account"
+msgstr "คุณสามารถลบได้เฉพาะบัญชีของคุณ"
+
+msgid "You have deleted your account successfully."
+msgstr "คุณได้ลบบัญชีผู้ใช้ของคุณเรียบร้อยแล้ว"
+
+msgid "Cannot get facebook user id from request"
+msgstr "ไม่สามารถเรียกบัญชีผู้ใช้เฟซบ๊คได้"
+
+msgid "Cannot get user by facebook id"
+msgstr "ไม่สามารถเรียกจากชื่อเฟซบุ๊คได้"
+
+msgid "Your Language"
+msgstr "ภาษาของคุณ"
+
+msgid "Recovery link is not valid."
+msgstr "ลิงค์กู้ไม่สามารถใช้งานได้"
+
+msgid "Upload failed due to unknown problems."
+msgstr "อัพโหลดล้มเหลวโดยไม่ทราบสาเหตุ"
+
+msgid "The match was not found."
+msgstr "ไม่พบเกมที่คุณต้องการ"
+
+msgid "Team you want to make a prediction was not found."
+msgstr "ไม่พบทีมที่คุณต้องการ"
+
+msgid "Active page was not found."
+msgstr "ไม่พบหน้าที่ต้องการ"
+
+msgid "Bad request. Security check failed."
+msgstr "คำสั่งผิดพลาด การตรวจสอบความปลอดภัยไม่สำเร็จ"
+
+msgid "The next one will start soon. You can visit our website later and start playing."
+msgstr "เกมต่อไปจะเริ่มต้นเร็วๆนี้ คุณสามารถเข้าไปที่เวปไซต์ของเราและเริ่มต้นทายผล"
+
+msgid "Acy"
+msgstr "ความแม่นยำ"
+
+msgid "Cannot connect user to facebook account because facebook email has been already taken by another user."
+msgstr "ไม่สามารถเชื่อมต่อกับเฟซบุ๊ค เพราะอีเมล์ของเฟซบุ๊คได้มีคนใช้แล้ว"
+
+msgid "Your Facebook data will be used to create your account."
+msgstr "ข้อมูลเฟซบุ๊คของคุณจะใช้เพื่อสร้างบัญชีของคุณ"
+
+msgid "Score Predictor"
+msgstr "ทำนายผลการแข่งขัน"
+
+msgid "Terms were saved successfully."
+msgstr "ข้อตกลงได้ถูกบันทึกเรียบร้อยแล้ว"
+
+msgid "A private league with the league code %s hasn't been not found"
+msgstr "A private league with the league code %s hasn't been not found"
+
+msgid "You joined the league earlier"
+msgstr "You joined the league earlier"
+
+msgid "You are not a member of this private league"
+msgstr "You are not a member of this private league"
+
+msgid "Create a private league"
+msgstr "Create a private league"
+
+msgid "Join a private league"
+msgstr "Join a private league"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Join"
+msgstr "Join"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Invalid private league display name"
+msgstr "Invalid private league display name"
+
+msgid "Invalid private league code"
+msgstr "Invalid private league code"
+
+msgid "Private league was created successfully. Now you can invite your friends using league code %s."
+msgstr "Private league was created successfully. Now you can invite your friends using league code %s."
+
+msgid "You have joined the private league successfully"
+msgstr "You have joined the private league successfully"
+
+msgid "You can't use bad words in private league display name"
+msgstr "You can't use bad words in private league display name"
+
+msgid "You have deleted the private league successfully"
+msgstr "You have deleted the private league successfully"
+
+msgid "Only admin can delete the private league"
+msgstr "Only admin can delete the private league"
+
+msgid "Are you sure that you want to delete the league?"
+msgstr "Are you sure that you want to delete the league?"
+
+msgid "Are you sure you want to be removed permanently from this private league?"
+msgstr "Are you sure you want to be removed permanently from this private league?"
+
+msgid "Are you sure you want to remove the user permanently from this private league?"
+msgstr "Are you sure you want to remove the user permanently from this private league?"
+
+msgid "Admin can't leave the private league"
+msgstr "Admin can't leave the private league"
+
+msgid "Unique league code"
+msgstr "Unique league code"
+

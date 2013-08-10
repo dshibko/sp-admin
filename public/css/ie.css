@@ -48,22 +48,6 @@
 
 
 /***article-image***/
-.lt-ie8 .article-image {
-  *zoom: expression( 
-          this.runtimeStyle.zoom="1",
-          this.appendChild( document.createElement("small") ).className="before"
-         );
-}
-.lt-ie8 .article-image small {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 2.5em;
-
-  background: url(../img/article-image-shadow.png) repeat-x left bottom;
-}
 .lt-ie8 .article-image.article-image-left figure {
     float: none;
     display: block;
@@ -308,9 +292,6 @@
 /***make-prediction-content***/
 .lt-ie8 .make-prediction > header {
   height: 4.4em;
-}
-.lt-ie8 .make-prediction-content {
-  background: #f0f4fb;
 }
 .lt-ie8 .make-prediction-content .home-team  {
   float: left;
