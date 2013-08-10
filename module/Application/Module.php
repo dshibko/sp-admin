@@ -55,14 +55,16 @@ class Module
 
     public function onAppDispatch(\Zend\Mvc\MvcEvent $e) {
         try {
-            $translator = $e->getApplication()->getServiceManager()->get('translator');
             $user = ApplicationManager::getInstance($e->getApplication()->getServiceManager())->getCurrentUser();
             if ($user == null) {
                 $userManager = UserManager::getInstance($e->getApplication()->getServiceManager());
                 $language = $userManager->getUserLanguage()->getLanguageCode();
             } else
                 $language = $user->getLanguage()->getLanguageCode();
-            $translator->setLocale($language);
+            if ($e->getApplication()->getServiceManager()->has('MvcTranslator'))
+                $e->getApplication()->getServiceManager()->get('MvcTranslator')->setLocale($language);
+            if ($e->getApplication()->getServiceManager()->has('translator'))
+                $e->getApplication()->getServiceManager()->get('translator')->setLocale($language);
         } catch (\Exception $ex) {
             LogManager::getInstance($e->getApplication()->getServiceManager())->logAppException($ex, Logger::WARN);
             $user = null;
