@@ -8,7 +8,14 @@
     event.preventDefault();
 });*/
 
-
+jQuery.extend( jQuery.idealforms.filters, {
+    terms: {
+        error: 'Term is required',
+        regex: function(inputData, value){
+           return jQuery(inputData.input).is(":checked");
+        }
+    }
+})
 var turnOffCustomStylePoint = 767;
 
 var setupOptions = {
