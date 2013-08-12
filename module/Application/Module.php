@@ -31,6 +31,18 @@ class Module
     const ERROR_500_PAGE_ROUTE = '500';
     const LOGIN_PAGE_ROUTE = 'login';
 
+    private static $ALLOWED_INACTIVE_ROUTES = array(
+        'logout',
+        'user-settings',
+        'delete-account',
+        'privacy',
+        'terms',
+        'how-to-play',
+        'help',
+        'cookies',
+        'contact',
+    );
+
     public function onBootstrap(MvcEvent $e)
     {
         date_default_timezone_set('UTC');
@@ -76,7 +88,7 @@ class Module
             if ($user != null) {
                 $routeName = $matches->getMatchedRouteName();
                 $userManager = UserManager::getInstance($e->getApplication()->getServiceManager());
-                if (!$userManager->getIsUserActive($user)) {
+                if (!$userManager->getIsUserActive($user) && !in_array($routeName, self::$ALLOWED_INACTIVE_ROUTES)) {
                     if ($detect->isMobile() || $detect->isTablet()){
                         if ($routeName != self::SETUP_PAGE_ROUTE){
                             return $this->redirect(self::SETUP_PAGE_ROUTE, $e);
