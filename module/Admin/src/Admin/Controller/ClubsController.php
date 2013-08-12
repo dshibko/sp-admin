@@ -28,7 +28,7 @@ class ClubsController extends AbstractActionController
                     if (!empty($seasons)) {
                         $clubs = array();
                         foreach ($seasons as $season)
-                            $clubs = array_merge_recursive($clubs, $teamManager->getClubEnemies($applicationManager->getAppClub(), $season, true));
+                            $clubs = array_merge($clubs, $teamManager->getClubEnemies($applicationManager->getAppClub(), $season, true));
                         $clubs = array_unique($clubs);
                     } else
                         $clubs = $teamManager->getAllTeams(true);
