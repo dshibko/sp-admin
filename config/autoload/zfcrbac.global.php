@@ -26,6 +26,11 @@ return array(
                 array('route' => 'delete-account', 'roles' => array(Role::USER, Role::REGIONAL_MANAGER, Role::SUPER_ADMIN)),
                 array('route' => 'how-to-play', 'roles' => array(Role::USER, Role::REGIONAL_MANAGER, Role::SUPER_ADMIN)),
                 array('route' => 'logout', 'roles' => array(Role::USER, Role::REGIONAL_MANAGER, Role::SUPER_ADMIN)),
+                array('route' => 'create-private-league', 'roles' => array(Role::USER, Role::REGIONAL_MANAGER, Role::SUPER_ADMIN)),
+                array('route' => 'join-private-league', 'roles' => array(Role::USER, Role::REGIONAL_MANAGER, Role::SUPER_ADMIN)),
+                array('route' => 'delete-private-league', 'roles' => array(Role::USER, Role::REGIONAL_MANAGER, Role::SUPER_ADMIN)),
+                array('route' => 'leave-private-league', 'roles' => array(Role::USER, Role::REGIONAL_MANAGER, Role::SUPER_ADMIN)),
+                array('route' => 'remove-user-from-private-league', 'roles' => array(Role::USER, Role::REGIONAL_MANAGER, Role::SUPER_ADMIN)),
             ),
         ),
         'providers' => array(
