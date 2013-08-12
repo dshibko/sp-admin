@@ -2,6 +2,7 @@
 
 namespace Neoco\View\Helper;
 
+use Application\Manager\LanguageManager;
 use \Application\Manager\RegionManager;
 use \Application\Manager\ContentManager;
 use Zend\View\Helper\AbstractHelper;
@@ -30,9 +31,9 @@ class GetContent extends AbstractHelper
     {
         if ($this->content === null) {
             $contentManager = ContentManager::getInstance($this->serviceLocator);
-            $regionManager = RegionManager::getInstance($this->serviceLocator);
-            $region = $regionManager->getSelectedRegion();
-            $this->content = $contentManager->getRegionContent($region, true);
+            $languageManager = LanguageManager::getInstance($this->serviceLocator);
+            $language = $languageManager->getSelectedLanguage();
+            $this->content = $contentManager->getLanguageContent($language, true);
         }
         return $this->content;
     }
