@@ -16,7 +16,7 @@ return array(
                     'options' => array(
                         'route'    => 'hot-fix <action>',
                         'defaults' => array(
-                            'controller' => 'Custom\Controller\HotFix',
+                            'controller' => 'Custom\Controller\HotFixes',
                         ),
                     ),
                 ),
@@ -26,7 +26,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Custom\Controller\Export' => 'Custom\Controller\CustomExportController',
-            'Custom\Controller\HotFix' => 'Custom\Controller\CustomHotFixController',
+            'Custom\Controller\HotFixes' => 'Custom\Controller\CustomHotFixesController',
         ),
     ),
 );

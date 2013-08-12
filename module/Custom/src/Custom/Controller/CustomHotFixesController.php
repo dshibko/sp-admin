@@ -16,7 +16,7 @@ use \Zend\Console\Adapter\AdapterInterface as Console;
 use \Zend\Mvc\Controller\AbstractActionController;
 use \Zend\Console\Exception\RuntimeException;
 
-class CustomHotFixController extends AbstractActionController {
+class CustomHotFixesController extends AbstractActionController {
 
 //    public function mergePredictionsAction() {
 //
