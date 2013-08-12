@@ -49,6 +49,7 @@ class LeagueDAO extends AbstractDAO {
         $rsm->addScalarResult('predictions_count', 'predictions_count');
         $rsm->addScalarResult('predictions_players_count', 'predictions_players_count');
         $rsm->addScalarResult('points', 'points');
+        $rsm->addScalarResult('accuracy', 'accuracy');
         $rsm->addScalarResult('correct_results', 'correct_results');
         $rsm->addScalarResult('correct_scores', 'correct_scores');
         $rsm->addScalarResult('correct_scorers', 'correct_scorers');
@@ -59,6 +60,7 @@ class LeagueDAO extends AbstractDAO {
                 lu.predictions_count,
                 lu.predictions_players_count,
                 lu.points,
+                lu.accuracy,
                 lu.correct_results,
                 lu.correct_scores,
                 lu.correct_scorers,

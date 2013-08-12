@@ -228,7 +228,7 @@ class LeagueUserDAO extends AbstractDAO {
     public function appendLeagueUsersUpdate($leagueUser, $place) {
         $points = $leagueUser['points'];
         $previousPlace = $leagueUser['place'] !== null ? $leagueUser['place'] : 'null';
-        $accuracy = floor(100 * $leagueUser['accuracy']);
+        $accuracy = $leagueUser['accuracy'];
         $id = $leagueUser['id'];
         $correctResults = $leagueUser['correct_results'];
         $correctScores = $leagueUser['correct_scores'];

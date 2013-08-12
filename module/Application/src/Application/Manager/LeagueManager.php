@@ -91,6 +91,7 @@ class LeagueManager extends BasicManager {
                                 $divider = 4;
                             }
                             $userRow['accuracy'] /= $divider;
+                            $userRow['accuracy'] = floor(100 * $userRow['accuracy']);
                             if ($userRow['points'] === null)
                                 $userRow['points'] = $prediction['points'];
                             else
@@ -103,7 +104,7 @@ class LeagueManager extends BasicManager {
 
                     usort($leagueUsers, function($u2, $u1) {
                         $res = $u1['points'] != $u2['points'] ? $u1['points'] - $u2['points'] :
-                            (floor(100 * $u1['accuracy']) != floor(100 * $u2['accuracy']) ? $u1['accuracy'] - $u2['accuracy'] :
+                            ($u1['accuracy'] != $u2['accuracy'] ? $u1['accuracy'] - $u2['accuracy'] :
                             ($u1['predictions_count'] != $u2['predictions_count'] ? $u1['predictions_count'] - $u2['predictions_count'] :
                             ($u1['correct_results'] != $u2['correct_results'] ? $u1['correct_results'] - $u2['correct_results'] :
                             ($u1['correct_scores'] != $u2['correct_scores'] ? $u1['correct_scores'] - $u2['correct_scores'] :
