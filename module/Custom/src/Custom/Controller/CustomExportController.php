@@ -116,6 +116,38 @@ class CustomExportController extends AbstractActionController {
 
     }
 
+    public function combinedAction() {
+
+        ini_set('max_execution_time', 0);
+        ini_set('max_input_time', -1);
+        ini_set('memory_limit', -1);
+
+        error_reporting(E_ERROR | E_PARSE);
+
+        $console = $this->getConsole();
+
+        try {
+
+            $customExportManager = CustomExportManager::getInstance($this->getServiceLocator());
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $console->writeLine("");
+            $console->writeLine("Start!");
+
+            $combinedExportContent = $customExportManager->getCombinedExportContent();
+
+            $combinedExportFileName = 'combined_' . date('dmY') . '.csv';
+            $combinedExportFilePath = $exportManager->saveExportFile($combinedExportFileName, $combinedExportContent);
+            if ($combinedExportFilePath === false)
+                throw new \Exception("Fail!");
+
+            $console->writeLine("Done!");
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleCustomException($e, Logger::ERR, $console);
+        }
+    }
+
     /**
      * @return \Zend\Console\Adapter\AdapterInterface
      * @throws \Zend\Console\Exception\RuntimeException

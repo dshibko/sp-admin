@@ -9,6 +9,7 @@ use Application\Manager\PredictionManager;
 use \Application\Model\DAOs\AvatarDAO;
 use Application\Model\DAOs\LeagueDAO;
 use Application\Model\DAOs\LeagueUserDAO;
+use Application\Model\DAOs\UserDAO;
 use Custom\Model\DAOs\CustomLeagueDAO;
 use Custom\Model\DAOs\CustomMatchDAO;
 use Custom\Model\DAOs\CustomUserDAO;
@@ -35,7 +36,7 @@ class CustomExportManager extends BasicManager {
         return self::$instance;
     }
 
-    public function getMaillistExportContent() {
+    public function getMaillistExportContent($toCSV = true) {
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
         $customMatchDAO = CustomMatchDAO::getInstance($this->getServiceLocator());
         $customLeagueDAO = CustomLeagueDAO::getInstance($this->getServiceLocator());
@@ -88,6 +89,12 @@ class CustomExportManager extends BasicManager {
         }
         $maillistExportContent = $customUserDAO->getMaillistData($nextMatchId, $secondMatchId, $prevMatchId, $globalLeagueId);
         foreach ($maillistExportContent as &$content) {
+
+            $nullables = array('hs1', 'as1', 'hs2', 'as2', 'hs_p1', 'as_p1', 'acy', 'pts', 'pl');
+            foreach ($nullables as $nullable)
+                if (!array_key_exists($nullable, $content))
+                    $content[$nullable] = null;
+
             $content['hn1'] = $nextMatchHomeTeamName;
             $content['an1'] = $nextMatchAwayTeamName;
             $content['cn1'] = $nextMatchCompetitionName;
@@ -155,7 +162,39 @@ class CustomExportManager extends BasicManager {
             'hs_p1' => 'number',
             'as_p1' => 'number',
         );
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($maillistExportContent, $exportConfig, $aliasConfig);
+        return $toCSV ? ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($maillistExportContent, $exportConfig, $aliasConfig) :
+            array($maillistExportContent, $exportConfig, $aliasConfig);
+    }
+
+    public function getCombinedExportContent() {
+        list($maillistExportContent, $maillistExportConfig, $maillistAliasConfig) = $this->getMaillistExportContent(false);
+        $users = UserDAO::getInstance($this->getServiceLocator())->getExportUsersWithoutFacebookData();
+
+        $usersArr = array();
+        foreach ($users as $user)
+            $usersArr[$user['email']] = $user;
+
+        $combinedContent = array();
+
+        foreach ($maillistExportContent as $maillistExportRow) {
+            $row = $maillistExportRow;
+            if (array_key_exists($maillistExportRow['email'], $usersArr))
+                $row = array_merge($row, $usersArr[$maillistExportRow['email']]);
+            $combinedContent [] = $row;
+        }
+
+        $usersExportConfig = array(
+            'email' => 'string',
+            'date' => array('date' => 'd/m/Y'),
+            'birthday' => array('date' => 'd/m/Y'),
+            'country' => 'string',
+            'term1' => 'string',
+            'term2' => 'string'
+        );
+
+        $exportConfig = array_merge($usersExportConfig, $maillistExportConfig);
+
+        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($combinedContent, $exportConfig, $maillistAliasConfig);
     }
 
 }

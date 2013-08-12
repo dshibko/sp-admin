@@ -42,8 +42,11 @@ class TablesController extends AbstractActionController {
             $region = $user->getCountry()->getRegion();
             if ($region != null) {
                 $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
-                $regionalLeagueName = $leagueManager->getLeagueDisplayName($regionalLeague->getId());
-                $regionalLeagueUsers = $leagueManager->getLeagueTop($regionalLeague->getId(), League::REGIONAL_TYPE, self::TOP_PLAYERS_COUNT);
+                if ($leagueManager->getIsUserInLeague($regionalLeague, $user)) {
+                    $regionalLeagueName = $leagueManager->getLeagueDisplayName($regionalLeague->getId());
+                    $regionalLeagueUsers = $leagueManager->getLeagueTop($regionalLeague->getId(), League::REGIONAL_TYPE, self::TOP_PLAYERS_COUNT);
+                } else
+                    $regionalLeague = null;
 
                 $temporalLeagues = $leagueManager->getTemporalLeagues($region, $season, true);
                 foreach ($temporalLeagues as &$temporalLeague) {
