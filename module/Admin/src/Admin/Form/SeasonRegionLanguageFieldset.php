@@ -13,10 +13,11 @@ class SeasonRegionLanguageFieldset extends RegionLanguageFieldset {
         $region = $this->getRegion();
         $league = $region['id'] === null ? $season->getGlobalLeague() : $season->getRegionalLeagueByRegionId($region['id']);
         foreach ($this->getLanguageFieldsets() as $languageFieldset)
-            if ($region['id'] === null)
-                $languageFieldset->initFieldsetByObject($league, $season);
-            else
-                $languageFieldset->initFieldsetByObject($league);
+            if ($league != null)
+                if ($region['id'] === null)
+                    $languageFieldset->initFieldsetByObject($league, $season);
+                else
+                    $languageFieldset->initFieldsetByObject($league);
     }
 
 }
