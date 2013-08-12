@@ -2,6 +2,8 @@
 
 namespace Application\Controller;
 
+use Application\Manager\SeasonManager;
+use Application\Model\Entities\League;
 use \Neoco\Exception\OutOfSeasonException;
 use \Neoco\Exception\InfoException;
 use \Application\Manager\LeagueManager;
@@ -23,9 +25,10 @@ class TablesController extends AbstractActionController {
 
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
+            $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
 
             $temporalLeagues = array();
-            $regionalLeague = $regionalLeagueUsers = null;
+            $regionalLeague = $regionalLeagueName = $regionalLeagueUsers = null;
 
             $user = $applicationManager->getCurrentUser();
             $season = $applicationManager->getCurrentSeason();
@@ -33,30 +36,37 @@ class TablesController extends AbstractActionController {
                 throw new OutOfSeasonException();
 
             $globalLeague = $applicationManager->getGlobalLeague($season);
-            $globalLeagueUsers = $leagueManager->getLeagueTop($globalLeague->getId(), self::TOP_PLAYERS_COUNT);
+            $globalLeagueName = $leagueManager->getLeagueDisplayName($globalLeague->getId());
+            $globalLeagueUsers = $leagueManager->getLeagueTop($globalLeague->getId(), League::GLOBAL_TYPE, self::TOP_PLAYERS_COUNT);
 
             $region = $user->getCountry()->getRegion();
-//            if ($region != null) {
-//                $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
-//                $regionalLeagueUsers = $leagueManager->getLeagueTop($regionalLeague->getId(), self::TOP_PLAYERS_COUNT);
-//                $temporalLeagues = $leagueManager->getTemporalLeagues($region, true);
-//                foreach ($temporalLeagues as &$temporalLeague) {
-//                    $temporalLeague['leagueUsers'] = $leagueManager->getLeagueTop($temporalLeague['id'], self::TOP_PLAYERS_COUNT);
-//                    $leagueRegions = $temporalLeague["leagueRegions"];
-//                    $leagueRegion = array_shift($leagueRegions);
-//                    $temporalLeague['displayName'] = $leagueRegion['displayName'];
-//                }
-//            }
-//            $region = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
-//            // todo remove
-            $seasonRegion = $season->getSeasonRegionByRegionId($applicationManager->getUserRegion($user)->getId());
+            if ($region != null) {
+                $regionalLeague = $applicationManager->getRegionalLeague($region, $season);
+                $regionalLeagueName = $leagueManager->getLeagueDisplayName($regionalLeague->getId());
+                $regionalLeagueUsers = $leagueManager->getLeagueTop($regionalLeague->getId(), League::REGIONAL_TYPE, self::TOP_PLAYERS_COUNT);
+
+                $temporalLeagues = $leagueManager->getTemporalLeagues($region, $season, true);
+                foreach ($temporalLeagues as &$temporalLeague) {
+                    $temporalLeague['leagueUsers'] = $leagueManager->getLeagueTop($temporalLeague['id'], League::MINI_TYPE, self::TOP_PLAYERS_COUNT);
+                    $temporalLeague['displayName'] = $leagueManager->getLeagueDisplayName($temporalLeague['id']);
+                }
+            }
+
+            $privateLeagues = $leagueManager->getPrivateLeagues($user->getId(), $season->getId(), true);
+            foreach ($privateLeagues as &$privateLeague)
+                $privateLeague['leagueUsers'] = $leagueManager->getLeagueTop($privateLeague['id'], League::PRIVATE_TYPE, self::TOP_PLAYERS_COUNT);
+
+            $seasonName = $seasonManager->getSeasonDisplayName($season->getId());
             return array(
                 'globalLeague' => $globalLeague,
+                'globalLeagueName' => $globalLeagueName,
                 'globalTopUsers' => $globalLeagueUsers,
                 'regionalLeague' => $regionalLeague,
+                'regionalLeagueName' => $regionalLeagueName,
                 'regionalTopUsers' => $regionalLeagueUsers,
                 'temporalLeagues' => $temporalLeagues,
-                'seasonRegion' => $seasonRegion,
+                'privateLeagues' => $privateLeagues,
+                'seasonName' => $seasonName,
                 'region' => $region,
             );
 

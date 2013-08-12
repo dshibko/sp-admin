@@ -17,7 +17,7 @@ if ($(document).width() <  turnOffCustomStylePoint)
 
 try {
     if (!$('html').hasClass('lt-ie8')) {
-        $('#forgot').idealforms(loginOptions).data('idealforms');
+    $('#forgot').idealforms(loginOptions).data('idealforms');
     }
 } catch (e) {}
 

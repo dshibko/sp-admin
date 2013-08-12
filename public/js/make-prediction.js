@@ -5,15 +5,15 @@ var turnOffCustomStylePoint = isMobile() ? 767 : 0;
 
 var makePredictionOptions = {
 
-  responsiveAt: turnOffCustomStylePoint,
+    responsiveAt: turnOffCustomStylePoint,
 
-  inputs: {
-      // 'title': {
+    inputs: {
+        // 'title': {
 
-      // }
-  },
+        // }
+    },
 
-  onSuccess: onSuccess
+    onSuccess: onSuccess
 
 };
 
@@ -47,7 +47,7 @@ if (savedHomeScore != -1 && savedAwayScore != -1) {
 }
 
 var numbersKeys = [48, 49, 50, 51, 52, 53, 54 , 55, 56, 57,
-                    96, 97, 98, 99, 100, 101, 102, 103, 104, 105];
+    96, 97, 98, 99, 100, 101, 102, 103, 104, 105];
 
 //var countdownEl;
 var startTime;
@@ -65,11 +65,13 @@ $(document).ready(function () {
     resizeFix();
 
     var countdown = $('aside.competition-countdown');
-    var untilTime = countdown.find('strong').text();
-    startTime = new Date(parseInt(untilTime) * 1000);
-    countdown.find('strong').remove();
-    initCountdown();
-    countdown.show();
+    if (countdown.length > 0) {
+        var untilTime = countdown.find('strong').text();
+        startTime = new Date(parseInt(untilTime) * 1000);
+        countdown.find('strong').remove();
+        initCountdown();
+        countdown.show();
+    }
 
     $("#home-team-score, #away-team-score").blur(function() {
         if ($(this).val() == '' && !$(this).attr('disabled'))

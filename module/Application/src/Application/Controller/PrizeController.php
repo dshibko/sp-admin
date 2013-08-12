@@ -2,6 +2,8 @@
 
 namespace Application\Controller;
 
+use Application\Manager\ContentManager;
+use Application\Manager\LanguageManager;
 use \Neoco\Exception\InfoException;
 use \Neoco\Exception\OutOfSeasonException;
 use \Zend\View\Model\ViewModel;
@@ -23,9 +25,15 @@ class PrizeController extends AbstractActionController {
             if ($season == null)
                 throw new OutOfSeasonException();
 
-            $region = $applicationManager->getUserRegion($user);
+            $language = $user->getLanguage();
             $globalLeague = $applicationManager->getGlobalLeague($season);
-            $grandPrize = $globalLeague->getPrizeByRegionId($region->getId());
+            $grandPrize = $globalLeague->getLeagueLanguageByLanguageId($language->getId());
+            $grandPrize = $grandPrize->getArrayCopy();
+            if (!$language->getIsDefault()) {
+                $defaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+                $defaultGrandPrize = $globalLeague->getLeagueLanguageByLanguageId($defaultLanguage->getId());
+                $grandPrize = ContentManager::getInstance($this->getServiceLocator())->extendContent($defaultGrandPrize->getArrayCopy(), $grandPrize);
+            }
 
             return array(
                 'grandPrize' => $grandPrize,

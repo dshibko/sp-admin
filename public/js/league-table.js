@@ -13,7 +13,7 @@ if ($(document).width() <  turnOffCustomStylePoint)
 
 try {
     if (!$('html').hasClass('lt-ie8')) {
-        $('#season-filter').idealforms(seasonFilterOptions).data('idealforms');
+    $('#season-filter').idealforms(seasonFilterOptions).data('idealforms');
     }
 } catch (e) {}
 
@@ -45,6 +45,25 @@ $(document).ready(function () {
         }
     });
 
+    $("#league-edit-button").click(function(e) {
+        e.preventDefault();
+        $("#league-edit-button").hide();
+        $("#league-delete-button").show();
+        $("#league-table").find("td.player a.remove-player").show();
+    });
+
+    $("#league-delete-button").click(function() {
+        return confirm($(this).attr('title'));
+    });
+
+    $("#league-leave-button").click(function() {
+        return confirm($(this).attr('title'));
+    });
+
+    $("#league-table").on('click', "td.player a.remove-player", function() {
+        return confirm($(this).attr('title'));
+    });
+
 });
 
 function loadLeagueRows(type, offset, callback) {
@@ -64,6 +83,8 @@ function loadLeagueRows(type, offset, callback) {
                 $('#show-more').hide();
             else
                 $('#show-more').show();
+            if ($('#league-delete-button:visible').length > 0)
+                $("#league-table").find("td.player a.remove-player").show();
             blockShowMore = false;
         },
         complete: function() {
@@ -89,6 +110,8 @@ function loadAroundYouLeagueRows() {
             $("#league-table tr:not(:first)").remove();
             $("#league-table tbody").append(data);
             $('#show-more').hide();
+            if ($('#league-delete-button:visible').length > 0)
+                $("#league-table").find("td.player a.remove-player").show();
         },
         complete: function() {
             hideLoaderImg(selectLoaderType);
@@ -110,12 +133,14 @@ function loadYourFriendsLeagueRows() {
             $("#league-table tr:not(:first)").remove();
             $("#league-table tbody").append(data);
             $('#show-more').hide();
+            if ($('#league-delete-button:visible').length > 0)
+                $("#league-table").find("td.player a.remove-player").show();
         },
         complete: function() {
             hideLoaderImg(selectLoaderType);
         }
     });
-}
+        }
 
 var loaderImgScr = '/img/ajax-loader.gif';
 var showMoreLoaderType = 'show-more';
@@ -145,7 +170,7 @@ function showLoaderImg(type) {
                 loaderImgWrapper.append(loaderImg);
                 loaderImg.css('left', selectForm.position().left - this.width - 10);
                 loaderImg.css('top', 3);
-            });
+    });
             break;
     }
 }

@@ -4,32 +4,32 @@ namespace Neoco\Form;
 
 use \Neoco\Form\FieldsetObjectInterface;
 
-abstract class LanguageFieldset extends UploadableFieldset implements  FieldsetObjectInterface{
+abstract class LanguageFieldset extends UploadableFieldset implements  FieldsetObjectInterface {
 
-    protected $data;
+    protected $language;
 
     /**
      * @param mixed $data
      * @return $this
      */
-    public function setData($data)
+    public function setLanguage($data)
     {
-        $this->data = $data;
+        $this->language = $data;
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getData()
+    public function getLanguage()
     {
-        return $this->data;
+        return $this->language;
     }
 
-    public function __construct(array $data) {
+    public function __construct($language) {
 
-        $this->setData($data);
-        parent::__construct(str_replace(" ", "_", $data['displayName']));
+        $this->setLanguage($language);
+        parent::__construct(str_replace(" ", "_", $language['displayName']));
 
     }
     /**
@@ -45,7 +45,5 @@ abstract class LanguageFieldset extends UploadableFieldset implements  FieldsetO
         }
         return parent::getInputFilterSpecification($inputSpec);
     }
-
-    public function initFieldsetByObject($dataObject){}
 
 }

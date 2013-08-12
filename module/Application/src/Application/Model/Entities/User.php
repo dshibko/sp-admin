@@ -16,13 +16,6 @@ class User extends BasicObject {
     /**
      * @var bool
      *
-     * @ORM\Column(name="is_active", type="boolean")
-     */
-    protected $isActive = false;
-
-    /**
-     * @var bool
-     *
      * @ORM\Column(name="is_public", type="boolean")
      */
     protected $isPublic = true;
@@ -618,23 +611,6 @@ class User extends BasicObject {
     }
 
     /**
-     * @param boolean $active
-     */
-    public function setIsActive($active)
-    {
-        $this->isActive = $active;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-
-    /**
      * @param string $facebookAccessToken
      */
     public function setFacebookAccessToken($facebookAccessToken)
@@ -794,9 +770,6 @@ class User extends BasicObject {
         }
         if (isset($data['role']) && $data['role'] instanceof \Application\Model\Entities\Role){
             $this->setRole($data['role']);
-        }
-        if (isset($data['active'])){
-            $this->setIsActive($data['active']);
         }
         if (isset($data['facebook_id'])){
             $this->setFacebookId($data['facebook_id']);

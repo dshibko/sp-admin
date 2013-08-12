@@ -2,13 +2,17 @@
 
 namespace Application\Manager;
 
+use Application\Model\DAOs\LeagueLanguageDAO;
 use \Application\Model\DAOs\LeagueUserPlaceDAO;
-use Application\Model\DAOs\PredictionDAO;
+use Application\Model\DAOs\PrivateLeagueDAO;
 use \Application\Model\Entities\LeagueUserPlace;
 use \Application\Model\Entities\LeagueUser;
+use Application\Model\Entities\PrivateLeague;
+use Application\Model\Entities\Season;
+use Application\Model\Entities\User;
 use \Doctrine\Common\Collections\ArrayCollection;
 use \Application\Model\Entities\LeagueRegion;
-use \Application\Model\Entities\Prize;
+use \Application\Model\Entities\LeagueLanguage;
 use \Application\Model\DAOs\RegionDAO;
 use \Application\Model\Entities\League;
 use \Application\Model\Helpers\MessagesConstants;
@@ -44,6 +48,17 @@ class LeagueManager extends BasicManager {
         return self::$instance;
     }
 
+    public function getLeagueDisplayName($leagueId) {
+        $leagueLanguageDAO = LeagueLanguageDAO::getInstance($this->getServiceLocator());
+        $language = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser()->getLanguage();
+        $displayName = $leagueLanguageDAO->getLeagueDisplayName($leagueId, $language->getId());
+        if (empty($displayName) && !$language->getIsDefault()) {
+            $defaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+            $displayName = $leagueLanguageDAO->getLeagueDisplayName($leagueId, $defaultLanguage->getId());
+        }
+        return $displayName;
+    }
+
     public function recalculateLeaguesTables(\Application\Model\Entities\Match $match, array $predictions) {
 
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
@@ -76,6 +91,7 @@ class LeagueManager extends BasicManager {
                                 $divider = 4;
                             }
                             $userRow['accuracy'] /= $divider;
+                            $userRow['accuracy'] = floor(100 * $userRow['accuracy']);
                             if ($userRow['points'] === null)
                                 $userRow['points'] = $prediction['points'];
                             else
@@ -88,7 +104,7 @@ class LeagueManager extends BasicManager {
 
                     usort($leagueUsers, function($u2, $u1) {
                         $res = $u1['points'] != $u2['points'] ? $u1['points'] - $u2['points'] :
-                            (floor(100 * $u1['accuracy']) != floor(100 * $u2['accuracy']) ? $u1['accuracy'] - $u2['accuracy'] :
+                            ($u1['accuracy'] != $u2['accuracy'] ? $u1['accuracy'] - $u2['accuracy'] :
                             ($u1['predictions_count'] != $u2['predictions_count'] ? $u1['predictions_count'] - $u2['predictions_count'] :
                             ($u1['correct_results'] != $u2['correct_results'] ? $u1['correct_results'] - $u2['correct_results'] :
                             ($u1['correct_scores'] != $u2['correct_scores'] ? $u1['correct_scores'] - $u2['correct_scores'] :
@@ -145,7 +161,7 @@ class LeagueManager extends BasicManager {
         $leagueDAO->remove($league);
     }
 
-    public function saveMiniLeague($displayName, $seasonId, $startDate, $endDate, $regionsData, $leagueId = -1, $editableLeague = true) {
+    public function saveMiniLeague($displayName, $seasonId, $startDate, $endDate, $regionsArr, $languagesData, $leagueId = -1, $editableLeague = true) {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         if ($leagueId == -1) {
             $league = new League();
@@ -161,84 +177,128 @@ class LeagueManager extends BasicManager {
         }
         $league->setType(League::MINI_TYPE);
         $league->setDisplayName($displayName);
-        $regionDAO = RegionDAO::getInstance($this->getServiceLocator());
-        $prizes = array();
-        $leagueRegions = array();
-        foreach ($regionsData as $regionId => $regionRow) {
-            $region = $regionDAO->findOneById($regionId);
-            if ($region != null) {
-                if (!$editableLeague)
-                    $prize = $league->getPrizeByRegionId($regionId);
-                else
-                    $prize = new Prize();
-                if (empty($regionRow['prizeImagePath']))
-                    $regionRow['prizeImagePath'] = $league->getPrizeByRegionId($regionId)->getPrizeImage();
-                $prize->setPrizeImage($regionRow['prizeImagePath']);
-                $prize->setPrizeDescription($regionRow['prizeDescription']);
-                $prize->setPrizeTitle($regionRow['prizeTitle']);
-                if (empty($regionRow['postWinImagePath']))
-                    $regionRow['postWinImagePath'] = $league->getPrizeByRegionId($regionId)->getPostWinImage();
-                $prize->setPostWinImage($regionRow['postWinImagePath']);
-                $prize->setPostWinDescription($regionRow['postWinDescription']);
-                $prize->setPostWinTitle($regionRow['postWinTitle']);
-                $prize->setLeague($league);
-                $prize->setRegion($region);
-                $prizes [] = $prize;
-                if (!$editableLeague)
+
+        if ($editableLeague) {
+            foreach ($league->getLeagueRegions() as $leagueRegion)
+                if (!in_array($leagueRegion->getRegion()->getId(), $regionsArr))
+                    $league->removeLeagueRegion($leagueRegion);
+
+            foreach ($regionsArr as $regionId) {
+                $region = RegionManager::getInstance($this->getServiceLocator())->getNonHydratedRegionFromArray($regionId);
+                if ($region) {
                     $leagueRegion = $league->getLeagueRegionByRegionId($regionId);
-                else
-                    $leagueRegion = new LeagueRegion();
-                $leagueRegion->setDisplayName($regionRow['displayName']);
-                $leagueRegion->setLeague($league);
-                $leagueRegion->setRegion($region);
-                $leagueRegions [] = $leagueRegion;
+                    if ($leagueRegion === null) {
+                        $leagueRegion = new LeagueRegion();
+                        $leagueRegion->setLeague($league);
+                        $leagueRegion->setRegion($region);
+                        $league->addLeagueRegion($leagueRegion);
+                    }
+                }
             }
         }
-        if ($editableLeague) {
-            $league->getPrizes()->clear();
-            $league->setPrizes(new ArrayCollection($prizes));
-            $league->getLeagueRegions()->clear();
-            $league->setLeagueRegions(new ArrayCollection($leagueRegions));
+
+        foreach ($league->getLeagueLanguages() as $leagueLanguage)
+            if (!array_key_exists($leagueLanguage->getLanguage()->getId(), $languagesData))
+                $league->removeLeagueLanguage($leagueLanguage);
+
+        foreach ($languagesData as $languageId => $languageRow) {
+            $language = LanguageManager::getInstance($this->getServiceLocator())->getNonHydratedLanguageFromArray($languageId);
+            if (!$language) continue;
+            $leagueLanguage = $league->getLeagueLanguageByLanguageId($languageId);
+            $add = false;
+            if ($leagueLanguage === null) {
+                $leagueLanguage = new LeagueLanguage();
+                $leagueLanguage->setLeague($league);
+                $leagueLanguage->setLanguage($language);
+                $add = true;
+            }
+            $leagueLanguage->setDisplayName($languageRow['leagueDisplayName']);
+            if (!empty($languageRow['prizeImagePath']))
+                $leagueLanguage->setPrizeImage($languageRow['prizeImagePath']);
+            $leagueLanguage->setPrizeDescription($languageRow['prizeDescription']);
+            $leagueLanguage->setPrizeTitle($languageRow['prizeTitle']);
+            if (!empty($languageRow['postWinImagePath']))
+                $leagueLanguage->setPostWinImage($languageRow['postWinImagePath']);
+            $leagueLanguage->setPostWinDescription($languageRow['postWinDescription']);
+            $leagueLanguage->setPostWinTitle($languageRow['postWinTitle']);
+            if ($add)
+                $league->addLeagueLanguage($leagueLanguage);
         }
+
         $leagueDAO->save($league);
         if ($editableLeague && $leagueId === -1) {
             $userManager = UserManager::getInstance($this->getServiceLocator());
-            foreach ($regionsData as $regionId => $regionRow)
-                $userManager->registerLeagueUsers($league, $regionId);
+            foreach ($league->getLeagueRegions() as $leagueRegion)
+                $userManager->registerMiniLeagueUsers($league, $leagueRegion->getRegion()->getId());
         }
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param int $userId
+     * @param int $seasonId
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getTemporalLeagues($region, $hydrate = false, $skipCache = false) {
+    public function getPrivateLeagues($userId, $seasonId, $hydrate = false, $skipCache = false) {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
-        return $leagueDAO->getTemporalLeagues($region, $hydrate, $skipCache);
+        return $leagueDAO->getPrivateLeagues($userId, $seasonId, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param int $seasonId
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getPrivateLeaguesCount($seasonId, $skipCache = false) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getPrivateLeaguesCount($seasonId, $skipCache);
+    }
+
+    /**
+     * @param int $seasonId
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getPrivateLeaguesUsersCount($seasonId, $skipCache = false) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getPrivateLeaguesUsersCount($seasonId, $skipCache);
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param Season $season
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getTemporalLeagues($region, $season, $hydrate = false, $skipCache = false) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getTemporalLeagues($region, $season, $hydrate, $skipCache);
     }
 
     /**
      * @param int $leagueId
+     * @param string $type
      * @param int $top
      * @param int $offset
      * @param array|null $facebookIds
      * @return array
      */
-    public function getLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null) {
+    public function getLeagueTop($leagueId, $type, $top = 0, $offset = 0, $facebookIds = null) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-        return $leagueUserDAO->getLeagueTop($leagueId, $top, $offset, $facebookIds);
+        return $leagueUserDAO->getLeagueTop($leagueId, ($type != League::PRIVATE_TYPE), $top, $offset, $facebookIds);
     }
 
     /**
      * @param int $leagueId
+     * @param string $type
      * @param bool $skipCache
      * @return int
      */
-    public function getLeagueUsersCount($leagueId, $skipCache = false) {
+    public function getLeagueUsersCount($leagueId, $type, $skipCache = false) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
-        return $leagueUserDAO->getLeagueUsersCount($leagueId, $skipCache);
+        return $leagueUserDAO->getLeagueUsersCount($leagueId, $type != League::PRIVATE_TYPE, $skipCache);
     }
 
     /**
@@ -249,6 +309,119 @@ class LeagueManager extends BasicManager {
     public function getYourPlaceInLeague($leagueId, $userId) {
         $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
         return $leagueUserDAO->getYourPlaceInLeague($leagueId, $userId);
+    }
+
+    public function getIsUserInLeague($league, $user) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getIsUserInLeague($league, $user);
+    }
+
+    /**
+     * @param string $name
+     * @param Season $season
+     * @param User $creator
+     * @return string
+     * @throws \Exception
+     */
+    public function createPrivateLeague($name, $season, $creator) {
+
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        $privateLeagueDAO = PrivateLeagueDAO::getInstance($this->getServiceLocator());
+
+        $hash = $this->generatePrivateLeagueKey($creator);
+
+        $league = new League();
+        $league->setDisplayName($name);
+        $league->setSeason($season);
+        $league->setCreator($creator);
+        $league->setCreationDate(new \DateTime());
+        $today = new \DateTime();
+        $league->setStartDate($today->setTime(0, 0, 0));
+        $league->setEndDate($season->getEndDate());
+        $league->setType(League::PRIVATE_TYPE);
+
+        $leagueUser = new LeagueUser();
+        $leagueUser->setUser($creator);
+        $leagueUser->setJoinDate(new \DateTime());
+        $leagueUser->setRegistrationDate($creator->getDate());
+        $leagueUser->setLeague($league);
+        $league->addLeagueUser($leagueUser);
+
+        $privateLeague = new PrivateLeague();
+        $privateLeague->setLeague($league);
+        $privateLeague->setUniqueHash($hash);
+        $league->setPrivateLeague($privateLeague);
+
+        $leagueDAO->save($league, true, false);
+        $privateLeagueDAO->clearCache();
+
+        return $hash;
+
+    }
+
+    private function generatePrivateLeagueKey($user) {
+        return (string) hash('crc32', microtime() . $user->getId());
+    }
+
+    /**
+     * @param string $hash
+     * @param User $user
+     * @throws \Exception
+     */
+    public function joinPrivateLeague($hash, $user) {
+
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        $privateLeagueDAO = PrivateLeagueDAO::getInstance($this->getServiceLocator());
+
+        $privateLeague = $leagueDAO->getPrivateLeagueByHash($hash);
+        if ($privateLeague === null)
+            throw new \Exception(sprintf(MessagesConstants::ERROR_UNKNOWN_PRIVATE_LEAGUE, $hash));
+
+        if ($leagueDAO->getIsUserInLeague($privateLeague, $user))
+            throw new \Exception(MessagesConstants::ERROR_YOU_JOINED_LEAGUE_EARLIER);
+
+        $leagueUser = new LeagueUser();
+        $leagueUser->setUser($user);
+        $leagueUser->setJoinDate(new \DateTime());
+        $leagueUser->setRegistrationDate($user->getDate());
+        $leagueUser->setLeague($privateLeague);
+        $privateLeague->addLeagueUser($leagueUser);
+
+        $leagueDAO->save($privateLeague, true, false);
+        $privateLeagueDAO->clearCache();
+
+    }
+
+    /**
+     * @param League $league
+     * @param User $user
+     * @throws \Exception
+     */
+    public function leavePrivateLeague($league, $user) {
+
+        $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
+
+        $leagueUser = $leagueUserDAO->getLeagueUser($league->getId(), $user->getId());
+        if ($leagueUser === null)
+            throw new \Exception(MessagesConstants::ERROR_NOT_MEMBER_OF_LEAGUE);
+
+        $fromPlace = $leagueUser->getPlace();
+        if (!empty($fromPlace))
+            $leagueUserDAO->moveUpLeagueUserPlaces($league, $fromPlace);
+
+        $leagueUserDAO->remove($leagueUser);
+
+    }
+
+    /**
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @param string $hash
+     * @return League|array
+     */
+    public function getPrivateLeagueByCode($hash, $hydrate = false, $skipCache = false) {
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        return $leagueDAO->getPrivateLeagueByHash($hash, $hydrate, $skipCache);
     }
 
 }

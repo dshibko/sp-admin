@@ -3,14 +3,15 @@
 namespace Application\Model\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Neoco\Model\BasicObject;
 
 /**
  * Prize
  *
- * @ORM\Table(name="prize")
+ * @ORM\Table(name="league_language")
  * @ORM\Entity
  */
-class Prize
+class LeagueLanguage extends BasicObject
 {
 
     /**
@@ -20,7 +21,7 @@ class Prize
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var League
@@ -46,7 +47,7 @@ class Prize
      * Set league
      *
      * @param League $league
-     * @return Prize
+     * @return LeagueLanguage
      */
     public function setLeague(League $league = null)
     {
@@ -64,64 +65,72 @@ class Prize
     {
         return $this->league;
     }
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="display_name", type="string", length=255, nullable=false)
+     */
+    protected $displayName;
+
     /**
      * @var string
      *
      * @ORM\Column(name="prize_title", type="string", length=50, nullable=false)
      */
-    private $prizeTitle;
+    protected $prizeTitle;
 
     /**
      * @var string
      *
      * @ORM\Column(name="prize_description", type="text", nullable=false)
      */
-    private $prizeDescription;
+    protected $prizeDescription;
 
     /**
      * @var string
      *
      * @ORM\Column(name="prize_image", type="string", length=255, nullable=false)
      */
-    private $prizeImage;
+    protected $prizeImage;
 
     /**
      * @var string
      *
      * @ORM\Column(name="post_win_title", type="string", length=50, nullable=false)
      */
-    private $postWinTitle;
+    protected $postWinTitle;
 
     /**
      * @var string
      *
      * @ORM\Column(name="post_win_description", type="text", nullable=false)
      */
-    private $postWinDescription;
+    protected $postWinDescription;
 
     /**
      * @var string
      *
      * @ORM\Column(name="post_win_image", type="string", length=255, nullable=false)
      */
-    private $postWinImage;
+    protected $postWinImage;
 
     /**
-     * @var Region
+     * @var Language
      *
-     * @ORM\ManyToOne(targetEntity="Region")
+     * @ORM\ManyToOne(targetEntity="Language")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="region_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      * })
      */
-    private $region;
+    private $language;
 
 
     /**
      * Set prizeTitle
      *
      * @param string $prizeTitle
-     * @return Prize
+     * @return LeagueLanguage
      */
     public function setPrizeTitle($prizeTitle)
     {
@@ -144,7 +153,7 @@ class Prize
      * Set prizeDescription
      *
      * @param string $prizeDescription
-     * @return Prize
+     * @return LeagueLanguage
      */
     public function setPrizeDescription($prizeDescription)
     {
@@ -167,7 +176,7 @@ class Prize
      * Set prizeImage
      *
      * @param string $prizeImage
-     * @return Prize
+     * @return LeagueLanguage
      */
     public function setPrizeImage($prizeImage)
     {
@@ -190,7 +199,7 @@ class Prize
      * Set postWinTitle
      *
      * @param string $postWinTitle
-     * @return Prize
+     * @return LeagueLanguage
      */
     public function setPostWinTitle($postWinTitle)
     {
@@ -213,7 +222,7 @@ class Prize
      * Set postWinDescription
      *
      * @param string $postWinDescription
-     * @return Prize
+     * @return LeagueLanguage
      */
     public function setPostWinDescription($postWinDescription)
     {
@@ -236,7 +245,7 @@ class Prize
      * Set postWinImage
      *
      * @param string $postWinImage
-     * @return Prize
+     * @return LeagueLanguage
      */
     public function setPostWinImage($postWinImage)
     {
@@ -256,25 +265,42 @@ class Prize
     }
 
     /**
-     * Set region
+     * Set language
      *
-     * @param Region $region
-     * @return Prize
+     * @param Language $language
+     * @return LeagueLanguage
      */
-    public function setRegion(Region $region = null)
+    public function setLanguage(Language $language = null)
     {
-        $this->region = $region;
+        $this->language = $language;
     
         return $this;
     }
 
     /**
-     * Get region
+     * Get language
      *
-     * @return Region
+     * @return Language
      */
-    public function getRegion()
+    public function getLanguage()
     {
-        return $this->region;
+        return $this->language;
     }
+
+    /**
+     * @param string $displayName
+     */
+    public function setDisplayName($displayName)
+    {
+        $this->displayName = $displayName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayName()
+    {
+        return $this->displayName;
+    }
+
 }

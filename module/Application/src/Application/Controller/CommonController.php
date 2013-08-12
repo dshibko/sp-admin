@@ -2,6 +2,8 @@
 
 namespace Application\Controller;
 
+use Zend\View\Model\ViewModel;
+
 class CommonController extends \Zend\Mvc\Controller\AbstractActionController
 {
 
@@ -18,5 +20,14 @@ class CommonController extends \Zend\Mvc\Controller\AbstractActionController
         return $response;
 
     }
+
+    public function error500Action(){
+        $viewModel = new ViewModel();
+        $this->response->setStatusCode(500);
+        $viewModel->setTemplate('error/static500.phtml');
+        $viewModel->setTerminal(true);
+        return $viewModel;
+    }
+
 
 }

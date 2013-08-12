@@ -71,6 +71,24 @@ class UserDAO extends AbstractDAO {
     }
 
     /**
+     * @param int $userId
+     * @param int $globalLeagueId
+     * @param bool $skipCache
+     * @return bool
+     */
+    public function getIsUserActive($userId, $globalLeagueId, $skipCache = false) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('number','number', 'integer');
+        $query = $this->getEntityManager()
+            ->createNativeQuery("
+                SELECT count(id) as number
+                FROM league_user lu
+                WHERE lu.user_id = $userId AND lu.league_id = $globalLeagueId
+            ", $rsm);
+        return (int)$this->prepareQuery($query, array($this->getRepositoryName()), $skipCache)->getSingleScalarResult() > 0;
+    }
+
+    /**
      * @param int $days
      * @param bool $hydrate
      * @param bool $skipCache
@@ -280,16 +298,21 @@ class UserDAO extends AbstractDAO {
     }
 
     /**
-     * @param bool $skipCache
+     * @param int $globalLeagueId
      * @return int
-     * @throws \Exception
      */
-    public function getIncompleteUsersNumber($skipCache = false) {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select($qb->expr()->count('u.id'))
-            ->from($this->getRepositoryName(), 'u')
-            ->where($qb->expr()->eq('u.isActive', 0));
-        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    public function getIncompleteUsersNumber($globalLeagueId) {
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('number','number', 'integer');
+        $query = $this->getEntityManager()
+            ->createNativeQuery("
+                SELECT count(u.id) as number
+                FROM user u
+                WHERE u.id not in (SELECT id FROM
+                league_user lu
+                WHERE lu.league_id = $globalLeagueId)
+            ", $rsm);
+        return $query->getSingleScalarResult();
     }
 
     /**
@@ -312,26 +335,16 @@ class UserDAO extends AbstractDAO {
         return $query->getArrayResult();
     }
 
-    public function registerLeagueUsers($leagueId, $regionId = null) {
+    public function registerMiniLeagueUsers($leagueId, $regionalLeagueId) {
         $conn = $this->getEntityManager()->getConnection();
         $now = new \DateTime();
         $now = date("Y-m-d H:i:s", $now->getTimestamp());
-        if ($regionId === null)
-            $conn->executeQuery('
-                INSERT INTO league_user (user_id, league_id, registration_date, join_date)
-                SELECT u.id, ?, u.date, ?
-                FROM user u
-                WHERE u.is_active = 1
-            ', array($leagueId, $now));
-        else {
-            $conn->executeQuery('
-                INSERT INTO league_user (user_id, league_id, registration_date, join_date)
-                SELECT u.id, ?, u.date, ?
-                FROM user u
-                INNER JOIN country c ON c.id = u.country_id AND c.region_id = ?
-                WHERE u.is_active = 1
-            ', array($leagueId, $now, $regionId));
-        }
+        $conn->executeQuery('
+            INSERT INTO league_user (user_id, league_id, registration_date, join_date)
+            SELECT u.id, ?, u.date, ?
+            FROM user u
+            INNER JOIN league_user lu ON lu.user_id = u.id AND lu.league_id = ?
+        ', array($leagueId, $now, $regionalLeagueId));
     }
 
     /**

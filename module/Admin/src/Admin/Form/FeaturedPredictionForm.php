@@ -25,9 +25,9 @@ class FeaturedPredictionForm extends RegionalisedForm {
         return $this->type;
     }
 
-    public function __construct($regionFieldsets, $type = 'featured_prediction') {
+    public function __construct($languageFieldsets, $type = 'featured_prediction') {
 
-        parent::__construct($regionFieldsets, 'featured-prediction');
+        parent::__construct($languageFieldsets, 'featured-prediction');
         $this->setAttribute('method', 'post');
         $this->setAttribute('enctype', 'multipart/form-data');
         $this->setType($type);

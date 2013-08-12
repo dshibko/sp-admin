@@ -115,6 +115,15 @@ class MessagesConstants
     const ERROR_INVALID_SETTING_FORM_TYPE = 'Invalid form type';
     const ERROR_INVALID_OLD_PASSWORD = 'Invalid old password';
     const ERROR_CANNOT_CONNECT_TO_FACEBOOK_ACCOUNT = 'Cannot connect user to facebook account because facebook email has been already taken by another user.';
+    const ERROR_UNKNOWN_PRIVATE_LEAGUE = "A private league with the league code %s hasn't been not found";
+    const ERROR_YOU_JOINED_LEAGUE_EARLIER = 'You joined the league earlier';
+    const ERROR_NOT_MEMBER_OF_LEAGUE = 'You are not a member of this private league';
+    const ERROR_INVALID_DISPLAY_NAME = 'Invalid private league display name';
+    const ERROR_INVALID_LEAGUE_CODE = 'Invalid private league code';
+    const ERROR_DISPLAY_NAME_BAD_WORDS = "You can't use bad words in private league display name";
+    const ERROR_ADMIN_DELETES_PRIVATE_LEAGUE = 'Only admin can delete the private league';
+    const ERROR_ADMIN_REMOVES_USERS_FROM_PRIVATE_LEAGUE = 'Only admin can remove users from the private league';
+    const ERROR_ADMIN_CANNOT_LEAVE_PRIVATE_LEAGUE = "Admin can't leave the private league";
 
     const SUCCESS_RECOVERY_LINK_SENT = "Recovery link was sent to your email. The link is active for 3 hours.";
     const SUCCESS_USER_RECOVERY_LINK_SENT = 'Recovery link was sent to your email. The link is active for 60 minutes';
@@ -131,6 +140,11 @@ class MessagesConstants
     const SUCCESS_PUBLIC_PROFILE_OPTION_SAVED = 'Public profile option was successfully saved.';
     const SUCCESS_DELETE_ACCOUNT = 'You have deleted your account successfully.';
     const SUCCESS_HELP_AND_SUPPORT_MESSAGE_SENT = 'Your message successfully sent';
+    const SUCCESS_PRIVATE_LEAGUE_CREATED = 'Private league was created successfully. Now you can invite your friends using league code %s.';
+    const SUCCESS_JOINED_PRIVATE_LEAGUE = 'You have joined the private league successfully';
+    const SUCCESS_DELETED_PRIVATE_LEAGUE = 'You have deleted the private league successfully';
+    const SUCCESS_LEFT_PRIVATE_LEAGUE = 'You have left the private league successfully';
+    const SUCCESS_REMOVED_USER_FROM_PRIVATE_LEAGUE = 'You have removed the user from the private league successfully';
 
     const INFO_LOGGED_OUT = "You've been logged out.";
     const INFO_OUT_OF_SEASON = "There is no season in play";

@@ -2,11 +2,14 @@
 
 namespace Neoco\View\Helper;
 
+use Application\Manager\LanguageManager;
 use \Application\Manager\MatchManager;
 use \Application\Manager\PredictionManager;
 use Application\Manager\RegionManager;
 use \Application\Manager\SettingsManager;
 use \Application\Manager\ApplicationManager;
+use Application\Model\DAOs\LeagueUserDAO;
+use Application\Model\Entities\League;
 use Zend\View\Helper\AbstractHelper;
 
 /**
@@ -29,8 +32,10 @@ class LeagueStats extends AbstractHelper
     }
 
     private $wasInitialized = false;
+    private $isActive = false;
     private $overallLeagueUsers;
     private $temporalLeagueUsers;
+    private $privateLeagueUsers;
     private $globalPoints = 0;
     private $globalAccuracy = 0;
     private $currentSeason;
@@ -42,28 +47,36 @@ class LeagueStats extends AbstractHelper
     {
         if (!$this->wasInitialized) {
             $this->wasInitialized = true;
-            $leagueUserDAO = \Application\Model\DAOs\LeagueUserDAO::getInstance($this->serviceLocator);
+            $leagueUserDAO = LeagueUserDAO::getInstance($this->serviceLocator);
             $this->currentSeason = ApplicationManager::getInstance($this->serviceLocator)->getCurrentSeason();
             if ($this->currentSeason === null) return $this;
             $user = ApplicationManager::getInstance($this->serviceLocator)->getCurrentUser();
-
-//            // todo remove
-            $region = $user->getCountry()->getRegion();
-//            $region = RegionManager::getInstance($this->serviceLocator)->getDefaultRegion();
-
-            $leagueUsers = $leagueUserDAO->getUserLeagues($user, $this->currentSeason, $region, true);
-            $this->overallLeagueUsers = $this->temporalLeagueUsers = array();
+            $language = $user->getLanguage();
+            $defaultLanguage = LanguageManager::getInstance($this->serviceLocator)->getDefaultLanguage();
+            $leagueUsers = $leagueUserDAO->getUserLeagues($user, $this->currentSeason, $language->getId(), $defaultLanguage->getId());
+            $this->isActive = !empty($leagueUsers);
+            $this->overallLeagueUsers = $this->temporalLeagueUsers = $this->privateLeagueUsers = array();
             foreach ($leagueUsers as $leagueUser)
                 if ($leagueUser['place'] != null) {
-                    if ($leagueUser['type'] == \Application\Model\Entities\League::MINI_TYPE)
-                        $this->temporalLeagueUsers [] = $leagueUser;
-                    else if ($leagueUser['type'] == \Application\Model\Entities\League::GLOBAL_TYPE) {
-                        array_unshift($this->overallLeagueUsers, $leagueUser);
-                        $this->globalPoints = $leagueUser['points'];
-                        $this->globalAccuracy = $leagueUser['accuracy'];
-                    } /*else if ($leagueUser['type'] == \Application\Model\Entities\League::REGIONAL_TYPE)
-                        array_push($this->overallLeagueUsers, $leagueUser);*/
-                    // todo remove
+                    if (empty($leagueUser['displayName']) && !$language->getIsDefault())
+                        $leagueUser['displayName'] = $leagueUser['defaultDisplayName'];
+                    switch($leagueUser['type']) {
+                        case League::MINI_TYPE:
+                            $this->temporalLeagueUsers [] = $leagueUser;
+                            break;
+                        case League::PRIVATE_TYPE:
+                            $leagueUser['displayName'] = $leagueUser['internalName'];
+                            $this->privateLeagueUsers [] = $leagueUser;
+                            break;
+                        case League::GLOBAL_TYPE:
+                            array_unshift($this->overallLeagueUsers, $leagueUser);
+                            $this->globalPoints = $leagueUser['points'];
+                            $this->globalAccuracy = $leagueUser['accuracy'];
+                            break;
+                        case League::REGIONAL_TYPE:
+                            array_push($this->overallLeagueUsers, $leagueUser);
+                            break;
+                    }
                 }
         }
         return $this;
@@ -87,9 +100,19 @@ class LeagueStats extends AbstractHelper
         return $this->temporalLeagueUsers;
     }
 
+    public function getPrivateLeagueUsers()
+    {
+        return $this->privateLeagueUsers;
+    }
+
     public function getCurrentSeason()
     {
         return $this->currentSeason;
+    }
+
+    public function getIsActive()
+    {
+        return $this->isActive;
     }
 
 }

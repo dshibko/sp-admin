@@ -8,7 +8,6 @@
             <h1><?php echo $this->escapeHtml($this->report['title']);?></h1>
             <p><?php echo $this->report['intro'];?></p>
             <footer class="clearfix">
-                <h3><?php echo $this->translate('Share this');?></h3>
                 <ul class="social-links">
                     <li>
                         <script type="text/javascript" src="/js/facebook.js"></script>
@@ -92,8 +91,8 @@
             <?php endif;?>
             <?php if (/*todo remove*/false && !empty($leaguesMovement['regional'])):?>
                 <?php echo $this->renderUserLeagueMovement($leaguesMovement['regional']);?>
-                <?php endif;?>
             <?php endif;?>
+        <?php endif;?>
         <!--REGIONAL LEAGUE MOVEMENT ENDS-->
     </div>
 </section>

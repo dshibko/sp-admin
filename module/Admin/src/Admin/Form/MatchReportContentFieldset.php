@@ -2,21 +2,22 @@
 
 namespace Admin\Form;
 
-use \Neoco\Form\RegionFieldset;
+use Neoco\Form\LanguageFieldset;
 
-class MatchReportContentFieldset extends RegionFieldset {
+class MatchReportContentFieldset extends LanguageFieldset
+{
 
     const TITLE_MAX_LENGTH = 255;
 
-    public function __construct($region) {
+    public function __construct($language, $required = 0) {
 
-        parent::__construct($region);
+        parent::__construct($language);
 
         $this->add(array(
             'name' => 'title',
             'type'  => 'text',
             'attributes' => array(
-                'required' => 'required',
+                'required' => $required,
                 'maxlength' => self::TITLE_MAX_LENGTH
             ),
             'options' => array(
@@ -28,7 +29,7 @@ class MatchReportContentFieldset extends RegionFieldset {
             'name' => 'intro',
             'type'  => 'textarea',
             'attributes' => array(
-                'required' => 'required'
+                'required' => $required
             ),
             'options' => array(
                 'label' => 'Intro',
@@ -39,7 +40,7 @@ class MatchReportContentFieldset extends RegionFieldset {
             'name' => 'headerImage',
             'type'  => 'file',
             'attributes' => array(
-                'required' => 'required',
+                'required' => $required,
                 'isImage' => true,
             ),
             'options' => array(
@@ -50,11 +51,11 @@ class MatchReportContentFieldset extends RegionFieldset {
     }
 
     /**
-     * @param array $regionContent
+     * @param array $languageContent
      */
-    function initFieldsetByObject($regionContent) {
-        $region = $this->getRegion();
-        $reportContent = $regionContent[$region['id']];
+    function initFieldsetByObject($languageContent) {
+        $language = $this->getLanguage();
+        $reportContent = $languageContent[$language['id']];
         foreach ($this->getElements() as $element) {
             $getter = 'get' . ucfirst($element->getName());
             if (method_exists($reportContent, $getter)) {

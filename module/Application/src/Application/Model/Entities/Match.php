@@ -215,40 +215,40 @@ class Match extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="MatchRegion", mappedBy="match", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="MatchLanguage", mappedBy="match", cascade={"remove"})
      */
-    protected $matchRegions;
+    protected $matchLanguages;
 
 
     /**
-     * Get match report regions
+     * Get match report languages
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getMatchRegions()
+    public function getMatchLanguages()
     {
-        return $this->matchRegions;
+        return $this->matchLanguages;
     }
 
 
     /**
-     * @param MatchRegion $matchRegion
+     * @param MatchLanguage $matchLanguage
      * @return \Application\Model\Entities\Match
      */
-    public function addMatchReportRegion(MatchRegion $matchRegion)
+    public function addMatchReportLanguage(MatchLanguage $matchLanguage)
     {
-        $this->matchRegions[] = $matchRegion;
+        $this->matchLanguages[] = $matchLanguage;
         return $this;
     }
 
 
     /**
-     * @param MatchRegion $matchRegion
+     * @param MatchLanguage $matchLanguage
      * @return Match
      */
-    public function removeMatchRegion(MatchRegion $matchRegion)
+    public function removeMatchLanguage(MatchLanguage $matchLanguage)
     {
-        $this->matchRegions->removeElement($matchRegion);
+        $this->matchLanguages->removeElement($matchLanguage);
         return $this;
     }
 
@@ -259,7 +259,7 @@ class Match extends BasicObject {
     {
         $this->predictions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->matchGoals = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->matchRegions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->matchLanguages = new \Doctrine\Common\Collections\ArrayCollection();
         $this->isDoublePoints = false;
     }
     

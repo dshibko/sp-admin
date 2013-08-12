@@ -6,7 +6,7 @@ use Neoco\Form\LanguageFieldset;
 
 class FooterPageFieldset extends LanguageFieldset
 {
-    public function __construct(array $language)
+    public function __construct(array $language, $required = false)
     {
         parent::__construct($language);
 
@@ -15,7 +15,7 @@ class FooterPageFieldset extends LanguageFieldset
             'name' => 'content',
             'type' => 'textarea',
             'attributes' => array(
-                'required' => true,
+                'required' => $required,
                 'editor'=> array(
                     'type' => 'ckeditor'
                 )
@@ -26,7 +26,7 @@ class FooterPageFieldset extends LanguageFieldset
         ));
     }
     public function initFieldsetByObject($pageData){
-        $data = $this->getData();
+        $data = $this->getLanguage();
         foreach ($pageData as $page) {
             if ($page->getLanguage()->getId() == $data['id']){
                 $this->get('content')->setValue($page->getContent());

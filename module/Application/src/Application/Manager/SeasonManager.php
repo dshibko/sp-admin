@@ -3,10 +3,10 @@
 namespace Application\Manager;
 
 use Application\Model\DAOs\LeagueUserDAO;
-use \Application\Model\Entities\Prize;
-use \Application\Model\DAOs\PrizeDAO;
-use \Application\Model\DAOs\SeasonRegionDAO;
-use \Application\Model\Entities\SeasonRegion;
+use \Application\Model\Entities\LeagueLanguage;
+use \Application\Model\DAOs\LeagueLanguageDAO;
+use \Application\Model\DAOs\SeasonLanguageDAO;
+use \Application\Model\Entities\SeasonLanguage;
 use \Application\Model\DAOs\LeagueDAO;
 use \Application\Model\Entities\League;
 use \Application\Model\Entities\Season;
@@ -71,12 +71,23 @@ class SeasonManager extends BasicManager {
         return SeasonDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
     }
 
-    public function createSeason($displayName, $startDate, $endDate, $feederId, $regionsData) {
+    public function createSeason($displayName, $startDate, $endDate, $feederId, $regionalLeaguesData, $globalLeagueData, $seasonData) {
         $season = new Season();
         $season->setDisplayName($displayName);
         $season->setStartDate($startDate);
         $season->setEndDate($endDate);
         $season->setFeederId($feederId);
+
+        foreach ($seasonData as $languageId => $seasonLanguageArr) {
+            $language = LanguageManager::getInstance($this->getServiceLocator())->getNonHydratedLanguageFromArray($languageId);
+            if (!$language) continue;
+            $seasonLanguage = new SeasonLanguage();
+            $seasonLanguage->setLanguage($language);
+            $seasonLanguage->setSeason($season);
+            $seasonLanguage->setDisplayName($seasonLanguageArr['seasonDisplayName']);
+            $seasonLanguage->setTerms($seasonLanguageArr['terms']);
+            $season->addSeasonLanguage($seasonLanguage);
+        }
 
         $seasonDAO = SeasonDAO::getInstance($this->getServiceLocator());
         $seasonDAO->save($season, false, false);
@@ -90,68 +101,64 @@ class SeasonManager extends BasicManager {
         $globalLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
         $globalLeague->setCreationDate(new \DateTime());
 
+        foreach ($globalLeagueData as $languageId => $globalLeagueLanguage) {
+            $language = LanguageManager::getInstance($this->getServiceLocator())->getNonHydratedLanguageFromArray($languageId);
+            if (!$language) continue;
+            $leagueLanguage = new LeagueLanguage();
+            $leagueLanguage->setLanguage($language);
+            $leagueLanguage->setLeague($globalLeague);
+            $this->fillInLeagueLanguage($leagueLanguage, $globalLeagueLanguage);
+            $globalLeague->addLeagueLanguage($leagueLanguage);
+        }
+
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         $leagueDAO->save($globalLeague, false, false);
 
-        $seasonRegionDAO = SeasonRegionDAO::getInstance($this->getServiceLocator());
-        $prizeDAO = PrizeDAO::getInstance($this->getServiceLocator());
+        $seasonLanguageDAO = SeasonLanguageDAO::getInstance($this->getServiceLocator());
+        $leagueLanguageDAO = LeagueLanguageDAO::getInstance($this->getServiceLocator());
 
         $regionalLeagues = array();
-        foreach ($regionsData as $id => $regionRow) {
-            $region = RegionManager::getInstance($this->getServiceLocator())->getNonHydratedRegionFromArray($id);
+        foreach ($regionalLeaguesData as $regionId => $regionRow) {
+            $region = RegionManager::getInstance($this->getServiceLocator())->getNonHydratedRegionFromArray($regionId);
             if (!$region) continue;
 
-            $seasonRegion = new SeasonRegion();
-            $seasonRegion->setSeason($season);
-            $seasonRegion->setRegion($region);
-            $seasonRegion->setDisplayName($regionRow['displayName']);
-            $seasonRegion->setTerms($regionRow['terms']);
-            $seasonRegionDAO->save($seasonRegion, false, false);
+            $regionalLeague = new League();
+            $regionalLeague->setDisplayName(self::REGIONAL_LEAGUE_PREFIX . $season->getDisplayName() . " " . $region->getDisplayName());
+            $regionalLeague->setStartDate($season->getStartDate());
+            $regionalLeague->setEndDate($season->getEndDate());
+            $regionalLeague->setSeason($season);
+            $regionalLeague->addRegion($region);
+            $regionalLeague->setType(League::REGIONAL_TYPE);
+            $regionalLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
+            $regionalLeague->setCreationDate(new \DateTime());
 
-            $prize = new Prize();
-            $prize->setLeague($globalLeague);
-            $prize->setRegion($region);
-            $prize->setPrizeImage($regionRow['prizeImagePath']);
-            $prize->setPrizeTitle($regionRow['prizeTitle']);
-            $prize->setPrizeDescription($regionRow['prizeDescription']);
-            $prize->setPostWinImage($regionRow['postWinImagePath']);
-            $prize->setPostWinTitle($regionRow['postWinTitle']);
-            $prize->setPostWinDescription($regionRow['postWinDescription']);
+            foreach ($regionRow as $languageId => $languageRow) {
+                $language = LanguageManager::getInstance($this->getServiceLocator())->getNonHydratedLanguageFromArray($languageId);
+                if (!$language) continue;
+                $regionalLeagueLanguage = new LeagueLanguage();
+                $regionalLeagueLanguage->setLeague($regionalLeague);
+                $regionalLeagueLanguage->setLanguage($language);
+                $this->fillInLeagueLanguage($regionalLeagueLanguage, $languageRow);
+                $regionalLeague->addLeagueLanguage($regionalLeagueLanguage);
+            }
 
-            $prizeDAO->save($prize, false, false);
+            $leagueDAO->save($regionalLeague, false, false);
 
-            $regionLeague = new League();
-            $regionLeague->setDisplayName(self::REGIONAL_LEAGUE_PREFIX . $season->getDisplayName() . " " . $region->getDisplayName());
-            $regionLeague->setStartDate($season->getStartDate());
-            $regionLeague->setEndDate($season->getEndDate());
-            $regionLeague->setSeason($season);
-            $regionLeague->addRegion($region);
-            $regionLeague->setType(League::REGIONAL_TYPE);
-            $regionLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
-            $regionLeague->setCreationDate(new \DateTime());
-
-            $leagueDAO->save($regionLeague, false, false);
-
-            $regionalLeagues [$id] = $regionLeague;
+            $regionalLeagues [$regionId] = $regionalLeague;
         }
 
         $seasonDAO->flush();
 
-        $userManager = UserManager::getInstance($this->getServiceLocator());
-        $userManager->registerLeagueUsers($globalLeague);
-        foreach ($regionalLeagues as $regionId => $regionalLeague)
-            $userManager->registerLeagueUsers($regionalLeague, $regionId);
-
         $seasonDAO->clearCache();
         $leagueDAO->clearCache();
-        $seasonRegionDAO->clearCache();
-        $prizeDAO->clearCache();
+        $seasonLanguageDAO->clearCache();
+        $leagueLanguageDAO->clearCache();
         LeagueUserDAO::getInstance($this->getServiceLocator())->clearCache();
 
         return $season;
     }
 
-    public function updateSeason($displayName, $startDate, $endDate, $feederId, $regionsData, $id) {
+    public function updateSeason($displayName, $startDate, $endDate, $feederId, $regionalLeaguesData, $globalLeagueData, $seasonData, $id) {
         $seasonDAO = SeasonDAO::getInstance($this->getServiceLocator());
         $season = $seasonDAO->findOneById($id);
         $season->setDisplayName($displayName);
@@ -161,6 +168,20 @@ class SeasonManager extends BasicManager {
         }
         $season->setFeederId($feederId);
 
+        foreach ($seasonData as $languageId => $seasonLanguageArr) {
+            $language = LanguageManager::getInstance($this->getServiceLocator())->getNonHydratedLanguageFromArray($languageId);
+            if (!$language) continue;
+            $seasonLanguage = $season->getSeasonLanguageByLanguageId($languageId);
+            if ($seasonLanguage === null) {
+                $seasonLanguage = new SeasonLanguage();
+                $seasonLanguage->setLanguage($language);
+                $seasonLanguage->setSeason($season);
+                $season->addSeasonLanguage($seasonLanguage);
+            }
+            $seasonLanguage->setDisplayName($seasonLanguageArr['seasonDisplayName']);
+            $seasonLanguage->setTerms($seasonLanguageArr['terms']);
+        }
+
         $seasonDAO->save($season, false, false);
 
         $globalLeague = $season->getGlobalLeague();
@@ -168,68 +189,69 @@ class SeasonManager extends BasicManager {
         $globalLeague->setStartDate($season->getStartDate());
         $globalLeague->setEndDate($season->getEndDate());
 
+        foreach ($globalLeagueData as $languageId => $globalLeagueLanguageRow) {
+            $language = LanguageManager::getInstance($this->getServiceLocator())->getNonHydratedLanguageFromArray($languageId);
+            if (!$language) continue;
+            $leagueLanguage = $globalLeague->getLeagueLanguageByLanguageId($languageId);
+            if ($leagueLanguage === null) {
+                $leagueLanguage = new LeagueLanguage();
+                $leagueLanguage->setLeague($globalLeague);
+                $leagueLanguage->setLanguage($language);
+                $globalLeague->addLeagueLanguage($leagueLanguage);
+            }
+            $this->fillInLeagueLanguage($leagueLanguage, $globalLeagueLanguageRow);
+        }
+
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         $leagueDAO->save($globalLeague, false, false);
 
-        $seasonRegionDAO = SeasonRegionDAO::getInstance($this->getServiceLocator());
-        $prizeDAO = PrizeDAO::getInstance($this->getServiceLocator());
+        $seasonLanguageDAO = SeasonLanguageDAO::getInstance($this->getServiceLocator());
+        $leagueLanguageDAO = LeagueLanguageDAO::getInstance($this->getServiceLocator());
 
-        foreach ($regionsData as $id => $regionRow) {
-            $region = RegionManager::getInstance($this->getServiceLocator())->getNonHydratedRegionFromArray($id);
-            if (!$region) continue;
+        foreach ($regionalLeaguesData as $regionId => $regionRow) {
+            $regionalLeague = $season->getRegionalLeagueByRegionId($regionId);
+            if ($regionalLeague === null) continue;
 
-            $seasonRegion = $season->getSeasonRegionByRegionId($region->getId());
-            if ($seasonRegion == null) {
-                $seasonRegion = new SeasonRegion();
-                $seasonRegion->setSeason($season);
-                $seasonRegion->setRegion($region);
+            foreach ($regionRow as $languageId => $languageRow) {
+
+                $language = LanguageManager::getInstance($this->getServiceLocator())->getNonHydratedLanguageFromArray($languageId);
+                if (!$language) continue;
+                $regionalLeagueLanguage = $regionalLeague->getLeagueLanguageByLanguageId($languageId);
+                if ($regionalLeagueLanguage === null) {
+                    $regionalLeagueLanguage = new LeagueLanguage();
+                    $regionalLeagueLanguage->setLeague($regionalLeague);
+                    $regionalLeagueLanguage->setLanguage($language);
+                    $regionalLeague->addLeagueLanguage($regionalLeagueLanguage);
+                }
+                $this->fillInLeagueLanguage($regionalLeagueLanguage, $languageRow);
             }
-            $seasonRegion->setDisplayName($regionRow['displayName']);
-            $seasonRegion->setTerms($regionRow['terms']);
+            $regionalLeague->setDisplayName(self::REGIONAL_LEAGUE_PREFIX . $season->getDisplayName() . " " . $regionalLeague->getRegion()->getDisplayName());
+            $regionalLeague->setStartDate($season->getStartDate());
+            $regionalLeague->setEndDate($season->getEndDate());
 
-            $seasonRegionDAO->save($seasonRegion, false, false);
-
-            $prize = $globalLeague->getPrizeByRegionId($region->getId());
-            if ($prize == null) {
-                $prize = new Prize();
-                $prize->setLeague($globalLeague);
-                $prize->setRegion($region);
-            }
-            if (!empty($regionRow['prizeImagePath']))
-                $prize->setPrizeImage($regionRow['prizeImagePath']);
-            $prize->setPrizeTitle($regionRow['prizeTitle']);
-            $prize->setPrizeDescription($regionRow['prizeDescription']);
-            if (!empty($regionRow['postWinImagePath']))
-                $prize->setPostWinImage($regionRow['postWinImagePath']);
-            $prize->setPostWinTitle($regionRow['postWinTitle']);
-            $prize->setPostWinDescription($regionRow['postWinDescription']);
-
-            $prizeDAO->save($prize, false, false);
-
-            $regionLeague = $season->getRegionalLeagueByRegionId($region->getId());
-            if ($regionLeague == null) {
-                $regionLeague = new League();
-                $regionLeague->setType(League::REGIONAL_TYPE);
-                $regionLeague->addRegion($region);
-                $regionLeague->setCreationDate(new \DateTime());
-                $regionLeague->setCreator(ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser());
-                $regionLeague->setSeason($season);
-            }
-            $regionLeague->setDisplayName(self::REGIONAL_LEAGUE_PREFIX . $season->getDisplayName() . " " . $region->getDisplayName());
-            $regionLeague->setStartDate($season->getStartDate());
-            $regionLeague->setEndDate($season->getEndDate());
-
-            $leagueDAO->save($regionLeague, false, false);
+            $leagueDAO->save($regionalLeague, false, false);
         }
 
         $seasonDAO->flush();
 
         $seasonDAO->clearCache();
         $leagueDAO->clearCache();
-        $seasonRegionDAO->clearCache();
-        $prizeDAO->clearCache();
+        $seasonLanguageDAO->clearCache();
+        $leagueLanguageDAO->clearCache();
 
         return $season;
+    }
+
+    private function fillInLeagueLanguage(LeagueLanguage $leagueLanguage, array $dataArr) {
+        $leagueLanguage->setDisplayName($dataArr['leagueDisplayName']);
+        $leagueLanguage->setPrizeTitle($dataArr['prizeTitle']);
+        if (!empty($dataArr['prizeImagePath']))
+            $leagueLanguage->setPrizeImage($dataArr['prizeImagePath']);
+        $leagueLanguage->setPrizeDescription($dataArr['prizeDescription']);
+        $leagueLanguage->setPostWinTitle($dataArr['postWinTitle']);
+        if (!empty($dataArr['postWinImagePath']))
+            $leagueLanguage->setPostWinImage($dataArr['postWinImagePath']);
+        $leagueLanguage->setPostWinDescription($dataArr['postWinDescription']);
     }
 
     /**
@@ -250,12 +272,12 @@ class SeasonManager extends BasicManager {
         foreach ($season->getLeagues() as $league) {
             if ($league->getLogoPath() != null)
                 $imageManager->deleteImage($league->getLogoPath());
-            if ($league->getPrizes() != null && is_array($league->getPrizes()) && count($league->getPrizes()) > 0) {
-                foreach ($league->getPrizes() as $prize) {
-                    if ($prize->getPrizeImage() != null)
-                        $imageManager->deleteImage($prize->getPrizeImage());
-                    if ($prize->getPostWinImage() != null)
-                        $imageManager->deleteImage($prize->getPostWinImage());
+            if ($league->getLeagueLanguages() != null && is_array($league->getLeagueLanguages()) && count($league->getLeagueLanguages()) > 0) {
+                foreach ($league->getLeagueLanguages() as $leagueLanguage) {
+                    if ($leagueLanguage->getPrizeImage() != null)
+                        $imageManager->deleteImage($leagueLanguage->getPrizeImage());
+                    if ($leagueLanguage->getPostWinImage() != null)
+                        $imageManager->deleteImage($leagueLanguage->getPostWinImage());
                 }
             }
         }
@@ -265,6 +287,17 @@ class SeasonManager extends BasicManager {
     public function getCurrentAndFutureSeasons($hydrate = false, $skipCache = false)
     {
         return SeasonDAO::getInstance($this->getServiceLocator())->getCurrentAndFutureSeasons($hydrate, $skipCache);
+    }
+
+    public function getSeasonDisplayName($seasonId) {
+        $seasonLanguageDAO = SeasonLanguageDAO::getInstance($this->getServiceLocator());
+        $language = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser()->getLanguage();
+        $displayName = $seasonLanguageDAO->getSeasonDisplayName($seasonId, $language->getId());
+        if (empty($displayName) && !$language->getIsDefault()) {
+            $defaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+            $displayName = $seasonLanguageDAO->getSeasonDisplayName($seasonId, $defaultLanguage->getId());
+        }
+        return $displayName;
     }
 
 }

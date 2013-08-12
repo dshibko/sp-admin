@@ -2,6 +2,7 @@
 
 namespace Admin\Controller;
 
+use Application\Manager\LeagueManager;
 use \Application\Manager\MatchManager;
 use \Application\Manager\PredictionManager;
 use \Application\Model\Helpers\MessagesConstants;
@@ -54,7 +55,8 @@ class IndexController extends AbstractActionController
 
             if ($currentSeason == null) {
                 $activeUsersNumber = $inactiveUsersNumber = $avgNumberOfPredictions =
-                $nextMatchPredictions = $prevMatchPredictions = MessagesConstants::INFO_ADMIN_OUT_OF_SEASON;
+                $nextMatchPredictions = $prevMatchPredictions =
+                $privateLeaguesCount = $privateLeaguesUsersCount = MessagesConstants::INFO_ADMIN_OUT_OF_SEASON;
             } else {
                 $activeUsersNumber = $userManager->getActiveUsersNumber($currentSeason);
                 $inactiveUsersNumber = $registeredUsersNumber - $activeUsersNumber;
@@ -74,11 +76,16 @@ class IndexController extends AbstractActionController
                     $prevMatchId = $prevMatch->getId();
                 } else
                     $prevMatchPredictions = MessagesConstants::INFO_ADMIN_NO_PREV_MATCH;
+
+                $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
+                $privateLeaguesCount = $leagueManager->getPrivateLeaguesCount($currentSeason->getId());
+                $privateLeaguesUsersCount = $leagueManager->getPrivateLeaguesUsersCount($currentSeason->getId());
             }
 
         } catch (\Exception $e) {
             $registeredUsersNumber = $activeUsersNumber = $inactiveUsersNumber =
-            $avgNumberOfPredictions = $nextMatchPredictions = $prevMatchPredictions = 'N\A';
+            $avgNumberOfPredictions = $nextMatchPredictions = $prevMatchPredictions =
+            $privateLeaguesCount = $privateLeaguesUsersCount = 'N\A';
             $usersRegisteredInPast7Days = array();
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
         }
@@ -90,6 +97,8 @@ class IndexController extends AbstractActionController
             'avgNumberOfPredictions' => $avgNumberOfPredictions,
             'nextMatchPredictions' => $nextMatchPredictions,
             'prevMatchPredictions' => $prevMatchPredictions,
+            'privateLeaguesCount' => $privateLeaguesCount,
+            'privateLeaguesUsersCount' => $privateLeaguesUsersCount,
             'usersRegisteredInPast7Days' => $usersRegisteredInPast7Days,
             'nextMatchId' => $nextMatchId,
             'prevMatchId' => $prevMatchId,

@@ -67,21 +67,21 @@ class PlayersController extends AbstractActionController
                         //Player Avatar
                         $avatar = $form->get('imagePath')->getValue();
                         if ($avatar['error'] != UPLOAD_ERR_NO_FILE)
-                            if (!array_key_exists('stored', $avatar) || $avatar['stored'] == 0) {
-                                $imageManager->deleteImage($player->getImagePath());
-                                $avatarPath = $imageManager->saveUploadedImage($form->get('imagePath'), ImageManager::IMAGE_PLAYER_AVATAR);
-                                $player->setImagePath($avatarPath);
-                            }
+                        if (!array_key_exists('stored', $avatar) || $avatar['stored'] == 0) {
+                            $imageManager->deleteImage($player->getImagePath());
+                            $avatarPath = $imageManager->saveUploadedImage($form->get('imagePath'), ImageManager::IMAGE_PLAYER_AVATAR);
+                            $player->setImagePath($avatarPath);
+                        }
 
                         //Player Background
                         $background = $form->get('backgroundImagePath')->getValue();
                         if ($background['error'] != UPLOAD_ERR_NO_FILE)
-                            if (!array_key_exists('stored', $background) || $background['stored'] == 0) {
-                                $imageManager->deleteImage($player->getBackgroundImagePath());
+                        if (!array_key_exists('stored', $background) || $background['stored'] == 0) {
+                            $imageManager->deleteImage($player->getBackgroundImagePath());
 
-                                $backgroundPath = $imageManager->saveUploadedImage($form->get('backgroundImagePath'), ImageManager::IMAGE_PLAYER_BACKGROUND);
-                                $player->setBackgroundImagePath($backgroundPath);
-                            }
+                            $backgroundPath = $imageManager->saveUploadedImage($form->get('backgroundImagePath'), ImageManager::IMAGE_PLAYER_BACKGROUND);
+                            $player->setBackgroundImagePath($backgroundPath);
+                        }
                         $data = $form->getData();
                         //Check changed data
                         if (!$player->getIsBlocked()){

@@ -3,9 +3,9 @@
 namespace Admin\Form;
 
 use Admin\Form\Filter\TermFormFilter;
-use \Neoco\Form\FieldsetsForm;
+use Neoco\Form\RegionalisedForm;
 
-class TermForm extends FieldsetsForm
+class TermForm extends RegionalisedForm
 {
 
     public function __construct($fieldsets) {

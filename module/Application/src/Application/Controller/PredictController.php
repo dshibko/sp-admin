@@ -16,7 +16,7 @@ use \Application\Manager\RegistrationManager;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ApplicationManager;
 use \Application\Manager\ContentManager;
-use \Application\Manager\RegionManager;
+use \Application\Manager\LanguageManager;
 use \Application\Manager\UserManager;
 
 class PredictController extends AbstractActionController {
@@ -31,6 +31,7 @@ class PredictController extends AbstractActionController {
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
+            $userManager = UserManager::getInstance($this->getServiceLocator());
 
             $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
 
@@ -44,11 +45,10 @@ class PredictController extends AbstractActionController {
             $facebookShareCopy = $twitterShareCopy = $securityKey = '';
 
             //Get setup form
-            if (!$user->getIsActive()){
-                $userManager = UserManager::getInstance($this->getServiceLocator());
+            if (!$userManager->getIsUserActive($user)) {
                 $setUpForm = $this->getServiceLocator()->get('Application\Form\SetUpForm');
-                $country = $user->getFacebookId() !== null ? $userManager->getUserGeoIpCountry() : $user->getCountry();
-                $language = $userManager->getUserLanguage();
+                $country = $user->getCountry() == null ? $userManager->getUserGeoIpCountry() : $user->getCountry();
+                $language = $user->getLanguage() == null ? $userManager->getUserLanguage() : $user->getLanguage();
                 $setUpForm ->get('region')->setValue($country->getId());
                 $setUpForm ->get('language')->setValue($language->getId());
             }
@@ -72,8 +72,8 @@ class PredictController extends AbstractActionController {
                 return $this->notFoundAction();
 
             //Match report
-            $region = $applicationManager->getUserRegion($user);
-            $matchReport = $matchManager->getPreMatchRegionReport($currentMatch['id'], $region->getId());
+            $userLanguage = $user->getLanguage();
+            $matchReport = $matchManager->getPreMatchLanguageReport($currentMatch['id'], $userLanguage->getId());
 
             if ($currentMatch['status'] == Match::PRE_MATCH_STATUS) {
 

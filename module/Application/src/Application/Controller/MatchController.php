@@ -4,7 +4,7 @@ namespace Application\Controller;
 
 use \Application\Manager\PredictionManager;
 use \Application\Manager\CompetitionManager;
-use \Application\Manager\RegionManager;
+use \Application\Manager\LanguageManager;
 use \Application\Manager\UserManager;
 use \Application\Model\Entities\Match;
 use \Application\Manager\MatchManager;
@@ -23,7 +23,7 @@ class MatchController extends AbstractActionController {
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
             $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
             $competitionManager = CompetitionManager::getInstance($this->getServiceLocator());
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
+            $languageManager = LanguageManager::getInstance($this->getServiceLocator());
             $userManager = UserManager::getInstance($this->getServiceLocator());
 
             $matchCode = (int) $this->params()->fromRoute('code', '');
@@ -46,19 +46,18 @@ class MatchController extends AbstractActionController {
                     return $this->redirect()->toRoute(ResultsController::RESULTS_ROUTE, array('back' => $back != 1 ? $back - 1 : null));
                 }
             }
-            // region detection
-// //             todo remove
+            // language detection
             $isCode = $userManager->getUserGeoIpIsoCode();
             if (!empty($isCode) && ($country = $applicationManager->getCountryByISOCode($isCode)) !== null &&
-                $country->getRegion() !== null)
-                $region = $country->getRegion();
+                $country->getLanguage() !== null)
+                $language = $country->getLanguage();
             else
-                $region = $regionManager->getDefaultRegion();
+                $language = $languageManager->getDefaultLanguage();
 
             $isPreMatchReport = ($match['status'] !== Match::FULL_TIME_STATUS);
 
-            $matchReport = $isPreMatchReport ? $matchManager->getPreMatchRegionReport($match['id'], $region->getId())
-                : $matchManager->getPostMatchRegionReport($match['id'], $region->getId());
+            $matchReport = $isPreMatchReport ? $matchManager->getPreMatchLanguageReport($match['id'], $language->getId())
+                : $matchManager->getPostMatchLanguageReport($match['id'], $language->getId());
 
             if ($isPreMatchReport) {
 

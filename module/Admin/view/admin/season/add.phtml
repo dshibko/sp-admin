@@ -41,7 +41,7 @@ $inputs = array($elements['displayName'], $elements['dates'], $elements['feederI
 </div>
 <?php endforeach; ?>
 </div>
-<?php echo $this->renderRegionFieldsets($form->getFieldsets(), $this->action == 'add'); ?>
+<?php echo $this->renderRegionLanguageFieldsets($form->getFieldsets(), $this->action == 'add', '', true, $activeTab); ?>
 <div class="form-actions">
     <button type="submit" class="btn blue"><i class="icon-ok"></i> <?=$this->translate($elements['submit']->getValue())?></button>
     <button type="button" class="btn">Cancel</button>

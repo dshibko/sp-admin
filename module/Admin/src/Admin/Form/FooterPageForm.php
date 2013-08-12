@@ -2,9 +2,9 @@
 
 namespace Admin\Form;
 
-use \Neoco\Form\FieldsetsForm;
+use Neoco\Form\RegionalisedForm;
 
-class FooterPageForm extends FieldsetsForm
+class FooterPageForm extends RegionalisedForm
 {
 
     protected $type;

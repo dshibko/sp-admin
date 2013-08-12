@@ -6,14 +6,14 @@
     <div class="first-column prizes">
         <h1><?php echo $title;?></h1>
         <figure class="prizes-banner">
-            <img src="<?php echo $this->grandPrize->getPrizeImage();?>" alt="">
+            <img src="<?php echo $this->grandPrize['prizeImage'];?>" alt="">
             <figcaption>
                 <article>
                     <hgroup>
-                        <h1><?php echo $this->grandPrize->getPrizeTitle();?></h1>
+                        <h1><?php echo $this->grandPrize['prizeTitle'];?></h1>
                     </hgroup>
                     <p>
-                        <?php echo $this->grandPrize->getPrizeDescription();?>
+                        <?php echo $this->grandPrize['prizeDescription'];?>
                     </p>
 <!--                    <h2>Visit Chelsea’s training ground</h2>-->
 <!--                    <p>Win the chance to visit Chelsea’s exclusive Training Ground in Cobham to see the players in a training session, an amazing prize for any Chelsea fan, as well as a bounty of CFC merchandise and products from our sponsors.</p>-->

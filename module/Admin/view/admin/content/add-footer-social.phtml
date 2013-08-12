@@ -6,7 +6,7 @@ $this->headTitle($title);
     <div class="span12">
     <?php
     $form = $this->form;
-    $params = array('region' => $this->activeRegion->getId(), 'action' => $this->action);
+    $params = array('language' => $this->activeLanguage->getId(), 'action' => $this->action);
     if ($this->action == 'editFooterSocial')
         $params['social'] = $form->get('order')->getValue();
     $form->setAttribute('action', $this->url('admin-content-footer-socials', $params));

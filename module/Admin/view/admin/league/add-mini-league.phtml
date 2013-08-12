@@ -57,7 +57,7 @@
                 </div>
             </div>
         </div>
-        <?php echo $this->renderRegionFieldsets($form->getFieldsets(), $this->action == 'add'); ?>
+        <?php echo $this->renderLanguageFieldsets($form->getFieldsets(), $this->action == 'add'); ?>
         <div class="form-actions">
             <button type="submit" class="btn blue"><i class="icon-ok"></i> <?=$this->translate($elements['submit']->getValue())?></button>
             <button type="button" class="btn">Cancel</button>
@@ -87,27 +87,27 @@
             e.preventDefault();
             this.form.reset();
         });
-        $('div.form').children('div.row-fluid:last').find('ul.nav-tabs li').hide();
-        $('div.form').children('div.row-fluid:last').find('div.tab-pane').addClass('hidden');
+//        $('div.form').children('div.row-fluid:last').find('ul.nav-tabs:first li').hide();
+//        $('div.form').children('div.row-fluid:last').find('div.tab-content:first').children('div.tab-pane').addClass('hidden');
         $("input[type='checkbox']").change(function() {
             var regionId = $(this).val();
-            var tabsContainer = $('div.form').children('div.row-fluid:last');
-            var tab = tabsContainer.find('ul.nav-tabs li:has(a[href="#tab_' + regionId + '"])');
-            var tabContainer = tabsContainer.find('div.tab-pane[id="tab_' + regionId + '"]');
+//            var tabsContainer = $('div.form').children('div.row-fluid:last');
+//            var tab = tabsContainer.find('ul.nav-tabs li:has(a[href="#tab_' + regionId + '"])');
+//            var tabContainer = tabsContainer.find('div.tab-pane[id="tab_' + regionId + '"]');
             var regions = $("#regions").val().split(',');
             if (regions.length == 1 && regions[0] == '') regions = [];
             if ($(this).attr('checked')) {
                 if (regions.indexOf(regionId) == -1)
                     regions[regions.length] = regionId;
-                tab.show();
-                tabContainer.removeClass('hidden');
-                tab.find('a').click();
+//                tab.show();
+//                tabContainer.removeClass('hidden');
+//                tab.find('a').click();
             } else {
                 if (regions.indexOf(regionId) != -1)
                     regions.splice(regions.indexOf(regionId), 1);
-                tab.hide();
-                tabsContainer.find('ul.nav-tabs li:visible:first a').click();
-                tabContainer.addClass('hidden');
+//                tab.hide();
+//                tabsContainer.find('ul.nav-tabs li:visible:first a').click();
+//                tabContainer.addClass('hidden');
             }
             $("#regions").val(regions.join(","));
         });
@@ -118,11 +118,13 @@
                 $(this).trigger('change');
             }
         });
-        if ($("#regions").val() == '')
+        if ($("#regions").val() == '') {
             $('input[type="checkbox"]').each(function() {
                 $(this).attr('checked', 'checked');
                 $(this).trigger('change');
             });
+            $('div.form').children('div.row-fluid:last').find('ul.nav-tabs li a:first').click();
+        }
         App.init(); // initlayout and core plugins
     });
     function parseDate(date) {
@@ -136,8 +138,10 @@
             var currentDates = dates.val();
             var datePickerOptions = {format: 'dd/MM/yyyy'};
             if (currentDates == '') {
-                var fromDate = Date.today().add({days: 1});
-                var toDate = Date.today().add({days: 31});
+                var fromDate = Date.today();
+                var toDate = Date.today().add({days: 30});
+//                var fromDate = Date.today().add({days: 1});
+//                var toDate = Date.today().add({days: 31});
             } else {
                 var fromDate = parseDate($.trim(currentDates.split("-")[0]));
                 var toDate = parseDate($.trim(currentDates.split("-")[1]));
@@ -166,7 +170,8 @@
                     separator: ' - ',
                     startDate: fromDate,
                     endDate: toDate,
-                    minDate: tomorrow.clone(),
+                    minDate: Date.today(),
+//                    minDate: tomorrow.clone(),
                     maxDate: tomorrow.clone().add({years: 2}),
                     locale: {
                         applyLabel: 'Submit',

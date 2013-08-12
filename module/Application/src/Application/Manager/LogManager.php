@@ -3,16 +3,15 @@
 namespace Application\Manager;
 
 use \Zend\Log\Writer\Stream;
-use \Zend\Log\Logger;
-use \Application\Model\Helpers\MessagesConstants;
+use Neoco\Log\Logger;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 
 class LogManager extends BasicManager {
 
-    private function __construct() {
-        $this->initLoggers();
-    }
+    const APP_LOGGER_NAME = 'app';
+    const OPTA_LOGGER_NAME = 'opta';
+    const CUSTOM_LOGGER_NAME = 'custom';
 
     /**
      * @var LogManager
@@ -32,73 +31,62 @@ class LogManager extends BasicManager {
         return self::$instance;
     }
 
-    /**
-     * @var \Zend\Log\Logger
-     */
-    private $appLogger;
+    private $loggers = array();
 
-    /**
-     * @var \Zend\Log\Logger
-     */
-    private $optaLogger;
-
-    /**
-     * @var \Zend\Log\Logger
-     */
-    private $customLogger;
-
-    private function initLoggers() {
-
-        $logDir = getcwd() . DIRECTORY_SEPARATOR . 'data'  . DIRECTORY_SEPARATOR . 'log'  . DIRECTORY_SEPARATOR;
-
-        $appErrorLogPath = $logDir . 'app' . DIRECTORY_SEPARATOR . 'error.log';
-        $appErrorLogWriter = new Stream($appErrorLogPath);
-        $this->appLogger = new Logger();
-        $this->appLogger->addWriter($appErrorLogWriter);
-
-        $optaErrorLogPath = $logDir . 'opta' . DIRECTORY_SEPARATOR . 'opta.log';
-        $optaErrorLogWriter = new Stream($optaErrorLogPath);
-        $this->optaLogger = new Logger();
-        $this->optaLogger->addWriter($optaErrorLogWriter);
-
-        $customErrorLogPath = $logDir . 'custom' . DIRECTORY_SEPARATOR . 'custom.log';
-        $customErrorLogWriter = new Stream($customErrorLogPath);
-        $this->customLogger = new Logger();
-        $this->customLogger->addWriter($customErrorLogWriter);
-
+    private static function getLogDir() {
+        return getcwd() . DIRECTORY_SEPARATOR . 'data'  . DIRECTORY_SEPARATOR . 'log'  . DIRECTORY_SEPARATOR;
     }
 
-    public function getAppLogger()
-    {
-        return $this->appLogger;
+    /**
+     * @param $name
+     * @param int $priority
+     * @throws \Exception
+     * @return Logger
+     */
+    private function getLogger($name, $priority) {
+
+        $logDir = self::getLogDir();
+
+        if (!in_array($name, array(self::APP_LOGGER_NAME, self::OPTA_LOGGER_NAME, self::CUSTOM_LOGGER_NAME)))
+            throw new \Exception('Unknown logger name');
+
+        if (!array_key_exists($name, $this->loggers))
+            $this->loggers[$name] = array();
+
+        if (!array_key_exists($priority, $this->loggers[$name])) {
+            $logger = new Logger();
+            $logPath = $logDir . $name . DIRECTORY_SEPARATOR . strtolower($logger->getPriorityName($priority)) . '.log';
+            $logWriter = new Stream($logPath);
+            $logger->addWriter($logWriter);
+            $this->loggers[$name][$priority] = $logger;
+        }
+
+        return $this->loggers[$name][$priority];
+
     }
 
     public function logAppException(\Exception $e, $priority = Logger::ERR) {
-        $this->getAppLogger()->log($priority, $e->getMessage(), array($e->getTraceAsString()));
+        $this->getLogger(self::APP_LOGGER_NAME, $priority)->log($priority, $e->getMessage(), array($e->getTraceAsString()));
     }
 
     public function logOptaException(\Exception $e, $priority = Logger::ERR) {
-        $this->optaLogger->log($priority, $e->getMessage(), array($e->getTraceAsString()));
+        $this->getLogger(self::OPTA_LOGGER_NAME, $priority)->log($priority, $e->getMessage(), array($e->getTraceAsString()));
     }
 
     public function logCustomException(\Exception $e, $priority = Logger::ERR) {
-        $this->customLogger->log($priority, $e->getMessage(), array($e->getTraceAsString()));
+        $this->getLogger(self::CUSTOM_LOGGER_NAME, $priority)->log($priority, $e->getMessage(), array($e->getTraceAsString()));
     }
 
-    /**
-     * @param $message
-     * @param int $priority
-     */
     public function logOptaMessage($message, $priority = Logger::INFO) {
-        $this->optaLogger->log($priority, $message);
+        $this->getLogger(self::OPTA_LOGGER_NAME, $priority)->log($priority, $message);
     }
 
     public function logOptaInfo($info) {
-        $this->optaLogger->log(Logger::INFO, $info);
+        $this->getLogger(self::OPTA_LOGGER_NAME, Logger::INFO)->log(Logger::INFO, $info);
     }
 
     public function logCustomMessage($message, $priority = Logger::INFO) {
-        $this->customLogger->log($priority, $message);
+        $this->getLogger(self::CUSTOM_LOGGER_NAME, $priority)->log($priority, $message);
     }
 
 }

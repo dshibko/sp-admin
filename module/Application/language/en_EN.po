@@ -28,7 +28,7 @@ msgstr "Sign In"
 
 #: view/application/auth/login.phtml:14 view/application/index/index.phtml:73
 msgid "Login with Facebook"
-msgstr "Login with Facebook"
+msgstr "Facebook login"
 
 #: view/application/auth/login.phtml:25
 msgid "Enter Your Credentials"
@@ -196,7 +196,7 @@ msgstr "days hours mins secs"
 
 #: view/application/predict/index.phtml:1
 msgid "Predict at"
-msgstr "Predict at"
+msgstr "Predict the"
 
 #: view/application/predict/index.phtml:15
 #: view/application/results/index.phtml:15
@@ -331,7 +331,7 @@ msgstr "We need to know your region so we can make sure you are entered into the
 #: view/application/registration/setup.phtml:41
 #: view/partials/setup-popup.phtml:15
 msgid "Note: once confirmed, you will not be able to change these settings until next season"
-msgstr "Note: once confirmed, you will not be able to change these settings until next season"
+msgstr "Note: once you have confirmed your region you will not be able to change this setting until next season"
 
 #: view/application/registration/setup.phtml:57
 #: view/partials/setup-popup.phtml:31
@@ -795,7 +795,7 @@ msgid "You were %s accurate in your prediction"
 msgstr "You were %s accurate in your prediction"
 
 msgid "Community correctly predicted the results"
-msgstr "Community correctly predicted the results"
+msgstr "Community correctly predicted the result"
 
 msgid "You didn't move on the %s league this match"
 msgstr "You didn't move on the %s league this match"
@@ -895,4 +895,67 @@ msgstr "Score Predictor"
 
 msgid "Terms were saved successfully."
 msgstr "Terms were saved successfully."
+
+msgid "A private league with the league code %s hasn't been not found"
+msgstr "A private league with the league code %s hasn't been not found"
+
+msgid "You joined the league earlier"
+msgstr "You joined the league earlier"
+
+msgid "You are not a member of this private league"
+msgstr "You are not a member of this private league"
+
+msgid "Create a private league"
+msgstr "Create a private league"
+
+msgid "Join a private league"
+msgstr "Join a private league"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Join"
+msgstr "Join"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Invalid private league display name"
+msgstr "Invalid private league display name"
+
+msgid "Invalid private league code"
+msgstr "Invalid private league code"
+
+msgid "Private league was created successfully. Now you can invite your friends using league code %s."
+msgstr "Private league was created successfully. Now you can invite your friends using league code %s."
+
+msgid "You have joined the private league successfully"
+msgstr "You have joined the private league successfully"
+
+msgid "You can't use bad words in private league display name"
+msgstr "You can't use bad words in private league display name"
+
+msgid "You have deleted the private league successfully"
+msgstr "You have deleted the private league successfully"
+
+msgid "Only admin can delete the private league"
+msgstr "Only admin can delete the private league"
+
+msgid "Are you sure that you want to delete the league?"
+msgstr "Are you sure that you want to delete the league?"
+
+msgid "Are you sure you want to be removed permanently from this private league?"
+msgstr "Are you sure you want to be removed permanently from this private league?"
+
+msgid "Are you sure you want to remove the user permanently from this private league?"
+msgstr "Are you sure you want to remove the user permanently from this private league?"
+
+msgid "Admin can't leave the private league"
+msgstr "Admin can't leave the private league"
+
+msgid "Unique league code"
+msgstr "Unique league code"
 

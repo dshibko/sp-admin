@@ -8,11 +8,11 @@
         <?php if (!empty($this->blocks)):?>
             <?php foreach ($this->blocks as $index => $block) : ?>
                 <article class="article-image article-image-<?= ($index + 1)  % 2 == 0 ? 'left' : 'right'?> clearfix user-content">
-                    <div>
+            <div>
                         <h2><?=$block['heading']?></h2>
                         <p><?=$block['description']?></p>
-                    </div>
-                    <figure>
+            </div>
+            <figure>
                         <div data-alt="<?=$block['heading']?>" data-picture="">
                             <div data-src="<?=$block['foregroundImage']['width480']?>"></div>
                             <div data-media="(min-width: 480px)" data-src="<?=$block['foregroundImage']['width480']?>"></div>
@@ -20,12 +20,12 @@
                             <div data-media="(min-width: 768px)" data-src="<?=$block['foregroundImage']['width1024']?>"></div>
                             <div data-media="(min-width: 1025px)" data-src="<?=$block['foregroundImage']['width1280']?>"></div>
                             <noscript><img src="<?=$block['foregroundImage']['width1024']?>" alt="<?=$block['heading']?>" /></noscript>
-                            <!--[if (lt IE 9) & (!IEMobile)]>
+                    <!--[if (lt IE 9) & (!IEMobile)]>
                             <div data-src="<?=$block['foregroundImage']['width1280']?>"></div>
-                            <![endif]-->
-                        </div>
-                    </figure>
-                </article>
+                    <![endif]-->
+                </div>
+            </figure>
+        </article>
             <?php endforeach; ?>
         <?php endif;?>
     </div>

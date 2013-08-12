@@ -4,7 +4,6 @@ namespace Admin\Form;
 
 use \Neoco\Form\UploadableForm;
 use Zend\Form\Form;
-use \Admin\Form\Filter\LoginInputFilter;
 
 class FooterImageForm extends UploadableForm {
 

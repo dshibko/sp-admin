@@ -39,6 +39,13 @@ class ExceptionManager extends BasicManager {
 
     /**
      * @param \Exception $e
+     */
+    public function handleFatalException(\Exception $e) {
+        LogManager::getInstance($this->getServiceLocator())->logAppException($e, Logger::CRIT);
+    }
+
+    /**
+     * @param \Exception $e
      * @param int $priority
      * @param \Zend\Console\Adapter\AdapterInterface $console
      */

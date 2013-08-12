@@ -450,43 +450,43 @@ class OptaManager extends BasicManager {
                     $awayTeamData = $teamData2;
                 }
 
-                $homeScore = $this->getXmlAttribute($homeTeamData, 'Score');
-                $awayScore = $this->getXmlAttribute($awayTeamData, 'Score');
-                $homeExtraScore = $awayExtraScore = null;
-                $homeShootoutScore = $awayShootoutScore = null;
+                    $homeScore = $this->getXmlAttribute($homeTeamData, 'Score');
+                    $awayScore = $this->getXmlAttribute($awayTeamData, 'Score');
+                    $homeExtraScore = $awayExtraScore = null;
+                    $homeShootoutScore = $awayShootoutScore = null;
 
-                foreach ($homeTeamData->Goal as $goalData) {
-                    $period = $this->getXmlAttribute($goalData, 'Period');
-                    if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
-                        $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
-                        $homeScore--;
-                        $homeExtraScore = $homeExtraScore == null ? 1 : $homeExtraScore + 1;
+                    foreach ($homeTeamData->Goal as $goalData) {
+                        $period = $this->getXmlAttribute($goalData, 'Period');
+                        if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
+                            $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
+                            $homeScore--;
+                            $homeExtraScore = $homeExtraScore == null ? 1 : $homeExtraScore + 1;
+                        }
+                        if ($period == MatchGoal::SHOOTOUT_PERIOD) {
+                            $homeExtraScore = $homeExtraScore == null ? 0 : $homeExtraScore;
+                            $homeShootoutScore =  $homeShootoutScore == null ? 1 : $homeShootoutScore + 1;
+                        }
                     }
-                    if ($period == MatchGoal::SHOOTOUT_PERIOD) {
-                        $homeExtraScore = $homeExtraScore == null ? 0 : $homeExtraScore;
-                        $homeShootoutScore =  $homeShootoutScore == null ? 1 : $homeShootoutScore + 1;
-                    }
-                }
 
-                foreach ($awayTeamData->Goal as $goalData) {
-                    $period = $this->getXmlAttribute($goalData, 'Period');
-                    if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
-                        $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
-                        $awayScore--;
-                        $awayExtraScore = $awayExtraScore == null ? 1 : $awayExtraScore + 1;
+                    foreach ($awayTeamData->Goal as $goalData) {
+                        $period = $this->getXmlAttribute($goalData, 'Period');
+                        if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
+                            $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
+                            $awayScore--;
+                            $awayExtraScore = $awayExtraScore == null ? 1 : $awayExtraScore + 1;
+                        }
+                        if ($period == MatchGoal::SHOOTOUT_PERIOD) {
+                            $awayExtraScore = $awayExtraScore == null ? 0 : $awayExtraScore;
+                            $awayShootoutScore =  $awayShootoutScore == null ? 1 : $awayShootoutScore + 1;
+                        }
                     }
-                    if ($period == MatchGoal::SHOOTOUT_PERIOD) {
-                        $awayExtraScore = $awayExtraScore == null ? 0 : $awayExtraScore;
-                        $awayShootoutScore =  $awayShootoutScore == null ? 1 : $awayShootoutScore + 1;
-                    }
-                }
 
-                $match->setHomeTeamFullTimeScore($homeScore);
-                $match->setAwayTeamFullTimeScore($awayScore);
-                $match->setHomeTeamExtraTimeScore($homeExtraScore);
-                $match->setAwayTeamExtraTimeScore($awayExtraScore);
-                $match->setHomeTeamShootoutScore($homeShootoutScore);
-                $match->setAwayTeamShootoutScore($awayShootoutScore);
+                    $match->setHomeTeamFullTimeScore($homeScore);
+                    $match->setAwayTeamFullTimeScore($awayScore);
+                    $match->setHomeTeamExtraTimeScore($homeExtraScore);
+                    $match->setAwayTeamExtraTimeScore($awayExtraScore);
+                    $match->setHomeTeamShootoutScore($homeShootoutScore);
+                    $match->setAwayTeamShootoutScore($awayShootoutScore);
 
                 $playerDAO = PlayerDAO::getInstance($this->getServiceLocator());
                 $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
@@ -760,16 +760,16 @@ class OptaManager extends BasicManager {
                         throw new OutOfSeasonException();
                     $processingStarted = false;
                     $seasonFeeds = $this->filterFeedsByParameters($feeds, $type, array('season_id' => $currentSeason->getFeederId()));
-                    foreach ($seasonFeeds as $seasonFeed)
-                        if ($force || $this->hasToBeProcessed($seasonFeed)) {
-                            $processingStarted = true;
+                        foreach ($seasonFeeds as $seasonFeed)
+                            if ($force || $this->hasToBeProcessed($seasonFeed)) {
+                                $processingStarted = true;
                             $this->processingStarted($seasonFeed, $type);
                             $this->saveFeedsChanges();
                             $success = $type == Feed::F1_TYPE ? $this->parseF1Feed($seasonFeed, $currentSeason, $console) :
                                 ($type == Feed::F40_TYPE ? $this->parseF40Feed($seasonFeed, $currentSeason, $console) : false);
-                            $this->processingCompleted($seasonFeed, $type, $success);
-                            $this->saveFeedsChanges();
-                        }
+                                $this->processingCompleted($seasonFeed, $type, $success);
+                        $this->saveFeedsChanges();
+                    }
                     if ($processingStarted)
                         $this->clearAppCache($type, $console);
                 }
@@ -929,16 +929,16 @@ class OptaManager extends BasicManager {
             }
 
             if (!empty($entitiesToBeCleared)) {
-                $entitiesToBeClearedQueryString = implode(",", $entitiesToBeCleared);
-                $clearAppCacheUrl = ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheUrl();
-                $clearAppCacheUrl = $clearAppCacheUrl . urlencode($entitiesToBeClearedQueryString);
-                $clearAppCacheResult = file_get_contents($clearAppCacheUrl);
-                if ($clearAppCacheResult == ClearAppCacheController::OK_MESSAGE)
-                    $this->logMessage(MessagesConstants::APP_CACHE_CLEARED, Logger::INFO, $console);
-                else
-                    $this->logMessage(MessagesConstants::APP_CACHE_NOT_CLEARED, Logger::WARN, $console);
-            }
+            $entitiesToBeClearedQueryString = implode(",", $entitiesToBeCleared);
+            $clearAppCacheUrl = ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheUrl();
+            $clearAppCacheUrl = $clearAppCacheUrl . urlencode($entitiesToBeClearedQueryString);
+            $clearAppCacheResult = file_get_contents($clearAppCacheUrl);
+            if ($clearAppCacheResult == ClearAppCacheController::OK_MESSAGE)
+                $this->logMessage(MessagesConstants::APP_CACHE_CLEARED, Logger::INFO, $console);
+            else
+                $this->logMessage(MessagesConstants::APP_CACHE_NOT_CLEARED, Logger::WARN, $console);
         }
+    }
     }
 
 }

@@ -6,12 +6,12 @@ use \Neoco\Model\BasicObject;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * RegionContent
+ * LanguageContent
  *
- * @ORM\Table(name="region_content")
+ * @ORM\Table(name="language_content")
  * @ORM\Entity
  */
-class RegionContent extends BasicObject
+class LanguageContent extends BasicObject
 {
 
     /**
@@ -38,12 +38,12 @@ class RegionContent extends BasicObject
     protected $id;
 
     /**
-     * @var Region
+     * @var Language
      *
-     * @ORM\OneToOne(targetEntity="Region")
-     * @ORM\JoinColumn(name="region_id", referencedColumnName="id")
+     * @ORM\OneToOne(targetEntity="Language")
+     * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
-    protected $region;
+    protected $language;
 
     /**
     * @ORM\OneToOne(targetEntity="ContentImage", cascade={"persist", "remove"}, orphanRemoval=true)
@@ -100,19 +100,19 @@ class RegionContent extends BasicObject
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      */
-    public function setRegion($region)
+    public function setLanguage($language)
     {
-        $this->region = $region;
+        $this->language = $language;
     }
 
     /**
-     * @return \Application\Model\Entities\Region
+     * @return \Application\Model\Entities\Language
      */
-    public function getRegion()
+    public function getLanguage()
     {
-        return $this->region;
+        return $this->language;
     }
 
     /**

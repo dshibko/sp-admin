@@ -11,7 +11,7 @@ abstract class UploadableFieldset extends Fieldset implements \Zend\InputFilter\
         foreach ($this->getElements() as $element) {
             if ($element->getAttribute('isImage')) {
                 $imageData = $element->getValue();
-                if ($imageData['stored'] == 1){
+                if (is_array($imageData) && array_key_exists('stored', $imageData) && $imageData['stored'] == 1){
                     $validators = array('required' => false);
                 }else{
                     $validators['validators'] = array(array('name' => 'fileextension', 'options' => array('extension' => 'jpg,jpeg,gif,png,bmp')));

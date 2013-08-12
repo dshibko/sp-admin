@@ -160,10 +160,10 @@ $this->headTitle($title);
                 <button type="submit"><?php echo $this->translate('Save changes');?></button>
             </div>
         </section>
-    <?php
-    echo $this->formHidden($this->languageForm->get('type'));
-    echo $this->form()->closeTag();
-    ?>
+        <?php
+        echo $this->formHidden($this->languageForm->get('type'));
+        echo $this->form()->closeTag();
+        ?>
     <!--TERMS FORM START-->
     <?php if (!is_null($this->termsForm)):?>
         <?php
@@ -173,22 +173,22 @@ $this->headTitle($title);
         ?>
         <?php $termsFieldset = $this->termsForm->getTermsFieldset();?>
         <?php if (!empty($termsFieldset)):?>
-            <section class="email-settings">
-                <div>
+        <section class="email-settings">
+            <div>
                     <h2><?php echo $this->translate('Terms');?></h2>
-                </div>
-                <div>
+            </div>
+            <div>
                     <?php foreach($termsFieldset->getElements() as $term):?>
-                        <label>
+                <label>
                             <?php echo $this->formCheckbox($term);?>
                             <?php echo $term->getLabel();?>
-                        </label>
+                </label>
                     <?php endforeach;?>
-                </div>
-                <div class="buttons">
-                    <button type="submit"><?php echo $this->translate('Save changes');?></button>
-                </div>
-            </section>
+            </div>
+            <div class="buttons">
+                <button type="submit"><?php echo $this->translate('Save changes');?></button>
+            </div>
+        </section>
         <?php endif;?>
         <?php
         echo $this->formHidden($this->termsForm->get('type'));
@@ -330,6 +330,6 @@ $this->headTitle($title);
     try {
         $('#settings-change-terms').idealforms(emailSettingsOptions).data('idealforms');
     } catch (e) {}
-   //$('#settings-change-public-profile').idealforms(publicProfileOptions).data('idealforms');
+   // $('#settings-change-public-profile').idealforms(publicProfileOptions).data('idealforms');
 
 </script>

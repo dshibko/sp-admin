@@ -4,6 +4,7 @@ namespace Application\Model\DAOs;
 
 use \Application\Model\Entities\League;
 use Application\Model\DAOs\AbstractDAO;
+use Application\Model\Entities\LeagueUser;
 use Doctrine\ORM\Query\ResultSetMapping;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -39,29 +40,30 @@ class LeagueUserDAO extends AbstractDAO {
     /**
      * @param \Application\Model\Entities\User $user
      * @param \Application\Model\Entities\Season $season
-     * @param \Application\Model\Entities\Region|null $region
-     * @param bool $hydrate
+     * @param int $languageId
+     * @param int $defaultLanguageId
      * @param bool $skipCache
+     * @internal param \Application\Model\Entities\Region|null $region
      * @return array
      */
-    public function getUserLeagues($user, $season, $region, $hydrate = false, $skipCache = false) {
+    public function getUserLeagues($user, $season, $languageId, $defaultLanguageId, $skipCache = false) {
         $nowTime = new \DateTime();
         $nowTime->setTime(0, 0, 0);
-        $regionId = $region == null ? 0 : $region->getId();
         $query = $this->getEntityManager()->createQuery('
             SELECT
-                lu.points, lu.accuracy, lu.place, lu.previousPlace, l.type, lr.displayName
+                lu.points, lu.accuracy, lu.place, lu.previousPlace, l.type, ll.displayName, ldl.displayName defaultDisplayName, l.displayName internalName
             FROM
                '.$this->getRepositoryName().' as lu
             INNER JOIN lu.league l WITH l.season = ' . $season->getId() . '
-            LEFT JOIN l.leagueRegions lr WITH lr.region = ' . $regionId . '
+            LEFT JOIN l.leagueLanguages ll WITH ll.language = ' . $languageId . '
+            LEFT JOIN l.leagueLanguages ldl WITH ldl.language = ' . $defaultLanguageId . '
             WHERE lu.user = ' . $user->getId() . ' AND
                 :nowTime >= l.startDate AND :nowTime <= l.endDate
         ')->setParameter('nowTime', $nowTime);
-        return $query->getArrayResult();
+        return $this->prepareQuery($query, array(LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
     }
 
-    public function getUserLeaguesByTypes(\Application\Model\Entities\User $user, \Application\Model\Entities\Season $season, \Application\Model\Entities\Region $region, array $types)
+    public function getUserLeaguesByTypes(\Application\Model\Entities\User $user, \Application\Model\Entities\Season $season, \Application\Model\Entities\Region $region, array $types, $skipCache = false)
     {
         $nowTime = new \DateTime();
         $nowTime->setTime(0, 0, 0);
@@ -72,8 +74,7 @@ class LeagueUserDAO extends AbstractDAO {
                 lu.accuracy,
                 lu.place,
                 lu.previousPlace,
-                l.type,
-                lr.displayName
+                l.type
             FROM
                '.$this->getRepositoryName().' as lu
             INNER JOIN lu.league l WITH l.season = ' . $season->getId() . '
@@ -81,23 +82,70 @@ class LeagueUserDAO extends AbstractDAO {
             WHERE lu.user = ' . $user->getId() . ' AND
                 :nowTime >= l.startDate AND :nowTime <= l.endDate AND l.type IN (:types)
         ')->setParameter('nowTime', $nowTime)->setParameter('types', $types);
-        return $query->getArrayResult();
+        return $this->prepareQuery($query, array(LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
     }
+
     /**
      * @param int $leagueId
+     * @param bool $placed
      * @param bool $skipCache
      * @return int
      */
-    public function getLeagueUsersCount($leagueId, $skipCache = false) {
+    public function getLeagueUsersCount($leagueId, $placed = true, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('lu.id'))
             ->from($this->getRepositoryName(), 'lu')
-            ->where($qb->expr()->isNotNull('lu.place'))
-            ->andWhere($qb->expr()->eq('lu.league', $leagueId));
+            ->where($qb->expr()->eq('lu.league', $leagueId));
+        if ($placed)
+            $qb->andWhere($qb->expr()->isNotNull('lu.place'));
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
-    // todo refactoring asap
+    /**
+     * @param int $leagueId
+     * @param bool $placeIsNotNull
+     * @param int $top
+     * @param int $offset
+     * @param array|null $facebookIds
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getLeagueTop($leagueId, $placeIsNotNull = true, $top = 0, $offset = 0, $facebookIds = null, $skipCache = false) {
+        if ($facebookIds !== null) {
+            if (empty($facebookIds)) return array();
+            $userDAO = UserDAO::getInstance($this->getServiceLocator());
+            $usersIdsArr = $userDAO->getUserIdsByFacebookIds($facebookIds, $skipCache);
+            $usersIds = array();
+            foreach ($usersIdsArr as $userId)
+                $usersIds [] = $userId['id'];
+            $facebookCondition = ' AND lu.user_id IN (' . implode(",", $usersIds) . ')';
+        } else $facebookCondition = '';
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('points','points');
+        $rsm->addScalarResult('accuracy','accuracy');
+        $rsm->addScalarResult('place','place');
+        $rsm->addScalarResult('previous_place','previousPlace');
+        $rsm->addScalarResult('display_name','displayName');
+        $rsm->addScalarResult('flag_image','flagImage');
+        $rsm->addScalarResult('country','country');
+        $rsm->addScalarResult('user_id','userId');
+        $limit = '';
+        if ($top > 0)
+            $limit = "LIMIT $offset, $top";
+        $placeIsNull = $placeIsNotNull ? 'AND lu.place IS NOT NULL' : '';
+        $query = $this->getEntityManager()->createNativeQuery("
+            SELECT
+                IFNULL(lu.points, 0) points, lu.accuracy, lu.place, lu.previous_place, u.display_name, c.flag_image, c.name as country, u.id as user_id
+            FROM
+               (SELECT * FROM league_user lu
+               WHERE lu.league_id = $leagueId $placeIsNull $facebookCondition
+            ORDER BY lu.place is not null DESC, lu.place ASC, lu.join_date ASC
+                $limit) as lu
+                INNER JOIN user u ON lu.user_id = u.id
+                INNER JOIN country c ON u.country_id = c.id
+        ", $rsm);
+        return $this->prepareQuery($query, array(LeagueUserPlaceDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
+    }
 
     /**
      * @param int $leagueId
@@ -107,7 +155,7 @@ class LeagueUserDAO extends AbstractDAO {
      * @param bool $skipCache
      * @return array
      */
-    public function getLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds = null, $skipCache = false) {
+    public function getPrivateLeagueTop($leagueId, $top = 0, $offset = 0, $facebookIds, $skipCache = false) {
         if ($facebookIds !== null) {
             if (empty($facebookIds)) return array();
             $userDAO = UserDAO::getInstance($this->getServiceLocator());
@@ -131,14 +179,14 @@ class LeagueUserDAO extends AbstractDAO {
             $limit = "LIMIT $offset, $top";
         $query = $this->getEntityManager()->createNativeQuery("
             SELECT
-                lu.points, lu.accuracy, lu.place, lu.previous_place, u.display_name, c.flag_image, c.name as country, u.id as user_id
+                0 points, lu.accuracy, lu.place, lu.previous_place, u.display_name, c.flag_image, c.name as country, u.id as user_id
             FROM
-               (SELECT * FROM league_user lu
-               WHERE lu.league_id = $leagueId AND lu.place IS NOT NULL $facebookCondition
-               ORDER BY lu.place ASC
-                $limit) as lu
-                INNER JOIN user u ON lu.user_id = u.id
-                INNER JOIN country c ON u.country_id = c.id
+               league_user lu
+               INNER JOIN user u ON lu.user_id = u.id
+               INNER JOIN country c ON u.country_id = c.id
+               WHERE lu.league_id = $leagueId $facebookCondition
+               ORDER BY u.display_name ASC
+                $limit
         ", $rsm);
         return $this->prepareQuery($query, array(LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName()), $skipCache)->getArrayResult();
     }
@@ -162,7 +210,7 @@ class LeagueUserDAO extends AbstractDAO {
      * @param int $userId
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return array
+     * @return LeagueUser|array
      */
     public function getLeagueUser($leagueId, $userId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
@@ -180,7 +228,7 @@ class LeagueUserDAO extends AbstractDAO {
     public function appendLeagueUsersUpdate($leagueUser, $place) {
         $points = $leagueUser['points'];
         $previousPlace = $leagueUser['place'] !== null ? $leagueUser['place'] : 'null';
-        $accuracy = floor(100 * $leagueUser['accuracy']);
+        $accuracy = $leagueUser['accuracy'];
         $id = $leagueUser['id'];
         $correctResults = $leagueUser['correct_results'];
         $correctScores = $leagueUser['correct_scores'];
@@ -210,5 +258,13 @@ class LeagueUserDAO extends AbstractDAO {
 
     public function commitLeagueUsersUpdate() {
         $this->getEntityManager()->getConnection()->commit();
+    }
+
+    public function moveUpLeagueUserPlaces($league, $fromPlace) {
+        $this->getEntityManager()->getConnection()->executeQuery("
+            UPDATE league_user lu
+            SET lu.place = lu.place - 1
+            WHERE lu.place > $fromPlace and lu.league_id = {$league->getId()};
+        ");
     }
 }

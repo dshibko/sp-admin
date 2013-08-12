@@ -2,9 +2,9 @@
 
 namespace Admin\Form;
 
-use \Neoco\Form\RegionFieldset;
+use Neoco\Form\LanguageFieldset;
 
-class FeaturedPlayerFieldset extends RegionFieldset
+class FeaturedPlayerFieldset extends LanguageFieldset
 {
     const MAX_MATCH_STATS_VALUE = 999;
     const MIN_MATCH_STATS_VALUE = 0;
@@ -14,15 +14,16 @@ class FeaturedPlayerFieldset extends RegionFieldset
     const MAX_SEASON_PLAYED_MINUTES_INPUT_LENGTH = 6;
 
 
-    public function __construct($region)
+    public function __construct($language, $required = 0)
     {
 
-        parent::__construct($region);
+        parent::__construct($language);
 
         //Featured Player
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'attributes' => array(
+                'required' => $required,
                 'class' => 'chosen',
                 'tabindex' => 6,
                 'style' => 'width:247px',
@@ -43,6 +44,7 @@ class FeaturedPlayerFieldset extends RegionFieldset
             'name' => 'player_goals',
             'type' => 'text',
             'attributes' => array(
+                'required' => $required,
                 'maxlength' => self::MAX_INPUT_LENGTH,
                 'between' => array(
                     'min' => self::MIN_MATCH_STATS_VALUE,
@@ -59,6 +61,7 @@ class FeaturedPlayerFieldset extends RegionFieldset
             'name' => 'player_matches_played',
             'type' => 'text',
             'attributes' => array(
+                'required' => $required,
                 'maxlength' => self::MAX_INPUT_LENGTH,
                 'between' => array(
                     'min' => self::MIN_MATCH_STATS_VALUE,
@@ -76,6 +79,7 @@ class FeaturedPlayerFieldset extends RegionFieldset
             'name' => 'player_match_starts',
             'type' => 'text',
             'attributes' => array(
+                'required' => $required,
                 'maxlength' => self::MAX_INPUT_LENGTH,
                 'between' => array(
                     'min' => self::MIN_MATCH_STATS_VALUE,
@@ -93,6 +97,7 @@ class FeaturedPlayerFieldset extends RegionFieldset
             'name' => 'player_minutes_played',
             'type' => 'text',
             'attributes' => array(
+                'required' => $required,
                 'maxlength' => self::MAX_SEASON_PLAYED_MINUTES_INPUT_LENGTH,
                 'between' => array(
                     'min' => self::MIN_MATCH_STATS_VALUE,
@@ -113,10 +118,10 @@ class FeaturedPlayerFieldset extends RegionFieldset
      */
     function initFieldsetByObject($match)
     {
-        $region = $this->getRegion();
-        foreach ($match->getMatchRegions() as $matchRegion) {
-            if ($matchRegion->getRegion()->getId() == $region['id']) {
-                $featuredPlayer = $matchRegion->getFeaturedPlayer();
+        $language = $this->getLanguage();
+        foreach ($match->getMatchLanguages() as $matchLanguage) {
+            if ($matchLanguage->getLanguage()->getId() == $language['id']) {
+                $featuredPlayer = $matchLanguage->getFeaturedPlayer();
                 //Featured Player
                 if ($featuredPlayer && $featuredPlayer->getPlayer()) {
                     $this->get('featured_player')->setValue($featuredPlayer->getPlayer()->getId());

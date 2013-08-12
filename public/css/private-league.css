@@ -1,0 +1,23 @@
+.more-info.private-league-button {
+    float: right;
+    margin: .4em 1em 1.3em 0;
+}
+
+.remove-player {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+span.private-league-code {
+    display: inline-block;
+    margin: 0 0 0 2em;
+    padding: .2em .2em 0 .2em;
+    color: #144a9b;
+    text-align: left;
+    text-decoration: none;
+    font: normal 1.7em/1 "ProximaNova-Bold",Helvetica,Arial;
+}
+
+.league-tables .league {
+    margin: 1em 0 0 !important;
+}

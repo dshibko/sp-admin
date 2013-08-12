@@ -16,10 +16,10 @@ use \Application\Model\DAOs\FooterImageDAO;
 use Application\Model\Entities\HowToPlayContent;
 use Application\Model\Entities\Language;
 use Application\Model\Entities\Logotype;
-use \Application\Model\Entities\RegionGameplayContent;
-use \Application\Model\DAOs\RegionGameplayContentDAO;
-use \Application\Model\Entities\RegionContent;
-use \Application\Model\DAOs\RegionContentDAO;
+use \Application\Model\Entities\LanguageGameplayContent;
+use \Application\Model\DAOs\LanguageGameplayContentDAO;
+use \Application\Model\Entities\LanguageContent;
+use \Application\Model\DAOs\LanguageContentDAO;
 use \Application\Model\DAOs\MatchDAO;
 use Application\Model\Entities\Term;
 use Application\Model\Entities\TermCopy;
@@ -54,134 +54,134 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param $heroBackgroundImage
      * @param $heroForegroundImage
      * @param $headlineCopy
      * @param $registerButtonCopy
      */
-    public function saveRegionContent($region, $heroBackgroundImage, $heroForegroundImage, $headlineCopy, $registerButtonCopy) {
-        $regionContent = ContentManager::getInstance($this->getServiceLocator())->getRegionContent($region);
-        if ($regionContent == null) {
-            $regionContent = new RegionContent();
-            $regionContent->setRegion($region);
+    public function saveLanguageContent($language, $heroBackgroundImage, $heroForegroundImage, $headlineCopy, $registerButtonCopy) {
+        $languageContent = ContentManager::getInstance($this->getServiceLocator())->getLanguageContent($language);
+        if ($languageContent == null) {
+            $languageContent = new LanguageContent();
+            $languageContent->setLanguage($language);
         } else {
             if ($heroBackgroundImage != null)
-                ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($regionContent->getHeroBackgroundImage());
+                ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($languageContent->getHeroBackgroundImage());
             if ($heroForegroundImage != null)
-                ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($regionContent->getHeroForegroundImage());
+                ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($languageContent->getHeroForegroundImage());
         }
         if ($heroBackgroundImage != null)
-            $regionContent->setHeroBackgroundImage($heroBackgroundImage);
+            $languageContent->setHeroBackgroundImage($heroBackgroundImage);
         if ($heroForegroundImage != null)
-            $regionContent->setHeroForegroundImage($heroForegroundImage);
-        $regionContent->setHeadlineCopy($headlineCopy);
-        $regionContent->setRegisterButtonCopy($registerButtonCopy);
-        RegionContentDAO::getInstance($this->getServiceLocator())->save($regionContent);
+            $languageContent->setHeroForegroundImage($heroForegroundImage);
+        $languageContent->setHeadlineCopy($headlineCopy);
+        $languageContent->setRegisterButtonCopy($registerButtonCopy);
+        LanguageContentDAO::getInstance($this->getServiceLocator())->save($languageContent);
     }
 
     /**
-     * @param $region
+     * @param $language
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return \Application\Model\Entities\RegionContent|array
+     * @return \Application\Model\Entities\LanguageContent|array
      */
-    public function getRegionContent($region, $hydrate = false, $skipCache = false) {
-        return RegionContentDAO::getInstance($this->getServiceLocator())->getRegionContent($region, $hydrate, $skipCache);
+    public function getLanguageContent($language, $hydrate = false, $skipCache = false) {
+        return LanguageContentDAO::getInstance($this->getServiceLocator())->getLanguageContent($language, $hydrate, $skipCache);
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param \Application\Model\Entities\ContentImage $foregroundImage
      * @param $heading
      * @param $description
      * @param $order
-     * @param RegionGameplayContent|null $regionGameplayContent
+     * @param LanguageGameplayContent|null $languageGameplayBlock
      */
-    public function saveRegionGameplayContent($region, $foregroundImage, $heading, $description, $order, $regionGameplayContent = null) {
-        if ($regionGameplayContent == null) {
-            $regionGameplayContent = new RegionGameplayContent();
-            $regionGameplayContent->setRegion($region);
+    public function saveLanguageGameplayContent($language, $foregroundImage, $heading, $description, $order, $languageGameplayBlock = null) {
+        if ($languageGameplayBlock == null) {
+            $languageGameplayBlock = new LanguageGameplayContent();
+            $languageGameplayBlock->setLanguage($language);
         } elseif ($foregroundImage != null)
-            ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($regionGameplayContent->getForegroundImage());
+            ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($languageGameplayBlock->getForegroundImage());
         if ($foregroundImage != null)
-            $regionGameplayContent->setForegroundImage($foregroundImage);
-        $regionGameplayContent->setHeading($heading);
-        $regionGameplayContent->setDescription($description);
-        $regionGameplayContent->setOrder($order);
-        RegionGameplayContentDAO::getInstance($this->getServiceLocator())->save($regionGameplayContent);
+            $languageGameplayBlock->setForegroundImage($foregroundImage);
+        $languageGameplayBlock->setHeading($heading);
+        $languageGameplayBlock->setDescription($description);
+        $languageGameplayBlock->setOrder($order);
+        LanguageGameplayContentDAO::getInstance($this->getServiceLocator())->save($languageGameplayBlock);
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param $fromOrder
      * @param $lastOrder
      */
-    public function swapRegionGameplayContentFromOrder($region, $fromOrder, $lastOrder) {
-        $regionGameplayContentDAO = RegionGameplayContentDAO::getInstance($this->getServiceLocator());
+    public function swapLanguageGameplayContentFromOrder($language, $fromOrder, $lastOrder) {
+        $languageGameplayContentDAO = LanguageGameplayContentDAO::getInstance($this->getServiceLocator());
         for ($i = $fromOrder; $i < $lastOrder; $i++) {
-            $regionGameplayBlock = $region->getRegionGameplayBlockByOrder($i);
-            $regionGameplayBlock->setOrder($i + 1);
-            $regionGameplayContentDAO->save($regionGameplayBlock, false, false);
+            $languageGameplayBlock = $language->getLanguageGameplayBlockByOrder($i);
+            $languageGameplayBlock->setOrder($i + 1);
+            $languageGameplayContentDAO->save($languageGameplayBlock, false, false);
         }
-        $regionGameplayContentDAO->flush();
-        $regionGameplayContentDAO->clearCache();
+        $languageGameplayContentDAO->flush();
+        $languageGameplayContentDAO->clearCache();
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param $toOrder
      * @param $lastOrder
      */
-    public function swapRegionGameplayContentToOrder($region, $toOrder, $lastOrder) {
-        $regionGameplayContentDAO = RegionGameplayContentDAO::getInstance($this->getServiceLocator());
+    public function swapLanguageGameplayContentToOrder($language, $toOrder, $lastOrder) {
+        $languageGameplayContentDAO = LanguageGameplayContentDAO::getInstance($this->getServiceLocator());
         for ($i = $lastOrder; $i > $toOrder; $i--) {
-            $regionGameplayBlock = $region->getRegionGameplayBlockByOrder($i);
-            $regionGameplayBlock->setOrder($i - 1);
-            $regionGameplayContentDAO->save($regionGameplayBlock, false, false);
+            $languageGameplayBlock = $language->getLanguageGameplayBlockByOrder($i);
+            $languageGameplayBlock->setOrder($i - 1);
+            $languageGameplayContentDAO->save($languageGameplayBlock, false, false);
         }
-        $regionGameplayContentDAO->flush();
-        $regionGameplayContentDAO->clearCache();
+        $languageGameplayContentDAO->flush();
+        $languageGameplayContentDAO->clearCache();
     }
 
     /**
-     * @param \Application\Model\Entities\RegionGameplayContent $block
+     * @param \Application\Model\Entities\LanguageGameplayContent $block
      */
-    public function deleteRegionGameplayContent(RegionGameplayContent $block) {
+    public function deleteLanguageGameplayContent(LanguageGameplayContent $block) {
         ImageManager::getInstance($this->getServiceLocator())->deleteContentImage($block->getForegroundImage());
-        ContentManager::getInstance($this->getServiceLocator())->swapRegionGameplayContentToOrder($block->getRegion(), $block->getOrder(), $block->getRegion()->getRegionGameplayBlocks()->count());
-        RegionContentDAO::getInstance($this->getServiceLocator())->remove($block);
+        ContentManager::getInstance($this->getServiceLocator())->swapLanguageGameplayContentToOrder($block->getLanguage(), $block->getOrder(), $block->getLanguage()->getLanguageGameplayBlocks()->count());
+        LanguageContentDAO::getInstance($this->getServiceLocator())->remove($block);
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getGameplayBlocks($region, $hydrate = false, $skipCache = false) {
-        return RegionGameplayContentDAO::getInstance($this->getServiceLocator())->getRegionGameplayBlocks($region, $hydrate, $skipCache);
+    public function getGameplayBlocks($language, $hydrate = false, $skipCache = false) {
+        return LanguageGameplayContentDAO::getInstance($this->getServiceLocator())->getLanguageGameplayBlocks($language, $hydrate, $skipCache);
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getFooterImages($region, $hydrate = false, $skipCache = false) {
-        return FooterImageDAO::getInstance($this->getServiceLocator())->getFooterImages($region, $hydrate, $skipCache);
+    public function getFooterImages(Language $language, $hydrate = false, $skipCache = false) {
+        return FooterImageDAO::getInstance($this->getServiceLocator())->getFooterImages($language, $hydrate, $skipCache);
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
-     * @param string $footerImagePath
+     * @param \Application\Model\Entities\Language $language
+     * @param $footerImagePath
      */
-    public function addFooterImage($region, $footerImagePath) {
+    public function addFooterImage(Language $language, $footerImagePath) {
         $imageManager = ImageManager::getInstance($this->getServiceLocator());
         $imageManager->resizeImage($footerImagePath, ImageManager::FOOTER_IMAGE_WIDTH, ImageManager::FOOTER_IMAGE_HEIGHT);
         $footerImage = new FooterImage();
-        $footerImage->setRegion($region);
+        $footerImage->setLanguage($language);
         $footerImage->setFooterImage($footerImagePath);
         FooterImageDAO::getInstance($this->getServiceLocator())->save($footerImage);
     }
@@ -202,27 +202,27 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getFooterSocials($region, $hydrate = false, $skipCache = false) {
-        return FooterSocialDAO::getInstance($this->getServiceLocator())->getFooterSocials($region, $hydrate, $skipCache);
+    public function getFooterSocials($language, $hydrate = false, $skipCache = false) {
+        return FooterSocialDAO::getInstance($this->getServiceLocator())->getFooterSocials($language, $hydrate, $skipCache);
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param \Application\Model\Entities\ContentImage $icon
      * @param $url
      * @param $copy
      * @param $order
      * @param \Application\Model\Entities\FooterSocial|null $footerSocial
      */
-    public function saveFooterSocial($region, $icon, $url, $copy, $order, $footerSocial = null) {
+    public function saveFooterSocial($language, $icon, $url, $copy, $order, $footerSocial = null) {
         if ($footerSocial == null) {
             $footerSocial = new FooterSocial();
-            $footerSocial->setRegion($region);
+            $footerSocial->setLanguage($language);
         } elseif ($icon != null)
             ImageManager::getInstance($this->getServiceLocator())->deleteImage($footerSocial->getIcon());
         if ($icon != null)
@@ -234,14 +234,14 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param $fromOrder
      * @param $lastOrder
      */
-    public function swapFooterSocialsFromOrder($region, $fromOrder, $lastOrder) {
+    public function swapFooterSocialsFromOrder($language, $fromOrder, $lastOrder) {
         $footerSocialDAO = FooterSocialDAO::getInstance($this->getServiceLocator());
         for ($i = $fromOrder; $i < $lastOrder; $i++) {
-            $footerSocial = $region->getFooterSocialByOrder($i);
+            $footerSocial = $language->getFooterSocialByOrder($i);
             $footerSocial->setOrder($i + 1);
             $footerSocialDAO->save($footerSocial, false, false);
         }
@@ -250,14 +250,14 @@ class ContentManager extends BasicManager {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param \Application\Model\Entities\Language $language
      * @param $toOrder
      * @param $lastOrder
      */
-    public function swapFooterSocialsToOrder($region, $toOrder, $lastOrder) {
+    public function swapFooterSocialsToOrder($language, $toOrder, $lastOrder) {
         $footerSocialDAO = FooterSocialDAO::getInstance($this->getServiceLocator());
         for ($i = $lastOrder; $i > $toOrder; $i--) {
-            $footerSocial = $region->getFooterSocialByOrder($i);
+            $footerSocial = $language->getFooterSocialByOrder($i);
             $footerSocial->setOrder($i - 1);
             $footerSocialDAO->save($footerSocial, false, false);
         }
@@ -271,7 +271,7 @@ class ContentManager extends BasicManager {
      */
     public function deleteFooterSocial($footerSocial) {
         ImageManager::getInstance($this->getServiceLocator())->deleteImage($footerSocial->getIcon());
-        ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsToOrder($footerSocial->getRegion(), $footerSocial->getOrder(), $footerSocial->getRegion()->getFooterSocials()->count());
+        ContentManager::getInstance($this->getServiceLocator())->swapFooterSocialsToOrder($footerSocial->getLanguage(), $footerSocial->getOrder(), $footerSocial->getLanguage()->getFooterSocials()->count());
         FooterSocialDAO::getInstance($this->getServiceLocator())->remove($footerSocial);
     }
 
@@ -284,7 +284,7 @@ class ContentManager extends BasicManager {
         $data = array();
         if (!empty($fieldsets)){
             foreach($fieldsets as $fieldset){
-                $language = $fieldset->getData();
+                $language = $fieldset->getLanguage();
                 $data[$language['id']] = array(
                     'content' => $fieldset->get('content')->getValue()
                 );
@@ -304,10 +304,19 @@ class ContentManager extends BasicManager {
             $imageManager = ImageManager::getInstance($this->getServiceLocator());
             $emblem = $imageManager->saveUploadedImage($form->get('emblem'), ImageManager::IMAGE_TYPE_LOGOTYPE);
             $data['emblem'] = $emblem;
+
             foreach($form->getFieldsets() as $fieldset){
-                $language = $fieldset->getData();
+                $language = $fieldset->getLanguage();
+                $logotypePath = '';
+                $logotype = $fieldset->get('logotype');
+                $value = $logotype->getValue();
+                if (isset($value['error']) && $value['error'] == UPLOAD_ERR_OK){
+                    $logotypePath = $imageManager->saveUploadedImage($logotype, ImageManager::IMAGE_TYPE_LOGOTYPE);
+                }elseif(isset($value['stored']) && $value['stored']){
+                    $logotypePath = null;
+                }
                 $data['languages'][$language['id']] = array(
-                    'logotype' => $imageManager->saveUploadedImage($fieldset->get('logotype'), ImageManager::IMAGE_TYPE_LOGOTYPE)
+                    'logotype' => $logotypePath
                 );
             }
         }
@@ -324,7 +333,7 @@ class ContentManager extends BasicManager {
         if (!empty($form)){
             $formData = $form->getData();
             foreach($form->getFieldsets() as $fieldset){
-                $language = $fieldset->getData();
+                $language = $fieldset->getLanguage();
                 $data[$language['id']] = array(
                     'required' => (bool)$formData['required'],
                     'checked'  => (bool)$formData['checked'],
@@ -368,13 +377,15 @@ class ContentManager extends BasicManager {
                 $language = $languageManager->getLanguageById($id);
                 $logotype->setLanguage($language);
                 $logotype->setEmblem($emblem);
-                if (!empty($languageData['logotype'])){
+
+                if (!is_null($languageData['logotype'])){
                     $oldLogotype = $logotype->getLogotype();
                     if (!empty($oldLogotype)){
                         $imageManager->deleteImage($oldLogotype);
                     }
                     $logotype->setLogotype($languageData['logotype']);
                 }
+
                 $logotypeDAO->save($logotype, false, false);
             }
 
@@ -468,12 +479,26 @@ class ContentManager extends BasicManager {
     public function getFooterPageContent($pageType)
     {
         $userManager = UserManager::getInstance($this->getServiceLocator());
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+
         $language = $userManager->getCurrentUserLanguage();
-        $footerPage = $this->getFooterPageByTypeAndLanguage($pageType, $language->getId());
+        $defaultLanguage = $languageManager->getDefaultLanguage();
+        $footerPage = $this->getFooterPageByTypeAndLanguage($pageType, $defaultLanguage->getId());
+
+        $content = '';
         if (!is_null($footerPage)){
-            return $footerPage->getContent();
+            $content = $footerPage->getContent();
         }
-        return false;
+        if ($defaultLanguage->getId() !== $language->getId()){
+            $userLanguageFooterPage = $this->getFooterPageByTypeAndLanguage($pageType, $language->getId());
+            if(!is_null($userLanguageFooterPage)){
+                $userContent = $userLanguageFooterPage->getContent();
+                if (!empty($userContent)){
+                    $content = $userContent;
+                }
+            }
+        }
+        return $content;
     }
 
     /**
@@ -539,20 +564,32 @@ class ContentManager extends BasicManager {
      */
     public function getSetUpFormTerms()
     {
-        $language = UserManager::getInstance($this->getServiceLocator())->getCurrentUserLanguage();
-        return $this->getTermsByLanguageId($language->getId(), true);
+        $userManager = UserManager::getInstance($this->getServiceLocator());
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+        $userLanguage = $userManager->getCurrentUserLanguage();
+        $defaultLanguage = $languageManager->getDefaultLanguage();
+        $terms = array();
+        if ($defaultLanguage instanceof Language){
+            $terms = $this->getTermsByLanguageId($defaultLanguage->getId(), true);
+            if ($userLanguage instanceof Language && $userLanguage->getId() !== $defaultLanguage->getId()){
+                $userTerms = $this->getTermsByLanguageId($userLanguage->getId(), true);
+                $terms = $this->extendContent($terms, $userTerms);
+            }
+        }
+
+        return $terms;
 
     }
 
     /**
-     * @param $regionId
+     * @param $languageId
      * @param $type
      * @param bool $hydrate
      * @param bool $skipCache
      * @return \Application\Model\Entities\DefaultReportContent|array
      */
-    public function getDefaultReportContentByTypeAndRegion($regionId, $type, $hydrate = false, $skipCache = false) {
-        return DefaultReportContentDAO::getInstance($this->getServiceLocator())->getDefaultReportContentByTypeAndRegion($regionId, $type, $hydrate, $skipCache);
+    public function getDefaultReportContentByTypeAndLanguage($languageId, $type, $hydrate = false, $skipCache = false) {
+        return DefaultReportContentDAO::getInstance($this->getServiceLocator())->getDefaultReportContentByTypeAndLanguage($languageId, $type, $hydrate, $skipCache);
     }
 
     public function saveDefaultReportContent($defaultReportContent, $flush = true, $clearCache = true) {

@@ -1,25 +1,17 @@
 <?php
     $title = $this->translate('League Tables');
-    $this->headTitle($title . ' - ' . $this->seasonRegion->getDisplayName());
+    $this->headTitle($title . ' - ' . $this->seasonName);
 ?>
+<link rel="stylesheet" href="/css/private-league.css">
 <div role="main" class="two-column-section clearfix">
     <div class="first-column league-tables">
+        <a href="<?=$this->url('create-private-league')?>" class="more-info private-league-button"><?=$this->translate('Create a private league')?></a>
         <h1><?=$title;?></h1>
-
+        <?php echo $this->partial('partials/flash-messages');?>
         <div class="league">
             <header class="clearfix">
-                <h2><?=$this->translate('Global league')?></h2>
-
-<!--                <form id="season-filter">-->
-<!--                    <div>-->
-<!--                        <select>-->
-<!--                            <option value="default">&ndash; Select season &ndash;</option>-->
-<!--                            <option value="">1</option>-->
-<!--                        </select>-->
-<!--                    </div>-->
-<!--                </form>-->
+                <h2><?=$this->globalLeagueName?></h2>
             </header>
-
             <section>
                 <div class="block">
                     <table>
@@ -48,27 +40,13 @@
                     </table>
                 </div>
                 <footer class="clearfix">
-<!--                    <h4>Share this</h4>-->
-<!--                    <ul class="social-links">-->
-<!--                        <li><a href="">Like</a></li>-->
-<!--                        <li><a href="">Tweet</a></li>-->
-<!--                    </ul>-->
                     <a href="<?=$this->url('full-table', array('table' => $this->globalLeague->getId()))?>" class="more-info"><?=$this->translate('View full table')?></a>
                 </footer>
             </section>
 
             <?php if ($this->regionalLeague !== null) : ?>
                 <header class="clearfix">
-                    <h2><?=$this->region->getDisplayName() . ' ' . $this->translate('league')?></h2>
-
-    <!--                <form id="season-filter">-->
-    <!--                    <div>-->
-    <!--                        <select>-->
-    <!--                            <option value="default">&ndash; Select season &ndash;</option>-->
-    <!--                            <option value="">1</option>-->
-    <!--                        </select>-->
-    <!--                    </div>-->
-    <!--                </form>-->
+                    <h2><?=$this->regionalLeagueName?></h2>
                 </header>
 
                 <section>
@@ -99,17 +77,12 @@
                         </table>
                     </div>
                     <footer class="clearfix">
-    <!--                    <h4>Share this</h4>-->
-    <!--                    <ul class="social-links">-->
-    <!--                        <li><a href="">Like</a></li>-->
-    <!--                        <li><a href="">Tweet</a></li>-->
-    <!--                    </ul>-->
                         <a href="<?=$this->url('full-table', array('table' => $this->regionalLeague->getId()))?>" class="more-info"><?=$this->translate('View full table')?></a>
                     </footer>
                 </section>
             <?php endif; ?>
             <?php foreach($this->temporalLeagues as $temporalLeague) : ?>
-                <?php if (!empty($temporalLeague['leagueUsers'])) : ?>
+                <?php //if (!empty($temporalLeague['leagueUsers'])) : ?>
                     <header class="clearfix">
                         <h2><?=$temporalLeague['displayName']?></h2>
                     </header>
@@ -144,10 +117,47 @@
                             <a href="<?=$this->url('full-table', array('table' => $temporalLeague['id']))?>" class="more-info"><?=$this->translate('View full table')?></a>
                         </footer>
                     </section>
-                <?php endif; ?>
+                <?php //endif; ?>
+            <?php endforeach;?>
+            <?php foreach($this->privateLeagues as $privateLeague) : ?>
+                <?php //if (!empty($privateLeague['leagueUsers'])) : ?>
+                    <header class="clearfix">
+                        <h2><?=$privateLeague['displayName']?></h2>
+                    </header>
+                    <section>
+                        <div class="block">
+                            <table>
+                                <tr>
+                                    <th colspan="3">
+                                        <h3><?=$this->translate('Top 4')?></h3>
+                                    </th>
+                                    <th><abbr title="Points"><?=$this->translate('pts')?></abbr></th>
+                                </tr>
+                                <?php foreach ($privateLeague['leagueUsers'] as $user) : $isActive = $user['userId'] == $this->getCurrentUser()->getId(); ?>
+                                <tr<?=$isActive ? ' class="your-table-position"' : ''?>>
+                                    <td class="position">
+                                        <?php if ($isActive) : ?><span><?php endif;?>
+                                        <?=$user['place'] !== null ? $user['place'] : '&ndash;'?>
+                                        <?php if ($isActive) : ?></span><?php endif;?>
+                                    </td>
+                                    <td class="player"><?=$user['displayName']?></td>
+                                    <td class="nationality"><img src="<?=$user['flagImage']?>" itemprop="nationality" alt="<?=$user['country']?>"></td>
+                                    <td class="points">
+                                        <?php if ($isActive) : ?><span><?php endif;?>
+                                        <?=$user['points'] !== null ? $user['points'] : '-'?>
+                                        <?php if ($isActive) : ?></span><?php endif;?>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            </table>
+                        </div>
+                        <footer class="clearfix">
+                            <a href="<?=$this->url('full-table', array('table' => $privateLeague['id']))?>" class="more-info"><?=$this->translate('View full table')?></a>
+                        </footer>
+                    </section>
+                <?php //endif; ?>
             <?php endforeach;?>
         </div>
     </div>
     <?php echo $this->partial('partials/right-column'); ?>
 </div>
-<!--<script src="/js/filter.js"></script>-->

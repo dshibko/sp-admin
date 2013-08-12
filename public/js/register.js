@@ -70,7 +70,7 @@ if ($(document).width() <  turnOffCustomStylePoint)
 
 try {
     if (!$('html').hasClass('lt-ie8')) {
-        var $register = $('#register').idealforms(registerOptions).data('idealforms');
-        $register.focusFirst();
+    var $register = $('#register').idealforms(registerOptions).data('idealforms');
+    $register.focusFirst();
     }
 } catch (e) {}

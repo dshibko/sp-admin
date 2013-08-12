@@ -56,7 +56,7 @@ class ImageManager extends BasicManager {
 
         $fileValue = $imageElement->getValue();
 
-        if ($fileValue['stored'] == 1) return '';
+        if ($fileValue['stored'] == 1 || $fileValue['error'] == UPLOAD_ERR_NO_FILE) return '';
 
         $appPath = $this->getAppPublicPath();
         $webPath = self::IMAGES_DIR_PATH . $type;

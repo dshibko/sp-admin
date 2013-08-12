@@ -2,16 +2,16 @@
 
 namespace Admin\Form;
 
-use \Neoco\Form\RegionFieldset;
+use Neoco\Form\LanguageFieldset;
 
-class FeaturedPredictionFieldset extends RegionFieldset
+class FeaturedPredictionFieldset extends LanguageFieldset
 {
     const MAX_TITLE_LENGTH = 255;
 
-    public function __construct($region)
+    public function __construct($language, $required = 0)
     {
 
-        parent::__construct($region);
+        parent::__construct($language);
 
         /*----------------------Featured Prediction Start----------------------*/
 
@@ -20,6 +20,7 @@ class FeaturedPredictionFieldset extends RegionFieldset
             'name' => 'prediction_name',
             'type' => 'text',
             'attributes' => array(
+                'required' => $required,
                 'maxlength' => self::MAX_TITLE_LENGTH,
             ),
             'options' => array(
@@ -32,6 +33,7 @@ class FeaturedPredictionFieldset extends RegionFieldset
             'name' => 'prediction_copy',
             'type' => 'textarea',
             'attributes' => array(
+                'required' => $required,
             ),
             'options' => array(
                 'label' => 'Prediction',
@@ -43,6 +45,7 @@ class FeaturedPredictionFieldset extends RegionFieldset
             'name' => 'prediction_image',
             'type' => 'file',
             'attributes' => array(
+                'required' => $required,
                 'isImage' => true,
             ),
             'options' => array(
@@ -59,10 +62,10 @@ class FeaturedPredictionFieldset extends RegionFieldset
      */
     function initFieldsetByObject($match)
     {
-        $region = $this->getRegion();
-        foreach ($match->getMatchRegions() as $matchRegion) {
-            if ($matchRegion->getRegion()->getId() == $region['id']) {
-                $featuredPrediction = $matchRegion->getFeaturedPrediction();
+        $language = $this->getLanguage();
+        foreach ($match->getMatchLanguages() as $matchLanguage) {
+            if ($matchLanguage->getLanguage()->getId() == $language['id']) {
+                $featuredPrediction = $matchLanguage->getFeaturedPrediction();
                 //Featured Prediction
                 if ($featuredPrediction) {
                     $this->get('prediction_name')->setValue($featuredPrediction->getName());

@@ -13,7 +13,7 @@
                 <h1 itemprop="name"><?=$this->getCurrentUser()->getDisplayName()?></h1>
             </section>
 
-            <?php if ($this->getCurrentUser()->getIsActive() && $this->getLeagueStats()->getCurrentSeason() !== null) : ?>
+            <?php if ($this->getLeagueStats()->getCurrentSeason() !== null && $this->getLeagueStats()->getIsActive()) : ?>
                 <section class="block total-points">
                     <table>
                         <thead>
@@ -41,7 +41,7 @@
                                 <?php foreach($overallLeagueUsers as $leagueUser) : ?>
                                     <tr>
                                         <th>
-                                            <?=$leagueUser['type'] == \Application\Model\Entities\League::GLOBAL_TYPE ? 'Global' : 'Local'?>
+                                            <?=$leagueUser['displayName']?>
                                         </th>
                                         <td class="movement">
                                             <?php if ($leagueUser['previousPlace'] != null) : ?>
@@ -77,9 +77,40 @@
                                         </th>
                                         <td class="movement">
                                             <?php if ($leagueUser['previousPlace'] != null) : ?>
-                                                <?php if ($leagueUser['previousPlace'] < $leagueUser['place']) : ?>
+                                                <?php if ($leagueUser['previousPlace'] > $leagueUser['place']) : ?>
                                                     <img alt="Moved Up" src="/img/up.png" class="up">
-                                                <?php elseif ($leagueUser['previousPlace'] > $leagueUser['place']) : ?>
+                                                <?php elseif ($leagueUser['previousPlace'] < $leagueUser['place']) : ?>
+                                                    <img alt="Moved Down" src="/img/down.png" class="down">
+                                                <?php endif;?>
+                                            <?php endif;?>
+                                        </td>
+                                        <td class="score"><?=$leagueUser['place'] != null ? $leagueUser['place'] : '-'?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                <?php endif; ?>
+                <?php
+                    $privateLeagueUsers = $this->getLeagueStats()->getPrivateLeagueUsers();
+                    if (!empty($privateLeagueUsers)) :
+                ?>
+                    <section class="league">
+                        <h1><?=$this->translate('Private Leagues')?></h1>
+                        <div class="block">
+                            <table>
+                                <tbody>
+                                <?php foreach($privateLeagueUsers as $leagueUser) : ?>
+                                    <tr>
+                                        <th>
+                                            <?=$leagueUser['displayName']?>
+                                        </th>
+                                        <td class="movement">
+                                            <?php if ($leagueUser['previousPlace'] != null) : ?>
+                                                <?php if ($leagueUser['previousPlace'] > $leagueUser['place']) : ?>
+                                                    <img alt="Moved Up" src="/img/up.png" class="up">
+                                                <?php elseif ($leagueUser['previousPlace'] < $leagueUser['place']) : ?>
                                                     <img alt="Moved Down" src="/img/down.png" class="down">
                                                 <?php endif;?>
                                             <?php endif;?>
@@ -94,7 +125,7 @@
                 <?php endif; ?>
 
             <?php endif; ?>
-            <?php if ($this->getCurrentUser()->getIsActive() && $this->getLeagueStats()->getCurrentSeason() !== null) : ?>
+            <?php if ($this->getLeagueStats()->getCurrentSeason() !== null && $this->getLeagueStats()->getIsActive()) : ?>
                 <p class="full"><a href="<?=$this->url('tables')?>"><?=$this->translate('View full league tables')?></a></p>
             <?php endif;?>
         </div>

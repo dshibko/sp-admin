@@ -90,6 +90,56 @@ return array(
                     ),
                 ),
             ),
+            'create-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/create-private-league',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'create',
+                    ),
+                ),
+            ),
+            'join-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/join-private-league',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'join',
+                    ),
+                ),
+            ),
+            'delete-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/delete-private-league/:code',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'delete',
+                    ),
+                ),
+            ),
+            'leave-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/leave-private-league/:code',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'leave',
+                    ),
+                ),
+            ),
+            'remove-user-from-private-league' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/remove-user-from-private-league/:code/:id',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\PrivateLeague',
+                        'action'     => 'removeUser',
+                    ),
+                ),
+            ),
             'registration' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -283,6 +333,16 @@ return array(
                     ),
                 ),
             ),
+            '500' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route'    => '/500',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Common',
+                        'action'     => 'error500',
+                    ),
+                ),
+            ),
             //Common Requests
             'common' => array(
                 'type'    => 'segment',
@@ -368,6 +428,7 @@ return array(
             'Application\Controller\Prize' => 'Application\Controller\PrizeController',
             'Application\Controller\Common' => 'Application\Controller\CommonController',
             'Application\Controller\ClearAppCache' => 'Application\Controller\ClearAppCacheController',
+            'Application\Controller\PrivateLeague' => 'Application\Controller\PrivateLeagueController',
         ),
     ),
     'controller_plugins' => array(

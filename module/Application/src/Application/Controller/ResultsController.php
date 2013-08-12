@@ -18,7 +18,6 @@ use \Application\Manager\RegistrationManager;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ApplicationManager;
 use \Application\Manager\ContentManager;
-use \Application\Manager\RegionManager;
 use Zend\View\Model\ViewModel;
 
 class ResultsController extends AbstractActionController {
@@ -58,8 +57,8 @@ class ResultsController extends AbstractActionController {
                 return $this->notFoundAction();
 
             //Match report
-            $region = $applicationManager->getUserRegion($user);
-            $matchReport = $matchManager->getPostMatchRegionReport($currentMatch['id'], $region->getId());
+            $userLanguage = $user->getLanguage();
+            $matchReport = $matchManager->getPostMatchLanguageReport($currentMatch['id'], $userLanguage->getId());
 
             $predictionPlayers = $currentMatch['prediction']['predictionPlayers'];
             $predictionPlayersCount = 0;

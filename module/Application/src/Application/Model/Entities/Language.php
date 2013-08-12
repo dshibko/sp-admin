@@ -29,6 +29,13 @@ class Language extends BasicObject {
     protected $languageCode;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="FooterSocial", mappedBy="language")
+     */
+    protected $footerSocials;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="display_name", type="string", length=40, nullable=false)
@@ -66,6 +73,13 @@ class Language extends BasicObject {
      * @ORM\OneToMany(targetEntity="HowToPlayContent", mappedBy="language")
      */
     protected $howToPlayBlocks;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="LanguageGameplayContent", mappedBy="language")
+     */
+    protected $languageGameplayBlocks;
     /**
      * Constructor
      */
@@ -87,6 +101,32 @@ class Language extends BasicObject {
     }
 
     /**
+     * @param \Doctrine\Common\Collections\Collection $languageGameplayBlocks
+     */
+    public function setLanguageGameplayBlocks($languageGameplayBlocks)
+    {
+        $this->languageGameplayBlocks = $languageGameplayBlocks;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLanguageGameplayBlocks()
+    {
+        return $this->languageGameplayBlocks;
+    }
+
+    /**
+     * @param $order
+     * @return \Application\Model\Entities\LanguageGameplayContent
+     */
+    public function getLanguageGameplayBlockByOrder($order) {
+        return $this->getLanguageGameplayBlocks()->filter(function (LanguageGameplayContent $languageGameplayContent) use ($order) {
+            return $order == $languageGameplayContent->getOrder();
+        })->first();
+    }
+
+    /**
      * @return \Doctrine\Common\Collections\Collection
      */
     public function getHowToPlayBlocks()
@@ -102,14 +142,14 @@ class Language extends BasicObject {
     public function setLanguageCode($languageCode)
     {
         $this->languageCode = $languageCode;
-
+    
         return $this;
     }
 
     /**
      * Get languageCode
      *
-     * @return string
+     * @return string 
      */
     public function getLanguageCode()
     {
@@ -125,14 +165,14 @@ class Language extends BasicObject {
     public function setDisplayName($displayName)
     {
         $this->displayName = $displayName;
-
+    
         return $this;
     }
 
     /**
      * Get displayName
      *
-     * @return string
+     * @return string 
      */
     public function getDisplayName()
     {
@@ -142,7 +182,7 @@ class Language extends BasicObject {
     /**
      * Get id
      *
-     * @return integer
+     * @return integer 
      */
     public function getId()
     {
@@ -228,6 +268,32 @@ class Language extends BasicObject {
     public function getIsDefault()
     {
         return $this->isDefault;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $footerSocials
+     */
+    public function setFooterSocials($footerSocials)
+    {
+        $this->footerSocials = $footerSocials;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFooterSocials()
+    {
+        return $this->footerSocials;
+    }
+
+    /**
+     * @param $order
+     * @return \Application\Model\Entities\FooterSocial
+     */
+    public function getFooterSocialByOrder($order) {
+        return $this->getFooterSocials()->filter(function (FooterSocial $footerSocial) use ($order) {
+            return $order == $footerSocial->getOrder();
+        })->first();
     }
 
 }

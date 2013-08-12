@@ -1,10 +1,27 @@
 <?php
-$this->headTitle($this->leagueName . ' - ' . $this->seasonName);
+$this->headTitle(htmlspecialchars_decode($this->leagueName) . ' - ' . $this->seasonName);
 ?>
 <?php if (!$this->onlyRows) : ?>
     <div role="main" class="two-column-section clearfix">
         <div class="first-column league-tables">
+            <?php if ($this->league->getType() == \Application\Model\Entities\League::PRIVATE_TYPE) : ?>
+                <link rel="stylesheet" href="/css/private-league.css">
+                <?php if ($this->league->getCreator()->getId() == $this->getCurrentUser()->getId()) : ?>
+                    <a href="#" id="league-edit-button" class="more-info private-league-button"><?=$this->translate('Edit')?></a>
+                    <a href="<?=$this->url('delete-private-league', array('code' => $this->league->getPrivateLeague()->getUniqueHash()))?>"
+                       id="league-delete-button" style="display: none" class="more-info private-league-button"
+                       title="<?=$this->translate('Are you sure that you want to delete the league?')?>"><?=$this->translate('Delete')?></a>
+                <?php else : ?>
+                    <a href="<?=$this->url('leave-private-league', array('code' => $this->league->getPrivateLeague()->getUniqueHash()))?>"
+                       id="league-leave-button" class="more-info private-league-button"
+                       title="<?=$this->translate('Are you sure you want to be removed permanently from this private league?')?>"><?=$this->translate('Leave')?></a>
+                <?php endif; ?>
+            <?php endif; ?>
             <h1><?=$this->translate('League Table')?></h1>
+            <?php if ($this->league->getType() == \Application\Model\Entities\League::PRIVATE_TYPE &&
+                        $this->league->getCreator()->getId() == $this->getCurrentUser()->getId()) : ?>
+                <span class="private-league-code"><?=$this->translate('Unique league code').': '.$this->league->getPrivateLeague()->getUniqueHash(); ?></span>
+            <?php endif; ?>
             <div class="league">
                 <header class="clearfix">
                     <h2><?=$this->seasonName?></h2>
@@ -20,7 +37,7 @@ $this->headTitle($this->leagueName . ' - ' . $this->seasonName);
                         </div>
                     </form>
                 </header>
-
+                <?php echo $this->partial('partials/flash-messages');?>
                 <section>
                     <div class="block">
                         <table id='league-table'>
@@ -38,7 +55,15 @@ $this->headTitle($this->leagueName . ' - ' . $this->seasonName);
                                     <?=$user['place'] !== null ? $user['place'] : '&ndash;'?>
                                     <?php if ($isActive) : ?></span><?php endif;?>
                                 </td>
-                                <td class="player"><?=$user['displayName']?></td>
+                                <td class="player">
+                                    <?=$user['displayName']?>
+                                    <?php if ($this->league->getType() == \Application\Model\Entities\League::PRIVATE_TYPE &&
+                                        $this->league->getCreator()->getId() == $this->getCurrentUser()->getId() && $user['userId'] != $this->getCurrentUser()->getId()) : ?>
+                                        &nbsp;<a href="<?=$this->url('remove-user-from-private-league', array('code' => $this->league->getPrivateLeague()->getUniqueHash(), 'id' => $user['userId']))?>"
+                                                 title="<?=$this->translate('Are you sure you want to remove the user permanently from this private league?')?>"
+                                                 style="display: none" class="remove-player">X</a>
+                                    <?php endif; ?>
+                                </td>
                                 <td class="nationality"><img src="<?=$user['flagImage']?>" itemprop="nationality" alt="<?=$user['country']?>"></td>
                                 <td class="points">
                                     <?php if ($isActive) : ?><span><?php endif;?>

@@ -1,0 +1,34 @@
+<div role="main" class="two-column-section clearfix">
+    <div class="first-column registration">
+        <h1>
+            <?=$this->translate('Join a private league')?>
+        </h1>
+        <form action="<?=$this->url('join-private-league')?>" method="post" id="join-private-league">
+            <?php echo $this->partial('partials/flash-messages');?>
+            <section>
+                <div>
+                    <label for="league-code"><?=$this->translate('League Code')?></label>
+                    <input name="league-code" type="text" class="required" id="league-code" value="">
+                </div>
+                <div class="buttons">
+                    <button type="submit"><?=$this->translate('Join')?></button>
+                </div>
+                <input type="hidden" name="check_key" value="<?=$this->securityKey?>"/>
+            </section>
+        </form>
+    </div>
+    <?php echo $this->partial('partials/right-column');?>
+</div>
+<script type="text/javascript">
+    var displayNameOptions = {
+        onFail: function(){},
+        onSuccess: function(){},
+        inputs: {
+            'league-code': {
+                filters: 'required'
+            }
+        }
+    };
+    if (!$('html').hasClass('lt-ie8'))
+        $('#join-private-league').idealforms(displayNameOptions).data('idealforms');
+</script>

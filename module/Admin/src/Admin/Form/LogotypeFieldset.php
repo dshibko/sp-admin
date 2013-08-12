@@ -6,7 +6,7 @@ use Neoco\Form\LanguageFieldset;
 
 class LogotypeFieldset extends LanguageFieldset
 {
-    public function __construct(array $language)
+    public function __construct(array $language, $required = false)
     {
         parent::__construct($language);
 
@@ -16,7 +16,7 @@ class LogotypeFieldset extends LanguageFieldset
             'type' => 'file',
             'attributes' => array(
                 'isImage' => true,
-                'required' => true,
+                'required' => $required,
             ),
             'options' => array(
                 'label' => 'Logotype',
@@ -24,7 +24,7 @@ class LogotypeFieldset extends LanguageFieldset
         ));
     }
     public function initFieldsetByObject($logotypes){
-        $data = $this->getData();
+        $data = $this->getLanguage();
         foreach ($logotypes as $logotype) {
             if ($logotype->getLanguage()->getId() == $data['id']){
                 $this->get('logotype')->setValue($logotype->getLogotype());

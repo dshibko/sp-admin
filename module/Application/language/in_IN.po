@@ -16,40 +16,40 @@ msgstr ""
 
 #: view/application/auth/forgot.phtml:2
 msgid "Forgot Password?"
-msgstr "Forgot Password?"
+msgstr "Lupa password?"
 
 #: view/application/auth/forgot.phtml:24 view/application/auth/reset.phtml:29
 msgid "Submit"
-msgstr "Submit"
+msgstr "Kirim"
 
 #: view/application/auth/login.phtml:2 view/application/auth/login.phtml:42
 msgid "Sign In"
-msgstr "Sign In"
+msgstr "Masuk"
 
 #: view/application/auth/login.phtml:14 view/application/index/index.phtml:73
 msgid "Login with Facebook"
-msgstr "Login with Facebook"
+msgstr "Login dengan Facebook"
 
 #: view/application/auth/login.phtml:25
 msgid "Enter Your Credentials"
-msgstr "Enter Your Credentials"
+msgstr "Masukkan Pengenal Anda"
 
 #: view/application/auth/login.phtml:37 view/application/index/index.phtml:89
 msgid "Remember me"
-msgstr "Remember me"
+msgstr "Ingat saya"
 
 #: view/application/auth/login.phtml:45 view/application/index/index.phtml:95
 msgid "Forgotten password"
-msgstr "Forgotten password"
+msgstr "Lupa password"
 
 #: view/application/auth/login.phtml:48 view/application/index/index.phtml:97
 msgid "Not a member?"
-msgstr "Not a member?"
+msgstr "Bukan anggota?"
 
 #: view/application/auth/login.phtml:49 view/application/index/index.phtml:98
 #: view/application/registration/index.phtml:179
 msgid "Register"
-msgstr "Register"
+msgstr "Daftar"
 
 #: view/application/auth/reset.phtml:2
 msgid "Reset Password"
@@ -57,19 +57,19 @@ msgstr "Reset Password"
 
 #: view/application/auth/reset.phtml:38
 msgid "Reset Password Page"
-msgstr "Reset Password Page"
+msgstr "Reset Halaman Password"
 
 #: view/application/content/help.phtml:9
 msgid "We would like to hear from you - any comments or suggestions or any questions you may have. Just use the form below."
-msgstr "We would like to hear from you - any comments or suggestions or any questions you may have. Just use the form below."
+msgstr "Kami ingin mendengar pendapat, saran, atau pertanyaan yang Anda miliki. Silakan gunakan form di bawah ini."
 
 #: view/application/content/help.phtml:19
 msgid "Enter Your Contact Info and Message"
-msgstr "Enter Your Contact Info and Message"
+msgstr "Masukkan Info Kontak Anda dan Pesan"
 
 #: view/application/content/help.phtml:36
 msgid "Send"
-msgstr "Send"
+msgstr "Kirim"
 
 #: view/application/content/help.phtml:37
 msgid "Reset"
@@ -77,13 +77,13 @@ msgstr "Reset"
 
 #: view/application/content/help.phtml:42
 msgid "FAQs"
-msgstr "FAQs"
+msgstr "FAQ"
 
 msgid "How to play"
-msgstr "How to play"
+msgstr "Cara bermain"
 
 msgid "Fixtures"
-msgstr "Fixtures"
+msgstr "Jadwal Pertandingan"
 
 #: view/application/fixtures/index.phtml:39
 #: view/application/match/index.phtml:41 view/application/match/index.phtml:81
@@ -95,45 +95,45 @@ msgstr "VS"
 
 #: view/application/fixtures/index.phtml:41
 msgid "Predict the score"
-msgstr "Predict the score"
+msgstr "Prediksi skor"
 
 msgid "No more matches will be played in this season. Please join us when next season starts."
-msgstr "No more matches will be played in this season. Please join us when the new season starts."
+msgstr "Tidak ada pertandingan lagi musim ini. Silakan bergabung ketika musim baru dimulai."
 
 #: view/application/full-table/index.phtml:7
 msgid "League Table"
-msgstr "League Table"
+msgstr "Klasemen Liga"
 
 #: view/application/full-table/index.phtml:14
 msgid "Everyone"
-msgstr "Everyone"
+msgstr "Semua orang"
 
 #: view/application/full-table/index.phtml:16
 msgid "Your friends"
-msgstr "Your friends"
+msgstr "Teman-teman Anda"
 
 #: view/application/full-table/index.phtml:18
 msgid "You and around you"
-msgstr "You and around you"
+msgstr "Anda dan sekeliling Anda"
 
 #: view/application/full-table/index.phtml:31
 #: view/application/tables/index.phtml:30
 #: view/application/tables/index.phtml:81
 #: view/application/tables/index.phtml:123
 msgid "pts"
-msgstr "pts"
+msgstr "poin"
 
 #: view/application/full-table/index.phtml:57
 msgid "Show more"
-msgstr "Show more"
+msgstr "Tunjukkan lagi"
 
 #: view/application/index/index.phtml:72
 msgid "Already a member?"
-msgstr "Already a member?"
+msgstr "Sudah menjadi anggota?"
 
 #: view/application/index/index.phtml:76
 msgid "Regular Login"
-msgstr "Regular Login"
+msgstr "Login Regular"
 
 #: view/application/index/index.phtml:80
 msgid "Email"
@@ -145,15 +145,15 @@ msgstr "Password"
 
 #: view/application/index/index.phtml:92
 msgid "Sign in"
-msgstr "Sign in"
+msgstr "Masuk"
 
 #: view/application/index/index.phtml:101
 msgid "Close"
-msgstr "Close"
+msgstr "Tutup"
 
 #: view/application/index/index.phtml:130
 msgid "Ready to try?"
-msgstr "Ready to try?"
+msgstr "Siap mencoba?"
 
 #: view/application/match/index.phtml:1 view/application/match/index.phtml:3
 #: view/application/match/index.phtml:4 view/application/predict/index.phtml:1
@@ -171,176 +171,176 @@ msgstr "vs"
 #: view/application/results/index.phtml:4
 #: view/application/results/index.phtml:6
 msgid "Match Report"
-msgstr "Match Report"
+msgstr "Laporan Pertandingan"
 
 #: view/application/match/index.phtml:17 view/application/match/index.phtml:68
 msgid "Public Report"
-msgstr "Public Report"
+msgstr "Laporan Publik"
 
 #: view/application/match/index.phtml:42
 #: view/application/predict/index.phtml:65
 #: view/application/predict/index.phtml:122
 #: view/application/results/index.phtml:61
 msgid "Scorers"
-msgstr "Scorers"
+msgstr "Pencetak gol"
 
 #: view/application/match/index.phtml:95
 #: view/application/predict/index.phtml:158
 msgid "Time left"
-msgstr "Time left"
+msgstr "Waktu tersisa"
 
 #: view/application/match/index.phtml:98
 #: view/application/predict/index.phtml:161
 msgid "days hours mins secs"
-msgstr "days hours mins secs"
+msgstr "hari jam menit detik"
 
 #: view/application/predict/index.phtml:1
 msgid "Predict at"
-msgstr "Predict at"
+msgstr "Prediksi"
 
 #: view/application/predict/index.phtml:15
 #: view/application/results/index.phtml:15
 msgid "New"
-msgstr "New"
+msgstr "Baru"
 
 #: view/application/predict/index.phtml:24
 #: view/application/results/index.phtml:24
 msgid "Prev"
-msgstr "Prev"
+msgstr "Sebelumnya"
 
 #: view/application/predict/index.phtml:24
 #: view/application/predict/index.phtml:29
 #: view/application/results/index.phtml:24
 #: view/application/results/index.phtml:29
 msgid "match"
-msgstr "match"
+msgstr "pertandingan"
 
 #: view/application/predict/index.phtml:29
 #: view/application/results/index.phtml:29
 msgid "Next"
-msgstr "Next"
+msgstr "Selanjutnya"
 
 #: view/application/predict/index.phtml:37
 msgid "Match in progress"
-msgstr "Match in progress"
+msgstr "Pertandingan sedang berlangsung"
 
 #: view/application/predict/index.phtml:41
 msgid "You predicted"
-msgstr "You predicted"
+msgstr "Prediksi Anda"
 
 #: view/application/predict/index.phtml:87
 msgid "This game is currently being played... check back soon for the results"
-msgstr "This game is currently being played... check back soon for the results"
+msgstr "Pertandingan ini sedang dimainkan… cek kembali untuk melihat hasilnya"
 
 #: view/application/predict/index.phtml:89
 msgid "or"
-msgstr "or"
+msgstr "atau"
 
 #: view/application/predict/index.phtml:90
 msgid "predict the next game"
-msgstr "predict the next game"
+msgstr "Prediksi pertandingan selanjutnya"
 
 #: view/application/predict/index.phtml:114
 #: view/application/predict/index.phtml:141
 #: view/application/predict/index.phtml:164
 #: view/application/predict/index.phtml:165
 msgid "Select scorer"
-msgstr "Select scorer"
+msgstr "Pilih pencetak gol"
 
 #: view/application/predict/index.phtml:149
 msgid "Make prediction"
-msgstr "Save prediction"
+msgstr "Buat prediksi"
 
 #: view/application/predict/index.phtml:151
 msgid "Edit your prediction"
-msgstr "Edit your prediction"
+msgstr "Edit prediksi Anda"
 
 #: view/application/predict/index.phtml:187
 msgid "You didn't save the prediction."
-msgstr "You didn't save the prediction."
+msgstr "Anda tidak menyimpan prediksi Anda."
 
 msgid "Prizes"
-msgstr "Prizes"
+msgstr "Hadiah"
 
 #: view/application/registration/index.phtml:2
 msgid "Registration"
-msgstr "Registration"
+msgstr "Pendaftaran"
 
 #: view/application/registration/index.phtml:15
 #: view/application/user/settings.phtml:14
 msgid "Connect with Facebook"
-msgstr "Connect with Facebook"
+msgstr "Hubungkan dengan Facebook"
 
 #: view/application/registration/index.phtml:26
 msgid "Enter Personal Info"
-msgstr "Enter Personal Info"
+msgstr "Masukkan Informasi Pribadi"
 
 msgid "Gender"
 msgstr "Gender"
 
 msgid "Male"
-msgstr "Male"
+msgstr "Laki-Laki"
 
 msgid "Female"
-msgstr "Female"
+msgstr "Wanita"
 
 #: view/application/registration/index.phtml:85
 msgid "Enter Email Addresses"
-msgstr "Enter Email Addresses"
+msgstr "Masukkan Alamat Email"
 
 #: view/application/registration/index.phtml:108
 msgid "Enter Your Password"
-msgstr "Enter Your Password"
+msgstr "Masukkan Password Anda"
 
 #: view/application/registration/index.phtml:131
 msgid "Enter Your Display Name"
-msgstr "Enter Your Display Name"
+msgstr "Masukkan Nama Pengguna"
 
 #: view/application/registration/index.phtml:145
 msgid "Enter Your Avatar"
-msgstr "Enter Your Avatar"
+msgstr "Masukkan Avatar Anda"
 
 #: view/application/registration/index.phtml:157
 #: view/application/user/settings.phtml:120
 msgid "Or choose from selection"
-msgstr "Or choose from selection"
+msgstr "Atau pilih dari beberapa pilihan"
 
 #: view/application/registration/index.phtml:164 view/partials/footer.phtml:14
 msgid "Terms"
-msgstr "Terms and conditions"
+msgstr "Syarat dan Ketentuan"
 
 #: view/application/registration/setup.phtml:10
 msgid "Set Up"
-msgstr "Set Up"
+msgstr "Mengeset"
 
 #: view/application/registration/setup.phtml:36
 #: view/partials/setup-popup.phtml:9
 msgid "Just one more thing"
-msgstr "Just one more thing"
+msgstr "Satu lagi"
 
 #: view/application/registration/setup.phtml:39
 #: view/partials/setup-popup.phtml:13
 msgid "Are these details correct?"
-msgstr "Are these details correct?"
+msgstr "Apakah data-data ini benar?"
 
 #: view/application/registration/setup.phtml:40
 #: view/partials/setup-popup.phtml:14
 msgid "We need to know your region su we can make sure you are antered into the right league."
-msgstr "We need to know your region so we can make sure you are entered into the right league."
+msgstr "Kami perlu mengetahui wilayah Anda sehingga kami bisa memastikan bahwa Anda masuk ke liga yang tepat."
 
 #: view/application/registration/setup.phtml:41
 #: view/partials/setup-popup.phtml:15
 msgid "Note: once confirmed, you will not be able to change these settings until next season"
-msgstr "Note: once confirmed, you will not be able to change these settings until next season"
+msgstr "Catatan: setelah dikonfirmasi, Anda tidak bisa mengubah pengaturan ini hingga musim depan"
 
 #: view/application/registration/setup.phtml:57
 #: view/partials/setup-popup.phtml:31
 msgid "Confirm and start playing"
-msgstr "Confirm and start playing"
+msgstr "Konfirmasi dan mulai bermain"
 
 #: view/application/results/index.phtml:1
 msgid "Your Results of"
-msgstr "Your Results of"
+msgstr "Hasil Anda"
 
 #: view/application/results/index.phtml:98
 msgid "Total"
@@ -348,14 +348,14 @@ msgstr "Total"
 
 #: view/application/results/index.phtml:99
 msgid "PTS"
-msgstr "PTS"
+msgstr "POIN"
 
 msgid "League Tables"
-msgstr "League Tables"
+msgstr "Klasemen Liga"
 
 #: view/application/tables/index.phtml:11
 msgid "Global league"
-msgstr "Global league"
+msgstr "Liga Global"
 
 #: view/application/tables/index.phtml:28
 #: view/application/tables/index.phtml:79
@@ -367,36 +367,36 @@ msgstr "Top 4"
 #: view/application/tables/index.phtml:107
 #: view/application/tables/index.phtml:144
 msgid "View full table"
-msgstr "View full table"
+msgstr "Lihat klasemen lengkap"
 
 #: view/application/tables/index.phtml:62
 msgid "league"
-msgstr "league"
+msgstr "liga"
 
 #: view/application/user/delete.phtml:2
 #: view/application/user/settings.phtml:164
 msgid "Delete Account"
-msgstr "Delete Account"
+msgstr "Hapus Akun"
 
 #: view/application/user/delete.phtml:11
 msgid "Are you sure you want to delete your account?"
-msgstr "Are you sure you want to delete your account?"
+msgstr "Apakah Anda yakin ingin menghapus akun Anda?"
 
 #: view/application/user/delete.phtml:12
 msgid "<strong>Note:</strong> all data associated with your account will be lost and non-recoverable."
-msgstr "<strong>Note:</strong> all data associated with your account will be lost and non-recoverable."
+msgstr "<strong>Catatan:</strong> semua data terkait akun Anda akan hilang dan tidak bisa diperbaiki"
 
 #: view/application/user/delete.phtml:14
 msgid "Confirm and delete account"
-msgstr "Confirm and delete account"
+msgstr "Konfirmasi dan hapus akun"
 
 #: view/application/user/settings.phtml:2 view/partials/menu.phtml:30
 msgid "Settings"
-msgstr "Settings"
+msgstr "Pengaturan"
 
 #: view/application/user/settings.phtml:25
 msgid "Change your Password"
-msgstr "Change your Password"
+msgstr "Ubah Password Anda"
 
 #: view/application/user/settings.phtml:40
 #: view/application/user/settings.phtml:69
@@ -404,72 +404,72 @@ msgstr "Change your Password"
 #: view/application/user/settings.phtml:124
 #: view/application/user/settings.phtml:156
 msgid "Save changes"
-msgstr "Save changes"
+msgstr "Simpan perubahan"
 
 #: view/application/user/settings.phtml:58
 msgid "Change Your Email Addresses"
-msgstr "Change Your Email Addresses"
+msgstr "Ubah alamat email Anda"
 
 #: view/application/user/settings.phtml:87
 msgid "Change Your Display Name"
-msgstr "Change Your Display Name"
+msgstr "Ubah Nama Pengguna Anda"
 
 #: view/application/user/settings.phtml:112
 msgid "Change Your Avatar"
-msgstr "Change Your Avatar"
+msgstr "Ubah avatar Anda"
 
 #: view/application/user/settings.phtml:115
 msgid "User avatar"
-msgstr "User avatar"
+msgstr "Avatar pengguna"
 
 #: view/application/user/settings.phtml:142
 msgid "Regional Settings"
-msgstr "Regional Settings"
+msgstr "Pengaturan Regional"
 
 #: view/application/user/settings.phtml:145
 msgid "Your country"
-msgstr "Your country"
+msgstr "Negara Anda"
 
 #: view/application/user/settings.phtml:148
 msgid "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league."
-msgstr "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the league."
+msgstr "Anda tidak bisa mengubah negara di tengah liga. Kami akan mengonfirmasi ulang data diri Anda di awal liga."
 
 #: view/error/404.phtml:1
 msgid "Page not found"
-msgstr "Page not found"
+msgstr "Halaman tidak ditemukan"
 
 #: view/error/404.phtml:4
 msgid "Whoops!"
-msgstr "Whoops!"
+msgstr "Aduh!"
 
 #: view/error/404.phtml:7 view/error/500.phtml:7 view/error/index.phtml:15
 #: view/error/index.phtml:39
 msgid "Message"
-msgstr "Message"
+msgstr "Pesan"
 
 #: view/error/404.phtml:8
 msgid "Sorry, the page you requested could not be found"
-msgstr "Sorry, the page you requested could not be found"
+msgstr "Maaf, halaman yang Anda minta tidak bisa ditemukan"
 
 #: view/error/500.phtml:1 view/error/500.phtml:4
 msgid "Server Error"
-msgstr "Server Error"
+msgstr "Terjadi kesalahan pada server"
 
 #: view/error/500.phtml:8
 msgid "Sorry, you can't see the page. We are aware of it and doing all our best to fix the problem."
-msgstr "Sorry, you can't see the page. We are aware of it and doing all our best to fix the problem."
+msgstr "Maaf, Anda tidak bisa melihat halaman ini. Kami sedang berusaha sebaik mungkin untuk memperbaikinya."
 
 #: view/error/500.phtml:15 view/error/index.phtml:8
 msgid "Additional information"
-msgstr "Additional information"
+msgstr "Informasi Tambahan"
 
 #: view/error/index.phtml:1
 msgid "An error occurred"
-msgstr " We scored an own goal and are looking to rectify the issue."
+msgstr "Terjadi kesalahan"
 
 #: view/error/index.phtml:11 view/error/index.phtml:35
 msgid "File"
-msgstr "File"
+msgstr "Data"
 
 #: view/error/index.phtml:19 view/error/index.phtml:43
 msgid "Stack trace"
@@ -477,422 +477,485 @@ msgstr "Stack trace"
 
 #: view/error/index.phtml:29
 msgid "Previous exceptions"
-msgstr "Previous exceptions"
+msgstr "Pengecualian sebelumnya"
 
 #: view/error/index.phtml:58
 msgid "No Exception available"
-msgstr "No Exception available"
+msgstr "Tidak Ada Pengecualian yang tersedia"
 
 #: view/error/info.phtml:2 view/error/info.phtml:7
 msgid "Info Page"
-msgstr "Info Page"
+msgstr "Halaman Info"
 
 #: view/partials/cookie-bar.phtml:3
 msgid "Dismiss"
-msgstr "Dismiss"
+msgstr "Hentikan"
 
 #: view/partials/footer.phtml:6
 msgid "Stay up to date with Truefan United"
-msgstr "Stay up to date with Chelsea Football Club"
+msgstr "Terus up to date dengan Chelsea Football Club"
 
 #: view/partials/footer.phtml:7
 msgid "See behind the scenes, match updates <br>and exclusive content"
-msgstr "With breaking news, match updates,  competitions and <br>exclusive interviews from the first team."
+msgstr "Dapatkan kabar dari balik layar, update pertandingan, <br>dan konten eksklusif."
 
 #: view/partials/footer.phtml:17
 msgid "Contact us"
-msgstr "Contact us"
+msgstr "Hubungi kami"
 
 #: view/partials/footer.phtml:20
 msgid "Privacy"
-msgstr "Privacy policy"
+msgstr "Kebijakan Privasi"
 
 #: view/partials/footer.phtml:23
 msgid "Help & Support"
-msgstr "Help & Support"
+msgstr "Bantuan & Dukungan"
 
 #: view/partials/footer.phtml:26
 msgid "Visit our main site"
-msgstr "Visit our main site"
+msgstr "Kunjungi halaman utama kami"
 
 #: view/partials/footer.phtml:29
 msgid "Cookies policy"
-msgstr "Cookies policy"
+msgstr "Ketentuan mengenai cookie"
 
 #: view/partials/footer.phtml:33
 msgid "MADE BY"
-msgstr "MADE BY"
+msgstr "DIBUAT OLEH"
 
 msgid "Invite friends to Score Predictor"
-msgstr "Invite friends to Score Predictor"
+msgstr "Undang teman ke Score Predictor"
 
 #: view/partials/menu.phtml:21
 msgid "User Navigation"
-msgstr "User Navigation"
+msgstr "Navigasi Pengguna"
 
 #: view/partials/menu.phtml:36
 msgid "Sign out"
-msgstr "Sign out"
+msgstr "Keluar"
 
 #: view/partials/post-match-report.phtml:9
 #: view/partials/pre-match-report.phtml:9
 msgid "Share this"
-msgstr "Share this"
+msgstr "Bagi ini"
 
 #: view/partials/post-match-report.phtml:34
 msgid "Was the most popular prediction this match"
-msgstr "Was the most popular prediction this match"
+msgstr "Adalah prediksi paling populer di pertandingan ini"
 
 #: view/partials/post-match-report.phtml:48
 msgid "Correct scorer predictions"
-msgstr "Correct scorer predictions"
+msgstr "Prediksi pencetak gol yang benar"
 
 #: view/partials/pre-match-report.phtml:37
 msgid "Featured Player"
-msgstr "Featured Player"
+msgstr "Pemain yang Bermain"
 
 #: view/partials/pre-match-report.phtml:43
 msgid "Goals this season"
-msgstr "Goals this season"
+msgstr "Gol musim ini"
 
 #: view/partials/pre-match-report.phtml:47
 #: view/partials/pre-match-report.phtml:82
 msgid "Matches played"
-msgstr "Matches played"
+msgstr "Pertandingan yang dimainkan"
 
 #: view/partials/pre-match-report.phtml:51
 msgid "Match"
-msgstr "Match"
+msgstr "Pertandingan"
 
 #: view/partials/pre-match-report.phtml:51
 msgid "starts"
-msgstr "starts"
+msgstr "mulai"
 
 #: view/partials/pre-match-report.phtml:55
 msgid "Mins"
-msgstr "Mins"
+msgstr "Menit"
 
 #: view/partials/pre-match-report.phtml:55
 msgid "played"
-msgstr "played"
+msgstr "telah dimainkan"
 
 #: view/partials/pre-match-report.phtml:72
 msgid "GOAL KEEPER"
-msgstr "GOAL KEEPER"
+msgstr "Kiper"
 
 #: view/partials/pre-match-report.phtml:78
 msgid "Saves this season"
-msgstr "Saves this season"
+msgstr "Penyelamatan musim ini"
 
 #: view/partials/pre-match-report.phtml:86
 msgid "Penalty saves"
-msgstr "Penalty saves"
+msgstr "Penyelamatan penalti"
 
 #: view/partials/pre-match-report.phtml:90
 msgid "Clean sheets"
-msgstr "Clean sheets"
+msgstr "Tidak kebobolan"
 
 #: view/partials/pre-match-report.phtml:107
 msgid "Draw"
-msgstr "Draw"
+msgstr "Seri"
 
 #: view/partials/pre-match-report.phtml:162
 msgid "Top predicted scorers"
-msgstr "Top predicted scorers"
+msgstr "Pencetak gol yang banyak diprediksi"
 
 #: view/partials/pre-match-report.phtml:189
 msgid "Top 5 predicted scores"
-msgstr "Top 5 predicted scores"
+msgstr "Top 5 skor yang diprediksi"
 
 #: view/partials/right-column.phtml:111
 msgid "+ Invite your friends"
-msgstr "+ Invite your friends"
+msgstr "\"+ undang teman-teman Anda\""
 
 msgid "Value is required and can't be empty"
-msgstr "Field is required"
+msgstr "Nilai diperlukan dan tidak bisa dikosongkan"
 
 msgid "Recovery link was sent to your email. The link is active for 60 minutes"
-msgstr "Recovery link was sent to your email. The link is active for 60 minutes"
+msgstr "Link perbaikan sudah dikirim ke email Anda. Link akan aktif selama 60 menit"
 
 msgid "Please use Facebook Connect Button to log in."
-msgstr "Please use Facebook Connect Button to log in."
+msgstr "Silakan gunakan Facebook Connect Button untuk login"
 
 msgid "The email you input is not registered."
-msgstr "The email you input is not registered."
+msgstr "Email yang Anda masukkan tidak terdaftar"
 
 msgid "Input cannot be empty"
-msgstr "Input cannot be empty"
+msgstr "Input tidak bisa dikosongkan"
 
 msgid "Connect your account for a one click login"
-msgstr "Connect with Facebook for easier Login"
+msgstr "Hubungkan dengan Facebook agar login lebih mudah"
 
 msgid "Wrong email or password."
-msgstr "Wrong email or password."
+msgstr "Email atau password salah"
 
 msgid "Confirm Password"
-msgstr "Confirm Password"
+msgstr "Konfirmasi Password"
 
 msgid "Your password was successfully changed. Now you can login using it."
-msgstr "Your password was successfully changed. Now you can login using it."
+msgstr "Password Anda berhasil diubah. Sekarang Anda bisa login menggunakan password tersebut"
 
 msgid "The form submitted did not originate from the expected site"
-msgstr "The form submitted did not originate from the expected site"
+msgstr "Form yang dikirimkan tidak berasal dari situs yang diharapkan"
 
 msgid "Now you can change the password."
-msgstr "Now you can change the password."
+msgstr "Sekarang Anda bisa mengubah password"
 
 msgid "You will be redirected to website..."
-msgstr "You will be redirected to the website..."
+msgstr "Anda akan kembali ke situs…"
 
 msgid "Name"
-msgstr "Name"
+msgstr "Nama"
 
 msgid "Your message successfully sent"
-msgstr "Your message successfully sent"
+msgstr "Pesan Anda berhasil dikirimkan"
 
 msgid "Please select"
-msgstr "Please select"
+msgstr "Silakan pilih"
 
 msgid "Title"
-msgstr "Title"
+msgstr "Gelar"
 
 msgid "First Name"
-msgstr "First Name"
+msgstr "Nama Depan"
 
 msgid "Last Name"
-msgstr "Last Name"
+msgstr "Nama Belakang"
 
 msgid "Date of Birth"
-msgstr "Date of Birth"
+msgstr "Tanggal Lahir"
 
 msgid "Country"
-msgstr "Country"
+msgstr "Negara"
 
 msgid "January"
-msgstr "January"
+msgstr "Januari"
 
 msgid "February"
-msgstr "February"
+msgstr "Februari"
 
 msgid "March"
-msgstr "March"
+msgstr "Maret"
 
 msgid "April"
 msgstr "April"
 
 msgid "May"
-msgstr "May"
+msgstr "Mei"
 
 msgid "June"
-msgstr "June"
+msgstr "Juni"
 
 msgid "July"
-msgstr "July"
+msgstr "Juli"
 
 msgid "August"
-msgstr "August"
+msgstr "Agustus"
 
 msgid "September"
 msgstr "September"
 
 msgid "October"
-msgstr "October"
+msgstr "Oktober"
 
 msgid "November"
 msgstr "November"
 
 msgid "December"
-msgstr "December"
+msgstr "Desember"
 
 msgid "Confirm Email"
-msgstr "Confirm Email"
+msgstr "Konfirmasi Email"
 
 msgid "Display Name"
-msgstr "Display Name"
+msgstr "Nama Display"
 
 msgid "Avatar"
 msgstr "Avatar"
 
 msgid "Error happened while connecting to your facebook account. Please try again later"
-msgstr " We scored an own goal! An error occurred while connecting to your Facebook account. Please try again later"
+msgstr "Kesalahan terjadi ketika menghubungkan dengan akun facebook Anda. Mohon coba beberapa saat lagi."
 
 msgid "Error happened while updating data. Please try again later"
-msgstr " We scored an own goal! An error occurred while updating data. Please try again later"
+msgstr "Kesalahan terjadi ketika memperbarui data. Mohon coba beberapa saat lagi."
 
 msgid "Your account successfully connected to facebook"
-msgstr "Your account has successfully connected to facebook"
+msgstr "Akun Anda berhasil dihubungkan ke facebook"
 
 msgid "Region"
-msgstr "Region"
+msgstr "Wilayah"
 
 msgid "Language"
-msgstr "Language"
+msgstr "Bahasa"
 
 msgid "You can't predict on this match. You can predict just on %s matches in the future."
-msgstr "You can't predict on this match. You can predict just on %s matches in the future."
+msgstr "Anda tidak bisa memprediksi pertandingan ini. Anda hanya bisa memprediksi % pertandingan selanjutnya"
 
 msgid "Predict"
-msgstr "Predict"
+msgstr "Prediksi"
 
 msgid "Results"
-msgstr "Results"
+msgstr "Hasil Akhir"
 
 msgid "Full Table"
-msgstr "Full Table"
+msgstr "Klasemen"
 
 msgid "All time head-to-head results"
-msgstr "All time head-to-head results"
+msgstr "Hasil seluruh head-to-head"
 
 msgid "Total goals this season"
-msgstr "Total goals this season"
+msgstr "Total gol musim ini"
 
 msgid "Global"
 msgstr "Global"
 
 msgid "Local"
-msgstr "Local"
+msgstr "Lokai"
 
 msgid "View full league tables"
-msgstr "View full league tables"
+msgstr "Lihat klasemen lengkap liga"
 
 msgid "Play against your mates"
-msgstr "Play against your mates"
+msgstr "Bermain melawan teman Anda"
 
 msgid "Create your own social league against your Facebook friends to find out who's top of the league"
-msgstr "Create your own social league against your Facebook friends to find out who's top of the league"
+msgstr "Buat liga Anda sendiri dengan teman-teman Facebook Anda untuk mengetahui siapa yang terbaik"
 
 msgid "Overall League"
-msgstr "Overall League"
+msgstr "Liga Keseluruhan"
 
 msgid "Temporal Leagues"
-msgstr "Temporal Leagues"
+msgstr "Liga Sementara"
 
 msgid "Your results"
-msgstr "Your results"
+msgstr "Hasil Anda"
 
 msgid "No matches were played in this season."
-msgstr "No matches have been played this season. Results will appear after the first match has been completed."
+msgstr "Tidak ada pertandingan yang dimainkan musim ini."
 
 msgid "You predicted the draw"
-msgstr "You predicted the draw"
+msgstr "Anda memprediksi hasil seri"
 
 msgid "You predicted the winner would be %s"
-msgstr "You predicted the winner would be %s"
+msgstr "Anda memprediksi pemenangnya adalah %"
 
 msgid "You predicted the score would be %s"
-msgstr "You predicted the score would be %s"
+msgstr "Anda memprediksi hasil akhirnya adalah %"
 
 msgid "You predicted the scorer(s) would be %s"
-msgstr "You predicted the scorer(s) would be %s"
+msgstr "Anda memprediksi pencetak golnya adalah %"
 
 msgid "You predicted that %s will score goal number %s of %s"
-msgstr "You predicted that %s will score goal number %s of %s"
+msgstr "Anda memprediksi bahwa % akan mencetak gol ke % dari % gol"
 
 msgid "This is double points match"
-msgstr "This is double points match"
+msgstr "Ini adalah pertandingan dengan poin ganda"
 
 msgid "You were %s accurate in your prediction"
-msgstr "You were %s accurate in your prediction"
+msgstr "Akurasi prediksi Anda adalah %"
 
 msgid "Community correctly predicted the results"
-msgstr "Community correctly predicted the results"
+msgstr "Komunitas memprediksi hasil akhir dengan benar"
 
 msgid "You didn't move on the %s league this match"
-msgstr "You didn't move on the %s league this match"
+msgstr "Anda tidak bergerak dari % liga dari pertandingan ini"
 
 msgid "You moved up %s place(s) on the %s league this match"
-msgstr "You moved up %s place(s) on the %s league this match"
+msgstr "Anda naik % posisi di % liga dari pertandingan ini"
 
 msgid "You moved down %s place(s) on the %s league this match"
-msgstr "You moved down %s place(s) on the %s league this match"
+msgstr "Anda turun % posisi di % liga dari pertandingan ini"
 
 msgid "Old password"
-msgstr "Old password"
+msgstr "Password lama"
 
 msgid "New password"
-msgstr "New password"
+msgstr "Password baru"
 
 msgid "Retype new password"
-msgstr "Retype new password"
+msgstr "Ulangi password baru"
 
 msgid "Upload a new avatar"
-msgstr "Upload a new avatar"
+msgstr "Unggah avatar baru"
 
 msgid "Please sign in to access this page"
-msgstr "Please sign in to access this page"
+msgstr "Silakan masuk untuk mengakses halaman ini"
 
 msgid "New password was successfully saved."
-msgstr "New password was successfully saved."
+msgstr "Password baru berhasil disimpan."
 
 msgid "New email was successfully saved."
-msgstr "New email was successfully saved."
+msgstr "Email yang baru berhasil disimpan."
 
 msgid "New display name was successfully saved."
-msgstr "New display name was successfully saved."
+msgstr "Nama display baru berhasil disimpan."
 
 msgid "New avatar was successfully saved."
-msgstr "New avatar was successfully saved."
+msgstr "Avatar baru berhasil disimpan."
 
 msgid "New language was successfully saved."
-msgstr "New language was successfully saved."
+msgstr "Bahasa baru berhasil disimpan."
 
 msgid "New email settings were successfully saved."
-msgstr "New email settings were successfully saved."
+msgstr "Pengaturan email yang baru berhasil disimpan"
 
 msgid "Public profile option was successfully saved."
-msgstr "Public profile option was successfully saved."
+msgstr "Pilihan profil publik berhasil disimpan."
 
 msgid "Invalid form type"
-msgstr "Invalid form type"
+msgstr "Penulisan salah"
 
 msgid "You can delete only yours account"
-msgstr "You can delete only your account"
+msgstr "Anda hanya bisa menghapus akun Anda"
 
 msgid "You have deleted your account successfully."
-msgstr "You have deleted your account successfully."
+msgstr "Anda telah berhasil menghapus akun Anda."
 
 msgid "Cannot get facebook user id from request"
-msgstr "Cannot get facebook user id from request"
+msgstr "Tidak bisa mendapatkan id pengguna facebook"
 
 msgid "Cannot get user by facebook id"
-msgstr "Cannot get user by facebook id"
+msgstr "Tidak bisa mendapatkan pengguna dengan id facebook"
 
 msgid "Your Language"
-msgstr "Your Language"
+msgstr "Bahasa Anda"
 
 msgid "Recovery link is not valid."
-msgstr "Recovery link is not valid."
+msgstr "Link perbaikan tidak valid."
 
 msgid "Upload failed due to unknown problems."
-msgstr "Upload failed due to unknown problems."
+msgstr "Pengunggahan gagal karena masalah yang tidak diketahui"
 
 msgid "The match was not found."
-msgstr "The match was not found."
+msgstr "Pertandingan tidak ditemukan"
 
 msgid "Team you want to make a prediction was not found."
-msgstr "Team you want to make a prediction was not found."
+msgstr "Tim yang ingin Anda prediksi tidak ditemukan."
 
 msgid "Active page was not found."
-msgstr "Active page was not found."
+msgstr "Halaman yang aktif tidak ditemukan"
 
 msgid "Bad request. Security check failed."
-msgstr "Bad request. Security check failed."
+msgstr "Permintaan gagal. Cek keamanan gagal."
 
 msgid "The next one will start soon. You can visit our website later and start playing."
-msgstr "The next one will start soon. You can visit our website later and start playing."
+msgstr "Pertandingan selanjutnya akan segera dimulai. Anda bisa mengunjungi situs kami lagi nanti dan mulai bermain."
 
 msgid "Acy"
-msgstr "Acy"
+msgstr "Akurasi pengguna"
 
 msgid "Cannot connect user to facebook account because facebook email has been already taken by another user."
-msgstr "Cannot connect user to facebook account because facebook email has already been taken by another user."
+msgstr "Tidak bisa menghubungkan pengguna dengan akun facebook karena email facebook sudah digunakan oleh pengguna lainnya"
 
 msgid "Your Facebook data will be used to create your account."
-msgstr "Your Facebook data will be used to create your account."
+msgstr "Data facebook Anda akan digunakan untuk membuat akun Anda"
 
 msgid "Score Predictor"
 msgstr "Score Predictor"
 
 msgid "Terms were saved successfully."
-msgstr "Terms were saved successfully."
+msgstr "Syarat telah berhasil disimpan disimpan."
+
+msgid "A private league with the league code %s hasn't been not found"
+msgstr "A private league with the league code %s hasn't been not found"
+
+msgid "You joined the league earlier"
+msgstr "You joined the league earlier"
+
+msgid "You are not a member of this private league"
+msgstr "You are not a member of this private league"
+
+msgid "Create a private league"
+msgstr "Create a private league"
+
+msgid "Join a private league"
+msgstr "Join a private league"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Join"
+msgstr "Join"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Invalid private league display name"
+msgstr "Invalid private league display name"
+
+msgid "Invalid private league code"
+msgstr "Invalid private league code"
+
+msgid "Private league was created successfully. Now you can invite your friends using league code %s."
+msgstr "Private league was created successfully. Now you can invite your friends using league code %s."
+
+msgid "You have joined the private league successfully"
+msgstr "You have joined the private league successfully"
+
+msgid "You can't use bad words in private league display name"
+msgstr "You can't use bad words in private league display name"
+
+msgid "You have deleted the private league successfully"
+msgstr "You have deleted the private league successfully"
+
+msgid "Only admin can delete the private league"
+msgstr "Only admin can delete the private league"
+
+msgid "Are you sure that you want to delete the league?"
+msgstr "Are you sure that you want to delete the league?"
+
+msgid "Are you sure you want to be removed permanently from this private league?"
+msgstr "Are you sure you want to be removed permanently from this private league?"
+
+msgid "Are you sure you want to remove the user permanently from this private league?"
+msgstr "Are you sure you want to remove the user permanently from this private league?"
+
+msgid "Admin can't leave the private league"
+msgstr "Admin can't leave the private league"
+
+msgid "Unique league code"
+msgstr "Unique league code"
 

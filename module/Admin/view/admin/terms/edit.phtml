@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <?php echo $this->renderFieldsets($this->form->getFieldsets(), $this->params['action'] == 'add');?>
+    <?php echo $this->renderLanguageFieldsets($this->form->getFieldsets(), $this->params['action'] == 'add');?>
     <div class="form-actions">
         <button type="submit" class="btn blue"><?=$this->translate($this->form->get('submit')->getValue());?></button>
         <button type="button" class="btn reset"><?php echo $this->translate('Reset');?></button>

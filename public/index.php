@@ -9,4 +9,12 @@ chdir(dirname(__DIR__));
 require 'init_autoloader.php';
 
 // Run the application!
-Zend\Mvc\Application::init(require 'config/application.config.php')->run();
+try {
+    $application = Zend\Mvc\Application::init(require 'config/application.config.php');
+    $application->run();
+} catch (\Exception $e) {
+    $logManager = new \Application\Manager\LogManager();
+    $logManager->logAppException($e, \Zend\Log\Logger::CRIT);
+    header('HTTP/1.1 500 Internal Server Error');
+    require 'module/Application/view/error/500.php';
+}

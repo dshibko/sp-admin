@@ -108,11 +108,11 @@ if (empty($this->twitterShareCopy))
                                 <input <?=!empty($this->current['prediction']) ? 'disabled="disabled"' : ''?> type="text" class="required" maxlength="2" name="home-team-score" id="home-team-score" value="<?=$this->current['prediction']['homeTeamScore']?>">
                             </fieldset>
                             <section>
-                            <?php
-                                if (!empty($this->current['prediction']) && !empty($this->current['prediction']['homeScorers']))
-                                    foreach ($this->current['prediction']['homeScorers'] as $order => $scorer)
-                                        print $this->squadSelect('home-team-scorer-' . $order, $this->current['homeSquad'], $this->translate('Select scorer'), '', $scorer['playerId']);
-                            ?>
+                                <?php
+                                    if (!empty($this->current['prediction']) && !empty($this->current['prediction']['homeScorers']))
+                                        foreach ($this->current['prediction']['homeScorers'] as $order => $scorer)
+                                            print $this->squadSelect('home-team-scorer-' . $order, $this->current['homeSquad'], $this->translate('Select scorer'), '', $scorer['playerId']);
+                                ?>
                             </section>
                         </div>
 
@@ -137,11 +137,11 @@ if (empty($this->twitterShareCopy))
                                 <input <?=!empty($this->current['prediction']) ? 'disabled="disabled"' : ''?> type="text" class="required" maxlength="2" name="away-team-score" id="away-team-score" value="<?=$this->current['prediction']['awayTeamScore']?>">
                             </fieldset>
                             <section>
-                            <?php
+                                <?php
                                 if (!empty($this->current['prediction']) && !empty($this->current['prediction']['awayScorers']))
                                     foreach ($this->current['prediction']['awayScorers'] as $order => $scorer)
                                         print $this->squadSelect('away-team-scorer-' . $order, $this->current['awaySquad'], $this->translate('Select scorer'), '', $scorer['playerId']);
-                            ?>
+                                ?>
                             </section>
                         </div>
 
@@ -192,23 +192,23 @@ if (empty($this->twitterShareCopy))
                                 <div class="buttons-wrapper">
                             <?php endif; ?>
                                 <div>
-                                    <button type="submit">
-                                        <?php if (empty($this->current['prediction'])) : ?>
-                                            <?=$this->translate('Make prediction')?>
-                                        <?php else: ?>
-                                            <?=$this->translate('Edit your prediction')?>
+                            <button type="submit">
+                                <?php if (empty($this->current['prediction'])) : ?>
+                                    <?=$this->translate('Make prediction')?>
+                                <?php else: ?>
+                                    <?=$this->translate('Edit your prediction')?>
                                             <div style="display: none">
                                                 <?=$this->translate('Make prediction')?>
                                             </div>
-                                        <?php endif; ?>
-                                    </button>
-                                    <aside class="competition-countdown" style="display: none">
-                                        <h4><?=$this->translate('Time left')?></h4>
-                                        <p>
-                                            <strong><?=$this->current['startTime']->getTimestamp();?></strong>
-                                            <?=$this->translate('days hours mins secs')?>
-                                        </p>
-                                    </aside>
+                                <?php endif; ?>
+                            </button>
+                    <aside class="competition-countdown" style="display: none">
+                        <h4><?=$this->translate('Time left')?></h4>
+                        <p>
+                            <strong><?=$this->current['startTime']->getTimestamp();?></strong>
+                            <?=$this->translate('days hours mins secs')?>
+                        </p>
+                    </aside>
                                 </div>
                             <?php if (!empty($this->current['prediction'])): ?>
                                 </div>
@@ -231,7 +231,7 @@ if (empty($this->twitterShareCopy))
 
 </div>
 
-<?php if (!$this->getCurrentUser()->getIsActive()):?>
+<?php if (!empty($this->setUpForm)):?>
     <?php echo $this->partial('partials/setup-popup', array('form'=>$this->setUpForm));?>
 <?php endif;?>
 

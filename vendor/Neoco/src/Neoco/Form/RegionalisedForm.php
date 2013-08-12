@@ -2,44 +2,37 @@
 
 namespace Neoco\Form;
 
+use Zend\Form\Element;
+use Zend\Form\Fieldset;
 use Zend\Form\Form;
+use Zend\Mvc\Controller\Plugin\FlashMessenger;
 
 abstract class RegionalisedForm extends Form {
 
-    public function __construct($regionFieldsets, $name) {
+    public function __construct($regionFieldsets, $name = null) {
         parent::__construct($name);
-
         foreach ($regionFieldsets as $regionFieldset)
             $this->add($regionFieldset);
-
     }
 
-    public function handleErrorMessages($messages, $messenger) {
-        foreach ($messages as $name => $message) {
-            if (is_array($message)) {
-                $isInFieldset = false;
-                foreach ($this->getFieldsets() as $fieldset) {
-                    if ($fieldset->getName() == $name) {
-                        $isInFieldset = true;
-                        foreach ($message as $k => $aMessage) {
-                            $messenger->addErrorMessage(str_replace("_", " ", $fieldset->getName()) . ", " .
-                                $fieldset->get($k)->getLabel() . ": " . current($aMessage));
-                        }
-                        break;
-                    }
-                }
-                if (!$isInFieldset)
-                    $messenger->addErrorMessage($this->get($name)->getLabel() . ": " .
-                        current($message));
-            } else if (is_string($message))
+    public function handleErrorMessages($messages, FlashMessenger $messenger, $parentEl = null, $prefix = '') {
+        if ($parentEl === null) $parentEl = $this;
+        foreach ($messages as $name => $message)
+            if (is_string($message))
                 $messenger->addErrorMessage($message);
-        }
+            else {
+                $targetEl = $parentEl->get($name);
+                if ($targetEl instanceof Fieldset)
+                    $this->handleErrorMessages($message, $messenger, $targetEl, $prefix . $targetEl->getName() . ", ");
+                else if ($targetEl instanceof Element)
+                    $messenger->addErrorMessage($prefix . $targetEl->getLabel() . ": " . implode(", ", $message));
+            }
     }
 
     public function initForm($dataObject) {
         $this->initFormByObject($dataObject);
         foreach ($this->getFieldsets() as $fieldset)
-            if ($fieldset instanceof RegionFieldset)
+            if ($fieldset instanceof FieldsetObjectInterface)
                 $fieldset->initFieldsetByObject($dataObject);
     }
 

@@ -22,7 +22,6 @@ $this->headTitle($title);
                                 <th><?=$this->translate('First Name')?></th>
                                 <th><?=$this->translate('Last Name')?></th>
                                 <th><?=$this->translate('Email')?></th>
-                                <th><?=$this->translate('Status')?></th>
                                 <th><?=$this->translate('Type')?></th>
                                 <th><?=$this->translate('Last logged in')?></th>
                                 <th style="width:124px;"><?=$this->translate('Action')?></th>
@@ -34,7 +33,6 @@ $this->headTitle($title);
                                     <td><?=$admin['firstName'];?></td>
                                     <td><?=$admin['lastName'];?></td>
                                     <td><a href="mailto:<?=$admin['email'];?>"><?=$admin['email'];?></a></td>
-                                    <td><?=!empty($admin['isActive']) ? $this->translate('Active') : $this->translate('Inactive');?></td>
                                     <td><?=$admin['role']['name'];?></td>
                                     <td>
                                         <?php echo (!is_null($admin['lastLoggedIn']) ? $admin['lastLoggedIn']->format('D, d M Y H:i') : $this->translate('Never'));?>
@@ -95,7 +93,7 @@ $this->headTitle($title);
         var messages = {perPage: "_MENU_ " + "<?=$this->translate('admins per page')?>", nextLink: "<?=$this->translate('Next')?>",
             prevLink: "<?=$this->translate('Previous')?>", showingLabel: "<?=$this->translate('Showing _START_ to _END_ of _TOTAL_ admins')?>"};
         var oTable = $('#admins-table').dataTable({
-            "aoColumns": [null, null,null,null,null,{"sType" : "date"},{bSortable: false}],
+            "aoColumns": [null, null,null,null,{"sType" : "date"},{bSortable: false}],
             "bStateSave" : true,
             "aLengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
             "iDisplayLength" : App.getDefaultItemsPerPage(),

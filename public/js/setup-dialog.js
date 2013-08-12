@@ -4,7 +4,7 @@
             $(this).remove();
             $('body').removeClass('no-scroll');
         }
-    });
+    }); 
     event.preventDefault();
 });*/
 
@@ -31,7 +31,7 @@ if ($(document).width() <  turnOffCustomStylePoint)
 
 try {
     if (!$('html').hasClass('lt-ie8')) {
-        var $setup = $('#setup').idealforms(setupOptions).data('idealforms');
-        $setup.focusFirst();
+    var $setup = $('#setup').idealforms(setupOptions).data('idealforms');
+    $setup.focusFirst();
     }
 } catch (e) {}

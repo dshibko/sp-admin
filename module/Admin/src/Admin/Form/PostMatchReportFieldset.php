@@ -2,22 +2,23 @@
 
 namespace Admin\Form;
 
-use \Neoco\Form\RegionFieldset;
+use Neoco\Form\LanguageFieldset;
 
-class PostMatchReportFieldset extends RegionFieldset
+class PostMatchReportFieldset extends LanguageFieldset
 {
     const MAX_TITLE_LENGTH = 255;
 
-    public function __construct($region)
+    public function __construct($language, $required = 0)
     {
 
-        parent::__construct($region);
+        parent::__construct($language);
 
         //Title
         $this->add(array(
             'name' => 'post_match_report_title',
             'type' => 'text',
             'attributes' => array(
+                'required' => $required,
                 'maxlength' => self::MAX_TITLE_LENGTH,
             ),
             'options' => array(
@@ -29,7 +30,9 @@ class PostMatchReportFieldset extends RegionFieldset
         $this->add(array(
             'name' => 'post_match_report_intro',
             'type' => 'textarea',
-            'attributes' => array(),
+            'attributes' => array(
+                'required' => $required,
+            ),
             'options' => array(
                 'label' => 'Post Match Report Intro',
             ),
@@ -55,12 +58,12 @@ class PostMatchReportFieldset extends RegionFieldset
      */
     function initFieldsetByObject($match)
     {
-        $region = $this->getRegion();
-        foreach ($match->getMatchRegions() as $matchRegion) {
-            if ($matchRegion->getRegion()->getId() == $region['id']) {
-                $this->get('post_match_report_title')->setValue($matchRegion->getPostMatchReportTitle());
-                $this->get('post_match_report_intro')->setValue($matchRegion->getPostMatchReportIntro());
-                $this->get('post_match_report_header_image')->setValue($matchRegion->getPostMatchReportHeaderImagePath());
+        $language = $this->getLanguage();
+        foreach ($match->getMatchLanguages() as $matchLanguage) {
+            if ($matchLanguage->getLanguage()->getId() == $language['id']) {
+                $this->get('post_match_report_title')->setValue($matchLanguage->getPostMatchReportTitle());
+                $this->get('post_match_report_intro')->setValue($matchLanguage->getPostMatchReportIntro());
+                $this->get('post_match_report_header_image')->setValue($matchLanguage->getPostMatchReportHeaderImagePath());
             }
         }
     }

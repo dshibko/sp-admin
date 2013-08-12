@@ -80,10 +80,11 @@ return array(
             'admin-seasons' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/admin/seasons[/][:action][/:id]',
+                    'route'    => '/admin/seasons[/][:action][/:id][/:regionId]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',
+                        'regionId'=> '[0-9]*',
                     ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'Admin\Controller',
@@ -120,10 +121,10 @@ return array(
             'admin-content-landing' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/content/landing/[region-:region][/:action][/block-:block]',
+                    'route'    => '/admin/content/landing/[language-:language][/:action][/block-:block]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'region' => '[0-9]+',
+                        'language' => '[0-9]+',
                         'block' => '[0-9]+',
                     ),
                     'defaults' => array(
@@ -284,10 +285,10 @@ return array(
             'admin-content-footer-images' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/content/footer-images/[region-:region][/:action][/image-:image]',
+                    'route'    => '/admin/content/footer-images/[language-:language][/:action][/image-:image]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'region' => '[0-9]+',
+                        'language' => '[0-9]+',
                         'image' => '[0-9]+',
                     ),
                     'defaults' => array(
@@ -299,10 +300,10 @@ return array(
             'admin-content-footer-socials' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/content/footer-socials/[region-:region][/:action][/social-:social]',
+                    'route'    => '/admin/content/footer-socials/[language-:language][/:action][/social-:social]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'region' => '[0-9]+',
+                        'language' => '[0-9]+',
                         'social' => '[0-9]+',
                     ),
                     'defaults' => array(

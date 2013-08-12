@@ -24,7 +24,7 @@
             <a href="#" class="btn fileupload-exists" data-dismiss="fileupload"><?=$this->translate('Remove')?></a>
         </div>
     </div>
-    <?php echo $this->renderFieldsets($this->form->getFieldsets(), false);?>
+    <?php echo $this->renderLanguageFieldsets($this->form->getFieldsets(), false);?>
     <div class="form-actions">
         <button type="submit" class="btn blue"><?=$this->translate($this->form->get('submit')->getValue());?></button>
         <button type="button" class="btn reset"><?php echo $this->translate('Reset');?></button>

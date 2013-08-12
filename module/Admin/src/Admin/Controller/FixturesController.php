@@ -14,7 +14,7 @@ use \Application\Manager\TeamManager;
 use \Application\Model\Entities\Match;
 use \Application\Manager\UserManager;
 use \Application\Manager\ExportManager;
-use \Application\Manager\RegionManager;
+use \Application\Manager\LanguageManager;
 use \Application\Manager\ImageManager;
 use \Application\Manager\PlayerManager;
 use \Admin\Form\FeaturedPlayerForm;
@@ -62,40 +62,33 @@ class FixturesController extends AbstractActionController
     }
 
     private function setRequiredFormFieldsets($form){
-        $requiredGroup = false;
-        foreach($form->getFieldsets() as $fieldset){
+        foreach($form->getFieldsets() as $k=>$fieldset){
             foreach($fieldset->getElements() as $element){
                 $value = $element->getValue();
+
                 //Check image value
                 if ($element->getAttribute('isImage')){
                     if (!$value['stored'] && $value['error'] == UPLOAD_ERR_NO_FILE){
                         $value = false;
                     }
                 }
-                if (!empty($value)){
-                    $requiredGroup = true;
-                    break 2;
-                }
-            }
-        }
 
-        if ($requiredGroup){
-            foreach($form->getFieldsets() as $fieldset){
-                foreach($fieldset->getElements() as $element){
-                    if ($element->getAttribute('isImage')){
+                if (!empty($value)){
+                    foreach($fieldset->getElements() as $element){
                         $value = $element->getValue();
-                        if ($value ['stored'] == 1){
-                            continue;
+                        if (!$element->getAttribute('isImage') || (!$value['stored'] && $element->getAttribute('isImage'))){
+                            $form->getInputFilter()
+                                ->get($fieldset->getName())
+                                ->get($element->getName())
+                                ->setRequired(true)->setAllowEmpty(false);
                         }
                     }
-                    $form->getInputFilter()
-                        ->get($fieldset->getName())
-                        ->get($element->getName())
-                        ->setRequired(true)->setAllowEmpty(false);
+                    break 1;
                 }
             }
         }
     }
+
     public function editAction()
     {
         $fixtureId = (string)$this->params()->fromRoute('fixture', '');
@@ -109,7 +102,7 @@ class FixturesController extends AbstractActionController
         $isFullTime = false;
         $matchManager = MatchManager::getInstance($this->serviceLocator);
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
-        $regionManager = RegionManager::getInstance($this->getServiceLocator());
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
 
         $form = null;
@@ -128,24 +121,24 @@ class FixturesController extends AbstractActionController
             $teamIds = array($appClub);
             $playerPositions = array(PlayerManager::DEFENDER_POSITION, PlayerManager::MIDFIELDER_POSITION, PlayerManager::FORWARD_POSITION);
             $goalkeeperPositions = array(PlayerManager::GOALKEEPER_POSITION);
-            $featuredPlayerRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedPlayerFieldset');
+            $featuredPlayerLanguages = $languageManager->getLanguagesFieldsets('\Admin\Form\FeaturedPlayerFieldset');
 
-            $featuredPlayerRegions = $matchManager->getFieldsetWithPlayers($featuredPlayerRegions,$teamIds , $playerPositions, 'featured_player');
+            $featuredPlayerLanguages = $matchManager->getFieldsetWithPlayers($featuredPlayerLanguages,$teamIds , $playerPositions, 'featured_player');
 
-            $featuredGoalkeeperRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedGoalkeeperFieldset');
-            $featuredGoalkeeperRegions = $matchManager->getFieldsetWithPlayers($featuredGoalkeeperRegions,$teamIds , $goalkeeperPositions, 'featured_goalkeeper');
+            $featuredGoalkeeperLanguages = $languageManager->getLanguagesFieldsets('\Admin\Form\FeaturedGoalkeeperFieldset');
+            $featuredGoalkeeperLanguages = $matchManager->getFieldsetWithPlayers($featuredGoalkeeperLanguages,$teamIds , $goalkeeperPositions, 'featured_goalkeeper');
 
-            $featuredPredictionRegions = $regionManager->getRegionsFieldsets('\Admin\Form\FeaturedPredictionFieldset');
+            $featuredPredictionLanguages = $languageManager->getLanguagesFieldsets('\Admin\Form\FeaturedPredictionFieldset');
 
-            $preMatchReportRegions = $regionManager->getRegionsFieldsets('\Admin\Form\PreMatchReportFieldset');
-            $postMatchReportRegions = $regionManager->getRegionsFieldsets('\Admin\Form\PostMatchReportFieldset');
+            $preMatchReportLanguages = $languageManager->getLanguagesFieldsets('\Admin\Form\PreMatchReportFieldset');
+            $postMatchReportLanguages = $languageManager->getLanguagesFieldsets('\Admin\Form\PostMatchReportFieldset');
 
             $form = new FixtureForm($teamManager->getTeamsSelectOptions(), self::FIXTURE_FORM_TYPE);
-            $featuredPlayerForm = new FeaturedPlayerForm($featuredPlayerRegions, self::FEATURED_PLAYER_FORM_TYPE);
-            $featuredGoalkeeperForm = new FeaturedGoalkeeperForm($featuredGoalkeeperRegions,self::FEATURED_GOALKEEPER_FORM_TYPE);
-            $featuredPredictionForm = new FeaturedPredictionForm($featuredPredictionRegions, self::FEATURED_PREDICTION_FORM_TYPE);
-            $preMatchReportForm = new PreMatchReportForm($preMatchReportRegions,self::PRE_MATCH_REPORT_FORM_TYPE);
-            $postMatchReportForm = new PostMatchReportForm($postMatchReportRegions, self::POST_MATCH_REPORT_FORM_TYPE);
+            $featuredPlayerForm = new FeaturedPlayerForm($featuredPlayerLanguages, self::FEATURED_PLAYER_FORM_TYPE);
+            $featuredGoalkeeperForm = new FeaturedGoalkeeperForm($featuredGoalkeeperLanguages,self::FEATURED_GOALKEEPER_FORM_TYPE);
+            $featuredPredictionForm = new FeaturedPredictionForm($featuredPredictionLanguages, self::FEATURED_PREDICTION_FORM_TYPE);
+            $preMatchReportForm = new PreMatchReportForm($preMatchReportLanguages,self::PRE_MATCH_REPORT_FORM_TYPE);
+            $postMatchReportForm = new PostMatchReportForm($postMatchReportLanguages, self::POST_MATCH_REPORT_FORM_TYPE);
 
             $params = array(
                 'fixture' => $fixture->getId(),
@@ -209,8 +202,8 @@ class FixturesController extends AbstractActionController
                         $featuredPlayerForm->setData($post);
                         $this->setRequiredFormFieldsets($featuredPlayerForm);
                         if ($featuredPlayerForm->isValid()){
-                            $regionsData = $regionManager->getFeaturedPlayerRegionsData($featuredPlayerRegions);
-                            $matchManager->save($fixture,$regionsData);
+                            $languageData = $languageManager->getFeaturedPlayerLanguagesData($featuredPlayerLanguages);
+                            $matchManager->save($fixture,$languageData);
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                             return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
                         }else{
@@ -222,8 +215,8 @@ class FixturesController extends AbstractActionController
                         $featuredGoalkeeperForm->setData($post);
                         $this->setRequiredFormFieldsets($featuredGoalkeeperForm);
                         if ($featuredGoalkeeperForm->isValid()){
-                            $regionsData = $regionManager->getFeaturedGoalkeeperRegionsData($featuredGoalkeeperRegions);
-                            $matchManager->save($fixture,$regionsData);
+                            $languageData = $languageManager->getFeaturedGoalkeeperLanguagesData($featuredGoalkeeperLanguages);
+                            $matchManager->save($fixture,$languageData);
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                             return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
                         }else{
@@ -235,8 +228,8 @@ class FixturesController extends AbstractActionController
                         $featuredPredictionForm->setData($post);
                         $this->setRequiredFormFieldsets($featuredPredictionForm);
                         if ($featuredPredictionForm->isValid()){
-                            $regionsData = $regionManager->getFeaturedPredictionRegionsData($featuredPredictionRegions);
-                            $matchManager->save($fixture,$regionsData);
+                            $languageData = $languageManager->getFeaturedPredictionLanguagesData($featuredPredictionLanguages);
+                            $matchManager->save($fixture,$languageData);
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                             return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
                         }else{
@@ -246,10 +239,10 @@ class FixturesController extends AbstractActionController
                     }
                     case self::PRE_MATCH_REPORT_FORM_TYPE :{
                         $preMatchReportForm->setData($post);
-                        $this->setRequiredFormFieldsets($preMatchReportForm);
+                        //$this->setRequiredFormFieldsets($preMatchReportForm);
                         if ($preMatchReportForm->isValid()){
-                            $regionsData = $regionManager->getPreMatchReportRegionsData($preMatchReportRegions);
-                            $matchManager->save($fixture,$regionsData);
+                            $languageData = $languageManager->getPreMatchReportLanguagesData($preMatchReportLanguages);
+                            $matchManager->save($fixture,$languageData);
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                             return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
                         }else{
@@ -259,10 +252,10 @@ class FixturesController extends AbstractActionController
                     }
                     case self::POST_MATCH_REPORT_FORM_TYPE :{
                         $postMatchReportForm->setData($post);
-                        $this->setRequiredFormFieldsets($postMatchReportForm);
+                        //$this->setRequiredFormFieldsets($postMatchReportForm);
                         if ($postMatchReportForm->isValid()){
-                            $regionsData = $regionManager->getPostMatchReportRegionsData($postMatchReportRegions);
-                            $matchManager->save($fixture,$regionsData);
+                            $languageData = $languageManager->getPostMatchReportLanguagesData($postMatchReportLanguages);
+                            $matchManager->save($fixture,$languageData);
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                             return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
                         }else{

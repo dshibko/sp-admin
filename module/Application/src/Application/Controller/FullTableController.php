@@ -32,66 +32,50 @@ class FullTableController extends AbstractActionController {
             $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
-            $regionManager = RegionManager::getInstance($this->getServiceLocator());
             $facebookManager = FacebookManager::getInstance($this->getServiceLocator());
 
-            $leagueUsers = array();
-            $leagueName = '';
-
-            $user = $applicationManager->getCurrentUser();
-
-            $league = $leagueManager->getLeagueById($leagueId, true);
+            $league = $leagueManager->getLeagueById($leagueId);
             if ($league === null)
                 return $this->notFoundAction();
 
-            switch ($league['type']) {
-                case League::GLOBAL_TYPE:
-                    $leagueName = $this->getTranslator()->translate($league['type']);
-                    break;
-                case League::REGIONAL_TYPE:
-                    $regionId = $league['leagueRegions'][0]['regionId'];
-                    $region = $regionManager->getRegionById($regionId, true);
-                    $leagueName = $region['displayName'];
-                    break;
-                case League::MINI_TYPE:
-                    $region = $user->getCountry()->getRegion();
-                    if ($region == null) return $this->notFoundAction();
-                    foreach ($league['leagueRegions'] as $leagueRegion)
-                        if ($leagueRegion['regionId'] == $region->getId()) {
-                            $leagueName = $leagueRegion['displayName'];
-                            break;
-                        }
-                    break;
-            }
+            $user = $applicationManager->getCurrentUser();
 
-            $season = $seasonManager->getSeasonById($league['season']['id']);
-            $seasonName = $season->getSeasonRegionByRegionId($applicationManager->getUserRegion($user)->getId())->getDisplayName();
+            if (!$leagueManager->getIsUserInLeague($league, $user))
+                return $this->notFoundAction();
+
+            $leagueUsers = array();
+            if ($league->getType() != League::PRIVATE_TYPE)
+                $leagueName = $leagueManager->getLeagueDisplayName($leagueId);
+            else
+                $leagueName = $league->getDisplayName();
+
+            $seasonName = $seasonManager->getSeasonDisplayName($league->getSeason()->getId());
 
             $offset = (int) $this->params()->fromQuery('offset', 0);
-            $leagueUsersCount = $leagueManager->getLeagueUsersCount($league['id']);
+            $leagueUsersCount = $leagueManager->getLeagueUsersCount($league->getId(), $league->getType());
             if ($offset < 0) $offset = 0;
             if ($leagueUsersCount > $offset) {
                 $aroundYou = (boolean) $this->params()->fromQuery('aroundYou', false);
                 $yourFriends = (boolean) $this->params()->fromQuery('yourFriends', false);
                 if ($aroundYou) {
-                    $yourPlaceInLeague = $leagueManager->getYourPlaceInLeague($league['id'], $user->getId());
+                    $yourPlaceInLeague = $leagueManager->getYourPlaceInLeague($league->getId(), $user->getId());
                     if ($yourPlaceInLeague > 0) {
                         if ($yourPlaceInLeague > self::AROUND_YOU_POSITIONS_NUMBER)
                             $showRowsBefore = self::AROUND_YOU_POSITIONS_NUMBER + 1;
                         else
                             $showRowsBefore = $yourPlaceInLeague;
-                        $leagueUsers = $leagueManager->getLeagueTop($league['id'], $showRowsBefore, $yourPlaceInLeague - $showRowsBefore);
+                        $leagueUsers = $leagueManager->getLeagueTop($league->getId(), $league->getType(), $showRowsBefore, $yourPlaceInLeague - $showRowsBefore);
                         if ($yourPlaceInLeague + self::AROUND_YOU_POSITIONS_NUMBER > $leagueUsersCount)
                             $showRowsAfter = $yourPlaceInLeague + self::AROUND_YOU_POSITIONS_NUMBER - $leagueUsersCount;
                         else
                             $showRowsAfter = self::AROUND_YOU_POSITIONS_NUMBER;
-                        $leagueUsers = array_merge($leagueUsers, $leagueManager->getLeagueTop($league['id'], $showRowsAfter, $yourPlaceInLeague));
+                        $leagueUsers = array_merge($leagueUsers, $leagueManager->getLeagueTop($league->getId(), $league->getType(), $showRowsAfter, $yourPlaceInLeague));
                     }
                 } else if ($yourFriends) {
                     $friendsFacebookIds = $facebookManager->getFriendsUsers($user);
-                    $leagueUsers = $leagueManager->getLeagueTop($league['id'], 0, 0, $friendsFacebookIds);
+                    $leagueUsers = $leagueManager->getLeagueTop($league->getId(), $league->getType(), 0, 0, $friendsFacebookIds);
                 } else
-                    $leagueUsers = $leagueManager->getLeagueTop($league['id'], self::PER_PAGE_PLAYERS_COUNT, $offset);
+                    $leagueUsers = $leagueManager->getLeagueTop($league->getId(), $league->getType(), self::PER_PAGE_PLAYERS_COUNT, $offset);
             }
 
             $onlyRows = (boolean) $this->params()->fromQuery('onlyRows', false);
@@ -102,6 +86,7 @@ class FullTableController extends AbstractActionController {
                 'leagueName' => $leagueName,
                 'leagueUsers' => $leagueUsers,
                 'leagueUsersCount' => $leagueUsersCount,
+                'league' => $league,
                 'onlyRows' => $onlyRows,
                 'perPage' => self::PER_PAGE_PLAYERS_COUNT,
             ));

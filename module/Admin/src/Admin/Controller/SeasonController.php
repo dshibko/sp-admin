@@ -2,11 +2,16 @@
 
 namespace Admin\Controller;
 
+use Admin\Form\LeagueLanguageFieldset;
+use Admin\Form\SeasonLanguageFieldset;
+use Application\Manager\LanguageManager;
 use Application\Manager\MatchManager;
+use Application\Model\Entities\League;
+use Application\Model\Entities\Region;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\Entities\Season;
 use \Application\Manager\ImageManager;
-use \Admin\Form\SeasonRegionFieldset;
+use \Admin\Form\SeasonRegionLanguageFieldset;
 use \Application\Manager\RegionManager;
 use \Admin\Form\SeasonForm;
 use \Application\Manager\SeasonManager;
@@ -14,7 +19,7 @@ use \Application\Manager\ExceptionManager;
 use \Neoco\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class SeasonController extends AbstractActionController {
+class SeasonController extends LeagueController {
 
     const SEASONS_INDEX_ROUTE = 'admin-seasons';
 
@@ -40,13 +45,34 @@ class SeasonController extends AbstractActionController {
 
         try {
             $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
+            $languages = LanguageManager::getInstance($this->getServiceLocator())->getAllLanguages(true);
 
             $regionFieldsets = array();
 
-            foreach ($regions as $region)
-                $regionFieldsets [] = new SeasonRegionFieldset($region);
+            $fakeGlobalRegion = new Region();
+            $fakeGlobalRegion->setDisplayName(League::GLOBAL_TYPE);
+            $fakeGlobalRegion->setIsDefault(true);
+            $globalRegionLanguageFieldsets = array();
+            foreach ($languages as $language) {
+                $seasonLanguageFieldset = new SeasonLanguageFieldset($language, $language['isDefault']);
+                if ($language['isDefault'])
+                    $seasonLanguageFieldset->get('leagueDisplayName')->setValue('Global League');
+                $globalRegionLanguageFieldsets [] = $seasonLanguageFieldset;
+            }
+            $globalFieldset = new SeasonRegionLanguageFieldset($fakeGlobalRegion->getArrayCopy(), $globalRegionLanguageFieldsets);
 
-            $form = new SeasonForm($regionFieldsets);
+            foreach ($regions as $region) {
+                $languageFieldsets = array();
+                foreach ($languages as $language) {
+                    $leagueLanguageFieldset = new LeagueLanguageFieldset($language);
+                    if ($language['isDefault'])
+                        $leagueLanguageFieldset->get('leagueDisplayName')->setValue($region['displayName'] . ' League');
+                    $languageFieldsets [] = $leagueLanguageFieldset;
+                }
+                $regionFieldsets [] = new SeasonRegionLanguageFieldset($region, $languageFieldsets);
+            }
+
+            $form = new SeasonForm(array_merge(array($globalFieldset), $regionFieldsets));
 
             $request = $this->getRequest();
 
@@ -55,10 +81,11 @@ class SeasonController extends AbstractActionController {
                     $request->getPost()->toArray(),
                     $request->getFiles()->toArray()
                 );
+
                 $form->setData($post);
+                $this->setRequiredFormFieldsets($form, $regionFieldsets);
                 if ($form->isValid()) {
                     try {
-
                         $dates = $form->get('dates')->getValue();
                         $startDate = array_shift(explode(" - ", $dates));
                         $startDate = \DateTime::createFromFormat('d/m/Y', $startDate);
@@ -71,9 +98,9 @@ class SeasonController extends AbstractActionController {
 
                         $imageManager = ImageManager::getInstance($this->getServiceLocator());
 
-                        list($displayName, $feederId, $regionsData) = $this->prepareUpdateData($form, $regionFieldsets, $imageManager);
+                        list($displayName, $feederId, $regionalLeaguesData, $globalLeagueData, $seasonData) = $this->prepareUpdateData($form, $globalFieldset, $regionFieldsets, $imageManager);
 
-                        $seasonManager->createSeason($displayName, $startDate, $endDate, $feederId, $regionsData);
+                        $seasonManager->createSeason($displayName, $startDate, $endDate, $feederId, $regionalLeaguesData, $globalLeagueData, $seasonData);
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_SEASON_CREATED);
 
@@ -108,6 +135,8 @@ class SeasonController extends AbstractActionController {
                 ));
             }
 
+            $activeRegionId = (int) $this->params()->fromRoute('regionId', 0);
+
             $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
 
@@ -118,13 +147,28 @@ class SeasonController extends AbstractActionController {
             $editableDates = !$matchManager->getHasFinishedMatches($season);
 
             $regions = RegionManager::getInstance($this->getServiceLocator())->getAllRegions(true);
+            $languages = LanguageManager::getInstance($this->getServiceLocator())->getAllLanguages(true);
 
             $regionFieldsets = array();
 
-            foreach ($regions as $region)
-                $regionFieldsets [] = new SeasonRegionFieldset($region);
+            $fakeGlobalRegion = new Region();
+            $fakeGlobalRegion->setDisplayName(League::GLOBAL_TYPE);
+            $fakeGlobalRegion->setIsDefault(true);
+            $globalRegionLanguageFieldsets = array();
+            foreach ($languages as $language)
+                $globalRegionLanguageFieldsets [] = new SeasonLanguageFieldset($language, $language['isDefault']);
+            $globalFieldset = new SeasonRegionLanguageFieldset($fakeGlobalRegion->getArrayCopy(), $globalRegionLanguageFieldsets);
 
-            $form = new SeasonForm($regionFieldsets);
+            $activeTab = 0;
+            foreach ($regions as $k=>$region) {
+                $activeTab = $region['id'] == $activeRegionId ? ($k+1) : $activeTab;
+                $languageFieldsets = array();
+                foreach ($languages as $language)
+                    $languageFieldsets [] = new LeagueLanguageFieldset($language);
+                $regionFieldsets [] = new SeasonRegionLanguageFieldset($region, $languageFieldsets);
+            }
+
+            $form = new SeasonForm(array_merge(array($globalFieldset), $regionFieldsets));
             $form->get('submit')->setValue('Update');
 
             $request = $this->getRequest();
@@ -135,6 +179,7 @@ class SeasonController extends AbstractActionController {
                     $request->getFiles()->toArray()
                 );
                 $form->setData($post);
+                $this->setRequiredFormFieldsets($form, $regionFieldsets);
                 if (!$editableDates)
                     $form->getInputFilter()->get('dates')->setRequired(false);
                 if ($form->isValid()) {
@@ -154,9 +199,9 @@ class SeasonController extends AbstractActionController {
 
                         $imageManager = ImageManager::getInstance($this->getServiceLocator());
 
-                        list($displayName, $feederId, $regionsData) = $this->prepareUpdateData($form, $regionFieldsets, $imageManager);
+                        list($displayName, $feederId, $regionalLeaguesData, $globalLeagueData, $seasonData) = $this->prepareUpdateData($form, $globalFieldset, $regionFieldsets, $imageManager);
 
-                        $seasonManager->updateSeason($displayName, $startDate, $endDate, $feederId, $regionsData, $id);
+                        $seasonManager->updateSeason($displayName, $startDate, $endDate, $feederId, $regionalLeaguesData, $globalLeagueData, $seasonData, $id);
 
                         $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_SEASON_UPDATED);
 
@@ -173,6 +218,7 @@ class SeasonController extends AbstractActionController {
 
             return array(
                 'id' => $id,
+                'activeTab' => $activeTab,
                 'form' => $form,
                 'action' => 'edit',
                 'editableDates' => $editableDates,
@@ -225,32 +271,44 @@ class SeasonController extends AbstractActionController {
         }
     }
 
-    private function prepareUpdateData($form, $regionFieldsets, $imageManager) {
+    protected function setRequiredFormFieldsets($form, $regionFieldsets) {
+        foreach($regionFieldsets as $regionFieldset)
+            parent::setRequiredFormFieldsets($form, $regionFieldset->getFieldsets(), $regionFieldset->getName());
+    }
+
+    private function prepareUpdateData($form, $globalFieldset, $regionFieldsets, $imageManager) {
         $displayName = $form->get('displayName')->getValue();
         $feederId = $form->get('feederId')->getValue();
 
-        $regionsData = array();
+        $seasonData = array();
+        $globalLeagueData = array();
+        $regionalLeaguesData = array();
+
+        $regionFieldsets = array_merge(array($globalFieldset), $regionFieldsets);
+
         foreach ($regionFieldsets as $regionFieldset) {
-            $regionData = array();
+            $region = $regionFieldset->getRegion();
+            foreach ($regionFieldset->getFieldsets() as $languageFieldset) {
+                $language = $languageFieldset->getLanguage();
+                if ($languageFieldset->has('seasonDisplayName') && $languageFieldset->has('terms')) {
+                    $seasonLanguageData = array();
+                    $seasonLanguageData['seasonDisplayName'] = $languageFieldset->get('seasonDisplayName')->getValue();
+                    $seasonLanguageData['terms'] = $languageFieldset->get('terms')->getValue();
+                    $seasonData [$language['id']] = $seasonLanguageData;
+                }
 
-            $regionData['displayName'] = $regionFieldset->get('displayName')->getValue();
-            $prizeImage = $regionFieldset->get('prizeImage');
-            $prizeImagePath = $imageManager->saveUploadedImage($prizeImage, ImageManager::IMAGE_TYPE_PRIZES);
-            $regionData['prizeImagePath'] = $prizeImagePath;
-            $regionData['prizeTitle'] = $regionFieldset->get('prizeTitle')->getValue();
-            $regionData['prizeDescription'] = $regionFieldset->get('prizeDescription')->getValue();
+                $leagueData = $this->fillInLeagueData($languageFieldset, $imageManager);
 
-            $postWinImage = $regionFieldset->get('postWinImage');
-            $postWinImagePath = $imageManager->saveUploadedImage($postWinImage, ImageManager::IMAGE_TYPE_PRIZES);
-            $regionData['postWinImagePath'] = $postWinImagePath;
-            $regionData['postWinTitle'] = $regionFieldset->get('postWinTitle')->getValue();
-            $regionData['postWinDescription'] = $regionFieldset->get('postWinDescription')->getValue();
-            $regionData['terms'] = $regionFieldset->get('terms')->getValue();
-            $regionData['region'] = $regionFieldset->getRegion();
-
-            $regionsData[$regionData['region']['id']] = $regionData;
+                if ($region['id'] === null) {
+                    $globalLeagueData[$language['id']] = $leagueData;
+                } else {
+                    if (!array_key_exists($region['id'], $regionalLeaguesData))
+                        $regionalLeaguesData[$region['id']] = array();
+                    $regionalLeaguesData[$region['id']][$language['id']] = $leagueData;
+                }
+            }
         }
 
-        return array($displayName, $feederId, $regionsData);
+        return array($displayName, $feederId, $regionalLeaguesData, $globalLeagueData, $seasonData);
     }
 }

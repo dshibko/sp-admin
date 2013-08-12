@@ -11,11 +11,14 @@ namespace Application;
 
 use Application\Form\RegistrationForm;
 use Application\Manager\ContentManager;
+use Application\Manager\ExceptionManager;
 use Application\Manager\LanguageManager;
+use Application\Manager\LogManager;
 use \Application\Manager\UserManager;
 use \Application\Manager\ApplicationManager;
 use \DoctrineModule\Authentication\Adapter\ObjectRepository;
 use \Zend\Authentication\AuthenticationService;
+use Zend\Log\Logger;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use Zend\Crypt\Password\Bcrypt;
@@ -25,7 +28,20 @@ class Module
 
     const SETUP_PAGE_ROUTE = 'setup';
     const PREDICT_PAGE_ROUTE = 'predict';
+    const ERROR_500_PAGE_ROUTE = '500';
     const LOGIN_PAGE_ROUTE = 'login';
+
+    private static $ALLOWED_INACTIVE_ROUTES = array(
+        'logout',
+        'user-settings',
+        'delete-account',
+        'privacy',
+        'terms',
+        'how-to-play',
+        'help',
+        'cookies',
+        'contact',
+    );
 
     public function onBootstrap(MvcEvent $e)
     {
@@ -36,6 +52,7 @@ class Module
         $sharedEvents = $eventManager->getSharedManager();
         $sharedEvents->attach(__NAMESPACE__, MvcEvent::EVENT_DISPATCH, array($this, 'onAppDispatch'), 100);
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onAppDispatchError'), -1);
+        $eventManager->attach(MvcEvent::EVENT_RENDER_ERROR, array($this, 'onRenderError'), -1);
         $eventManager->attach(MvcEvent::EVENT_FINISH, array($this, 'onFinish'), 500);
     }
 
@@ -49,25 +66,29 @@ class Module
     }
 
     public function onAppDispatch(\Zend\Mvc\MvcEvent $e) {
-        $translator = $e->getApplication()->getServiceManager()->get('translator');
-        $user = ApplicationManager::getInstance($e->getApplication()->getServiceManager())->getCurrentUser();
-        if ($user == null) {
-            $userManager = UserManager::getInstance($e->getApplication()->getServiceManager());
-            $language = $userManager->getUserLanguage()->getLanguageCode();
-        } else
-            $language = $user->getLanguage()->getLanguageCode();
-
-//        // todo remove
-//        $language = LanguageManager::getInstance($e->getApplication()->getServiceManager())->getDefaultLanguage()->getLanguageCode();
-
-        $translator->setLocale($language);
+        try {
+            $user = ApplicationManager::getInstance($e->getApplication()->getServiceManager())->getCurrentUser();
+            if ($user == null) {
+                $userManager = UserManager::getInstance($e->getApplication()->getServiceManager());
+                $language = $userManager->getUserLanguage()->getLanguageCode();
+            } else
+                $language = $user->getLanguage()->getLanguageCode();
+            if ($e->getApplication()->getServiceManager()->has('MvcTranslator'))
+                $e->getApplication()->getServiceManager()->get('MvcTranslator')->setLocale($language);
+            if ($e->getApplication()->getServiceManager()->has('translator'))
+                $e->getApplication()->getServiceManager()->get('translator')->setLocale($language);
+        } catch (\Exception $ex) {
+            LogManager::getInstance($e->getApplication()->getServiceManager())->logAppException($ex, Logger::WARN);
+            $user = null;
+        }
         $matches = $e->getRouteMatch();
         $detect = new \Neoco\Mobile\Detect();
 
         if ($matches != null) {
             if ($user != null) {
                 $routeName = $matches->getMatchedRouteName();
-                if (!$user->getIsActive()) {
+                $userManager = UserManager::getInstance($e->getApplication()->getServiceManager());
+                if (!$userManager->getIsUserActive($user) && !in_array($routeName, self::$ALLOWED_INACTIVE_ROUTES)) {
                     if ($detect->isMobile() || $detect->isTablet()){
                         if ($routeName != self::SETUP_PAGE_ROUTE){
                             return $this->redirect(self::SETUP_PAGE_ROUTE, $e);
@@ -106,6 +127,17 @@ class Module
             }
         }
         return true;
+    }
+
+    public function onRenderError(\Zend\Mvc\MvcEvent $e) {
+        ExceptionManager::getInstance($e->getApplication()->getServiceManager())->handleFatalException($e->getParam('exception'));
+        $headers = new \Zend\Http\Headers();
+        $url = new \Zend\View\Helper\Url();
+        $url->setRouter($e->getApplication()->getServiceManager()->get('router'));
+        $headers->addHeaderLine("Location", $url->__invoke(self::ERROR_500_PAGE_ROUTE));
+        $response = $e->getResponse();
+        $response->setHeaders($headers);
+        $response->send();
     }
 
     /**

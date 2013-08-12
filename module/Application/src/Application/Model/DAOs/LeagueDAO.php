@@ -2,10 +2,10 @@
 
 namespace Application\Model\DAOs;
 
+use Application\Model\Entities\Season;
 use \Doctrine\ORM\Query\ResultSetMapping;
 use \Application\Model\Entities\League;
 use \Application\Model\DAOs\AbstractDAO;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\Query\Expr;
 
@@ -49,6 +49,7 @@ class LeagueDAO extends AbstractDAO {
         $rsm->addScalarResult('predictions_count', 'predictions_count');
         $rsm->addScalarResult('predictions_players_count', 'predictions_players_count');
         $rsm->addScalarResult('points', 'points');
+        $rsm->addScalarResult('accuracy', 'accuracy');
         $rsm->addScalarResult('correct_results', 'correct_results');
         $rsm->addScalarResult('correct_scores', 'correct_scores');
         $rsm->addScalarResult('correct_scorers', 'correct_scorers');
@@ -59,6 +60,7 @@ class LeagueDAO extends AbstractDAO {
                 lu.predictions_count,
                 lu.predictions_players_count,
                 lu.points,
+                lu.accuracy,
                 lu.correct_results,
                 lu.correct_scores,
                 lu.correct_scorers,
@@ -148,27 +150,84 @@ class LeagueDAO extends AbstractDAO {
     }
 
     /**
-     * @param \Application\Model\Entities\Region $region
+     * @param int $userId
+     * @param int $seasonId
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getTemporalLeagues($region, $hydrate = false, $skipCache = false) {
+    public function getPrivateLeagues($userId, $seasonId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
+        $today = new \DateTime();
+        $today->setTime(0, 0, 0);
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.leagueUsers','lu', Expr\Join::WITH, 'lu.user = ' . $userId)
+            ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::PRIVATE_TYPE)
+            ->andWhere($qb->expr()->lte('l.startDate', ':today'))->setParameter('today', $today)
+            ->andWhere($qb->expr()->eq('l.season', ':seasonId'))->setParameter('seasonId', $seasonId)
+            ->orderBy('l.endDate', 'DESC');
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
+     * @param int $seasonId
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getPrivateLeaguesCount($seasonId, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('l.id'))
+            ->from($this->getRepositoryName(), 'l')
+            ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::PRIVATE_TYPE)
+            ->andWhere($qb->expr()->eq('l.season', ':seasonId'))->setParameter('seasonId', $seasonId);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @param int $seasonId
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getPrivateLeaguesUsersCount($seasonId, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('distinct lu.user'))
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.leagueUsers', 'lu')
+            ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::PRIVATE_TYPE)
+            ->andWhere($qb->expr()->eq('l.season', ':seasonId'))->setParameter('seasonId', $seasonId);
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @param \Application\Model\Entities\Region $region
+     * @param Season $season
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getTemporalLeagues($region, $season, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $nowTime = new \DateTime();
+        $nowTime->setTime(0, 0, 0);
         $qb->select('l, lr')
             ->from($this->getRepositoryName(), 'l')
             ->join('l.leagueRegions','lr', Expr\Join::WITH, 'lr.region = ' . $region->getId())
             ->where($qb->expr()->eq('l.type', ':type'))->setParameter('type', League::MINI_TYPE)
-            ->andWhere($qb->expr()->lte('l.startDate', ':now'))->setParameter('now', new \DateTime())
+            ->andWhere($qb->expr()->lte('l.startDate', ':now'))->setParameter('now', $nowTime)
+            ->andWhere($qb->expr()->gte('l.endDate', ':now'))->setParameter('now', $nowTime)
+            ->andWhere($qb->expr()->eq('l.season', ':seasonId'))->setParameter('seasonId', $season->getId())
             ->orderBy('l.endDate', 'DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
     public function getAllLeagues($hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('l.id, l.type, l.displayName, l.startDate, l.endDate, s.displayName as seasonName, s.id as seasonId')
+        $qb->select('l.id, l.type, l.displayName, l.startDate, l.endDate, s.displayName as seasonName, s.id as seasonId, lr.regionId')
             ->from($this->getRepositoryName(), 'l')
             ->join('l.season', 's')
+            ->leftJoin('l.leagueRegions', 'lr')
+            ->groupBy('l.id')
             ->orderBy('l.startDate', 'DESC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
@@ -183,12 +242,12 @@ class LeagueDAO extends AbstractDAO {
         $startDate->setTime(0, 0, 0);
         $endDate->setTime(0, 0, 0);
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select($qb->expr()->count('s.id'))
-            ->from($this->getRepositoryName(), 's')
+        $qb->select($qb->expr()->count('l.id'))
+            ->from($this->getRepositoryName(), 'l')
             ->where($qb->expr()->andX(
-            $qb->expr()->andX($qb->expr()->lte('s.startDate', ":startDate"), $qb->expr()->gte('s.endDate', ":startDate")),
-            $qb->expr()->andX($qb->expr()->lte('s.startDate', ":endDate"), $qb->expr()->gte('s.endDate', ":endDate"))))
-            ->andWhere($qb->expr()->eq('s.id', $seasonId))
+            $qb->expr()->andX($qb->expr()->lte('l.startDate', ":startDate"), $qb->expr()->gte('l.endDate', ":startDate")),
+            $qb->expr()->andX($qb->expr()->lte('l.startDate', ":endDate"), $qb->expr()->gte('l.endDate', ":endDate"))))
+            ->andWhere($qb->expr()->eq('l.season', $seasonId))
             ->setParameter("startDate", $startDate)
             ->setParameter("endDate", $endDate);
         return $this->getQuery($qb, false)->getSingleScalarResult() > 0;
@@ -196,12 +255,21 @@ class LeagueDAO extends AbstractDAO {
 
     public function findOneById($id, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('l, lr, p, s')
+        $qb->select('l, lr, ll, s')
             ->from($this->getRepositoryName(), 'l')
             ->leftJoin('l.leagueRegions', 'lr')
-            ->leftJoin('l.prizes', 'p')
+            ->leftJoin('l.leagueLanguages', 'll')
             ->join('l.season', 's')
             ->where($qb->expr()->eq('l.id', $id));
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    public function getPrivateLeagueByHash($hash, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l')
+            ->join('l.privateLeague', 'pl')
+            ->where($qb->expr()->eq('pl.uniqueHash', ':hash'))->setParameter('hash', $hash);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 

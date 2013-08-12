@@ -21,6 +21,6 @@ if ($(document).width() <  turnOffCustomStylePoint)
 
 try {
     if (!$('html').hasClass('lt-ie8')) {
-        $('#login').idealforms(loginOptions).data('idealforms');
+    $('#login').idealforms(loginOptions).data('idealforms');
     }
 } catch (e) {}
