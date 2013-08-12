@@ -116,7 +116,6 @@ class LeagueController extends AbstractActionController {
 
                     } catch (\Exception $e) {
                         $this->flashMessenger()->addErrorMessage($e->getMessage());
-                        return $this->redirect()->toRoute(self::LEAGUES_INDEX_ROUTE, array('action' => 'addMiniLeague'));
                     }
                 } else {
                     $form->handleErrorMessages($form->getMessages(), $this->flashMessenger());
