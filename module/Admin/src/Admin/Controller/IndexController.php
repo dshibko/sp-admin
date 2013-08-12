@@ -78,8 +78,10 @@ class IndexController extends AbstractActionController
                     $prevMatchPredictions = MessagesConstants::INFO_ADMIN_NO_PREV_MATCH;
 
                 $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
-                $privateLeaguesCount = $leagueManager->getPrivateLeaguesCount($currentSeason->getId());
-                $privateLeaguesUsersCount = $leagueManager->getPrivateLeaguesUsersCount($currentSeason->getId());
+                if ($currentSeason != null) {
+                    $privateLeaguesCount = $leagueManager->getPrivateLeaguesCount($currentSeason->getId());
+                    $privateLeaguesUsersCount = $leagueManager->getPrivateLeaguesUsersCount($currentSeason->getId());
+                }
             }
 
         } catch (\Exception $e) {
