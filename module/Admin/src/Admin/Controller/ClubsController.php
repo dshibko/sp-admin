@@ -3,6 +3,7 @@
 namespace Admin\Controller;
 
 use \Application\Manager\ApplicationManager;
+use Application\Manager\SeasonManager;
 use \Application\Manager\SettingsManager;
 use \Application\Manager\ExceptionManager;
 use \Neoco\Controller\AbstractActionController;
@@ -19,13 +20,16 @@ class ClubsController extends AbstractActionController
     {
         $teamManager = TeamManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
         try {
             switch ($applicationManager->getAppEdition()) {
                 case ApplicationManager::CLUB_EDITION:
-                    $season = $applicationManager->getCurrentSeason();
-                    if ($season !== null)
-                        $clubs = $teamManager->getClubEnemies($applicationManager->getAppClub(), $season, true);
-                    else
+                    $seasons = $seasonManager->getAllNotFinishedSeasons();
+                    if (!empty($seasons)) {
+                        $clubs = array();
+                        foreach ($seasons as $season)
+                            $clubs = array_merge($clubs, $teamManager->getClubEnemies($applicationManager->getAppClub(), $season, true));
+                    } else
                         $clubs = $teamManager->getAllTeams(true);
                     break;
                 case ApplicationManager::COMPETITION_EDITION:
