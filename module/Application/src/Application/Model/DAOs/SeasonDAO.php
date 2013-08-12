@@ -67,7 +67,7 @@ class SeasonDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 's')
             ->where($qb->expr()->gte('s.endDate', ":today"))
             ->orderBy('s.startDate', 'ASC')
-            ->setParameter("now", $today);
+            ->setParameter("today", $today);
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
