@@ -1,3 +1,9 @@
+ RewriteEngine on
+ RewriteCond %{REMOTE_ADDR} !^123\.456\.789\.000
+ RewriteCond %{REQUEST_URI} !/maintenance.html$ [NC]
+ RewriteCond %{REQUEST_URI} !\.(jpe?g?|png|gif|css) [NC]
+ RewriteRule .* /maintenance.html [R=302,L]
+
 RewriteEngine On
 # The following rule tells Apache that if the requested filename
 # exists, simply serve it.
@@ -5,11 +11,11 @@ RewriteCond %{REQUEST_FILENAME} -s [OR]
 RewriteCond %{REQUEST_FILENAME} -l [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^.*$ - [NC,L]
-# The following rewrites all other queries to index.php. The 
+# The following rewrites all other queries to index.php. The
 # condition ensures that if you are using Apache aliases to do
-# mass virtual hosting, the base path will be prepended to 
+# mass virtual hosting, the base path will be prepended to
 # allow proper resolution of the index.php file; it will work
-# in non-aliased environments as well, providing a safe, one-size 
+# in non-aliased environments as well, providing a safe, one-size
 # fits all solution.
 RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
 RewriteRule ^(.*) - [E=BASE:%1]
@@ -98,7 +104,6 @@ AddDefaultCharset utf-8
     RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^.*$ - [NC,L]
     RewriteRule ^.*$ index.php [NC,L]
-    Redirect 301 /productions/3-the-audience /productions/ntlout3-the-audience
 </IfModule>
 
 <IfModule mod_rewrite.c>

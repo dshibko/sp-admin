@@ -168,7 +168,7 @@ class CustomExportManager extends BasicManager {
 
     public function getCombinedExportContent() {
         list($maillistExportContent, $maillistExportConfig, $maillistAliasConfig) = $this->getMaillistExportContent(false);
-        $users = UserDAO::getInstance($this->getServiceLocator())->getExportUsersWithoutFacebookData();
+        $users = CustomUserDAO::getInstance($this->getServiceLocator())->getExportUsersData();
 
         $usersArr = array();
         foreach ($users as $user)
@@ -185,16 +185,25 @@ class CustomExportManager extends BasicManager {
 
         $usersExportConfig = array(
             'email' => 'string',
-            'date' => array('date' => 'd/m/Y'),
+            'title' => 'string',
+            'first_name' => 'string',
+            'last_name' => 'string',
             'birthday' => array('date' => 'd/m/Y'),
             'country' => 'string',
             'term1' => 'string',
             'term2' => 'string'
         );
 
-        $exportConfig = array_merge($usersExportConfig, $maillistExportConfig);
+        $usersAliasConfig = array(
+            'title' => 'Title',
+            'first_name' => 'FirstName',
+            'last_name' => 'LastName',
+        );
 
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($combinedContent, $exportConfig, $maillistAliasConfig);
+        $exportConfig = array_merge($usersExportConfig, $maillistExportConfig);
+        $aliasConfig = array_merge($usersAliasConfig, $maillistAliasConfig);
+
+        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($combinedContent, $exportConfig, $aliasConfig);
     }
 
 }
