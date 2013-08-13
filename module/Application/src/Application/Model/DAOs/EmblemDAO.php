@@ -28,7 +28,7 @@ class EmblemDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\Emblem';
+        return '\Application\Model\Entities\Emblem';
     }
 
     public function getEmblem($hydrate = false, $skipCache = false) {

@@ -28,7 +28,7 @@ class AccountRemovalDAO extends AbstractDAO {
      * @return string
      */
     function getRepositoryName() {
-        return 'Application\Model\Entities\AccountRemoval';
+        return '\Application\Model\Entities\AccountRemoval';
     }
 
     /**
