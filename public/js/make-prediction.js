@@ -1,7 +1,7 @@
 function isMobile() {
     return is_iphone || is_touch_device();
 }
-var turnOffCustomStylePoint = isMobile() ? 1600 : 0;
+var turnOffCustomStylePoint = isMobile() ? 2000 : 0;
 
 var makePredictionOptions = {
 
