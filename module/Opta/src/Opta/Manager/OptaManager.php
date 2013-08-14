@@ -40,6 +40,8 @@ use \Neoco\Manager\BasicManager;
 
 class OptaManager extends BasicManager {
 
+    const PARSE_F7_FEEDS_DAYS_BEFORE_START = 7;
+
     /**
      * @var OptaManager
      */
@@ -762,7 +764,7 @@ class OptaManager extends BasicManager {
                     foreach ($seasons as $season) {
                         $seasonFeeds = $this->filterFeedsByParameters($feeds, $type, array('season_id' => $season->getFeederId()));
                             foreach ($seasonFeeds as $seasonFeed)
-                                if ($force || $this->hasToBeProcessed($seasonFeed)) {
+                                if ($force || $this->hasToBeProcessed($seasonFeed, $type)) {
                                     $processingStarted = true;
                                 $this->processingStarted($seasonFeed, $type);
                                 $this->saveFeedsChanges();
@@ -795,7 +797,7 @@ class OptaManager extends BasicManager {
                             'game_id' => $match['feederId'],
                         ));
                         foreach ($matchFeeds as $matchFeed)
-                            if ($force || $this->hasToBeProcessed($matchFeed)) {
+                            if ($force || $this->hasToBeProcessed($matchFeed, $type, array('startTime' => $match['startTime']))) {
                                 $processingStarted = true;
                                 $this->processingStarted($matchFeed, $type);
                                 $this->saveFeedsChanges();
@@ -855,7 +857,14 @@ class OptaManager extends BasicManager {
         });
     }
 
-    public function hasToBeProcessed($feedFilePath) {
+    public function hasToBeProcessed($feedFilePath, $feedType, $options = array()) {
+        if ($feedType == Feed::F7_TYPE && array_key_exists('startTime', $options)) {
+            $matchStartTime = $options['startTime'];
+            $feedLastUpdate = new \DateTime();
+            $feedLastUpdate->setTimestamp(filemtime($feedFilePath));
+            if ($matchStartTime->diff($feedLastUpdate)->days > self::PARSE_F7_FEEDS_DAYS_BEFORE_START)
+                return false;
+        }
         $feedInfo = pathinfo($feedFilePath);
         $feedName = $feedInfo['basename'];
         $feedDAO = FeedDAO::getInstance($this->getServiceLocator());
