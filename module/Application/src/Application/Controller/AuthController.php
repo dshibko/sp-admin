@@ -46,7 +46,7 @@ class AuthController extends AbstractActionController
                         $this->flashmessenger()->addErrorMessage($this->getTranslator()->translate(MessagesConstants::ERROR_WRONG_EMAIL_OR_PASSWORD));
                     }
                     if ($result->isValid()) {
-                        $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
+                        return $this->redirect()->toRoute(self::PREDICT_PAGE_ROUTE);
                     }
                 }else{
                     $this->formErrors($form, $this);
