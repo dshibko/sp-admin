@@ -206,7 +206,7 @@ if (empty($this->twitterShareCopy))
                         <h4><?=$this->translate('Time left')?></h4>
                         <p>
                             <strong><?=$this->current['startTime']->getTimestamp();?></strong>
-                            <?=str_replace(" ", "&nbsp;", $this->translate('days hours mins secs'))?>
+                            <?=$this->translate('days hours mins secs')?>
                         </p>
                     </aside>
                                 </div>
