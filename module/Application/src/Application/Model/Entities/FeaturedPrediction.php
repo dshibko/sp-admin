@@ -3,6 +3,7 @@
 namespace Application\Model\Entities;
 
 use Doctrine\ORM\Mapping as ORM;
+use Neoco\Model\BasicObject;
 
 /**
  * FeaturedPrediction
@@ -10,28 +11,28 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="featured_prediction")
  * @ORM\Entity
  */
-class FeaturedPrediction
+class FeaturedPrediction extends BasicObject
 {
     /**
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=true)
      */
-    private $name;
+    protected $name;
 
     /**
      * @var string
      *
      * @ORM\Column(name="copy", type="text", nullable=true)
      */
-    private $copy;
+    protected $copy;
 
     /**
      * @var string
      *
      * @ORM\Column(name="image_path", type="string", length=255, nullable=true)
      */
-    private $imagePath;
+    protected $imagePath;
 
     /**
      * @var integer
@@ -40,7 +41,7 @@ class FeaturedPrediction
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    protected $id;
 
     /**
      * @param string $copy

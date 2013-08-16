@@ -479,14 +479,19 @@ class MatchManager extends BasicManager
 
             //Match report featured prediction
             $featuredPrediction = $matchLanguage->getFeaturedPrediction();
-            if (is_null($featuredPrediction)){
-                $featuredPrediction = $defaultMatchLanguage->getFeaturedPrediction();
+
+            if ($featuredPrediction->hasEmptyFields()) {
+                $defaultFeaturedPrediction = $defaultMatchLanguage->getFeaturedPrediction();
+                $featuredPrediction = $contentManager->extendContent($defaultFeaturedPrediction->getArrayCopy(), $featuredPrediction->getArrayCopy());
+            } else {
+                $featuredPrediction = $featuredPrediction->getArrayCopy();
             }
+
             if (!is_null($featuredPrediction)){
                 $report['featuredPrediction'] = array(
-                    'name' => $featuredPrediction->getName(),
-                    'copy' => $featuredPrediction->getCopy(),
-                    'backgroundImage' => $featuredPrediction->getImagePath()
+                    'name' => $featuredPrediction['name'],
+                    'copy' => $featuredPrediction['copy'],
+                    'backgroundImage' => $featuredPrediction['imagePath']
                 );
              }
 
