@@ -232,6 +232,14 @@ if (empty($this->twitterShareCopy))
 </div>
 
 <?php if (!empty($this->setUpForm)):?>
+    <style>
+        #setup-dialog section {
+            padding: 0.6em 0 !important;
+        }
+        #setup-dialog section fieldset label.ideal-radiocheck-label p {
+            font-size: 10px !important;
+        }
+    </style>
     <?php echo $this->partial('partials/setup-popup', array('form'=>$this->setUpForm));?>
 <?php endif;?>
 
