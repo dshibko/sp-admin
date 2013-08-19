@@ -216,6 +216,14 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
         return $allEntities;
     }
 
+    public function beginTransaction() {
+        $this->getEntityManager()->getConnection()->beginTransaction();
+    }
+
+    public function commit() {
+        $this->getEntityManager()->getConnection()->commit();
+    }
+
     /**
      * @static
      * @abstract

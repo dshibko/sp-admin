@@ -57,4 +57,18 @@ class CompetitionDAO extends AbstractDAO
         return parent::findAllByFields($fields, $hydrate, $skipCache);
     }
 
+    /**
+     * @param int $feederId
+     * @param bool $skipCache
+     * @return mixed
+     */
+    public function getLogoByFeederId($feederId, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('c.logoPath')
+            ->from($this->getRepositoryName(), 'c')
+            ->where($qb->expr()->eq('c.feederId', ':feederId'))->setParameter('feederId',$feederId)
+            ->groupBy('c.feederId');
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
 }

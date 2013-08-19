@@ -5,12 +5,10 @@ namespace Application\Manager;
 use Application\Model\DAOs\LeagueLanguageDAO;
 use \Application\Model\DAOs\LeagueUserPlaceDAO;
 use Application\Model\DAOs\PrivateLeagueDAO;
-use \Application\Model\Entities\LeagueUserPlace;
 use \Application\Model\Entities\LeagueUser;
 use Application\Model\Entities\PrivateLeague;
 use Application\Model\Entities\Season;
 use Application\Model\Entities\User;
-use \Doctrine\Common\Collections\ArrayCollection;
 use \Application\Model\Entities\LeagueRegion;
 use \Application\Model\Entities\LeagueLanguage;
 use \Application\Model\DAOs\RegionDAO;
@@ -68,7 +66,7 @@ class LeagueManager extends BasicManager {
             $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
             $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
 
-            $leagueUserDAO->beginLeagueUsersUpdate();
+            $leagueUserDAO->beginTransaction();
 
             foreach ($season->getLeagues() as $league)
                 if ($league->getType() != League::MINI_TYPE || $league->getIsActive($match->getStartTime())) {
@@ -121,7 +119,7 @@ class LeagueManager extends BasicManager {
 
                 }
 
-            $leagueUserDAO->commitLeagueUsersUpdate();
+            $leagueUserDAO->commit();
             $leagueUserDAO->clearCache();
 
         } else
@@ -230,6 +228,7 @@ class LeagueManager extends BasicManager {
             $userManager = UserManager::getInstance($this->getServiceLocator());
             foreach ($league->getLeagueRegions() as $leagueRegion)
                 $userManager->registerMiniLeagueUsers($league, $leagueRegion->getRegion()->getId());
+            LeagueUserDAO::getInstance($this->getServiceLocator())->clearCache();
         }
     }
 
@@ -311,9 +310,9 @@ class LeagueManager extends BasicManager {
         return $leagueUserDAO->getYourPlaceInLeague($leagueId, $userId);
     }
 
-    public function getIsUserInLeague($league, $user) {
+    public function getIsUserInLeague($league, $user, $skipCache = false) {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
-        return $leagueDAO->getIsUserInLeague($league, $user);
+        return $leagueDAO->getIsUserInLeague($league, $user, $skipCache);
     }
 
     /**
@@ -352,8 +351,9 @@ class LeagueManager extends BasicManager {
         $privateLeague->setUniqueHash($hash);
         $league->setPrivateLeague($privateLeague);
 
-        $leagueDAO->save($league, true, false);
+        $leagueDAO->save($league);
         $privateLeagueDAO->clearCache();
+        LeagueUserDAO::getInstance($this->getServiceLocator())->clearCache();
 
         return $hash;
 
@@ -377,7 +377,7 @@ class LeagueManager extends BasicManager {
         if ($privateLeague === null)
             throw new \Exception(sprintf(MessagesConstants::ERROR_UNKNOWN_PRIVATE_LEAGUE, $hash));
 
-        if ($leagueDAO->getIsUserInLeague($privateLeague, $user))
+        if ($leagueDAO->getIsUserInLeague($privateLeague, $user, true))
             throw new \Exception(MessagesConstants::ERROR_YOU_JOINED_LEAGUE_EARLIER);
 
         $leagueUser = new LeagueUser();
@@ -387,8 +387,9 @@ class LeagueManager extends BasicManager {
         $leagueUser->setLeague($privateLeague);
         $privateLeague->addLeagueUser($leagueUser);
 
-        $leagueDAO->save($privateLeague, true, false);
+        $leagueDAO->save($privateLeague);
         $privateLeagueDAO->clearCache();
+        LeagueUserDAO::getInstance($this->getServiceLocator())->clearCache();
 
     }
 

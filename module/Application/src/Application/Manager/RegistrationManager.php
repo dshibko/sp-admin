@@ -1,6 +1,7 @@
 <?php
 namespace Application\Manager;
 
+use Application\Model\DAOs\LeagueUserDAO;
 use \Application\Model\Entities\LeagueUser;
 use \Application\Model\DAOs\LeagueDAO;
 use \Application\Model\DAOs\UserDAO;
@@ -14,9 +15,7 @@ use Application\Model\Entities\Season;
 use Neoco\Exception\OutOfSeasonException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
-use Application\Model\Entities\Avatar;
 use Application\Model\Entities\User;
-use Application\Model\Entities\Region;
 
 
 class RegistrationManager extends BasicManager
@@ -154,6 +153,7 @@ class RegistrationManager extends BasicManager
         }
         $leagueDAO->flush();
         $leagueDAO->clearCache();
+        LeagueUserDAO::getInstance($this->getServiceLocator())->clearCache();
     }
 
 }

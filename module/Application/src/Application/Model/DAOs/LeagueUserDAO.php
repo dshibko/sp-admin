@@ -6,7 +6,6 @@ use \Application\Model\Entities\League;
 use Application\Model\DAOs\AbstractDAO;
 use Application\Model\Entities\LeagueUser;
 use Doctrine\ORM\Query\ResultSetMapping;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Doctrine\ORM\Query\Expr;
 
@@ -221,10 +220,6 @@ class LeagueUserDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
-    public function beginLeagueUsersUpdate() {
-        $this->getEntityManager()->getConnection()->beginTransaction();
-    }
-
     public function appendLeagueUsersUpdate($leagueUser, $place) {
         $points = $leagueUser['points'];
         $previousPlace = $leagueUser['place'] !== null ? $leagueUser['place'] : 'null';
@@ -254,10 +249,6 @@ class LeagueUserDAO extends AbstractDAO {
             INSERT INTO league_user_place (league_user_id, match_id, place, previous_place)
             VALUES($leagueUserId, $matchId, $place, $previousPlace)
         ");
-    }
-
-    public function commitLeagueUsersUpdate() {
-        $this->getEntityManager()->getConnection()->commit();
     }
 
     public function moveUpLeagueUserPlaces($league, $fromPlace) {

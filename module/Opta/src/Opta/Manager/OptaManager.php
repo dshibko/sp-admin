@@ -84,6 +84,9 @@ class OptaManager extends BasicManager {
                     $competition = new Competition();
                     $competition->setFeederId($competitionFeederId);
                     $competition->setSeason($season);
+                    $logo = $competitionDAO->getLogoByFeederId(8);
+                    if (!empty($logo))
+                        $competition->setLogoPath($logo);
                 }
                 $competition->setDisplayName($this->getXmlAttribute($xml->SoccerDocument, 'competition_name'));
 
@@ -228,14 +231,17 @@ class OptaManager extends BasicManager {
 
                     $competition = $season->getCompetitionByFeederId($competitionFeederId);
 
+                    $competitionDAO = CompetitionDAO::getInstance($this->getServiceLocator());
                     if ($competition == null) {
                         $competition = new Competition();
                         $competition->setFeederId($competitionFeederId);
                         $competition->setSeason($season);
+                        $logo = $competitionDAO->getLogoByFeederId(8);
+                        if (!empty($logo))
+                            $competition->setLogoPath($logo);
                     }
                     $competition->setDisplayName($this->getXmlAttribute($xml->SoccerDocument, 'competition_name'));
 
-                    $competitionDAO = CompetitionDAO::getInstance($this->getServiceLocator());
                     $competitionDAO->save($competition);
 
                     $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
