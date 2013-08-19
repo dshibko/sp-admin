@@ -18,26 +18,26 @@ use \Zend\Console\Exception\RuntimeException;
 
 class CustomHotFixesController extends AbstractActionController {
 
-//    public function mergePredictionsAction() {
-//
-//        $console = $this->getConsole();
-//
-//        try {
-//
-//            $customHotFixManager = CustomHotFixManager::getInstance($this->getServiceLocator());
-//
-//            $console->writeLine("");
-//            $console->writeLine("Hot fix started");
-//
-//            $customHotFixManager->mergePredictions();
-//
-//            $console->writeLine("Hot fix finished");
-//
-//        } catch(\Exception $e) {
-//            ExceptionManager::getInstance($this->getServiceLocator())->handleCustomException($e, Logger::ERR, $console);
-//        }
-//
-//    }
+    public function privateLeagueAction() {
+
+        $console = $this->getConsole();
+
+        try {
+
+            $customHotFixManager = CustomHotFixManager::getInstance($this->getServiceLocator());
+
+            $console->writeLine("");
+            $console->writeLine("Hot fix started");
+
+            $customHotFixManager->fixPrivateLeaguesPredictions(array(62, 75, 124, 167, 258, 308));
+
+            $console->writeLine("Hot fix finished");
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleCustomException($e, Logger::ERR, $console);
+        }
+
+    }
 
     /**
      * @return \Zend\Console\Adapter\AdapterInterface

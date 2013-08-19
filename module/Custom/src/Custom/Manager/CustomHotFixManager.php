@@ -9,6 +9,7 @@ use Application\Manager\PredictionManager;
 use \Application\Model\DAOs\AvatarDAO;
 use Application\Model\DAOs\LeagueDAO;
 use Application\Model\DAOs\LeagueUserDAO;
+use Application\Model\DAOs\LeagueUserPlaceDAO;
 use Application\Model\DAOs\PredictionDAO;
 use Application\Model\Entities\Prediction;
 use Application\Model\Entities\PredictionPlayer;
@@ -67,6 +68,29 @@ class CustomHotFixManager extends BasicManager {
             $predictionDAO->save($prediction, false, false);
         }
         $predictionDAO->flush();
+    }
+
+    public function fixPrivateLeaguesPredictions($ids) {
+        $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        foreach ($ids as $id) {
+            $league = $leagueDAO->findOneById($id);
+            $leagueUsers = $league->getLeagueUsers();
+            $leagueUserIds = array();
+            foreach ($leagueUsers as $leagueUser) {
+                if (!in_array($leagueUser->getUser()->getId(), $leagueUserIds))
+                    $leagueUserIds [] = $leagueUser->getUser()->getId();
+                else {
+                    var_dump($leagueUser->getUser()->getId());
+                    $fromPlace = $leagueUser->getPlace();
+                    if (!empty($fromPlace))
+                        $leagueUserDAO->moveUpLeagueUserPlaces($league, $fromPlace);
+                    $leagueUserDAO->remove($leagueUser, false, false);
+                }
+            }
+
+        }
+        $leagueUserDAO->flush();
     }
 
 }
