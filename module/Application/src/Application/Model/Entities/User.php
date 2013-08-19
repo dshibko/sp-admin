@@ -182,7 +182,7 @@ class User extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="LeagueUser", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="LeagueUser", mappedBy="user", cascade={"persist", "remove"})
      */
     protected $leagueUsers;
 

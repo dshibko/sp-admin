@@ -480,14 +480,14 @@ class MatchManager extends BasicManager
             //Match report featured prediction
             $featuredPrediction = $matchLanguage->getFeaturedPrediction();
 
-            if ($featuredPrediction->hasEmptyFields()) {
-                $defaultFeaturedPrediction = $defaultMatchLanguage->getFeaturedPrediction();
-                $featuredPrediction = $contentManager->extendContent($defaultFeaturedPrediction->getArrayCopy(), $featuredPrediction->getArrayCopy());
-            } else {
-                $featuredPrediction = $featuredPrediction->getArrayCopy();
-            }
-
             if (!is_null($featuredPrediction)){
+                if ($featuredPrediction->hasEmptyFields()) {
+                    $defaultFeaturedPrediction = $defaultMatchLanguage->getFeaturedPrediction();
+                    $featuredPrediction = $contentManager->extendContent($defaultFeaturedPrediction->getArrayCopy(), $featuredPrediction->getArrayCopy());
+                } else {
+                    $featuredPrediction = $featuredPrediction->getArrayCopy();
+                }
+
                 $report['featuredPrediction'] = array(
                     'name' => $featuredPrediction['name'],
                     'copy' => $featuredPrediction['copy'],

@@ -273,4 +273,17 @@ class LeagueDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    /**
+     * @param int $userId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getLeaguesCreatedByUser($userId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('l')
+            ->from($this->getRepositoryName(), 'l')
+            ->andWhere($qb->expr()->eq('l.creator', ':creator'))->setParameter('creator', $userId);
+        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
 }

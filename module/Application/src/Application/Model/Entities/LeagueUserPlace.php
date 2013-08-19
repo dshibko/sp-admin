@@ -25,7 +25,7 @@ class LeagueUserPlace extends BasicObject {
     /**
      * @var LeagueUser
      *
-     * @ORM\OneToOne(targetEntity="LeagueUser", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="LeagueUser", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="league_user_id", referencedColumnName="id")
      * })

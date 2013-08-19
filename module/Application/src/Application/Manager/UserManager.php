@@ -3,6 +3,9 @@
 namespace Application\Manager;
 
 use Application\Model\DAOs\AccountRemovalDAO;
+use Application\Model\DAOs\LeagueDAO;
+use Application\Model\DAOs\LeagueUserDAO;
+use Application\Model\DAOs\LeagueUserPlaceDAO;
 use Application\Model\Entities\AccountRemoval;
 use Application\Model\Entities\League;
 use Application\Model\Entities\User;
@@ -402,6 +405,7 @@ class UserManager extends BasicManager {
     public function deleteAccount(\Application\Model\Entities\User $user, $deleteFacebookApp = true)
     {
         $userDAO = UserDAO::getInstance($this->getServiceLocator());
+        $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
         $accountRemovalDAO = AccountRemovalDAO::getInstance($this->getServiceLocator());
         $avatarDAO = AvatarDAO::getInstance($this->getServiceLocator());
         if ($user->getFacebookId() && $deleteFacebookApp){
@@ -410,6 +414,13 @@ class UserManager extends BasicManager {
             $facebook->api('/'.$user->getFacebookId(). '/permissions', 'DELETE', array('access_token' => $user->getFacebookAccessToken()));
         }
         $avatar = $user->getAvatar();
+        $leagues = $leagueDAO->getLeaguesCreatedByUser($user->getId());
+        foreach ($leagues as $league)
+            if ($league->getType() != League::PRIVATE_TYPE) {
+                $league->setCreator(null);
+                $leagueDAO->save($league, false, false);
+            } else
+                $leagueDAO->remove($league, false, false);
         $userDAO->remove($user, false, false);
         if (!$avatar->getIsDefault()){
             $this->deleteAvatarImages($avatar);
@@ -423,7 +434,10 @@ class UserManager extends BasicManager {
         $userDAO->flush();
         $accountRemovalDAO->clearCache();
         $userDAO->clearCache();
+        $leagueDAO->clearCache();
         $avatarDAO->clearCache();
+        LeagueUserDAO::getInstance($this->getServiceLocator())->clearCache();
+        LeagueUserPlaceDAO::getInstance($this->getServiceLocator())->clearCache();
 
         return true;
     }
