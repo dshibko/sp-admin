@@ -15,6 +15,7 @@ use Application\Model\DAOs\AvatarDAO;
 use Application\Model\Entities\Role;
 use Application\Model\Entities\User;
 use Application\Model\Helpers\MessagesConstants;
+use Custom\Manager\CustomExportManager;
 use \Neoco\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -71,7 +72,10 @@ class UserController extends AbstractActionController
             ini_set('max_input_time', -1);
             ini_set('memory_limit', -1);
 
-            $content = UserManager::getInstance($this->getServiceLocator())->getUsersExportContent();
+//            $content = UserManager::getInstance($this->getServiceLocator())->getUsersExportContent();
+
+            $customExportManager = CustomExportManager::getInstance($this->getServiceLocator());
+            $content = $customExportManager->getCombinedExportContent();
 
             $response = $this->getResponse();
             $headers = $response->getHeaders();
