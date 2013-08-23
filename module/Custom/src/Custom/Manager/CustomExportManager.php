@@ -112,6 +112,9 @@ class CustomExportManager extends BasicManager {
         }
         $aliasConfig = array(
             'email' => 'Email',
+            'title' => 'Title',
+            'firstName' => 'FirstName',
+            'lastName' => 'Surname',
             'hn1' => 'SPG_HomeName1',
             'an1' => 'SPG_AwayName1',
             'hs1' => 'SPG_HomeScore1',
@@ -138,6 +141,9 @@ class CustomExportManager extends BasicManager {
         );
         $exportConfig = array(
             'email' => 'string',
+            'title' => 'string',
+            'firstName' => 'string',
+            'lastName' => 'string',
             'hn1' => 'string',
             'an1' => 'string',
             'hs1' => 'number',

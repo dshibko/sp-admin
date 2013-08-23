@@ -64,7 +64,7 @@ class CustomUserDAO extends UserDAO {
      */
     public function getMaillistData($nextMatchId, $secondMatchId, $prevMatchId, $globalLeagueId) {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('u.id, u.email')
+        $qb->select('u.id, u.email, u.title, u.firstName, u.lastName')
             ->from($this->getRepositoryName(), 'u')
             ->orderBy('u.id', 'DESC');
         if ($nextMatchId !== null) {
