@@ -73,6 +73,10 @@ class CustomExportController extends AbstractActionController {
 
     public function maillistAction() {
 
+        ini_set('max_execution_time', 0);
+        ini_set('max_input_time', -1);
+        ini_set('memory_limit', -1);
+
         error_reporting(E_ERROR | E_PARSE);
 
         $console = $this->getConsole();
