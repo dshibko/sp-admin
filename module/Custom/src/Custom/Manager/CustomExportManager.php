@@ -64,6 +64,7 @@ class CustomExportManager extends BasicManager {
                 $usersWithPerfectResultArr [] = $userWithPerfectResult['id'];
             $prevMatchHomeTeamName = $prevMatch != null ? $prevMatch->getHomeTeam()->getDisplayName() : null;
             $prevMatchAwayTeamName = $prevMatch != null ? $prevMatch->getAwayTeam()->getDisplayName() : null;
+            // todo to refactor
             $prevMatchCompetitionName = $prevMatch != null ? $prevMatch->getCompetition()->getDisplayName() : null;
             $lastMiniLeague = $customLeagueDAO->getLastMiniLeague($season);
             if ($lastMiniLeague != null) {
@@ -113,8 +114,13 @@ class CustomExportManager extends BasicManager {
         $aliasConfig = array(
             'email' => 'Email',
             'title' => 'Title',
-            'firstName' => 'FirstName',
-            'lastName' => 'Surname',
+            'firstName' => 'First Name',
+            'lastName' => 'Last Name',
+            'birthday' => 'DateofBirth',
+            'country' => 'County',
+            'term1' => 'CFCEmailOptIn',
+            'term2' => 'CFC3rdPartyOptIn',
+            'date' => 'SPG_EntryDate',
             'hn1' => 'SPG_HomeName1',
             'an1' => 'SPG_AwayName1',
             'hs1' => 'SPG_HomeScore1',
@@ -144,6 +150,11 @@ class CustomExportManager extends BasicManager {
             'title' => 'string',
             'firstName' => 'string',
             'lastName' => 'string',
+            'birthday' => array('date' => 'd/m/Y'),
+            'country' => 'string',
+            'term1' => 'string',
+            'term2' => 'string',
+            'date' => array('date' => 'd/m/Y'),
             'hn1' => 'string',
             'an1' => 'string',
             'hs1' => 'number',
