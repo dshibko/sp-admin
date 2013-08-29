@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class AchievementBlock extends BasicObject {
 
+    const PERFECT_PREDICTION_TYPE = 'Perfect Prediction';
+    const CORRECT_SCORE_TYPE = 'Correct Score';
     const CORRECT_RESULT_TYPE = 'First Correct Result';
     const CORRECT_SCORER_TYPE = 'First Correct Scorer';
 

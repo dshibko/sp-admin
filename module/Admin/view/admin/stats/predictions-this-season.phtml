@@ -1,0 +1,27 @@
+<?php
+$title = 'Total number of predictions this season';
+$this->headTitle($title);
+?>
+<div class="row-fluid">
+    <div class="span3 responsive" data-tablet="span6  fix-offset" data-desktop="span3">
+        <div class="dashboard-stat blue">
+            <div class="visual">
+                <i class="icon-bar-chart"></i>
+            </div>
+            <div class="details">
+                <div class="number"><?=$this->data['predictions']?></div>
+                <div class="desc">Predictions</div>
+            </div>
+        </div>
+    </div>
+</div>
+<a href="<?=$this->url('admin-stats-users', array('action' => 'exportPredictionsThisSeason'))?>" class="btn green"><i class="icon-download-alt"></i> <?=$this->translate('Total number of predictions this season')?></a>
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/app.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        App.init(); // initlayout and core plugins
+    });
+</script>
+<!-- END JAVASCRIPTS -->

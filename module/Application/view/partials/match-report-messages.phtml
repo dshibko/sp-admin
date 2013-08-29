@@ -1,0 +1,67 @@
+    <div class="item match-results">
+        <div>
+            <header>
+                <h1><?=$this->translator->translate('Match Results');?></h1>
+                <time class="game-date"><? print $this->matchInfo['localStartTime']->format('D d M h.i a');?></time>
+            </header>
+
+            <section class="your-results-content clearfix">
+                <div class="scorers clearfix">
+                    <div class="home-team">
+                        <figure class="clearfix">
+                            <img src="<?=$this->matchInfo['homeLogo']?>" alt="">
+                            <figcaption>
+                                <?=$this->matchInfo['homeName']?>
+                            </figcaption>
+                        </figure>
+
+                        <section>
+                            <strong><?=!empty($this->matchInfo['homeTeamFullTimeScore']) ? $this->matchInfo['homeTeamFullTimeScore'] : '0'?></strong>
+                            <ul>
+                                <?php foreach ($this->matchInfo['goals']['homeScorers'] as $scorer) :?>
+                                    <li>
+                                        <?=$scorer['displayName']?> <?=$scorer['type'] == \Application\Model\Entities\MatchGoal::OWN_TYPE ? '(o.g.)' : ''?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </section>
+                    </div>
+
+                    <div class="league-block">
+                        <em>VS</em>
+                    </div>
+
+                    <div class="away-team">
+                        <figure class="clearfix">
+                            <img src="<?=$this->matchInfo['awayLogo']?>" alt="">
+                            <figcaption>
+                                <?=$this->matchInfo['awayName']?>
+                            </figcaption>
+                        </figure>
+
+                        <section>
+                            <strong><?=!empty($this->matchInfo['awayTeamFullTimeScore']) ? $this->matchInfo['awayTeamFullTimeScore'] : '0'?></strong>
+                            <ul>
+                                <?php foreach ($this->matchInfo['goals']['awayScorers'] as $scorer) :?>
+                                    <li>
+                                        <?=$scorer['displayName']?> <?=$scorer['type'] == \Application\Model\Entities\MatchGoal::OWN_TYPE ? '(o.g.)' : ''?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2><?=$this->translator->translate('Your results');?></h2>
+                <ul class="results">
+                    <li><strong>+<?=!empty($this->matchInfo['prediction']['points']) ? $this->matchInfo['prediction']['points'] : '0'?><abbr title="Points"><?=$this->translator->translate('PTS');?></abbr></strong></li>
+                    <li><strong>+<?=!empty($this->matchInfo['accuracy']) ? $this->matchInfo['accuracy'] : '0'?> <abbr title="Accuracy"><?=$this->translator->translate('Acy');?></abbr></strong></li>
+                </ul>
+                <a href="<?=$this->fullReportUrl?>" class="see-full"><?=$this->translator->translate('See full report');?></a>
+            </section>
+
+        </div>
+        <a href="<?=$this->hideMessageUrl?>" message_id="<?=$this->messageId?>" class="close hide-message">close</a>
+    </div>

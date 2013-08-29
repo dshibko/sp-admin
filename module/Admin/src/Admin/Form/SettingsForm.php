@@ -16,30 +16,6 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
         $this->setInputFilter(new SettingsFormFilter());
 
         $this->add(array(
-            'name' => 'site-background-colour',
-            'type'  => 'text',
-            'options' => array(
-                'label' => 'Site Background Colour',
-            ),
-            'attributes' => array(
-                'required' => true,
-                'class' => 'span2 colorpicker-default m-wrap',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'site-footer-colour',
-            'type'  => 'text',
-            'options' => array(
-                'label' => 'Site Footer Colour',
-            ),
-            'attributes' => array(
-                'required' => true,
-                'class' => 'span2 colorpicker-default m-wrap',
-            ),
-        ));
-
-        $this->add(array(
             'name' => 'language',
             'type'  => 'select',
             'options' => array(

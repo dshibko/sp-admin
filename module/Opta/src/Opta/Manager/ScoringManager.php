@@ -2,6 +2,13 @@
 
 namespace Opta\Manager;
 
+use Application\Manager\LeagueManager;
+use Application\Model\DAOs\MessageDAO;
+use Application\Model\DAOs\UserDAO;
+use Application\Model\Entities\MatchReportMessage;
+use Application\Model\Entities\Message;
+use Application\Model\Entities\Prediction;
+use Application\Model\Entities\User;
 use \Zend\Log\Logger;
 use \Application\Model\Entities\PredictionPlayer;
 use \Application\Model\Entities\MatchGoal;
@@ -41,6 +48,8 @@ class ScoringManager extends BasicManager {
     public function calculateMatchScores($match) {
 
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        $messageDAO = MessageDAO::getInstance($this->getServiceLocator());
+
         $predictions = $predictionDAO->getMatchPredictions($match->getId());
         $predictionsArr = array();
         $predictionDAO->beginPredictionsUpdate();
@@ -115,6 +124,17 @@ class ScoringManager extends BasicManager {
                 'points' => $points,
             );
 
+            $message = new Message();
+            $message->setUser($messageDAO->getReference(UserDAO::getInstance($this->getServiceLocator())->getRepositoryName(), $prediction['user_id']));
+            $message->setDate(new \DateTime());
+            $message->setMessageType(Message::MATCH_REPORT_TYPE);
+            $message->setWasViewed(false);
+            $matchReportMessage = new MatchReportMessage();
+            $matchReportMessage->setMessage($message);
+            $matchReportMessage->setPrediction($messageDAO->getReference(PredictionDAO::getInstance($this->getServiceLocator())->getRepositoryName(), $prediction['id']));
+            $message->setMatchReportMessage($matchReportMessage);
+            $messageDAO->save($message, false, false);
+
             $predictionsArr [$prediction['user_id']] = $prediction;
 
             $predictionDAO->appendPredictionsUpdate($prediction);
@@ -124,7 +144,10 @@ class ScoringManager extends BasicManager {
         $predictionDAO->commitPredictionsUpdate();
         $predictionDAO->clearCache();
 
-        \Application\Manager\LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables($match, $predictionsArr);
+        $messageDAO->flush();
+        $messageDAO->clearCache();
+
+        LeagueManager::getInstance($this->getServiceLocator())->recalculateLeaguesTables($match, $predictionsArr);
 
     }
 

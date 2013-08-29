@@ -22,7 +22,6 @@ class MatchController extends AbstractActionController {
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
             $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
-            $competitionManager = CompetitionManager::getInstance($this->getServiceLocator());
             $languageManager = LanguageManager::getInstance($this->getServiceLocator());
             $userManager = UserManager::getInstance($this->getServiceLocator());
 
@@ -36,8 +35,7 @@ class MatchController extends AbstractActionController {
 
             $user = $applicationManager->getCurrentUser();
             $season = $applicationManager->getCurrentSeason();
-            $competition = $competitionManager->getCompetitionById($match['competitionId']);
-            if ($user != null && $season != null && $season->getId() == $competition->getSeason()->getId()) {
+            if ($user != null && $season != null && $match['seasonId'] == $season->getId()) {
                 if ($match['status'] !== Match::FULL_TIME_STATUS) {
                     $ahead = $matchManager->getUpcomingMatchNumber($match['startTime'], $season);
                     return $this->redirect()->toRoute(PredictController::PREDICT_ROUTE, array('ahead' => $ahead != 1 ? $ahead - 1 : null));

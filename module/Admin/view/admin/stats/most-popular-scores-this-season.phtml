@@ -1,0 +1,45 @@
+<?php
+$title = 'Most Popular Scores This Season';
+$this->headTitle($title);
+?>
+<div class="row-fluid">
+    <div class="span6">
+        <!-- BEGIN SAMPLE TABLE PORTLET-->
+        <div class="portlet box grey">
+            <div class="portlet-title">
+                <h4>Most Popular Scores This Season</h4>
+            </div>
+            <div class="portlet-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Home Team Score</th>
+                        <th>Away Team Score</th>
+                        <th>Predictions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($this->data as $row) : ?>
+                            <tr>
+                                <td><?=$row['home_team_score'];?></td>
+                                <td><?=$row['away_team_score'];?></td>
+                                <td><?=$row['predictions'];?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- END SAMPLE TABLE PORTLET-->
+    </div>
+</div>
+<a href="<?=$this->url('admin-stats-users', array('action' => 'exportMostPopularScoresThisSeason'))?>" class="btn green"><i class="icon-download-alt"></i> <?=$this->translate('Top 5 most popular scores this season')?></a>
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="<?=$this->getConstant('admin_assets_path_prefix')?>assets/scripts/app.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL SCRIPTS -->
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        App.init(); // initlayout and core plugins
+    });
+</script>
+<!-- END JAVASCRIPTS -->

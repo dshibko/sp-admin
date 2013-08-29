@@ -23,6 +23,23 @@
                 </article>
             </figcaption>
         </figure>
-    </div>
+        <?php if (!empty($this->miniLeaguesPrizes)) : ?>
+            <section class="mini-league-prizes">
+                <?php foreach ($this->miniLeaguesPrizes as $miniLeaguesPrize) : ?>
+                    <article class="user-content clearfix">
+                        <figure>
+                            <img src="<?=$miniLeaguesPrize['prizeImage']?>" alt="">
+                            <figcaption>
+                                <?=$miniLeaguesPrize['prizeTitle']?>
+                            </figcaption>
+                        </figure>
+                        <?=$miniLeaguesPrize['prizeDescription']?>
+<!--                        <h1>Win a signed Moses shirt</h1>-->
+<!--                        <p>This month the player who tops the table for January will win a signed exclusive Moses shirt</p>-->
+<!--                        <p><strong>Winners announced 1 March 2013</strong></p>-->
+                    </article>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
     <?php echo $this->partial('partials/right-column'); ?>
 </div>

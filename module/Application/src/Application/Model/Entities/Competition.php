@@ -35,20 +35,6 @@ class Competition extends BasicObject {
     private $logoPath;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="start_date", type="date", nullable=true)
-     */
-    private $startDate;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="end_date", type="date", nullable=true)
-     */
-    private $endDate;
-
-    /**
      * @var integer
      *
      * @ORM\Column(name="id", type="integer")
@@ -65,14 +51,26 @@ class Competition extends BasicObject {
     private $matches;
 
     /**
-     * @var Season
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToOne(targetEntity="Season")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="season_id", referencedColumnName="id")
-     * })
+     * @ORM\ManyToMany(targetEntity="Season", inversedBy="competitions")
+     * @ORM\JoinTable(name="competition_season",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="competition_id", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="season_id", referencedColumnName="id")
+     *   }
+     * )
      */
-    private $season;
+    private $seasons;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="CompetitionSeason", mappedBy="competition")
+     */
+    private $competitionSeasons;
 
     /**
      * Constructor
@@ -80,6 +78,8 @@ class Competition extends BasicObject {
     public function __construct()
     {
         $this->matches = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->seasons = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->competitionSeasons = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -130,52 +130,6 @@ class Competition extends BasicObject {
     }
 
     /**
-     * Set startDate
-     *
-     * @param \DateTime $startDate
-     * @return Competition
-     */
-    public function setStartDate($startDate)
-    {
-        $this->startDate = $startDate;
-    
-        return $this;
-    }
-
-    /**
-     * Get startDate
-     *
-     * @return \DateTime 
-     */
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
-
-    /**
-     * Set endTime
-     *
-     * @param \DateTime $endTime
-     * @return Competition
-     */
-    public function setEndDate($endTime)
-    {
-        $this->endDate = $endTime;
-    
-        return $this;
-    }
-
-    /**
-     * Get endTime
-     *
-     * @return \DateTime 
-     */
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
-
-    /**
      * Get id
      *
      * @return integer 
@@ -219,26 +173,36 @@ class Competition extends BasicObject {
     }
 
     /**
-     * Set season
+     * Add season
      *
      * @param Season $season
      * @return Competition
      */
-    public function setSeason(Season $season = null)
+    public function addSeason(Season $season)
     {
-        $this->season = $season;
-    
+        $this->seasons[] = $season;
+
         return $this;
     }
 
     /**
-     * Get season
+     * Remove season
      *
-     * @return Season
+     * @param Season $season
      */
-    public function getSeason()
+    public function removeSeason(Season $season)
     {
-        return $this->season;
+        $this->seasons->removeElement($season);
+    }
+
+    /**
+     * Get seasons
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSeasons()
+    {
+        return $this->seasons;
     }
 
     /**
@@ -255,6 +219,22 @@ class Competition extends BasicObject {
     public function getFeederId()
     {
         return $this->feederId;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $competitionSeasons
+     */
+    public function setCompetitionSeasons($competitionSeasons)
+    {
+        $this->competitionSeasons = $competitionSeasons;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCompetitionSeasons()
+    {
+        return $this->competitionSeasons;
     }
 
 }

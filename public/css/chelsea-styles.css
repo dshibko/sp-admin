@@ -38,7 +38,30 @@ aside.ready-try .cta,
 }
 
 .banner figcaption {
-  font: bold 4.3em/1.2 Arial;
+  font-family: Arial;
+  font-weight: bold;
+}
+
+.pink:hover,
+.banner .cta:hover, 
+.ready-try .cta:hover, 
+aside.ready-try .cta:hover,
+.make-prediction .make-prediction-content .buttons-block button:hover,
+#setup-dialog footer button.pink:hover,
+.inner-page div[role="main"] .second-column .login section .cta:hover,
+#setup-dialog.setup-mobile.dialog footer button.pink:hover {
+  /*background: #fff;
+  color: #be4f2b;*/
+  color: #fff;
+  background: rgb(212,169,53);
+  background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q0YTkzNSIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNjODk4MDAiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+);
+  background: -moz-linear-gradient(top,  rgba(212,169,53,1) 0%, rgba(200,152,0,1) 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(212,169,53,1)), color-stop(100%,rgba(200,152,0,1)));
+  background: -webkit-linear-gradient(top,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  background: -o-linear-gradient(top,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  background: -ms-linear-gradient(top,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  background: linear-gradient(to bottom,  rgba(212,169,53,1) 0%,rgba(200,152,0,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d4a935', endColorstr='#c89800',GradientType=0 );
 }
 
 #setup-dialog footer button.pink,
@@ -58,7 +81,7 @@ aside.find-out-more {
   background: none;
 }
 .ie8 .main-navigation li.user-navigation summary {
-  height: 4.95em;
+  height: 5.2em;
 }
 .main-navigation li.active, .main-navigation li:hover {
   background: #0081c8;
@@ -135,6 +158,20 @@ aside.find-out-more {
     margin-bottom: 4px;
   }
 }
+@media screen and (max-width: 1024px) and (orientation: portrait) {
+  .main-navigation a.mobilenav {
+    background-color: #003366;
+  }
+  .main-navigation ul {
+    border-bottom: 4px solid #003366;
+  }
+  .main-navigation ul li .flag-unread-items {
+    border-top: 1.4em solid #ffca00;
+  }
+  .main-navigation ul li.user-navigation .popup-content ul {
+    margin-bottom: 4px;
+  }
+}
 
 
 
@@ -160,6 +197,10 @@ aside.find-out-more {
   background: #b2b2b2;
 }
 
+.grid-layout .item.players.particular-player section div h1 {
+  color: #b8b6b5;
+}
+
 .lt-ie8 .grid-layout .item.pie-chart.top5-predicted-scores section figure ol.legend li:first-child small {
   background: #4d4d4d;
 }
@@ -177,1013 +218,422 @@ aside.find-out-more {
 }
 
 
-
-body {
+/***/
+body, * {
   font-family: Arial;
 }
 
-.inner-page div[role="main"] h1 {
-  font: bold 4em/1 Arial;
-}
-.inner-page div[role="main"] .first-column > hgroup h2 {
-  font: normal 2.3em/1 Arial;
-}
-
-.pink {
-  font: bold 2.5em/2.1 Arial;
-}
-a.more-info {
-  font: bold 1.7em/1 Arial;
-}
-a.show-more {
-  font: bold 1.7em/1 Arial;
-}
-.inner-page div[role="main"] .match-banner article p {
-  font: normal 1.6em/1.2 Arial;
-}
-.inner-page div[role="main"] .match-banner article footer h3 {
-  font: bold 1.5em/1 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .inner-page div[role="main"] .match-banner article h1 {
-    font: bold 3em/1.2 Arial;
-  }
-  .inner-page div[role="main"] .match-banner article p {
-    font: normal 1.5em/1.2 Arial;
-  }
-  .inner-page div[role="main"] .match-banner article footer h3 {
-    font: bold 1.5em/1 Arial;
-  }
-}
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  .inner-page div[role="main"] .match-banner article p {
-    font: normal 1.8em/1.4 Arial;
-  }
-  .inner-page div[role="main"] .match-banner article footer h3 {
-    font: bold 1.8em/1.4 Arial;
-  }
-}
-/***footer***/
-footer[role="contentinfo"] {
-  font: normal 1.4em/1.2 Arial;
-}
-footer[role="contentinfo"] article h2 {
-  font: bold 1.6em/1.5 Arial;
-}
-footer[role="contentinfo"] > div > p a {
-  font: bold 0.8em/1.2 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  /***footer***/
-  footer[role="contentinfo"] {
-    font: normal 1.3em/1.2 Arial;
-  }
-  footer[role="contentinfo"] article h2 {
-    font: bold 1.3em/1.5 Arial;
-  }
- }
-@media screen and (min-width: 768px) and (orientation: portrait) {
-  footer[role="contentinfo"] {
-    font: normal 1.7em/1.2 Arial;
-  }
-}
-.main-navigation li {
-  font: bold 1.4em/1 Arial;
-}
-.main-navigation li.user-navigation .popup-content li {
-  font: normal 1.1em/1 Arial;
-}
-.main-navigation li.user-navigation .popup-content li.user-profile strong {
-  font: bold 1em/1 Arial;
-}
-.main-navigation li.user-navigation .popup-content li.user-profile a {
-  font: normal 0.8em/1 Arial;
-}
-.main-navigation li .flag-unread-items span {
-  font: bold 0.76em/1 Arial;
-}
-@media screen and (max-width: 767px) {
-  .main-navigation ul li {
-    font: bold 1.6em/1 Arial;
-  }
-  .main-navigation ul li.user-navigation .popup-content li {
-    font: normal 1em/1 Arial;
-  }
-  .main-navigation ul li.user-navigation .popup-content li.user-profile strong {
-    font: bold 1.1em/1 Arial;
-  }
-  .main-navigation ul li.user-navigation .popup-content li.user-profile a {
-    font: normal 0.9em/1 Arial;
-  }
-}
-.ideal-form.stack select {
-  font: normal 1.5em/1.4 Arial;
-}
-.ideal-form .buttons-block button,
-.ideal-form .buttons button {
-  font: normal 1.5em/1 Arial;
-}
-.ideal-form .buttons-block button[type="submit"],
-.ideal-form .buttons button[type="submit"] {
-  font: bold 1.5em/1 Arial;
-}
-.ideal-form .ideal-error {
-  font: normal 1.3em/1.3 sans-serif;
-}
-.grid-layout .item.pie-chart section figure div .pieLabel {
-  font: bold 2.5em/1 Arial;
-}
-.grid-layout .item.pie-chart section h1 {
-  font: bold 2.3em/1 Arial;
-}
-.grid-layout .item.pie-chart section p {
-  font: normal 1.6em/1 Arial;
-}
-.grid-layout .item.pie-chart section ol li {
-  font: normal 1.6em/1 Arial;
-}
-.grid-layout .item.stacked-bar section h1 {
-  font: bold 2.3em/1 Arial;
-}
-.grid-layout .item.stacked-bar section figure > ol li span {
-  font: bold 2.5em/1.7 Arial;
-}
-.grid-layout .item.stacked-bar section figure ol.legend li {
-  font: normal 1.6em/1 Arial;
-}
-.grid-layout .item.featured-player section div hgroup h1 {
-  font: bold 1.5em/1.2 Arial;
-}
-.grid-layout .item.featured-player section div hgroup h2 {
-  font: bold 2.4em/1 Arial;
-}
-.grid-layout .item.featured-player section div li {
-  font: normal 1.6em/1 Arial;
-}
-.grid-layout .item.featured-player section div li strong {
-  font: bold 1.6em/1 Arial;
-}
-.grid-layout .item.featured-player section div li:first-child strong {
-  font: bold 6em/1 Arial;
-}
-.grid-layout .item.help-tip section h1 {
-  font: bold 2.3em/1 Arial;
-}
-.grid-layout .item.help-tip section p {
-  font: normal 1.6em/1.2 Arial;
-}
-.grid-layout .item.blockquote section figure blockquote {
-  font: bold 2.3em/1.2 Arial;
-}
-.grid-layout .item.blockquote section figure blockquote:before {
-  font: bold 5em/1 Arial;
-}
-.grid-layout .item.blockquote section figure figcaption {
-  font: normal 1.7em/1 Arial;
-}
-.grid-layout .item.top-predicted-scorers section div h1 {
-  font: bold 2.3em/1.2 Arial;
-}
-.grid-layout .item.top-predicted-scorers section div ol li {
-  font: normal 1.6em/1 Arial;
-}
-.grid-layout .item.top-predicted-scorers section div ol li.big strong {
-  font: bold 6em/0.5 Arial;
-}
-.grid-layout .item.top-predicted-scorers section div ol li.big strong sup {
-  font: bold 0.5em/1 Arial;
-}
-.grid-layout .item.top-predicted-scorers section div ol li.middle strong {
-  font: bod 3em/0.8 Arial;
-}
-.grid-layout .item.top-predicted-scorers section div ol li.small strong {
-  font: bold 1.6em/0.9 Arial;
-}
-.grid-layout .item.summary section p {
-  font: normal 1.6em/1.2 Arial;
-}
-.grid-layout .item.summary section p strong {
-  font: bold 5.9em/1 Arial;
-}
 .grid-layout .item.summary section p em {
   font-style: normal;
   font-family: Arial;
 }
-.grid-layout .item.summary.left section figure div .pieLabel {
-  font: bold 4.6em/1 Arial;
-}
-.grid-layout .item.summary.left section figure div.your-place p {
-  font: bold 1.4em/1 Arial;
-}
-.grid-layout .item.summary.left section figure div.your-place p strong {
-  font: bold 3.3em/0.9 Arial;
-}
-.grid-layout .item.summary.left section figure div.your-place.no-dynamic p strong {
-  font: bold 7em/0.9 Arial;
-}
-.grid-layout .item.summary.left section figcaption {
-  font: normal 1.6em/1.2 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .grid-layout .item.pie-chart section figure div .pieLabel {
-    font: bold 1.7em/1 Arial;
-  }
-  .grid-layout .item.pie-chart section h1 {
-    font: bold 2em/1 Arial;
-  }
-  .grid-layout .item.pie-chart section p {
-    font: normal 1.4em/1 Arial;
-  }
-  .grid-layout .item.stacked-bar section h1 {
-    font: bold 2em/1 Arial;
-  }
-  .grid-layout .item.stacked-bar section figure > ol li span {
-    font: bold 1.7em/1.8 Arial;
-  }
-  .grid-layout .item.stacked-bar section figure ol.legend li {
-    font: normal 1.4em/0.9 Arial;
-  }
-  .grid-layout .item.featured-player section div hgroup h2 {
-    font: bold 1.7em/1 Arial;
-  }
-  .grid-layout .item.featured-player section div li {
-    font: normal 1.5em/1 Arial;
-  }
-  .grid-layout .item.featured-player section div li strong {
-    font: bold 2.3em/0.9 Arial;
-  }
-  .grid-layout .item.featured-player section div li:first-child strong {
-    font: bold 4em/0.8 Arial;
-  }
-  .grid-layout .item.help-tip section h1 {
-    font: bold 2em/1 Arial;
-  }
-  .grid-layout .item.help-tip section p {
-    font: normal 1.4em/1.2 Arial;
-  }
-  .grid-layout .item.blockquote section figure blockquote {
-    font: bold 1.8em/1 Arial;
-  }
-  .grid-layout .item.blockquote section figure blockquote:before {
-    font: bold 2em/1 Arial;
-  }
-  .grid-layout .item.blockquote section figure figcaption {
-    margin: 0.2em 0 0 0;
-    font: normal 1.6em/1 Arial;
-  }
-  .grid-layout .item.top-predicted-scorers section div h1 {
-    font: bold 1.8em/1.2 Arial;
-  }
-  .grid-layout .item.top-predicted-scorers section div ol li {
-    font: normal 1.4em/1 Arial;
-  }
-  .grid-layout .item.top-predicted-scorers section div ol li.big strong {
-    font: bold 4em/0.5 Arial;
-  }
-  .grid-layout .item.top-predicted-scorers section div ol li.big strong sup {
-    font: bold 0.5em/1 Arial;
-  }
-  .grid-layout .item.top-predicted-scorers section div ol li.middle strong {
-    font: bold 2em/0.8 Arial;
-  }
-  .grid-layout .item.top-predicted-scorers section div ol li.small strong {
-    font: bold 1em/1 Arial;
-  }
-  .grid-layout .item.summary section p {
-    font: normal 1.4em/1.2 Arial;
-  }
-  .grid-layout .item.summary section p strong {
-    font: bold 4em/0.8 Arial;
-  }
-  .grid-layout .item.summary.left section figure div .pieLabel {
-    font: bold 1.7em/1 Arial;
-  }
-  .grid-layout .item.summary.left section figcaption {
-    font: normal 1.4em/1 Arial;
-  }
-}
+
+/***normal***/
+.inner-page div[role="main"] .first-column > hgroup h2,
+.inner-page div[role="main"] .match-banner article p,
+footer[role="contentinfo"],
+.main-navigation li.user-navigation .popup-content li,
+.main-navigation li.user-navigation .popup-content li.user-profile a,
+.ideal-form.stack select,
+.ideal-form .buttons-block button,
+.ideal-form .buttons button,
+.ideal-form .ideal-error,
+.grid-layout .item.pie-chart section p,
+.grid-layout .item.pie-chart section ol li,
+.grid-layout .item.stacked-bar section figure ol.legend li,
+.grid-layout .item.featured-player section div li,
+.grid-layout .item.help-tip section p,
+.grid-layout .item.blockquote section figure figcaption,
+.grid-layout .item.top-predicted-scorers section div ol li,
+.grid-layout .item.top-predicted-scorers section div ol li.big strong,
+.grid-layout .item.summary section p,
+.grid-layout .item.summary.left section figcaption,
+.grid-layout .item.top-scorers section div section li,
+.grid-layout .item.players section div section li,
 .user-content p,
 .user-content pre,
-.user-content address {
-  font: normal 1.7em/1.3 Arial;
-}
-.user-content h1 {
-  margin: 0 0 1em;
-  font: normal 4em/1.3 Arial;
-}
-.user-content h2 {
-  margin: 0 0 1em;
-  font: bold 2.3em/1 Arial;
-}
-.user-content h3 {
-  margin: 0 0 1em;
-  font: normal 3em/1.3 Arial;
-}
-.user-content h4 {
-  margin: 0 0 1em;
-  font: normal 2.4em/1.3 Arial;
-}
-.user-content h5 {
-  margin: 0 0 1em;
-  font: normal 2em/1.3 Arial;
-}
-.user-content h6 {
-  margin: 0 0 1em;
-  font: normal 1.8em/1.3 Arial;
-}
+.user-content address,
+.user-content h1,
+.user-content h3,
+.user-content h4,
+.user-content h5,
+.user-content h6,
 .user-content li,
 .user-content dt,
-.user-content dd {
-  font: normal 1.7em/1.3 Arial;
-}
+.user-content dd,
 .user-content dd pre,
 .user-content li li,
-.user-content li p {
-  font: normal 1em/1.3 Arial;
-}
-.user-content a {
-  font-family: Arial;
-}
-
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .user-content p,
-  .user-content pre,
-  .user-content address {
-    font: normal 1.5em/1.4 Arial;
-  }
-}
-@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-  .user-content p,
-  .user-content pre,
-  .user-content address {
-    font: normal 1.8em/1.4 Arial;
-  }
-  .user-content h2 {
-    margin: 0 0 0.5em;
-    font: bold 3em/1 Arial;
-  }
-  .user-content li {
-    font: normal 1.8em/1.4 Arial;
-  }
-}
-#setup-dialog header p {
-  font: bold 1.7em/1.4 Arial;
-}
-#setup-dialog section h1 {
-  font: bold 4em/1.4 Arial;
-}
-#setup-dialog section p {
-  font: normal 1.5em/1.4 Arial;
-}
-#setup-dialog section p.note {
-  font-family: Arial;
-  font-weight: bold;
-}
-#setup-dialog section fieldset label {
-  font: bold 1.6em/1.4 Arial;
-}
-#setup-dialog section fieldset label.ideal-radiocheck-label {
-  font: normal 1em/1 Arial;
-}
-#setup-dialog footer button.pink {
-  font: bold 2em/2.1 Arial;
-}
-@media screen and (min-width: 768px) and (orientation: portrait) {
-  #setup-dialog .ideal-form header p {
-    font: bold 1.9em/1.4 Arial;
-  }
-  #setup-dialog .ideal-form section p {
-    font: normal 1.8em/1.4 Arial;
-  }
-  #setup-dialog .ideal-form footer button.pink {
-    font: bold 2.4em/2.1 Arial;
-  }
-}
-
-#setup-dialog.setup-mobile.dialog section h1 {
-  font: bold 4em/1 Arial;
-}
-#setup-dialog.setup-mobile.dialog section p {
-  font: normal 1.6em/1.4 Arial;
-}
-#setup-dialog.setup-mobile.dialog section p.note {
-  font-family: Arial;
-  font-weight: bold;
-}
-#setup-dialog.setup-mobile.dialog section fieldset label {
-  font: bold 2em/1.4 Arial;
-}
-#setup-dialog.setup-mobile.dialog section fieldset label.ideal-radiocheck-label {
-  font: normal 1em/1 Arial;
-}
-#setup-dialog.setup-mobile.dialog footer button.pink {
-  font: bold 2em/2.1 Arial;
-}
-.errors-page article.error h2 {
-  font: bold 2.8em/1 Arial;
-}
-.errors-page article.error p {
-  font: normal 1.7em/1.2 Arial;
-}
-.errors-page article.error figure div {
-  font: bold 20em/1 Arial;
-}
-.errors-page article + article.user-content h3 {
-  font: bold 1.8em/1.3 Arial;
-}
+.user-content li p,
+.user-content a,
+#setup-dialog section p,
+#setup-dialog section fieldset label.ideal-radiocheck-label,
+#setup-dialog.setup-mobile.dialog section p,
+#setup-dialog.setup-mobile.dialog section fieldset label.ideal-radiocheck-label,
+.errors-page article.error p,
 .errors-page article + article.user-content p,
 .errors-page article + article.user-content li,
-.errors-page article + article.user-content dd {
-  font: normal 1.6em/1.3 Arial;
-}
-.errors-page article + article.user-content dd pre {
-  font: normal 1em/1.3 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .errors-page article.error h2 {
-    font: bold 2.4em/1 Arial;
-  }
-  .errors-page article.error p {
-    font: normal 1.6em/1.2 Arial;
-  }
-  .errors-page article.error figure div {
-    font: bold 10em/1 Arial;
-  }
-  .errors-page article + article.user-content h3 {
-    font: bold 2em/1.3 Arial;
-  }
-  .errors-page article + article.user-content p,
-  .errors-page article + article.user-content li,
-  .errors-page article + article.user-content dd {
-    font: normal 1.4em/1.2 Arial;
-  }
-  .errors-page article + article.user-content dd pre {
-    font: normal 1em/1.2 Arial;
-  }
-}
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  .errors-page article.error p {
-    font: normal 2em/1.2 Arial;
-  }
-  .errors-page article + article.user-content h3 {
-    font: bold 2em/1.3 Arial;
-  }
-  .errors-page article + article.user-content p,
-  .errors-page article + article.user-content li,
-  .errors-page article + article.user-content dd {
-    font: normal 1.8em/1.3 Arial;
-  }
-  .errors-page article + article.user-content dd pre {
-    font: normal 1em/1.3 Arial;
-  }
-}
-.message article p.note {
-  font-family: Arial;
-  font-weight: bold;
-}
-
-.article-image h2 {
-  font: bold 3.3em/1.06 Arial;
-}
-.article-image p {
-  font: normal 1.7em/1.5em Arial;
-}
-aside.ready-try {
-  font: bold 2.8em/1.06 Arial;
-}
-aside.ready-try .cta {
-  font: bold 0.8em/2.2 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-   .article-image-left.user-content h2,
-  .article-image-right.user-content h2 {
-    font: bold 2.3em/1.06 Arial;
-  }
-  div[role="main"] aside.ready-try {
-    background: #fff;
-    font: bold 2.1em/1.4 Arial;
-  }
-}
-.registration .ideal-form h2 {
-  font: bold 2.3em/1 Arial;
-}
-.registration label {
-  font: normal 1.6em/1.55 Arial;
-}
-.registration .field p {
-  font: normal 1.6em/1.2 Arial;
-}
-.registration .field p strong {
-  font: bold 1em/1 Arial;
-}
-.registration .avatar .desktopLabel {
-  font: normal 1.7em/1.6 Arial;
-}
-.registration .email-settings label {
-  font: normal 1.6em/1.6 Arial;
-}
-.registration .email-settings label a {
-  font-family: Arial;
-  font-weight: bold;
-}
-.registration .buttons a {
-  font: bold 1.5em/2.2 Arial;
-}
-.registration.sign-in .buttons-block p {
-  font: normal 1.5em/1.55 Arial;
-}
-.registration.sign-in .buttons-block p a {
-  font-family: Arial;
-  font-weight: bold;
-}
+.errors-page article + article.user-content dd,
+.errors-page article + article.user-content dd pre,
+.article-image p,
+.registration label,
+.registration .field p,
+.registration .avatar .desktopLabel,
+.registration .email-settings label,
+.registration.sign-in .buttons-block p,
 .form-errors,
-.success-message {
-  font: normal 1.5em/1.4 Arial;
-}
-aside.connect-facebook h2 {
-  font: bold 2.3em/1 Arial;
-}
-aside.connect-facebook p {
-  font: normal 1.5em/1.4 Arial;
-}
-aside.connect-facebook .login-with-facebook span {
-  font: bold 1.7em/2.4 Arial;
-}
-p.intro {
-  font: normal 1.5em/1.4 Arial;
-}
-@media screen and (min-width: 768px) and (orientation: portrait) {
-  .registration .buttons-block.signIn-buttons-block p {
-    font: bold 1.7em/1.6 Arial;
-  }
-  .registration .form-errors,
-  .registration .success-message {
-    font: normal 1.8em/1.4 Arial;
-  }
-  .ideal-form .buttons-block button[type="submit"] {
-    font: bold 1.7em/1 Arial;
-  }
-  .ideal-form .buttons button[type="submit"] {
-    font: bold 1.7em/1 Arial;
-  }
-  .ideal-form .buttons a {
-    font: bold 1.7em/2.2 Arial;
-  }
-  aside.connect-facebook p {
-    font: normal 1.8em/1.4 Arial;
-  }
-}
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  .registration p.intro {
-    font: normal 1.8em/1.4 Arial;
-  }
-  .registration .ideal-form h2 {
-    font: bold 2.6em/1 Arial;
-  }
-  .registration .buttons-block div button {
-    font: normal 1.7em/1 Arial;
-  }
- }
-
-.fixtures table tr td figcaption {
-  font: bold 2.3em/1.7 Arial;
-}
-.fixtures table tr td figcaption time {
-  font: bold 0.6em/1.2 Arial;
-}
-.fixtures table tr td.action-block span {
-  font: bold 1.2em/1.4 Arial;
-}
-.fixtures table tr td.action-block em {
-  font: bold 3em/1 Arial;
-}
-.fixtures table tr td.action-block a {
-  font: bold 1.7em/1 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-   .fixtures table tr td.home-team figcaption,
-  .fixtures table tr td.away-team figcaption {
-    font: bold 2.3em/1.2 Arial;
-  }
-  .fixtures table tr td.action-block div span {
-    font: normal 1.6em/1.4 Arial;
-  }
-  .fixtures table tr td.action-block div a {
-    font: bold 2em/1 Arial;
-  }
-}
-.league-tables .league header h2 {
-  font: bold 2.3em/1 Arial;
-}
-.league-tables .league table tr th h3 {
-  font: bold 2.1em/1 Arial;
-}
-.league-tables .league table tr th abbr {
-  font: normal 1.3em/1 Arial;
-}
-.league-tables .league table tr td {
-  font: normal 1.6em/1 Arial;
-}
-.league-tables .league table tr td.points {
-  font: bold 2.3em/1 Arial;
-}
-.league-tables .league table tr.your-table-position td.position,
-.league-tables .league table tr.your-table-position td.player {
-  font: bold 1.6em/1 Arial;
-}
-.league-tables .league footer h4 {
-  font: bold 1.6em/1 Arial;
-}
-.league-tables .league article h1 {
-  font: bold 2.1em/1 Arial;
-}
-.league-tables .league article p {
-  font: normal 1.8em/1.2 Arial;
-}
-.league-tables .league article p a {
-  font: bold 1em/1 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .league-tables .league header h2 {
-    font: bold 2.3em/1 Arial;
-  }
-   .league-tables .league table tr th h3 {
-    font: bold 1.9em/1 Arial;
-  }
-  .league-tables .league table tr td {
-    font: normal 1.4em/1 Arial;
-  }
-  .league-tables .league article h1 {
-    font: bold 2.1em/1 Arial;
-  }
-  .league-tables .league article p {
-    font: normal 1.8em/1.2 Arial;
-  }
-  .league-tables .league article p a {
-    font: bold 1em/1 Arial;
-  }
-}
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  .prizes .prizes-banner figcaption h1 {
-  font: bold 1.7em/1 Arial;
-}
-.prizes .prizes-banner figcaption h2 {
-  font: bold 4em/1 Arial;
-}
-.prizes .prizes-banner figcaption p {
-  font: normal 1.5em/1.5 Arial;
-}
-.prizes .prizes-banner figcaption footer p {
-  font: bold 1.7em/1.5 Arial;
-}
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .prizes .prizes-banner figcaption h1 {
-    font: bold 1.5em/1 Arial;
-  }
-  .prizes .prizes-banner figcaption h2 {
-    font: bold 2.4em/1 Arial;
-  }
-  .prizes .prizes-banner figcaption p {
-    font: normal 1.5em/1.2 Arial;
-  }
-}
-@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-  .prizes .prizes-banner figcaption p {
-    font: normal 1.9em/1.4 Arial;
-  }
-}
-.privacy .privacy-content p {
-  font: normal 1.6em/1.3 Arial;
-}
-.privacy .privacy-content li h2 {
-  margin: 1.4em 0 0.3em;
-  font: normal 1.4em/1.2 Arial;
-}
-.privacy .privacy-content li p {
-  font: normal 1em/1.2 Arial;
-}
-@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
-  .privacy .privacy-content.user-content p {
-    font: normal 1.9em/1.4 Arial;
-  }
-  .privacy .privacy-content.user-content li p {
-    font: normal 1.1em/1.4 Arial;
-  }
-}
-.support .faqs dt {
-  font: bold 2.3em/1.2 Arial;
-}
-.support .faqs dt:before {
-  font: bold 0.8em/1 Arial;
-}
-.support .faqs dd {
-  font: normal 1.6em/1.4 Arial;
-}
-.support .faqs dd:before {
-  font: bold 1em/1 Arial;
-}
-
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .support .faqs dt {
-    font: bold 2em/1.1 Arial;
-  }
-  .support .faqs dd:before {
-    font: bold 0.9em/1 Arial;
-  }
-}
-
-.banner .cta,
-.ready-try .cta {
-  font: bold 0.68em/2.6 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .banner figcaption {
-    font: bold 2.2em/1.2 Arial;
-  }
-  .banner figcaption .cta {
-    font: bold 0.9em/2.6 Arial;
-  }
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .home-page .banner figcaption {
-    font: bold 2.2em/1.2 Arial;
-  }
-  .home-page .banner figcaption .cta {
-    font: bold 0.8em/2.6 Arial;
-  }
-}
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  .banner figcaption {
-    font: bold 3.6em/1.2 Arial;
-  }
-  .banner aside.connect-facebook .login-with-facebook span {
-    font: bold 1.7em/2.8 Arial;
-  }
-}
-
-.login-area > p {
-  font: normal 1.4em/1.2 Arial;
-}
-.login-area > p .login-with-facebook span {
-  font: bold 0.9em/2.2 Arial;
-}
-.login-area details summary {
-  font: bold 1.3em/2 Arial;
-}
-.login-area details .login-form p {
-  font: normal 1.3em/1.5 Arial;
-}
-.login-area details .login-form p a {
-  font-family: Arial;
-  font-weight: bold;
-}
-.login-area details .login-form .field label {
-  font: bold 1.3em/1.3 Arial;
-}
-.login-area details .login-form .field input {
-  font: normal 1.6em/1.8 Arial;
-}
-.login-area details .login-form .signin-button input {
-  font: bold 1.3em/1 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .login-area > p .login-with-facebook span {
-    font: bold 0.9em/3 Arial;
-  }
-  .login-area details summary {
-    font: bold 1.3em/3 Arial;
-  }
-}
-.inner-page div[role="main"] .second-column .wrap h1 {
-  font: bold 1.5em/1 Arial;
-}
-.inner-page div[role="main"] .second-column .wrap .user-profile h1 {
-  font: bold 2.3em/1 Arial;
-}
-.inner-page div[role="main"] .second-column .wrap .user-profile a {
-  font: normal 1.5em/1 Arial;
-}
-.inner-page div[role="main"] .second-column .wrap .total-points th {
-  font: normal 1.2em/1 Arial;
-}
-.inner-page div[role="main"] .second-column .wrap .total-points td.pts {
-  font: bold 5.3em/1 Arial;
-}
-.inner-page div[role="main"] .second-column .wrap .total-points td.acy {
-  font: bold 2.3em/1 Arial;
-}
-.inner-page div[role="main"] .second-column .wrap .league th {
-  font: normal 1.7em/1 Arial;
-}
-.inner-page div[role="main"] .second-column .wrap .league td {
-  font: bold 2.1em/1 Arial;
-}
-.inner-page div[role="main"] .second-column .wrap p.full a {
-  font: normal 1.5em/1 Arial;
-}
-.inner-page div[role="main"] .second-column .login section p {
-  font: normal 1.6em/1.2 Arial;
-}
-.inner-page div[role="main"] .second-column .login section .cta {
-  font: bold 1.8em/2.4 Arial;
-}
-.inner-page div[role="main"] .second-column .facebook-invite a.facebook {
-  font: normal 1.6em/1 Arial;
-}
-@media only screen and (max-width: 1024px) {
-  .inner-page div[role="main"] .second-column .login section p {
-    font: normal 1.6em/1.2 Arial;
-  }
-  .inner-page div[role="main"] .second-column .login section .cta {
-    font: bold 1.8em/2.4 Arial;
-  }
-  .inner-page div[role="main"] .second-column .facebook-invite h1 {
-    font: bold 2.1em/1 Arial;
-  }
-  .inner-page div[role="main"] .second-column .facebook-invite p {
-    font: normal 1.6em/1.3 Arial;
-  }
-  .inner-page div[role="main"] .second-column .facebook-invite a.facebook {
-    font: normal 1.8em/1 Arial;
-  }
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .inner-page div[role="main"] .second-column .login section p {
-    font: normal 1.5em/1.2 Arial;
-  }
-  .inner-page div[role="main"] .second-column .login section .cta {
-    font: bold 1.7em/2.4 Arial;
-  }
-  .inner-page div[role="main"] .second-column .facebook-invite h1 {
-    font: bold 1.8em/1 Arial;
-  }
-  .inner-page div[role="main"] .second-column .facebook-invite p {
-    font: normal 1.5em/1.2 Arial;
-  }
-  .inner-page div[role="main"] .second-column .facebook-invite a.facebook {
-    font: normal 1.6em/1 Arial;
-  }
-}
-@media screen and (min-width: 768px) and (orientation: portrait) {
-  .inner-page div[role="main"] .second-column .login section p {
-    font: normal 2em/1.2 Arial;
-  }
-  .inner-page div[role="main"] .second-column .login section .cta {
-    font: bold 2em/2.4 Arial;
-  }
-  .inner-page div[role="main"] .second-column .facebook-invite h1 {
-    padding: 0 0 0.4em;
-    font: bold 2.3em/1 Helvetica, Arial;
-  }
-  .inner-page div[role="main"] .second-column .facebook-invite p {
-    font: normal 2em/1.3 Arial;
-  }
-}
-.carousel-wrap > header .game-date {
-  font: bold 1.6em/2.8 Arial;
-}
-.carousel-wrap > header li a {
-  font: bold 1.6em/2.8 Arial;
-}
-.carousel-wrap > header .flag-new-prediction span {
-  font: normal 1.3em/1 Arial;
-}
-.carousel-wrap .competition-countdown h4,
-.carousel-wrap .competition-countdown p {
-  font: bold 1.4em/3.5 Arial;
-}
-.carousel-wrap .competition-countdown p {
-  font: normal 1.4em/1 Arial;
-}
-.carousel-wrap .competition-countdown strong {
-  font: bold 1.8em/1 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .carousel-wrap > header .game-date {
-    font: bold 2em/3 Arial;
-  }
-  .carousel-wrap > header li a {
-    font: bold 2em/3 Arial;
-  }
-}
-.make-prediction .make-prediction-content .home-team label figure figcaption,
-.make-prediction .make-prediction-content .away-team label figure figcaption {
-  font: bold 2.3em/1.2 Arial;
-}
-.make-prediction .make-prediction-content .home-team .ideal-field input[type="text"],
-.make-prediction .make-prediction-content .away-team .ideal-field input[type="text"] {
-  font: bold 5.3em/1 Arial;
-}
-.make-prediction .make-prediction-content .league-logo em {
-  font: bold 4em/1 Arial;
-}
-.make-prediction .make-prediction-content .league-logo span {
-  font: bold 1.5em/1 Arial;
-}
-.make-prediction .make-prediction-content .buttons-block button {
-  font: bold 2.5em/2.1 Arial;
-}
-.make-prediction .make-prediction-content .buttons-block .home-team-scorers h4,
-.make-prediction .make-prediction-content .buttons-block .away-team-scorers h4 {
-  font: bold 1.5em/1 Arial;
-}
+.success-message,
+aside.connect-facebook p,
+p.intro,
+.league-tables .league table tr th abbr,
+.league-tables .league table tr td,
+.league-tables .league article p,
+.privacy .privacy-content p,
+.privacy .privacy-content li h2,
+.privacy .privacy-content li p,
+.support .faqs dd,
+.login-area > p,
+.login-area details .login-form p,
+.login-area details .login-form .field input,
+.inner-page div[role="main"] .second-column .wrap .user-profile a,
+.inner-page div[role="main"] .second-column .wrap .total-points th,
+.inner-page div[role="main"] .second-column .wrap .league th,
+.inner-page div[role="main"] .second-column .wrap p.full a,
+.inner-page div[role="main"] .second-column .login section p,
+.inner-page div[role="main"] .second-column .facebook-invite a.facebook,
+.carousel-wrap > header .flag-new-prediction span,
+.carousel-wrap .competition-countdown p,
 .make-prediction .make-prediction-content .buttons-block .home-team-scorers li,
-.make-prediction .make-prediction-content .buttons-block .away-team-scorers li {
-  font: normal 1.4em/1.2 Arial;
-}
-@media only screen and (min-width: 320px) and (max-width: 767px) {
-  .make-prediction .make-prediction-content .buttons-block .home-team-scorers h4,
-  .make-prediction .make-prediction-content .buttons-block .away-team-scorers h4 {
-    font: bold 2.1em/1 Arial;
-  }
-  .make-prediction .make-prediction-content .buttons-block .home-team-scorers li,
-  .make-prediction .make-prediction-content .buttons-block .away-team-scorers li {
-    font: normal 1.8em/1.4 Arial;
-  }
-}
-.your-results-content .scorers .home-team figure figcaption,
-.your-results-content .scorers .away-team figure figcaption {
-  font: bold 2.3em/1.2 Arial;
-}
-.your-results-content .scorers .home-team section strong,
-.your-results-content .scorers .away-team section strong {
-  font: bold 3em/1 Arial;
-}
+.make-prediction .make-prediction-content .buttons-block .away-team-scorers li,
 .your-results-content .scorers .home-team section ul li,
-.your-results-content .scorers .away-team section ul li {
-  font: normal 1.4em/1.4 Arial;
+.your-results-content .scorers .away-team section ul li,
+.your-results-content .scorers .league-block strong,
+.your-results-content .points table th,
+.your-results-content .points table td.total strong abbr,
+.your-results-content .award article p,
+.your-results-content .scorers + p,
+#message-dialog .item > div header h1,
+#message-dialog .item > div > section h2,
+#message-dialog .item > div > section .results li strong abbr,
+.cookie-dialog section p    {
+  font-family: Arial;
 }
-.your-results-content .scorers .league-block strong {
-  font: normal 1.2em/1.4 Arial;
-}
-.your-results-content .scorers .league-block em {
-  font: bold 3em/1 Arial;
-}
-.your-results-content .scorers .league-block span {
-  font: bold 1.5em/1 Arial;
-}
-.your-results-content .points table th {
-  font: normal 1.5em/1.3 Arial;
-}
-.your-results-content .points table th.total {
-  font: bold 2.5em/1 Arial;
-}
-.your-results-content .points table td {
-  font: bold 2.2em/1.3 Arial;
-}
-.your-results-content .points table td.total h3 {
-  font: bold 1em/1 Arial;
-}
-.your-results-content .points table td.total strong {
-  font: bold 2.3em/0.6 Arial;
-}
-.your-results-content .points table td.total strong abbr {
-  font: normal 0.4em/1 Arial;
-}
-.your-results-content .award article h2 {
-  font: bold 2.5em/1 Arial;
-}
-.your-results-content .award article p {
-  font: normal 1.6em/1.2 Arial;
-}
-.your-results-content .award article footer h3 {
-  font: bold 2.3em/1 Arial;
-}
-.your-results-content .scorers + p {
-  font: normal 1.6em/1.2 Arial;
-}
-.your-results-content .scorers + p a {
+
+/***bold***/
+.inner-page div[role="main"] h1,
+.pink,
+a.more-info,
+a.show-more,
+.inner-page div[role="main"] .match-banner article footer h3,
+footer[role="contentinfo"] article h2,
+footer[role="contentinfo"] > div > p a,
+.main-navigation li,
+.main-navigation li.user-navigation .popup-content li.user-profile strong,
+.main-navigation li .flag-unread-items span,
+.ideal-form .buttons-block button[type="submit"],
+.ideal-form .buttons button[type="submit"],
+.grid-layout .item.pie-chart section figure div .pieLabel,
+.grid-layout .item.pie-chart section h1,
+.grid-layout .item.stacked-bar section h1,
+.grid-layout .item.stacked-bar section figure > ol li span,
+.grid-layout .item.featured-player section div hgroup h1,
+.grid-layout .item.featured-player section div hgroup h2,
+.grid-layout .item.featured-player section div li strong,
+.grid-layout .item.featured-player section div li:first-child strong,
+.grid-layout .item.help-tip section h1,
+.grid-layout .item.blockquote section figure blockquote,
+.grid-layout .item.blockquote section figure blockquote:before,
+.grid-layout .item.top-predicted-scorers section div h1,
+.grid-layout .item.top-predicted-scorers section div ol li.big strong sup,
+.grid-layout .item.top-predicted-scorers section div ol li.middle strong,
+.grid-layout .item.top-predicted-scorers section div ol li.small strong,
+.grid-layout .item.summary section p strong,
+.grid-layout .item.summary.left section figure div .pieLabel,
+.grid-layout .item.summary.left section figure div.your-place p,
+.grid-layout .item.summary.left section figure div.your-place p strong,
+.grid-layout .item.summary.left section figure div.your-place.no-dynamic p strong,
+.grid-layout .item.top-scorers section div h1,
+.grid-layout .item.players section div h1,
+.user-content h2,
+#setup-dialog header p,
+#setup-dialog section h1,
+#setup-dialog section p.note,
+#setup-dialog section fieldset label,
+#setup-dialog footer button.pink,
+#setup-dialog.setup-mobile.dialog section h1,
+#setup-dialog.setup-mobile.dialog section p.note,
+#setup-dialog.setup-mobile.dialog section fieldset label,
+#setup-dialog.setup-mobile.dialog footer button.pink,
+.errors-page article.error h2,
+.errors-page article.error figure div,
+.errors-page article + article.user-content h3,
+.message article p.note,
+.article-image h2,
+aside.ready-try,
+aside.ready-try .cta,
+.registration .ideal-form h2,
+.registration .field p strong,
+.registration .email-settings label a,
+.registration .buttons a,
+.registration.sign-in .buttons-block p a,
+aside.connect-facebook h2,
+aside.connect-facebook .login-with-facebook span,
+.fixtures table tr td figcaption,
+.fixtures table tr td.action-block time,
+.fixtures table tr td.action-block abbr,
+.fixtures table tr td.action-block em,
+.fixtures table tr td.action-block a,
+.fixtures table tr td figcaption input[type="text"],
+.league-tables .league header h2,
+.league-tables .league table tr th h3,
+.league-tables .league table tr td.points,
+.league-tables .league table tr.your-table-position td.position,
+.league-tables .league table tr.your-table-position td.player,
+.league-tables .league footer h4,
+.league-tables .league article h1,
+.league-tables .league article p a,
+.support .faqs dt,
+.support .faqs dt:before,
+.support .faqs dd:before,
+.banner .cta,
+.ready-try .cta,
+.login-area > p .login-with-facebook span,
+.login-area details summary,
+.login-area details .login-form p a,
+.login-area details .login-form .field label,
+.login-area details .login-form .signin-button input,
+.inner-page div[role="main"] .second-column .wrap h1,
+.inner-page div[role="main"] .second-column .wrap .user-profile h1,
+.inner-page div[role="main"] .second-column .wrap .total-points td.pts,
+.inner-page div[role="main"] .second-column .wrap .total-points td.acy,
+.inner-page div[role="main"] .second-column .wrap .league td,
+.inner-page div[role="main"] .second-column .login section .cta,
+.carousel-wrap > header .game-date,
+.carousel-wrap > header li a,
+.carousel-wrap .competition-countdown h4,
+.carousel-wrap .competition-countdown p,
+.carousel-wrap .competition-countdown strong,
+.make-prediction .make-prediction-content .home-team label figure figcaption,
+.make-prediction .make-prediction-content .away-team label figure figcaption,
+.make-prediction .make-prediction-content .home-team .ideal-field input[type="text"],
+.make-prediction .make-prediction-content .away-team .ideal-field input[type="text"],
+.make-prediction .make-prediction-content .league-logo em,
+.make-prediction .make-prediction-content .league-logo span,
+.make-prediction .make-prediction-content .buttons-block button,
+.make-prediction .make-prediction-content .buttons-block .home-team-scorers h4,
+.make-prediction .make-prediction-content .buttons-block .away-team-scorers h4,
+.your-results-content .scorers .home-team figure figcaption,
+.your-results-content .scorers .away-team figure figcaption,
+.your-results-content .scorers .home-team section strong,
+.your-results-content .scorers .away-team section strong,
+.your-results-content .scorers .league-block em,
+.your-results-content .scorers .league-block span,
+.your-results-content .points table th.total,
+.your-results-content .points table td,
+.your-results-content .points table td.total h3,
+.your-results-content .points table td.total strong,
+.your-results-content .award article h2,
+.your-results-content .award article footer h3,
+.your-results-content .scorers + p a,
+.your-results-content.match-in-progress .scorers h2,
+.prizes .prizes-banner figcaption footer p,
+.prizes .mini-league-prizes article figure figcaption,
+#message-dialog .item > div header time,
+#message-dialog .item > div > section .results li strong,
+#message-dialog .item > div > section .see-full,
+.cookie-dialog section a,
+.cookie-dialog section button   {
   font-family: Arial;
   font-weight: bold;
 }
-.your-results-content.match-in-progress .scorers h2 {
-  font: bold 2em/1 Arial;
-}
+
+
 @media only screen and (min-width: 320px) and (max-width: 767px) {
+  .grid-layout .item.pie-chart section figure div .pieLabel,
+  .grid-layout .item.pie-chart section h1,
+  .grid-layout .item.stacked-bar section h1,
+  .grid-layout .item.stacked-bar section figure > ol li span,
+  .grid-layout .item.featured-player section div hgroup h2,
+  .grid-layout .item.featured-player section div li strong,
+  .grid-layout .item.featured-player section div li:first-child strong,
+  .grid-layout .item.help-tip section h1,
+  .grid-layout .item.blockquote section figure blockquote,
+  .grid-layout .item.blockquote section figure blockquote:before,
+  .grid-layout .item.top-predicted-scorers section div h1,
+  .grid-layout .item.top-predicted-scorers section div ol li.big strong,
+  .grid-layout .item.top-predicted-scorers section div ol li.big strong sup,
+  .grid-layout .item.top-predicted-scorers section div ol li.middle strong,
+  .grid-layout .item.top-predicted-scorers section div ol li.small strong,
+  .grid-layout .item.summary section p strong,
+  .grid-layout .item.summary.left section figure div .pieLabel,
+  .errors-page article.error h2,
+  .errors-page article.error figure div,
+  .errors-page article + article.user-content h3,
+  .article-image-left.user-content h2,
+  .article-image-right.user-content h2,
+  div[role="main"] aside.ready-try,
+  .fixtures table tr td.home-team figcaption,
+  .fixtures table tr td.away-team figcaption,
+  .fixtures table tr td.action-block div a,
+  .fixtures table tr td.action-block div time,
+  .fixtures table tr td.action-block div abbr,
+  .league-tables .league header h2,
+  .league-tables .league table tr th h3,
+  .league-tables .league article h1,
+  .league-tables .league article p a,
+  .prizes .prizes-banner figcaption h1,
+  .prizes .prizes-banner figcaption h2,
+  .support .faqs dt,
+  .support .faqs dd:before,
+  .banner figcaption,
+  .banner figcaption .cta,
+  .home-page .banner figcaption,
+  .home-page .banner figcaption .cta,
+  .login-area > p .login-with-facebook span,
+  .login-area details summary,
+  .inner-page div[role="main"] .second-column .login section .cta,
+  .inner-page div[role="main"] .second-column .facebook-invite h1,
+  .carousel-wrap > header .game-date,
+  .carousel-wrap > header li a,
+  .make-prediction .make-prediction-content .buttons-block .home-team-scorers h4,
+  .make-prediction .make-prediction-content .buttons-block .away-team-scorers h4,
+  .your-results .your-results-content .scorers .league-block span,
+  .your-results .your-results-content .points table td,
+  .your-results .your-results-content.match-in-progress .scorers h2,
+  .inner-page div[role="main"] .match-banner article h1,
+  .inner-page div[role="main"] .match-banner article footer h3,
+  footer[role="contentinfo"] article h2  {
+    font-family: Arial;
+    font-weight: bold;
+  }
+  .grid-layout .item.pie-chart section p,
+  .grid-layout .item.stacked-bar section figure ol.legend li,
+  .grid-layout .item.featured-player section div li,
+  .grid-layout .item.help-tip section p,
+  .grid-layout .item.top-predicted-scorers section div ol li,
+  .grid-layout .item.summary section p,
+  .grid-layout .item.summary.left section figcaption,
+  .grid-layout .item.blockquote section figure figcaption,
+  .user-content p,
+  .user-content pre,
+  .user-content address,
+  .errors-page article.error p,
+  .errors-page article + article.user-content p,
+  .errors-page article + article.user-content li,
+  .errors-page article + article.user-content dd,
+  .errors-page article + article.user-content dd pre,
+  .fixtures table tr td.action-block div span,
+  .league-tables .league table tr td,
+  .league-tables .league article p,
+  .prizes .prizes-banner figcaption p,
+  .inner-page div[role="main"] .second-column .login section p,
+  .inner-page div[role="main"] .second-column .facebook-invite p,
+  .inner-page div[role="main"] .second-column .facebook-invite a.facebook,
+  .make-prediction .make-prediction-content .buttons-block .home-team-scorers li,
+  .make-prediction .make-prediction-content .buttons-block .away-team-scorers li,
   .your-results .your-results-content .scorers .home-team section ul li,
-  .your-results .your-results-content .scorers .away-team section ul li {
-    font: normal 1.8em/1.4 Arial;
-  }
-  .your-results .your-results-content .scorers .league-block strong {
-    font: normal 1.7em/1.4 Arial;
-  }
-  .your-results .your-results-content .scorers .league-block span {
-    font: bold 1.7em/1 Arial;
-  }
-  .your-results .your-results-content .points table th {
-    font: normal 2.1em/1.3 Arial;
-  }
-  .your-results .your-results-content .points table td {
-    font: bold 2.5em/1.3 Arial;
-  }
-  .your-results .your-results-content .award article p {
-    font: normal 2.1em/1.3 Arial;
-  }
-  .your-results .your-results-content .scorers + p {
-    font: normal 2.3em/1.2 Arial;
-  }
-  .your-results .your-results-content.match-in-progress .scorers h2 {
-    font: bold 3em/1 Arial;
+  .your-results .your-results-content .scorers .away-team section ul li,
+  .your-results .your-results-content .scorers .league-block strong,
+  .your-results .your-results-content .points table th,
+  .your-results .your-results-content .award article p,
+  .your-results .your-results-content .scorers + p,
+  .inner-page div[role="main"] .match-banner article p,
+  footer[role="contentinfo"]   {
+    font-family: Arial;
   }
 }
+@media screen and (max-width: 767px) {
+  .main-navigation ul li,
+  .main-navigation ul li.user-navigation .popup-content li.user-profile strong  {
+    font-family: Arial;
+    font-weight: bold;
+  }
+  .main-navigation ul li.user-navigation .popup-content li,
+  .main-navigation ul li.user-navigation .popup-content li.user-profile a  {
+    font-family: Arial;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .errors-page article.error p,
+  .errors-page article + article.user-content p,
+  .errors-page article + article.user-content li,
+  .errors-page article + article.user-content dd,
+  .errors-page article + article.user-content dd pre,
+  .registration p.intro,
+  .registration .buttons-block div button,
+  .prizes .prizes-banner figcaption p,
+  .inner-page div[role="main"] .match-banner article p  {
+    font-family: Arial;
+  }
+  .errors-page article + article.user-content h3,
+  .registration .ideal-form h2,
+  .prizes .prizes-banner figcaption h1,
+  .prizes .prizes-banner figcaption h2,
+  .prizes .prizes-banner figcaption footer p,
+  .banner figcaption,
+  .banner aside.connect-facebook .login-with-facebook span,
+  .inner-page div[role="main"] .match-banner article footer h3 {
+    font-family: Arial;
+    font-weight: bold;
+  }
+}
+
+
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+  .user-content p,
+  .user-content pre,
+  .user-content address,
+  .user-content li,
+  .prizes .prizes-banner figcaption p,
+  .privacy .privacy-content.user-content p,
+  .privacy .privacy-content.user-content li p {
+    font-family: Arial;
+  }
+  .user-content h2 {
+    font-family: Arial;
+    font-weight: bold;
+  }
+}
+
+@media screen and (min-width: 768px) and (orientation: portrait) {
+  #setup-dialog .ideal-form header p,
+  #setup-dialog .ideal-form footer button.pink,
+  .registration .buttons-block.signIn-buttons-block p,
+  .ideal-form .buttons-block button[type="submit"],
+  .ideal-form .buttons button[type="submit"],
+  .ideal-form .buttons a,
+  .inner-page div[role="main"] .second-column .login section .cta,
+  .inner-page div[role="main"] .second-column .facebook-invite h1 {
+    font-family: Arial;
+    font-weight: bold;
+  }
+  #setup-dialog .ideal-form section p,
+  .registration .form-errors,
+  .registration .success-message,
+  aside.connect-facebook p,
+  .inner-page div[role="main"] .second-column .login section p,
+  .inner-page div[role="main"] .second-column .facebook-invite p,
+  footer[role="contentinfo"]  {
+    font-family: Arial;
+  }
+}
+
+
+@media only screen and (max-width: 1024px) {
+  .inner-page div[role="main"] .second-column .login section p,
+  .inner-page div[role="main"] .second-column .facebook-invite p,
+  .inner-page div[role="main"] .second-column .facebook-invite a.facebook  {
+   font-family: Arial;
+  }
+  .inner-page div[role="main"] .second-column .login section .cta,
+  .inner-page div[role="main"] .second-column .facebook-invite h1 {
+    font-family: Arial;
+    font-weight: bold;
+  }
+}
+
+
+
+
+
+

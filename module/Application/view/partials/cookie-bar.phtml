@@ -1,4 +1,6 @@
-<div class="cookie-bar" style="display:none; background-color:red;">
-    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.
-    <a href="javascript:void(0)" class="close-cookie-bar"><?php $this->translate('Dismiss');?></a>
+<div class="cookie-dialog" style="display: none;">
+    <section>
+        <p><?=$this->translate(sprintf("We use cookies to ensure that we gave you the best experience on our website. If you continue without changing your settings, we'll assume that you are happy to receive all cookies on the Score Predictor website. Learn more about our %scookie usage%s and how to change your cookie settings.", '<a href="'.$this->url("cookies").'">', '</a>'))?></p>
+        <button><?=$this->translate('Accept and close')?></button>
+    </section>
 </div>

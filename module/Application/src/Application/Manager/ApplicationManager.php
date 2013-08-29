@@ -6,6 +6,7 @@ use \Application\Model\DAOs\LeagueDAO;
 use \Application\Model\DAOs\SeasonDAO;
 use Application\Model\DAOs\TeamDAO;
 use \Application\Model\Entities\Season;
+use Application\Model\Entities\Team;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\Entities\User;
 use \Application\Model\DAOs\UserDAO;
@@ -292,8 +293,6 @@ class ApplicationManager extends BasicManager {
      */
     public function getUserRegion(\Application\Model\Entities\User $user)
     {
-//        // todo remove
-//        return RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
         $region = $user->getCountry()->getRegion();
         if (is_null($region)){
             $region = RegionManager::getInstance($this->getServiceLocator())->getDefaultRegion();
@@ -302,7 +301,7 @@ class ApplicationManager extends BasicManager {
     }
 
     /**
-     * @return mixed
+     * @return Team
      */
     public function getAppClub()
     {

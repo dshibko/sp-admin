@@ -60,6 +60,26 @@ class ResultsController extends AbstractActionController {
             $userLanguage = $user->getLanguage();
             $matchReport = $matchManager->getPostMatchLanguageReport($currentMatch['id'], $userLanguage->getId());
 
+            $currentTeam = $applicationManager->getAppClub();
+            $mostPopularScorer = $matchManager->getMostPopularScorer($currentMatch['id'], $currentTeam->getId());
+
+            $matchReport['mostPopularScorer'] = $mostPopularScorer;
+
+            $matchPredictionsCount = $predictionManager->getMatchPredictionsCount($currentMatch['id']);
+            if ($matchPredictionsCount > 0) {
+                if (!$currentMatch['prediction']['isCorrectScore']) {
+                    $sameScorelinePredictionsCount = $predictionManager->getSameScorelinePredictionsCount($currentMatch['id'],
+                                                                                                          $currentMatch['prediction']['homeTeamScore'],
+                                                                                                          $currentMatch['prediction']['awayTeamScore'],
+                                                                                                          $user->getId());
+
+                    $matchReport['sameScorelinePredictionsPercentage'] = round( ($sameScorelinePredictionsCount / $matchPredictionsCount) * 100 );
+                }
+
+                $correctScoreCount = $predictionManager->getPredictionsCorrectScoreCount($currentMatch['id']);
+                $matchReport['correctScorePercentage'] = round( ($correctScoreCount / $matchPredictionsCount) * 100 );
+            }
+
             $predictionPlayers = $currentMatch['prediction']['predictionPlayers'];
             $predictionPlayersCount = 0;
             foreach ($predictionPlayers as $predictionPlayer)
@@ -154,23 +174,9 @@ class ResultsController extends AbstractActionController {
             $accuracyKey = sprintf($this->getTranslator()->translate(MessagesConstants::INFO_YOUR_ACCURACY), '<b>' . $accuracy . '%</b>');
             $breakpoints[$accuracyKey] = '';
 
-            $correctScorerPredictionsBeforeThisMatch = $predictionManager->getUserCorrectScorerPredictionsNumber($season, $user, $currentMatch['startTime']);
-            $firstCorrectScorer = ($correctScorerPredictionsBeforeThisMatch == 0 && $currentMatch['prediction']['correctScorers'] > 0);
-            $hasUserCorrectResultsBeforeThisMatch = $predictionManager->hasUserCorrectResults($season, $user, $currentMatch['startTime']);
-            $firstCorrectResult = ($hasUserCorrectResultsBeforeThisMatch === false && $currentMatch['prediction']['isCorrectResult']);
-
-            if ($firstCorrectResult && $firstCorrectScorer) {
-                $bool = rand(0, 1) == 1;
-                $firstCorrectResult = $bool;
-                $firstCorrectScorer = !$bool;
-            }
-
-            if ($firstCorrectResult || $firstCorrectScorer) {
-                $shareManager = ShareManager::getInstance($this->getServiceLocator());
-                if ($firstCorrectResult)
-                    $achievementBlock = $shareManager->getAchievementBlockByType(AchievementBlock::CORRECT_RESULT_TYPE);
-                if ($firstCorrectScorer)
-                    $achievementBlock = $shareManager->getAchievementBlockByType(AchievementBlock::CORRECT_SCORER_TYPE);
+            $shareManager = ShareManager::getInstance($this->getServiceLocator());
+            $achievementBlock = $shareManager->getAchievementBlock($season, $user, $currentMatch);
+            if ($achievementBlock !== null) {
                 $facebookShareCopy = $achievementBlock->getFacebookShareCopy()->getCopy();
                 $twitterShareCopy = $achievementBlock->getTwitterShareCopy()->getCopy();
             }

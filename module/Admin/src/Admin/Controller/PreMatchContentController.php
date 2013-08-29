@@ -28,6 +28,7 @@ class PreMatchContentController extends MatchContentController {
             $preMatchCopy = $shareManager->getCopyByTarget(ShareCopy::PRE_MATCH_REPORT, true);
             $weightLabels = array(
                 1 => 'First Prediction',
+                2 => 'Milestone Prediction',
                 3 => 'Every Prediction',
             );
             foreach ($preMatchCopy as $aPreMatchCopy) {

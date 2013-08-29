@@ -518,9 +518,12 @@ class UserManager extends BasicManager {
             $user = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentUser();
         }
         $lastLoggedIn = $user->getLastLoggedIn();
+
+        $sessionManager = SessionManager::getInstance($this->getServiceLocator());
+        $sessionManager->setParameter(SessionManager::IS_JUST_LOGGED_IN, true, SessionManager::USER_STORAGE);
+
         if (is_null($lastLoggedIn) && $user->isAdmin()){
-            $session = new SessionContainer('admin');
-            $session->isFirstTimeLoggedIn = true;
+            $sessionManager->setParameter(SessionManager::IS_FIRST_TIME_LOGGED_IN, true, SessionManager::ADMIN_STORAGE);
         }
         $user->setLastLoggedIn(new \DateTime());
         $this->save($user);

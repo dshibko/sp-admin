@@ -59,6 +59,68 @@ function initCharts(doResize){
             communityPredictedChart.draw();
         }
     }
+    if (window.sameScorelinePredictionsData !== undefined){
+        var sameScorelinePredictionsChart = $.plot($('#same-scoreline-predictions'),
+            window.sameScorelinePredictionsData,
+            {
+                series: {
+                    pie: {
+                        innerRadius: 0.8,
+                        stroke: {color: '#e6edf8', width: 0},
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 0,
+                            formatter: function(label, series) {
+                                return label;
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            }
+        );
+
+        if (doResize === true){
+            sameScorelinePredictionsChart.resize();
+            sameScorelinePredictionsChart.setupGrid();
+            sameScorelinePredictionsChart.draw();
+        }
+    }
+    if (window.correctScoreData !== undefined){
+        var correctScoreChart = $.plot($('#correct-score'),
+            window.correctScoreData,
+            {
+                series: {
+                    pie: {
+                        innerRadius: 0.8,
+                        stroke: {color: '#e6edf8', width: 0},
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 0,
+                            formatter: function(label, series) {
+                                return label;
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            }
+        );
+
+        if (doResize === true){
+            correctScoreChart.resize();
+            correctScoreChart.setupGrid();
+            correctScoreChart.draw();
+        }
+    }
 }
 
 initCharts(false);

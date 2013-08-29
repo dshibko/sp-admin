@@ -38,6 +38,16 @@ class Feed extends BasicObject {
     protected $fileName;
 
     /**
+     * @var Season
+     *
+     * @ORM\ManyToOne(targetEntity="Season")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="season_id", referencedColumnName="id")
+     * })
+     */
+    protected $season;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="type", type="string", columnDefinition="ENUM('F1', 'F2', 'F7', 'F40')")
@@ -145,6 +155,22 @@ class Feed extends BasicObject {
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param \Application\Model\Entities\Season $season
+     */
+    public function setSeason($season)
+    {
+        $this->season = $season;
+    }
+
+    /**
+     * @return \Application\Model\Entities\Season
+     */
+    public function getSeason()
+    {
+        return $this->season;
     }
 
 }

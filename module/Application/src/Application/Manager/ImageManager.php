@@ -26,6 +26,8 @@ class ImageManager extends BasicManager {
     const IMAGE_TYPE_LOGOTYPE = 'logotype';
     const WEB_SEPARATOR = '/';
 
+    const COMPETITION_LOGO_SIZE = 67;
+
     const FOOTER_IMAGE_WIDTH = 182;
     const FOOTER_IMAGE_HEIGHT = 206;
 

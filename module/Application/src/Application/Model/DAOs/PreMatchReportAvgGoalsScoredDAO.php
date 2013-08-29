@@ -1,0 +1,51 @@
+<?php
+
+namespace Application\Model\DAOs;
+
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Doctrine\ORM\Query\Expr;
+
+
+class PreMatchReportAvgGoalsScoredDAO extends AbstractDAO {
+
+    /**
+     * @var PreMatchReportAvgGoalsScoredDAO
+     */
+    private static $instance;
+
+    /**
+     * @static
+     * @param \Zend\ServiceManager\ServiceLocatorInterface $serviceLocatorInterface
+     * @return PreMatchReportAvgGoalsScoredDAO
+     */
+    public static function getInstance(ServiceLocatorInterface $serviceLocatorInterface) {
+        if (self::$instance == null) {
+            self::$instance = new PreMatchReportAvgGoalsScoredDAO();
+            self::$instance->setServiceLocator($serviceLocatorInterface);
+        }
+        return self::$instance;
+    }
+
+    /**
+     * @return string
+     */
+    function getRepositoryName() {
+        return '\Application\Model\Entities\PreMatchReportAvgGoalsScored';
+    }
+
+    /**
+     * @param $matchId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return mixed
+     */
+    function getPreMatchReportAvgGoalsScoredByMatchId($matchId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('ags')
+            ->from($this->getRepositoryName(), 'ags')
+            ->where($qb->expr()->eq('ags.match', ':matchId'))
+            ->setParameter("matchId", $matchId);
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+}

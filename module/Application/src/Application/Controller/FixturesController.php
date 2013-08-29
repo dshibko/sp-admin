@@ -26,6 +26,7 @@ class FixturesController extends AbstractActionController {
         try {
 
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
+            $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
             $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
             $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
@@ -34,11 +35,34 @@ class FixturesController extends AbstractActionController {
             if ($season == null)
                 throw new OutOfSeasonException();
 
+            $user = $applicationManager->getCurrentUser();
+
             $seasonName = $seasonManager->getSeasonDisplayName($season->getId());
             $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS);
-            $matchesLeft = $matchManager->getMatchesLeftInTheSeason($season, true);
+            $matchesLeft = $matchManager->getMatchesLeftInTheSeason($season);
             if (empty($matchesLeft))
                 throw new InfoException(MessagesConstants::INFO_NO_MORE_MATCHES_WILL_BE_PLAYED);
+
+            $predictableCount = 0;
+            $predictableMatchesIds = array();
+            foreach ($matchesLeft as &$match) {
+                if ($match['isLive']) {
+                    $match['predictable'] = false;
+                }
+                else {
+                    $match['predictable'] = $predictableCount++ < $maxAhead;
+                    $predictableMatchesIds[] = $match['id'];
+                }
+            }
+            $userPredictedMatchesIds = $predictionManager->getPredictedMatchesIdsByUser($predictableMatchesIds, $user->getId(), true);
+
+            foreach ($matchesLeft as &$match) {
+                if ($match['predictable']) {
+                    if (in_array($match['id'], $userPredictedMatchesIds)) {
+                        $match['predicted'] = true;
+                    }
+                }
+            }
 
             return array(
                 'fixtures' => $matchesLeft,

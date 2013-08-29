@@ -4,6 +4,7 @@ namespace Application\Controller;
 
 use Application\Manager\ContentManager;
 use Application\Manager\LanguageManager;
+use Application\Manager\LeagueManager;
 use \Neoco\Exception\InfoException;
 use \Neoco\Exception\OutOfSeasonException;
 use \Zend\View\Model\ViewModel;
@@ -25,18 +26,42 @@ class PrizeController extends AbstractActionController {
             if ($season == null)
                 throw new OutOfSeasonException();
 
-            $language = $user->getLanguage();
+            // grand prize
+
             $globalLeague = $applicationManager->getGlobalLeague($season);
+
+            $language = $user->getLanguage();
             $grandPrize = $globalLeague->getLeagueLanguageByLanguageId($language->getId());
             $grandPrize = $grandPrize->getArrayCopy();
+
+            $defaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+
             if (!$language->getIsDefault()) {
-                $defaultLanguage = LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
                 $defaultGrandPrize = $globalLeague->getLeagueLanguageByLanguageId($defaultLanguage->getId());
                 $grandPrize = ContentManager::getInstance($this->getServiceLocator())->extendContent($defaultGrandPrize->getArrayCopy(), $grandPrize);
             }
 
+            // mini league prize
+
+            $miniLeaguesPrizes = array();
+            $region = $user->getCountry()->getRegion();
+            if ($region != null) {
+                $leagueManager = LeagueManager::getInstance($this->getServiceLocator());
+                $temporalLeagues = $leagueManager->getTemporalLeagues($region, $season);
+                foreach ($temporalLeagues as $temporalLeague) {
+                    $miniLeaguePrize = $temporalLeague->getLeagueLanguageByLanguageId($language->getId());
+                    $miniLeaguePrize = $miniLeaguePrize->getArrayCopy();
+                    if (!$language->getIsDefault()) {
+                        $defaultMiniLeaguePrize = $temporalLeague->getLeagueLanguageByLanguageId($defaultLanguage->getId());
+                        $miniLeaguePrize = ContentManager::getInstance($this->getServiceLocator())->extendContent($defaultMiniLeaguePrize->getArrayCopy(), $miniLeaguePrize);
+                    }
+                    $miniLeaguesPrizes [] = $miniLeaguePrize;
+                }
+            }
+
             return array(
                 'grandPrize' => $grandPrize,
+                'miniLeaguesPrizes' => $miniLeaguesPrizes,
             );
 
         } catch (InfoException $e) {

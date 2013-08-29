@@ -3,7 +3,7 @@ var TableManaged = function () {
     return {
 
         //main function to initiate the module
-        init: function (messages, aoColumns, aaSorting) {
+        init: function (messages, aoColumns, aaSorting, filter) {
 
             if (!jQuery().dataTable) {
                 return;
@@ -22,7 +22,7 @@ var TableManaged = function () {
             var oTable = $('#users-table').dataTable({
                 "aoColumns": aoColumns,
                 "aaSorting": aaSorting,
-                "bFilter": false,
+                "bFilter": filter,
                 "bStateSave" : true,
                 "aLengthMenu": [[5, 10, 15, 25, 50, 100 , -1], [5, 10, 15, 25, 50, 100, "All"]],
                 "iDisplayLength" : 25,

@@ -123,14 +123,14 @@ class Match extends BasicObject {
     protected $homeTeam;
 
     /**
-     * @var Competition
+     * @var CompetitionSeason
      *
-     * @ORM\ManyToOne(targetEntity="Competition")
+     * @ORM\ManyToOne(targetEntity="CompetitionSeason")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="competition_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="competition_season_id", referencedColumnName="id")
      * })
      */
-    protected $competition;
+    protected $competitionSeason;
 
     /**
      * @var Player
@@ -219,6 +219,54 @@ class Match extends BasicObject {
      */
     protected $matchLanguages;
 
+    /**
+     * @var PreMatchReportHeadToHead
+     *
+     * @ORM\OneToOne(targetEntity="PreMatchReportHeadToHead", mappedBy="match", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $preMatchReportHeadToHead;
+
+    /**
+     * @var PreMatchReportGoalsScored
+     *
+     * @ORM\OneToOne(targetEntity="PreMatchReportGoalsScored", mappedBy="match", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $preMatchReportGoalsScored;
+
+    /**
+     * @var PreMatchReportAvgGoalsScored
+     *
+     * @ORM\OneToOne(targetEntity="PreMatchReportAvgGoalsScored", mappedBy="match", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $preMatchReportAvgGoalsScored;
+
+    /**
+     * @var PreMatchReportFormGuide
+     *
+     * @ORM\OneToOne(targetEntity="PreMatchReportFormGuide", mappedBy="match", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $preMatchReportFormGuide;
+
+    /**
+     * @var PreMatchReportLastSeasonMatch
+     *
+     * @ORM\OneToOne(targetEntity="PreMatchReportLastSeasonMatch", mappedBy="match", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $preMatchReportLastSeasonMatch;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="PreMatchReportMostRecentScorer", mappedBy="match", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $preMatchReportMostRecentScorers;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="PreMatchReportTopScorer", mappedBy="match", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $preMatchReportTopScorers;
 
     /**
      * Get match report languages
@@ -261,6 +309,8 @@ class Match extends BasicObject {
         $this->matchGoals = new \Doctrine\Common\Collections\ArrayCollection();
         $this->matchLanguages = new \Doctrine\Common\Collections\ArrayCollection();
         $this->isDoublePoints = false;
+        $this->preMatchReportMostRecentScorers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->preMatchReportTopScorers = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -424,26 +474,26 @@ class Match extends BasicObject {
     }
 
     /**
-     * Set competition
+     * Set competitionSeason
      *
-     * @param Competition $competition
+     * @param CompetitionSeason $competitionSeason
      * @return Match
      */
-    public function setCompetition(Competition $competition = null)
+    public function setCompetitionSeason(CompetitionSeason $competitionSeason = null)
     {
-        $this->competition = $competition;
+        $this->competitionSeason = $competitionSeason;
     
         return $this;
     }
 
     /**
-     * Get competition
+     * Get competitionSeason
      *
-     * @return Competition
+     * @return CompetitionSeason
      */
-    public function getCompetition()
+    public function getCompetitionSeason()
     {
-        return $this->competition;
+        return $this->competitionSeason;
     }
 
     /**
@@ -752,17 +802,156 @@ class Match extends BasicObject {
         return $this->hasLineUp;
     }
 
+    /**
+     * @param \Application\Model\Entities\PreMatchReportHeadToHead $preMatchReportHeadToHead
+     */
+    public function setPreMatchReportHeadToHead($preMatchReportHeadToHead)
+    {
+        $this->preMatchReportHeadToHead = $preMatchReportHeadToHead;
+    }
 
     /**
-     * @return array
+     * @return \Application\Model\Entities\PreMatchReportHeadToHead
      */
-    public function getPredictionIds()
+    public function getPreMatchReportHeadToHead()
     {
-        $predictionIds = array();
-        foreach($this->predictions as $prediction){
-            $predictionIds[] = $prediction->getId();
-        }
-        return $predictionIds;
+        return $this->preMatchReportHeadToHead;
+    }
+
+    /**
+     * @param \Application\Model\Entities\PreMatchReportGoalsScored $preMatchReportGoalsScored
+     */
+    public function setPreMatchReportGoalsScored($preMatchReportGoalsScored)
+    {
+        $this->preMatchReportGoalsScored = $preMatchReportGoalsScored;
+    }
+
+    /**
+     * @return \Application\Model\Entities\PreMatchReportGoalsScored
+     */
+    public function getPreMatchReportGoalsScored()
+    {
+        return $this->preMatchReportGoalsScored;
+    }
+
+    /**
+     * @param \Application\Model\Entities\PreMatchReportFormGuide $preMatchReportFormGuide
+     */
+    public function setPreMatchReportFormGuide($preMatchReportFormGuide)
+    {
+        $this->preMatchReportFormGuide = $preMatchReportFormGuide;
+    }
+
+    /**
+     * @return \Application\Model\Entities\PreMatchReportFormGuide
+     */
+    public function getPreMatchReportFormGuide()
+    {
+        return $this->preMatchReportFormGuide;
+    }
+
+    /**
+     * @param \Application\Model\Entities\PreMatchReportAvgGoalsScored $preMatchReportAvgGoalsScored
+     */
+    public function setPreMatchReportAvgGoalsScored($preMatchReportAvgGoalsScored)
+    {
+        $this->preMatchReportAvgGoalsScored = $preMatchReportAvgGoalsScored;
+    }
+
+    /**
+     * @return \Application\Model\Entities\PreMatchReportAvgGoalsScored
+     */
+    public function getPreMatchReportAvgGoalsScored()
+    {
+        return $this->preMatchReportAvgGoalsScored;
+    }
+
+    /**
+     * @param \Application\Model\Entities\PreMatchReportLastSeasonMatch $preMatchReportLastSeasonMatch
+     */
+    public function setPreMatchReportLastSeasonMatch($preMatchReportLastSeasonMatch)
+    {
+        $this->preMatchReportLastSeasonMatch = $preMatchReportLastSeasonMatch;
+    }
+
+    /**
+     * @return \Application\Model\Entities\PreMatchReportLastSeasonMatch
+     */
+    public function getPreMatchReportLastSeasonMatch()
+    {
+        return $this->preMatchReportLastSeasonMatch;
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $preMatchReportMostRecentScorers
+     */
+    public function setPreMatchReportMostRecentScorers($preMatchReportMostRecentScorers)
+    {
+        $this->preMatchReportMostRecentScorers = $preMatchReportMostRecentScorers;
+    }
+
+    /**
+     * @param PreMatchReportMostRecentScorer $preMatchReportMostRecentScorer
+     */
+    public function addPreMatchReportMostRecentScorer($preMatchReportMostRecentScorer)
+    {
+        $this->preMatchReportMostRecentScorers [] = $preMatchReportMostRecentScorer;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPreMatchReportMostRecentScorers()
+    {
+        return $this->preMatchReportMostRecentScorers;
+    }
+
+    /**
+     * @param Team $team
+     * @param int $place
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPreMatchReportMostRecentScorerByTeamAndPlace($team, $place)
+    {
+        return $this->getPreMatchReportMostRecentScorers()->filter(function (PreMatchReportMostRecentScorer $preMatchReportMostRecentScorer) use ($team, $place) {
+            return $preMatchReportMostRecentScorer->getTeam()->getId() == $team->getId() && $preMatchReportMostRecentScorer->getPlace() == $place;
+        })->first();
+    }
+
+    /**
+     * @param \Doctrine\Common\Collections\Collection $preMatchReportTopScorer
+     */
+    public function setPreMatchReportTopScorers($preMatchReportTopScorer)
+    {
+        $this->preMatchReportTopScorers = $preMatchReportTopScorer;
+    }
+
+    /**
+     * @param PreMatchReportTopScorer $preMatchReportTopScorer
+     */
+    public function addPreMatchReportTopScorers($preMatchReportTopScorer)
+    {
+        $this->preMatchReportTopScorers [] = $preMatchReportTopScorer;
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPreMatchReportTopScorers()
+    {
+        return $this->preMatchReportTopScorers;
+    }
+
+    /**
+     * @param Team $team
+     * @param int $place
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPreMatchReportTopScorerByTeamAndPlace($team, $place)
+    {
+        return $this->getPreMatchReportTopScorers()->filter(function (PreMatchReportTopScorer $preMatchReportTopScorer) use ($team, $place) {
+            return $preMatchReportTopScorer->getTeam()->getId() == $team->getId() && $preMatchReportTopScorer->getPlace() == $place;
+        })->first();
     }
 
 }

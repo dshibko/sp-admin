@@ -3,7 +3,6 @@
 namespace Application\Model\DAOs;
 
 use \Application\Model\DAOs\AbstractDAO;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class CompetitionDAO extends AbstractDAO
@@ -58,17 +57,25 @@ class CompetitionDAO extends AbstractDAO
     }
 
     /**
-     * @param int $feederId
+     * @param int $clubId
+     * @param bool $hydrate
      * @param bool $skipCache
-     * @return mixed
+     * @return array
      */
-    public function getLogoByFeederId($feederId, $skipCache = false) {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('c.logoPath')
-            ->from($this->getRepositoryName(), 'c')
-            ->where($qb->expr()->eq('c.feederId', ':feederId'))->setParameter('feederId',$feederId)
-            ->groupBy('c.feederId');
-        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    public function getAllClubCompetitions($clubId, $hydrate = false, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQuery(
+            'SELECT c ' .
+            'FROM ' . $this->getRepositoryName() . ' c ' .
+            'LEFT JOIN c.competitionSeasons cs ' .
+            'LEFT JOIN cs.matches m ' .
+            'WHERE m.homeTeam = :clubId OR m.awayTeam = :clubId'
+        )->setParameter('clubId', $clubId);
+        return $this->prepareQuery($qb, array(
+            $this->getRepositoryName(),
+            CompetitionSeasonDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+            MatchDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+        ), $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
 }

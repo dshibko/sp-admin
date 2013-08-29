@@ -180,7 +180,7 @@ class Season extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Competition", mappedBy="season", cascade={"remove"})
+     * @ORM\ManyToMany(targetEntity="Competition", mappedBy="seasons", cascade={"remove"})
      */
     private $competitions;
 

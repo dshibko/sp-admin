@@ -2,10 +2,21 @@
 
 namespace Application\Manager;
 
+use Application\Model\DAOs\PreMatchReportAvgGoalsScoredDAO;
+use Application\Model\DAOs\PreMatchReportConfigDAO;
+use Application\Model\DAOs\PreMatchReportFormGuideDAO;
+use Application\Model\DAOs\PreMatchReportGoalsScoredDAO;
+use Application\Model\DAOs\PreMatchReportHeadToHeadDAO;
+use Application\Model\DAOs\PreMatchReportLastSeasonMatchDAO;
+use Application\Model\DAOs\PreMatchReportMostRecentScorerDAO;
+use Application\Model\DAOs\PreMatchReportTopScorerDAO;
+use Application\Model\DAOs\PredictionDAO;
+use Application\Model\DAOs\PredictionPlayerDAO;
 use \Application\Model\Entities\DefaultReportContent;
 use \Application\Model\DAOs\LeagueUserPlaceDAO;
 use \Application\Model\Entities\Match;
 use \Application\Model\DAOs\MatchDAO;
+use Application\Model\Entities\PreMatchReportConfig;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use \Application\Manager\UserManager;
@@ -30,6 +41,9 @@ class MatchManager extends BasicManager
     const POST_MATCH_REPORT_TOP_SCORES_NUMBER = 1;
     const POST_MATCH_REPORT_CORRECT_SCORERS_NUMBER = 3;
     const ALL_SCORERS = -1;
+
+    const PRE_MATCH_REPORT_11_WEIGHT = 11;
+
     /**
      * @var MatchManager
      */
@@ -163,19 +177,17 @@ class MatchManager extends BasicManager
 
     /**
      * @param $season
-     * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    public function getMatchesLeftInTheSeason($season, $hydrate = false, $skipCache = false)
+    public function getMatchesLeftInTheSeason($season, $skipCache = false)
     {
         $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
-        $matches = $matchDAO->getMatchesLeftInTheSeason($season, $hydrate, $skipCache);
-        if ($hydrate)
-            foreach ($matches as &$match) {
-                $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
-                $match['isLive'] = $match['status'] == Match::LIVE_STATUS || ($match['status'] == Match::PRE_MATCH_STATUS && $match['startTime'] < new \DateTime());
-            }
+        $matches = $matchDAO->getMatchesLeftInTheSeason($season, $skipCache);
+        foreach ($matches as &$match) {
+            $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
+            $match['isLive'] = $match['status'] == Match::LIVE_STATUS || ($match['status'] == Match::PRE_MATCH_STATUS && $match['startTime'] < new \DateTime());
+        }
         return $matches;
     }
 
@@ -408,6 +420,38 @@ class MatchManager extends BasicManager
         return $analytics;
     }
 
+    private $preMatchReportConfig;
+
+    private function getPreMatchReportConfig($matchId) {
+        if ($this->preMatchReportConfig === null)
+            $this->preMatchReportConfig = array();
+        if (!array_key_exists($matchId, $this->preMatchReportConfig)) {
+            $preMatchReportConfigDAO = PreMatchReportConfigDAO::getInstance($this->getServiceLocator());
+            $configData = $preMatchReportConfigDAO->getConfigByMatchId($matchId);
+            $this->preMatchReportConfig[$matchId] = array();
+            foreach ($configData as $configRow)
+                $this->preMatchReportConfig[$matchId][$configRow["weight"]] = $configRow["displayIndex"];
+        }
+        return $this->preMatchReportConfig[$matchId];
+    }
+
+    /**
+     * @param int $weight
+     * @param int $displayIndex
+     * @param Match $match
+     */
+    private function addPreMatchReportConfigRecord($weight, $displayIndex, $match) {
+        $preMatchReportConfigDAO = PreMatchReportConfigDAO::getInstance($this->getServiceLocator());
+        $preMatchReportConfig = new PreMatchReportConfig();
+        $preMatchReportConfig->setWeight($weight);
+        $preMatchReportConfig->setDisplayIndex($displayIndex);
+        $preMatchReportConfig->setMatch($match);
+        $preMatchReportConfigDAO->save($preMatchReportConfig);
+        $config = $this->getPreMatchReportConfig($match->getId());
+        $config[$weight] = $displayIndex;
+        return $config;
+    }
+
     /**
      * @param $matchId
      * @param $languageId
@@ -420,10 +464,13 @@ class MatchManager extends BasicManager
         $matchLanguageDAO = MatchLanguageDAO::getInstance($this->getServiceLocator());
         $matchLanguage = $matchLanguageDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $languageId);
         $defaultMatchLanguage = $matchLanguageDAO->getMatchLanguageByMatchIdAndLanguageId($matchId, $defaultLanguage->getId());
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
 
         $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
         $contentManager = ContentManager::getInstance($this->getServiceLocator());
+
+        $config = $this->getPreMatchReportConfig($matchId);
 
         $matchLanguage = !is_null($matchLanguage) ? $matchLanguage : $defaultMatchLanguage;
 
@@ -479,7 +526,6 @@ class MatchManager extends BasicManager
 
             //Match report featured prediction
             $featuredPrediction = $matchLanguage->getFeaturedPrediction();
-
             if (!is_null($featuredPrediction)){
                 if ($featuredPrediction->hasEmptyFields()) {
                     $defaultFeaturedPrediction = $defaultMatchLanguage->getFeaturedPrediction();
@@ -487,6 +533,7 @@ class MatchManager extends BasicManager
                 } else {
                     $featuredPrediction = $featuredPrediction->getArrayCopy();
                 }
+
 
                 $report['featuredPrediction'] = array(
                     'name' => $featuredPrediction['name'],
@@ -577,6 +624,120 @@ class MatchManager extends BasicManager
             }
         }
 
+        $preMatchReportAvgGoalsScoredDAO = PreMatchReportAvgGoalsScoredDAO::getInstance($this->getServiceLocator());
+        $avgGoalsScored = $preMatchReportAvgGoalsScoredDAO->getPreMatchReportAvgGoalsScoredByMatchId($matchId);
+        if (!empty($avgGoalsScored)) {
+            $report['avgGoalsScored']['homeTeamGoals'] = $avgGoalsScored->getHomeTeamAvgGoals();
+            $report['avgGoalsScored']['awayTeamGoals'] = $avgGoalsScored->getAwayTeamAvgGoals();
+            $avgGoalsSum = $report['avgGoalsScored']['homeTeamGoals'] + $report['avgGoalsScored']['awayTeamGoals'];
+            $report['avgGoalsScored']['homeTeamGoalsBarWidth'] = round($report['avgGoalsScored']['homeTeamGoals'] / $avgGoalsSum * 100);
+            $report['avgGoalsScored']['awayTeamGoalsBarWidth'] = round($report['avgGoalsScored']['awayTeamGoals'] / $avgGoalsSum * 100);
+        }
+
+        $preMatchReportGoalsScoredDAO = PreMatchReportGoalsScoredDAO::getInstance($this->getServiceLocator());
+        $goalsScoredThisSeason = $preMatchReportGoalsScoredDAO->getPreMatchReportGoalsScoredByMatchId($matchId);
+        if (!empty($goalsScoredThisSeason)) {
+            $report['goalsScoredThisSeason']['homeTeamGoals'] = $goalsScoredThisSeason->getHomeTeamGoals();
+            $report['goalsScoredThisSeason']['awayTeamGoals'] = $goalsScoredThisSeason->getAwayTeamGoals();
+            $goalsSum = $report['goalsScoredThisSeason']['homeTeamGoals'] + $report['goalsScoredThisSeason']['awayTeamGoals'];
+            $report['goalsScoredThisSeason']['homeTeamGoalsBarWidth'] = round($report['goalsScoredThisSeason']['homeTeamGoals'] / $goalsSum * 100);
+            $report['goalsScoredThisSeason']['awayTeamGoalsBarWidth'] = round($report['goalsScoredThisSeason']['awayTeamGoals'] / $goalsSum * 100);
+        }
+
+        $preMatchReportHeadToHeadDAO = PreMatchReportHeadToHeadDAO::getInstance($this->getServiceLocator());
+        $headToHead = $preMatchReportHeadToHeadDAO->getPreMatchReportHeadToHeadByMatchId($matchId);
+        if (!empty($headToHead)) {
+            $homeTeamWins = $headToHead->getHomeTeamWins();
+            $awayTeamWins = $headToHead->getAwayTeamWins();
+            $draws = $headToHead->getDraws();
+            $totalResults = $homeTeamWins + $awayTeamWins + $draws;
+            $report['headToHead']['homeTeamWins']['wins'] = $homeTeamWins;
+            $report['headToHead']['homeTeamWins']['winsPercentage'] = round($homeTeamWins / $totalResults * 100);
+            $report['headToHead']['awayTeamWins']['wins'] = $awayTeamWins;
+            $report['headToHead']['awayTeamWins']['winsPercentage'] = round($awayTeamWins / $totalResults * 100);
+            $report['headToHead']['draws']['draws'] = $draws;
+            $report['headToHead']['draws']['drawsPercentage'] = round($draws / $totalResults * 100);
+        }
+
+        $preMatchReportFormGuideDAO = PreMatchReportFormGuideDAO::getInstance($this->getServiceLocator());
+        $reportFormGuide = $preMatchReportFormGuideDAO->getPreMatchReportFormGuideByMatchId($matchId);
+        if (!empty($reportFormGuide)) {
+            $teamsForms = array('homeTeam' => $reportFormGuide->getHomeTeamForm(), 'awayTeam' => $reportFormGuide->getAwayTeamForm());
+            foreach ($teamsForms as $side => $form) {
+                $report['teamsFormGuide'][$side] = str_split($form);
+            }
+        }
+
+        $preMatchReportLastSeasonMatchDAO = PreMatchReportLastSeasonMatchDAO::getInstance($this->getServiceLocator());
+        $lastSeasonMatchResult = $preMatchReportLastSeasonMatchDAO->getPreMatchReportLastSeasonResultByMatchId($matchId);
+        if (!empty($lastSeasonMatchResult)) {
+            $report['lastSeasonMatchResult']['homeTeamScore'] = $lastSeasonMatchResult->getHomeTeamScore();
+            $report['lastSeasonMatchResult']['awayTeamScore'] = $lastSeasonMatchResult->getAwayTeamScore();
+        }
+
+        if (!array_key_exists(self::PRE_MATCH_REPORT_11_WEIGHT, $config))
+            $config = $this->addPreMatchReportConfigRecord(self::PRE_MATCH_REPORT_11_WEIGHT, rand(0, 1), $match);
+
+        if ($config[self::PRE_MATCH_REPORT_11_WEIGHT] == 0) {
+            $preMatchReportMostRecentScorerDAO = PreMatchReportMostRecentScorerDAO::getInstance($this->getServiceLocator());
+            $mostRecentScorers = $preMatchReportMostRecentScorerDAO->getPreMatchReportMostRecentScorersByMatchId($matchId);
+            if (!empty($mostRecentScorers)) {
+                $appClub = !empty($appClub) ? $appClub : $applicationManager->getAppClub();
+                $homeTeam = $match->getHomeTeam();
+                $awayTeam = $match->getAwayTeam();
+
+                $homeTeamDisplayName = $homeTeam->getDisplayName();
+                $awayTeamDisplayName = $awayTeam->getDisplayName();
+
+                foreach ($mostRecentScorers as $scorer) {
+                    $teamId = $scorer->getTeam()->getId();
+                    if ($scorer->getPlace() == 1 && $teamId == $appClub->getId()) {
+                        $report['mostRecentScorersImage'] = $scorer->getPlayer()->getBackgroundImagePath();
+                    }
+                    if ($teamId == $homeTeam->getId()) {
+                        $report['mostRecentScorers'][$homeTeamDisplayName][] = $scorer->getPlayer()->getDisplayName();
+                    } else {
+                        $report['mostRecentScorers'][$awayTeamDisplayName][] = $scorer->getPlayer()->getDisplayName();
+                    }
+                }
+                if ($appClub->getId() == $awayTeam->getId()) {
+                    $report['mostRecentScorers'] = array_reverse($report['mostRecentScorers']);
+                }
+            }
+        }
+
+        if ($config[self::PRE_MATCH_REPORT_11_WEIGHT] == 1) {
+            $preMatchReportTopScorerDAO = PreMatchReportTopScorerDAO::getInstance($this->getServiceLocator());
+            $topMatchScorers = $preMatchReportTopScorerDAO->getPreMatchReportTopScorersMatchId($matchId);
+            if (!empty($topMatchScorers)) {
+                $appClub = !empty($appClub) ? $appClub : $applicationManager->getAppClub();
+                $homeTeam = !empty($homeTeam) ? $homeTeam : $match->getHomeTeam();
+                $awayTeam = !empty($awayTeam) ? $awayTeam : $match->getAwayTeam();
+
+                $homeTeamDisplayName = $homeTeam->getDisplayName();
+                $awayTeamDisplayName = $awayTeam->getDisplayName();
+
+                foreach ($topMatchScorers as $scorer) {
+                    $teamId = $scorer->getTeam()->getId();
+                    $playerId = $scorer->getPlayer()->getId();
+
+                    if ($scorer->getPlace() == 1 && $teamId == $appClub->getId()) {
+                        $report['topMatchScorersImage'] = $scorer->getPlayer()->getBackgroundImagePath();
+                    }
+                    if ($teamId == $homeTeam->getId()) {
+                        $report['topMatchScorers'][$homeTeamDisplayName][$playerId]['playerName'] = $scorer->getPlayer()->getDisplayName();
+                        $report['topMatchScorers'][$homeTeamDisplayName][$playerId]['goals'] = $scorer->getGoals();
+                    } else {
+                        $report['topMatchScorers'][$awayTeamDisplayName][$playerId]['playerName'] = $scorer->getPlayer()->getDisplayName();
+                        $report['topMatchScorers'][$awayTeamDisplayName][$playerId]['goals'] = $scorer->getGoals();
+                    }
+                }
+
+                if ($appClub->getId() == $awayTeam->getId()) {
+                    $report['topMatchScorers'] = array_reverse($report['topMatchScorers']);
+                }
+            }
+        }
 
         return $report;
     }
@@ -814,9 +975,9 @@ class MatchManager extends BasicManager
         return $matchDAO->getMatchGoals($matchId, $hydrate, $skipCache);
     }
 
-    public function getUnfinishedAndPredictableMatches($season, $hydrate = false, $skipCache = false) {
+    public function getUnfinishedAndPredictableMatches($season, $skipCache = false) {
         $liveMatchesNumber = $this->getLiveMatchesNumber(new \DateTime(), $season);
-        $matchesLeft = $this->getMatchesLeftInTheSeason($season, $hydrate, $skipCache);
+        $matchesLeft = $this->getMatchesLeftInTheSeason($season, $skipCache);
         $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
         $maxAhead = $settingsManager->getSetting(SettingsManager::AHEAD_PREDICTIONS_DAYS, true);
         $matches = array_slice($matchesLeft, 0, $maxAhead + $liveMatchesNumber);
@@ -825,5 +986,16 @@ class MatchManager extends BasicManager
 
     public function getHasFinishedMatches($season, $skipCache = false) {
         return MatchDAO::getInstance($this->getServiceLocator())->getHasFinishedMatches($season, $skipCache);
+    }
+
+    /**
+     * @param $matchId
+     * @param $teamId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return mixed
+     */
+    public function getMostPopularScorer($matchId, $teamId) {
+        return PredictionPlayerDAO::getInstance($this->getServiceLocator())->getMostPopularScorer($matchId, $teamId, $hydrate = false, $skipCache = false);
     }
 }

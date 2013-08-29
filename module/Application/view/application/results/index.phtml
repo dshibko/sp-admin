@@ -58,7 +58,11 @@ if (empty($this->twitterShareCopy))
                         <div class="league-block">
                             <strong><?=$this->current['competitionName']?></strong>
                             <em><?=$this->translate('VS')?></em>
-                            <span><?=$this->translate('Scorers')?></span>
+                            <?php if ($this->current['homeTeamFullTimeScore'] !== 0 || $this->current['awayTeamFullTimeScore'] !== 0) : ?>
+                                <span>
+                                    <?=$this->translate('Scorers')?>
+                                </span>
+                            <?php endif; ?>
                         </div>
 
                         <div class="away-team">

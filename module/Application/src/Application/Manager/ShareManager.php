@@ -3,14 +3,19 @@
 namespace Application\Manager;
 
 use \Application\Model\Entities\AchievementBlock;
+use Application\Model\Entities\Season;
 use \Application\Model\Entities\ShareCopy;
 use \Application\Model\DAOs\AchievementBlockDAO;
 use \Application\Model\DAOs\ShareCopyDAO;
+use \Application\Model\Entities\User;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 
 class ShareManager extends BasicManager
 {
+
+    const FIRST_PREDICTION_WEIGHT = 1;
+    const PREDICTION_MILESTONE_WEIGHT = 2;
 
     /**
      * @var ShareManager
@@ -69,13 +74,95 @@ class ShareManager extends BasicManager
         $achievementBlockDAO->save($achievementBlock, $flush, $clearCache);
     }
 
+
+    /**
+     * @param Season $season
+     * @param \Application\Model\Entities\User $user
+     * @param array $currentMatch
+     * @return AchievementBlock
+     */
+    public function getAchievementBlock($season, $user, $currentMatch) {
+        $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
+
+        $achievementBlock = null;
+
+        // weight #10
+        if ($currentMatch['prediction']['isCorrectScore'])
+            return $this->getAchievementBlockByType(AchievementBlock::CORRECT_SCORE_TYPE);
+
+        // weight #3
+        if ($currentMatch['prediction']['isCorrectResult']) {
+            $hasThreeConsecutiveWinsInSeason = $predictionManager->getConsecutiveWinsInSeason($season, $user, $currentMatch['startTime']);
+            if ($hasThreeConsecutiveWinsInSeason % 3 == 2)
+                return $this->getAchievementBlockByType(AchievementBlock::PERFECT_PREDICTION_TYPE);
+        }
+
+        // weight #1
+
+        $firstCorrectScorer = false;
+        if ($currentMatch['prediction']['correctScorers'] > 0)
+            $firstCorrectScorer = $predictionManager->getUserCorrectScorerPredictionsNumber($season, $user, $currentMatch['startTime']) == 0;
+
+        $firstCorrectResult = false;
+        if ($currentMatch['prediction']['isCorrectResult'])
+            $firstCorrectResult = $predictionManager->hasUserCorrectResults($season, $user, $currentMatch['startTime']) === false;
+
+        if ($firstCorrectResult && $firstCorrectScorer) {
+            $bool = rand(0, 1) == 1;
+            $firstCorrectResult = $bool;
+            $firstCorrectScorer = !$bool;
+        }
+
+        if ($firstCorrectResult || $firstCorrectScorer) {
+            if ($firstCorrectResult)
+                $achievementBlock = $this->getAchievementBlockByType(AchievementBlock::CORRECT_RESULT_TYPE);
+            if ($firstCorrectScorer)
+                $achievementBlock = $this->getAchievementBlockByType(AchievementBlock::CORRECT_SCORER_TYPE);
+        }
+        return $achievementBlock;
+    }
+
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function getPredictionCopy($user) {
+        $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
+
+        $numberOfPredictions = $predictionManager->getAllUserPredictionsNumber($user);
+
+        // weight 2
+        $milestones = array(10, 25, 50, 100, 200, 500);
+        if (in_array($numberOfPredictions, $milestones))
+            return $this->getPredictionMilestoneCopy($numberOfPredictions);
+
+        // weight 1
+        if ($numberOfPredictions == 1)
+            return $this->getFirstPredictionCopy();
+
+        // weight 3
+        return $this->getRandomEveryPredictionCopy();
+
+    }
+
     /**
      * @return array
      */
     public function getFirstPredictionCopy()
     {
-        $facebookCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getFirstPredictionCopy(ShareCopy::FACEBOOK_ENGINE);
-        $twitterCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getFirstPredictionCopy(ShareCopy::TWITTER_ENGINE);
+        $facebookCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getPredictionCopy(ShareCopy::FACEBOOK_ENGINE, self::FIRST_PREDICTION_WEIGHT);
+        $twitterCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getPredictionCopy(ShareCopy::TWITTER_ENGINE, self::FIRST_PREDICTION_WEIGHT);
+        return array($facebookCopy, $twitterCopy);
+    }
+
+    /**
+     * @param int $numberOfPredictions
+     * @return array
+     */
+    public function getPredictionMilestoneCopy($numberOfPredictions)
+    {
+        $facebookCopy = sprintf(ShareCopyDAO::getInstance($this->getServiceLocator())->getPredictionCopy(ShareCopy::FACEBOOK_ENGINE, self::PREDICTION_MILESTONE_WEIGHT), $numberOfPredictions);
+        $twitterCopy = sprintf(ShareCopyDAO::getInstance($this->getServiceLocator())->getPredictionCopy(ShareCopy::TWITTER_ENGINE, self::PREDICTION_MILESTONE_WEIGHT), $numberOfPredictions);
         return array($facebookCopy, $twitterCopy);
     }
 

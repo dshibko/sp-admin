@@ -9,9 +9,26 @@ use Application\Manager\PlayerManager;
 use Application\Manager\RegionManager;
 use \Application\Manager\SeasonManager;
 use Application\Manager\UserManager;
+use Application\Model\DAOs\CompetitionSeasonDAO;
 use Application\Model\DAOs\LeagueUserDAO;
 use Application\Model\DAOs\LeagueUserPlaceDAO;
+use Application\Model\DAOs\MessageDAO;
+use Application\Model\DAOs\PreMatchReportAvgGoalsScoredDAO;
+use Application\Model\DAOs\PreMatchReportFormGuideDAO;
+use Application\Model\DAOs\PreMatchReportGoalsScoredDAO;
+use Application\Model\DAOs\PreMatchReportHeadToHeadDAO;
+use Application\Model\DAOs\PreMatchReportLastSeasonMatchDAO;
+use Application\Model\DAOs\PreMatchReportMostRecentScorerDAO;
+use Application\Model\DAOs\PreMatchReportTopScorerDAO;
 use Application\Model\DAOs\PredictionDAO;
+use Application\Model\Entities\CompetitionSeason;
+use Application\Model\Entities\PreMatchReportAvgGoalsScored;
+use Application\Model\Entities\PreMatchReportFormGuide;
+use Application\Model\Entities\PreMatchReportGoalsScored;
+use Application\Model\Entities\PreMatchReportHeadToHead;
+use Application\Model\Entities\PreMatchReportLastSeasonMatch;
+use Application\Model\Entities\PreMatchReportMostRecentScorer;
+use Application\Model\Entities\PreMatchReportTopScorer;
 use Application\Model\Entities\Season;
 use Neoco\Exception\OutOfSeasonException;
 use \Application\Model\DAOs\FeedDAO;
@@ -75,22 +92,27 @@ class OptaManager extends BasicManager {
 
             if ($season != null) {
 
-                $competitionDAO = CompetitionDAO::getInstance($this->getServiceLocator());
                 $competitionFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'competition_id');
                 if (empty($competitionFeederId))
                     throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'competition_id'));
-                $competition = $season->getCompetitionByFeederId($competitionFeederId);
+                $competitionDAO = CompetitionDAO::getInstance($this->getServiceLocator());
+                $competition = $competitionDAO->findOneByFeederId($competitionFeederId, false, true);
                 if ($competition == null) {
                     $competition = new Competition();
                     $competition->setFeederId($competitionFeederId);
-                    $competition->setSeason($season);
-                    $logo = $competitionDAO->getLogoByFeederId(8);
-                    if (!empty($logo))
-                        $competition->setLogoPath($logo);
+                    $competition->addSeason($season);
                 }
                 $competition->setDisplayName($this->getXmlAttribute($xml->SoccerDocument, 'competition_name'));
-
                 $competitionDAO->save($competition);
+
+                $competitionSeasonDAO = CompetitionSeasonDAO::getInstance($this->getServiceLocator());
+                $competitionSeason = $competitionSeasonDAO->getCompetitionSeason($competition->getId(), $season->getId());
+                if ($competitionSeason == null) {
+                    $competitionSeason = new CompetitionSeason();
+                    $competitionSeason->setCompetition($competition);
+                    $competitionSeason->setSeason($season);
+                    $competitionSeasonDAO->save($competitionSeason);
+                }
 
                 $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
                 $playerDAO = PlayerDAO::getInstance($this->getServiceLocator());
@@ -105,13 +127,13 @@ class OptaManager extends BasicManager {
                             $this->logMessage(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'team_id'), Logger::WARN, $console);
                             continue;
                         }
-                        $team = $teamDAO->findOneByFeederId($teamFeederId);
+                        $team = $teamDAO->findOneByFeederId($teamFeederId, false, true);
                         if ($team == null) {
                             $team = new Team();
                             $team->setFeederId($teamFeederId);
                         }
-                        if (!$team->hasCompetition($competition))
-                            $team->addCompetition($competition);
+                        if (!$team->hasCompetitionSeason($competitionSeason))
+                            $team->addCompetitionSeason($competitionSeason);
                         if (!$team->getIsBlocked()) {
                             $team->setDisplayName($teamXml->Name->__toString());
                             $team->setShortName($this->getNodeValue($teamXml->SYMID));
@@ -128,8 +150,8 @@ class OptaManager extends BasicManager {
                                 }
 
                         foreach ($team->getPlayers() as $player)
-                            if ($player->hasCompetition($competition))
-                                $player->removeCompetition($competition);
+                            if ($player->hasCompetitionSeason($competitionSeason))
+                                $player->removeCompetitionSeason($competitionSeason);
 
                         $playerFeederIds = array();
 
@@ -144,33 +166,33 @@ class OptaManager extends BasicManager {
                                     $this->logMessage(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'player_id'), Logger::WARN, $console);
                                     continue;
                                 }
-                                $player = $playerDAO->findOneByFeederId($playerFeederId);
+                                $player = $playerDAO->findOneByFeederId($playerFeederId, false, true);
                                 if ($player == null) {
                                     $player = new Player();
                                     $player->setFeederId($playerFeederId);
                                     $team->addPlayer($player);
                                 } else if ($player->getTeam()->getId() != $team->getId()) {
-                                    $player->clearCompetitions();
+                                    $player->clearCompetitionSeasons();
                                     $team->addPlayer($player);
                                 }
-                                if (!$player->hasCompetition($competition))
-                                    $player->addCompetition($competition);
+                                if (!$player->hasCompetitionSeason($competitionSeason))
+                                    $player->addCompetitionSeason($competitionSeason);
 
                                 $player->setTeam($team);
                                 if (!$player->getIsBlocked()) {
                                     $player->setDisplayName($playerXml->Name->__toString());
-                                    $player->setShirtNumber($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'jersey_num'));
+                                    $player->setShirtNumber($this->getNodeValueByAttribute($playerXml, 'Stat', 'Type', 'jersey_num'));
                                 }
                                 $player->setPosition($playerXml->Position->__toString());
                                 $player->setName($playerXml->Stat->{0}->__toString());
                                 $player->setSurname($playerXml->Stat->{1}->__toString());
-                                $player->setBirthDate($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'birth_date', 'Y-m-d'));
-                                $player->setWeight($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'weight'));
-                                $player->setHeight($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'height'));
-                                $player->setRealPosition($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'real_position'));
-                                $player->setRealPositionSide($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'real_position_side'));
-                                $player->setJoinDate($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'join_date', 'Y-m-d'));
-                                $player->setCountry($this->getNodeByAttributeValue($playerXml, 'Stat', 'Type', 'country'));
+                                $player->setBirthDate($this->getNodeValueByAttribute($playerXml, 'Stat', 'Type', 'birth_date', 'Y-m-d'));
+                                $player->setWeight($this->getNodeValueByAttribute($playerXml, 'Stat', 'Type', 'weight'));
+                                $player->setHeight($this->getNodeValueByAttribute($playerXml, 'Stat', 'Type', 'height'));
+                                $player->setRealPosition($this->getNodeValueByAttribute($playerXml, 'Stat', 'Type', 'real_position'));
+                                $player->setRealPositionSide($this->getNodeValueByAttribute($playerXml, 'Stat', 'Type', 'real_position_side'));
+                                $player->setJoinDate($this->getNodeValueByAttribute($playerXml, 'Stat', 'Type', 'join_date', 'Y-m-d'));
+                                $player->setCountry($this->getNodeValueByAttribute($playerXml, 'Stat', 'Type', 'country'));
                             } catch (\Exception $e) {
                                 ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::ERR, $console);
                             }
@@ -228,21 +250,24 @@ class OptaManager extends BasicManager {
                     throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'competition_id'));
 
                 if ($edition != ApplicationManager::COMPETITION_EDITION || $optaId == $competitionFeederId) {
-
-                    $competition = $season->getCompetitionByFeederId($competitionFeederId);
-
                     $competitionDAO = CompetitionDAO::getInstance($this->getServiceLocator());
+                    $competition = $competitionDAO->findOneByFeederId($competitionFeederId, false, true);
                     if ($competition == null) {
                         $competition = new Competition();
                         $competition->setFeederId($competitionFeederId);
-                        $competition->setSeason($season);
-                        $logo = $competitionDAO->getLogoByFeederId(8);
-                        if (!empty($logo))
-                            $competition->setLogoPath($logo);
+                        $competition->addSeason($season);
                     }
                     $competition->setDisplayName($this->getXmlAttribute($xml->SoccerDocument, 'competition_name'));
-
                     $competitionDAO->save($competition);
+
+                    $competitionSeasonDAO = CompetitionSeasonDAO::getInstance($this->getServiceLocator());
+                    $competitionSeason = $competitionSeasonDAO->getCompetitionSeason($competition->getId(), $season->getId());
+                    if ($competitionSeason == null) {
+                        $competitionSeason = new CompetitionSeason();
+                        $competitionSeason->setCompetition($competition);
+                        $competitionSeason->setSeason($season);
+                        $competitionSeasonDAO->save($competitionSeason);
+                    }
 
                     $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
 
@@ -272,7 +297,7 @@ class OptaManager extends BasicManager {
                                 $this->logMessage(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'match_id'), Logger::WARN, $console);
                                 continue;
                             }
-                            $match = $matchDAO->findOneByFeederId($matchFeederId);
+                            $match = $matchDAO->findOneByFeederId($matchFeederId, false, true);
                             if ($match == null) {
                                 $match = new Match();
                                 $match->setFeederId($matchFeederId);
@@ -296,7 +321,7 @@ class OptaManager extends BasicManager {
                                     continue;
                                 }
 
-                                $match->setCompetition($competition);
+                                $match->setCompetitionSeason($competitionSeason);
                                 $match->setWeek($this->getXmlAttribute($matchXml->MatchInfo, 'MatchDay'));
                                 $status = $this->getXmlAttribute($matchXml->MatchInfo, 'Period');
                                 if (!in_array($status, Match::getAvailableStatuses()))
@@ -313,7 +338,7 @@ class OptaManager extends BasicManager {
                                     $awayTeamFeederId = $team2FeederId;
                                 }
 
-                                $homeTeam = $teamDAO->findOneByFeederId($homeTeamFeederId);
+                                $homeTeam = $teamDAO->findOneByFeederId($homeTeamFeederId, false, true);
                                 if ($homeTeam === null) {
                                     $homeTeamName = $xml->xpath('SoccerDocument/Team[@uID=\'t' . $homeTeamFeederId . '\']/Name');
                                     if (!empty($homeTeamName)) {
@@ -324,7 +349,7 @@ class OptaManager extends BasicManager {
                                         $teamDAO->save($homeTeam);
                                     }
                                 }
-                                $awayTeam = $teamDAO->findOneByFeederId($awayTeamFeederId);
+                                $awayTeam = $teamDAO->findOneByFeederId($awayTeamFeederId, false, true);
                                 if ($awayTeam === null) {
                                     $awayTeamName = $xml->xpath('SoccerDocument/Team[@uID=\'t' . $awayTeamFeederId . '\']/Name');
                                     if (!empty($awayTeamName)) {
@@ -390,7 +415,7 @@ class OptaManager extends BasicManager {
             $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
             $matchFeederId = $this->getIdFromString($this->getXmlAttribute($xml->SoccerDocument, 'uID'));
             $period = $this->getXmlAttribute($xml->SoccerDocument->MatchData->MatchInfo, 'Period');
-            $match = $matchDAO->findOneByFeederId($matchFeederId);
+            $match = $matchDAO->findOneByFeederId($matchFeederId, false, true);
 
             $cacheClearArr = array();
 
@@ -407,14 +432,14 @@ class OptaManager extends BasicManager {
                     $updated = false;
                     foreach ($teamsData as $teamData) {
                         $teamFeederId = $this->getIdFromString($this->getXmlAttribute($teamData, 'TeamRef'));
-                        $teamObj = $teamDAO->findOneByFeederId($teamFeederId);
+                        $teamObj = $teamDAO->findOneByFeederId($teamFeederId, false, true);
                         if ($teamObj != null && $teamData->PlayerLineUp != null && $teamObj->getPlayers()->count() == 0) {
                             $updated = true;
                             $squad = $teamData->PlayerLineUp->MatchPlayer;
                             if ($squad != null)
                                 foreach ($squad as $player) {
                                     $playerFeederId = $this->getIdFromString($this->getXmlAttribute($player, 'PlayerRef'));
-                                    $playerObj = $playerDAO->findOneByFeederId($playerFeederId);
+                                    $playerObj = $playerDAO->findOneByFeederId($playerFeederId, false, true);
                                     if ($playerObj === null) {
                                         $playerObj = new Player();
                                         $playerObj->setFeederId($playerFeederId);
@@ -429,7 +454,7 @@ class OptaManager extends BasicManager {
                                     $playerObj->setDisplayName($firstName . ' ' . $lastName);
                                     $playerObj->setPosition($this->getXmlAttribute($player, 'Position'));
                                     $playerObj->setShirtNumber($this->getXmlAttribute($player, 'ShirtNumber'));
-                                    $playerObj->addCompetition($match->getCompetition());
+                                    $playerObj->addCompetitionSeason($match->getCompetitionSeason());
                                     $playerDAO->save($playerObj, false, false);
                                 }
                         }
@@ -500,9 +525,9 @@ class OptaManager extends BasicManager {
                 $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
 
                 $homeTeamFeederId = $this->getIdFromString($this->getXmlAttribute($homeTeamData, 'TeamRef'));
-                $homeTeam = $teamDAO->findOneByFeederId($homeTeamFeederId);
+                $homeTeam = $teamDAO->findOneByFeederId($homeTeamFeederId, false, true);
                 $awayTeamFeederId = $this->getIdFromString($this->getXmlAttribute($awayTeamData, 'TeamRef'));
-                $awayTeam = $teamDAO->findOneByFeederId($awayTeamFeederId);
+                $awayTeam = $teamDAO->findOneByFeederId($awayTeamFeederId, false, true);
 
                 $players = array();
 
@@ -519,7 +544,7 @@ class OptaManager extends BasicManager {
                         $matchGoal->setMinute($this->getXmlAttribute($goalData, 'Time'));
                         $playerFeederId = $this->getIdFromString($this->getXmlAttribute($goalData, 'PlayerRef'));
                         if (!array_key_exists($playerFeederId, $players))
-                            $players[$playerFeederId] = $playerDAO->findOneByFeederId($playerFeederId);
+                            $players[$playerFeederId] = $playerDAO->findOneByFeederId($playerFeederId, false, true);
                         $matchGoal->setPlayer($players[$playerFeederId]);
                         $timestamp = $this->getXmlAttribute($goalData, 'TimeStamp');
                         $matchGoal->setTime(new \DateTime($timestamp));
@@ -539,6 +564,7 @@ class OptaManager extends BasicManager {
                 $cacheClearArr[] = PredictionDAO::getInstance($this->getServiceLocator())->getRepositoryName();
                 $cacheClearArr[] = LeagueUserDAO::getInstance($this->getServiceLocator())->getRepositoryName();
                 $cacheClearArr[] = LeagueUserPlaceDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                $cacheClearArr[] = MessageDAO::getInstance($this->getServiceLocator())->getRepositoryName();
 
                 $match->setIsBlocked(true);
                 $match->setStatus(Match::FULL_TIME_STATUS);
@@ -563,7 +589,7 @@ class OptaManager extends BasicManager {
                     $hasLineUp = false;
                     foreach ($teamsData as $teamData) {
                         $teamFeederId = $this->getIdFromString($this->getXmlAttribute($teamData, 'TeamRef'));
-                        $teamObj = $teamDAO->findOneByFeederId($teamFeederId);
+                        $teamObj = $teamDAO->findOneByFeederId($teamFeederId, false, true);
                         if ($teamObj != null && $teamData->PlayerLineUp != null) {
                             $hasLineUp = true;
                             $squad = $teamData->PlayerLineUp->MatchPlayer;
@@ -571,7 +597,7 @@ class OptaManager extends BasicManager {
                                 foreach ($squad as $player) {
                                     $lineUpPlayer = new LineUpPlayer();
                                     $playerFeederId = $this->getIdFromString($this->getXmlAttribute($player, 'PlayerRef'));
-                                    $playerObj = $playerDAO->findOneByFeederId($playerFeederId);
+                                    $playerObj = $playerDAO->findOneByFeederId($playerFeederId, false, true);
                                     if ($playerObj === null) continue;
                                     $lineUpPlayer->setPlayer($playerObj);
                                     $lineUpPlayer->setMatch($match);
@@ -607,6 +633,272 @@ class OptaManager extends BasicManager {
         } catch (\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::CRIT, $console);
             return false;
+        }
+    }
+
+    /**
+     * @param $filePath
+     * @param \Zend\Console\Adapter\AdapterInterface|null $console
+     */
+    public function parseF2Feed($filePath, $console = null) {
+
+        try {
+            $this->startProgress($console, 'F2', $filePath);
+
+            $xml = $this->getXMLContent($filePath);
+
+            $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+            $playerDAO = PlayerDAO::getInstance($this->getServiceLocator());
+
+            $matchData = $xml->Match;
+
+            if ($matchData != null) {
+
+                $matchFeederId = $this->getIdFromString($this->getXmlAttribute($matchData, 'Id'));
+                $match = $matchDAO->findOneByFeederId($matchFeederId, false, true);
+                if ($match == null)
+                    throw new \Exception(sprintf(MessagesConstants::WARNING_MATCH_NOT_FOUND, $matchFeederId));
+
+                $previousMeetings = $matchData->PreviousMeetings->MatchData;
+                if (!empty($previousMeetings)) {
+
+                    // head to head
+                    $homeTeamWins = $draws = $awayTeamWins = 0;
+                    foreach ($previousMeetings as $previousMeeting) {
+                        $homeTeamSideData = $this->getNodeByAttribute($previousMeeting, 'TeamData', 'TeamRef', 't' . $match->getHomeTeam()->getFeederId());
+                        $awayTeamSideData = $this->getNodeByAttribute($previousMeeting, 'TeamData', 'TeamRef', 't' . $match->getAwayTeam()->getFeederId());
+                        if ($awayTeamSideData !== null && $awayTeamSideData !== null) {
+                            $homeScore = $this->getXmlAttribute($homeTeamSideData, 'Score');
+                            $awayScore = $this->getXmlAttribute($awayTeamSideData, 'Score');
+                            if ($homeScore == $awayScore)
+                                $draws++;
+                            else if ($homeScore > $awayScore)
+                                $homeTeamWins++;
+                            else if ($homeScore < $awayScore)
+                                $awayTeamWins++;
+                        }
+                    }
+                    $headToHead = $match->getPreMatchReportHeadToHead();
+                    if ($headToHead == null) {
+                        $headToHead = new PreMatchReportHeadToHead();
+                        $headToHead->setMatch($match);
+                    }
+                    $headToHead->setHomeTeamWins($homeTeamWins);
+                    $headToHead->setDraws($draws);
+                    $headToHead->setAwayTeamWins($awayTeamWins);
+                    $match->setPreMatchReportHeadToHead($headToHead);
+
+                    // last season match
+                    foreach ($previousMeetings as $previousMeeting) {
+                        $homeTeamSideData = $this->getNodeByAttribute($previousMeeting, 'TeamData', 'TeamRef', 't' . $match->getHomeTeam()->getFeederId());
+                        $awayTeamSideData = $this->getNodeByAttribute($previousMeeting, 'TeamData', 'TeamRef', 't' . $match->getAwayTeam()->getFeederId());
+                        if ($homeTeamSideData !== null && $this->getXmlAttribute($homeTeamSideData, 'Side') == 'Home' &&
+                            $awayTeamSideData !== null && $this->getXmlAttribute($awayTeamSideData, 'Side') == 'Away') {
+                            $homeTeamScoreInLastSeasonMatch = $this->getXmlAttribute($homeTeamSideData, 'Score');
+                            $awayTeamScoreInLastSeasonMatch = $this->getXmlAttribute($awayTeamSideData, 'Score');
+                            $lastSeasonMatch = $match->getPreMatchReportLastSeasonMatch();
+                            if ($lastSeasonMatch == null) {
+                                $lastSeasonMatch = new PreMatchReportLastSeasonMatch();
+                                $lastSeasonMatch->setMatch($match);
+                            }
+                            $lastSeasonMatch->setHomeTeamScore($homeTeamScoreInLastSeasonMatch);
+                            $lastSeasonMatch->setAwayTeamScore($awayTeamScoreInLastSeasonMatch);
+                            $match->setPreMatchReportLastSeasonMatch($lastSeasonMatch);
+                            break;
+                        }
+                    }
+
+                }
+
+                // goals scored
+                $homeTeamTotalsData = $this->getNodeByAttribute($matchData->Totals, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId());
+                $awayTeamTotalsData = $this->getNodeByAttribute($matchData->Totals, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId());
+                if ($homeTeamTotalsData != null && $awayTeamTotalsData != null) {
+                    $homeTeamGoals = $this->getNodeValueByAttribute($homeTeamTotalsData, 'Stat', 'Type', 'goals');
+                    $awayTeamGoals = $this->getNodeValueByAttribute($awayTeamTotalsData, 'Stat', 'Type', 'goals');
+                    if ($homeTeamGoals !== null && $awayTeamGoals !== null) {
+                        $goalsScored = $match->getPreMatchReportGoalsScored();
+                        if ($goalsScored == null) {
+                            $goalsScored = new PreMatchReportGoalsScored();
+                            $goalsScored->setMatch($match);
+                        }
+                        $goalsScored->setHomeTeamGoals($homeTeamGoals);
+                        $goalsScored->setAwayTeamGoals($awayTeamGoals);
+                        $match->setPreMatchReportGoalsScored($goalsScored);
+                    }
+                }
+
+                // avg goals scored
+                $homeTeamAveragesData = $this->getNodeByAttribute($matchData->Averages, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId());
+                $awayTeamAveragesData = $this->getNodeByAttribute($matchData->Averages, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId());
+                if ($homeTeamAveragesData != null && $awayTeamAveragesData != null) {
+                    $homeTeamAvgGoals = $this->getNodeValueByAttribute($homeTeamAveragesData->Overall, 'Stat', 'Type', 'goals');
+                    $awayTeamAvgGoals = $this->getNodeValueByAttribute($awayTeamAveragesData->Overall, 'Stat', 'Type', 'goals');
+                    if ($homeTeamAvgGoals !== null && $awayTeamAvgGoals !== null) {
+                        $avgGoalsScored = $match->getPreMatchReportAvgGoalsScored();
+                        if ($avgGoalsScored == null) {
+                            $avgGoalsScored = new PreMatchReportAvgGoalsScored();
+                            $avgGoalsScored->setMatch($match);
+                        }
+                        $avgGoalsScored->setHomeTeamAvgGoals(floatval($homeTeamAvgGoals));
+                        $avgGoalsScored->setAwayTeamAvgGoals(floatval($awayTeamAvgGoals));
+                        $match->setPreMatchReportAvgGoalsScored($avgGoalsScored);
+                    }
+                }
+
+                $homeTeamFormData = $this->getNodeByAttribute($matchData->Form, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId());
+                $awayTeamFormData = $this->getNodeByAttribute($matchData->Form, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId());
+                if ($homeTeamFormData != null && $awayTeamFormData != null) {
+
+                    // form guide
+                    $homeTeamFormText = $this->getNodeValue($homeTeamFormData->FormText);
+                    $awayTeamFormText = $this->getNodeValue($awayTeamFormData->FormText);
+                    if (!empty($homeTeamFormText) && !empty($awayTeamFormText)) {
+                        $formMatchesMaxNumber = 5;
+                        $formMatchesMinNumber = 3;
+                        $saveFormData = true;
+                        $formTexts = array($homeTeamFormText, $awayTeamFormText);
+                        foreach ($formTexts as &$formText)
+                            if (strlen($formText) > $formMatchesMaxNumber)
+                                $formText = substr($formText, strlen($formText) - $formMatchesMaxNumber, $formMatchesMaxNumber);
+                            else if (strlen($formText) < $formMatchesMinNumber) {
+                                $saveFormData = false;
+                                break;
+                            }
+                        if ($saveFormData) {
+                            $formGuide = $match->getPreMatchReportFormGuide();
+                            if ($formGuide == null) {
+                                $formGuide = new PreMatchReportFormGuide();
+                                $formGuide->setMatch($match);
+                            }
+                            $formGuide->setHomeTeamForm($formTexts[0]);
+                            $formGuide->setAwayTeamForm($formTexts[1]);
+                            $match->setPreMatchReportFormGuide($formGuide);
+                        }
+                    }
+
+                    // last players to score
+                    $teamsFormData = array(
+                        $match->getHomeTeam()->getFeederId() => $homeTeamFormData,
+                        $match->getAwayTeam()->getFeederId() => $awayTeamFormData,
+                    );
+                    $teamsLastScorersMaxNumber = 3;
+                    $teamsLastScorersArr = array();
+                    foreach($teamsFormData as $feederId => $teamFormData) {
+                        $teamFormMatches = $teamFormData->MatchData;
+                        $teamFormMatchesCount = count($teamFormMatches);
+                        for ($i = $teamFormMatchesCount - 1; $i >= 0; $i--) {
+                            $teamFormMatch = $teamFormMatches->{$i};
+                            $teamMatchData = $this->getNodeByAttribute($teamFormMatch, 'TeamData', 'TeamRef', 't' . $feederId);
+                            if ($teamMatchData !== null) {
+                                $teamScorers = $teamMatchData->Goal;
+                                $teamScorersCount = count($teamScorers);
+                                for ($j = $teamScorersCount - 1; $j >= 0; $j--) {
+                                    $teamScorer = $teamScorers->{$j};
+                                    if ($this->getXmlAttribute($teamScorer, 'Type') != MatchGoal::OWN_TYPE) {
+                                        if (!array_key_exists($feederId, $teamsLastScorersArr))
+                                            $teamsLastScorersArr[$feederId] = array();
+                                        $scorerFeederId = $this->getIdFromString($this->getXmlAttribute($teamScorer, 'PlayerRef'));
+                                        if (!in_array($scorerFeederId, $teamsLastScorersArr[$feederId]))
+                                            $teamsLastScorersArr[$feederId][] = $scorerFeederId;
+                                        if (count($teamsLastScorersArr[$feederId]) == $teamsLastScorersMaxNumber)
+                                            break 2;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (!empty($teamsLastScorersArr)) {
+                        $teamsFeederIds = array(
+                            $match->getHomeTeam()->getFeederId() => $match->getHomeTeam(),
+                            $match->getAwayTeam()->getFeederId() => $match->getAwayTeam(),
+                        );
+                        foreach ($teamsFeederIds as $feederId => $team) {
+                            if (array_key_exists($feederId, $teamsLastScorersArr)) {
+                                $teamLastScorers = $teamsLastScorersArr[$feederId];
+                                foreach ($teamLastScorers as $i => $teamLastScorer) {
+                                    $player = $playerDAO->findOneByFeederId($teamLastScorer);
+                                    if ($player != null) {
+                                        $place = $i + 1;
+                                        $topScorer = $match->getPreMatchReportMostRecentScorerByTeamAndPlace($team, $place);
+                                        if ($topScorer == null) {
+                                            $topScorer = new PreMatchReportMostRecentScorer();
+                                            $topScorer->setMatch($match);
+                                            $topScorer->setTeam($team);
+                                            $topScorer->setPlace($place);
+                                            $match->addPreMatchReportMostRecentScorer($topScorer);
+                                        }
+                                        $topScorer->setPlayer($player);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // top scorers
+                $homeTeamTopScorersData = $this->getNodeByAttribute($matchData->Rankings, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId());
+                $awayTeamTopScorersData = $this->getNodeByAttribute($matchData->Rankings, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId());
+                $teamsTopScorersData = array(
+                    $match->getHomeTeam()->getFeederId() => $homeTeamTopScorersData,
+                    $match->getAwayTeam()->getFeederId() => $awayTeamTopScorersData,
+                );
+                $teamsTopScorersMaxNumber = 3;
+                $teamsTopScorersArr = array();
+                foreach($teamsTopScorersData as $feederId => $teamTopScorersData) {
+                    $teamTopScorersStatsData = $this->getNodeByAttribute($teamTopScorersData->Overall, 'Stat', 'Type', 'goals_scored');
+                    if ($teamTopScorersStatsData !== null) {
+                        $teamTopScorersRanks = $teamTopScorersStatsData->Rank;
+                        foreach ($teamTopScorersRanks as $teamTopScorersRank) {
+                            $goalsScored = $this->getXmlAttribute($teamTopScorersRank, 'Total');
+                            $teamTopScorers = $teamTopScorersRank->Player;
+                            foreach ($teamTopScorers as $teamTopScorer) {
+                                if (!array_key_exists($feederId, $teamsTopScorersArr))
+                                    $teamsTopScorersArr[$feederId] = array();
+                                $scorerFeederId = $this->getIdFromString($this->getNodeValue($teamTopScorer));
+                                $teamsTopScorersArr[$feederId][$scorerFeederId] = $goalsScored;
+                                if (count($teamsTopScorersArr[$feederId]) == $teamsTopScorersMaxNumber)
+                                    break 2;
+                            }
+                        }
+                    }
+                }
+                if (!empty($teamsTopScorersArr)) {
+                    $teamsFeederIds = array(
+                        $match->getHomeTeam()->getFeederId() => $match->getHomeTeam(),
+                        $match->getAwayTeam()->getFeederId() => $match->getAwayTeam(),
+                    );
+                    foreach ($teamsFeederIds as $feederId => $team) {
+                        $place = 0;
+                        if (array_key_exists($feederId, $teamsTopScorersArr)) {
+                            $teamTopScorers = $teamsTopScorersArr[$feederId];
+                            foreach ($teamTopScorers as $teamTopScorer => $goalsScored) {
+                                $player = $playerDAO->findOneByFeederId($teamTopScorer);
+                                if ($player != null) {
+                                    $topScorer = $match->getPreMatchReportTopScorerByTeamAndPlace($team, ++$place);
+                                    if ($topScorer == null) {
+                                        $topScorer = new PreMatchReportTopScorer();
+                                        $topScorer->setMatch($match);
+                                        $topScorer->setTeam($team);
+                                        $topScorer->setPlace($place);
+                                        $match->addPreMatchReportTopScorers($topScorer);
+                                    }
+                                    $topScorer->setGoals($goalsScored);
+                                    $topScorer->setPlayer($player);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                $matchDAO->save($match);
+
+            }
+
+            $this->finishProgress($console, 'F2', $filePath);
+
+        } catch (\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleOptaException($e, Logger::CRIT, $console);
         }
     }
 
@@ -653,14 +945,26 @@ class OptaManager extends BasicManager {
      * @param string|null $format
      * @return \DateTime|string|null
      */
-    private function getNodeByAttributeValue(\SimpleXMLElement $xmlObj, $nodeName, $attrName, $value, $format = null) {
-        $xmlNode = $xmlObj->xpath($nodeName . '[@' . $attrName . '=\'' . $value . '\']');
-        $nodeValue = !empty($xmlNode) ? $xmlNode[0]->__toString() : null;
+    private function getNodeValueByAttribute(\SimpleXMLElement $xmlObj, $nodeName, $attrName, $value, $format = null) {
+        $xmlNode = $this->getNodeByAttribute($xmlObj, $nodeName, $attrName, $value);
+        $nodeValue = !empty($xmlNode) ? $xmlNode->__toString() : null;
         if (!empty($nodeValue) && $format !== null)
             $nodeValue = \DateTime::createFromFormat($format, $nodeValue);
         if ($nodeValue == 'Unknown')
             $nodeValue = null;
         return $nodeValue;
+    }
+
+    /**
+     * @param \SimpleXMLElement $xmlObj
+     * @param string $nodeName
+     * @param string $attrName
+     * @param string $value
+     * @return null|\SimpleXMLElement
+     */
+    private function getNodeByAttribute(\SimpleXMLElement $xmlObj, $nodeName, $attrName, $value) {
+        $xmlNode = $xmlObj->xpath($nodeName . '[@' . $attrName . '=\'' . $value . '\']');
+        return !empty($xmlNode) ? $xmlNode[0] : null;
     }
 
     private function getXmlAttribute(\SimpleXMLElement $obj, $attrName) {
@@ -769,16 +1073,16 @@ class OptaManager extends BasicManager {
                     $processingStarted = false;
                     foreach ($seasons as $season) {
                         $seasonFeeds = $this->filterFeedsByParameters($feeds, $type, array('season_id' => $season->getFeederId()));
-                            foreach ($seasonFeeds as $seasonFeed)
-                                if ($force || $this->hasToBeProcessed($seasonFeed, $type)) {
-                                    $processingStarted = true;
-                                $this->processingStarted($seasonFeed, $type);
+                        foreach ($seasonFeeds as $seasonFeed)
+                            if ($force || $this->hasToBeProcessed($seasonFeed, $type, $season)) {
+                                $processingStarted = true;
+                                $this->processingStarted($seasonFeed, $type, $season);
                                 $this->saveFeedsChanges();
                                 $success = $type == Feed::F1_TYPE ? $this->parseF1Feed($seasonFeed, $season, $console) :
-                                    ($type == Feed::F40_TYPE ? $this->parseF40Feed($seasonFeed, $season, $console) : false);
-                                    $this->processingCompleted($seasonFeed, $type, $success);
-                            $this->saveFeedsChanges();
-                        }
+                                ($type == Feed::F40_TYPE ? $this->parseF40Feed($seasonFeed, $season, $console) : false);
+                                $this->processingCompleted($seasonFeed, $type, $season, $success);
+                                $this->saveFeedsChanges();
+                            }
                     }
                     if ($processingStarted)
                         $this->clearAppCache($type, $console);
@@ -793,7 +1097,7 @@ class OptaManager extends BasicManager {
                     if ($currentSeason === null)
                         throw new OutOfSeasonException();
                     $matchManager = MatchManager::getInstance($this->getServiceLocator());
-                    $unfinishedAndPredictableMatches = $matchManager->getUnfinishedAndPredictableMatches($currentSeason, true, true);
+                    $unfinishedAndPredictableMatches = $matchManager->getUnfinishedAndPredictableMatches($currentSeason, true);
                     $processingStarted = false;
                     $clearCacheApp = array();
                     foreach ($unfinishedAndPredictableMatches as $match) {
@@ -803,16 +1107,50 @@ class OptaManager extends BasicManager {
                             'game_id' => $match['feederId'],
                         ));
                         foreach ($matchFeeds as $matchFeed)
-                            if ($force || $this->hasToBeProcessed($matchFeed, $type, array('startTime' => $match['startTime']))) {
+                            if ($force || $this->hasToBeProcessed($matchFeed, $type, $currentSeason, array('startTime' => $match['startTime']))) {
                                 $processingStarted = true;
-                                $this->processingStarted($matchFeed, $type);
+                                $this->processingStarted($matchFeed, $type, $currentSeason);
                                 $this->saveFeedsChanges();
                                 $success = $this->parseF7Feed($matchFeed, $console);
                                 if ($success !== false && is_array($success)) {
                                     $clearCacheApp = array_merge($clearCacheApp, $success);
                                     $success = true;
                                 }
-                                $this->processingCompleted($matchFeed, $type, $success);
+                                $this->processingCompleted($matchFeed, $type, $currentSeason, $success);
+                                $this->saveFeedsChanges();
+                            }
+                    }
+                    if ($processingStarted)
+                        $this->clearAppCache($type, $console, array_unique($clearCacheApp));
+                }
+                break;
+
+            case Feed::F2_TYPE: // 0 */4 * * * cd <APP_ROOT>; php public/index.php opta F2
+
+                $feeds = $this->getUploadedFeedsByType($type);
+                if (!empty($feeds)) {
+                    $currentSeason = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
+                    if ($currentSeason === null)
+                        throw new OutOfSeasonException();
+                    $matchManager = MatchManager::getInstance($this->getServiceLocator());
+                    $unfinishedAndPredictableMatches = $matchManager->getUnfinishedAndPredictableMatches($currentSeason, true);
+                    $processingStarted = false;
+                    $clearCacheApp = array();
+                    foreach ($unfinishedAndPredictableMatches as $match) {
+                        $matchFeeds = $this->filterFeedsByParameters($feeds, $type, array(
+                            'game_id' => $match['feederId'],
+                        ));
+                        foreach ($matchFeeds as $matchFeed)
+                            if ($force || $this->hasToBeProcessed($matchFeed, $type, $currentSeason)) {
+                                $processingStarted = true;
+                                $this->processingStarted($matchFeed, $type, $currentSeason);
+                                $this->saveFeedsChanges();
+                                $success = $this->parseF2Feed($matchFeed, $console);
+                                if ($success !== false && is_array($success)) {
+                                    $clearCacheApp = array_merge($clearCacheApp, $success);
+                                    $success = true;
+                                }
+                                $this->processingCompleted($matchFeed, $type, $currentSeason, $success);
                                 $this->saveFeedsChanges();
                             }
                     }
@@ -826,6 +1164,7 @@ class OptaManager extends BasicManager {
 
     private static $feedsPatterns = array(
         Feed::F1_TYPE => 'srml-{competition_id}-{season_id}-results.xml',
+        Feed::F2_TYPE => 'opta-{game_id}-matchpreview.xml',
         Feed::F7_TYPE => 'srml-{competition_id}-{season_id}-f{game_id}-matchresults.xml',
         Feed::F40_TYPE => 'srml-{competition_id}-{season_id}-squads.xml',
     );
@@ -863,7 +1202,14 @@ class OptaManager extends BasicManager {
         });
     }
 
-    public function hasToBeProcessed($feedFilePath, $feedType, $options = array()) {
+    /**
+     * @param string $feedFilePath
+     * @param string $feedType
+     * @param Season $season
+     * @param array $options
+     * @return bool
+     */
+    public function hasToBeProcessed($feedFilePath, $feedType, $season, $options = array()) {
         if ($feedType == Feed::F7_TYPE && array_key_exists('startTime', $options)) {
             $matchStartTime = $options['startTime'];
             $feedLastUpdate = new \DateTime();
@@ -874,7 +1220,7 @@ class OptaManager extends BasicManager {
         $feedInfo = pathinfo($feedFilePath);
         $feedName = $feedInfo['basename'];
         $feedDAO = FeedDAO::getInstance($this->getServiceLocator());
-        $feed = $feedDAO->getFeedByFileName($feedName, true, true);
+        $feed = $feedDAO->getFeedByFileNameAndSeason($feedName, $season->getId(), true, true);
         if ($feed !== null) {
             $lastFileUpdate = new \DateTime();
             $lastFileUpdate->setTimestamp(filemtime($feedFilePath));
@@ -884,15 +1230,21 @@ class OptaManager extends BasicManager {
         return true;
     }
 
-    public function processingStarted($feedFilePath, $type) {
+    /**
+     * @param string $feedFilePath
+     * @param string $type
+     * @param Season $season
+     */
+    public function processingStarted($feedFilePath, $type, $season) {
         $feedInfo = pathinfo($feedFilePath);
         $feedName = $feedInfo['basename'];
         $feedDAO = FeedDAO::getInstance($this->getServiceLocator());
-        $feed = $feedDAO->getFeedByFileName($feedName, false, true);
+        $feed = $feedDAO->getFeedByFileNameAndSeason($feedName, $season->getId(), false, true);
         if ($feed === null) {
             $feed = new Feed();
             $feed->setType($type);
             $feed->setFileName($feedName);
+            $feed->setSeason($season);
         }
         $lastUpdate = new \DateTime();
         $lastUpdate->setTimestamp(filemtime($feedFilePath));
@@ -901,15 +1253,22 @@ class OptaManager extends BasicManager {
         $feedDAO->save($feed, false, false);
     }
 
-    public function processingCompleted($feedFilePath, $type, $successfully = true) {
+    /**
+     * @param string $feedFilePath
+     * @param string $type
+     * @param Season $season
+     * @param bool $successfully
+     */
+    public function processingCompleted($feedFilePath, $type, $season, $successfully = true) {
         $feedInfo = pathinfo($feedFilePath);
         $feedName = $feedInfo['basename'];
         $feedDAO = FeedDAO::getInstance($this->getServiceLocator());
-        $feed = $feedDAO->getFeedByFileName($feedName, false, true);
+        $feed = $feedDAO->getFeedByFileNameAndSeason($feedName, $season->getId(), false, true);
         if ($feed === null) {
             $feed = new Feed();
             $feed->setType($type);
             $feed->setFileName($feedName);
+            $feed->setSeason($season);
         }
         $lastUpdate = new \DateTime();
         $lastUpdate->setTimestamp(filemtime($feedFilePath));
@@ -930,8 +1289,19 @@ class OptaManager extends BasicManager {
             switch ($type) {
                 case Feed::F1_TYPE:
                     $entitiesToBeCleared[] = CompetitionDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = CompetitionSeasonDAO::getInstance($this->getServiceLocator())->getRepositoryName();
                     $entitiesToBeCleared[] = TeamDAO::getInstance($this->getServiceLocator())->getRepositoryName();
                     $entitiesToBeCleared[] = MatchDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    break;
+
+                case Feed::F2_TYPE:
+                    $entitiesToBeCleared[] = PreMatchReportAvgGoalsScoredDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = PreMatchReportFormGuideDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = PreMatchReportGoalsScoredDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = PreMatchReportHeadToHeadDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = PreMatchReportLastSeasonMatchDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = PreMatchReportMostRecentScorerDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = PreMatchReportTopScorerDAO::getInstance($this->getServiceLocator())->getRepositoryName();
                     break;
 
                 case Feed::F7_TYPE:
@@ -940,22 +1310,23 @@ class OptaManager extends BasicManager {
 
                 case Feed::F40_TYPE:
                     $entitiesToBeCleared[] = CompetitionDAO::getInstance($this->getServiceLocator())->getRepositoryName();
+                    $entitiesToBeCleared[] = CompetitionSeasonDAO::getInstance($this->getServiceLocator())->getRepositoryName();
                     $entitiesToBeCleared[] = TeamDAO::getInstance($this->getServiceLocator())->getRepositoryName();
                     $entitiesToBeCleared[] = PlayerDAO::getInstance($this->getServiceLocator())->getRepositoryName();
                     break;
             }
 
             if (!empty($entitiesToBeCleared)) {
-            $entitiesToBeClearedQueryString = implode(",", $entitiesToBeCleared);
-            $clearAppCacheUrl = ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheUrl();
-            $clearAppCacheUrl = $clearAppCacheUrl . urlencode($entitiesToBeClearedQueryString);
-            $clearAppCacheResult = file_get_contents($clearAppCacheUrl);
-            if ($clearAppCacheResult == ClearAppCacheController::OK_MESSAGE)
-                $this->logMessage(MessagesConstants::APP_CACHE_CLEARED, Logger::INFO, $console);
-            else
-                $this->logMessage(MessagesConstants::APP_CACHE_NOT_CLEARED, Logger::WARN, $console);
+                $entitiesToBeClearedQueryString = implode(",", $entitiesToBeCleared);
+                $clearAppCacheUrl = ApplicationManager::getInstance($this->getServiceLocator())->getClearAppCacheUrl();
+                $clearAppCacheUrl = $clearAppCacheUrl . urlencode($entitiesToBeClearedQueryString);
+                $clearAppCacheResult = file_get_contents($clearAppCacheUrl);
+                if ($clearAppCacheResult == ClearAppCacheController::OK_MESSAGE)
+                    $this->logMessage(MessagesConstants::APP_CACHE_CLEARED, Logger::INFO, $console);
+                else
+                    $this->logMessage(MessagesConstants::APP_CACHE_NOT_CLEARED, Logger::WARN, $console);
+            }
         }
-    }
     }
 
 }

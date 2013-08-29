@@ -37,15 +37,16 @@ class TeamDAO extends AbstractDAO {
     /**
      * @param integer $teamId
      * @param integer $competitionId
+     * @param integer $seasonId
      * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    function getTeamSquadInCompetition($teamId, $competitionId, $hydrate = false, $skipCache = false) {
+    function getTeamSquadInCompetition($teamId, $competitionId, $seasonId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p.displayName, p.position, p.shirtNumber, p.id')
             ->from('\Application\Model\Entities\Player', 'p')
-            ->join('p.competitions', 'cp', Expr\Join::WITH, 'cp.id = ' . $competitionId)
+            ->join('p.competitionSeasons', 'csp', Expr\Join::WITH, 'csp.competition = ' . $competitionId . ' AND csp.season = ' . $seasonId)
             ->where($qb->expr()->eq('p.team', $teamId))
             ->orderBy('p.position', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
@@ -62,7 +63,7 @@ class TeamDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('p.displayName, p.position, p.shirtNumber, p.id')
             ->from('\Application\Model\Entities\Player', 'p')
-            ->join('p.competitions', 'cp', Expr\Join::WITH, 'cp.season = ' . $seasonId)
+            ->join('p.competitionSeasons', 'csp', Expr\Join::WITH, 'csp.season = ' . $seasonId)
             ->where($qb->expr()->eq('p.team', $teamId))
             ->groupBy('p.id')
             ->having('count(cp.id) > 0')
@@ -97,10 +98,10 @@ class TeamDAO extends AbstractDAO {
             ->createQuery('SELECT t
                 FROM ' . $this->getRepositoryName() . ' t
                 LEFT JOIN t.homeMatches as hm
-                LEFT JOIN hm.competition as hc
+                LEFT JOIN hm.competitionSeason as hcs
                 LEFT JOIN t.awayMatches as am
-                LEFT JOIN am.competition as ac
-                WHERE ((hm.awayTeam = :clubId AND hc.season = :seasonId) OR (am.homeTeam = :clubId AND ac.season = :seasonId) OR t = :clubId)
+                LEFT JOIN am.competitionSeason as acs
+                WHERE ((hm.awayTeam = :clubId AND hcs.season = :seasonId) OR (am.homeTeam = :clubId AND acs.season = :seasonId) OR t = :clubId)
                 GROUP BY t.id')
             ->setParameter('seasonId', $season->getId())
             ->setParameter('clubId', $club != null ? $club->getId() : null);

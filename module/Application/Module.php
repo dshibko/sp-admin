@@ -10,6 +10,8 @@
 namespace Application;
 
 use Application\Form\RegistrationForm;
+use Application\Helper\DefaultSkinHelper;
+use Application\Helper\UserMessagesHelper;
 use Application\Manager\ContentManager;
 use Application\Manager\ExceptionManager;
 use Application\Manager\LanguageManager;
@@ -216,6 +218,11 @@ class Module
                     $defaultAvatars->setServiceLocator($sm->getServiceLocator());
                     return $defaultAvatars;
                 },
+                'userMessages' => function($sm){
+                    $userMessages = new UserMessagesHelper();
+                    $userMessages->setServiceLocator($sm->getServiceLocator());
+                    return $userMessages;
+                },
                 'footerImage' => function($sm){
                     $footerImage = new \Neoco\View\Helper\FooterImage();
                     $footerImage->setServiceLocator($sm->getServiceLocator());
@@ -270,6 +277,11 @@ class Module
                     $footerPageContent = new \Neoco\View\Helper\FooterPageContent();
                     $footerPageContent->setServiceLocator($sm->getServiceLocator());
                     return $footerPageContent;
+                },
+                'defaultSkin' => function($sm){
+                    $defaultSkinHelper = new DefaultSkinHelper();
+                    $defaultSkinHelper->setServiceLocator($sm->getServiceLocator());
+                    return $defaultSkinHelper;
                 }
             )
         );

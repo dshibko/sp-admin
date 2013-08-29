@@ -34,17 +34,19 @@ class FeedDAO extends AbstractDAO {
 
     /**
      * @param string $fileName
+     * @param int $seasonId
      * @param bool $hydrate
      * @param bool $skipCache
      * @return \Application\Model\Entities\Feed|array
-     * @throws \Exception
      */
-    public function getFeedByFileName($fileName, $hydrate = false, $skipCache = false) {
+    public function getFeedByFileNameAndSeason($fileName, $seasonId, $hydrate = false, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('f')
             ->from($this->getRepositoryName(), 'f')
             ->where($qb->expr()->eq('f.fileName', ':fileName'))
-            ->setParameter('fileName', $fileName);
+            ->andWhere($qb->expr()->eq('f.season', ':seasonId'))
+            ->setParameter('fileName', $fileName)
+            ->setParameter('seasonId', $seasonId);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
 

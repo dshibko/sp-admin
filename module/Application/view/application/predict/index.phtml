@@ -117,7 +117,11 @@ if (empty($this->twitterShareCopy))
                         </div>
 
                         <div class="league-logo">
+                            <?php if (!empty($this->current['competitionLogo'])) : ?>
+                                <img src="<?=$this->current['competitionLogo']?>" alt="">
+                            <?php else : ?>
                             <img style="visibility: hidden;" src="/img/league-logo.png" alt="">
+                            <?php endif; ?>
                             <em><?=$this->translate('VS')?></em>
                             <span style="display:none">
                                 <?=$this->translate('Scorers')?>

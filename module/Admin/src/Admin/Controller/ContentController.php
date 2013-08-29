@@ -2,9 +2,15 @@
 
 namespace Admin\Controller;
 
+use Admin\Form\DefaultSkinForm;
 use \Admin\Form\FooterImageForm;
 use \Admin\Form\FooterSocialForm;
+use Application\Manager\DefaultSkinManager;
 use Application\Manager\LanguageManager;
+use Application\Manager\SettingsManager;
+use Application\Model\DAOs\ColourLanguageDAO;
+use Application\Model\DAOs\ContentImageDAO;
+use Application\Model\Entities\ColourLanguage;
 use \Application\Model\Helpers\MessagesConstants;
 use \Admin\Form\GameplayContentForm;
 use \Application\Manager\ContentManager;
@@ -12,6 +18,7 @@ use \Application\Manager\ImageManager;
 use \Admin\Form\LandingContentForm;
 use \Application\Manager\ExceptionManager;
 use \Neoco\Controller\AbstractActionController;
+use Zend\Validator\File\ImageSize;
 use Zend\View\Model\ViewModel;
 
 class ContentController extends AbstractActionController {
@@ -20,6 +27,8 @@ class ContentController extends AbstractActionController {
     const ADMIN_LANDING_ROUTE = 'admin-content-landing';
     const ADMIN_FOOTER_IMAGES_ROUTE = 'admin-content-footer-images';
     const ADMIN_FOOTER_SOCIALS_ROUTE = 'admin-content-footer-socials';
+    const ADMIN_TRACKING_CODE_ROUTE = 'admin-content-tracking-code';
+    const ADMIN_DEFAULT_SKIN_ROUTE = 'admin-content-default-skin';
 
     public function indexAction() {
         return $this->redirect()->toRoute(self::ADMIN_LANDING_ROUTE);
@@ -636,6 +645,117 @@ class ContentController extends AbstractActionController {
         }
 
         return $this->redirect()->toRoute(self::ADMIN_FOOTER_SOCIALS_ROUTE);
+
+    }
+
+    public function trackingCodeAction() {
+
+        try {
+
+            $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
+
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $setting = $request->getPost()->toArray();
+                $settingsManager->saveSettings($setting);
+            }
+
+            $trackingCode = $settingsManager->getSetting(SettingsManager::TRACKING_CODE);
+
+            return array(
+                'trackingCode' => $trackingCode,
+            );
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute(self::ADMIN_TRACKING_CODE_ROUTE);
+        }
+
+    }
+
+    public function defaultSkinAction() {
+
+        try {
+            $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
+            $contentImageDAO = ContentImageDAO::getInstance($this->getServiceLocator());
+            $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+            $colourLanguageDAO = ColourLanguageDAO::getInstance($this->getServiceLocator());
+            $defaultSkinManager = DefaultSkinManager::getInstance($this->getServiceLocator());
+
+            $defaultSkinFieldsets = $languageManager->getLanguagesFieldsets('\Admin\Form\DefaultSkinFieldset');
+            $form = new DefaultSkinForm($defaultSkinFieldsets);
+
+            $request = $this->getRequest();
+            if ($request->isPost()) {
+                $post = array_merge_recursive(
+                    $request->getPost()->toArray(),
+                    $request->getFiles()->toArray()
+                );
+                $form->setData($post);
+                if ($form->isValid()) {
+                    try {
+                        $imageManager = ImageManager::getInstance($this->getServiceLocator());
+
+                        if ($form->get('defaultSkinImage')->getValue() != null) {
+                            $defaultSkinImagePath = $imageManager->saveUploadedImage($form->get('defaultSkinImage'));
+
+                            if (!empty($defaultSkinImagePath)) {
+                                $defaultSkinImage = $imageManager->prepareContentImage($defaultSkinImagePath, ImageManager::$HERO_BACKGROUND_SIZES);
+                                $contentImageDAO->save($defaultSkinImage);
+                                $settingsManager->saveSettings(array(SettingsManager::DEFAULT_SKIN_IMAGE => $defaultSkinImage->getId()));
+                                $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_DEFAULT_SKIN_IMAGE_ADDED);
+                            }
+                        }
+
+                        $defaultSkinColours = $defaultSkinManager->getDefaultSkinLanguageData($form);
+                        foreach ($defaultSkinColours['languages'] as $languageId => $defaultSkin) {
+                            foreach ($defaultSkin as $type => $colour) {
+                                if (!empty($colour)) {
+                                    $colourLanguage = $defaultSkinManager->getColourByTypeAndLanguageId($type, $languageId);
+                                    if (is_null($colourLanguage)){
+                                        $colourLanguage = new ColourLanguage();
+                                        $colourLanguage->setLanguage($languageManager->getLanguageById($languageId));
+                                        $colourLanguage->setType($type);
+                                    }
+                                    $colourLanguage->setColour($colour);
+                                    $colourLanguageDAO->save($colourLanguage, false, false);
+                                }
+                            }
+                        }
+                        $colourLanguageDAO->flush();
+                        $colourLanguageDAO->clearCache();
+
+                        $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_DEFAULT_SKIN_COLOUR_ADDED);
+                        return $this->redirect()->toRoute(self::ADMIN_DEFAULT_SKIN_ROUTE);
+                    } catch (\Exception $e) {
+                        $this->flashMessenger()->addErrorMessage($e->getMessage());
+                    }
+                } else {
+                    foreach ($form->getMessages() as $el => $messages) {
+                        $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " .
+                        (is_array($messages) ? implode(", ", $messages): $messages));
+                    }
+                }
+            }
+            $defaultContentColours = $defaultSkinManager->getDefaultColoursByType(DefaultSkinManager::CONTENT_COLOUR_TYPE);
+            $defaultFooterColours = $defaultSkinManager->getDefaultColoursByType(DefaultSkinManager::FOOTER_COLOUR_TYPE);
+            $form->initForm(array_merge($defaultContentColours, $defaultFooterColours));
+
+            $defaultSkinImageId = $settingsManager->getSetting(SettingsManager::DEFAULT_SKIN_IMAGE);
+            if ($defaultSkinImageId > 0) {
+                $defaultSkinImage = $contentImageDAO->findOneById($defaultSkinImageId);
+                if (!is_null($defaultSkinImage)) {
+                    $form->populateValues(array('defaultSkinImage' => $defaultSkinImage->getWidth1280()));
+                }
+            }
+
+            return array(
+                'form' => $form,
+            );
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute(self::ADMIN_DEFAULT_SKIN_ROUTE);
+        }
 
     }
 }

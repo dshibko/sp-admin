@@ -11,6 +11,15 @@ function is_touch_device() {
 
 $(document).ready(function () {
 
+    if ($.cookie('cookiesBar') != 1) {
+        $('.cookie-dialog').show();
+        $.cookie('cookiesBar', 1, { expires: 9999, path: '/' });
+    }
+
+    $('.cookie-dialog button').click(function() {
+        $('.cookie-dialog').slideToggle("slow");
+    });
+
 // Only do anything if the browser does not support placeholders
     if (!Modernizr.input.placeholder) {
 
@@ -78,10 +87,22 @@ $(document).ready(function () {
     };
     $('#make-prediction').addClass("stack");
 
-    if ( navigator.userAgent.indexOf(" Safari/") != -1 && navigator.userAgent.indexOf(" Version/5") != -1) {
-        $('body').addClass("safari5");
-    };
-    $('#make-prediction').addClass("stack");
+    $('.hide-message').click(function(event) {
+        event.preventDefault();
+        var $messageId = $(this).attr('message_id');
+        var $url = $(this).attr('href');
+
+        $(this).parent().slideToggle("slow");
+
+        $.ajax({
+            type: "POST",
+            url: $url,
+            data: { 'id' : $messageId },
+            async: false,
+            success : function(data) {
+            }
+        });
+    });
 
 //
 //nav

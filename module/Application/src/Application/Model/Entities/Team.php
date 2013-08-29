@@ -65,17 +65,17 @@ class Team extends BasicObject {
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Competition", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="CompetitionSeason", cascade={"persist"})
      * @ORM\JoinTable(name="team_competition",
      *   joinColumns={
      *     @ORM\JoinColumn(name="team_id", referencedColumnName="id")
      *   },
      *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="competition_id", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="competition_season_id", referencedColumnName="id")
      *   }
      * )
      */
-    protected $competitions;
+    protected $competitionSeasons;
 
     /**
      * @var string
@@ -125,7 +125,7 @@ class Team extends BasicObject {
      */
     public function __construct()
     {
-        $this->competitions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->competitionSeasons = new \Doctrine\Common\Collections\ArrayCollection();
         $this->homeMatches = new \Doctrine\Common\Collections\ArrayCollection();
         $this->awayMatches = new \Doctrine\Common\Collections\ArrayCollection();
         $this->players = new \Doctrine\Common\Collections\ArrayCollection();
@@ -400,45 +400,45 @@ class Team extends BasicObject {
     }
 
     /**
-     * Add competitions
+     * Add competitionSeason
      *
-     * @param Competition $competition
+     * @param CompetitionSeason $competitionSeason
      * @return \Application\Model\Entities\Team
      */
-    public function addCompetition(Competition $competition)
+    public function addCompetitionSeason(CompetitionSeason $competitionSeason)
     {
-        $this->competitions[] = $competition;
+        $this->competitionSeasons[] = $competitionSeason;
 
         return $this;
     }
 
     /**
-     * Has competition
+     * Has competitionSeason
      *
-     * @param \Application\Model\Entities\Competition $competition
+     * @param \Application\Model\Entities\CompetitionSeason $competitionSeason
      * @return \Application\Model\Entities\Team
      */
-    public function hasCompetition(Competition $competition)
+    public function hasCompetitionSeason(CompetitionSeason $competitionSeason)
     {
-        return $this->competitions->contains($competition);
+        return $this->competitionSeasons->contains($competitionSeason);
     }
 
     /**
-     * Remove competitions
+     * Remove competitionSeason
      *
-     * @param Competition $competitions
+     * @param CompetitionSeason $competitionSeason
      */
-    public function removeCompetition(Competition $competitions)
+    public function removeCompetitionSeason(CompetitionSeason $competitionSeason)
     {
-        $this->competitions->removeElement($competitions);
+        $this->competitionSeasons->removeElement($competitionSeason);
     }
 
     /**
-     * Clear competitions
+     * Clear competitionSeasons
      */
-    public function clearCompetitions()
+    public function clearCompetitionSeasons()
     {
-        $this->competitions->clear();
+        $this->competitionSeasons->clear();
     }
 
 

@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use \Application\Manager\ExceptionManager;
+use Application\Manager\SettingsManager;
 use Application\Manager\UserManager;
 use \Neoco\Controller\AbstractActionController;
 use \Application\Manager\ApplicationManager;
@@ -30,8 +31,10 @@ class IndexController extends AbstractActionController {
 
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
             $languageManager = LanguageManager::getInstance($this->getServiceLocator());
+            $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
             $language = $languageManager->getSelectedLanguage();
             $defaultLanguage = $languageManager->getDefaultLanguage();
+            $trackingCode = $settingsManager->getSetting(SettingsManager::TRACKING_CODE);
 
             $content = $contentManager->getLanguageContent($language, true);
             $defaultContent = $contentManager->getLanguageContent($defaultLanguage, true);
@@ -44,6 +47,7 @@ class IndexController extends AbstractActionController {
             $viewModel = new ViewModel(array(
                 'content' => $content,
                 'blocks' => $gameplayBlocks,
+                'trackingCode' => $trackingCode,
             ));
 
             $viewModel->setTerminal(true);

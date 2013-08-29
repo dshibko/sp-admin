@@ -27,8 +27,6 @@ class RegionManager extends BasicManager {
     }
 
     public function getSelectedRegion() {
-//        // todo remove
-//        return $this->getDefaultRegion();
         $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
         $user = $applicationManager->getCurrentUser();
         $country = null;

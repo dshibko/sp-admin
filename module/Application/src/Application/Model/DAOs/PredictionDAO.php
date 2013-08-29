@@ -2,6 +2,7 @@
 
 namespace Application\Model\DAOs;
 
+use Application\Manager\PredictionManager;
 use \Application\Model\Entities\Season;
 use \Doctrine\ORM\Query\ResultSetMapping;
 use \Doctrine\ORM\Query\ResultSetMappingBuilder;
@@ -66,7 +67,7 @@ class PredictionDAO extends AbstractDAO {
         $query = $this->getEntityManager()
             ->createNativeQuery('SELECT AVG(pr.predictions) as avg FROM (SELECT COUNT(p.id) as predictions
              FROM `match` m
-             INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $season->getId() . '
+             INNER JOIN competition_season cs ON cs.id = m.competition_season_id AND cs.season_id = ' . $season->getId() . '
              LEFT JOIN prediction p ON p.match_id = m.id
              WHERE m.start_time < NOW()
              AND m.status = \'' . Match::FULL_TIME_STATUS . '\'
@@ -106,6 +107,44 @@ class PredictionDAO extends AbstractDAO {
             $qb->setMaxResults($limit);
         }
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+
+    }
+
+    /**
+     * @param $matchId
+     * @param $isClubHomeSide
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getClubWinPredictionsCount($matchId, $isClubHomeSide, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('COUNT(p.id)');
+        $qb->from($this->getRepositoryName(), 'p');
+        if (!$isClubHomeSide) {
+            $qb->where($qb->expr()->lt('p.homeTeamScore','p.awayTeamScore'));
+        } else {
+            $qb->where($qb->expr()->gt('p.homeTeamScore','p.awayTeamScore'));
+        }
+        $qb->andWhere($qb->expr()->eq('p.match', ':matchId'))->setParameter('matchId', $matchId);
+
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+
+    }
+
+    public function getSameScorelinePredictionsCount($matchId, $homeTeamScore, $awayTeamScore, $userId, $skipCache = false)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('COUNT(p.id)');
+        $qb->from($this->getRepositoryName(), 'p');
+        $qb->where($qb->expr()->eq('p.homeTeamScore',':homeTeamScore'))->setParameter('homeTeamScore', $homeTeamScore);
+        $qb->andWhere($qb->expr()->eq('p.awayTeamScore',':awayTeamScore'))->setParameter('awayTeamScore', $awayTeamScore);
+        $qb->andWhere($qb->expr()->eq('p.match', ':matchId'))->setParameter('matchId', $matchId);
+        $qb->andWhere($qb->expr()->neq('p.user', ':userId'))->setParameter('userId', $userId);
+
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
 
     }
 
@@ -162,7 +201,7 @@ class PredictionDAO extends AbstractDAO {
             COUNT(p.id) as user_count
         ');
         $qb->from($this->getRepositoryName(),'p');
-        $qb->where($qb->expr()->in('p.match',':id'))->setParameter('id', $matchId);
+        $qb->where($qb->expr()->eq('p.match',':id'))->setParameter('id', $matchId);
         $qb->andWhere('p.isCorrectScore = 1');
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
@@ -309,7 +348,7 @@ class PredictionDAO extends AbstractDAO {
                 SELECT count(mt.id) unp FROM (
                     SELECT m.id
                     FROM `match` m
-                    INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                    INNER JOIN competition_season cs ON cs.id = m.competition_season_id AND cs.season_id = ' . $seasonId . '
                     WHERE m.status = \'' . Match::PRE_MATCH_STATUS . '\'
                     AND m.start_time > NOW()
                     ORDER BY m.start_time ASC
@@ -359,8 +398,20 @@ class PredictionDAO extends AbstractDAO {
             ->createQuery('SELECT COUNT(p.id)
              FROM ' . $this->getRepositoryName() . ' p
              JOIN p.match m
-             JOIN m.competition c
-             JOIN c.season s WITH s.id = ' . $season->getId() . '
+             JOIN m.competitionSeason cs WITH cs.season = ' . $season->getId() . '
+             WHERE p.user = ' . $user->getId()
+             );
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * @param \Application\Model\Entities\User $user
+     * @return integer
+     */
+    public function getAllUserPredictionsNumber($user) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT COUNT(p.id)
+             FROM ' . $this->getRepositoryName() . ' p
              WHERE p.user = ' . $user->getId()
              );
         return $query->getSingleScalarResult();
@@ -377,8 +428,7 @@ class PredictionDAO extends AbstractDAO {
             ->createQuery('SELECT SUM(p.correctScorers)
              FROM ' . $this->getRepositoryName() . ' p
              JOIN p.match m
-             JOIN m.competition c
-             JOIN c.season s WITH s.id = ' . $season->getId() . '
+             JOIN m.competitionSeason cs WITH cs.season = ' . $season->getId() . '
              WHERE p.user = ' . $user->getId() . ' AND m.startTime < :beforeTime'
              )->setParameter('beforeTime', $beforeTime);
         return $query->getSingleScalarResult();
@@ -395,11 +445,37 @@ class PredictionDAO extends AbstractDAO {
             ->createQuery('SELECT 1
              FROM ' . $this->getRepositoryName() . ' p
              JOIN p.match m
-             JOIN m.competition c
-             JOIN c.season s WITH s.id = ' . $season->getId() . '
+             JOIN m.competitionSeason cs WITH cs.season = ' . $season->getId() . '
              WHERE p.user = ' . $user->getId() . ' AND m.startTime < :beforeTime AND p.isCorrectResult = 1'
              )->setParameter('beforeTime', $beforeTime)->setMaxResults(1);
         return $query->getOneOrNullResult();
+    }
+
+    public function getLastWrongResultMatchThisSeason($season, $user, $beforeTime) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT p, m
+             FROM ' . $this->getRepositoryName() . ' p
+             JOIN p.match m
+             JOIN m.competitionSeason cs WITH cs.season = ' . $season->getId() . '
+             WHERE p.user = ' . $user->getId() . ' AND m.startTime < :beforeTime AND p.isCorrectResult = 0
+             ORDER BY m.startTime DESC'
+            )->setParameter('beforeTime', $beforeTime);
+        return $query->getOneOrNullResult();
+    }
+
+    public function getConsecutiveWinsInSeason($season, $user, $beforeTime, $fromTime = null) {
+        $fromTimeDql = $fromTime != null ? 'AND m.startTime > :fromTime' : '';
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT COUNT(p.id)
+             FROM ' . $this->getRepositoryName() . ' p
+             JOIN p.match m
+             JOIN m.competitionSeason cs WITH cs.season = ' . $season->getId() . '
+             WHERE p.user = ' . $user->getId() . ' AND m.startTime < :beforeTime ' . $fromTimeDql . ' AND p.isCorrectResult = 1
+             ORDER BY m.startTime DESC'
+            )->setParameter('beforeTime', $beforeTime);
+        if ($fromTime != null)
+            $query->setParameter('fromTime', $fromTime);
+        return (int)$query->getSingleScalarResult();
     }
 
     /**
@@ -414,12 +490,12 @@ class PredictionDAO extends AbstractDAO {
                 SELECT count(p.id) predictions
                 FROM `prediction` p
                 INNER JOIN `match` m ON m.id = p.match_id
-                INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                INNER JOIN competition_season cs ON cs.id = m.competition_season_id AND cs.season_id = ' . $seasonId . '
              ', $rsm);
         return $query->getSingleScalarResult();
     }
 
-    public function getPredictionsPerDayWhileSeason($seasonId)
+    public function getPredictionsPerDayThisSeason($seasonId)
     {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('predictions','predictions');
@@ -434,11 +510,11 @@ class PredictionDAO extends AbstractDAO {
                 INNER JOIN
                     `match` m ON m.id = p.match_id
                 INNER JOIN
-                    competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                    competition_season cs ON cs.id = m.competition_season_id AND cs.season_id = ' . $seasonId . '
                 GROUP BY
                       date
                 ORDER BY
-                    date
+                    date DESC
             ', $rsm);
         return $query->getArrayResult();
     }
@@ -456,7 +532,7 @@ class PredictionDAO extends AbstractDAO {
                         SELECT count(p.id) as predictions
                         FROM `match` m
                         LEFT OUTER JOIN `prediction` p ON p.match_id = m.id
-                        INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                        INNER JOIN competition_season cs ON cs.id = m.competition_season_id AND cs.season_id = ' . $seasonId . '
                         GROUP BY m.id
                         ORDER BY predictions DESC) pr
                  ', $rsm)->getSingleScalarResult();
@@ -477,7 +553,7 @@ class PredictionDAO extends AbstractDAO {
                         SELECT count(p.id) as predictions
                         FROM `match` m
                         LEFT OUTER JOIN `prediction` p ON p.match_id = m.id
-                        INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                        INNER JOIN competition_season cs ON cs.id = m.competition_season_id AND cs.season_id = ' . $seasonId . '
                         WHERE m.status = \'' . Match::FULL_TIME_STATUS . '\'
                         GROUP BY m.id
                         ORDER BY predictions DESC) pr
@@ -504,7 +580,8 @@ class PredictionDAO extends AbstractDAO {
                 FROM `match` m
                 INNER JOIN team t1 ON t1.id = m.home_team_id
                 INNER JOIN team t2 ON t2.id = m.away_team_id
-                INNER JOIN competition c ON c.id = m.competition_id AND c.season_id = ' . $seasonId . '
+                INNER JOIN competition_season cs ON cs.id = m.competition_season_id AND cs.season_id = ' . $seasonId . '
+                INNER JOIN competition c ON c.id = cs.competition_id
                 WHERE ' . ($fullTimeOnly ? 'm.status = \'' . Match::FULL_TIME_STATUS . '\' AND ' : '') . '
                 (SELECT IFNULL(count(p.id), 0) as predictions
                 FROM `prediction` p
@@ -530,8 +607,7 @@ class PredictionDAO extends AbstractDAO {
              FROM \Application\Model\Entities\PredictionPlayer pp
              JOIN pp.prediction p
              JOIN p.match m
-             JOIN m.competition c
-             JOIN c.season s WITH s.id = ' . $seasonId . '
+             JOIN m.competitionSeason cs WITH cs.season = ' . $seasonId . '
              JOIN pp.player pl
              JOIN pl.team t
              WHERE pp.playerId IS NOT NULL
@@ -558,8 +634,7 @@ class PredictionDAO extends AbstractDAO {
                 count(p.id) as predictions
              FROM ' . $this->getRepositoryName() . ' p
              JOIN p.match m
-             JOIN m.competition c
-             JOIN c.season s WITH s.id = ' . $seasonId . '
+             JOIN m.competitionSeason cs WITH cs.season = ' . $seasonId . '
              GROUP BY p.homeTeamScore, p.awayTeamScore
              ORDER BY predictions DESC
              '
@@ -646,5 +721,22 @@ class PredictionDAO extends AbstractDAO {
         $qb->from($this->getRepositoryName(),'p');
         $qb->where($qb->expr()->eq('p.match',':id'))->setParameter('id', $matchId);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
+    }
+
+    /**
+     * @param $matchesIds
+     * @param $userId
+     * @param bool $skipCache
+     * @return array
+     */
+    function getPredictedMatchesIdsByUser($matchesIds, $userId, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('IDENTITY(p.match)')
+            ->from($this->getRepositoryName(), 'p')
+            ->where($qb->expr()->in('p.match', ':matches'))
+            ->andWhere($qb->expr()->eq('p.user', ':userId'))
+            ->setParameter("matches", $matchesIds)
+            ->setParameter("userId", $userId);
+        return $this->getQuery($qb, $skipCache)->getArrayResult();
     }
 }

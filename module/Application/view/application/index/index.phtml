@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/normalize.min.css">
 
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/styles-v2.1.css">
 
     <script src="/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <!--[if lt IE 9]>
@@ -26,12 +27,13 @@
     <!-- exclusion end -->
 
 </head>
-<body class="home-page" style="background: <?=$this->settingsHelper()->getBackgroundColor()?>;">
+<body class="home-page" style="background: <?=$this->defaultSkin()->getContentBackgroundColour();?>;">
 <!--[if lt IE 7]>
 <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 <![endif]-->
 
 <div id="wrapper">
+    <?php echo $this->partial('partials/cookie-bar');?>
     <header role="banner">
         <div  class="banner">
             <div data-alt="FCBARCELONA Score Predictor Banner" data-picture="">
@@ -145,7 +147,7 @@
     <script src="js/main.js"></script>
 
     <?php echo $this->partial('partials/footer');?>
-
+    <?=$this->trackingCode;?>
 </div>
 </body>
 </html>

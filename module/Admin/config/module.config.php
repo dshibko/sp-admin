@@ -108,6 +108,21 @@ return array(
                     ),
                 ),
             ),
+            'admin-competitions' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/admin/competitions[/][:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id'     => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Admin\Controller',
+                        'controller' => 'Competition',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
             'admin-content' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -183,6 +198,26 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Terms',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-content-tracking-code' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/tracking-code/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Content',
+                        'action'     => 'trackingCode',
+                    ),
+                ),
+            ),
+            'admin-content-default-skin' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/content/default-skin/',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Content',
+                        'action'     => 'defaultSkin',
                     ),
                 ),
             ),
@@ -321,7 +356,66 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Stats',
-                        'action'     => 'users',
+                    ),
+                ),
+            ),
+            'admin-stats-users-facebook-vs-direct' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/users/facebook-vs-direct[/]',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'facebookVsDirect',
+                    ),
+                ),
+            ),
+            'admin-stats-users-registrations-per-week' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/users/registrations-per-week[/]',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'registrationsPerWeek',
+                    ),
+                ),
+            ),
+            'admin-stats-users-active-vs-inactive' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/users/active-vs-inactive[/]',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'activeVsInactive',
+                    ),
+                ),
+            ),
+            'admin-stats-users-incomplete-registrations' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/users/admin-stats-users-incomplete-registrations[/]',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'incompleteRegistrations',
+                    ),
+                ),
+            ),
+            'admin-stats-users-facebook-vs-email-account-deletions' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/users/admin-stats-users-facebook-vs-email-account-deletions[/]',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'accountDeletions',
+                    ),
+                ),
+            ),
+            'admin-stats-users-users-by-region' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/users/users-by-region[/]',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'usersByRegion',
                     ),
                 ),
             ),
@@ -334,7 +428,76 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Stats',
-                        'action'     => 'predictions',
+                    ),
+                ),
+            ),
+            'admin-stats-predictions-predictions-season' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/predictions/predictions-season',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'predictionsThisSeason',
+                    ),
+                ),
+            ),
+            'admin-stats-predictions-predictions-per-match-overtime' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/predictions/predictions-per-match-overtime',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'predictionsPerMatchOverTime',
+                    ),
+                ),
+            ),
+            'admin-stats-predictions-predictions-per-match-season' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/predictions/predictions-per-match-season',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'avgPredictionsPerMatchThisSeason',
+                    ),
+                ),
+            ),
+            'admin-stats-predictions-highest-predicted-match' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/predictions/highest-predicted-match',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'highestPredictedMatch',
+                    ),
+                ),
+            ),
+            'admin-stats-predictions-lowest-predicted-match' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/predictions/lowest-predicted-match',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'lowestPredictedMatch',
+                    ),
+                ),
+            ),
+            'admin-stats-predictions-top5-scorers-season' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/predictions/top5-scorers-season',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'mostPopularScorersThisSeason',
+                    ),
+                ),
+            ),
+            'admin-stats-predictions-top5-scores-season' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/admin/stats/predictions/top5-scores-season',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Stats',
+                        'action'     => 'mostPopularScoresThisSeason',
                     ),
                 ),
             ),
@@ -371,6 +534,7 @@ return array(
             'Admin\Controller\Auth' => 'Admin\Controller\AuthController',
             'Admin\Controller\Content' => 'Admin\Controller\ContentController',
             'Admin\Controller\Season' => 'Admin\Controller\SeasonController',
+            'Admin\Controller\Competition' => 'Admin\Controller\CompetitionController',
             'Admin\Controller\Settings' => 'Admin\Controller\SettingsController',
             'Admin\Controller\Languages' => 'Admin\Controller\LanguagesController',
             'Admin\Controller\Clubs' => 'Admin\Controller\ClubsController',
@@ -409,6 +573,7 @@ return array(
             'admin/terms/add' => __DIR__ . '/../view/admin/terms/edit.phtml',
             'admin/user/edit-admin' => __DIR__ . '/../view/admin/user/add-admin.phtml',
             'admin/how-to-play/edit' => __DIR__ . '/../view/admin/how-to-play/add.phtml',
+
         ),
         'template_path_stack' => array(
             __DIR__ . '/../view',
@@ -551,6 +716,20 @@ return array(
                             )
                         )
                     ),
+                    'competitions' => array(
+                        'title' => 'Competitions',
+                        'label' => 'icon-trophy',
+                        'route' => 'admin-competitions',
+                        'action' => 'index',
+                        'pages' => array(
+                            array(
+                                'title' => 'Edit Competition',
+                                'label' => 'icon-edit',
+                                'route' => 'admin-competitions',
+                                'action' => 'edit',
+                            ),
+                        )
+                    ),
                     'clubs' => array(
                         'title' => 'Clubs',
                         'label' => 'icon-group',
@@ -630,6 +809,11 @@ return array(
                                         'action' => 'deleteBlock',
                                     ),
                                 ),
+                            ),
+                            'default-skin' => array(
+                                'title' => 'Default Skin',
+                                'label' => 'icon-tint',
+                                'route' => 'admin-content-default-skin',
                             ),
                             'how-to-play' => array(
                                 'title' => 'How to play',
@@ -797,23 +981,99 @@ return array(
                                     ),
                                 )
                             ),
+                            'tracking-code' => array(
+                                'title' => 'Tracking Code',
+                                'label' => 'icon-paper-clip',
+                                'route' => 'admin-content-tracking-code',
+                            ),
                         ),
                     ),
                     'stats' => array(
                         'title' => 'Stats',
                         'label' => 'icon-bar-chart',
-                        'route' => 'admin-stats-users',
+                        'route' => 'admin-stats-users-facebook-vs-direct',
                         'sub-menu' => true,
                         'pages' => array(
                             'users' => array(
                                 'title' => 'Users',
                                 'label' => 'icon-group',
-                                'route' => 'admin-stats-users',
+                                'route' => 'admin-stats-users-facebook-vs-direct',
+                                'sub-menu' => true,
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Facebook vs direct',
+                                        'label' => '',
+                                        'route' => 'admin-stats-users-facebook-vs-direct',
+                                    ),
+                                    array(
+                                        'title' => 'Registrations over time per week',
+                                        'label' => '',
+                                        'route' => 'admin-stats-users-registrations-per-week',
+                                    ),
+                                    array(
+                                        'title' => 'Active vs inactive users',
+                                        'label' => '',
+                                        'route' => 'admin-stats-users-active-vs-inactive',
+                                    ),
+                                    array(
+                                        'title' => 'Incomplete registrations',
+                                        'label' => '',
+                                        'route' => 'admin-stats-users-incomplete-registrations',
+                                    ),
+                                    array(
+                                        'title' => 'Facebook vs email account deletions',
+                                        'label' => '',
+                                        'route' => 'admin-stats-users-facebook-vs-email-account-deletions',
+                                    ),
+                                    array(
+                                        'title' => 'Users by region',
+                                        'label' => '',
+                                        'route' => 'admin-stats-users-users-by-region',
+                                    ),
+                                )
                             ),
                             'predictions' => array(
                                 'title' => 'Predictions',
                                 'label' => 'icon-signal',
                                 'route' => 'admin-stats-predictions',
+                                'sub-menu' => true,
+                                'pages' => array(
+                                    array(
+                                        'title' => 'Predictions this season',
+                                        'label' => '',
+                                        'route' => 'admin-stats-predictions-predictions-season',
+                                    ),
+                                    array(
+                                        'title' => 'Predictions over time',
+                                        'label' => '',
+                                        'route' => 'admin-stats-predictions-predictions-per-match-overtime',
+                                    ),
+                                    array(
+                                        'title' => 'Average number of predictions per match',
+                                        'label' => '',
+                                        'route' => 'admin-stats-predictions-predictions-per-match-season',
+                                    ),
+                                    array(
+                                        'title' => 'Highest predicted match',
+                                        'label' => '',
+                                        'route' => 'admin-stats-predictions-highest-predicted-match',
+                                    ),
+                                    array(
+                                        'title' => 'Lowest predicted match',
+                                        'label' => '',
+                                        'route' => 'admin-stats-predictions-lowest-predicted-match',
+                                    ),
+                                    array(
+                                        'title' => 'Top 5 selected scorers',
+                                        'label' => '',
+                                        'route' => 'admin-stats-predictions-top5-scorers-season',
+                                    ),
+                                    array(
+                                        'title' => 'Top 5 selected scores',
+                                        'label' => '',
+                                        'route' => 'admin-stats-predictions-top5-scores-season',
+                                    ),
+                                )
                             ),
                         ),
                     ),

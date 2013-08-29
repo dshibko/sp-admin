@@ -29,6 +29,71 @@ $(window).load(function () {
 
 function initCharts(doResize){
 
+    if (window.clubVictoryPredictionsData !== undefined){
+        var clubVictoryPredictionsChart = $.plot($('#chart-victory-predictions'),
+            window.clubVictoryPredictionsData,
+            {
+                series: {
+                    pie: {
+                        innerRadius: 0.8,
+                        stroke: {color: '#e6edf8', width: 0},
+                        show: true,
+                        radius: 1,
+                        label: {
+                            show: true,
+                            radius: 0,
+                            formatter: function(label, series) {
+                                return '<b style="color: #a01749;">'+label+'</b>';
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            }
+        );
+
+        if (doResize === true){
+            clubVictoryPredictionsChart.resize();
+            clubVictoryPredictionsChart.setupGrid();
+            clubVictoryPredictionsChart.draw();
+        }
+    }
+
+    if (window.headToHeadData !== undefined){
+        var headToHeadChart = $.plot($('#chart-head-to-head-results'), 
+            window.headToHeadData, {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        innerRadius: 0.4,
+                        stroke: { width: 0 },
+                        label:{
+                            radius: 3/4,
+                            formatter: function (label, series) {
+                                return label;
+                            },
+                            background: {
+
+                            }
+                        }
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            });
+
+        if (doResize === true){
+            headToHeadChart.resize();
+            headToHeadChart.setupGrid();
+            headToHeadChart.draw();
+        }
+
+    }
+
     if (window.topScoresData !== undefined){
         var top5ScoresChart = $.plot($('#chart_top5'),
             window.topScoresData, {
@@ -51,6 +116,8 @@ function initCharts(doResize){
         }
 
     }
+
+
 
 
 //    if ($('#chart-head-to-head-results').size() > 0){

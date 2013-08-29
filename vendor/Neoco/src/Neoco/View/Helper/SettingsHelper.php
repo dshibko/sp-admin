@@ -31,14 +31,6 @@ class SettingsHelper extends AbstractHelper
         return $this;
     }
 
-    public function getBackgroundColor() {
-        return SettingsManager::getInstance($this->serviceLocator)->getSetting(SettingsManager::SITE_BACKGROUND_COLOR_KEY);
-    }
-
-    public function getFooterColor() {
-        return SettingsManager::getInstance($this->serviceLocator)->getSetting(SettingsManager::SITE_FOOTER_COLOR_KEY);
-    }
-
     public function get($key, $defaultValue = null)
     {
         $value = SettingsManager::getInstance($this->serviceLocator)->getSetting($key);

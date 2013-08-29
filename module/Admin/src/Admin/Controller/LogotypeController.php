@@ -15,11 +15,11 @@ class LogotypeController extends AbstractActionController {
 
     public function indexAction() {
         $form = null;
-        $lanaguageManager = LanguageManager::getInstance($this->getServiceLocator());
+        $languageManager = LanguageManager::getInstance($this->getServiceLocator());
         $contentManager = ContentManager::getInstance($this->getServiceLocator());
         $logotypes = null;
         try {
-            $logotypeLanguageFieldsets = $lanaguageManager->getLanguagesFieldsets('\Admin\Form\LogotypeFieldset');
+            $logotypeLanguageFieldsets = $languageManager->getLanguagesFieldsets('\Admin\Form\LogotypeFieldset');
             $form = new LogotypeForm($logotypeLanguageFieldsets);
             $logotypes = $contentManager->getLogotypes();
             $request = $this->getRequest();

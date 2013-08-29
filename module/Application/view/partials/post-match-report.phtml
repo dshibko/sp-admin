@@ -76,8 +76,41 @@
             </div>
             <script type="text/javascript">
                 var communityPredictedData = [
-                    {color : '#144a9b', data: <?php echo (!empty($this->report['correctResult']) ? $this->report['correctResult'] : 0.00001);?>, label:  '<?php echo (int)$this->report['correctResult'] . '%';?>'},
+                    {color : '#144a9b', data: <?php echo (!empty($this->report['correctResult']) ? $this->report['correctResult'] : 0.00001);?>, label:  '<?php echo (int)$this->report['correctResult'] . '<em style="font-style: normal; font-size: .6em; vertical-align: top">%</em>';?>'},
                     {color : '#90b1d4', data: <?php echo (100 - $this->report['correctResult']);?>, label: ''}
+
+                ];
+            </script>
+        <?php endif;?>
+        <?php if (!empty($this->report['sameScorelinePredictionsPercentage'])):?>
+            <div class="item col1 summary left">
+                <section>
+                    <figure class="clearfix">
+                        <div id="same-scoreline-predictions"></div>
+                        <figcaption><?php echo $this->translate('Community agreed with your score prediction');?></figcaption>
+                    </figure>
+                </section>
+            </div>
+            <script type="text/javascript">
+                var sameScorelinePredictionsData = [
+                    {color : '#144a9b', data: <?php echo (!empty($this->report['sameScorelinePredictionsPercentage']) ? $this->report['sameScorelinePredictionsPercentage'] : 0.00001);?>, label:  '<?php echo (int)$this->report['sameScorelinePredictionsPercentage'] . '<em style="font-style: normal; font-size: .6em; vertical-align: top">%</em>';?>'},
+                    {color : '#90b1d4', data: <?php echo (100 - $this->report['sameScorelinePredictionsPercentage']);?>, label: ''}
+                ];
+            </script>
+        <?php endif;?>
+        <?php if (isset($this->report['correctScorePercentage'])):?>
+            <div class="item col1 summary left">
+                <section>
+                    <figure class="clearfix">
+                        <div id="correct-score"></div>
+                        <figcaption><?php echo $this->translate('Community correctly predicted the score line');?></figcaption>
+                    </figure>
+                </section>
+            </div>
+            <script type="text/javascript">
+                var correctScoreData = [
+                    {color : '#144a9b', data: <?php echo (!empty($this->report['correctScorePercentage']) ? $this->report['correctScorePercentage'] : 0.00001);?>, label:  '<?php echo (int)$this->report['correctScorePercentage'] . '<em style="font-style: normal; font-size: .6em; vertical-align: top">%</em>';?>'},
+                    {color : '#90b1d4', data: <?php echo (100 - $this->report['correctScorePercentage']);?>, label: ''}
 
                 ];
             </script>
@@ -94,6 +127,21 @@
             <?php endif;?>
         <?php endif;?>
         <!--REGIONAL LEAGUE MOVEMENT ENDS-->
+        <!--MOST POPULAR SCORER STARTS-->
+        <?php if(!empty($this->report['mostPopularScorer'])) : ?>
+            <div class="item col1 players particular-player masonry-brick">
+                <section class="clearfix">
+                    <img src="<?php echo !empty($this->report['mostPopularScorer']['background_image_path']) ? $this->report['mostPopularScorer']['background_image_path'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
+                    <div>
+                        <h1><?=$this->report['mostPopularScorer']['display_name']?></h1>
+                        <section class="user-content">
+                            <p><?php echo sprintf($this->translate('Is the %smost%s picked player'), '<strong>', '</strong>');?></p>
+                        </section>
+                    </div>
+                </section>
+            </div>
+        <?php endif; ?>
+        <!--MOST POPULAR SCORER ENDS-->
     </div>
 </section>
 <script src="/js/vendor/jquery.masonry.min.js"></script>

@@ -3,6 +3,7 @@
 namespace Application\Manager;
 
 use \Application\Model\DAOs\CompetitionDAO;
+use Application\Model\Entities\Competition;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 
@@ -54,12 +55,21 @@ class CompetitionManager extends BasicManager
      * @param $id
      * @param bool $hydrate
      * @param bool $skipCache
-     * @return mixed
+     * @return Competition|array
      */
     public function getCompetitionById($id, $hydrate = false, $skipCache = false)
     {
         return CompetitionDAO::getInstance($this->getServiceLocator())->findOneById($id, $hydrate, $skipCache);
     }
 
+    public function getAllClubCompetitions($clubId, $hydrate = false, $skipCache = false)
+    {
+        return CompetitionDAO::getInstance($this->getServiceLocator())->getAllClubCompetitions($clubId, $hydrate, $skipCache);
+    }
+
+    public function updateCompetition(Competition $competition) {
+        $competitionDAO = CompetitionDAO::getInstance($this->getServiceLocator());
+        $competitionDAO->save($competition);
+    }
 
 }

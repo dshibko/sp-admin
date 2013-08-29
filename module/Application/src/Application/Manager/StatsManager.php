@@ -41,30 +41,23 @@ class StatsManager extends BasicManager {
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getFacebookVsDirectContent() {
+    public function getFacebookVsDirectData() {
         $userManager = UserManager::getInstance($this->getServiceLocator());
 
         $data = array(
-            array(
-                'facebook' => $userManager->getFacebookUsersNumber(),
-                'direct' => $userManager->getDirectUsersNumber(),
-            ),
-        );
+                     'facebook' => $userManager->getFacebookUsersNumber(),
+                     'direct' => $userManager->getDirectUsersNumber(),
+                );
 
-        $exportConfig = array(
-            'facebook' => 'number',
-            'direct' => 'number',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($data, $exportConfig);
+        return $data;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getRegistrationsPerWeekContent() {
+    public function getRegistrationsPerWeekData() {
         $userDAO = UserDAO::getInstance($this->getServiceLocator());
 
         $perWeekRegistrations = $userDAO->getPerWeekRegistrations();
@@ -111,41 +104,28 @@ class StatsManager extends BasicManager {
 
         $perWeekRegistrationsArr = array_reverse($perWeekRegistrationsArr);
 
-        $exportConfig = array(
-            'first_week_day' => array('date' => 'j F Y'),
-            'last_week_day' => array('date' => 'j F Y'),
-            'registrations' => 'number',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($perWeekRegistrationsArr, $exportConfig);
+        return $perWeekRegistrationsArr;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getActiveVsInactiveContent() {
+    public function getActiveVsInactiveData() {
         $userDAO = UserDAO::getInstance($this->getServiceLocator());
 
         $data = array(
-            array(
-                'active' => $userDAO->getNumberOfUsersPredictedLastNDays(self::PREDICTED_LAST_DAYS),
-                'inactive' => $userDAO->getNumberOfUsersNotPredictedLastNDays(self::PREDICTED_LAST_DAYS),
-            ),
-        );
+                    'active' => $userDAO->getNumberOfUsersPredictedLastNDays(self::PREDICTED_LAST_DAYS),
+                    'inactive' => $userDAO->getNumberOfUsersNotPredictedLastNDays(self::PREDICTED_LAST_DAYS),
+                );
 
-        $exportConfig = array(
-            'active' => 'number',
-            'inactive' => 'number',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($data, $exportConfig);
+        return $data;
     }
 
     /**
      * @throws \Neoco\Exception\InfoException
-     * @return string
+     * @return array
      */
-    public function getIncompleteRegistrationsContent() {
+    public function getIncompleteRegistrationsData() {
         $userDAO = UserDAO::getInstance($this->getServiceLocator());
 
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
@@ -153,22 +133,16 @@ class StatsManager extends BasicManager {
             throw new InfoException(MessagesConstants::INFO_ADMIN_OUT_OF_SEASON);
 
         $data = array(
-            array(
-                'incomplete' => $userDAO->getIncompleteUsersNumber($season->getGlobalLeague()->getId()),
-            ),
+            'incomplete' => $userDAO->getIncompleteUsersNumber($season->getGlobalLeague()->getId()),
         );
 
-        $exportConfig = array(
-            'incomplete' => 'number',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($data, $exportConfig);
+        return $data;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getUsersByRegionContent() {
+    public function getUsersByRegionData() {
         $userDAO = UserDAO::getInstance($this->getServiceLocator());
 
         $data = $userDAO->getUsersByRegion();
@@ -182,18 +156,14 @@ class StatsManager extends BasicManager {
                 'users' => $usersNumber - $sum,
             );
 
-        $exportConfig = array(
-            'region' => 'string',
-            'users' => 'number',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($data, $exportConfig);
+        return $data;
     }
 
     /**
-     * @return string
+     * @throws \Neoco\Exception\InfoException
+     * @return array
      */
-    public function getPredictionsThisSeasonContent() {
+    public function getPredictionsThisSeasonData() {
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
 
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
@@ -201,22 +171,17 @@ class StatsManager extends BasicManager {
             throw new InfoException(MessagesConstants::INFO_ADMIN_OUT_OF_SEASON);
 
         $data = array(
-            array(
-                'predictions' => $predictionDAO->getPredictionsCount($season->getId()),
-            ),
+            'predictions' => $predictionDAO->getPredictionsCount($season->getId()),
         );
 
-        $exportConfig = array(
-            'predictions' => 'number',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($data, $exportConfig);
+        return $data;
     }
 
     /**
-     * @return string
+     * @throws \Neoco\Exception\InfoException
+     * @return array
      */
-    public function getAvgPredictionsPerMatchThisSeasonContent() {
+    public function getAvgPredictionsPerMatchThisSeasonData() {
 
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
         if ($season === null)
@@ -226,22 +191,17 @@ class StatsManager extends BasicManager {
         $avgNumberOfPredictions = $predictionManager->getAvgNumberOfPredictions($season);
 
         $data = array(
-            array(
-                'avg_number_of_predictions' => $avgNumberOfPredictions,
-            ),
+            'avg_number_of_predictions' => $avgNumberOfPredictions,
         );
 
-        $exportConfig = array(
-            'avg_number_of_predictions' => 'number',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($data, $exportConfig);
+        return $data;
     }
 
     /**
-     * @return string
+     * @throws \Neoco\Exception\InfoException
+     * @return array
      */
-    public function getHighestPredictedMatchContent() {
+    public function getHighestPredictedMatchData() {
 
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
         if ($season === null)
@@ -250,21 +210,14 @@ class StatsManager extends BasicManager {
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
         $highestPredictedMatches = $predictionDAO->getHighestPredictedMatches($season->getId());
 
-        $exportConfig = array(
-            'predictions' => 'number',
-            'start_time' => array('date' => 'j F Y'),
-            'competition' => 'string',
-            'home_team' => 'string',
-            'away_team' => 'string',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($highestPredictedMatches, $exportConfig);
+        return $highestPredictedMatches;
     }
 
     /**
-     * @return string
+     * @throws \Neoco\Exception\InfoException
+     * @return array
      */
-    public function getLowestPredictedMatchContent() {
+    public function getLowestPredictedMatchData() {
 
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
         if ($season === null)
@@ -273,22 +226,14 @@ class StatsManager extends BasicManager {
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
         $lowestPredictedMatches = $predictionDAO->getLowestPredictedMatches($season->getId());
 
-        $exportConfig = array(
-            'predictions' => 'number',
-            'start_time' => array('date' => 'j F Y'),
-            'competition' => 'string',
-            'home_team' => 'string',
-            'away_team' => 'string',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($lowestPredictedMatches, $exportConfig);
+        return $lowestPredictedMatches;
     }
 
     /**
      * @throws \Neoco\Exception\InfoException
-     * @return string
+     * @return array
      */
-    public function getMostPopularScorersThisSeasonContent() {
+    public function getMostPopularScorersThisSeasonData() {
 
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
         if ($season === null)
@@ -297,36 +242,30 @@ class StatsManager extends BasicManager {
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
         $topScorersThisSeason = $predictionDAO->getTopScorersThisSeason($season->getId(), self::TOP_SCORERS_COUNT);
 
-        $exportConfig = array(
-            'player' => 'string',
-            'team' => 'string',
-            'predictions' => 'number',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($topScorersThisSeason, $exportConfig);
+        return $topScorersThisSeason;
     }
 
-    public function getPredictionsPerDayWhileSeason()
+    /**
+     * @return string
+     * @throws \Neoco\Exception\InfoException
+     */
+    public function getPredictionsPerDayThisSeasonData()
     {
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
         if ($season === null)
             throw new InfoException(MessagesConstants::INFO_ADMIN_OUT_OF_SEASON);
 
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
-        $predictionsPerDayWhileSeason = $predictionDAO->getPredictionsPerDayWhileSeason($season->getId());
-        $exportConfig = array(
-            'predictions' => 'number',
-            'date' => array('date' => 'j F Y'),
-        );
+        $predictionsPerDayWhileSeason = $predictionDAO->getPredictionsPerDayThisSeason($season->getId());
 
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($predictionsPerDayWhileSeason, $exportConfig);
+        return $predictionsPerDayWhileSeason;
     }
 
     /**
      * @throws \Neoco\Exception\InfoException
-     * @return string
+     * @return array
      */
-    public function getMostPopularScoresThisSeasonContent() {
+    public function getMostPopularScoresThisSeasonData() {
 
         $season = ApplicationManager::getInstance($this->getServiceLocator())->getCurrentSeason();
         if ($season === null)
@@ -337,31 +276,22 @@ class StatsManager extends BasicManager {
         foreach ($topScoresThisSeason as &$topScoreThisSeason)
             $topScoreThisSeason['score'] = $topScoreThisSeason['home_team_score'] . '-' . $topScoreThisSeason['away_team_score'];
 
-        $exportConfig = array(
-            'score' => 'string',
-            'predictions' => 'number',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($topScoresThisSeason, $exportConfig);
+        return $topScoresThisSeason;
     }
 
-    public function getAccountDeletions()
+    /**
+     * @return array
+     */
+    public function getAccountDeletionsData()
     {
         $accountRemovalDAO = AccountRemovalDAO::getInstance($this->getServiceLocator());
 
         $data = array(
-            array(
-                'facebook' => $accountRemovalDAO->getDeletionsCountByType(AccountRemoval::FACEBOOK_ACCOUNT),
-                'direct' => $accountRemovalDAO->getDeletionsCountByType(AccountRemoval::DIRECT_ACCOUNT),
-            ),
+            'facebook' => $accountRemovalDAO->getDeletionsCountByType(AccountRemoval::FACEBOOK_ACCOUNT),
+            'direct' => $accountRemovalDAO->getDeletionsCountByType(AccountRemoval::DIRECT_ACCOUNT),
         );
 
-        $exportConfig = array(
-            'facebook' => 'number',
-            'direct' => 'number',
-        );
-
-        return ExportManager::getInstance($this->getServiceLocator())->exportArrayToCSV($data, $exportConfig);
+        return $data;
     }
 
 }

@@ -72,17 +72,17 @@ class ShareCopyDAO extends AbstractDAO {
 
     /**
      * @param string $engine
+     * @param int $weight
      * @param bool $skipCache
      * @return array
-     * @throws \Exception
      */
-    public function getFirstPredictionCopy($engine, $skipCache = false) {
+    public function getPredictionCopy($engine, $weight, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('sc.copy')
             ->from($this->getRepositoryName(), 'sc')
             ->where($qb->expr()->eq('sc.target', ':target'))->setParameter('target', ShareCopy::PRE_MATCH_REPORT)
             ->andWhere($qb->expr()->eq('sc.engine', ':engine'))->setParameter('engine', $engine)
-            ->andWhere($qb->expr()->eq('sc.weight', 1))
+            ->andWhere($qb->expr()->eq('sc.weight', $weight))
             ->orderBy('sc.weight', 'ASC')
             ->addOrderBy('sc.id', 'ASC');
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();

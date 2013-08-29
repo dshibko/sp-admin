@@ -146,7 +146,7 @@ class PredictionManager extends BasicManager {
         if ($hasLineUp)
             $squad = MatchDAO::getInstance($this->getServiceLocator())->getMatchTeamSquad($matchId, $teamId, $hydrate, $skipCache);
         else {
-            $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquadInCompetition($teamId, $competitionId, $hydrate, $skipCache);
+            $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquadInCompetition($teamId, $competitionId, $seasonId, $hydrate, $skipCache);
             if (empty($squad))
                 $squad = TeamDAO::getInstance($this->getServiceLocator())->getTeamSquad($teamId, $seasonId, $hydrate, $skipCache);
         }
@@ -175,8 +175,8 @@ class PredictionManager extends BasicManager {
             return null;
     }
 
-    public static $positionsOrder = array('Goalkeeper', 'Defender', 'Midfielder', 'Forward');
-    public static $positionsAbbreviation = array('GK', 'DF', 'MF', 'FW');
+    public static $positionsOrder = array('Forward', 'Midfielder', 'Defender', 'Goalkeeper');
+    public static $positionsAbbreviation = array('FW', 'MF', 'DF', 'GK');
 
     /**
      * @param $players
@@ -207,6 +207,29 @@ class PredictionManager extends BasicManager {
     public function getTopScorers($matchId, $limit = 5, $hydrate = false, $skipCache = false)
     {
         return PredictionDAO::getInstance($this->getServiceLocator())->getTopScorers($matchId, $limit, $hydrate, $skipCache);
+    }
+
+    /**
+     * @param  $match
+     * @param $teamId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getClubWinPredictionsCount($matchId, $matchHomeTeamId, $teamId, $skipCache = false)
+    {
+        return PredictionDAO::getInstance($this->getServiceLocator())->getClubWinPredictionsCount($matchId, $matchHomeTeamId == $teamId, $skipCache);
+    }
+
+    /**
+     * @param $matchId
+     * @param $prediction
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return int
+     */
+    public function getSameScorelinePredictionsCount($matchId, $homeTeamScore, $awayTeamScore, $userId, $skipCache = false) {
+        return PredictionDAO::getInstance($this->getServiceLocator())->getSameScorelinePredictionsCount($matchId, $homeTeamScore, $awayTeamScore, $userId, $skipCache);
     }
 
     /**
@@ -313,6 +336,27 @@ class PredictionManager extends BasicManager {
         $predictionDAO->save($prediction);
     }
 
+
+    /**
+     * @param $matchesIds
+     * @param $userId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return array
+     */
+    public function getPredictedMatchesIdsByUser($matchesIds, $userId, $hydrate = false, $skipCache = false) {
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        $matchesIdsArr = $predictionDAO->getPredictedMatchesIdsByUser($matchesIds, $userId, $hydrate, $skipCache);
+        $matchesIds = array();
+        if (is_array($matchesIdsArr)) {
+            foreach ($matchesIdsArr as $matchesIdArr) {
+                $matchesIds[] = $matchesIdArr[1];
+            }
+        }
+
+        return $matchesIds;
+    }
+
     /**
      * @param $matchId
      * @param array $scorersIds
@@ -323,6 +367,10 @@ class PredictionManager extends BasicManager {
     public function getCorrectScorersPredictionsCount($matchId, array $scorersIds, $hydrate = true, $skipCache = false)
     {
         return PredictionDAO::getInstance($this->getServiceLocator())->getCorrectScorersPredictionsCount($matchId, $scorersIds,$hydrate ,$skipCache);
+    }
+
+    public function getAllUserPredictionsNumber($user) {
+        return PredictionDAO::getInstance($this->getServiceLocator())->getAllUserPredictionsNumber($user);
     }
 
     public function getUserPredictionsNumber($season, $user) {
@@ -337,6 +385,13 @@ class PredictionManager extends BasicManager {
     public function hasUserCorrectResults($season, $user, $beforeTime) {
         $number = PredictionDAO::getInstance($this->getServiceLocator())->hasUserCorrectResults($season, $user, $beforeTime);
         return $number == null ? false : true;
+    }
+
+    public function getConsecutiveWinsInSeason($season, $user, $beforeTime) {
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        $lastWrongResultMatchThisSeason = $predictionDAO->getLastWrongResultMatchThisSeason($season, $user, $beforeTime);
+        $fromTime = $lastWrongResultMatchThisSeason != null ? $lastWrongResultMatchThisSeason->getMatch()->getStartTime() : null;
+        return $predictionDAO->getConsecutiveWinsInSeason($season, $user, $beforeTime, $fromTime);
     }
 
     public function getUserPrediction($matchId, $userId, $hydrate = false, $skipCache = false) {

@@ -330,7 +330,7 @@ class FixturesController extends AbstractActionController
                         ->setAwayTeam($teamManager->getTeamById($data['awayTeam']))
                         ->setHomeTeam($teamManager->getTeamById($data['homeTeam']))
                         ->setStartTime($dateTime)
-                        ->setCompetition(CompetitionManager::getInstance($this->getServiceLocator())->getCompetitionById($data['competition']));
+                        ->setCompetitionSeason(CompetitionManager::getInstance($this->getServiceLocator())->getCompetitionById($data['competition']));
                     $matchManager->save($fixture);
                     $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                     return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, array('action' => 'edit', 'fixture' => $fixture->getId())));

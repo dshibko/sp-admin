@@ -75,6 +75,13 @@ class PredictController extends AbstractActionController {
             $userLanguage = $user->getLanguage();
             $matchReport = $matchManager->getPreMatchLanguageReport($currentMatch['id'], $userLanguage->getId());
 
+            $matchPredictionsCount = $predictionManager->getMatchPredictionsCount($currentMatch['id']);
+            if ($matchPredictionsCount > 0) {
+                $clubVictoryPredictions = $predictionManager->getClubWinPredictionsCount($currentMatch['id'], $currentMatch['homeId'], $applicationManager->getAppClub()->getId());
+                $matchReport['clubVictoryPredictionsPercentage'] = round( ($clubVictoryPredictions / $matchPredictionsCount) * 100 );
+                $matchReport['currentClub'] = $applicationManager->getAppClub()->getDisplayName();
+            }
+
             if ($currentMatch['status'] == Match::PRE_MATCH_STATUS) {
 
                 $securityKey = $this->generateSecurityKey(array($currentMatch['id'], $currentMatch['homeId'], $currentMatch['awayId']));
@@ -151,12 +158,8 @@ class PredictController extends AbstractActionController {
                 unset($currentMatch['prediction']['predictionPlayers']);
 
                 // settings of share copy
-                $numberOfPredictions = $predictionManager->getUserPredictionsNumber($season, $user);
                 $shareManager = ShareManager::getInstance($this->getServiceLocator());
-                if ($numberOfPredictions == 1)
-                    list($facebookShareCopy, $twitterShareCopy) = $shareManager->getFirstPredictionCopy();
-                else
-                    list($facebookShareCopy, $twitterShareCopy) = $shareManager->getRandomEveryPredictionCopy();
+                list($facebookShareCopy, $twitterShareCopy) = $shareManager->getPredictionCopy($user);
             }
 
             if ($maxAhead > $matchesLeft)

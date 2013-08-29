@@ -2,32 +2,46 @@
 
 namespace Admin\Controller;
 
+use Application\Manager\ExportManager;
 use \Application\Manager\StatsManager;
 use \Application\Manager\ExceptionManager;
 use \Neoco\Controller\AbstractActionController;
 
 class StatsController extends AbstractActionController {
     
-    public function usersAction() {
-
-        return array();
-
-    }
-
-    public function predictionsAction() {
-
-        return array();
-
-    }
-
     public function exportFacebookVsDirectAction() {
 
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getFacebookVsDirectContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getFacebookVsDirectData();
+
+            $exportConfig = array(
+                'facebook' => 'number',
+                'direct' => 'number',
+            );
+
+            $content = $exportManager->exportArrayToCSV(array($data), $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-users');
+        }
+
+    }
+
+    public function facebookVsDirectAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getFacebookVsDirectData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -41,9 +55,35 @@ class StatsController extends AbstractActionController {
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getRegistrationsPerWeekContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getRegistrationsPerWeekData();
+
+            $exportConfig = array(
+                'first_week_day' => array('date' => 'j F Y'),
+                'last_week_day' => array('date' => 'j F Y'),
+                'registrations' => 'number',
+            );
+
+            $content = $exportManager->exportArrayToCSV($data, $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-users');
+        }
+
+    }
+
+    public function registrationsPerWeekAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getRegistrationsPerWeekData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -57,9 +97,34 @@ class StatsController extends AbstractActionController {
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getActiveVsInactiveContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getActiveVsInactiveData();
+
+            $exportConfig = array(
+                'active' => 'number',
+                'inactive' => 'number',
+            );
+
+            $content = $exportManager->exportArrayToCSV(array($data), $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-users');
+        }
+
+    }
+
+    public function activeVsInactiveAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getActiveVsInactiveData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -73,9 +138,33 @@ class StatsController extends AbstractActionController {
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getIncompleteRegistrationsContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getIncompleteRegistrationsData();
+
+            $exportConfig = array(
+                'incomplete' => 'number',
+            );
+
+            $content = $exportManager->exportArrayToCSV(array($data), $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-users');
+        }
+
+    }
+
+    public function incompleteRegistrationsAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getIncompleteRegistrationsData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -88,8 +177,33 @@ class StatsController extends AbstractActionController {
 
         try {
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getAccountDeletions();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getAccountDeletionsData();
+
+            $exportConfig = array(
+                'facebook' => 'number',
+                'direct' => 'number',
+            );
+
+            $content = $exportManager->exportArrayToCSV(array($data), $exportConfig);
+
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-users');
+        }
+
+    }
+
+    public function accountDeletionsAction() {
+
+        try {
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getAccountDeletionsData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -103,9 +217,34 @@ class StatsController extends AbstractActionController {
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getUsersByRegionContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getUsersByRegionData();
+
+            $exportConfig = array(
+                'region' => 'string',
+                'users' => 'number',
+            );
+
+            $content = $exportManager->exportArrayToCSV($data, $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-users');
+        }
+
+    }
+
+    public function usersByRegionAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getUsersByRegionData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -119,9 +258,33 @@ class StatsController extends AbstractActionController {
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getPredictionsThisSeasonContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getPredictionsThisSeasonData();
+
+            $exportConfig = array(
+                'predictions' => 'number',
+            );
+
+            $content = $exportManager->exportArrayToCSV(array($data), $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-predictions');
+        }
+
+    }
+
+    public function predictionsThisSeasonAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getPredictionsThisSeasonData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -134,9 +297,33 @@ class StatsController extends AbstractActionController {
 
         try {
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getPredictionsPerDayWhileSeason();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getPredictionsPerDayThisSeasonData();
+
+            $exportConfig = array(
+                'predictions' => 'number',
+                'date' => array('date' => 'j F Y'),
+            );
+
+            $content = $exportManager->exportArrayToCSV($data, $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-predictions');
+        }
+
+    }
+
+    public function predictionsPerMatchOverTimeAction() {
+
+        try {
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getPredictionsPerDayThisSeasonData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -150,9 +337,33 @@ class StatsController extends AbstractActionController {
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getAvgPredictionsPerMatchThisSeasonContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getAvgPredictionsPerMatchThisSeasonData();
+
+            $exportConfig = array(
+                'avg_number_of_predictions' => 'number',
+            );
+
+            $content = $exportManager->exportArrayToCSV(array($data), $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-predictions');
+        }
+
+    }
+
+    public function avgPredictionsPerMatchThisSeasonAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getAvgPredictionsPerMatchThisSeasonData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -166,9 +377,37 @@ class StatsController extends AbstractActionController {
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getHighestPredictedMatchContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getHighestPredictedMatchData();
+
+            $exportConfig = array(
+                'predictions' => 'number',
+                'start_time' => array('date' => 'j F Y'),
+                'competition' => 'string',
+                'home_team' => 'string',
+                'away_team' => 'string',
+            );
+
+            $content = $exportManager->exportArrayToCSV($data, $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-predictions');
+        }
+
+    }
+
+    public function highestPredictedMatchAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getHighestPredictedMatchData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -182,9 +421,37 @@ class StatsController extends AbstractActionController {
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getLowestPredictedMatchContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getLowestPredictedMatchData();
+
+            $exportConfig = array(
+                'predictions' => 'number',
+                'start_time' => array('date' => 'j F Y'),
+                'competition' => 'string',
+                'home_team' => 'string',
+                'away_team' => 'string',
+            );
+
+            $content = $exportManager->exportArrayToCSV($data, $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-predictions');
+        }
+
+    }
+
+    public function lowestPredictedMatchAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getLowestPredictedMatchData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -198,9 +465,35 @@ class StatsController extends AbstractActionController {
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getMostPopularScorersThisSeasonContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getMostPopularScorersThisSeasonData();
+
+            $exportConfig = array(
+                'player' => 'string',
+                'team' => 'string',
+                'predictions' => 'number',
+            );
+
+            $content = $exportManager->exportArrayToCSV($data, $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-predictions');
+        }
+
+    }
+
+    public function mostPopularScorersThisSeasonAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getMostPopularScorersThisSeasonData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
@@ -214,9 +507,34 @@ class StatsController extends AbstractActionController {
         try {
 
             $statsManager = StatsManager::getInstance($this->getServiceLocator());
-            $content = $statsManager->getMostPopularScoresThisSeasonContent();
+            $exportManager = ExportManager::getInstance($this->getServiceLocator());
+
+            $data = $statsManager->getMostPopularScoresThisSeasonData();
+
+            $exportConfig = array(
+                'score' => 'string',
+                'predictions' => 'number',
+            );
+
+            $content = $exportManager->exportArrayToCSV($data, $exportConfig);
 
             return $this->exportAction($content, __FUNCTION__);
+
+        } catch(\Exception $e) {
+            ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);
+            return $this->redirect()->toRoute('admin-stats-predictions');
+        }
+
+    }
+
+    public function mostPopularScoresThisSeasonAction() {
+
+        try {
+
+            $statsManager = StatsManager::getInstance($this->getServiceLocator());
+            $data = $statsManager->getMostPopularScoresThisSeasonData();
+
+            return array('data' => $data);
 
         } catch(\Exception $e) {
             ExceptionManager::getInstance($this->getServiceLocator())->handleControllerException($e, $this);

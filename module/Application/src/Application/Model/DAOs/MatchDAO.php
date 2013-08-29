@@ -77,19 +77,26 @@ class MatchDAO extends AbstractDAO {
      * @return integer
      */
     function getNearestMatch($offset, Season $season, $skipCache = false) {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('m.id as matchId, c.id as competitionId, c.displayName as competitionName')
-            ->from($this->getRepositoryName(), 'm')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
-            ->join('m.homeTeam', 'h')
-            ->where($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
-            ->orderBy('m.startTime', 'ASC')
-            ->addOrderBy('h.displayName', 'ASC')
-            ->setParameter("status1", Match::PRE_MATCH_STATUS)
-            ->setParameter("status2", Match::LIVE_STATUS)
+        $query = $this->getEntityManager()->createQuery('
+            SELECT m.id as matchId, c.id as competitionId, c.displayName as competitionName
+            FROM '.$this->getRepositoryName().' as m
+            INNER JOIN m.competitionSeason cs WITH cs.season = :seasonId
+            INNER JOIN cs.competition c
+            INNER JOIN m.homeTeam h
+            WHERE m.status = :status1 OR m.status = :status2
+            ORDER BY m.startTime ASC, h.displayName ASC
+        ')
             ->setFirstResult($offset)
-            ->setMaxResults(1);
-        return $this->getQuery($qb, $skipCache)->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->setMaxResults(1)
+            ->setParameter("seasonId", $season->getId())
+            ->setParameter("status1", Match::PRE_MATCH_STATUS)
+            ->setParameter("status2", Match::LIVE_STATUS);
+        return $this->prepareQuery($query, array(
+            $this->getRepositoryName(),
+            CompetitionDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+            CompetitionSeasonDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+            TeamDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+        ), $skipCache)->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
     }
 
     /**
@@ -100,19 +107,28 @@ class MatchDAO extends AbstractDAO {
      * @return integer
      */
     function getLastMatch($offset, User $user, Season $season, $skipCache = false) {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('m.id as matchId, c.id as competitionId, c.displayName as competitionName')
-            ->from($this->getRepositoryName(), 'm')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
-            ->innerJoin('m.predictions', 'p', Expr\Join::WITH, 'p.user = ' . $user->getId())
-            ->join('m.homeTeam', 'h')
-            ->where($qb->expr()->eq('m.status', ':status'))
-            ->orderBy('m.startTime', 'DESC')
-            ->addOrderBy('h.displayName', 'DESC')
-            ->setParameter("status", Match::FULL_TIME_STATUS)
+        $query = $this->getEntityManager()->createQuery('
+            SELECT m.id as matchId, c.id as competitionId, c.displayName as competitionName
+            FROM '.$this->getRepositoryName().' as m
+            INNER JOIN m.competitionSeason cs WITH cs.season = :seasonId
+            INNER JOIN cs.competition c
+            INNER JOIN m.predictions p WITH p.user = :userId
+            INNER JOIN m.homeTeam h
+            WHERE m.status = :status
+            ORDER BY m.startTime DESC, h.displayName DESC
+        ')
             ->setFirstResult($offset)
-            ->setMaxResults(1);
-        return $this->getQuery($qb, $skipCache)->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
+            ->setMaxResults(1)
+            ->setParameter("userId", $user->getId())
+            ->setParameter("seasonId", $season->getId())
+            ->setParameter("status", Match::FULL_TIME_STATUS);
+        return $this->prepareQuery($query, array(
+            $this->getRepositoryName(),
+            CompetitionDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+            CompetitionSeasonDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+            TeamDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+            PredictionDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+        ), $skipCache)->getOneOrNullResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
     }
 
     /**
@@ -125,7 +141,7 @@ class MatchDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('m.id'))
             ->from($this->getRepositoryName(), 'm')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->innerJoin('m.competitionSeason', 'cs', Expr\Join::WITH, 'cs.season = ' . $season->getId())
             ->where($qb->expr()->andX($qb->expr()->lt('m.startTime', ":fromTime"), $qb->expr()->eq('m.status', ":status1")))
             ->orWhere($qb->expr()->eq('m.status', ':status2'))
             ->setParameter("fromTime", $fromTime)
@@ -144,7 +160,7 @@ class MatchDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('m.id'))
             ->from($this->getRepositoryName(), 'm')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->innerJoin('m.competitionSeason', 'cs', Expr\Join::WITH, 'cs.season = ' . $season->getId())
             ->where($qb->expr()->gt('m.startTime', ":fromTime"))
             ->andWhere($qb->expr()->eq('m.status', ':status'))
             ->setParameter("fromTime", $fromTime)
@@ -162,7 +178,7 @@ class MatchDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('m.id'))
             ->from($this->getRepositoryName(), 'm')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->innerJoin('m.competitionSeason', 'cs', Expr\Join::WITH, 'cs.season = ' . $season->getId())
             ->innerJoin('m.predictions', 'p', Expr\Join::WITH, 'p.user = ' . $user->getId())
             ->where($qb->expr()->eq('m.status', ':status'))
             ->setParameter("status", Match::FULL_TIME_STATUS);
@@ -178,7 +194,7 @@ class MatchDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('m.id'))
             ->from($this->getRepositoryName(), 'm')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->innerJoin('m.competitionSeason', 'cs', Expr\Join::WITH, 'cs.season = ' . $season->getId())
             ->where($qb->expr()->eq('m.status', ':status'))
             ->setParameter("status", Match::FULL_TIME_STATUS);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
@@ -194,7 +210,7 @@ class MatchDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('m.id'))
             ->from($this->getRepositoryName(), 'm')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->innerJoin('m.competitionSeason', 'cs', Expr\Join::WITH, 'cs.season = ' . $season->getId())
             ->innerJoin('m.predictions', 'p', Expr\Join::WITH, 'p.user = ' . $user->getId())
             ->andWhere($qb->expr()->eq('m.status', ':status'))
             ->andWhere($qb->expr()->eq('p.wasViewed', 0))
@@ -204,36 +220,30 @@ class MatchDAO extends AbstractDAO {
 
     /**
      * @param \Application\Model\Entities\Season $season
-     * @param bool $hydrate
      * @param bool $skipCache
      * @return array
      */
-    function getMatchesLeftInTheSeason(Season $season, $hydrate = false, $skipCache = false) {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('
-                m.id,
-                m.feederId,
-                m.status,
-                m.startTime,
-                m.timezone,
-                h.shortName as homeShortName,
-                a.shortName as awayShortName,
-                h.displayName as homeName,
-                h.logoPath as homeLogo,
-                a.displayName as awayName,
-                a.logoPath as awayLogo,
-                c.displayName as competitionName
-            ')
-            ->from($this->getRepositoryName(), 'm')
-            ->join('m.homeTeam', 'h')
-            ->join('m.awayTeam', 'a')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
-            ->where($qb->expr()->orX($qb->expr()->eq('m.status', ':status1'), $qb->expr()->eq('m.status', ':status2')))
+    function getMatchesLeftInTheSeason(Season $season, $skipCache = false) {
+        $query = $this->getEntityManager()->createQuery('
+            SELECT m.id, m.feederId, m.status, m.startTime, m.timezone, h.shortName as homeShortName, a.shortName as awayShortName, h.displayName as homeName,
+                h.logoPath as homeLogo, h.feederId homeFeederId, a.displayName as awayName, a.logoPath as awayLogo, a.feederId awayFeederId, c.displayName as competitionName
+            FROM '.$this->getRepositoryName().' as m
+            INNER JOIN m.homeTeam h
+            INNER JOIN m.awayTeam a
+            INNER JOIN m.competitionSeason cs WITH cs.season = :seasonId
+            INNER JOIN cs.competition c
+            WHERE m.status = :status1 OR m.status = :status2
+            ORDER BY m.startTime ASC, h.displayName ASC
+        ')
+            ->setParameter("seasonId", $season->getId())
             ->setParameter("status1", Match::PRE_MATCH_STATUS)
-            ->setParameter("status2", Match::LIVE_STATUS)
-            ->orderBy('m.startTime', 'ASC')
-            ->addOrderBy('h.displayName', 'ASC');
-        return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+            ->setParameter("status2", Match::LIVE_STATUS);
+        return $this->prepareQuery($query, array(
+            $this->getRepositoryName(),
+            CompetitionDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+            CompetitionSeasonDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+            TeamDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+        ), $skipCache)->getArrayResult();
     }
 
     /**
@@ -243,16 +253,24 @@ class MatchDAO extends AbstractDAO {
      * @return Match|array
      */
     function getMatchInfo($matchId, $hydrate = false, $skipCache = false) {
-        $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('m.id, m.status, m.startTime, m.timezone, m.isDoublePoints, m.hasLineUp, h.id as homeId, h.displayName as homeName,
-            h.logoPath as homeLogo, a.id as awayId, a.displayName as awayName, a.logoPath as awayLogo,
-            c.displayName as competitionName, c.id as competitionId, m.homeTeamFullTimeScore, m.awayTeamFullTimeScore')
-            ->from($this->getRepositoryName(), 'm')
-            ->join('m.homeTeam', 'h')
-            ->join('m.awayTeam', 'a')
-            ->join('m.competition', 'c')
-            ->where($qb->expr()->eq('m.id', $matchId));
-        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+        $query = $this->getEntityManager()->createQuery('
+            SELECT m.id, m.status, m.startTime, m.timezone, m.isDoublePoints, m.hasLineUp, h.id as homeId, h.displayName as homeName,
+              h.logoPath as homeLogo, a.id as awayId, a.displayName as awayName, a.logoPath as awayLogo,
+              c.displayName as competitionName, c.logoPath as competitionLogo, c.id as competitionId, m.homeTeamFullTimeScore, m.awayTeamFullTimeScore, IDENTITY(cs.season) as seasonId
+            FROM '.$this->getRepositoryName().' as m
+            INNER JOIN m.homeTeam h
+            INNER JOIN m.awayTeam a
+            INNER JOIN m.competitionSeason cs
+            INNER JOIN cs.competition c
+            WHERE m.id = :matchId
+        ')
+            ->setParameter("matchId", $matchId);
+        return $this->prepareQuery($query, array(
+            $this->getRepositoryName(),
+            CompetitionDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+            CompetitionSeasonDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+            TeamDAO::getInstance($this->getServiceLocator())->getRepositoryName(),
+        ), $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
     /**
@@ -288,9 +306,11 @@ class MatchDAO extends AbstractDAO {
             FROM
                '.$this->getRepositoryName().' as m
             INNER JOIN
-                    m.competition c
+                    m.competitionSeason cs
             INNER JOIN
-                    c.season s
+                    cs.season s
+            INNER JOIN
+                    cs.competition c
             INNER JOIN
                     m.awayTeam at
             INNER JOIN
@@ -322,7 +342,7 @@ class MatchDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('m.id'))
             ->from($this->getRepositoryName(), 'm')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->innerJoin('m.competitionSeason', 'cs', Expr\Join::WITH, 'cs.season = ' . $season->getId())
             ->join('m.homeTeam', 'h')
             ->where($qb->expr()->orX($qb->expr()->andX($qb->expr()->gt('m.startTime', ":fromTime"), $qb->expr()->lte('m.startTime', ":tillTime"), $qb->expr()->eq('m.status', ':status1')), $qb->expr()->eq('m.status', ':status2')))
             ->orderBy('m.startTime', 'ASC')
@@ -345,7 +365,7 @@ class MatchDAO extends AbstractDAO {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select($qb->expr()->count('m.id'))
             ->from($this->getRepositoryName(), 'm')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->innerJoin('m.competitionSeason', 'cs', Expr\Join::WITH, 'cs.season = ' . $season->getId())
             ->innerJoin('m.predictions', 'p', Expr\Join::WITH, 'p.user = ' . $user->getId())
             ->join('m.homeTeam', 'h')
             ->where($qb->expr()->eq('m.status', ':status'))
@@ -357,11 +377,16 @@ class MatchDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult();
     }
 
+    /**
+     * @param $season
+     * @param bool $skipCache
+     * @return bool
+     */
     function getHasFinishedMatches($season, $skipCache = false) {
         $qb = $this->getEntityManager()->createQueryBuilder();
         $qb->select('count(m.id) as matches')
             ->from($this->getRepositoryName(), 'm')
-            ->innerJoin('m.competition', 'c', Expr\Join::WITH, 'c.season = ' . $season->getId())
+            ->innerJoin('m.competitionSeason', 'cs', Expr\Join::WITH, 'cs.season = ' . $season->getId())
             ->where($qb->expr()->eq('m.status', ':status'))
             ->setParameter("status", Match::FULL_TIME_STATUS);
         return $this->getQuery($qb, $skipCache)->getSingleScalarResult() > 0;

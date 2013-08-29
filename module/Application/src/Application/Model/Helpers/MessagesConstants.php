@@ -13,6 +13,7 @@ class MessagesConstants
     const SUCCESS_SEASON_UPDATED = "A season was updated successfully.";
     const SUCCESS_LEAGUE_CREATED = "A league was created successfully.";
     const SUCCESS_LEAGUE_UPDATED = "A league was updated successfully.";
+    const SUCCESS_COMPETITION_UPDATED = "A competition was updated successfully.";
     const SUCCESS_LANDING_UPDATED = "A landing page content was updated successfully.";
     const SUCCESS_GAMEPLAY_BLOCK_CREATED = "A gameplay block was created successfully.";
     const SUCCESS_GAMEPLAY_BLOCK_UPDATED = "A gameplay block was updated successfully.";
@@ -84,6 +85,8 @@ class MessagesConstants
     const ERROR_FTP_CANNOT_CONNECT_TO_THE_HOST = 'Cannot connect to FTP host "%s".';
     const ERROR_FTP_CANNOT_LOGIN_TO_THE_HOST = 'Cannot login to FTP host "%s" using username "%s".';
     const ERROR_FTP_CANNOT_CONFIGURE_PASSIVE_MODE = 'Cannot configure passive mode to FTP host "%s".';
+    const SUCCESS_DEFAULT_SKIN_IMAGE_ADDED = "A default skin image was added successfully.";
+    const SUCCESS_DEFAULT_SKIN_COLOUR_ADDED = "A default skin colour was updated successfully.";
 
 //    Application Messages Constants
     const ERROR_FORM_FILLED_INCORRECTLY = "Form has been filled incorrectly.";
@@ -180,6 +183,7 @@ class MessagesConstants
     const INFO_WRONG_COMPETITION = 'Feed competition is not an application competition';
     const INFO_ENTITY_NOT_FOUND = '"%s" was not found';
     const WARNING_TEAM_NOT_FOUND = 'A team was with team_id = "%s" was not found';
+    const WARNING_MATCH_NOT_FOUND = 'A match was with feeder_id = "%s" was not found';
     const ERROR_FIELD_IS_EMPTY = 'The field "%s" is empty';
     const ERROR_CANNOT_BE_PARSED = 'The feed file contents cannot be parsed to xml';
 

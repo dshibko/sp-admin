@@ -266,6 +266,15 @@ abstract class AbstractDAO implements ServiceLocatorAwareInterface {
     }
 
     /**
+     * @param $class
+     * @param $id
+     * @return object
+     */
+    public function getReference($class, $id) {
+        return $this->getEntityManager()->getReference($class, $id);
+    }
+
+    /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;

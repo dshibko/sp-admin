@@ -140,6 +140,16 @@ return array(
                     ),
                 ),
             ),
+            'hide-message' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route'    => '/hide-message/',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\UserMessages',
+                        'action'     => 'hideMessage',
+                    ),
+                ),
+            ),
             'registration' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -429,6 +439,7 @@ return array(
             'Application\Controller\Common' => 'Application\Controller\CommonController',
             'Application\Controller\ClearAppCache' => 'Application\Controller\ClearAppCacheController',
             'Application\Controller\PrivateLeague' => 'Application\Controller\PrivateLeagueController',
+            'Application\Controller\UserMessages' => 'Application\Controller\UserMessagesController',
         ),
     ),
     'controller_plugins' => array(

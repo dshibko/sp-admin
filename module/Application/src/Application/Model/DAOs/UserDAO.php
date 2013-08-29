@@ -199,8 +199,7 @@ class UserDAO extends AbstractDAO {
              FROM ' . $this->getRepositoryName() . ' u
              WHERE EXISTS(SELECT 1 FROM \Application\Model\Entities\Prediction p
              JOIN p.match m
-             JOIN m.competition c
-             JOIN c.season s WITH s.id = ' . $season->getId() . '
+             JOIN m.competitionSeason cs WITH cs.season = ' . $season->getId() . '
              WHERE p.user = u.id)
              ');
         return $query->getSingleScalarResult();
