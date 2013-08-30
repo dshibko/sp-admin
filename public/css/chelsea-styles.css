@@ -632,8 +632,6 @@ aside.connect-facebook .login-with-facebook span,
   }
 }
 
-
-
-
-
-
+.grid-layout .item.blockquote section figure blockquote {
+    color: #fff;
+}
