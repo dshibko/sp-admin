@@ -897,7 +897,7 @@ msgid "Terms were saved successfully."
 msgstr "ข้อตกลงได้ถูกบันทึกเรียบร้อยแล้ว"
 
 msgid "A private league with the league code %s hasn't been not found"
-msgstr "A private league with the league code %s hasn't been not found"
+msgstr "ไม่พบลีกส่วนตัวที่มีรหัส %s นี้"
 
 msgid "You joined the league earlier"
 msgstr "You joined the league earlier"

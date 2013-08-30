@@ -192,7 +192,7 @@ msgstr "剩余时间"
 #: view/application/match/index.phtml:98
 #: view/application/predict/index.phtml:161
 msgid "days hours mins secs"
-msgstr "天 时 分 秒"
+msgstr "天&nbsp;&nbsp;时&nbsp;&nbsp;分&nbsp;&nbsp;秒"
 
 #: view/application/predict/index.phtml:1
 msgid "Predict at"
