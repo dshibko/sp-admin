@@ -66,7 +66,7 @@ class TeamDAO extends AbstractDAO {
             ->join('p.competitionSeasons', 'csp', Expr\Join::WITH, 'csp.season = ' . $seasonId)
             ->where($qb->expr()->eq('p.team', $teamId))
             ->groupBy('p.id')
-            ->having('count(cp.id) > 0')
+            ->having('count(csp.id) > 0')
             ->orderBy('p.position', 'ASC');
         return $this->getQuery($qb, $skipCache)->getResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }

@@ -37,7 +37,8 @@ class UserMessagesHelper extends AbstractHelper
         $user = $applicationManager->getCurrentUser();
         if ($user != null && $sessionManager->getParameter(SessionManager::IS_JUST_LOGGED_IN, SessionManager::USER_STORAGE)) {
             $firstRoute = $sessionManager->getParameter(SessionManager::FIRST_ROUTE, SessionManager::USER_STORAGE);
-            $currentRoute = $this->serviceLocator->get('router')->match($this->serviceLocator->get('Request'))->getMatchedRouteName();
+            $match = $this->serviceLocator->get('router')->match($this->serviceLocator->get('Request'));
+            $currentRoute = $match != null ? $match->getMatchedRouteName() : null;
             if (empty($firstRoute)) {
                 $sessionManager->setParameter(SessionManager::FIRST_ROUTE, $currentRoute, SessionManager::USER_STORAGE);
                 $this->showMessages = true;
