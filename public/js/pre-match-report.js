@@ -43,7 +43,7 @@ function initCharts(doResize){
                             show: true,
                             radius: 0,
                             formatter: function(label, series) {
-                                return '<b style="color: #a01749;">'+label+'</b>';
+                                return '<b style="color: #4d4d4d;">'+label+'</b>';
                             }
                         }
                     }
