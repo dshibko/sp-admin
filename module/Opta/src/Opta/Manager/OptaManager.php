@@ -896,6 +896,13 @@ class OptaManager extends BasicManager {
                 }
 
                 $matchDAO->save($match);
+                PreMatchReportAvgGoalsScoredDAO::getInstance($this->getServiceLocator())->clearCache();
+                PreMatchReportFormGuideDAO::getInstance($this->getServiceLocator())->clearCache();
+                PreMatchReportGoalsScoredDAO::getInstance($this->getServiceLocator())->clearCache();
+                PreMatchReportHeadToHeadDAO::getInstance($this->getServiceLocator())->clearCache();
+                PreMatchReportLastSeasonMatchDAO::getInstance($this->getServiceLocator())->clearCache();
+                PreMatchReportMostRecentScorerDAO::getInstance($this->getServiceLocator())->clearCache();
+                PreMatchReportTopScorerDAO::getInstance($this->getServiceLocator())->clearCache();
 
             }
 
