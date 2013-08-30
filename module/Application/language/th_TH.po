@@ -959,3 +959,74 @@ msgstr "Admin can't leave the private league"
 msgid "Unique league code"
 msgstr "Unique league code"
 
+#: Iteration 2.1
+#: view/application/fixtures/index.phtml:41
+msgid "View my prediction"
+msgstr "View my prediction"
+
+#: view/application/fixtures/match-report-messages.phtml:62
+msgid "See full report"
+msgstr "See full report"
+
+#: view/application/partials/match-report-messages.phtml:4
+msgid "Match Results"
+msgstr "Match Results"
+
+#: view/application/partials/pre-match-report.phtml:218
+msgid "Community think %s will win this match"
+msgstr "Community think %s will win this match"
+
+msgid "Community correctly predicted the score line"
+msgstr "Community correctly predicted the score line"
+
+#: view/application/partials/post-match-report.phtml:90
+msgid "Community agreed with your score prediction"
+msgstr "Community agreed with your score prediction"
+
+#: view/application/partials/cookie-bar.phtml:4
+msgid "Accept and close"
+msgstr "Accept and close"
+
+#: view/application/partials/cookie-bar.phtml:3
+msgid "We use cookies to ensure that we gave you the best experience on our website. If you continue without changing your settings, we'll assume that you are happy to receive all cookies on the Score Predictor website. Learn more about our %scookie usage%s and how to change your cookie settings."
+msgstr "We use cookies to ensure that we gave you the best experience on our website. If you continue without changing your settings, we'll assume that you are happy to receive all cookies on the Score Predictor website. Learn more about our %scookie usage%s and how to change your cookie settings."
+
+#: view/application/partials/pre-match-report.phtml:235
+msgid "Average goals per game this season"
+msgstr "Average goals per game this season"
+
+#: view/application/partials/pre-match-report.phtml:256
+msgid "Last 5 matches"
+msgstr "Last 5 matches"
+
+#: view/application/partials/pre-match-report.phtml:272
+msgid "Wins"
+msgstr "Wins"
+
+#: view/application/partials/pre-match-report.phtml:273
+msgid "Losses"
+msgstr "Losses"
+
+#: view/application/partials/pre-match-report.phtml:274
+msgid "Draws"
+msgstr "Draws"
+
+#: view/application/partials/pre-match-report.phtml:287
+msgid "Total goals this season"
+msgstr "Total goals this season"
+
+#: view/application/partials/pre-match-report.phtml:347
+msgid "Was the result of the corresponding fixture last season"
+msgstr "Was the result of the corresponding fixture last season"
+
+#: view/application/partials/pre-match-report.phtml:359
+msgid "Last players to score"
+msgstr "Last players to score"
+
+#: view/application/partials/pre-match-report.phtml:383
+msgid "Top scorers"
+msgstr "Top scorers"
+
+#: view/application/partials/post-match-report.phtml:138
+msgid "Is the %smost%s picked player"
+msgstr "Is the %smost%s picked player"

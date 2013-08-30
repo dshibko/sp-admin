@@ -765,7 +765,7 @@ msgid "Overall League"
 msgstr "Overall League"
 
 msgid "Temporal Leagues"
-msgstr "Temporal Leagues"
+msgstr "Mini Leagues"
 
 msgid "Your results"
 msgstr "Your results"
