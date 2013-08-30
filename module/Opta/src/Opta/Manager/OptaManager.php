@@ -659,7 +659,9 @@ class OptaManager extends BasicManager {
                 if ($match == null)
                     throw new \Exception(sprintf(MessagesConstants::WARNING_MATCH_NOT_FOUND, $matchFeederId));
 
-                $previousMeetings = $matchData->PreviousMeetings->MatchData;
+                $previousMeetingsNode = !empty($matchData->PreviousMeetings) ? $matchData->PreviousMeetings :
+                    (!empty($matchData->PreviousMeetingsOtherComps) ? $matchData->PreviousMeetingsOtherComps : null);
+                $previousMeetings = !empty($previousMeetingsNode) ? $previousMeetingsNode->MatchData : null;
                 if (!empty($previousMeetings)) {
 
                     // head to head
@@ -711,8 +713,8 @@ class OptaManager extends BasicManager {
                 }
 
                 // goals scored
-                $homeTeamTotalsData = $this->getNodeByAttribute($matchData->Totals, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId());
-                $awayTeamTotalsData = $this->getNodeByAttribute($matchData->Totals, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId());
+                $homeTeamTotalsData = !empty($matchData->Totals) ? $this->getNodeByAttribute($matchData->Totals, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId()) : null;
+                $awayTeamTotalsData = !empty($matchData->Totals) ? $this->getNodeByAttribute($matchData->Totals, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId()) : null;
                 if ($homeTeamTotalsData != null && $awayTeamTotalsData != null) {
                     $homeTeamGoals = $this->getNodeValueByAttribute($homeTeamTotalsData, 'Stat', 'Type', 'goals');
                     $awayTeamGoals = $this->getNodeValueByAttribute($awayTeamTotalsData, 'Stat', 'Type', 'goals');
@@ -729,8 +731,8 @@ class OptaManager extends BasicManager {
                 }
 
                 // avg goals scored
-                $homeTeamAveragesData = $this->getNodeByAttribute($matchData->Averages, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId());
-                $awayTeamAveragesData = $this->getNodeByAttribute($matchData->Averages, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId());
+                $homeTeamAveragesData = !empty($matchData->Averages) ? $this->getNodeByAttribute($matchData->Averages, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId()) : null;
+                $awayTeamAveragesData = !empty($matchData->Averages) ? $this->getNodeByAttribute($matchData->Averages, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId()) : null;
                 if ($homeTeamAveragesData != null && $awayTeamAveragesData != null) {
                     $homeTeamAvgGoals = $this->getNodeValueByAttribute($homeTeamAveragesData->Overall, 'Stat', 'Type', 'goals');
                     $awayTeamAvgGoals = $this->getNodeValueByAttribute($awayTeamAveragesData->Overall, 'Stat', 'Type', 'goals');
@@ -746,8 +748,8 @@ class OptaManager extends BasicManager {
                     }
                 }
 
-                $homeTeamFormData = $this->getNodeByAttribute($matchData->Form, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId());
-                $awayTeamFormData = $this->getNodeByAttribute($matchData->Form, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId());
+                $homeTeamFormData = !empty($matchData->Form) ? $this->getNodeByAttribute($matchData->Form, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId()) : null;
+                $awayTeamFormData = !empty($matchData->Form) ? $this->getNodeByAttribute($matchData->Form, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId()) : null;
                 if ($homeTeamFormData != null && $awayTeamFormData != null) {
 
                     // form guide
@@ -837,54 +839,56 @@ class OptaManager extends BasicManager {
                 }
 
                 // top scorers
-                $homeTeamTopScorersData = $this->getNodeByAttribute($matchData->Rankings, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId());
-                $awayTeamTopScorersData = $this->getNodeByAttribute($matchData->Rankings, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId());
-                $teamsTopScorersData = array(
-                    $match->getHomeTeam()->getFeederId() => $homeTeamTopScorersData,
-                    $match->getAwayTeam()->getFeederId() => $awayTeamTopScorersData,
-                );
-                $teamsTopScorersMaxNumber = 3;
-                $teamsTopScorersArr = array();
-                foreach($teamsTopScorersData as $feederId => $teamTopScorersData) {
-                    $teamTopScorersStatsData = $this->getNodeByAttribute($teamTopScorersData->Overall, 'Stat', 'Type', 'goals_scored');
-                    if ($teamTopScorersStatsData !== null) {
-                        $teamTopScorersRanks = $teamTopScorersStatsData->Rank;
-                        foreach ($teamTopScorersRanks as $teamTopScorersRank) {
-                            $goalsScored = $this->getXmlAttribute($teamTopScorersRank, 'Total');
-                            $teamTopScorers = $teamTopScorersRank->Player;
-                            foreach ($teamTopScorers as $teamTopScorer) {
-                                if (!array_key_exists($feederId, $teamsTopScorersArr))
-                                    $teamsTopScorersArr[$feederId] = array();
-                                $scorerFeederId = $this->getIdFromString($this->getNodeValue($teamTopScorer));
-                                $teamsTopScorersArr[$feederId][$scorerFeederId] = $goalsScored;
-                                if (count($teamsTopScorersArr[$feederId]) == $teamsTopScorersMaxNumber)
-                                    break 2;
+                if (!empty($matchData->Rankings)) {
+                    $homeTeamTopScorersData = $this->getNodeByAttribute($matchData->Rankings, 'Team', 'uID', 't' . $match->getHomeTeam()->getFeederId());
+                    $awayTeamTopScorersData = $this->getNodeByAttribute($matchData->Rankings, 'Team', 'uID', 't' . $match->getAwayTeam()->getFeederId());
+                    $teamsTopScorersData = array(
+                        $match->getHomeTeam()->getFeederId() => $homeTeamTopScorersData,
+                        $match->getAwayTeam()->getFeederId() => $awayTeamTopScorersData,
+                    );
+                    $teamsTopScorersMaxNumber = 3;
+                    $teamsTopScorersArr = array();
+                    foreach($teamsTopScorersData as $feederId => $teamTopScorersData) {
+                        $teamTopScorersStatsData = $this->getNodeByAttribute($teamTopScorersData->Overall, 'Stat', 'Type', 'goals_scored');
+                        if ($teamTopScorersStatsData !== null) {
+                            $teamTopScorersRanks = $teamTopScorersStatsData->Rank;
+                            foreach ($teamTopScorersRanks as $teamTopScorersRank) {
+                                $goalsScored = $this->getXmlAttribute($teamTopScorersRank, 'Total');
+                                $teamTopScorers = $teamTopScorersRank->Player;
+                                foreach ($teamTopScorers as $teamTopScorer) {
+                                    if (!array_key_exists($feederId, $teamsTopScorersArr))
+                                        $teamsTopScorersArr[$feederId] = array();
+                                    $scorerFeederId = $this->getIdFromString($this->getNodeValue($teamTopScorer));
+                                    $teamsTopScorersArr[$feederId][$scorerFeederId] = $goalsScored;
+                                    if (count($teamsTopScorersArr[$feederId]) == $teamsTopScorersMaxNumber)
+                                        break 2;
+                                }
                             }
                         }
                     }
-                }
-                if (!empty($teamsTopScorersArr)) {
-                    $teamsFeederIds = array(
-                        $match->getHomeTeam()->getFeederId() => $match->getHomeTeam(),
-                        $match->getAwayTeam()->getFeederId() => $match->getAwayTeam(),
-                    );
-                    foreach ($teamsFeederIds as $feederId => $team) {
-                        $place = 0;
-                        if (array_key_exists($feederId, $teamsTopScorersArr)) {
-                            $teamTopScorers = $teamsTopScorersArr[$feederId];
-                            foreach ($teamTopScorers as $teamTopScorer => $goalsScored) {
-                                $player = $playerDAO->findOneByFeederId($teamTopScorer);
-                                if ($player != null) {
-                                    $topScorer = $match->getPreMatchReportTopScorerByTeamAndPlace($team, ++$place);
-                                    if ($topScorer == null) {
-                                        $topScorer = new PreMatchReportTopScorer();
-                                        $topScorer->setMatch($match);
-                                        $topScorer->setTeam($team);
-                                        $topScorer->setPlace($place);
-                                        $match->addPreMatchReportTopScorers($topScorer);
+                    if (!empty($teamsTopScorersArr)) {
+                        $teamsFeederIds = array(
+                            $match->getHomeTeam()->getFeederId() => $match->getHomeTeam(),
+                            $match->getAwayTeam()->getFeederId() => $match->getAwayTeam(),
+                        );
+                        foreach ($teamsFeederIds as $feederId => $team) {
+                            $place = 0;
+                            if (array_key_exists($feederId, $teamsTopScorersArr)) {
+                                $teamTopScorers = $teamsTopScorersArr[$feederId];
+                                foreach ($teamTopScorers as $teamTopScorer => $goalsScored) {
+                                    $player = $playerDAO->findOneByFeederId($teamTopScorer);
+                                    if ($player != null) {
+                                        $topScorer = $match->getPreMatchReportTopScorerByTeamAndPlace($team, ++$place);
+                                        if ($topScorer == null) {
+                                            $topScorer = new PreMatchReportTopScorer();
+                                            $topScorer->setMatch($match);
+                                            $topScorer->setTeam($team);
+                                            $topScorer->setPlace($place);
+                                            $match->addPreMatchReportTopScorers($topScorer);
+                                        }
+                                        $topScorer->setGoals($goalsScored);
+                                        $topScorer->setPlayer($player);
                                     }
-                                    $topScorer->setGoals($goalsScored);
-                                    $topScorer->setPlayer($player);
                                 }
                             }
                         }
@@ -1135,7 +1139,6 @@ class OptaManager extends BasicManager {
                     $matchManager = MatchManager::getInstance($this->getServiceLocator());
                     $unfinishedAndPredictableMatches = $matchManager->getUnfinishedAndPredictableMatches($currentSeason, true);
                     $processingStarted = false;
-                    $clearCacheApp = array();
                     foreach ($unfinishedAndPredictableMatches as $match) {
                         $matchFeeds = $this->filterFeedsByParameters($feeds, $type, array(
                             'game_id' => $match['feederId'],
@@ -1143,19 +1146,15 @@ class OptaManager extends BasicManager {
                         foreach ($matchFeeds as $matchFeed)
                             if ($force || $this->hasToBeProcessed($matchFeed, $type, $currentSeason)) {
                                 $processingStarted = true;
-                                $this->processingStarted($matchFeed, $type, $currentSeason);
-                                $this->saveFeedsChanges();
-                                $success = $this->parseF2Feed($matchFeed, $console);
-                                if ($success !== false && is_array($success)) {
-                                    $clearCacheApp = array_merge($clearCacheApp, $success);
-                                    $success = true;
-                                }
-                                $this->processingCompleted($matchFeed, $type, $currentSeason, $success);
-                                $this->saveFeedsChanges();
+//                                $this->processingStarted($matchFeed, $type, $currentSeason);
+//                                $this->saveFeedsChanges();
+                                $this->parseF2Feed($matchFeed, $console);
+//                                $this->processingCompleted($matchFeed, $type, $currentSeason);
+//                                $this->saveFeedsChanges();
                             }
                     }
                     if ($processingStarted)
-                        $this->clearAppCache($type, $console, array_unique($clearCacheApp));
+                        $this->clearAppCache($type, $console);
                 }
                 break;
 

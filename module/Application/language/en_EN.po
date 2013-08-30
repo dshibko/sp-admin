@@ -740,8 +740,8 @@ msgstr "Results"
 msgid "Full Table"
 msgstr "Full Table"
 
-msgid "All time head-to-head results"
-msgstr "All time head-to-head results"
+msgid "Head-to-head results"
+msgstr "Head-to-head results"
 
 msgid "Total goals this season"
 msgstr "Total goals this season"
@@ -1014,10 +1014,6 @@ msgstr "Draws"
 #: view/application/partials/pre-match-report.phtml:287
 msgid "Total goals this season"
 msgstr "Total goals this season"
-
-#: view/application/partials/pre-match-report.phtml:312
-msgid "All time head-to-head results"
-msgstr "All time head-to-head results"
 
 #: view/application/partials/pre-match-report.phtml:347
 msgid "Was the result of the corresponding fixture last season"
