@@ -1146,11 +1146,11 @@ class OptaManager extends BasicManager {
                         foreach ($matchFeeds as $matchFeed)
                             if ($force || $this->hasToBeProcessed($matchFeed, $type, $currentSeason)) {
                                 $processingStarted = true;
-//                                $this->processingStarted($matchFeed, $type, $currentSeason);
-//                                $this->saveFeedsChanges();
+                                $this->processingStarted($matchFeed, $type, $currentSeason);
+                                $this->saveFeedsChanges();
                                 $this->parseF2Feed($matchFeed, $console);
-//                                $this->processingCompleted($matchFeed, $type, $currentSeason);
-//                                $this->saveFeedsChanges();
+                                $this->processingCompleted($matchFeed, $type, $currentSeason);
+                                $this->saveFeedsChanges();
                             }
                     }
                     if ($processingStarted)
