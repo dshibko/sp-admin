@@ -88,7 +88,7 @@ class CountryDAO extends AbstractDAO {
             ->from($this->getRepositoryName(), 'c')
             ->leftJoin('c.region', 'r')
             ->leftJoin('c.language', 'l')
-            ->where('c.isoCode = :iso_code')
+            ->where($qb->expr()->eq('c.isoCode', ':iso_code'))
             ->setParameter('iso_code', $isoCode);
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY : null);
     }
