@@ -129,7 +129,7 @@ msgstr "Show more"
 
 #: view/application/index/index.phtml:72
 msgid "Already a member?"
-msgstr "Already a member?"
+msgstr "Já é membro ?"
 
 #: view/application/index/index.phtml:76
 msgid "Regular Login"
@@ -149,7 +149,7 @@ msgstr "Sign in"
 
 #: view/application/index/index.phtml:101
 msgid "Close"
-msgstr "Close"
+msgstr "Fechar "
 
 #: view/application/index/index.phtml:130
 msgid "Ready to try?"
@@ -269,7 +269,7 @@ msgstr "Registration"
 #: view/application/registration/index.phtml:15
 #: view/application/user/settings.phtml:14
 msgid "Connect with Facebook"
-msgstr "Connect with Facebook"
+msgstr "Conectar através do Facebook"
 
 #: view/application/registration/index.phtml:26
 msgid "Enter Personal Info"
@@ -321,7 +321,7 @@ msgstr "Just one more thing"
 #: view/application/registration/setup.phtml:39
 #: view/partials/setup-popup.phtml:13
 msgid "Are these details correct?"
-msgstr "Are these details correct?"
+msgstr "Confirma que os seguintes dados estão corretos ? "
 
 #: view/application/registration/setup.phtml:40
 #: view/partials/setup-popup.phtml:14
@@ -336,7 +336,7 @@ msgstr "Note: once you have confirmed your region you will not be able to change
 #: view/application/registration/setup.phtml:57
 #: view/partials/setup-popup.phtml:31
 msgid "Confirm and start playing"
-msgstr "Confirm and start playing"
+msgstr "Confirme e comece a jogar "
 
 #: view/application/results/index.phtml:1
 msgid "Your Results of"
@@ -380,15 +380,15 @@ msgstr "Delete Account"
 
 #: view/application/user/delete.phtml:11
 msgid "Are you sure you want to delete your account?"
-msgstr "Are you sure you want to delete your account?"
+msgstr "Tem a certeza que pretende apagar a sua conta ? "
 
 #: view/application/user/delete.phtml:12
 msgid "<strong>Note:</strong> all data associated with your account will be lost and non-recoverable."
-msgstr "<strong>Note:</strong> all data associated with your account will be lost and non-recoverable."
+msgstr "Todas as informações da sua data base associadas á sua conta serão apagadas e não será possível recuperá-las. "
 
 #: view/application/user/delete.phtml:14
 msgid "Confirm and delete account"
-msgstr "Confirm and delete account"
+msgstr "Confirme e apague a sua conta "
 
 #: view/application/user/settings.phtml:2 view/partials/menu.phtml:30
 msgid "Settings"
@@ -396,7 +396,7 @@ msgstr "Settings"
 
 #: view/application/user/settings.phtml:25
 msgid "Change your Password"
-msgstr "Change your Password"
+msgstr "Alterar Palavra-passe "
 
 #: view/application/user/settings.phtml:40
 #: view/application/user/settings.phtml:69
@@ -408,15 +408,15 @@ msgstr "Save changes"
 
 #: view/application/user/settings.phtml:58
 msgid "Change Your Email Addresses"
-msgstr "Change Your Email Addresses"
+msgstr "Alterar o seu endereço de email "
 
 #: view/application/user/settings.phtml:87
 msgid "Change Your Display Name"
-msgstr "Change Your Display Name"
+msgstr "Alterar nome "
 
 #: view/application/user/settings.phtml:112
 msgid "Change Your Avatar"
-msgstr "Change Your Avatar"
+msgstr "Alterar a sua imagem "
 
 #: view/application/user/settings.phtml:115
 msgid "User avatar"
@@ -461,7 +461,7 @@ msgstr "Sorry, you can't see the page. We are aware of it and doing all our best
 
 #: view/error/500.phtml:15 view/error/index.phtml:8
 msgid "Additional information"
-msgstr "Additional information"
+msgstr "Informação adicional "
 
 #: view/error/index.phtml:1
 msgid "An error occurred"
@@ -501,7 +501,7 @@ msgstr "With breaking news, match updates,  competitions and <br>exclusive inter
 
 #: view/partials/footer.phtml:17
 msgid "Contact us"
-msgstr "Contact us"
+msgstr "Contacte-nos "
 
 #: view/partials/footer.phtml:20
 msgid "Privacy"
@@ -590,7 +590,7 @@ msgstr "Penalty saves"
 
 #: view/partials/pre-match-report.phtml:90
 msgid "Clean sheets"
-msgstr "Clean sheets"
+msgstr "Limpar "
 
 #: view/partials/pre-match-report.phtml:107
 msgid "Draw"
@@ -624,13 +624,13 @@ msgid "Input cannot be empty"
 msgstr "Input cannot be empty"
 
 msgid "Connect your account for a one click login"
-msgstr "Connect with Facebook for easier Login"
+msgstr "Conecte-se através do Facebook "
 
 msgid "Wrong email or password."
 msgstr "Wrong email or password."
 
 msgid "Confirm Password"
-msgstr "Confirm Password"
+msgstr "Confirme a sua palavra passe"
 
 msgid "Your password was successfully changed. Now you can login using it."
 msgstr "Your password was successfully changed. Now you can login using it."
@@ -678,7 +678,7 @@ msgid "March"
 msgstr "March"
 
 msgid "April"
-msgstr "April"
+msgstr "Abril "
 
 msgid "May"
 msgstr "May"
@@ -690,7 +690,7 @@ msgid "July"
 msgstr "July"
 
 msgid "August"
-msgstr "August"
+msgstr "Agosto"
 
 msgid "September"
 msgstr "September"
@@ -705,13 +705,13 @@ msgid "December"
 msgstr "December"
 
 msgid "Confirm Email"
-msgstr "Confirm Email"
+msgstr "Confirme o seu Email "
 
 msgid "Display Name"
 msgstr "Display Name"
 
 msgid "Avatar"
-msgstr "Avatar"
+msgstr "Imagem "
 
 msgid "Error happened while connecting to your facebook account. Please try again later"
 msgstr "Ocorreu um erro durante a ligação ao facebook. Por favor tente mais tarde "
@@ -796,7 +796,7 @@ msgid "You were %s accurate in your prediction"
 msgstr "You were %s accurate in your prediction"
 
 msgid "Community correctly predicted the results"
-msgstr "Community correctly predicted the result"
+msgstr "O público acertou na previsão"
 
 msgid "You didn't move on the %s league this match"
 msgstr "You didn't move on the %s league this match"
@@ -853,10 +853,10 @@ msgid "You have deleted your account successfully."
 msgstr "You have deleted your account successfully."
 
 msgid "Cannot get facebook user id from request"
-msgstr "Cannot get facebook user id from request"
+msgstr "Não é possível obter o ID do usário deste Facebook pedido "
 
 msgid "Cannot get user by facebook id"
-msgstr "Cannot get user by facebook id"
+msgstr "Não é possível obter o Facebook ID "
 
 msgid "Your Language"
 msgstr "Your Language"
@@ -874,10 +874,10 @@ msgid "Team you want to make a prediction was not found."
 msgstr "Team you want to make a prediction was not found."
 
 msgid "Active page was not found."
-msgstr "Active page was not found."
+msgstr "A página que procura não foi encontrada "
 
 msgid "Bad request. Security check failed."
-msgstr "Bad request. Security check failed."
+msgstr "Falha na verificação de segurança"
 
 msgid "The next one will start soon. You can visit our website later and start playing."
 msgstr "The next one will start soon. You can visit our website later and start playing."
@@ -886,7 +886,7 @@ msgid "Acy"
 msgstr "Acy"
 
 msgid "Cannot connect user to facebook account because facebook email has been already taken by another user."
-msgstr "Cannot connect user to facebook account because facebook email has already been taken by another user."
+msgstr "Não é possível conetar-se com a conta de Facebook pois este email já está a ser utilizado"
 
 msgid "Your Facebook data will be used to create your account."
 msgstr "Your Facebook data will be used to create your account."
@@ -898,7 +898,7 @@ msgid "Terms were saved successfully."
 msgstr "Terms were saved successfully."
 
 msgid "A private league with the league code %s hasn't been not found"
-msgstr "A private league with the league code %s hasn't been not found"
+msgstr "O seu código privado da Liga não foi encontrado  "
 
 msgid "You joined the league earlier"
 msgstr "You joined the league earlier"
@@ -946,16 +946,16 @@ msgid "Only admin can delete the private league"
 msgstr "Only admin can delete the private league"
 
 msgid "Are you sure that you want to delete the league?"
-msgstr "Are you sure that you want to delete the league?"
+msgstr "Tem a certeza que pretende apagar a Liga ? "
 
 msgid "Are you sure you want to be removed permanently from this private league?"
-msgstr "Are you sure you want to be removed permanently from this private league?"
+msgstr "Tem a certeza que pretende ser removido da Liga ? "
 
 msgid "Are you sure you want to remove the user permanently from this private league?"
-msgstr "Are you sure you want to remove the user permanently from this private league?"
+msgstr "Tem a certeza que pretende remover o utilizador da sua Liga ? "
 
 msgid "Admin can't leave the private league"
-msgstr "Admin can't leave the private league"
+msgstr "O Admistrador náo pode deixar a Liga Privada"
 
 msgid "Unique league code"
 msgstr "Unique league code"
@@ -975,18 +975,18 @@ msgstr "Match Results"
 
 #: view/application/partials/pre-match-report.phtml:218
 msgid "Community think %s will win this match"
-msgstr "Community think %s will win this match"
+msgstr " % do público acredita que irá ganhar este jogo"
 
 msgid "Community correctly predicted the score line"
-msgstr "Community correctly predicted the score line"
+msgstr "O público acertou no resultado "
 
 #: view/application/partials/post-match-report.phtml:90
 msgid "Community agreed with your score prediction"
-msgstr "Community agreed with your score prediction"
+msgstr "o público concorda com a sua previsão"
 
 #: view/application/partials/cookie-bar.phtml:4
 msgid "Accept and close"
-msgstr "Accept and close"
+msgstr "Aceitar e fechar "
 
 #: view/application/partials/cookie-bar.phtml:3
 msgid "We use cookies to ensure that we gave you the best experience on our website. If you continue without changing your settings, we'll assume that you are happy to receive all cookies on the Score Predictor website. Learn more about our %scookie usage%s and how to change your cookie settings."
@@ -994,7 +994,7 @@ msgstr "We use cookies to ensure that we gave you the best experience on our web
 
 #: view/application/partials/pre-match-report.phtml:235
 msgid "Average goals per game this season"
-msgstr "Average goals per game this season"
+msgstr "Média de golos por jogo esta época "
 
 #: view/application/partials/pre-match-report.phtml:256
 msgid "Last 5 matches"

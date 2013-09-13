@@ -16,7 +16,7 @@ msgstr ""
 
 #: view/application/auth/forgot.phtml:2
 msgid "Forgot Password?"
-msgstr "Forgot Password?"
+msgstr "¿Olvido su contraseña?"
 
 #: view/application/auth/forgot.phtml:24 view/application/auth/reset.phtml:29
 msgid "Submit"
@@ -28,11 +28,11 @@ msgstr "Sign In"
 
 #: view/application/auth/login.phtml:14 view/application/index/index.phtml:73
 msgid "Login with Facebook"
-msgstr "Facebook login"
+msgstr "Regístrese con Facebook"
 
 #: view/application/auth/login.phtml:25
 msgid "Enter Your Credentials"
-msgstr "Enter Your Credentials"
+msgstr "Introduzca sus credenciales"
 
 #: view/application/auth/login.phtml:37 view/application/index/index.phtml:89
 msgid "Remember me"
@@ -40,11 +40,11 @@ msgstr "Remember me"
 
 #: view/application/auth/login.phtml:45 view/application/index/index.phtml:95
 msgid "Forgotten password"
-msgstr "Forgotten password"
+msgstr "Contraseña olvidada"
 
 #: view/application/auth/login.phtml:48 view/application/index/index.phtml:97
 msgid "Not a member?"
-msgstr "Not a member?"
+msgstr "¿No eres miembro?"
 
 #: view/application/auth/login.phtml:49 view/application/index/index.phtml:98
 #: view/application/registration/index.phtml:179
@@ -77,13 +77,13 @@ msgstr "Reset"
 
 #: view/application/content/help.phtml:42
 msgid "FAQs"
-msgstr "FAQs"
+msgstr "Preguntas más comunes"
 
 msgid "How to play"
-msgstr "How to play"
+msgstr "¿Cómo jugar?"
 
 msgid "Fixtures"
-msgstr "Fixtures"
+msgstr "Calendario"
 
 #: view/application/fixtures/index.phtml:39
 #: view/application/match/index.phtml:41 view/application/match/index.phtml:81
@@ -98,15 +98,15 @@ msgid "Predict the score"
 msgstr "Predict the score"
 
 msgid "No more matches will be played in this season. Please join us when next season starts."
-msgstr "No more matches will be played in this season. Please join us when the new season starts."
+msgstr "No se jugarán más partidos esta temporada. Por favor únase a nosotros cuando empiece la siguiente temporada."
 
 #: view/application/full-table/index.phtml:7
 msgid "League Table"
-msgstr "League Table"
+msgstr "Clasificación"
 
 #: view/application/full-table/index.phtml:14
 msgid "Everyone"
-msgstr "Everyone"
+msgstr "Todos"
 
 #: view/application/full-table/index.phtml:16
 msgid "Your friends"
@@ -171,7 +171,7 @@ msgstr "vs"
 #: view/application/results/index.phtml:4
 #: view/application/results/index.phtml:6
 msgid "Match Report"
-msgstr "Match Report"
+msgstr "Crónica del partido"
 
 #: view/application/match/index.phtml:17 view/application/match/index.phtml:68
 msgid "Public Report"
@@ -201,7 +201,7 @@ msgstr "Predict the"
 #: view/application/predict/index.phtml:15
 #: view/application/results/index.phtml:15
 msgid "New"
-msgstr "New"
+msgstr "Nuevo"
 
 #: view/application/predict/index.phtml:24
 #: view/application/results/index.phtml:24
@@ -213,16 +213,16 @@ msgstr "Prev"
 #: view/application/results/index.phtml:24
 #: view/application/results/index.phtml:29
 msgid "match"
-msgstr "match"
+msgstr "partido"
 
 #: view/application/predict/index.phtml:29
 #: view/application/results/index.phtml:29
 msgid "Next"
-msgstr "Next"
+msgstr "Siguiente"
 
 #: view/application/predict/index.phtml:37
 msgid "Match in progress"
-msgstr "Match in progress"
+msgstr "Partido en juego"
 
 #: view/application/predict/index.phtml:41
 msgid "You predicted"
@@ -276,13 +276,13 @@ msgid "Enter Personal Info"
 msgstr "Inserta tu información personal"
 
 msgid "Gender"
-msgstr "Gender"
+msgstr "Género"
 
 msgid "Male"
-msgstr "Male"
+msgstr "Hombre"
 
 msgid "Female"
-msgstr "Female"
+msgstr "Mujer"
 
 #: view/application/registration/index.phtml:85
 msgid "Enter Email Addresses"
@@ -290,11 +290,11 @@ msgstr "Inserta tu dirección de email"
 
 #: view/application/registration/index.phtml:108
 msgid "Enter Your Password"
-msgstr "Enter Your Password"
+msgstr "Introduzca su contraseña"
 
 #: view/application/registration/index.phtml:131
 msgid "Enter Your Display Name"
-msgstr "Enter Your Display Name"
+msgstr "Introduzca su nombre para mostrar"
 
 #: view/application/registration/index.phtml:145
 msgid "Enter Your Avatar"
@@ -316,7 +316,7 @@ msgstr "Set Up"
 #: view/application/registration/setup.phtml:36
 #: view/partials/setup-popup.phtml:9
 msgid "Just one more thing"
-msgstr "Just one more thing"
+msgstr "Solo una cosa más"
 
 #: view/application/registration/setup.phtml:39
 #: view/partials/setup-popup.phtml:13
@@ -331,7 +331,7 @@ msgstr "We need to know your region so we can make sure you are entered into the
 #: view/application/registration/setup.phtml:41
 #: view/partials/setup-popup.phtml:15
 msgid "Note: once confirmed, you will not be able to change these settings until next season"
-msgstr "Note: once you have confirmed your region you will not be able to change this setting until next season"
+msgstr "Aviso: una vez confirmado, no podrás cambiar las características hasta la siguiente temporada"
 
 #: view/application/registration/setup.phtml:57
 #: view/partials/setup-popup.phtml:31
@@ -351,11 +351,11 @@ msgid "PTS"
 msgstr "PTS"
 
 msgid "League Tables"
-msgstr "League Tables"
+msgstr "Clasificaciones"
 
 #: view/application/tables/index.phtml:11
 msgid "Global league"
-msgstr "Global league"
+msgstr "Liga global"
 
 #: view/application/tables/index.phtml:28
 #: view/application/tables/index.phtml:79
@@ -371,7 +371,7 @@ msgstr "View full table"
 
 #: view/application/tables/index.phtml:62
 msgid "league"
-msgstr "league"
+msgstr "liga"
 
 #: view/application/user/delete.phtml:2
 #: view/application/user/settings.phtml:164
@@ -445,7 +445,7 @@ msgstr "Whoops!"
 #: view/error/404.phtml:7 view/error/500.phtml:7 view/error/index.phtml:15
 #: view/error/index.phtml:39
 msgid "Message"
-msgstr "Message"
+msgstr "Mensaje"
 
 #: view/error/404.phtml:8
 msgid "Sorry, the page you requested could not be found"
@@ -469,7 +469,7 @@ msgstr "Ocurrió un error."
 
 #: view/error/index.phtml:11 view/error/index.phtml:35
 msgid "File"
-msgstr "File"
+msgstr "Archivo"
 
 #: view/error/index.phtml:19 view/error/index.phtml:43
 msgid "Stack trace"
@@ -481,11 +481,11 @@ msgstr "Previous exceptions"
 
 #: view/error/index.phtml:58
 msgid "No Exception available"
-msgstr "No Exception available"
+msgstr "Ninguna excepción disponible"
 
 #: view/error/info.phtml:2 view/error/info.phtml:7
 msgid "Info Page"
-msgstr "Info Page"
+msgstr "Página de información"
 
 #: view/partials/cookie-bar.phtml:3
 msgid "Dismiss"
@@ -509,7 +509,7 @@ msgstr "Privacy policy"
 
 #: view/partials/footer.phtml:23
 msgid "Help & Support"
-msgstr "Help & Support"
+msgstr "Ayuda"
 
 #: view/partials/footer.phtml:26
 msgid "Visit our main site"
@@ -521,10 +521,10 @@ msgstr "Política de Cookies"
 
 #: view/partials/footer.phtml:33
 msgid "MADE BY"
-msgstr "MADE BY"
+msgstr "Hecho por"
 
 msgid "Invite friends to Score Predictor"
-msgstr "Invite friends to Score Predictor"
+msgstr "Invita a amigos al Pronosticador de resultados"
 
 #: view/partials/menu.phtml:21
 msgid "User Navigation"
@@ -549,20 +549,20 @@ msgstr "Pronóstico de goleador correct"
 
 #: view/partials/pre-match-report.phtml:37
 msgid "Featured Player"
-msgstr "Featured Player"
+msgstr "Jugador destacado"
 
 #: view/partials/pre-match-report.phtml:43
 msgid "Goals this season"
-msgstr "Goals this season"
+msgstr "Goles esta temporada"
 
 #: view/partials/pre-match-report.phtml:47
 #: view/partials/pre-match-report.phtml:82
 msgid "Matches played"
-msgstr "Matches played"
+msgstr "Partidos jugados"
 
 #: view/partials/pre-match-report.phtml:51
 msgid "Match"
-msgstr "Match"
+msgstr "Partido"
 
 #: view/partials/pre-match-report.phtml:51
 msgid "starts"
@@ -570,7 +570,7 @@ msgstr "starts"
 
 #: view/partials/pre-match-report.phtml:55
 msgid "Mins"
-msgstr "Mins"
+msgstr "Minutos"
 
 #: view/partials/pre-match-report.phtml:55
 msgid "played"
@@ -578,7 +578,7 @@ msgstr "played"
 
 #: view/partials/pre-match-report.phtml:72
 msgid "GOAL KEEPER"
-msgstr "GOAL KEEPER"
+msgstr "Portero"
 
 #: view/partials/pre-match-report.phtml:78
 msgid "Saves this season"
@@ -609,7 +609,7 @@ msgid "+ Invite your friends"
 msgstr "+ Invita a tus amigos"
 
 msgid "Value is required and can't be empty"
-msgstr "Field is required"
+msgstr "Un valor es requerido y no puede estar vacío"
 
 msgid "Recovery link was sent to your email. The link is active for 60 minutes"
 msgstr "Recovery link was sent to your email. The link is active for 60 minutes"
@@ -621,7 +621,7 @@ msgid "The email you input is not registered."
 msgstr "The email you input is not registered."
 
 msgid "Input cannot be empty"
-msgstr "Input cannot be empty"
+msgstr "La entrada no puede estar vacía"
 
 msgid "Connect your account for a one click login"
 msgstr "Conecta con tu cuenta para conectarte con un solo clic"
@@ -645,7 +645,7 @@ msgid "You will be redirected to website..."
 msgstr "You will be redirected to the website..."
 
 msgid "Name"
-msgstr "Name"
+msgstr "Nombres"
 
 msgid "Your message successfully sent"
 msgstr "Your message successfully sent"
@@ -657,10 +657,10 @@ msgid "Title"
 msgstr "Title"
 
 msgid "First Name"
-msgstr "First Name"
+msgstr "Nombre"
 
 msgid "Last Name"
-msgstr "Last Name"
+msgstr "Apellido"
 
 msgid "Date of Birth"
 msgstr "Fecha de nacimiento"
@@ -669,25 +669,25 @@ msgid "Country"
 msgstr "País"
 
 msgid "January"
-msgstr "January"
+msgstr "enero"
 
 msgid "February"
-msgstr "February"
+msgstr "Febrero"
 
 msgid "March"
-msgstr "March"
+msgstr "marzo"
 
 msgid "April"
 msgstr "Abril"
 
 msgid "May"
-msgstr "May"
+msgstr "Mayo"
 
 msgid "June"
-msgstr "June"
+msgstr "Junio"
 
 msgid "July"
-msgstr "July"
+msgstr "Julio"
 
 msgid "August"
 msgstr "Agosto"
@@ -699,7 +699,7 @@ msgid "October"
 msgstr "October"
 
 msgid "November"
-msgstr "November"
+msgstr "noviembre"
 
 msgid "December"
 msgstr "Diciembre"
@@ -726,7 +726,7 @@ msgid "Region"
 msgstr "Region"
 
 msgid "Language"
-msgstr "Language"
+msgstr "Idioma"
 
 msgid "You can't predict on this match. You can predict just on %s matches in the future."
 msgstr "You can't predict on this match. You can predict just on %s matches in the future."
@@ -738,10 +738,10 @@ msgid "Results"
 msgstr "Results"
 
 msgid "Full Table"
-msgstr "Full Table"
+msgstr "Clasificación completa"
 
 msgid "Head-to-head results"
-msgstr "Head-to-head results"
+msgstr "Comparar resultados"
 
 #: view/application/partials/pre-match-report.phtml:287
 msgid "Total goals this season"
@@ -766,13 +766,13 @@ msgid "Overall League"
 msgstr "Overall League"
 
 msgid "Temporal Leagues"
-msgstr "Mini Leagues"
+msgstr "Ligas temporales"
 
 msgid "Your results"
 msgstr "Your results"
 
 msgid "No matches were played in this season."
-msgstr "No matches have been played this season. Results will appear after the first match has been completed."
+msgstr "No se jugó ningún partido esta temporada."
 
 msgid "You predicted the draw"
 msgstr "You predicted the draw"
@@ -811,7 +811,7 @@ msgid "Old password"
 msgstr "Old password"
 
 msgid "New password"
-msgstr "New password"
+msgstr "Nueva contraseña"
 
 msgid "Retype new password"
 msgstr "Retype new password"
@@ -823,28 +823,28 @@ msgid "Please sign in to access this page"
 msgstr "Please sign in to access this page"
 
 msgid "New password was successfully saved."
-msgstr "New password was successfully saved."
+msgstr "La nueva contraseña se guardó correctamente"
 
 msgid "New email was successfully saved."
-msgstr "New email was successfully saved."
+msgstr "El nuevo email se guardó correctamente."
 
 msgid "New display name was successfully saved."
-msgstr "New display name was successfully saved."
+msgstr "El nuevo nombre para mostrar se guardó correctamente."
 
 msgid "New avatar was successfully saved."
-msgstr "New avatar was successfully saved."
+msgstr "La nueva imagen se guardó correctamente."
 
 msgid "New language was successfully saved."
-msgstr "New language was successfully saved."
+msgstr "El nuevo idioma se guardó correctamente"
 
 msgid "New email settings were successfully saved."
-msgstr "New email settings were successfully saved."
+msgstr "Los nuevos ajustes del email se salvaron correctamente."
 
 msgid "Public profile option was successfully saved."
 msgstr "Public profile option was successfully saved."
 
 msgid "Invalid form type"
-msgstr "Invalid form type"
+msgstr "Código no valido"
 
 msgid "You can delete only yours account"
 msgstr "You can delete only your account"
@@ -910,13 +910,13 @@ msgid "Create a private league"
 msgstr "Crear una liga privada"
 
 msgid "Join a private league"
-msgstr "Join a private league"
+msgstr "Unirse a una liga privada"
 
 msgid "Create"
 msgstr "Crear"
 
 msgid "Join"
-msgstr "Join"
+msgstr "Unirse"
 
 msgid "Edit"
 msgstr "Edita"
@@ -925,10 +925,10 @@ msgid "Delete"
 msgstr "Borrar"
 
 msgid "Invalid private league display name"
-msgstr "Invalid private league display name"
+msgstr "Nombre de liga privada incorrecto"
 
 msgid "Invalid private league code"
-msgstr "Invalid private league code"
+msgstr "Código de liga privada incorrecto"
 
 msgid "Private league was created successfully. Now you can invite your friends using league code %s."
 msgstr "Private league was created successfully. Now you can invite your friends using league code %s."
@@ -971,7 +971,7 @@ msgstr "See full report"
 
 #: view/application/partials/match-report-messages.phtml:4
 msgid "Match Results"
-msgstr "Match Results"
+msgstr "Resultados del partido"
 
 #: view/application/partials/pre-match-report.phtml:218
 msgid "Community think %s will win this match"
@@ -994,11 +994,11 @@ msgstr "We use cookies to ensure that we gave you the best experience on our web
 
 #: view/application/partials/pre-match-report.phtml:235
 msgid "Average goals per game this season"
-msgstr "Media de goles por temporada"
+msgstr "Media de goles por partido esta temporada"
 
 #: view/application/partials/pre-match-report.phtml:256
 msgid "Last 5 matches"
-msgstr "Last 5 matches"
+msgstr "Últimos cinco partidos"
 
 #: view/application/partials/pre-match-report.phtml:272
 msgid "Wins"
@@ -1006,7 +1006,7 @@ msgstr "Wins"
 
 #: view/application/partials/pre-match-report.phtml:273
 msgid "Losses"
-msgstr "Losses"
+msgstr "Derrotas"
 
 #: view/application/partials/pre-match-report.phtml:274
 msgid "Draws"
@@ -1018,7 +1018,7 @@ msgstr "Was the result of the corresponding fixture last season"
 
 #: view/application/partials/pre-match-report.phtml:359
 msgid "Last players to score"
-msgstr "Last players to score"
+msgstr "Últimos jugadores en marcar"
 
 #: view/application/partials/pre-match-report.phtml:383
 msgid "Top scorers"
@@ -1026,5 +1026,5 @@ msgstr "Top scorers"
 
 #: view/application/partials/post-match-report.phtml:138
 msgid "Is the %smost%s picked player"
-msgstr "Is the %smost%s picked player"
+msgstr "Es el jugador más elegido"
 
