@@ -330,7 +330,7 @@
         <?php endif; ?>
         <!--TOP SCORERS BLOCK ENDS-->
         <!--AVERAGE GOALS THIS SEASON BLOCK STARTS #12 -->
-        <?php if(empty($this->report['avgGoalsScored'])) : ?>
+        <?php if(!empty($this->report['avgGoalsScored'])) : ?>
             <div class="item col1 stacked-bar">
                 <section>
                     <h1><?php echo $this->translate('Average goals per game this season')?></h1>
