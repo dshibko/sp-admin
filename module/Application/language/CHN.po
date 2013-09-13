@@ -16,7 +16,7 @@ msgstr ""
 
 #: view/application/auth/forgot.phtml:2
 msgid "Forgot Password?"
-msgstr "Forgot Password?"
+msgstr "忘记密码？"
 
 #: view/application/auth/forgot.phtml:24 view/application/auth/reset.phtml:29
 msgid "Submit"
@@ -28,11 +28,11 @@ msgstr "Sign In"
 
 #: view/application/auth/login.phtml:14 view/application/index/index.phtml:73
 msgid "Login with Facebook"
-msgstr "Facebook login"
+msgstr "用微博"
 
 #: view/application/auth/login.phtml:25
 msgid "Enter Your Credentials"
-msgstr "Enter Your Credentials"
+msgstr "输入您的个人信息"
 
 #: view/application/auth/login.phtml:37 view/application/index/index.phtml:89
 msgid "Remember me"
@@ -40,7 +40,7 @@ msgstr "Remember me"
 
 #: view/application/auth/login.phtml:45 view/application/index/index.phtml:95
 msgid "Forgotten password"
-msgstr "Forgotten password"
+msgstr "忘记密码"
 
 #: view/application/auth/login.phtml:48 view/application/index/index.phtml:97
 msgid "Not a member?"
@@ -65,11 +65,11 @@ msgstr "We would like to hear from you - any comments or suggestions or any ques
 
 #: view/application/content/help.phtml:19
 msgid "Enter Your Contact Info and Message"
-msgstr "Enter Your Contact Info and Message"
+msgstr "输入您的联系方式和讯息"
 
 #: view/application/content/help.phtml:36
 msgid "Send"
-msgstr "Send"
+msgstr "发送"
 
 #: view/application/content/help.phtml:37
 msgid "Reset"
@@ -77,13 +77,13 @@ msgstr "Reset"
 
 #: view/application/content/help.phtml:42
 msgid "FAQs"
-msgstr "FAQs"
+msgstr "常见问题解答"
 
 msgid "How to play"
-msgstr "How to play"
+msgstr "怎样玩\n"
 
 msgid "Fixtures"
-msgstr "Fixtures"
+msgstr "赛事"
 
 #: view/application/fixtures/index.phtml:39
 #: view/application/match/index.phtml:41 view/application/match/index.phtml:81
@@ -98,15 +98,15 @@ msgid "Predict the score"
 msgstr "Predict the score"
 
 msgid "No more matches will be played in this season. Please join us when next season starts."
-msgstr "No more matches will be played in this season. Please join us when the new season starts."
+msgstr "本赛季还未进行比赛，请于新赛季开赛后加入我们吧\n"
 
 #: view/application/full-table/index.phtml:7
 msgid "League Table"
-msgstr "League Table"
+msgstr "联赛积分表\n"
 
 #: view/application/full-table/index.phtml:14
 msgid "Everyone"
-msgstr "Everyone"
+msgstr "所有人"
 
 #: view/application/full-table/index.phtml:16
 msgid "Your friends"
@@ -137,7 +137,7 @@ msgstr "Regular Login"
 
 #: view/application/index/index.phtml:80
 msgid "Email"
-msgstr "Email"
+msgstr "电子邮件"
 
 #: view/application/index/index.phtml:84
 msgid "Password"
@@ -171,7 +171,7 @@ msgstr "vs"
 #: view/application/results/index.phtml:4
 #: view/application/results/index.phtml:6
 msgid "Match Report"
-msgstr "Match Report"
+msgstr "赛事报道\n"
 
 #: view/application/match/index.phtml:17 view/application/match/index.phtml:68
 msgid "Public Report"
@@ -192,7 +192,7 @@ msgstr "Time left"
 #: view/application/match/index.phtml:98
 #: view/application/predict/index.phtml:161
 msgid "days hours mins secs"
-msgstr "days hours mins secs"
+msgstr "日 小时 分 秒"
 
 #: view/application/predict/index.phtml:1
 msgid "Predict at"
@@ -201,7 +201,7 @@ msgstr "Predict the"
 #: view/application/predict/index.phtml:15
 #: view/application/results/index.phtml:15
 msgid "New"
-msgstr "New"
+msgstr "新"
 
 #: view/application/predict/index.phtml:24
 #: view/application/results/index.phtml:24
@@ -213,16 +213,16 @@ msgstr "Prev"
 #: view/application/results/index.phtml:24
 #: view/application/results/index.phtml:29
 msgid "match"
-msgstr "match"
+msgstr "比赛"
 
 #: view/application/predict/index.phtml:29
 #: view/application/results/index.phtml:29
 msgid "Next"
-msgstr "Next"
+msgstr "下一个"
 
 #: view/application/predict/index.phtml:37
 msgid "Match in progress"
-msgstr "Match in progress"
+msgstr "进行中的比赛\n"
 
 #: view/application/predict/index.phtml:41
 msgid "You predicted"
@@ -253,7 +253,7 @@ msgstr "Save prediction"
 
 #: view/application/predict/index.phtml:151
 msgid "Edit your prediction"
-msgstr "Edit your prediction"
+msgstr "编辑您的预测"
 
 #: view/application/predict/index.phtml:187
 msgid "You didn't save the prediction."
@@ -273,32 +273,32 @@ msgstr "链接脸书"
 
 #: view/application/registration/index.phtml:26
 msgid "Enter Personal Info"
-msgstr "Enter Personal Info"
+msgstr "输入个人信息"
 
 msgid "Gender"
-msgstr "Gender"
+msgstr "性别"
 
 msgid "Male"
-msgstr "Male"
+msgstr "男性"
 
 msgid "Female"
-msgstr "Female"
+msgstr "女性"
 
 #: view/application/registration/index.phtml:85
 msgid "Enter Email Addresses"
-msgstr "Enter Email Addresses"
+msgstr "输入您的电子邮件"
 
 #: view/application/registration/index.phtml:108
 msgid "Enter Your Password"
-msgstr "Enter Your Password"
+msgstr "输入您的密码"
 
 #: view/application/registration/index.phtml:131
 msgid "Enter Your Display Name"
-msgstr "Enter Your Display Name"
+msgstr "输入您的昵称"
 
 #: view/application/registration/index.phtml:145
 msgid "Enter Your Avatar"
-msgstr "Enter Your Avatar"
+msgstr "输入您的头像"
 
 #: view/application/registration/index.phtml:157
 #: view/application/user/settings.phtml:120
@@ -316,7 +316,7 @@ msgstr "Set Up"
 #: view/application/registration/setup.phtml:36
 #: view/partials/setup-popup.phtml:9
 msgid "Just one more thing"
-msgstr "Just one more thing"
+msgstr "最后一点\n"
 
 #: view/application/registration/setup.phtml:39
 #: view/partials/setup-popup.phtml:13
@@ -351,11 +351,11 @@ msgid "PTS"
 msgstr "PTS"
 
 msgid "League Tables"
-msgstr "League Tables"
+msgstr "联赛积分表\n"
 
 #: view/application/tables/index.phtml:11
 msgid "Global league"
-msgstr "Global league"
+msgstr "全球联盟"
 
 #: view/application/tables/index.phtml:28
 #: view/application/tables/index.phtml:79
@@ -371,12 +371,12 @@ msgstr "View full table"
 
 #: view/application/tables/index.phtml:62
 msgid "league"
-msgstr "league"
+msgstr "联盟"
 
 #: view/application/user/delete.phtml:2
 #: view/application/user/settings.phtml:164
 msgid "Delete Account"
-msgstr "Delete Account"
+msgstr "删除账户"
 
 #: view/application/user/delete.phtml:11
 msgid "Are you sure you want to delete your account?"
@@ -445,7 +445,7 @@ msgstr "Whoops!"
 #: view/error/404.phtml:7 view/error/500.phtml:7 view/error/index.phtml:15
 #: view/error/index.phtml:39
 msgid "Message"
-msgstr "Message"
+msgstr "讯息"
 
 #: view/error/404.phtml:8
 msgid "Sorry, the page you requested could not be found"
@@ -469,7 +469,7 @@ msgstr "我们打进一粒乌龙球，现在正在纠正这个错误"
 
 #: view/error/index.phtml:11 view/error/index.phtml:35
 msgid "File"
-msgstr "File"
+msgstr "文件"
 
 #: view/error/index.phtml:19 view/error/index.phtml:43
 msgid "Stack trace"
@@ -481,15 +481,15 @@ msgstr "Previous exceptions"
 
 #: view/error/index.phtml:58
 msgid "No Exception available"
-msgstr "No Exception available"
+msgstr "不可例外"
 
 #: view/error/info.phtml:2 view/error/info.phtml:7
 msgid "Info Page"
-msgstr "Info Page"
+msgstr "信息页面\n"
 
 #: view/partials/cookie-bar.phtml:3
 msgid "Dismiss"
-msgstr "Dismiss"
+msgstr "解散"
 
 #: view/partials/footer.phtml:6
 msgid "Stay up to date with Truefan United"
@@ -509,7 +509,7 @@ msgstr "Privacy policy"
 
 #: view/partials/footer.phtml:23
 msgid "Help & Support"
-msgstr "Help & Support"
+msgstr "帮助\n"
 
 #: view/partials/footer.phtml:26
 msgid "Visit our main site"
@@ -521,10 +521,10 @@ msgstr "Cookies政策"
 
 #: view/partials/footer.phtml:33
 msgid "MADE BY"
-msgstr "MADE BY"
+msgstr "制造由\n"
 
 msgid "Invite friends to Score Predictor"
-msgstr "Invite friends to Score Predictor"
+msgstr "邀请好友参加比分预测器"
 
 #: view/partials/menu.phtml:21
 msgid "User Navigation"
@@ -549,20 +549,20 @@ msgstr "正确比分预测"
 
 #: view/partials/pre-match-report.phtml:37
 msgid "Featured Player"
-msgstr "Featured Player"
+msgstr "上场球员"
 
 #: view/partials/pre-match-report.phtml:43
 msgid "Goals this season"
-msgstr "Goals this season"
+msgstr "本赛季进球\n"
 
 #: view/partials/pre-match-report.phtml:47
 #: view/partials/pre-match-report.phtml:82
 msgid "Matches played"
-msgstr "Matches played"
+msgstr "已进行的赛事\n"
 
 #: view/partials/pre-match-report.phtml:51
 msgid "Match"
-msgstr "Match"
+msgstr "比赛"
 
 #: view/partials/pre-match-report.phtml:51
 msgid "starts"
@@ -570,7 +570,7 @@ msgstr "starts"
 
 #: view/partials/pre-match-report.phtml:55
 msgid "Mins"
-msgstr "Mins"
+msgstr "分"
 
 #: view/partials/pre-match-report.phtml:55
 msgid "played"
@@ -578,7 +578,7 @@ msgstr "played"
 
 #: view/partials/pre-match-report.phtml:72
 msgid "GOAL KEEPER"
-msgstr "GOAL KEEPER"
+msgstr "门将"
 
 #: view/partials/pre-match-report.phtml:78
 msgid "Saves this season"
@@ -594,7 +594,7 @@ msgstr "清除清单"
 
 #: view/partials/pre-match-report.phtml:107
 msgid "Draw"
-msgstr "Draw"
+msgstr "平"
 
 #: view/partials/pre-match-report.phtml:162
 msgid "Top predicted scorers"
@@ -609,7 +609,7 @@ msgid "+ Invite your friends"
 msgstr "+ 邀请您的好友"
 
 msgid "Value is required and can't be empty"
-msgstr "Field is required"
+msgstr "所有信息都必须填完整\n"
 
 msgid "Recovery link was sent to your email. The link is active for 60 minutes"
 msgstr "Recovery link was sent to your email. The link is active for 60 minutes"
@@ -621,7 +621,7 @@ msgid "The email you input is not registered."
 msgstr "The email you input is not registered."
 
 msgid "Input cannot be empty"
-msgstr "Input cannot be empty"
+msgstr "信息输入空白\n"
 
 msgid "Connect your account for a one click login"
 msgstr "使用脸书登录"
@@ -645,7 +645,7 @@ msgid "You will be redirected to website..."
 msgstr "You will be redirected to the website..."
 
 msgid "Name"
-msgstr "Name"
+msgstr "姓名"
 
 msgid "Your message successfully sent"
 msgstr "Your message successfully sent"
@@ -657,37 +657,37 @@ msgid "Title"
 msgstr "Title"
 
 msgid "First Name"
-msgstr "First Name"
+msgstr "名"
 
 msgid "Last Name"
-msgstr "Last Name"
+msgstr "姓"
 
 msgid "Date of Birth"
-msgstr "Date of Birth"
+msgstr "出生年月"
 
 msgid "Country"
 msgstr "国家"
 
 msgid "January"
-msgstr "January"
+msgstr "一月"
 
 msgid "February"
-msgstr "February"
+msgstr "二月"
 
 msgid "March"
-msgstr "March"
+msgstr "三月"
 
 msgid "April"
 msgstr "四月"
 
 msgid "May"
-msgstr "May"
+msgstr "五月"
 
 msgid "June"
-msgstr "June"
+msgstr "六月"
 
 msgid "July"
-msgstr "July"
+msgstr "七月"
 
 msgid "August"
 msgstr "八月"
@@ -702,13 +702,13 @@ msgid "November"
 msgstr "November"
 
 msgid "December"
-msgstr "December"
+msgstr "十二月"
 
 msgid "Confirm Email"
 msgstr "确认电子邮件"
 
 msgid "Display Name"
-msgstr "Display Name"
+msgstr "显示名称"
 
 msgid "Avatar"
 msgstr "头像"
@@ -726,7 +726,7 @@ msgid "Region"
 msgstr "Region"
 
 msgid "Language"
-msgstr "Language"
+msgstr "语言\n"
 
 msgid "You can't predict on this match. You can predict just on %s matches in the future."
 msgstr "You can't predict on this match. You can predict just on %s matches in the future."
@@ -738,20 +738,20 @@ msgid "Results"
 msgstr "Results"
 
 msgid "Full Table"
-msgstr "Full Table"
+msgstr "完整积分榜"
 
 msgid "Head-to-head results"
-msgstr "Head-to-head results"
+msgstr "对战结果"
 
 #: view/application/partials/pre-match-report.phtml:287
 msgid "Total goals this season"
 msgstr "Total goals this season"
 
 msgid "Global"
-msgstr "Global"
+msgstr "全球"
 
 msgid "Local"
-msgstr "Local"
+msgstr "本地"
 
 msgid "View full league tables"
 msgstr "View full league tables"
@@ -760,19 +760,19 @@ msgid "Play against your mates"
 msgstr "Play against your mates"
 
 msgid "Create your own social league against your Facebook friends to find out who's top of the league"
-msgstr "Create your own social league against your Facebook friends to find out who's top of the league"
+msgstr "创建个人联盟，和您的微博好友一起竞赛联盟冠军吧"
 
 msgid "Overall League"
 msgstr "Overall League"
 
 msgid "Temporal Leagues"
-msgstr "Mini Leagues"
+msgstr "小型联盟"
 
 msgid "Your results"
 msgstr "Your results"
 
 msgid "No matches were played in this season."
-msgstr "No matches have been played this season. Results will appear after the first match has been completed."
+msgstr "本赛季还未进行比赛。\n"
 
 msgid "You predicted the draw"
 msgstr "You predicted the draw"
@@ -811,7 +811,7 @@ msgid "Old password"
 msgstr "Old password"
 
 msgid "New password"
-msgstr "New password"
+msgstr "新密码"
 
 msgid "Retype new password"
 msgstr "Retype new password"
@@ -823,28 +823,28 @@ msgid "Please sign in to access this page"
 msgstr "Please sign in to access this page"
 
 msgid "New password was successfully saved."
-msgstr "New password was successfully saved."
+msgstr "新密码已保存\n"
 
 msgid "New email was successfully saved."
-msgstr "New email was successfully saved."
+msgstr "新电子邮件已保存\n"
 
 msgid "New display name was successfully saved."
-msgstr "New display name was successfully saved."
+msgstr "新昵称已保存\n"
 
 msgid "New avatar was successfully saved."
-msgstr "New avatar was successfully saved."
+msgstr "新头像已保存\n"
 
 msgid "New language was successfully saved."
-msgstr "New language was successfully saved."
+msgstr "新语言已保存\n"
 
 msgid "New email settings were successfully saved."
-msgstr "New email settings were successfully saved."
+msgstr "电子邮件更新成功保存\n"
 
 msgid "Public profile option was successfully saved."
 msgstr "Public profile option was successfully saved."
 
 msgid "Invalid form type"
-msgstr "Invalid form type"
+msgstr "无效表格类型\n"
 
 msgid "You can delete only yours account"
 msgstr "You can delete only your account"
@@ -907,28 +907,28 @@ msgid "You are not a member of this private league"
 msgstr "You are not a member of this private league"
 
 msgid "Create a private league"
-msgstr "Create a private league"
+msgstr "创建私人联盟"
 
 msgid "Join a private league"
-msgstr "Join a private league"
+msgstr "加入私人联盟"
 
 msgid "Create"
 msgstr "创建"
 
 msgid "Join"
-msgstr "Join"
+msgstr "加入"
 
 msgid "Edit"
-msgstr "Edit"
+msgstr "编辑"
 
 msgid "Delete"
-msgstr "Delete"
+msgstr "删除"
 
 msgid "Invalid private league display name"
-msgstr "Invalid private league display name"
+msgstr "无效私人联盟昵称"
 
 msgid "Invalid private league code"
-msgstr "Invalid private league code"
+msgstr "无效私人联盟代码"
 
 msgid "Private league was created successfully. Now you can invite your friends using league code %s."
 msgstr "Private league was created successfully. Now you can invite your friends using league code %s."
@@ -971,7 +971,7 @@ msgstr "See full report"
 
 #: view/application/partials/match-report-messages.phtml:4
 msgid "Match Results"
-msgstr "Match Results"
+msgstr "比赛结果"
 
 #: view/application/partials/pre-match-report.phtml:218
 msgid "Community think %s will win this match"
@@ -998,7 +998,7 @@ msgstr "本赛季每场比赛平均进球"
 
 #: view/application/partials/pre-match-report.phtml:256
 msgid "Last 5 matches"
-msgstr "Last 5 matches"
+msgstr "最后５场比赛"
 
 #: view/application/partials/pre-match-report.phtml:272
 msgid "Wins"
@@ -1006,11 +1006,11 @@ msgstr "Wins"
 
 #: view/application/partials/pre-match-report.phtml:273
 msgid "Losses"
-msgstr "Losses"
+msgstr "负"
 
 #: view/application/partials/pre-match-report.phtml:274
 msgid "Draws"
-msgstr "Draws"
+msgstr "平局"
 
 #: view/application/partials/pre-match-report.phtml:347
 msgid "Was the result of the corresponding fixture last season"
@@ -1018,7 +1018,7 @@ msgstr "Was the result of the corresponding fixture last season"
 
 #: view/application/partials/pre-match-report.phtml:359
 msgid "Last players to score"
-msgstr "Last players to score"
+msgstr "最后一名进球球员"
 
 #: view/application/partials/pre-match-report.phtml:383
 msgid "Top scorers"
@@ -1026,5 +1026,5 @@ msgstr "Top scorers"
 
 #: view/application/partials/post-match-report.phtml:138
 msgid "Is the %smost%s picked player"
-msgstr "Is the %smost%s picked player"
+msgstr "是%s被选择最多%s球员"
 
