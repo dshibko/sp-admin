@@ -114,7 +114,7 @@
             </div>
             <script type="text/javascript">
                 var headToHeadData = [];
-                var colors = ['#144a9b', '#7f7f80','#363636'];
+                var colors = ['#6baddf', '#333333','#808080'];
                 var percentage = [];
                 var labels = [];
                 percentage.push('<?=$headToHead['homeTeamWins']['winsPercentage'];?>');
@@ -214,7 +214,7 @@
             </div>
             <script type="text/javascript">
                 var topScoresData = [];
-                var colors = ['#4d4d4d', '#666665', '#818080', '#999999', '#b2b2b2'];
+                var colors = ['#6baddf', '#33537e', '#667f9e', '#99aabe', '#bfc9d8'];
                 var percentage = [];
                     <?php foreach($topScores as $percentage):?>
                 percentage.push('<?php echo $percentage;?>');
@@ -330,7 +330,7 @@
         <?php endif; ?>
         <!--TOP SCORERS BLOCK ENDS-->
         <!--AVERAGE GOALS THIS SEASON BLOCK STARTS #12 -->
-        <?php if(!empty($this->report['avgGoalsScored'])) : ?>
+        <?php if(empty($this->report['avgGoalsScored'])) : ?>
             <div class="item col1 stacked-bar">
                 <section>
                     <h1><?php echo $this->translate('Average goals per game this season')?></h1>
