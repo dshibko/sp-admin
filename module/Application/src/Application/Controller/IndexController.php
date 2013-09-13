@@ -32,6 +32,7 @@ class IndexController extends AbstractActionController {
             $contentManager = ContentManager::getInstance($this->getServiceLocator());
             $languageManager = LanguageManager::getInstance($this->getServiceLocator());
             $settingsManager = SettingsManager::getInstance($this->getServiceLocator());
+            $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
             $language = $languageManager->getSelectedLanguage();
             $defaultLanguage = $languageManager->getDefaultLanguage();
             $trackingCode = $settingsManager->getSetting(SettingsManager::TRACKING_CODE);
@@ -48,6 +49,7 @@ class IndexController extends AbstractActionController {
                 'content' => $content,
                 'blocks' => $gameplayBlocks,
                 'trackingCode' => $trackingCode,
+                'appClub' => $applicationManager->getAppClub(),
             ));
 
             $viewModel->setTerminal(true);
