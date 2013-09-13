@@ -203,7 +203,7 @@ class FixturesController extends AbstractActionController
                         $this->setRequiredFormFieldsets($featuredPlayerForm);
                         if ($featuredPlayerForm->isValid()){
                             $languageData = $languageManager->getFeaturedPlayerLanguagesData($featuredPlayerLanguages);
-                            $matchManager->save($fixture,$languageData);
+	                    $matchManager->save($fixture,$languageData);
                             $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_FIXTURE_SAVED);
                             return $this->redirect()->toUrl($this->url()->fromRoute(self::FIXTURES_LIST_ROUTE, $params));
                         }else{

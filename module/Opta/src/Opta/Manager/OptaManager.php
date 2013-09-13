@@ -58,6 +58,7 @@ use \Neoco\Manager\BasicManager;
 class OptaManager extends BasicManager {
 
     const PARSE_F7_FEEDS_DAYS_BEFORE_START = 7;
+    const CHAMPIONS_LEAGUE_COMPETITION_NAME = 'Champions League';
 
     /**
      * @var OptaManager
@@ -92,6 +93,12 @@ class OptaManager extends BasicManager {
 
             if ($season != null) {
 
+		$competitionName = $this->getXmlAttribute($xml->SoccerDocument, 'competition_name');
+
+                if ($competitionName != self::CHAMPIONS_LEAGUE_COMPETITION_NAME) {
+                    return false;
+                }
+
                 $competitionFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'competition_id');
                 if (empty($competitionFeederId))
                     throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'competition_id'));
@@ -102,7 +109,7 @@ class OptaManager extends BasicManager {
                     $competition->setFeederId($competitionFeederId);
                     $competition->addSeason($season);
                 }
-                $competition->setDisplayName($this->getXmlAttribute($xml->SoccerDocument, 'competition_name'));
+                $competition->setDisplayName($competitionName);
                 $competitionDAO->save($competition);
 
                 $competitionSeasonDAO = CompetitionSeasonDAO::getInstance($this->getServiceLocator());
@@ -245,6 +252,12 @@ class OptaManager extends BasicManager {
 
             if ($season != null) {
 
+		$competitionName = $this->getXmlAttribute($xml->SoccerDocument, 'competition_name');
+
+                if ($competitionName != self::CHAMPIONS_LEAGUE_COMPETITION_NAME) {
+                    return false;
+                }
+
                 $competitionFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'competition_id');
                 if (empty($competitionFeederId))
                     throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'competition_id'));
@@ -257,7 +270,7 @@ class OptaManager extends BasicManager {
                         $competition->setFeederId($competitionFeederId);
                         $competition->addSeason($season);
                     }
-                    $competition->setDisplayName($this->getXmlAttribute($xml->SoccerDocument, 'competition_name'));
+                    $competition->setDisplayName($competitionName);
                     $competitionDAO->save($competition);
 
                     $competitionSeasonDAO = CompetitionSeasonDAO::getInstance($this->getServiceLocator());
@@ -1075,7 +1088,7 @@ class OptaManager extends BasicManager {
             // export TZ=UTC;
             case Feed::F1_TYPE: // 10 10 * * * cd <APP_ROOT>; php public/index.php opta F1
             case Feed::F40_TYPE: // 0 0,12 * * * cd <APP_ROOT>; php public/index.php opta F40
-                $feeds = $this->getUploadedFeedsByType($type);
+                $feeds = $this->getUploadedFeedsByType($type);print_r($feeds);
                 if (!empty($feeds)) {
                     $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
                     $seasons = $seasonManager->getAllNotFinishedSeasons();

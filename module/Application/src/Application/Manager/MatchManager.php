@@ -331,7 +331,6 @@ class MatchManager extends BasicManager
                 }
                 $matchLanguageDAO->save($matchLanguage, false, false);
             }
-
         }
 
         $matchDAO->flush();

@@ -15,47 +15,7 @@ class SettingsFormFilter extends InputFilter
     function __construct()
     {
         $factory = new InputFactory();
-
-        //Site Background Color
-        $this->add($factory->createInput(array(
-            'name' => 'site-background-colour',
-            'required' => true,
-            'validators' => array(
-                array(
-                    'name' => 'StringLength',
-                    'options' => array(
-                        'max' => self::MAX_VALUE_LENGTH
-                    )
-                ),
-                array('name' => 'regex',
-                    'options' => array(
-                        'pattern'   => self::CSS_HEX_PATTERN,
-                        'messages' => array(\Zend\Validator\Regex::NOT_MATCH => MessagesConstants::ERROR_INCORRECT_CSS_COLOR)
-                    )
-                ),
-            ),
-        )));
-
-        //Site Footer Colour
-        $this->add($factory->createInput(array(
-            'name' => 'site-footer-colour',
-            'required' => true,
-            'validators' => array(
-                array(
-                    'name' => 'StringLength',
-                    'options' => array(
-                        'max' => self::MAX_VALUE_LENGTH
-                    )
-                ),
-                array('name' => 'regex',
-                    'options' => array(
-                        'pattern'   => self::CSS_HEX_PATTERN,
-                        'messages' => array(\Zend\Validator\Regex::NOT_MATCH => MessagesConstants::ERROR_INCORRECT_CSS_COLOR)
-                    )
-                ),
-            ),
-        )));
-
+ 
         //Language
         $this->add($factory->createInput(array(
             'name' => 'language',

@@ -1,0 +1,1030 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2013-06-20 21:01+0300\n"
+"PO-Revision-Date: 2013-06-20 21:14+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.5\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop;translate\n"
+"X-Poedit-Basepath: e:\\MyProjects\\scorepredictor\\tru002\\module"
+"\\Application\\\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: view/application/auth/forgot.phtml:2
+msgid "Forgot Password?"
+msgstr "Forgot Password?"
+
+#: view/application/auth/forgot.phtml:24 view/application/auth/reset.phtml:29
+msgid "Submit"
+msgstr "Submit"
+
+#: view/application/auth/login.phtml:2 view/application/auth/login.phtml:42
+msgid "Sign In"
+msgstr "Sign In"
+
+#: view/application/auth/login.phtml:14 view/application/index/index.phtml:73
+msgid "Login with Facebook"
+msgstr "Facebook login"
+
+#: view/application/auth/login.phtml:25
+msgid "Enter Your Credentials"
+msgstr "Enter Your Credentials"
+
+#: view/application/auth/login.phtml:37 view/application/index/index.phtml:89
+msgid "Remember me"
+msgstr "Remember me"
+
+#: view/application/auth/login.phtml:45 view/application/index/index.phtml:95
+msgid "Forgotten password"
+msgstr "Forgotten password"
+
+#: view/application/auth/login.phtml:48 view/application/index/index.phtml:97
+msgid "Not a member?"
+msgstr "Not a member?"
+
+#: view/application/auth/login.phtml:49 view/application/index/index.phtml:98
+#: view/application/registration/index.phtml:179
+msgid "Register"
+msgstr "Register"
+
+#: view/application/auth/reset.phtml:2
+msgid "Reset Password"
+msgstr "Reset Password"
+
+#: view/application/auth/reset.phtml:38
+msgid "Reset Password Page"
+msgstr "Reset Password Page"
+
+#: view/application/content/help.phtml:9
+msgid "We would like to hear from you - any comments or suggestions or any questions you may have. Just use the form below."
+msgstr "We would like to hear from you - any comments or suggestions or any questions you may have. Just use the form below."
+
+#: view/application/content/help.phtml:19
+msgid "Enter Your Contact Info and Message"
+msgstr "Enter Your Contact Info and Message"
+
+#: view/application/content/help.phtml:36
+msgid "Send"
+msgstr "Send"
+
+#: view/application/content/help.phtml:37
+msgid "Reset"
+msgstr "Reset"
+
+#: view/application/content/help.phtml:42
+msgid "FAQs"
+msgstr "FAQs"
+
+msgid "How to play"
+msgstr "How to play"
+
+msgid "Fixtures"
+msgstr "Fixtures"
+
+#: view/application/fixtures/index.phtml:39
+#: view/application/match/index.phtml:41 view/application/match/index.phtml:81
+#: view/application/predict/index.phtml:64
+#: view/application/predict/index.phtml:121
+#: view/application/results/index.phtml:60
+msgid "VS"
+msgstr "VS"
+
+#: view/application/fixtures/index.phtml:41
+msgid "Predict the score"
+msgstr "Predict the score"
+
+msgid "No more matches will be played in this season. Please join us when next season starts."
+msgstr "No more matches will be played in this season. Please join us when the new season starts."
+
+#: view/application/full-table/index.phtml:7
+msgid "League Table"
+msgstr "League Table"
+
+#: view/application/full-table/index.phtml:14
+msgid "Everyone"
+msgstr "Everyone"
+
+#: view/application/full-table/index.phtml:16
+msgid "Your friends"
+msgstr "Your friends"
+
+#: view/application/full-table/index.phtml:18
+msgid "You and around you"
+msgstr "You and around you"
+
+#: view/application/full-table/index.phtml:31
+#: view/application/tables/index.phtml:30
+#: view/application/tables/index.phtml:81
+#: view/application/tables/index.phtml:123
+msgid "pts"
+msgstr "pts"
+
+#: view/application/full-table/index.phtml:57
+msgid "Show more"
+msgstr "Show more"
+
+#: view/application/index/index.phtml:72
+msgid "Already a member?"
+msgstr "Already a member?"
+
+#: view/application/index/index.phtml:76
+msgid "Regular Login"
+msgstr "Regular Login"
+
+#: view/application/index/index.phtml:80
+msgid "Email"
+msgstr "Email"
+
+#: view/application/index/index.phtml:84
+msgid "Password"
+msgstr "Password"
+
+#: view/application/index/index.phtml:92
+msgid "Sign in"
+msgstr "Sign in"
+
+#: view/application/index/index.phtml:101
+msgid "Close"
+msgstr "Close"
+
+#: view/application/index/index.phtml:130
+msgid "Ready to try?"
+msgstr "Ready to try?"
+
+#: view/application/match/index.phtml:1 view/application/match/index.phtml:3
+#: view/application/match/index.phtml:4 view/application/predict/index.phtml:1
+#: view/application/predict/index.phtml:4
+#: view/application/predict/index.phtml:6
+#: view/application/results/index.phtml:1
+#: view/application/results/index.phtml:4
+#: view/application/results/index.phtml:6
+msgid "vs"
+msgstr "vs"
+
+#: view/application/match/index.phtml:1 view/application/match/index.phtml:3
+#: view/application/match/index.phtml:4 view/application/predict/index.phtml:4
+#: view/application/predict/index.phtml:6
+#: view/application/results/index.phtml:4
+#: view/application/results/index.phtml:6
+msgid "Match Report"
+msgstr "Match Report"
+
+#: view/application/match/index.phtml:17 view/application/match/index.phtml:68
+msgid "Public Report"
+msgstr "Public Report"
+
+#: view/application/match/index.phtml:42
+#: view/application/predict/index.phtml:65
+#: view/application/predict/index.phtml:122
+#: view/application/results/index.phtml:61
+msgid "Scorers"
+msgstr "Scorers"
+
+#: view/application/match/index.phtml:95
+#: view/application/predict/index.phtml:158
+msgid "Time left"
+msgstr "Time left"
+
+#: view/application/match/index.phtml:98
+#: view/application/predict/index.phtml:161
+msgid "days hours mins secs"
+msgstr "days hours mins secs"
+
+#: view/application/predict/index.phtml:1
+msgid "Predict at"
+msgstr "Predict the"
+
+#: view/application/predict/index.phtml:15
+#: view/application/results/index.phtml:15
+msgid "New"
+msgstr "New"
+
+#: view/application/predict/index.phtml:24
+#: view/application/results/index.phtml:24
+msgid "Prev"
+msgstr "Prev"
+
+#: view/application/predict/index.phtml:24
+#: view/application/predict/index.phtml:29
+#: view/application/results/index.phtml:24
+#: view/application/results/index.phtml:29
+msgid "match"
+msgstr "match"
+
+#: view/application/predict/index.phtml:29
+#: view/application/results/index.phtml:29
+msgid "Next"
+msgstr "Next"
+
+#: view/application/predict/index.phtml:37
+msgid "Match in progress"
+msgstr "Match in progress"
+
+#: view/application/predict/index.phtml:41
+msgid "You predicted"
+msgstr "You predicted"
+
+#: view/application/predict/index.phtml:87
+msgid "This game is currently being played... check back soon for the results"
+msgstr "This game is currently being played... check back soon for the results"
+
+#: view/application/predict/index.phtml:89
+msgid "or"
+msgstr "or"
+
+#: view/application/predict/index.phtml:90
+msgid "predict the next game"
+msgstr "predict the next game"
+
+#: view/application/predict/index.phtml:114
+#: view/application/predict/index.phtml:141
+#: view/application/predict/index.phtml:164
+#: view/application/predict/index.phtml:165
+msgid "Select scorer"
+msgstr "Select scorer"
+
+#: view/application/predict/index.phtml:149
+msgid "Make prediction"
+msgstr "Save prediction"
+
+#: view/application/predict/index.phtml:151
+msgid "Edit your prediction"
+msgstr "Edit your prediction"
+
+#: view/application/predict/index.phtml:187
+msgid "You didn't save the prediction."
+msgstr "You didn't save the prediction."
+
+msgid "Prizes"
+msgstr "Prizes"
+
+#: view/application/registration/index.phtml:2
+msgid "Registration"
+msgstr "Registration"
+
+#: view/application/registration/index.phtml:15
+#: view/application/user/settings.phtml:14
+msgid "Connect with Facebook"
+msgstr "Connect with Facebook"
+
+#: view/application/registration/index.phtml:26
+msgid "Enter Personal Info"
+msgstr "Enter Personal Info"
+
+msgid "Gender"
+msgstr "Gender"
+
+msgid "Male"
+msgstr "Male"
+
+msgid "Female"
+msgstr "Female"
+
+#: view/application/registration/index.phtml:85
+msgid "Enter Email Addresses"
+msgstr "Enter Email Addresses"
+
+#: view/application/registration/index.phtml:108
+msgid "Enter Your Password"
+msgstr "Enter Your Password"
+
+#: view/application/registration/index.phtml:131
+msgid "Enter Your Display Name"
+msgstr "Enter Your Display Name"
+
+#: view/application/registration/index.phtml:145
+msgid "Enter Your Avatar"
+msgstr "Enter Your Avatar"
+
+#: view/application/registration/index.phtml:157
+#: view/application/user/settings.phtml:120
+msgid "Or choose from selection"
+msgstr "Or choose from selection"
+
+#: view/application/registration/index.phtml:164 view/partials/footer.phtml:14
+msgid "Terms"
+msgstr "Terms and conditions"
+
+#: view/application/registration/setup.phtml:10
+msgid "Set Up"
+msgstr "Set Up"
+
+#: view/application/registration/setup.phtml:36
+#: view/partials/setup-popup.phtml:9
+msgid "Just one more thing"
+msgstr "Just one more thing"
+
+#: view/application/registration/setup.phtml:39
+#: view/partials/setup-popup.phtml:13
+msgid "Are these details correct?"
+msgstr "Are these details correct?"
+
+#: view/application/registration/setup.phtml:40
+#: view/partials/setup-popup.phtml:14
+msgid "We need to know your region su we can make sure you are antered into the right league."
+msgstr "We need to know your region so we can make sure you are entered into the right league."
+
+#: view/application/registration/setup.phtml:41
+#: view/partials/setup-popup.phtml:15
+msgid "Note: once confirmed, you will not be able to change these settings until next season"
+msgstr "Note: once you have confirmed your region you will not be able to change this setting until next season"
+
+#: view/application/registration/setup.phtml:57
+#: view/partials/setup-popup.phtml:31
+msgid "Confirm and start playing"
+msgstr "Confirm and start playing"
+
+#: view/application/results/index.phtml:1
+msgid "Your Results of"
+msgstr "Your Results of"
+
+#: view/application/results/index.phtml:98
+msgid "Total"
+msgstr "Total"
+
+#: view/application/results/index.phtml:99
+msgid "PTS"
+msgstr "PTS"
+
+msgid "League Tables"
+msgstr "League Tables"
+
+#: view/application/tables/index.phtml:11
+msgid "Global league"
+msgstr "Global league"
+
+#: view/application/tables/index.phtml:28
+#: view/application/tables/index.phtml:79
+#: view/application/tables/index.phtml:121
+msgid "Top 4"
+msgstr "Top 4"
+
+#: view/application/tables/index.phtml:56
+#: view/application/tables/index.phtml:107
+#: view/application/tables/index.phtml:144
+msgid "View full table"
+msgstr "View full table"
+
+#: view/application/tables/index.phtml:62
+msgid "league"
+msgstr "league"
+
+#: view/application/user/delete.phtml:2
+#: view/application/user/settings.phtml:164
+msgid "Delete Account"
+msgstr "Delete Account"
+
+#: view/application/user/delete.phtml:11
+msgid "Are you sure you want to delete your account?"
+msgstr "Are you sure you want to delete your account?"
+
+#: view/application/user/delete.phtml:12
+msgid "<strong>Note:</strong> all data associated with your account will be lost and non-recoverable."
+msgstr "<strong>Note:</strong> all data associated with your account will be lost and non-recoverable."
+
+#: view/application/user/delete.phtml:14
+msgid "Confirm and delete account"
+msgstr "Confirm and delete account"
+
+#: view/application/user/settings.phtml:2 view/partials/menu.phtml:30
+msgid "Settings"
+msgstr "Settings"
+
+#: view/application/user/settings.phtml:25
+msgid "Change your Password"
+msgstr "Change your Password"
+
+#: view/application/user/settings.phtml:40
+#: view/application/user/settings.phtml:69
+#: view/application/user/settings.phtml:94
+#: view/application/user/settings.phtml:124
+#: view/application/user/settings.phtml:156
+msgid "Save changes"
+msgstr "Save changes"
+
+#: view/application/user/settings.phtml:58
+msgid "Change Your Email Addresses"
+msgstr "Change Your Email Addresses"
+
+#: view/application/user/settings.phtml:87
+msgid "Change Your Display Name"
+msgstr "Change Your Display Name"
+
+#: view/application/user/settings.phtml:112
+msgid "Change Your Avatar"
+msgstr "Change Your Avatar"
+
+#: view/application/user/settings.phtml:115
+msgid "User avatar"
+msgstr "User avatar"
+
+#: view/application/user/settings.phtml:142
+msgid "Regional Settings"
+msgstr "Regional Settings"
+
+#: view/application/user/settings.phtml:145
+msgid "Your country"
+msgstr "Your country"
+
+#: view/application/user/settings.phtml:148
+msgid "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the the league."
+msgstr "You cannot change your country in the middle of a league. We will prompt you to re-confirm your details at the start of the league."
+
+#: view/error/404.phtml:1
+msgid "Page not found"
+msgstr "Page not found"
+
+#: view/error/404.phtml:4
+msgid "Whoops!"
+msgstr "Whoops!"
+
+#: view/error/404.phtml:7 view/error/500.phtml:7 view/error/index.phtml:15
+#: view/error/index.phtml:39
+msgid "Message"
+msgstr "Message"
+
+#: view/error/404.phtml:8
+msgid "Sorry, the page you requested could not be found"
+msgstr "Sorry, the page you requested could not be found"
+
+#: view/error/500.phtml:1 view/error/500.phtml:4
+msgid "Server Error"
+msgstr "Server Error"
+
+#: view/error/500.phtml:8
+msgid "Sorry, you can't see the page. We are aware of it and doing all our best to fix the problem."
+msgstr "Sorry, you can't see the page. We are aware of it and doing all our best to fix the problem."
+
+#: view/error/500.phtml:15 view/error/index.phtml:8
+msgid "Additional information"
+msgstr "Additional information"
+
+#: view/error/index.phtml:1
+msgid "An error occurred"
+msgstr " We scored an own goal and are looking to rectify the issue."
+
+#: view/error/index.phtml:11 view/error/index.phtml:35
+msgid "File"
+msgstr "File"
+
+#: view/error/index.phtml:19 view/error/index.phtml:43
+msgid "Stack trace"
+msgstr "Stack trace"
+
+#: view/error/index.phtml:29
+msgid "Previous exceptions"
+msgstr "Previous exceptions"
+
+#: view/error/index.phtml:58
+msgid "No Exception available"
+msgstr "No Exception available"
+
+#: view/error/info.phtml:2 view/error/info.phtml:7
+msgid "Info Page"
+msgstr "Info Page"
+
+#: view/partials/cookie-bar.phtml:3
+msgid "Dismiss"
+msgstr "Dismiss"
+
+#: view/partials/footer.phtml:6
+msgid "Stay up to date with Truefan United"
+msgstr "Stay up to date with Manchester City"
+
+#: view/partials/footer.phtml:7
+msgid "See behind the scenes, match updates <br>and exclusive content"
+msgstr "With breaking news, match updates,  competitions and <br>exclusive interviews from the first team."
+
+#: view/partials/footer.phtml:17
+msgid "Contact us"
+msgstr "Contact us"
+
+#: view/partials/footer.phtml:20
+msgid "Privacy"
+msgstr "Privacy policy"
+
+#: view/partials/footer.phtml:23
+msgid "Help & Support"
+msgstr "Help & Support"
+
+#: view/partials/footer.phtml:26
+msgid "Visit our main site"
+msgstr "Visit our main site"
+
+#: view/partials/footer.phtml:29
+msgid "Cookies policy"
+msgstr "Cookies policy"
+
+#: view/partials/footer.phtml:33
+msgid "MADE BY"
+msgstr "MADE BY"
+
+msgid "Invite friends to Score Predictor"
+msgstr "Invite friends to Score Predictor"
+
+#: view/partials/menu.phtml:21
+msgid "User Navigation"
+msgstr "User Navigation"
+
+#: view/partials/menu.phtml:36
+msgid "Sign out"
+msgstr "Sign out"
+
+#: view/partials/post-match-report.phtml:9
+#: view/partials/pre-match-report.phtml:9
+msgid "Share this"
+msgstr "Share this"
+
+#: view/partials/post-match-report.phtml:34
+msgid "Was the most popular prediction this match"
+msgstr "Was the most popular prediction this match"
+
+#: view/partials/post-match-report.phtml:48
+msgid "Correct scorer predictions"
+msgstr "Correct scorer predictions"
+
+#: view/partials/pre-match-report.phtml:37
+msgid "Featured Player"
+msgstr "Featured Player"
+
+#: view/partials/pre-match-report.phtml:43
+msgid "Goals this season"
+msgstr "Goals this season"
+
+#: view/partials/pre-match-report.phtml:47
+#: view/partials/pre-match-report.phtml:82
+msgid "Matches played"
+msgstr "Matches played"
+
+#: view/partials/pre-match-report.phtml:51
+msgid "Match"
+msgstr "Match"
+
+#: view/partials/pre-match-report.phtml:51
+msgid "starts"
+msgstr "starts"
+
+#: view/partials/pre-match-report.phtml:55
+msgid "Mins"
+msgstr "Mins"
+
+#: view/partials/pre-match-report.phtml:55
+msgid "played"
+msgstr "played"
+
+#: view/partials/pre-match-report.phtml:72
+msgid "GOAL KEEPER"
+msgstr "GOAL KEEPER"
+
+#: view/partials/pre-match-report.phtml:78
+msgid "Saves this season"
+msgstr "Saves this season"
+
+#: view/partials/pre-match-report.phtml:86
+msgid "Penalty saves"
+msgstr "Penalty saves"
+
+#: view/partials/pre-match-report.phtml:90
+msgid "Clean sheets"
+msgstr "Clean sheets"
+
+#: view/partials/pre-match-report.phtml:107
+msgid "Draw"
+msgstr "Draw"
+
+#: view/partials/pre-match-report.phtml:162
+msgid "Top predicted scorers"
+msgstr "Top predicted scorers"
+
+#: view/partials/pre-match-report.phtml:189
+msgid "Top 5 predicted scores"
+msgstr "Top 5 predicted scores"
+
+#: view/partials/right-column.phtml:111
+msgid "+ Invite your friends"
+msgstr "+ Invite your friends"
+
+msgid "Value is required and can't be empty"
+msgstr "Field is required"
+
+msgid "Recovery link was sent to your email. The link is active for 60 minutes"
+msgstr "Recovery link was sent to your email. The link is active for 60 minutes"
+
+msgid "Please use Facebook Connect Button to log in."
+msgstr "Please use Facebook Connect Button to log in."
+
+msgid "The email you input is not registered."
+msgstr "The email you input is not registered."
+
+msgid "Input cannot be empty"
+msgstr "Input cannot be empty"
+
+msgid "Connect your account for a one click login"
+msgstr "Connect with Facebook for easier Login"
+
+msgid "Wrong email or password."
+msgstr "Wrong email or password."
+
+msgid "Confirm Password"
+msgstr "Confirm Password"
+
+msgid "Your password was successfully changed. Now you can login using it."
+msgstr "Your password was successfully changed. Now you can login using it."
+
+msgid "The form submitted did not originate from the expected site"
+msgstr "The form submitted did not originate from the expected site"
+
+msgid "Now you can change the password."
+msgstr "Now you can change the password."
+
+msgid "You will be redirected to website..."
+msgstr "You will be redirected to the website..."
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Your message successfully sent"
+msgstr "Your message successfully sent"
+
+msgid "Please select"
+msgstr "Please select"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "First Name"
+msgstr "First Name"
+
+msgid "Last Name"
+msgstr "Last Name"
+
+msgid "Date of Birth"
+msgstr "Date of Birth"
+
+msgid "Country"
+msgstr "Country"
+
+msgid "January"
+msgstr "January"
+
+msgid "February"
+msgstr "February"
+
+msgid "March"
+msgstr "March"
+
+msgid "April"
+msgstr "April"
+
+msgid "May"
+msgstr "May"
+
+msgid "June"
+msgstr "June"
+
+msgid "July"
+msgstr "July"
+
+msgid "August"
+msgstr "August"
+
+msgid "September"
+msgstr "September"
+
+msgid "October"
+msgstr "October"
+
+msgid "November"
+msgstr "November"
+
+msgid "December"
+msgstr "December"
+
+msgid "Confirm Email"
+msgstr "Confirm Email"
+
+msgid "Display Name"
+msgstr "Display Name"
+
+msgid "Avatar"
+msgstr "Avatar"
+
+msgid "Error happened while connecting to your facebook account. Please try again later"
+msgstr " We scored an own goal! An error occurred while connecting to your Facebook account. Please try again later"
+
+msgid "Error happened while updating data. Please try again later"
+msgstr " We scored an own goal! An error occurred while updating data. Please try again later"
+
+msgid "Your account successfully connected to facebook"
+msgstr "Your account has successfully connected to facebook"
+
+msgid "Region"
+msgstr "Region"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "You can't predict on this match. You can predict just on %s matches in the future."
+msgstr "You can't predict on this match. You can predict just on %s matches in the future."
+
+msgid "Predict"
+msgstr "Predict"
+
+msgid "Results"
+msgstr "Results"
+
+msgid "Full Table"
+msgstr "Full Table"
+
+msgid "Head-to-head results"
+msgstr "Head-to-head results"
+
+#: view/application/partials/pre-match-report.phtml:287
+msgid "Total goals this season"
+msgstr "Total goals this season"
+
+msgid "Global"
+msgstr "Global"
+
+msgid "Local"
+msgstr "Local"
+
+msgid "View full league tables"
+msgstr "View full league tables"
+
+msgid "Play against your mates"
+msgstr "Play against your mates"
+
+msgid "Create your own social league against your Facebook friends to find out who's top of the league"
+msgstr "Create your own social league against your Facebook friends to find out who's top of the league"
+
+msgid "Overall League"
+msgstr "Overall League"
+
+msgid "Temporal Leagues"
+msgstr "Mini Leagues"
+
+msgid "Your results"
+msgstr "Your results"
+
+msgid "No matches were played in this season."
+msgstr "No matches have been played this season. Results will appear after the first match has been completed."
+
+msgid "You predicted the draw"
+msgstr "You predicted the draw"
+
+msgid "You predicted the winner would be %s"
+msgstr "You predicted the winner would be %s"
+
+msgid "You predicted the score would be %s"
+msgstr "You predicted the score would be %s"
+
+msgid "You predicted the scorer(s) would be %s"
+msgstr "You predicted the scorer(s) would be %s"
+
+msgid "You predicted that %s will score goal number %s of %s"
+msgstr "You predicted that %s will score goal number %s of %s"
+
+msgid "This is double points match"
+msgstr "This is double points match"
+
+msgid "You were %s accurate in your prediction"
+msgstr "You were %s accurate in your prediction"
+
+msgid "Community correctly predicted the results"
+msgstr "Community correctly predicted the result"
+
+msgid "You didn't move on the %s league this match"
+msgstr "You didn't move on the %s league this match"
+
+msgid "You moved up %s place(s) on the %s league this match"
+msgstr "You moved up %s place(s) on the %s league this match"
+
+msgid "You moved down %s place(s) on the %s league this match"
+msgstr "You moved down %s place(s) on the %s league this match"
+
+msgid "Old password"
+msgstr "Old password"
+
+msgid "New password"
+msgstr "New password"
+
+msgid "Retype new password"
+msgstr "Retype new password"
+
+msgid "Upload a new avatar"
+msgstr "Upload a new avatar"
+
+msgid "Please sign in to access this page"
+msgstr "Please sign in to access this page"
+
+msgid "New password was successfully saved."
+msgstr "New password was successfully saved."
+
+msgid "New email was successfully saved."
+msgstr "New email was successfully saved."
+
+msgid "New display name was successfully saved."
+msgstr "New display name was successfully saved."
+
+msgid "New avatar was successfully saved."
+msgstr "New avatar was successfully saved."
+
+msgid "New language was successfully saved."
+msgstr "New language was successfully saved."
+
+msgid "New email settings were successfully saved."
+msgstr "New email settings were successfully saved."
+
+msgid "Public profile option was successfully saved."
+msgstr "Public profile option was successfully saved."
+
+msgid "Invalid form type"
+msgstr "Invalid form type"
+
+msgid "You can delete only yours account"
+msgstr "You can delete only your account"
+
+msgid "You have deleted your account successfully."
+msgstr "You have deleted your account successfully."
+
+msgid "Cannot get facebook user id from request"
+msgstr "Cannot get facebook user id from request"
+
+msgid "Cannot get user by facebook id"
+msgstr "Cannot get user by facebook id"
+
+msgid "Your Language"
+msgstr "Your Language"
+
+msgid "Recovery link is not valid."
+msgstr "Recovery link is not valid."
+
+msgid "Upload failed due to unknown problems."
+msgstr "Upload failed due to unknown problems."
+
+msgid "The match was not found."
+msgstr "The match was not found."
+
+msgid "Team you want to make a prediction was not found."
+msgstr "Team you want to make a prediction was not found."
+
+msgid "Active page was not found."
+msgstr "Active page was not found."
+
+msgid "Bad request. Security check failed."
+msgstr "Bad request. Security check failed."
+
+msgid "The next one will start soon. You can visit our website later and start playing."
+msgstr "The next one will start soon. You can visit our website later and start playing."
+
+msgid "Acy"
+msgstr "Acy"
+
+msgid "Cannot connect user to facebook account because facebook email has been already taken by another user."
+msgstr "Cannot connect user to facebook account because facebook email has already been taken by another user."
+
+msgid "Your Facebook data will be used to create your account."
+msgstr "Your Facebook data will be used to create your account."
+
+msgid "Score Predictor"
+msgstr "Score Predictor"
+
+msgid "Terms were saved successfully."
+msgstr "Terms were saved successfully."
+
+msgid "A private league with the league code %s hasn't been not found"
+msgstr "A private league with the league code %s hasn't been not found"
+
+msgid "You joined the league earlier"
+msgstr "You joined the league earlier"
+
+msgid "You are not a member of this private league"
+msgstr "You are not a member of this private league"
+
+msgid "Create a private league"
+msgstr "Create a private league"
+
+msgid "Join a private league"
+msgstr "Join a private league"
+
+msgid "Create"
+msgstr "Create"
+
+msgid "Join"
+msgstr "Join"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Delete"
+msgstr "Delete"
+
+msgid "Invalid private league display name"
+msgstr "Invalid private league display name"
+
+msgid "Invalid private league code"
+msgstr "Invalid private league code"
+
+msgid "Private league was created successfully. Now you can invite your friends using league code %s."
+msgstr "Private league was created successfully. Now you can invite your friends using league code %s."
+
+msgid "You have joined the private league successfully"
+msgstr "You have joined the private league successfully"
+
+msgid "You can't use bad words in private league display name"
+msgstr "You can't use bad words in private league display name"
+
+msgid "You have deleted the private league successfully"
+msgstr "You have deleted the private league successfully"
+
+msgid "Only admin can delete the private league"
+msgstr "Only admin can delete the private league"
+
+msgid "Are you sure that you want to delete the league?"
+msgstr "Are you sure that you want to delete the league?"
+
+msgid "Are you sure you want to be removed permanently from this private league?"
+msgstr "Are you sure you want to be removed permanently from this private league?"
+
+msgid "Are you sure you want to remove the user permanently from this private league?"
+msgstr "Are you sure you want to remove the user permanently from this private league?"
+
+msgid "Admin can't leave the private league"
+msgstr "Admin can't leave the private league"
+
+msgid "Unique league code"
+msgstr "Unique league code"
+
+#: Iteration 2.1
+#: view/application/fixtures/index.phtml:41
+msgid "View my prediction"
+msgstr "View my prediction"
+
+#: view/application/fixtures/match-report-messages.phtml:62
+msgid "See full report"
+msgstr "See full report"
+
+#: view/application/partials/match-report-messages.phtml:4
+msgid "Match Results"
+msgstr "Match Results"
+
+#: view/application/partials/pre-match-report.phtml:218
+msgid "Community think %s will win this match"
+msgstr "Community think %s will win this match"
+
+msgid "Community correctly predicted the score line"
+msgstr "Community correctly predicted the score line"
+
+#: view/application/partials/post-match-report.phtml:90
+msgid "Community agreed with your score prediction"
+msgstr "Community agreed with your score prediction"
+
+#: view/application/partials/cookie-bar.phtml:4
+msgid "Accept and close"
+msgstr "Accept and close"
+
+#: view/application/partials/cookie-bar.phtml:3
+msgid "We use cookies to ensure that we gave you the best experience on our website. If you continue without changing your settings, we'll assume that you are happy to receive all cookies on the Score Predictor website. Learn more about our %scookie usage%s and how to change your cookie settings."
+msgstr "We use cookies to ensure that we gave you the best experience on our website. If you continue without changing your settings, we'll assume that you are happy to receive all cookies on the Score Predictor website. Learn more about our %scookie usage%s and how to change your cookie settings."
+
+#: view/application/partials/pre-match-report.phtml:235
+msgid "Average goals per game this season"
+msgstr "Average goals per game this season"
+
+#: view/application/partials/pre-match-report.phtml:256
+msgid "Last 5 matches"
+msgstr "Last 5 matches"
+
+#: view/application/partials/pre-match-report.phtml:272
+msgid "Wins"
+msgstr "Wins"
+
+#: view/application/partials/pre-match-report.phtml:273
+msgid "Losses"
+msgstr "Losses"
+
+#: view/application/partials/pre-match-report.phtml:274
+msgid "Draws"
+msgstr "Draws"
+
+#: view/application/partials/pre-match-report.phtml:347
+msgid "Was the result of the corresponding fixture last season"
+msgstr "Was the result of the corresponding fixture last season"
+
+#: view/application/partials/pre-match-report.phtml:359
+msgid "Last players to score"
+msgstr "Last players to score"
+
+#: view/application/partials/pre-match-report.phtml:383
+msgid "Top scorers"
+msgstr "Top scorers"
+
+#: view/application/partials/post-match-report.phtml:138
+msgid "Is the %smost%s picked player"
+msgstr "Is the %smost%s picked player"
+
