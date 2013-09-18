@@ -143,7 +143,7 @@ class AvatarHelper
     {
         $data = $this->getData()->getValue();
 
-        if ($data['error'] != UPLOAD_ERR_NO_FILE) { //User upload avatar
+        if (isset($data['error']) && $data['error'] != UPLOAD_ERR_NO_FILE) { //User upload avatar
             $size = new Size(array(
                 'max' => self::IMAGE_MAX_SIZE
             ));

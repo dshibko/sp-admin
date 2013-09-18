@@ -489,7 +489,9 @@ class UserManager extends BasicManager {
             return null;
         if (null === $this->userGeoIpIsoCode){
             $remoteAddresses = new RemoteAddress();
-            $this->userGeoIpIsoCode = geoip_country_code_by_name($remoteAddresses->getIpAddress());
+	    $headers = apache_request_headers(); 
+	    $realClientIp = $headers["X-Forwarded-For"];
+            $this->userGeoIpIsoCode = geoip_country_code_by_name($realClientIp);
         }
         return $this->userGeoIpIsoCode;
     }
