@@ -29,16 +29,16 @@ class FeaturedPlayer
     /**
      * @var integer
      *
-     * @ORM\Column(name="match_starts", type="integer", length=3, nullable=true)
+     * @ORM\Column(name="number_of_assists", type="integer", length=3, nullable=true)
      */
-    private $matchStarts;
+    private $numberOfAssists;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="minutes_played", type="integer", length=6, nullable=true)
+     * @ORM\Column(name="number_of_shots", type="integer", length=6, nullable=true)
      */
-    private $minutesPlayed;
+    private $numberOfShots;
 
     /**
      * @var integer
@@ -96,21 +96,21 @@ class FeaturedPlayer
     }
 
     /**
-     * @param int $matchStarts
+     * @param int $numberOfAssists
      * @return \Application\Model\Entities\FeaturedPlayer
      */
-    public function setMatchStarts($matchStarts)
+    public function setNumberOfAssists($numberOfAssists)
     {
-        $this->matchStarts = $matchStarts;
+        $this->numberOfAssists = $numberOfAssists;
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getMatchStarts()
+    public function getNumberOfAssists()
     {
-        return $this->matchStarts;
+        return $this->numberOfAssists;
     }
 
     /**
@@ -132,21 +132,21 @@ class FeaturedPlayer
     }
 
     /**
-     * @param int $minutesPlayed
+     * @param int $numberOfShots
      * @return \Application\Model\Entities\FeaturedPlayer
      */
-    public function setMinutesPlayed($minutesPlayed)
+    public function setNumberOfShots($numberOfShots)
     {
-        $this->minutesPlayed = $minutesPlayed;
+        $this->numberOfShots = $numberOfShots;
         return $this;
     }
 
     /**
      * @return int
      */
-    public function getMinutesPlayed()
+    public function getNumberOfShots()
     {
-        return $this->minutesPlayed;
+        return $this->numberOfShots;
     }
 
     /**

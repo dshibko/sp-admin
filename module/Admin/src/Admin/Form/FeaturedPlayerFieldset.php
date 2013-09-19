@@ -76,7 +76,7 @@ class FeaturedPlayerFieldset extends LanguageFieldset
 
         //Number of matches starts this season
         $this->add(array(
-            'name' => 'player_match_starts',
+            'name' => 'player_assists',
             'type' => 'text',
             'attributes' => array(
                 'required' => $required,
@@ -88,13 +88,13 @@ class FeaturedPlayerFieldset extends LanguageFieldset
                 'digits' => true,
             ),
             'options' => array(
-                'label' => 'Number of match starts this season',
+                'label' => 'Number of assists this season',
             ),
         ));
 
         //Total number of minutes
         $this->add(array(
-            'name' => 'player_minutes_played',
+            'name' => 'player_shots',
             'type' => 'text',
             'attributes' => array(
                 'required' => $required,
@@ -106,7 +106,7 @@ class FeaturedPlayerFieldset extends LanguageFieldset
                 'digits' => true,
             ),
             'options' => array(
-                'label' => 'Total number of minutes played this season',
+                'label' => 'Total number of shots this season',
             ),
         ));
         /*----------------------Player Stats End---------------------------*/
@@ -126,8 +126,8 @@ class FeaturedPlayerFieldset extends LanguageFieldset
                 if ($featuredPlayer && $featuredPlayer->getPlayer()) {
                     $this->get('featured_player')->setValue($featuredPlayer->getPlayer()->getId());
                     $this->get('player_matches_played')->setValue($featuredPlayer->getMatchesPlayed());
-                    $this->get('player_match_starts')->setValue($featuredPlayer->getMatchStarts());
-                    $this->get('player_minutes_played')->setValue($featuredPlayer->getMinutesPlayed());
+                    $this->get('player_assists')->setValue($featuredPlayer->getNumberOfAssists());
+                    $this->get('player_shots')->setValue($featuredPlayer->getNumberOfShots());
                     $this->get('player_goals')->setValue($featuredPlayer->getGoals());
                 }
             }

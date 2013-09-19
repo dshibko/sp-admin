@@ -150,7 +150,7 @@ class LanguageManager extends BasicManager {
     public function savePoFileContent($poFileName, array $data)
     {
         $poFile = $this->getPoFilePath($poFileName);
-            $defaultLanguage = LanguageDAO::getInstance($this->getServiceLocator())->getDefaultLanguage();
+        $defaultLanguage = LanguageDAO::getInstance($this->getServiceLocator())->getDefaultLanguage();
         if (!file_exists($poFile)){
             $defaultLanguageFile = $this->getPoFilePath($defaultLanguage->getLanguageCode());
             if (!copy($defaultLanguageFile, $poFile)){
@@ -181,7 +181,7 @@ class LanguageManager extends BasicManager {
     {
         $poFile = $this->getPoFilePath($poFileName);
         if (file_exists($poFile)){
-           return phpmo_convert($poFile);
+            return phpmo_convert($poFile);
         }
         return false;
     }
@@ -221,9 +221,9 @@ class LanguageManager extends BasicManager {
                 $country->setLanguage($language);
                 $countryDAO->save($country, false, false);
             }
-           $countryDAO->flush();
-           $countryDAO->clearCache();
-           LanguageDAO::getInstance($this->getServiceLocator())->clearCache();
+            $countryDAO->flush();
+            $countryDAO->clearCache();
+            LanguageDAO::getInstance($this->getServiceLocator())->clearCache();
         }
         return true;
     }
@@ -259,8 +259,8 @@ class LanguageManager extends BasicManager {
                     'id' => $fieldset->get('featured_player')->getValue(),
                     'goals' => $fieldset->get('player_goals')->getValue(),
                     'matches_played' => $fieldset->get('player_matches_played')->getValue(),
-                    'match_starts' => $fieldset->get('player_match_starts')->getValue(),
-                    'minutes_played' => $fieldset->get('player_minutes_played')->getValue(),
+                    'player_assists' => $fieldset->get('player_assists')->getValue(),
+                    'player_shots' => $fieldset->get('player_shots')->getValue(),
                 ),
             );
         }

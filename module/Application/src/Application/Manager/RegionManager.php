@@ -128,8 +128,8 @@ class RegionManager extends BasicManager {
                     'id' => $fieldset->get('featured_player')->getValue(),
                     'goals' => $fieldset->get('player_goals')->getValue(),
                     'matches_played' => $fieldset->get('player_matches_played')->getValue(),
-                    'match_starts' => $fieldset->get('player_match_starts')->getValue(),
-                    'minutes_played' => $fieldset->get('player_minutes_played')->getValue(),
+                    'player_assists' => $fieldset->get('player_assists')->getValue(),
+                    'player_shots' => $fieldset->get('player_shots')->getValue(),
                 ),
             );
         }

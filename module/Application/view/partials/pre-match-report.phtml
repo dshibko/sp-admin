@@ -1,368 +1,369 @@
 <!--HEADER STARTS-->
-    <section class="match-banner">
-        <div class="clearfix">
-            <?php if (!empty($this->report['headerImage'])): ?>
-                <img src="<?php echo $this->report['headerImage'];?>" alt="">
-            <?php endif; ?>
-            <article>
-                <h1><?php echo $this->escapeHtml($this->report['title']);?></h1>
-                <p><?php echo $this->report['intro'];?></p>
-                <footer class="clearfix">
-                    <ul class="social-links">
-                        <li>
-                            <script type="text/javascript" src="/js/facebook.js"></script>
-                            <a summary="<?=$this->facebookShareCopy?>" href="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" class="like">Like</a>
-                        </li>
-                        <li>
-                            <a href="https://twitter.com/share" class="twitter-share-button" data-text="<?=$this->twitterShareCopy?>" data-url="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" data-count="none">Tweet</a>
-                            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-                        </li>
-<!--                        <li><a href="">Pin it</a></li>-->
-                    </ul>
-                </footer>
-            </article>
-        </div>
-    </section>
+<section class="match-banner">
+    <div class="clearfix">
+        <?php if (!empty($this->report['headerImage'])): ?>
+            <img src="<?php echo $this->report['headerImage'];?>" alt="">
+        <?php endif; ?>
+        <article>
+            <h1><?php echo $this->escapeHtml($this->report['title']);?></h1>
+            <p><?php echo $this->report['intro'];?></p>
+            <footer class="clearfix">
+                <ul class="social-links">
+                    <li>
+                        <script type="text/javascript" src="/js/facebook.js"></script>
+                        <a summary="<?=$this->facebookShareCopy?>" href="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" class="like">Like</a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/share" class="twitter-share-button" data-text="<?=$this->twitterShareCopy?>" data-url="<?=$this->url('match', array('code' => $this->code), array('force_canonical' => true))?>" data-count="none">Tweet</a>
+                        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                    </li>
+                    <!--                        <li><a href="">Pin it</a></li>-->
+                </ul>
+            </footer>
+        </article>
+    </div>
+</section>
 <!--HEADER ENDS-->
 <section class="grid-layout">
-   <div id="container" class="clearfix masonry centered fluid">
-        <!--FEATURED PLAYER BLOCK STARTS #1 -->
-        <?php if (!empty($this->report['featuredPlayer'])):?>
-            <?php $featuredPlayer = $this->report['featuredPlayer'];?>
-            <div class="item col2 featured-player">
-                <section class="clearfix">
-                    <img src="<?php echo !empty($featuredPlayer['backgroundImage']) ? $featuredPlayer['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                    <div>
-                        <hgroup>
-                            <h1><?php echo $this->translate('Featured Player');?></h1>
-                            <h2><?php echo $featuredPlayer['displayName'];?></h2>
-                        </hgroup>
-                        <ul class="clearfix">
-                            <li>
-                                <strong><?php echo $featuredPlayer['goals'];?></strong>
-                                <span><?php echo $this->translate('Goals this season');?></span>
-                            </li>
-                            <li>
-                                <strong><?php echo $featuredPlayer['matchesPlayed'];?></strong>
-                                <span><?php echo $this->translate('Matches played');?></span>
-                            </li>
-                            <li>
-                                <strong><?php echo $featuredPlayer['matchStarts'];?></strong>
-                                <span><?php echo $this->translate('Match');?> <br><?php echo $this->translate('starts');?></span>
-                            </li>
-                            <li>
-                                <strong><?php echo $featuredPlayer['minutesPlayed'];?></strong>
-                                <span><?php echo $this->translate('Mins');?> <br><?php echo $this->translate('played');?></span>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
+<div id="container" class="clearfix masonry centered fluid">
+<!--FEATURED PLAYER BLOCK STARTS #1 -->
+<?php if (!empty($this->report['featuredPlayer'])):?>
+    <?php $featuredPlayer = $this->report['featuredPlayer'];?>
+    <div class="item col2 featured-player">
+        <section class="clearfix">
+            <img src="<?php echo !empty($featuredPlayer['backgroundImage']) ? $featuredPlayer['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
+            <div>
+                <hgroup>
+                    <h1><?php echo $this->translate('Featured Player');?></h1>
+                    <h2><?php echo $featuredPlayer['displayName'];?></h2>
+                </hgroup>
+                <ul class="clearfix">
+                    <li>
+                        <strong><?php echo $featuredPlayer['goals'];?></strong>
+                        <span><?php echo $this->translate('Goals this season');?></span>
+                    </li>
+                    <li>
+                        <strong><?php echo $featuredPlayer['matchesPlayed'];?></strong>
+                        <span><?php echo $this->translate('Matches played');?></span>
+                    </li>
+                    <li>
+                        <strong><?php echo $featuredPlayer['numberOfAssists'];?></strong>
+                        <span><?php echo $this->translate('Number of assists');?></span>
+                    </li>
+                    <li>
+                        <strong><?php echo $featuredPlayer['numberOfShots'];?></strong>
+                        <span><?php echo $this->translate('Number of shots');?></span>
+                    </li>
+                </ul>
             </div>
-        <?php endif;?>
-        <!--FEATURED PLAYER BLOCK ENDS-->
-        <!--FEATURED GOALKEEPER BLOCK STARTS #1 -->
-        <?php if (!empty($this->report['featuredGoalkeeper'])):?>
-            <?php $featuredGoalkeeper = $this->report['featuredGoalkeeper'];?>
-            <div class="item col2 featured-player">
-                <section class="clearfix">
-                    <img src="<?php echo !empty($featuredGoalkeeper['backgroundImage']) ? $featuredGoalkeeper['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                    <div>
-                        <hgroup>
-                            <h1><?php echo $this->translate('GOAL KEEPER');?></h1>
-                            <h2><?php echo $featuredGoalkeeper['displayName'];?></h2>
-                        </hgroup>
-                        <ul class="clearfix">
-                            <li>
-                                <strong><?php echo $featuredGoalkeeper['saves'];?></strong>
-                                <span><?php echo $this->translate('Saves this season');?></span>
-                            </li>
-                            <li>
-                                <strong><?php echo $featuredGoalkeeper['matchesPlayed'];?></strong>
-                                <span><?php echo $this->translate('Matches played');?></span>
-                            </li>
-                            <li>
-                                <strong><?php echo $featuredGoalkeeper['penaltySaves'];?></strong>
-                                <span><?php echo $this->translate('Penalty saves');?></span>
-                            </li>
-                            <li>
-                                <strong><?php echo $featuredGoalkeeper['cleanSheets'];?></strong>
-                                <span><?php echo $this->translate('Clean sheets');?></span>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
+        </section>
+    </div>
+<?php endif;?>
+<!--FEATURED PLAYER BLOCK ENDS-->
+<!--FEATURED GOALKEEPER BLOCK STARTS #1 -->
+<?php if (!empty($this->report['featuredGoalkeeper'])):?>
+    <?php $featuredGoalkeeper = $this->report['featuredGoalkeeper'];?>
+    <div class="item col2 featured-player">
+        <section class="clearfix">
+            <img src="<?php echo !empty($featuredGoalkeeper['backgroundImage']) ? $featuredGoalkeeper['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
+            <div>
+                <hgroup>
+                    <h1><?php echo $this->translate('GOAL KEEPER');?></h1>
+                    <h2><?php echo $featuredGoalkeeper['displayName'];?></h2>
+                </hgroup>
+                <ul class="clearfix">
+                    <li>
+                        <strong><?php echo $featuredGoalkeeper['saves'];?></strong>
+                        <span><?php echo $this->translate('Saves this season');?></span>
+                    </li>
+                    <li>
+                        <strong><?php echo $featuredGoalkeeper['matchesPlayed'];?></strong>
+                        <span><?php echo $this->translate('Matches played');?></span>
+                    </li>
+                    <li>
+                        <strong><?php echo $featuredGoalkeeper['penaltySaves'];?></strong>
+                        <span><?php echo $this->translate('Penalty saves');?></span>
+                    </li>
+                    <li>
+                        <strong><?php echo $featuredGoalkeeper['cleanSheets'];?></strong>
+                        <span><?php echo $this->translate('Clean sheets');?></span>
+                    </li>
+                </ul>
             </div>
-        <?php endif;?>
-        <!--FEATURED GOALKEEPER BLOCK ENDS-->
-        <!--HEAD TO HEAD BLOCK STARTS #2-->
-        <?php if (isset($this->report['headToHead'])):?>
-            <?php $headToHead = $this->report['headToHead'];?>
-            <div class="item col1 pie-chart masonry-brick">
-                <section>
-                    <figure class="clearfix">
-                        <div id="chart-head-to-head-results"></div>
-                        <figcaption>
-                            <h1><?php echo $this->translate('Head-to-head results');?></h1>
-                            <ol class="legend">
-                                <li><?=$this->match['homeName'];?> </li>
-                                <li><?=$this->match['awayName'];?> </li>
-                                <li><?=$this->translate('Draws');?> </li>
-                            </ol>
-                        </figcaption>
-                    </figure>
-                </section>
+        </section>
+    </div>
+<?php endif;?>
+<!--FEATURED GOALKEEPER BLOCK ENDS-->
+<!--HEAD TO HEAD BLOCK STARTS #2-->
+<?php if (isset($this->report['headToHead'])):?>
+    <?php $headToHead = $this->report['headToHead'];?>
+    <div class="item col1 pie-chart masonry-brick">
+        <section>
+            <figure class="clearfix">
+                <div id="chart-head-to-head-results"></div>
+                <figcaption>
+                    <h1><?php echo $this->translate('Head-to-head results');?></h1>
+                    <ol class="legend">
+                        <li><?=$this->match['homeName'];?> </li>
+                        <li><?=$this->match['awayName'];?> </li>
+                        <li><?=$this->translate('Draws');?> </li>
+                    </ol>
+                </figcaption>
+            </figure>
+        </section>
+    </div>
+    <script type="text/javascript">
+        var headToHeadData = [];
+        var colors = ['#144a9b', '#7f7f80','#363636'];
+        var percentage = [];
+        var labels = [];
+        percentage.push('<?=$headToHead['homeTeamWins']['winsPercentage'];?>');
+        percentage.push('<?=$headToHead['awayTeamWins']['winsPercentage'];?>');
+        percentage.push('<?=$headToHead['draws']['drawsPercentage'];?>');
+        labels.push('<?=$headToHead['homeTeamWins']['wins'];?>');
+        labels.push('<?=$headToHead['awayTeamWins']['wins'];?>');
+        labels.push('<?=$headToHead['draws']['draws'];?>');
+        for (var i = 0; i < colors.length; i++){
+            if (percentage[i] !== undefined){
+                headToHeadData.push({color:colors[i],data:percentage[i], label :labels[i]});
+            }
+        }
+    </script>
+<?php endif;?>
+<!--HEAD TO HEAD BLOCK ENDS-->
+<!--GOALS SCORED THIS SEASON BLOCK STARTS #3 -->
+<?php if(!empty($this->report['goalsScoredThisSeason'])) : ?>
+    <div class="item col1 stacked-bar masonry-brick">
+        <section>
+            <h1><?php echo $this->translate('Total goals this season')?></h1>
+            <figure>
+                <ol class="clearfix">
+                    <li style="width: <?=$this->report['goalsScoredThisSeason']['homeTeamGoalsBarWidth']?>%;"><span><?=$this->report['goalsScoredThisSeason']['homeTeamGoals']?></span></li>
+                    <li style="width: <?=$this->report['goalsScoredThisSeason']['awayTeamGoalsBarWidth']?>%;"><span><?=$this->report['goalsScoredThisSeason']['awayTeamGoals']?></span></li>
+                </ol>
+                <figcaption>
+                    <ol class="legend">
+                        <li><?=$this->match['homeName']?></li>
+                        <li><?=$this->match['awayName']?></li>
+                    </ol>
+                </figcaption>
+            </figure>
+        </section>
+    </div>
+<?php endif; ?>
+<!--GOALS SCORED THIS SEASON BLOCK ENDS-->
+
+<!--TOP PREDICTED SCORERS BLOCK STARTS #6 -->
+<?php if (!empty($this->report['topScorers'])):?>
+    <?php $topScorers = $this->report['topScorers'];?>
+    <div class="item col2 top-predicted-scorers">
+        <section class="clearfix">
+            <img src="<?php echo !empty($topScorers['backgroundImage']) ? $topScorers['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
+            <div>
+                <h1><?php echo $this->translate('Top predicted scorers');?></h1>
+                <?php
+                $classes = array('big', 'middle', 'small');
+                $index = 0;
+                ?>
+                <ol class="clearfix">
+                    <?php foreach($topScorers['scorers'] as $scorer):?>
+                        <li class="<?php echo (isset($classes[$index]) ? $classes[$index] : 'small');?>">
+                            <strong><?php echo $scorer['percentage'];?><sup>%</sup></strong>
+                            <span><?php echo $scorer['playerName'];?></span>
+                        </li>
+                        <?php $index++;?>
+                    <?php endforeach;?>
+                </ol>
             </div>
-            <script type="text/javascript">
-                var headToHeadData = [];
-                var colors = ['#6baddf', '#333333','#808080'];
-                var percentage = [];
-                var labels = [];
-                percentage.push('<?=$headToHead['homeTeamWins']['winsPercentage'];?>');
-                percentage.push('<?=$headToHead['awayTeamWins']['winsPercentage'];?>');
-                percentage.push('<?=$headToHead['draws']['drawsPercentage'];?>');
-                labels.push('<?=$headToHead['homeTeamWins']['wins'];?>');
-                labels.push('<?=$headToHead['awayTeamWins']['wins'];?>');
-                labels.push('<?=$headToHead['draws']['draws'];?>');
-                for (var i = 0; i < colors.length; i++){
-                    if (percentage[i] !== undefined){
-                        headToHeadData.push({color:colors[i],data:percentage[i], label :labels[i]});
-                    }
-                }
-            </script>
-        <?php endif;?>
-        <!--HEAD TO HEAD BLOCK ENDS-->
-        <!--GOALS SCORED THIS SEASON BLOCK STARTS #3 -->
-        <?php if(!empty($this->report['goalsScoredThisSeason'])) : ?>
-            <div class="item col1 stacked-bar masonry-brick">
-                <section>
-                    <h1><?php echo $this->translate('Total goals this season')?></h1>
-                    <figure>
-                        <ol class="clearfix">
-                            <li style="width: <?=$this->report['goalsScoredThisSeason']['homeTeamGoalsBarWidth']?>%;"><span><?=$this->report['goalsScoredThisSeason']['homeTeamGoals']?></span></li>
-                            <li style="width: <?=$this->report['goalsScoredThisSeason']['awayTeamGoalsBarWidth']?>%;"><span><?=$this->report['goalsScoredThisSeason']['awayTeamGoals']?></span></li>
-                        </ol>
-                        <figcaption>
-                            <ol class="legend">
-                                <li><?=$this->match['homeName']?></li>
-                                <li><?=$this->match['awayName']?></li>
-                            </ol>
-                        </figcaption>
-                    </figure>
-                </section>
-            </div>
-        <?php endif; ?>
-        <!--GOALS SCORED THIS SEASON BLOCK ENDS-->
-        <!--FEATURED PREDICTION STARTS #5 -->
-        <?php if (!empty($this->report['featuredPrediction']) && !empty($this->report['featuredPrediction']['copy'])):?>
-            <?php $featuredPrediction = $this->report['featuredPrediction'];?>
-            <div class="item col2 blockquote">
-                <section class="">
-                    <img src="<?php echo $featuredPrediction['backgroundImage'];?>" alt="Featured Prediction" class="bg">
-                    <figure>
-                        <blockquote>
-                            <p><?php echo $featuredPrediction['copy'];?></p>
-                        </blockquote>
-                        <figcaption><?php echo $featuredPrediction['name'];?></figcaption>
-                    </figure>
-                </section>
-            </div>
-        <?php endif;?>
-       <!--FEATURED PREDICTION ENDS-->
-       <!--TOP PREDICTED SCORERS BLOCK STARTS #6 -->
-            <?php if (!empty($this->report['topScorers'])):?>
-                <?php $topScorers = $this->report['topScorers'];?>
-            <div class="item col2 top-predicted-scorers">
-                <section class="clearfix">
-                    <img src="<?php echo !empty($topScorers['backgroundImage']) ? $topScorers['backgroundImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                    <div>
-                        <h1><?php echo $this->translate('Top predicted scorers');?></h1>
-                        <?php
-                        $classes = array('big', 'middle', 'small');
-                        $index = 0;
-                        ?>
-                        <ol class="clearfix">
-                            <?php foreach($topScorers['scorers'] as $scorer):?>
-                            <li class="<?php echo (isset($classes[$index]) ? $classes[$index] : 'small');?>">
-                                <strong><?php echo $scorer['percentage'];?><sup>%</sup></strong>
-                                <span><?php echo $scorer['playerName'];?></span>
-                            </li>
-                            <?php $index++;?>
-                            <?php endforeach;?>
-                        </ol>
-                    </div>
-                </section>
-            </div>
-        <?php endif;?>
-        <!--TOP PREDICTED SCORERS BLOCK ENDS-->
-        <!--TOP PREDICTED SCORES BLOCK STARTS #7 -->
-        <?php if (!empty($this->report['topScores'])):?>
-            <?php $topScores = $this->report['topScores'];?>
-            <div class="item col1 pie-chart top5-predicted-scores">
-                <section>
-                    <figure>
-                        <div id="chart_top5"></div>
-                        <figcaption>
-                            <h1><?php echo $this->translate('Top 5 predicted scores');?></h1>
-                            <ol class="legend">
-                                <?php foreach($topScores as $score => $percentage):?>
-                                <li><?php echo $score;?> (<?php echo $percentage;?>%)</li>
+        </section>
+    </div>
+<?php endif;?>
+<!--TOP PREDICTED SCORERS BLOCK ENDS-->
+<!--TOP PREDICTED SCORES BLOCK STARTS #7 -->
+<?php if (!empty($this->report['topScores'])):?>
+    <?php $topScores = $this->report['topScores'];?>
+    <div class="item col1 pie-chart top5-predicted-scores">
+        <section>
+            <figure>
+                <div id="chart_top5"></div>
+                <figcaption>
+                    <h1><?php echo $this->translate('Top 5 predicted scores');?></h1>
+                    <ol class="legend">
+                        <?php foreach($topScores as $score => $percentage):?>
+                            <li><?php echo $score;?> (<?php echo $percentage;?>%)</li>
+                        <?php endforeach;?>
+                    </ol>
+                </figcaption>
+            </figure>
+        </section>
+    </div>
+    <script type="text/javascript">
+        var topScoresData = [];
+        var colors = ['#144a9b', '#275596', '#3b65a0', '#5a80b5', '#7b9ac6'];
+        var percentage = [];
+        <?php foreach($topScores as $percentage):?>
+        percentage.push('<?php echo $percentage;?>');
+        <?php endforeach;?>
+        for (var i = 0; i < colors.length; i++){
+            if (percentage[i] !== undefined){
+                topScoresData.push({color:colors[i],data:percentage[i], label :''});
+            }
+        }
+    </script>
+<?php endif;?>
+<!--TOP PREDICTED SCORES BLOCK ENDS-->
+<!--CLUB WIN PERCENTAGE BLOCK STARTS #8 -->
+<?php if (isset($this->report['clubVictoryPredictionsPercentage'])):?>
+    <?php $clubVictoryPredictionsPercentage = $this->report['clubVictoryPredictionsPercentage'];?>
+    <div class="item col1 summary left">
+        <section>
+            <figure class="clearfix">
+                <div id="chart-victory-predictions"></div>
+                <figcaption><?php echo sprintf($this->translate('Community think %s will win this match'), '<b>'.$this->report['currentClub'].'</b>');?></figcaption>
+            </figure>
+        </section>
+    </div>
+    <script type="text/javascript">
+        var clubVictoryPredictionsData = [
+            {color : '#144a9b', data: <?php echo (!empty($clubVictoryPredictionsPercentage) ? $clubVictoryPredictionsPercentage : 0.00001);?>, label:  '<?php echo (int)$clubVictoryPredictionsPercentage . '<em style="font-style: normal; font-size: .6em; vertical-align: top">%</em>';?>'},
+            {color : '#90b1d4', data: <?php echo (100 - $clubVictoryPredictionsPercentage);?>, label: ''}
+        ];
+
+    </script>
+<?php endif;?>
+<!--CLUB WIN PERCENTAGE BLOCK ENDS-->
+<!--FORM GUIDE BLOCK STARTS #9 -->
+<?php if(!empty($this->report['teamsFormGuide'])) : ?>
+    <div class="item col1 stacked-bar masonry-brick">
+        <section>
+            <h1><?php echo $this->translate('Last 5 matches')?></h1>
+            <?php $resultsArray = array('W' => array('class' => 'wins', 'label' => 'Wins'),
+                'D' => array('class' => 'draws', 'label' => 'Draws'),
+                'L' => array('class' => 'losses', 'label' => 'Losses')
+            ); ?>
+            <figure>
+                <dl class="five-matches clearfix">
+                    <?php foreach ($this->report['teamsFormGuide'] as $sideName => $sides) : ?>
+                        <dt><img src="<?=$sideName == 'homeTeam' ? $this->match['homeLogo'] : $this->match['awayLogo']?>" alt=""></dt>
+                        <dd>
+                            <ol class="clearfix">
+                                <?php foreach ($sides as $result) : ?>
+                                    <li class="<?=$resultsArray[$result]['class']?>"><?=$resultsArray[$result]['label']?></li>
                                 <?php endforeach;?>
                             </ol>
-                        </figcaption>
-                    </figure>
-                </section>
-            </div>
-            <script type="text/javascript">
-                var topScoresData = [];
-                var colors = ['#6baddf', '#33537e', '#667f9e', '#99aabe', '#bfc9d8'];
-                var percentage = [];
-                    <?php foreach($topScores as $percentage):?>
-                percentage.push('<?php echo $percentage;?>');
-                    <?php endforeach;?>
-                for (var i = 0; i < colors.length; i++){
-                    if (percentage[i] !== undefined){
-                        topScoresData.push({color:colors[i],data:percentage[i], label :''});
-                    }
-                }
-            </script>
-        <?php endif;?>
-        <!--TOP PREDICTED SCORES BLOCK ENDS-->
-        <!--CLUB WIN PERCENTAGE BLOCK STARTS #8 -->
-        <?php if (isset($this->report['clubVictoryPredictionsPercentage'])):?>
-            <?php $clubVictoryPredictionsPercentage = $this->report['clubVictoryPredictionsPercentage'];?>
-            <div class="item col1 summary left">
-                <section>
-                    <figure class="clearfix">
-                        <div id="chart-victory-predictions"></div>
-                        <figcaption><?php echo sprintf($this->translate('Community think %s will win this match'), '<b>'.$this->report['currentClub'].'</b>');?></figcaption>
-                    </figure>
-                </section>
-            </div>
-            <script type="text/javascript">
-                var clubVictoryPredictionsData = [
-                    {color : '#6baddf', data: <?php echo (!empty($clubVictoryPredictionsPercentage) ? $clubVictoryPredictionsPercentage : 0.00001);?>, label:  '<?php echo (int)$clubVictoryPredictionsPercentage . '<em style="font-style: normal; font-size: .6em; vertical-align: top">%</em>';?>'},
-                    {color : '#33537e', data: <?php echo (100 - $clubVictoryPredictionsPercentage);?>, label: ''}
-                ];
+                        </dd>
+                    <?php endforeach; ?>
+                </dl>
+                <figcaption>
+                    <ol class="legend">
+                        <li><?php echo $this->translate('Wins')?></li>
+                        <li><?php echo $this->translate('Losses')?></li>
+                        <li><?php echo $this->translate('Draws')?></li>
+                    </ol>
+                </figcaption>
+            </figure>
 
-            </script>
-        <?php endif;?>
-        <!--CLUB WIN PERCENTAGE BLOCK ENDS-->
-        <!--FORM GUIDE BLOCK STARTS #9 -->
-        <?php if(!empty($this->report['teamsFormGuide'])) : ?>
-            <div class="item col1 stacked-bar masonry-brick">
-                <section>
-                    <h1><?php echo $this->translate('Last 5 matches')?></h1>
-                    <?php $resultsArray = array('W' => array('class' => 'wins', 'label' => 'Wins'),
-                        'D' => array('class' => 'draws', 'label' => 'Draws'),
-                        'L' => array('class' => 'losses', 'label' => 'Losses')
-                    ); ?>
-                    <figure>
-                        <dl class="five-matches clearfix">
-                            <?php foreach ($this->report['teamsFormGuide'] as $sideName => $sides) : ?>
-                                <dt><img src="<?=$sideName == 'homeTeam' ? $this->match['homeLogo'] : $this->match['awayLogo']?>" alt=""></dt>
-                                <dd>
-                                    <ol class="clearfix">
-                                        <?php foreach ($sides as $result) : ?>
-                                            <li class="<?=$resultsArray[$result]['class']?>"><?=$resultsArray[$result]['label']?></li>
-                                        <?php endforeach;?>
-                                    </ol>
-                                </dd>
-                            <?php endforeach; ?>
-                        </dl>
-                        <figcaption>
-                            <ol class="legend">
-                                <li><?php echo $this->translate('Wins')?></li>
-                                <li><?php echo $this->translate('Losses')?></li>
-                                <li><?php echo $this->translate('Draws')?></li>
-                            </ol>
-                        </figcaption>
-                    </figure>
-
-                </section>
-            </div>
-        <?php endif; ?>
-        <!--FORM GUIDE BLOCK ENDS-->
-        <!--MOST RECENT SCORERS BLOCK STARTS #11 -->
-        <?php if(!empty($this->report['mostRecentScorers'])) : ?>
-            <div class="item col1 players masonry-brick">
-                <section class="clearfix">
-                    <img src="<?php echo !empty($this->report['mostRecentScorersImage']) ? $this->report['mostRecentScorersImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                    <div>
-                        <h1><?php echo $this->translate('Last players to score')?></h1>
-                        <?php foreach ($this->report['mostRecentScorers'] as $team=>$scorers) : ?>
-                            <section>
-                                <h2><?=$team;?></h2>
-                                <ol>
-                                    <?php foreach ($scorers as $scorer) : ?>
-                                        <li><?=$scorer;?></li>
-                                    <?php endforeach; ?>
-                                </ol>
-                            </section>
-                        <?php endforeach; ?>
-                    </div>
-                </section>
-            </div>
-        <?php endif; ?>
-        <!--MOST RECENT SCORERS BLOCK ENDS-->
-        <!--TOP SCORERS BLOCK STARTS #11 -->
-        <?php if(!empty($this->report['topMatchScorers'])) : ?>
-            <div class="item col2 top-scorers masonry-brick">
-                <section class="clearfix">
-                    <img src="<?php echo !empty($this->report['topMatchScorersImage']) ? $this->report['topMatchScorersImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
-                    <div>
-                        <h1><?php echo $this->translate('Top scorers');?></h1>
-                        <?php foreach ($this->report['topMatchScorers'] as $team=>$scorers) : ?>
-                            <section>
-                                <h2><?=$team;?></h2>
-                                <ol>
-                                    <?php foreach ($scorers as $scorer) : ?>
-                                        <li>
-                                            <?=$scorer['playerName'];?>
-                                            <strong><?=$scorer['goals'];?></strong>
-                                        </li>
-                                    <?php endforeach; ?>
-                                </ol>
-                            </section>
-                        <?php endforeach; ?>
-                    </div>
-                </section>
-            </div>
-        <?php endif; ?>
-        <!--TOP SCORERS BLOCK ENDS-->
-        <!--AVERAGE GOALS THIS SEASON BLOCK STARTS #12 -->
-        <?php if(!empty($this->report['avgGoalsScored'])) : ?>
-            <div class="item col1 stacked-bar">
-                <section>
-                    <h1><?php echo $this->translate('Average goals per game this season')?></h1>
-                    <figure>
-                        <ol class="clearfix">
-                            <li style="width: <?=$this->report['avgGoalsScored']['homeTeamGoalsBarWidth']?>%;"><span><?=$this->report['avgGoalsScored']['homeTeamGoals']?></span></li>
-                            <li style="width: <?=$this->report['avgGoalsScored']['awayTeamGoalsBarWidth']?>%;"><span><?=$this->report['avgGoalsScored']['awayTeamGoals']?></span></li>
-                        </ol>
-                        <figcaption>
-                            <ol class="legend">
-                                <li><?=$this->match['homeName']?></li>
-                                <li><?=$this->match['awayName']?></li>
-                            </ol>
-                        </figcaption>
-                    </figure>
-                </section>
-            </div>
-        <?php endif; ?>
-        <!--AVERAGE GOALS THIS SEASON BLOCK ENDS-->
-        <!--LAST SEASON MATCH RESULT BLOCK STARTS #14 -->
-        <?php if(!empty($this->report['lastSeasonMatchResult'])) : ?>
-            <div class="item col1 summary masonry-brick">
-                <section>
-                    <p>
-                        <strong><?=$this->report['lastSeasonMatchResult']['homeTeamScore'];?>-<?=$this->report['lastSeasonMatchResult']['awayTeamScore'];?></strong>
-                        <?php echo $this->translate('Was the result of the corresponding fixture last season');?>
-                    </p>
-                </section>
-            </div>
-        <?php endif; ?>
-        <!--LAST SEASON MATCH RESULT BLOCK ENDS-->
+        </section>
     </div>
+<?php endif; ?>
+<!--FORM GUIDE BLOCK ENDS-->
+<!--MOST RECENT SCORERS BLOCK STARTS #11 -->
+<?php if(!empty($this->report['mostRecentScorers'])) : ?>
+    <div class="item col1 players masonry-brick">
+        <section class="clearfix">
+            <img src="<?php echo !empty($this->report['mostRecentScorersImage']) ? $this->report['mostRecentScorersImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
+            <div>
+                <h1><?php echo $this->translate('Last players to score')?></h1>
+                <?php foreach ($this->report['mostRecentScorers'] as $team=>$scorers) : ?>
+                    <section>
+                        <h2><?=$team;?></h2>
+                        <ol>
+                            <?php foreach ($scorers as $scorer) : ?>
+                                <li><?=$scorer;?></li>
+                            <?php endforeach; ?>
+                        </ol>
+                    </section>
+                <?php endforeach; ?>
+            </div>
+        </section>
+    </div>
+<?php endif; ?>
+<!--MOST RECENT SCORERS BLOCK ENDS-->
+<!--TOP SCORERS BLOCK STARTS #11 -->
+<?php if(!empty($this->report['topMatchScorers'])) : ?>
+    <div class="item col2 top-scorers masonry-brick">
+        <section class="clearfix">
+            <img src="<?php echo !empty($this->report['topMatchScorersImage']) ? $this->report['topMatchScorersImage'] : $this->getConstant('default_player_background');?>" alt="" class="bg">
+            <div>
+                <h1><?php echo $this->translate('Top scorers');?></h1>
+                <?php foreach ($this->report['topMatchScorers'] as $team=>$scorers) : ?>
+                    <section>
+                        <h2><?=$team;?></h2>
+                        <ol>
+                            <?php foreach ($scorers as $scorer) : ?>
+                                <li>
+                                    <?=$scorer['playerName'];?>
+                                    <strong><?=$scorer['goals'];?></strong>
+                                </li>
+                            <?php endforeach; ?>
+                        </ol>
+                    </section>
+                <?php endforeach; ?>
+            </div>
+        </section>
+    </div>
+<?php endif; ?>
+<!--TOP SCORERS BLOCK ENDS-->
+<!--AVERAGE GOALS THIS SEASON BLOCK STARTS #12 -->
+<?php if(!empty($this->report['avgGoalsScored'])) : ?>
+    <div class="item col1 stacked-bar">
+        <section>
+            <h1><?php echo $this->translate('Average goals per game this season')?></h1>
+            <figure>
+                <ol class="clearfix">
+                    <li style="width: <?=$this->report['avgGoalsScored']['homeTeamGoalsBarWidth']?>%;"><span><?=$this->report['avgGoalsScored']['homeTeamGoals']?></span></li>
+                    <li style="width: <?=$this->report['avgGoalsScored']['awayTeamGoalsBarWidth']?>%;"><span><?=$this->report['avgGoalsScored']['awayTeamGoals']?></span></li>
+                </ol>
+                <figcaption>
+                    <ol class="legend">
+                        <li><?=$this->match['homeName']?></li>
+                        <li><?=$this->match['awayName']?></li>
+                    </ol>
+                </figcaption>
+            </figure>
+        </section>
+    </div>
+<?php endif; ?>
+<!--AVERAGE GOALS THIS SEASON BLOCK ENDS-->
+<!--LAST SEASON MATCH RESULT BLOCK STARTS #14 -->
+<?php if(!empty($this->report['lastSeasonMatchResult'])) : ?>
+    <div class="item col1 summary masonry-brick">
+        <section>
+            <p>
+                <strong><?=$this->report['lastSeasonMatchResult']['homeTeamScore'];?>-<?=$this->report['lastSeasonMatchResult']['awayTeamScore'];?></strong>
+                <?php echo $this->translate('Was the result of the corresponding fixture last season');?>
+            </p>
+        </section>
+    </div>
+<?php endif; ?>
+<!--LAST SEASON MATCH RESULT BLOCK ENDS-->
+<!--FEATURED PREDICTION STARTS #5 -->
+<?php if (!empty($this->report['featuredPrediction']) && !empty($this->report['featuredPrediction']['copy'])):?>
+    <?php $featuredPrediction = $this->report['featuredPrediction'];?>
+    <div class="item col2 blockquote">
+        <section class="">
+            <img src="<?php echo $featuredPrediction['backgroundImage'];?>" alt="Featured Prediction" class="bg">
+            <figure>
+                <blockquote>
+                    <p><?php echo $featuredPrediction['copy'];?></p>
+                </blockquote>
+                <figcaption><?php echo $featuredPrediction['name'];?></figcaption>
+            </figure>
+        </section>
+    </div>
+<?php endif;?>
+<!--FEATURED PREDICTION ENDS-->
+</div>
 </section>
 <script src="/js/vendor/jquery.masonry.min.js"></script>
 <script src="/js/vendor/jquery.flot.js"></script>

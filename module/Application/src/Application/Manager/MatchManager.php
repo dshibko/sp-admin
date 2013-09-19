@@ -289,8 +289,8 @@ class MatchManager extends BasicManager
                     $featuredPlayer->setPlayer($player)
                         ->setMatchesPlayed((int)$languageRow['featured_player']['matches_played'])
                         ->setGoals((int)$languageRow['featured_player']['goals'])
-                        ->setMatchStarts((int)$languageRow['featured_player']['match_starts'])
-                        ->setMinutesPlayed((int)$languageRow['featured_player']['minutes_played']);
+                        ->setNumberOfAssists((int)$languageRow['featured_player']['player_assists'])
+                        ->setNumberOfShots((int)$languageRow['featured_player']['player_shots']);
                     $featuredPlayerDAO->save($featuredPlayer, false, false);
                     $matchLanguage->setFeaturedPlayer($featuredPlayer);
                 }
@@ -331,6 +331,7 @@ class MatchManager extends BasicManager
                 }
                 $matchLanguageDAO->save($matchLanguage, false, false);
             }
+
         }
 
         $matchDAO->flush();
@@ -501,8 +502,8 @@ class MatchManager extends BasicManager
                     'displayName' => $featuredPlayer->getPlayer()->getDisplayName(),
                     'goals' => (int)$featuredPlayer->getGoals(),
                     'matchesPlayed' => (int)$featuredPlayer->getMatchesPlayed(),
-                    'matchStarts' => (int)$featuredPlayer->getMatchStarts(),
-                    'minutesPlayed' => (int)$featuredPlayer->getMinutesPlayed(),
+                    'numberOfAssists' => (int)$featuredPlayer->getNumberOfAssists(),
+                    'numberOfShots' => (int)$featuredPlayer->getNumberOfShots(),
                     'backgroundImage' => $featuredPlayer->getPlayer()->getBackgroundImagePath(),
                 );
             }
@@ -539,7 +540,7 @@ class MatchManager extends BasicManager
                     'copy' => $featuredPrediction['copy'],
                     'backgroundImage' => $featuredPrediction['imagePath']
                 );
-             }
+            }
 
             $match = $matchLanguage->getMatch();
 
@@ -558,9 +559,9 @@ class MatchManager extends BasicManager
             }
             //Display only featured player or featured goalkeeper
             if ($matchLanguage->getDisplayFeaturedPlayer()){
-                  if (isset($report['featuredGoalkeeper'])){
-                      unset($report['featuredGoalkeeper']);
-                  }
+                if (isset($report['featuredGoalkeeper'])){
+                    unset($report['featuredGoalkeeper']);
+                }
             }elseif (!is_null($matchLanguage->getDisplayFeaturedPlayer())){
                 if (isset($report['featuredPlayer'])){
                     unset($report['featuredPlayer']);
