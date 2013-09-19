@@ -58,6 +58,42 @@ class PredictionDAO extends AbstractDAO {
     }
 
     /**
+     * @param $matchId
+     * @param $userId
+     * @param bool $hydrate
+     * @return \Application\Model\Entities\Prediction
+     */
+    function getUserPredictionWithScorers($matchId, $userId, $hydrate = false) {
+        $query = $this->getEntityManager()
+            ->createQuery('SELECT p, ppl, pl
+             FROM ' . $this->getRepositoryName() . ' p
+             JOIN p.match m WITH m.id = ' . $matchId . '
+             JOIN p.user u WITH u.id = ' . $userId . '
+             LEFT JOIN p.predictionPlayers ppl
+             LEFT JOIN ppl.player pl WITH pl.id = ppl.player');
+
+        return $query->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
+     * @param $predictionId
+     * @param bool $hydrate
+     * @param bool $skipCache
+     * @return \Application\Model\Entities\Prediction
+     */
+    function getPrediction($predictionId, $hydrate = false, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('p, pl, m, u')
+            ->from($this->getRepositoryName(), 'p')
+            ->join('p.match', 'm')
+            ->join('p.user', 'u')
+            ->leftJoin('p.predictionPlayers', 'pl')
+            ->where($qb->expr()->eq('p.id', ':predictionId'))
+            ->setParameter('predictionId', $predictionId);
+        return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
+    }
+
+    /**
      * @param \Application\Model\Entities\Season $season
      * @return integer
      */
@@ -400,7 +436,7 @@ class PredictionDAO extends AbstractDAO {
              JOIN p.match m
              JOIN m.competitionSeason cs WITH cs.season = ' . $season->getId() . '
              WHERE p.user = ' . $user->getId()
-             );
+            );
         return $query->getSingleScalarResult();
     }
 
@@ -413,7 +449,7 @@ class PredictionDAO extends AbstractDAO {
             ->createQuery('SELECT COUNT(p.id)
              FROM ' . $this->getRepositoryName() . ' p
              WHERE p.user = ' . $user->getId()
-             );
+            );
         return $query->getSingleScalarResult();
     }
 
@@ -430,7 +466,7 @@ class PredictionDAO extends AbstractDAO {
              JOIN p.match m
              JOIN m.competitionSeason cs WITH cs.season = ' . $season->getId() . '
              WHERE p.user = ' . $user->getId() . ' AND m.startTime < :beforeTime'
-             )->setParameter('beforeTime', $beforeTime);
+            )->setParameter('beforeTime', $beforeTime);
         return $query->getSingleScalarResult();
     }
 
@@ -447,7 +483,7 @@ class PredictionDAO extends AbstractDAO {
              JOIN p.match m
              JOIN m.competitionSeason cs WITH cs.season = ' . $season->getId() . '
              WHERE p.user = ' . $user->getId() . ' AND m.startTime < :beforeTime AND p.isCorrectResult = 1'
-             )->setParameter('beforeTime', $beforeTime)->setMaxResults(1);
+            )->setParameter('beforeTime', $beforeTime)->setMaxResults(1);
         return $query->getOneOrNullResult();
     }
 
@@ -526,8 +562,8 @@ class PredictionDAO extends AbstractDAO {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('max_predictions', 'max_predictions', 'integer');
         $maxPredictions = (int)
-            $this->getEntityManager()
-                ->createNativeQuery('
+        $this->getEntityManager()
+            ->createNativeQuery('
                     SELECT MAX(pr.predictions) as max_predictions FROM (
                         SELECT count(p.id) as predictions
                         FROM `match` m
@@ -547,8 +583,8 @@ class PredictionDAO extends AbstractDAO {
         $rsm = new ResultSetMapping();
         $rsm->addScalarResult('max_predictions', 'max_predictions', 'integer');
         $maxPredictions = (int)
-            $this->getEntityManager()
-                ->createNativeQuery('
+        $this->getEntityManager()
+            ->createNativeQuery('
                     SELECT MIN(pr.predictions) as max_predictions FROM (
                         SELECT count(p.id) as predictions
                         FROM `match` m
@@ -614,7 +650,7 @@ class PredictionDAO extends AbstractDAO {
              GROUP BY pp.playerId
              ORDER BY predictions DESC
              '
-        )->setMaxResults($limit);
+            )->setMaxResults($limit);
 
         return $query->getArrayResult();
     }
@@ -638,7 +674,7 @@ class PredictionDAO extends AbstractDAO {
              GROUP BY p.homeTeamScore, p.awayTeamScore
              ORDER BY predictions DESC
              '
-        )->setMaxResults($limit);
+            )->setMaxResults($limit);
 
         return $query->getArrayResult();
     }

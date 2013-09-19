@@ -169,7 +169,7 @@ class PredictionManager extends BasicManager {
             $match = $matchDAO->getMatchInfo($matchData['matchId'], $hydrate, $skipCache);
             $match['goals'] = $matchDAO->getMatchGoals($matchData['matchId'], $hydrate, $skipCache);
             $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
-            $match['prediction'] = $predictionDAO->getUserPrediction($matchData['matchId'], $user->getId(), true, $skipCache);
+            $match['prediction'] = $predictionDAO->getUserPredictionWithScorers($matchData['matchId'], $user->getId(), true);
             return $match;
         } else
             return null;
@@ -397,6 +397,45 @@ class PredictionManager extends BasicManager {
     public function getUserPrediction($matchId, $userId, $hydrate = false, $skipCache = false) {
         $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
         return $predictionDAO->getUserPrediction($matchId, $userId, $hydrate, $skipCache);
+    }
+
+    public function getMatchPrediction($predictionId, $season, $hydrate = false, $skipCache = false) {
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+
+        $prediction = $predictionDAO->getPrediction($predictionId, $hydrate, $skipCache);
+        if (!empty($prediction)) {
+            $match = $matchDAO->getMatchInfo($prediction['match']['id'], false, $skipCache);
+            $utcTime = new \DateTime();
+            $startUtcTime = $match['startTime'];
+            if ($startUtcTime < $utcTime)
+                $match['status'] = Match::LIVE_STATUS;
+            $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
+            $homeSquad = $this->getTeamSquad($match['status'] == Match::PRE_MATCH_STATUS && $match['hasLineUp'], $prediction['match']['id'], $match['homeId'], $match['competitionId'], $season->getId(), $hydrate, $skipCache);
+            $match['homeSquad'] = $this->preparePlayers($homeSquad);
+            $awaySquad = $this->getTeamSquad($match['status'] == Match::PRE_MATCH_STATUS && $match['hasLineUp'], $prediction['match']['id'], $match['awayId'], $match['competitionId'], $season->getId(), $hydrate, $skipCache);
+            $match['awaySquad'] = $this->preparePlayers($awaySquad);
+            $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
+            $prediction['match'] = $match;
+            return $prediction;
+        } else
+            return null;
+    }
+
+    public function getMatchResultByPredictionId($predictionId, $hydrate = false, $skipCache = false) {
+        $predictionDAO = PredictionDAO::getInstance($this->getServiceLocator());
+        $matchDAO = MatchDAO::getInstance($this->getServiceLocator());
+
+        $prediction = $predictionDAO->getPrediction($predictionId, $hydrate, $skipCache);
+        if (!empty($prediction)) {
+            $match = $matchDAO->getMatchInfo($prediction['match']['id'], $hydrate, $skipCache);
+            $match['goals'] = $matchDAO->getMatchGoals($prediction['match']['id'], $hydrate, $skipCache);
+            $match['localStartTime'] = ApplicationManager::getInstance($this->getServiceLocator())->getLocalTime($match['startTime'], $match['timezone']);
+            $result['prediction'] = $prediction;
+            $result['match'] = $match;
+            return $result;
+        } else
+            return null;
     }
 
     public function getMatchPredictionsCount($matchId, $skipCache = false)

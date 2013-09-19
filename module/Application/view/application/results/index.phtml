@@ -56,13 +56,9 @@ if (empty($this->twitterShareCopy))
                         </div>
 
                         <div class="league-block">
+                            <h2><?=$this->current['Match Results']?></h2>
                             <strong><?=$this->current['competitionName']?></strong>
                             <em><?=$this->translate('VS')?></em>
-                            <?php if ($this->current['homeTeamFullTimeScore'] !== 0 || $this->current['awayTeamFullTimeScore'] !== 0) : ?>
-                                <span>
-                                    <?=$this->translate('Scorers')?>
-                                </span>
-                            <?php endif; ?>
                         </div>
 
                         <div class="away-team">
@@ -77,32 +73,61 @@ if (empty($this->twitterShareCopy))
                                 <strong><?=$this->current['awayTeamFullTimeScore']?></strong>
                                 <ul>
                                     <?php foreach ($this->current['goals']['awayScorers'] as $scorer) :?>
-                                    <li>
-                                        <?=$scorer['displayName']?> <?=$scorer['type'] == \Application\Model\Entities\MatchGoal::OWN_TYPE ? '(o.g.)' : ''?>
-                                    </li>
+                                        <li>
+                                            <?=$scorer['displayName']?> <?=$scorer['type'] == \Application\Model\Entities\MatchGoal::OWN_TYPE ? '(o.g.)' : ''?>
+                                        </li>
                                     <?php endforeach; ?>
                                 </ul>
                             </section>
                         </div>
                     </div>
+                    <div class="scorers clearfix">
+                        <div class="home-team">
+                            <section>
+                                <strong><?=$this->current['prediction']['homeTeamScore']?></strong>
+                                <?php if (!empty($this->current['prediction']['homeScorers'])) : ?>
+                                    <?php foreach($this->current['prediction']['homeScorers'] as $scorer) : ?>
+                                        <ul>
+                                            <li><?=!empty($scorer['player']) ? $scorer['player']['displayName'] : '---'?></li>
+                                        </ul>
+                                    <?php endforeach;?>
+                                <?php endif;?>
+                        </div>
 
+                        <div class="league-block">
+                            <h2>Your Prediction</h2>
+                        </div>
+
+                        <div class="away-team">
+                            <section>
+                                <strong><?=$this->current['prediction']['awayTeamScore']?></strong>
+                                <?php if (!empty($this->current['prediction']['awayScorers'])) : ?>
+                                    <?php foreach($this->current['prediction']['awayScorers'] as $scorer) : ?>
+                                        <ul>
+                                            <li><?=!empty($scorer['player']) ? $scorer['player']['displayName'] : '---'?></li>
+                                        </ul>
+                                    <?php endforeach;?>
+                                <?php endif;?>
+                            </section>
+                        </div>
+                    </div>
                     <div class="points<?=empty($this->achievementBlock) ? ' full' : '' ?>">
                         <table>
                             <tbody>
-                                <?php foreach ($this->breakpoints as $breakpointText => $points) : ?>
-                                    <tr>
-                                        <th><?=$breakpointText?></th>
-                                        <td><span class="prediction-<?= $points == '+0' ? 'un' : ''?>successful"><?=$points?></span></td>
-                                    </tr>
-                                <?php endforeach; ?>
+                            <?php foreach ($this->breakpoints as $breakpointText => $points) : ?>
+                                <tr>
+                                    <th><?=$breakpointText?></th>
+                                    <td><span class="prediction-<?= $points == '+0' ? 'un' : ''?>successful"><?=$points?></span></td>
+                                </tr>
+                            <?php endforeach; ?>
                             </tbody>
                             <tfoot>
-                                <tr>
-                                    <td colspan="2" class="total">
-                                        <h3><?=$this->translate('Total')?></h3>
-                                        <strong>+<?=$this->current['prediction']['points']?> <abbr title="Points"><?=$this->translate('PTS')?></abbr></strong>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td colspan="2" class="total">
+                                    <h3><?=$this->translate('Total')?></h3>
+                                    <strong>+<?=$this->current['prediction']['points']?> <abbr title="Points"><?=$this->translate('PTS')?></abbr></strong>
+                                </td>
+                            </tr>
                             </tfoot>
                         </table>
                     </div>
