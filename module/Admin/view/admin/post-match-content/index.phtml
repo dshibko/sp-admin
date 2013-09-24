@@ -28,6 +28,43 @@ $this->headTitle($title);
                 </div>
             </div>
         </div>
+        <div class="portlet box blue">
+            <div class="portlet-title">
+                <h4><i class="icon-reorder"></i><?php echo $this->translate('Achievement Share Copy');?></h4>
+            </div>
+            <div class="portlet-body">
+                <div class="form">
+                    <div class="row-fluid">
+                        <?php
+                        $form = $this->achievementCopyForm;
+                        $form->setAttribute('action', $this->url('admin-post-match-content'));
+                        $form->prepare();
+                        echo $this->form()->openTag($form);
+                        $elements = $form->getElements();
+                        ?>
+                        <?php foreach ($elements as $element) :
+                            $type = $element->getAttribute('type');
+                            $hint = $element->getAttribute('hint');
+                            if ($type != 'submit') : ?>
+                                <div class="control-group form-horizontal">
+                                    <label class="control-label"><?=$this->translate($element->getLabel())?></label>
+                                    <div class="controls">
+                                        <?=$this->formElement($element);?>
+                                        <?php if (!empty($hint)) : ?>
+                                            <span class="help-inline"><?=$hint?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            <?php endif; endforeach; ?>
+                        <div class="form-actions">
+                            <button type="submit" class="btn blue"><i class="icon-ok"></i> <?=$this->translate($elements['submit']->getValue())?></button>
+                            <button type="button" class="btn" onclick="this.form.reset();">Cancel</button>
+                        </div>
+                        <?php echo $this->form()->closeTag(); ?>
+                    </div>
+                </div>
+            </div>
+        </div>
         <?php
         foreach ($this->forms as $form) :
             $form->setAttribute('action', $this->url('admin-post-match-content'));
@@ -57,29 +94,29 @@ $this->headTitle($title);
                                     </div>
                                 <?php endif; ?>
                                 <?php if ($type == 'file') : $image = $element->getValue(); $image = is_array($image) ? '' : $image; ?>
-                                    <div class="control-group form-horizontal">
-                                        <label class="control-label"><?=$element->getLabel()?></label>
-                                        <div class="controls">
-                                            <div class="fileupload fileupload-<?=(!empty($image) ? 'exists' : 'new')?>" data-provides="fileupload">
-                                                <div class="input-append">
-                                                    <div class="uneditable-input">
-                                                        <i class="icon-file fileupload-exists"></i>
-                                                        <span class="fileupload-preview"><?=(!empty($image) ? '<input type="hidden" name="' . $element->getAttribute('name') . '[stored]" value="1"/><a href="' . $image . '" target="_blank">Open</a>' : '')?></span>
-                                                    </div>
+                                <div class="control-group form-horizontal">
+                                    <label class="control-label"><?=$element->getLabel()?></label>
+                                    <div class="controls">
+                                        <div class="fileupload fileupload-<?=(!empty($image) ? 'exists' : 'new')?>" data-provides="fileupload">
+                                            <div class="input-append">
+                                                <div class="uneditable-input">
+                                                    <i class="icon-file fileupload-exists"></i>
+                                                    <span class="fileupload-preview"><?=(!empty($image) ? '<input type="hidden" name="' . $element->getAttribute('name') . '[stored]" value="1"/><a href="' . $image . '" target="_blank">Open</a>' : '')?></span>
+                                                </div>
                                                             <span class="btn btn-file">
                                                                 <span class="fileupload-new"><?=$this->translate('Select file')?></span>
                                                                 <span class="fileupload-exists"><?=$this->translate('Change')?></span>
                                                                 <input type="file" value="" class="default" name="<?=$element->getAttribute('name')?>"/>
                                                             </span>
-                                                    <a href="#" class="btn fileupload-exists" data-dismiss="fileupload"><?=$this->translate('Remove')?></a>
-                                                </div>
+                                                <a href="#" class="btn fileupload-exists" data-dismiss="fileupload"><?=$this->translate('Remove')?></a>
                                             </div>
                                         </div>
                                     </div>
-                                <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
                                 <?php if ($type == 'hidden') : ?>
-                                    <?=$this->formElement($element);?>
-                                <?php endif; ?>
+                                <?=$this->formElement($element);?>
+                            <?php endif; ?>
                             <?php endforeach; ?>
                             <div class="form-actions">
                                 <button type="submit" class="btn blue"><i class="icon-ok"></i> <?=$this->translate($elements['submit']->getValue())?></button>

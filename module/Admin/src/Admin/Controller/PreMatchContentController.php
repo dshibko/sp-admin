@@ -30,6 +30,8 @@ class PreMatchContentController extends MatchContentController {
                 1 => 'First Prediction',
                 2 => 'Milestone Prediction',
                 3 => 'Every Prediction',
+                4 => 'Achievement Sharing',
+                5 => 'Prediction Sharing',
             );
             foreach ($preMatchCopy as $aPreMatchCopy) {
                 $label = $aPreMatchCopy['engine'] . '<br/>' . $weightLabels[$aPreMatchCopy['weight']];

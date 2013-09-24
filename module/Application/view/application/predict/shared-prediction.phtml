@@ -1,0 +1,208 @@
+<?php $this->headTitle($this->translate('Predict at') . ' ' . $this->current['match']['homeName'] . ' ' . $this->translate('vs') . ' ' . $this->current['match']['awayName']);?>
+<?php
+if (empty($this->facebookShareCopy))
+    $this->facebookShareCopy = $this->translate('Match Report') . ': ' . $this->current['match']['homeName'] . ' ' . $this->translate('vs') . ' ' . $this->current['match']['awayName'];
+if (empty($this->twitterShareCopy))
+    $this->twitterShareCopy = $this->translate('Match Report') . ': ' . $this->current['match']['homeName'] . ' ' . $this->translate('vs') . ' ' . $this->current['match']['awayName'];
+?>
+<div role="main" class="two-column-section clearfix">
+
+    <div class="first-column <?=$this->current['match']['status'] == \Application\Model\Entities\Match::LIVE_STATUS ? 'results' : 'predict'?>">
+        <section class="carousel-wrap <?=$this->current['match']['status'] == \Application\Model\Entities\Match::LIVE_STATUS ? 'your-results' : 'make-prediction'?>">
+            <header>
+                <?php if ($this->current['match']['status'] == \Application\Model\Entities\Match::PRE_MATCH_STATUS) : ?>
+                <?php endif; ?>
+                <time class="game-date">
+                    <?php print $this->current['match']['localStartTime'];?>
+                </time>
+                <ul class="direction-nav">
+
+                </ul>
+            </header>
+            <?php if ($this->current['status'] == \Application\Model\Entities\Match::LIVE_STATUS) : ?>
+                <div class="your-results-content match-in-progress clearfix">
+                    <h1>
+                        <?=$this->translate('Match in progress');?>
+                    </h1>
+                    <div class="scorers clearfix">
+                        <h2>
+                            <?=$this->translate('You predicted');?>
+                        </h2>
+                        <div class="home-team">
+                            <figure class="clearfix">
+                                <img src="<?=$this->clubLogo($this->current['match']['homeLogo']);?>" alt="<?=$this->current['homeName']; ?>">
+                                <figcaption>
+                                    <?=$this->current['match']['homeName']; ?>
+                                </figcaption>
+                            </figure>
+
+                            <?php if (!empty($this->current)) : ?>
+                                <section>
+                                    <strong><?=$this->current['homeTeamScore'];?></strong>
+                                    <ul>
+                                        <?php foreach ($this->current['homeScorers'] as $order => $scorer): ?>
+                                            <li><?=$scorer['playerName'] ? $scorer['playerName'] : '---';?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </section>
+                            <?php endif; ?>
+                        </div>
+                        <div class="league-block">
+                            <strong><?=$this->current['competitionName']?></strong>
+                            <em><?=$this->translate('VS')?></em>
+                            <span <?=empty($this->current['homeScorers']) && empty($this->current['awayScorers']) ? 'style="display:none"': ''?>><?=$this->translate('Scorers')?></span>
+                        </div>
+                        <div class="away-team">
+                            <figure class="clearfix">
+                                <img src="<?=$this->clubLogo($this->current['match']['awayLogo']);?>" alt="<?=$this->current['match']['awayName']; ?>">
+                                <figcaption>
+                                    <?=$this->current['match']['awayName']; ?>
+                                </figcaption>
+                            </figure>
+
+                            <?php if (!empty($this->current)) : ?>
+                                <section>
+                                    <strong><?=$this->current['prediction']['awayTeamScore'];?></strong>
+                                    <ul>
+                                        <?php foreach ($this->current['prediction']['awayScorers'] as $order => $scorer): ?>
+                                            <li><?=$scorer['playerName'] ? $scorer['playerName'] : '---';?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </section>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <p><?=$this->translate('This game is currently being played... check back soon for the results')?>
+                        <?php if ($this->ahead < $this->maxAhead + $this->liveMatches - 1) : ?>
+                            <?=$this->translate('or')?>
+                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead + 1));?>"><?=$this->translate('predict the next game')?></a>
+                        <?php endif; ?>
+                    </p>
+                </div>
+            <?php endif; ?>
+            <?php if ($this->current['match']['status'] == \Application\Model\Entities\Match::PRE_MATCH_STATUS) : ?>
+                <div class="make-prediction-content clearfix">
+                    <form id="make-prediction">
+                        <div class="home-team">
+                            <fieldset>
+                                <label for="home-team-score">
+                                    <figure>
+                                        <img src="<?=$this->clubLogo($this->current['match']['homeLogo'])?>" alt="<?=$this->current['match']['homeName'];?>">
+                                        <figcaption>
+                                            <?=$this->current['match']['homeName'];?>
+                                        </figcaption>
+                                    </figure>
+                                </label>
+                                <input disabled="disabled" type="text" class="required" maxlength="2" name="home-team-score" id="home-team-score" value="<?=$this->current['homeTeamScore']?>">
+                            </fieldset>
+                        </div>
+
+                        <div class="league-logo">
+                            <?php if (!empty($this->current['match']['competitionLogo'])) : ?>
+                                <img src="<?=$this->current['match']['competitionLogo']?>" alt="">
+                            <?php else : ?>
+                            <img style="visibility: hidden;" src="/img/league-logo.png" alt="">
+                            <?php endif; ?>
+                            <em><?=$this->translate('VS')?></em>
+                            <span style="display:none">
+                                <?=$this->translate('Scorers')?>
+                            </span>
+                        </div>
+
+                        <div class="away-team">
+                            <fieldset>
+                                <label for="away-team-score">
+                                    <figure>
+                                        <img src="<?=$this->clubLogo($this->current['match']['awayLogo'])?>" alt="<?=$this->current['match']['awayName'];?>">
+                                        <figcaption>
+                                            <?=$this->current['match']['awayName'];?>
+                                        </figcaption>
+                                    </figure>
+                                </label>
+                                <input disabled="disabled" type="text" class="required" maxlength="2" name="away-team-score" id="away-team-score" value="<?=$this->current['awayTeamScore']?>">
+                            </fieldset>
+
+                        </div>
+
+                        <div class="buttons-block clearfix">
+                                <div class="home-team-scorers">
+                                    <?php if(!empty($this->current['homeScorers'])): ?>
+                                        <h4><?=$this->translate('Scorers')?></h4>
+                                        <ul>
+                                            <?php
+                                            foreach ($this->current['homeScorers'] as $order => $scorer) {
+                                                $scorerData = null;
+                                                foreach ($this->current['match']['homeSquad'] as $player)
+                                                    if ($scorer['playerId'] == $player['id']) {
+                                                        $scorerData = $player;
+                                                        break;
+                                                    }
+                                                $scorerStr = $scorerData !== null ?
+                                                    (!empty($scorerData['shirtNumber']) ? $scorerData['shirtNumber'] : '&ndash;') . ' - ' . $scorerData['displayName'] :
+                                                    '---'; ?>
+                                                <li><?=$scorerStr?></li><?php
+                                            }
+                                            ?>
+                                        </ul>
+                                    <?php endif;?>
+                                </div>
+                                <div class="away-team-scorers">
+                                    <?php if(!empty($this->current['awayScorers'])): ?>
+                                        <h4><?=$this->translate('Scorers')?></h4>
+                                        <ul>
+                                            <?php
+                                                foreach ($this->current['awayScorers'] as $order => $scorer) {
+                                                    $scorerData = null;
+                                                    foreach ($this->current['match']['awaySquad'] as $player)
+                                                        if ($scorer['playerId'] == $player['id']) {
+                                                            $scorerData = $player;
+                                                            break;
+                                                        }
+                                                    $scorerStr = $scorerData !== null ?
+                                                        (!empty($scorerData['shirtNumber']) ? $scorerData['shirtNumber'] : '&ndash;') . ' - ' . $scorerData['displayName'] :
+                                                        '---'; ?>
+                                                    <li><?=$scorerStr?></li><?php
+                                                }
+                                            ?>
+                                        </ul>
+                                    <?php endif;?>
+                                </div>
+                                <div class="buttons-wrapper">
+
+                    <aside class="competition-countdown" style="display: none">
+                        <h4><?=$this->translate('Time left')?></h4>
+                        <p>
+                            <strong><?=$this->current['match']['startTime']->getTimestamp();?></strong>
+                            <?=$this->translate('days hours mins secs')?>
+                        </p>
+                    </aside>
+                                </div>
+                        </div>
+                        <input type="hidden" name="check_key" value="<?=$this->securityKey?>"/>
+                    </form>
+                    <?php print $this->squadSelect('home-team-scorer', $this->current['match']['homeSquad'], $this->translate('Select scorer'), 'style="display: none"'); ?>
+                    <?php print $this->squadSelect('away-team-scorer', $this->current['match']['awaySquad'], $this->translate('Select scorer'), 'style="display: none"'); ?>
+                </div>
+            <?php endif; ?>
+        </section>
+        <!--MATCH REPORT START-->
+            <?php echo $this->partial('partials/pre-match-report', array('report' => $this->matchReport, 'match' => $this->current['match'],
+                'code' => $this->matchCode, 'facebookShareCopy' => $this->facebookShareCopy, 'twitterShareCopy' => $this->twitterShareCopy));?>
+        <!--MATCH REPORT END-->
+    </div>
+
+    <?php echo $this->partial('partials/right-column'); ?>
+
+</div>
+
+
+<script type="text/javascript">
+    var isEditMode = true;
+    var liveMatchRedirect = '';
+    var savedHomeScore = <?=$this->current['homeTeamScore'] ?>;
+    var savedAwayScore = <?=$this->current['awayTeamScore'] ?>;
+    var pageUnloadCopy = "";
+    var utcTimeUrl = '<?= $this->url('common', array('action' => 'utcTime')) . '?' . time(); ?>';
+</script>
+<script type="text/javascript" src="/js/vendor/jquery.countdown.js"></script>
+<script type="text/javascript" src="/js/make-prediction.js?anti-cache"></script>

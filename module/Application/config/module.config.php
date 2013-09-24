@@ -30,6 +30,26 @@ return array(
                     ),
                 ),
             ),
+            'prediction' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/prediction/:predictionCode',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Predict',
+                        'action'     => 'sharedPrediction',
+                    ),
+                ),
+            ),
+            'result' => array(
+                'type' => 'segment',
+                'options' => array(
+                    'route'    => '/result/:predictionCode',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Results',
+                        'action'     => 'sharedResults',
+                    ),
+                ),
+            ),
             'tables' => array(
                 'type' => 'segment',
                 'options' => array(

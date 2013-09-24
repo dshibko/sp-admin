@@ -160,6 +160,7 @@ class PredictController extends AbstractActionController {
                 // settings of share copy
                 $shareManager = ShareManager::getInstance($this->getServiceLocator());
                 list($facebookShareCopy, $twitterShareCopy) = $shareManager->getPredictionCopy($user);
+                list($facebookPredictionShareCopy, $twitterPredictionShareCopy) = !empty($currentMatch['prediction']) ? $shareManager->getSharingPredictionCopy() : array();
             }
 
             if ($maxAhead > $matchesLeft)
@@ -173,8 +174,11 @@ class PredictController extends AbstractActionController {
                 'securityKey' => $securityKey,
                 'matchReport' => $matchReport,
                 'matchCode' => $this->encodeInt($currentMatch['id']),
+                'predictionCode' => $this->encodeInt($currentMatch['prediction']['id']),
                 'facebookShareCopy' => $facebookShareCopy,
                 'twitterShareCopy' => $twitterShareCopy,
+                'facebookPredictionShareCopy' => $facebookPredictionShareCopy,
+                'twitterPredictionShareCopy' => $twitterPredictionShareCopy,
             );
             if (!empty($setUpForm)){
                 $params['setUpForm'] = $setUpForm;
@@ -188,6 +192,90 @@ class PredictController extends AbstractActionController {
             return $this->errorAction($e);
         }
 
+    }
+
+    public function sharedPredictionAction()
+    {
+        $applicationManager = ApplicationManager::getInstance($this->getServiceLocator());
+        $predictionManager = PredictionManager::getInstance($this->getServiceLocator());
+        $matchManager = MatchManager::getInstance($this->getServiceLocator());
+
+        $user = $applicationManager->getCurrentUser();
+        $predictionCode = (int)$this->params()->fromRoute('predictionCode', '');
+        if (empty($predictionCode))
+            return $this->notFoundAction();
+        $predictionId = $this->decodeInt($predictionCode);
+
+        $season = $applicationManager->getCurrentSeason();
+        if ($season == null)
+            throw new OutOfSeasonException();
+
+        $currentPrediction = $predictionManager->getMatchPrediction($predictionId, $season, true);
+        if ($currentPrediction == null)
+            return $this->notFoundAction();
+
+        $currentPrediction['match']['localStartTime'] = $currentPrediction['match']['localStartTime']->format('D d M h.i a');
+
+        $predictionPlayers = $currentPrediction['predictionPlayers'];
+        $homeScorers = array();
+        $awayScorers = array();
+        foreach ($predictionPlayers as $predictionPlayer) {
+            if ($predictionPlayer['teamId'] == $currentPrediction['match']['homeId']) {
+                if ($currentPrediction['match']['status'] == Match::LIVE_STATUS) {
+                    $playerName = '';
+                    if ($predictionPlayer['playerId'] != null)
+                        foreach ($currentPrediction['match']['homeSquad'] as $player)
+                            if ($player['id'] == $predictionPlayer['playerId']) {
+                                $playerName = $player['displayName'];
+                                break;
+                            }
+                    $predictionPlayer['playerName'] = $playerName;
+                }
+                $homeScorers[$predictionPlayer['order']] = $predictionPlayer;
+            } else if ($predictionPlayer['teamId'] == $currentPrediction['match']['awayId']) {
+                if ($currentPrediction['status'] == Match::LIVE_STATUS) {
+                    $playerName = '';
+                    if ($predictionPlayer['playerId'] != null)
+                        foreach ($currentPrediction['awaySquad'] as $player)
+                            if ($player['id'] == $predictionPlayer['playerId']) {
+                                $playerName = $player['displayName'];
+                                break;
+                            }
+                    $predictionPlayer['playerName'] = $playerName;
+                }
+                $awayScorers[$predictionPlayer['order']] = $predictionPlayer;
+            }
+        }
+        ksort($homeScorers);
+        ksort($awayScorers);
+        $currentPrediction['homeScorers'] = $homeScorers;
+        $currentPrediction['awayScorers'] = $awayScorers;
+        unset($currentPrediction['predictionPlayers']);
+
+
+        $userLanguage = $user != null ? $user->getLanguage() : LanguageManager::getInstance($this->getServiceLocator())->getDefaultLanguage();
+        $matchReport = $matchManager->getPreMatchLanguageReport($currentPrediction['match']['id'], $userLanguage->getId());
+
+        $matchPredictionsCount = $predictionManager->getMatchPredictionsCount($currentPrediction['match']['id']);
+        if ($matchPredictionsCount > 0) {
+            $clubVictoryPredictions = $predictionManager->getClubWinPredictionsCount($currentPrediction['match']['id'], $currentPrediction['match']['homeId'], $applicationManager->getAppClub()->getId());
+            $matchReport['clubVictoryPredictionsPercentage'] = round(($clubVictoryPredictions / $matchPredictionsCount) * 100);
+            $matchReport['currentClub'] = $applicationManager->getAppClub()->getDisplayName();
+        }
+
+        $shareManager = ShareManager::getInstance($this->getServiceLocator());
+        list($facebookShareCopy, $twitterShareCopy) = $user == null ? array() : $shareManager->getPredictionCopy($user);
+
+        $params = array(
+            'current' => $currentPrediction,
+            'matchReport' => $matchReport,
+            'predictionCode' => $this->encodeInt($currentPrediction['id']),
+            'matchCode' => $this->encodeInt($currentPrediction['match']['id']),
+            'facebookShareCopy' => $facebookShareCopy,
+            'twitterShareCopy' => $twitterShareCopy,
+        );
+
+        return $params;
     }
 
 }

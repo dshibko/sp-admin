@@ -21,12 +21,12 @@ if (empty($this->twitterShareCopy))
                 <ul class="direction-nav">
                     <?php if ($this->ahead > 0) : ?>
                         <li class="prev-match">
-                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead != 1 ? $this->ahead - 1 : null));?>"><?=$this->translate('Prev')?> <span><?=$this->translate('match')?></span></a>
+                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead != 1 ? $this->ahead - 1 : null));?>"><span><?=$this->translate('Prev')?> <?=$this->translate('match')?></span></a>
                         </li>
                     <?php endif; ?>
                     <?php if ($this->ahead < $this->maxAhead + $this->liveMatches - 1) : ?>
                         <li class="next-match">
-                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead + 1));?>"><?=$this->translate('Next')?> <span><?=$this->translate('match')?></span></a>
+                            <a href="<?=$this->url('predict', array('ahead' => $this->ahead + 1));?>"><span><?=$this->translate('Next')?> <?=$this->translate('match')?></span></a>
                         </li>
                     <?php endif; ?>
                 </ul>
@@ -120,7 +120,7 @@ if (empty($this->twitterShareCopy))
                             <?php if (!empty($this->current['competitionLogo'])) : ?>
                                 <img src="<?=$this->current['competitionLogo']?>" alt="">
                             <?php else : ?>
-                            <img style="visibility: hidden;" src="/img/league-logo.png" alt="">
+                                <img style="visibility: hidden;" src="/img/league-logo.png" alt="">
                             <?php endif; ?>
                             <em><?=$this->translate('VS')?></em>
                             <span style="display:none">
@@ -206,6 +206,21 @@ if (empty($this->twitterShareCopy))
                                             </div>
                                 <?php endif; ?>
                             </button>
+                                <? if (!empty($this->facebookPredictionShareCopy) && !empty($this->twitterPredictionShareCopy)) : ?>
+                                    <aside class="social-links clearfix">
+                                        <h3><?=$this->translate('Share your prediction')?></h3>
+                                        <ul>
+                                            <li>
+                                                <script type="text/javascript" src="/js/facebook.js"></script>
+                                                <a summary="<?=$this->facebookPredictionShareCopy?>" href="<?=$this->url('prediction', array('predictionCode' => $this->predictionCode), array('force_canonical' => true))?>" class="like">Like</a>
+                                            </li>
+                                            <li>
+                                                <a href="https://twitter.com/share" class="twitter-share-button" data-text="<?=$this->twitterPredictionShareCopy?>" data-url="<?=$this->url('prediction', array('predictionCode' => $this->predictionCode), array('force_canonical' => true))?>" data-count="none">Tweet</a>
+                                                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+                                            </li>
+                                        </ul>
+                                    </aside>
+                                <? endif; ?>
                     <aside class="competition-countdown" style="display: none">
                         <h4><?=$this->translate('Time left')?></h4>
                         <p>
@@ -236,14 +251,6 @@ if (empty($this->twitterShareCopy))
 </div>
 
 <?php if (!empty($this->setUpForm)):?>
-    <style>
-        #setup-dialog section {
-            padding: 0.6em 0 !important;
-        }
-        #setup-dialog section fieldset label.ideal-radiocheck-label p {
-            font-size: 10px !important;
-        }
-    </style>
     <?php echo $this->partial('partials/setup-popup', array('form'=>$this->setUpForm));?>
 <?php endif;?>
 
@@ -256,4 +263,4 @@ if (empty($this->twitterShareCopy))
     var utcTimeUrl = '<?= $this->url('common', array('action' => 'utcTime')) . '?' . time(); ?>';
 </script>
 <script type="text/javascript" src="/js/vendor/jquery.countdown.js"></script>
-<script type="text/javascript" src="/js/make-prediction.js?anti-cache"></script>
+<script type="text/javascript" src="/js/make-prediction.js"></script>

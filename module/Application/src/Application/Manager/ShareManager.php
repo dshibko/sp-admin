@@ -16,6 +16,8 @@ class ShareManager extends BasicManager
 
     const FIRST_PREDICTION_WEIGHT = 1;
     const PREDICTION_MILESTONE_WEIGHT = 2;
+    const ACHIEVEMENT_WEIGHT = 4;
+    const PREDICTION_WEIGHT = 5;
 
     /**
      * @var ShareManager
@@ -152,6 +154,20 @@ class ShareManager extends BasicManager
     {
         $facebookCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getPredictionCopy(ShareCopy::FACEBOOK_ENGINE, self::FIRST_PREDICTION_WEIGHT);
         $twitterCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getPredictionCopy(ShareCopy::TWITTER_ENGINE, self::FIRST_PREDICTION_WEIGHT);
+        return array($facebookCopy, $twitterCopy);
+    }
+
+    public function getSharingPredictionCopy()
+    {
+        $facebookCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getPredictionCopy(ShareCopy::FACEBOOK_ENGINE, self::PREDICTION_WEIGHT);
+        $twitterCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getPredictionCopy(ShareCopy::TWITTER_ENGINE, self::PREDICTION_WEIGHT);
+        return array($facebookCopy, $twitterCopy);
+    }
+
+    public function getSharingAchievementCopy()
+    {
+        $facebookCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getAchievementCopy(ShareCopy::FACEBOOK_ENGINE, self::ACHIEVEMENT_WEIGHT);
+        $twitterCopy = ShareCopyDAO::getInstance($this->getServiceLocator())->getAchievementCopy(ShareCopy::TWITTER_ENGINE, self::ACHIEVEMENT_WEIGHT);
         return array($facebookCopy, $twitterCopy);
     }
 

@@ -35,6 +35,14 @@ class PostMatchContentController extends MatchContentController {
                 $forms [$achievementBlock->getId()] = $form;
             }
 
+            $achievementCopyForm = new PreMatchReportCopyForm();
+            $achievementShareCopy = $shareManager->getSharingAchievementCopy();
+
+            foreach ($achievementShareCopy as $aPostMatchCopy) {
+                $label = $aPostMatchCopy['engine'];
+                $achievementCopyForm->addSocialField($aPostMatchCopy, $label);
+            }
+
             $request = $this->getRequest();
             if ($request->isPost()) {
                 $id = $request->getPost('id', 0);
@@ -66,7 +74,25 @@ class PostMatchContentController extends MatchContentController {
                     } else
                         foreach ($form->getMessages() as $el => $messages)
                             $this->flashMessenger()->addErrorMessage($form->get($el)->getLabel() . ": " .
-                                (is_array($messages) ? implode(", ", $messages): $messages));
+                            (is_array($messages) ? implode(", ", $messages): $messages));
+                } else {
+                    $achievementCopyForm->setData($request->getPost());
+                    if ($achievementCopyForm->isValid()) {
+                        foreach ($achievementCopyForm->getElements() as $element) {
+                            $name = $element->getAttribute('name');
+                            if (preg_match("/share-copy-([\\d]*)/", $name) > 0) {
+                                preg_match("/share-copy-([\\d]*)/", $name, $id);
+                                $id = $id[1];
+                                $shareManager->saveShareCopy($id, $element->getValue(), false, false);
+                            }
+                        }
+                        $shareManager->flushAndClearCache();
+                        $this->flashMessenger()->addSuccessMessage(MessagesConstants::SUCCESS_POST_MATCH_SHARE_COPY_UPDATED);
+                        return $this->redirect()->toRoute(self::ADMIN_POST_MATCH_CONTENT_ROUTE);
+                    } else
+                        foreach ($achievementCopyForm->getMessages() as $el => $messages)
+                            $this->flashMessenger()->addErrorMessage($achievementCopyForm->get($el)->getLabel() . ": " .
+                            (is_array($messages) ? implode(", ", $messages): $messages));
                 }
             }
 
@@ -77,6 +103,7 @@ class PostMatchContentController extends MatchContentController {
         return array(
             'forms' => $forms,
             'reportContentForm' => $reportContentForm,
+            'achievementCopyForm' => $achievementCopyForm,
         );
 
     }
