@@ -343,16 +343,6 @@ return array(
                     ),
                 ),
             ),
-            '500' => array(
-                'type' => 'Literal',
-                'options' => array(
-                    'route'    => '/500',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Common',
-                        'action'     => 'error500',
-                    ),
-                ),
-            ),
             //Common Requests
             'common' => array(
                 'type'    => 'segment',

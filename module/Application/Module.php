@@ -132,14 +132,7 @@ class Module
     }
 
     public function onRenderError(\Zend\Mvc\MvcEvent $e) {
-        ExceptionManager::getInstance($e->getApplication()->getServiceManager())->handleFatalException($e->getParam('exception'));
-        $headers = new \Zend\Http\Headers();
-        $url = new \Zend\View\Helper\Url();
-        $url->setRouter($e->getApplication()->getServiceManager()->get('router'));
-        $headers->addHeaderLine("Location", $url->__invoke(self::ERROR_500_PAGE_ROUTE));
-        $response = $e->getResponse();
-        $response->setHeaders($headers);
-        $response->send();
+        throw $e->getParam('exception');
     }
 
     /**
