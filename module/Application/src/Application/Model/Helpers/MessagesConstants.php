@@ -159,6 +159,12 @@ class MessagesConstants
     const INFO_YOU_PREDICTED_THE_SCORERS = "You predicted the scorer(s) would be %s";
     const INFO_YOU_PREDICTED_SCORER_ORDER = "You predicted that %s will score goal number %s of %s";
     const INFO_YOUR_ACCURACY = "You were %s accurate in your prediction";
+    const INFO_PREDICTED_THE_DRAW = "Predicted the draw";
+    const INFO_PREDICTED_THE_WINNER = "Predicted the winner would be %s";
+    const INFO_PREDICTED_THE_SCORE = "Predicted the score would be %s";
+    const INFO_PREDICTED_THE_SCORERS = "Predicted the scorer(s) would be %s";
+    const INFO_PREDICTED_SCORER_ORDER = "Predicted that %s will score goal number %s of %s";
+    const INFO_ACCURACY = "%s accuracy in prediction";
     const INFO_THIS_IS_DOUBLE_POINTS_MATCH = "This is double points match";
     const INFO_FACEBOOK_CONNECT_BUTTON = "Your Facebook data will be used to create your account.";
 
