@@ -2,6 +2,7 @@
 
 namespace Application\Controller;
 
+use Application\Manager\LanguageManager;
 use \Neoco\Exception\OutOfSeasonException;
 use \Neoco\Exception\InfoException;
 use \Application\Model\Entities\AchievementBlock;
