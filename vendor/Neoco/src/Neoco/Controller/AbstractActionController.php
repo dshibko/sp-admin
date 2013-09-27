@@ -68,6 +68,18 @@ class AbstractActionController extends \Zend\Mvc\Controller\AbstractActionContro
         return $int - 5;
     }
 
+    public function encodeBigInt($int) {
+        if ($int > 999) {
+            return $this->encodeInt(floor($int / 1000)) . '-' . $this->encodeInt($int % 1000);
+        }
+        return $this->encodeInt($int);
+    }
+
+    public function decodeBigInt($encodedInt) {
+        $intArray = explode('-', $encodedInt);
+        return isset($intArray[1]) ? $this->decodeInt($intArray[0]) * 1000 + $this->decodeInt($intArray[1]) : $this->decodeInt($intArray[0]);
+    }
+
     public function infoAction(InfoException $e)
     {
         $title = $e->getTitle();
