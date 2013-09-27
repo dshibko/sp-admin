@@ -10,6 +10,7 @@ use Application\Model\Entities\Team;
 use \Application\Model\Helpers\MessagesConstants;
 use \Application\Model\Entities\User;
 use \Application\Model\DAOs\UserDAO;
+use Neoco\Exception\AppClubNotFoundException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use \Neoco\Manager\BasicManager;
 use \Application\Model\DAOs\LanguageDAO;
@@ -301,11 +302,15 @@ class ApplicationManager extends BasicManager {
     }
 
     /**
+     * @throws \Neoco\Exception\AppClubNotFoundException
      * @return Team
      */
     public function getAppClub()
     {
-        return TeamDAO::getInstance($this->getServiceLocator())->findOneByFeederId($this->getAppOptaId());
+        $appClub = TeamDAO::getInstance($this->getServiceLocator())->findOneByFeederId($this->getAppOptaId());
+        if ($appClub == null)
+            throw new AppClubNotFoundException();
+        return $appClub;
     }
 
     public function encryptPassword($password, $salt = null)
