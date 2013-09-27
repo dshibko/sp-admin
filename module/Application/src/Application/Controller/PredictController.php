@@ -174,7 +174,7 @@ class PredictController extends AbstractActionController {
                 'securityKey' => $securityKey,
                 'matchReport' => $matchReport,
                 'matchCode' => $this->encodeInt($currentMatch['id']),
-                'predictionCode' => $this->encodeInt($currentMatch['prediction']['id']),
+                'predictionCode' => $this->encodeBigInt($currentMatch['prediction']['id']),
                 'facebookShareCopy' => $facebookShareCopy,
                 'twitterShareCopy' => $twitterShareCopy,
                 'facebookPredictionShareCopy' => $facebookPredictionShareCopy,
@@ -201,10 +201,10 @@ class PredictController extends AbstractActionController {
         $matchManager = MatchManager::getInstance($this->getServiceLocator());
 
         $user = $applicationManager->getCurrentUser();
-        $predictionCode = (int)$this->params()->fromRoute('predictionCode', '');
+        $predictionCode = $this->params()->fromRoute('predictionCode', '');
         if (empty($predictionCode))
             return $this->notFoundAction();
-        $predictionId = $this->decodeInt($predictionCode);
+        $predictionId = $this->decodeBigInt($predictionCode);
 
         $season = $applicationManager->getCurrentSeason();
         if ($season == null)
@@ -269,7 +269,6 @@ class PredictController extends AbstractActionController {
         $params = array(
             'current' => $currentPrediction,
             'matchReport' => $matchReport,
-            'predictionCode' => $this->encodeInt($currentPrediction['id']),
             'matchCode' => $this->encodeInt($currentPrediction['match']['id']),
             'facebookShareCopy' => $facebookShareCopy,
             'twitterShareCopy' => $twitterShareCopy,

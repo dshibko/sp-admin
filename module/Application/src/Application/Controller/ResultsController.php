@@ -192,7 +192,7 @@ class ResultsController extends AbstractActionController {
                 'breakpoints' => $breakpoints,
                 'firstResultView' => $firstView,
                 'matchCode' => $this->encodeInt($currentMatch['id']),
-                'predictionCode' => $this->encodeInt($currentMatch['prediction']['id']),
+                'predictionCode' => $this->encodeBigInt($currentMatch['prediction']['id']),
                 'achievementBlock' => $achievementBlock,
                 'facebookShareCopy' => $facebookShareCopy,
                 'twitterShareCopy' => $twitterShareCopy,
@@ -216,10 +216,10 @@ class ResultsController extends AbstractActionController {
             $matchManager = MatchManager::getInstance($this->getServiceLocator());
 
             $user = $applicationManager->getCurrentUser();
-            $predictionCode = (int)$this->params()->fromRoute('predictionCode', '');
+            $predictionCode = $this->params()->fromRoute('predictionCode', '');
             if (empty($predictionCode))
                 return $this->notFoundAction();
-            $predictionId = $this->decodeInt($predictionCode);
+            $predictionId = $this->decodeBigInt($predictionCode);
 
             $season = $applicationManager->getCurrentSeason();
             if ($season == null)
