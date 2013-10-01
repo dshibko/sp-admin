@@ -1088,7 +1088,7 @@ class OptaManager extends BasicManager {
             // export TZ=UTC;
             case Feed::F1_TYPE: // 10 10 * * * cd <APP_ROOT>; php public/index.php opta F1
             case Feed::F40_TYPE: // 0 0,12 * * * cd <APP_ROOT>; php public/index.php opta F40
-                $feeds = $this->getUploadedFeedsByType($type);print_r($feeds);
+                $feeds = $this->getUploadedFeedsByType($type);
                 if (!empty($feeds)) {
                     $seasonManager = SeasonManager::getInstance($this->getServiceLocator());
                     $seasons = $seasonManager->getAllNotFinishedSeasons();

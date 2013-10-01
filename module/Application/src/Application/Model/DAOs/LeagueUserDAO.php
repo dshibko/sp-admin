@@ -220,6 +220,23 @@ class LeagueUserDAO extends AbstractDAO {
         return $this->getQuery($qb, $skipCache)->getOneOrNullResult($hydrate ? \Doctrine\ORM\Query::HYDRATE_ARRAY : null);
     }
 
+    /**
+     * @param int $userId
+     * @param int $seasonId
+     * @param bool $skipCache
+     * @return bool
+     */
+    public function getHasUserRegionalLeague($userId, $seasonId, $skipCache = false) {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select($qb->expr()->count('l.id'))
+            ->from(LeagueDAO::getInstance($this->getServiceLocator())->getRepositoryName(), 'l')
+            ->join('l.leagueUsers', 'lu')
+            ->where($qb->expr()->eq('l.type', League::REGIONAL_TYPE))
+            ->where($qb->expr()->eq('l.season', $seasonId))
+            ->andWhere($qb->expr()->eq('lu.user', $userId));
+        return $this->getQuery($qb, $skipCache)->getSingleScalarResult() > 0;
+    }
+
     public function appendLeagueUsersUpdate($leagueUser, $place) {
         $points = $leagueUser['points'];
         $previousPlace = $leagueUser['place'] !== null ? $leagueUser['place'] : 'null';
