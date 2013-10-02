@@ -58,7 +58,6 @@ use \Neoco\Manager\BasicManager;
 class OptaManager extends BasicManager {
 
     const PARSE_F7_FEEDS_DAYS_BEFORE_START = 7;
-    const CHAMPIONS_LEAGUE_COMPETITION_NAME = 'Champions League';
 
     /**
      * @var OptaManager
@@ -93,12 +92,6 @@ class OptaManager extends BasicManager {
 
             if ($season != null) {
 
-		$competitionName = $this->getXmlAttribute($xml->SoccerDocument, 'competition_name');
-
-                if ($competitionName != self::CHAMPIONS_LEAGUE_COMPETITION_NAME) {
-                    return false;
-                }
-
                 $competitionFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'competition_id');
                 if (empty($competitionFeederId))
                     throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'competition_id'));
@@ -109,7 +102,7 @@ class OptaManager extends BasicManager {
                     $competition->setFeederId($competitionFeederId);
                     $competition->addSeason($season);
                 }
-                $competition->setDisplayName($competitionName);
+                $competition->setDisplayName($this->getXmlAttribute($xml->SoccerDocument, 'competition_name'));
                 $competitionDAO->save($competition);
 
                 $competitionSeasonDAO = CompetitionSeasonDAO::getInstance($this->getServiceLocator());
@@ -252,12 +245,6 @@ class OptaManager extends BasicManager {
 
             if ($season != null) {
 
-		$competitionName = $this->getXmlAttribute($xml->SoccerDocument, 'competition_name');
-
-                if ($competitionName != self::CHAMPIONS_LEAGUE_COMPETITION_NAME) {
-                    return false;
-                }
-
                 $competitionFeederId = $this->getXmlAttribute($xml->SoccerDocument, 'competition_id');
                 if (empty($competitionFeederId))
                     throw new \Exception(sprintf(MessagesConstants::ERROR_FIELD_IS_EMPTY, 'competition_id'));
@@ -270,7 +257,7 @@ class OptaManager extends BasicManager {
                         $competition->setFeederId($competitionFeederId);
                         $competition->addSeason($season);
                     }
-                    $competition->setDisplayName($competitionName);
+                    $competition->setDisplayName($this->getXmlAttribute($xml->SoccerDocument, 'competition_name'));
                     $competitionDAO->save($competition);
 
                     $competitionSeasonDAO = CompetitionSeasonDAO::getInstance($this->getServiceLocator());
@@ -496,43 +483,43 @@ class OptaManager extends BasicManager {
                     $awayTeamData = $teamData2;
                 }
 
-                    $homeScore = $this->getXmlAttribute($homeTeamData, 'Score');
-                    $awayScore = $this->getXmlAttribute($awayTeamData, 'Score');
-                    $homeExtraScore = $awayExtraScore = null;
-                    $homeShootoutScore = $awayShootoutScore = null;
+                $homeScore = $this->getXmlAttribute($homeTeamData, 'Score');
+                $awayScore = $this->getXmlAttribute($awayTeamData, 'Score');
+                $homeExtraScore = $awayExtraScore = null;
+                $homeShootoutScore = $awayShootoutScore = null;
 
-                    foreach ($homeTeamData->Goal as $goalData) {
-                        $period = $this->getXmlAttribute($goalData, 'Period');
-                        if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
-                            $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
-                            $homeScore--;
-                            $homeExtraScore = $homeExtraScore == null ? 1 : $homeExtraScore + 1;
-                        }
-                        if ($period == MatchGoal::SHOOTOUT_PERIOD) {
-                            $homeExtraScore = $homeExtraScore == null ? 0 : $homeExtraScore;
-                            $homeShootoutScore =  $homeShootoutScore == null ? 1 : $homeShootoutScore + 1;
-                        }
+                foreach ($homeTeamData->Goal as $goalData) {
+                    $period = $this->getXmlAttribute($goalData, 'Period');
+                    if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
+                        $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
+                        $homeScore--;
+                        $homeExtraScore = $homeExtraScore == null ? 1 : $homeExtraScore + 1;
                     }
-
-                    foreach ($awayTeamData->Goal as $goalData) {
-                        $period = $this->getXmlAttribute($goalData, 'Period');
-                        if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
-                            $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
-                            $awayScore--;
-                            $awayExtraScore = $awayExtraScore == null ? 1 : $awayExtraScore + 1;
-                        }
-                        if ($period == MatchGoal::SHOOTOUT_PERIOD) {
-                            $awayExtraScore = $awayExtraScore == null ? 0 : $awayExtraScore;
-                            $awayShootoutScore =  $awayShootoutScore == null ? 1 : $awayShootoutScore + 1;
-                        }
+                    if ($period == MatchGoal::SHOOTOUT_PERIOD) {
+                        $homeExtraScore = $homeExtraScore == null ? 0 : $homeExtraScore;
+                        $homeShootoutScore =  $homeShootoutScore == null ? 1 : $homeShootoutScore + 1;
                     }
+                }
 
-                    $match->setHomeTeamFullTimeScore($homeScore);
-                    $match->setAwayTeamFullTimeScore($awayScore);
-                    $match->setHomeTeamExtraTimeScore($homeExtraScore);
-                    $match->setAwayTeamExtraTimeScore($awayExtraScore);
-                    $match->setHomeTeamShootoutScore($homeShootoutScore);
-                    $match->setAwayTeamShootoutScore($awayShootoutScore);
+                foreach ($awayTeamData->Goal as $goalData) {
+                    $period = $this->getXmlAttribute($goalData, 'Period');
+                    if ($period == MatchGoal::EXTRA_FIRST_HALF_PERIOD ||
+                        $period == MatchGoal::EXTRA_SECOND_HALF_PERIOD) {
+                        $awayScore--;
+                        $awayExtraScore = $awayExtraScore == null ? 1 : $awayExtraScore + 1;
+                    }
+                    if ($period == MatchGoal::SHOOTOUT_PERIOD) {
+                        $awayExtraScore = $awayExtraScore == null ? 0 : $awayExtraScore;
+                        $awayShootoutScore =  $awayShootoutScore == null ? 1 : $awayShootoutScore + 1;
+                    }
+                }
+
+                $match->setHomeTeamFullTimeScore($homeScore);
+                $match->setAwayTeamFullTimeScore($awayScore);
+                $match->setHomeTeamExtraTimeScore($homeExtraScore);
+                $match->setAwayTeamExtraTimeScore($awayExtraScore);
+                $match->setHomeTeamShootoutScore($homeShootoutScore);
+                $match->setAwayTeamShootoutScore($awayShootoutScore);
 
                 $playerDAO = PlayerDAO::getInstance($this->getServiceLocator());
                 $teamDAO = TeamDAO::getInstance($this->getServiceLocator());
@@ -799,30 +786,31 @@ class OptaManager extends BasicManager {
                     );
                     $teamsLastScorersMaxNumber = 3;
                     $teamsLastScorersArr = array();
-                    foreach($teamsFormData as $feederId => $teamFormData) {
-                        $teamFormMatches = $teamFormData->MatchData;
-                        $teamFormMatchesCount = count($teamFormMatches);
-                        for ($i = $teamFormMatchesCount - 1; $i >= 0; $i--) {
-                            $teamFormMatch = $teamFormMatches->{$i};
-                            $teamMatchData = $this->getNodeByAttribute($teamFormMatch, 'TeamData', 'TeamRef', 't' . $feederId);
-                            if ($teamMatchData !== null) {
-                                $teamScorers = $teamMatchData->Goal;
-                                $teamScorersCount = count($teamScorers);
-                                for ($j = $teamScorersCount - 1; $j >= 0; $j--) {
-                                    $teamScorer = $teamScorers->{$j};
-                                    if ($this->getXmlAttribute($teamScorer, 'Type') != MatchGoal::OWN_TYPE) {
-                                        if (!array_key_exists($feederId, $teamsLastScorersArr))
-                                            $teamsLastScorersArr[$feederId] = array();
-                                        $scorerFeederId = $this->getIdFromString($this->getXmlAttribute($teamScorer, 'PlayerRef'));
-                                        if (!in_array($scorerFeederId, $teamsLastScorersArr[$feederId]))
-                                            $teamsLastScorersArr[$feederId][] = $scorerFeederId;
-                                        if (count($teamsLastScorersArr[$feederId]) == $teamsLastScorersMaxNumber)
-                                            break 2;
+                    foreach($teamsFormData as $feederId => $teamFormData)
+                        if ($teamFormData !== null) {
+                            $teamFormMatches = $teamFormData->MatchData;
+                            $teamFormMatchesCount = count($teamFormMatches);
+                            for ($i = $teamFormMatchesCount - 1; $i >= 0; $i--) {
+                                $teamFormMatch = $teamFormMatches->{$i};
+                                $teamMatchData = $this->getNodeByAttribute($teamFormMatch, 'TeamData', 'TeamRef', 't' . $feederId);
+                                if ($teamMatchData !== null) {
+                                    $teamScorers = $teamMatchData->Goal;
+                                    $teamScorersCount = count($teamScorers);
+                                    for ($j = $teamScorersCount - 1; $j >= 0; $j--) {
+                                        $teamScorer = $teamScorers->{$j};
+                                        if ($this->getXmlAttribute($teamScorer, 'Type') != MatchGoal::OWN_TYPE) {
+                                            if (!array_key_exists($feederId, $teamsLastScorersArr))
+                                                $teamsLastScorersArr[$feederId] = array();
+                                            $scorerFeederId = $this->getIdFromString($this->getXmlAttribute($teamScorer, 'PlayerRef'));
+                                            if (!in_array($scorerFeederId, $teamsLastScorersArr[$feederId]))
+                                                $teamsLastScorersArr[$feederId][] = $scorerFeederId;
+                                            if (count($teamsLastScorersArr[$feederId]) == $teamsLastScorersMaxNumber)
+                                                break 2;
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
                     if (!empty($teamsLastScorersArr)) {
                         $teamsFeederIds = array(
                             $match->getHomeTeam()->getFeederId() => $match->getHomeTeam(),
@@ -861,24 +849,25 @@ class OptaManager extends BasicManager {
                     );
                     $teamsTopScorersMaxNumber = 3;
                     $teamsTopScorersArr = array();
-                    foreach($teamsTopScorersData as $feederId => $teamTopScorersData) {
-                        $teamTopScorersStatsData = $this->getNodeByAttribute($teamTopScorersData->Overall, 'Stat', 'Type', 'goals_scored');
-                        if ($teamTopScorersStatsData !== null) {
-                            $teamTopScorersRanks = $teamTopScorersStatsData->Rank;
-                            foreach ($teamTopScorersRanks as $teamTopScorersRank) {
-                                $goalsScored = $this->getXmlAttribute($teamTopScorersRank, 'Total');
-                                $teamTopScorers = $teamTopScorersRank->Player;
-                                foreach ($teamTopScorers as $teamTopScorer) {
-                                    if (!array_key_exists($feederId, $teamsTopScorersArr))
-                                        $teamsTopScorersArr[$feederId] = array();
-                                    $scorerFeederId = $this->getIdFromString($this->getNodeValue($teamTopScorer));
-                                    $teamsTopScorersArr[$feederId][$scorerFeederId] = $goalsScored;
-                                    if (count($teamsTopScorersArr[$feederId]) == $teamsTopScorersMaxNumber)
-                                        break 2;
+                    foreach($teamsTopScorersData as $feederId => $teamTopScorersData)
+                        if ($teamTopScorersData !== null) {
+                            $teamTopScorersStatsData = $this->getNodeByAttribute($teamTopScorersData->Overall, 'Stat', 'Type', 'goals_scored');
+                            if ($teamTopScorersStatsData !== null) {
+                                $teamTopScorersRanks = $teamTopScorersStatsData->Rank;
+                                foreach ($teamTopScorersRanks as $teamTopScorersRank) {
+                                    $goalsScored = $this->getXmlAttribute($teamTopScorersRank, 'Total');
+                                    $teamTopScorers = $teamTopScorersRank->Player;
+                                    foreach ($teamTopScorers as $teamTopScorer) {
+                                        if (!array_key_exists($feederId, $teamsTopScorersArr))
+                                            $teamsTopScorersArr[$feederId] = array();
+                                        $scorerFeederId = $this->getIdFromString($this->getNodeValue($teamTopScorer));
+                                        $teamsTopScorersArr[$feederId][$scorerFeederId] = $goalsScored;
+                                        if (count($teamsTopScorersArr[$feederId]) == $teamsTopScorersMaxNumber)
+                                            break 2;
+                                    }
                                 }
                             }
                         }
-                    }
                     if (!empty($teamsTopScorersArr)) {
                         $teamsFeederIds = array(
                             $match->getHomeTeam()->getFeederId() => $match->getHomeTeam(),
@@ -909,13 +898,6 @@ class OptaManager extends BasicManager {
                 }
 
                 $matchDAO->save($match);
-                PreMatchReportAvgGoalsScoredDAO::getInstance($this->getServiceLocator())->clearCache();
-                PreMatchReportFormGuideDAO::getInstance($this->getServiceLocator())->clearCache();
-                PreMatchReportGoalsScoredDAO::getInstance($this->getServiceLocator())->clearCache();
-                PreMatchReportHeadToHeadDAO::getInstance($this->getServiceLocator())->clearCache();
-                PreMatchReportLastSeasonMatchDAO::getInstance($this->getServiceLocator())->clearCache();
-                PreMatchReportMostRecentScorerDAO::getInstance($this->getServiceLocator())->clearCache();
-                PreMatchReportTopScorerDAO::getInstance($this->getServiceLocator())->clearCache();
 
             }
 
@@ -1103,7 +1085,7 @@ class OptaManager extends BasicManager {
                                 $this->processingStarted($seasonFeed, $type, $season);
                                 $this->saveFeedsChanges();
                                 $success = $type == Feed::F1_TYPE ? $this->parseF1Feed($seasonFeed, $season, $console) :
-                                ($type == Feed::F40_TYPE ? $this->parseF40Feed($seasonFeed, $season, $console) : false);
+                                    ($type == Feed::F40_TYPE ? $this->parseF40Feed($seasonFeed, $season, $console) : false);
                                 $this->processingCompleted($seasonFeed, $type, $season, $success);
                                 $this->saveFeedsChanges();
                             }
@@ -1188,6 +1170,13 @@ class OptaManager extends BasicManager {
         Feed::F40_TYPE => 'srml-{competition_id}-{season_id}-squads.xml',
     );
 
+    /**
+     * Allowed competitions feeder ids, empty if all are allowed
+     *
+     * @var array
+     */
+    private static $allowedCompetitionsFeederIds = array(5);
+
     public function getAvailableFeedTypes() {
         return array_keys(self::$feedsPatterns);
     }
@@ -1207,13 +1196,16 @@ class OptaManager extends BasicManager {
         $optaDirPath = $applicationManager->getAppOptaDirPath();
         $feedPattern = self::$feedsPatterns[$type];
         $feedPattern = preg_replace('/(\{[^\}]*\})/', '*', $feedPattern);
-        return glob($optaDirPath . DIRECTORY_SEPARATOR . $feedPattern);
+        $feeds = glob($optaDirPath . DIRECTORY_SEPARATOR . $feedPattern);
+        if (!empty(self::$allowedCompetitionsFeederIds))
+            $feeds = $this->filterFeedsByParameters($feeds, $type, array('competition_id' => self::$allowedCompetitionsFeederIds));
+        return $feeds;
     }
 
     public function filterFeedsByParameters($feeds, $type, $parameters) {
         $feedPattern = self::$feedsPatterns[$type];
         foreach ($parameters as $parameterName => $parameterValue)
-            $feedPattern = preg_replace("/{" . $parameterName . "}/", $parameterValue, $feedPattern);
+            $feedPattern = preg_replace("/{" . $parameterName . "}/", is_array($parameterValue) ? ('(' . implode('|', $parameterValue) . ')') : $parameterValue, $feedPattern);
         $feedPattern = preg_quote(preg_replace('/(\{[^\}]*\})/', '*', $feedPattern));
         $feedPattern = '/' . preg_replace('/(\\\\\*)/', '([\d]*)', $feedPattern) . '/';
         return array_filter($feeds, function($feed) use ($feedPattern) {
