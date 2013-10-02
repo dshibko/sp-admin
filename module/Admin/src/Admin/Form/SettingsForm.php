@@ -50,7 +50,7 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
                 'label' => 'Bad word filter',
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'class' => 'span4',
                 'hint' => 'Bad word filter words (for users display name). Separate by comma, f.e word1,word2,word3',
             ),
@@ -99,7 +99,7 @@ class SettingsForm extends Form implements \Zend\InputFilter\InputFilterProvider
                 'label' => 'Google Analytics Id',
             ),
             'attributes' => array(
-                'required' => true,
+                'required' => false,
                 'hint' => 'Like this "UA-XXXXX-Y"',
             ),
         ));
