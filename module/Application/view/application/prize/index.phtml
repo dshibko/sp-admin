@@ -1,6 +1,6 @@
 <?php
-    $title = $this->translate('Prizes');
-    $this->headTitle($title );
+$title = $this->translate('Prizes');
+$this->headTitle($title );
 ?>
 <div role="main" class="two-column-section clearfix">
     <div class="first-column prizes">
@@ -15,11 +15,11 @@
                     <p>
                         <?php echo $this->grandPrize['prizeDescription'];?>
                     </p>
-<!--                    <h2>Visit Chelsea’s training ground</h2>-->
-<!--                    <p>Win the chance to visit Chelsea’s exclusive Training Ground in Cobham to see the players in a training session, an amazing prize for any Chelsea fan, as well as a bounty of CFC merchandise and products from our sponsors.</p>-->
-<!--                    <footer>-->
-<!--                        <p>Winners announced <time>19 May 2013</time></p>-->
-<!--                    </footer>-->
+                    <!--                    <h2>Visit Chelsea’s training ground</h2>-->
+                    <!--                    <p>Win the chance to visit Chelsea’s exclusive Training Ground in Cobham to see the players in a training session, an amazing prize for any Chelsea fan, as well as a bounty of CFC merchandise and products from our sponsors.</p>-->
+                    <!--                    <footer>-->
+                    <!--                        <p>Winners announced <time>19 May 2013</time></p>-->
+                    <!--                    </footer>-->
                 </article>
             </figcaption>
         </figure>
@@ -34,11 +34,12 @@
                             </figcaption>
                         </figure>
                         <?=$miniLeaguesPrize['prizeDescription']?>
-<!--                        <h1>Win a signed Moses shirt</h1>-->
-<!--                        <p>This month the player who tops the table for January will win a signed exclusive Moses shirt</p>-->
-<!--                        <p><strong>Winners announced 1 March 2013</strong></p>-->
+                        <!--                        <h1>Win a signed Moses shirt</h1>-->
+                        <!--                        <p>This month the player who tops the table for January will win a signed exclusive Moses shirt</p>-->
+                        <!--                        <p><strong>Winners announced 1 March 2013</strong></p>-->
                     </article>
                 <?php endforeach; ?>
+            </section>
         <?php endif; ?>
     </div>
     <?php echo $this->partial('partials/right-column'); ?>

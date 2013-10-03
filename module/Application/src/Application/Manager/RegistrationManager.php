@@ -117,6 +117,7 @@ class RegistrationManager extends BasicManager
      */
     public function registerUserInLeagues($user, $season) {
         $leagueDAO = LeagueDAO::getInstance($this->getServiceLocator());
+        $leagueUserDAO = LeagueUserDAO::getInstance($this->getServiceLocator());
         $globalLeague = $season->getGlobalLeague();
         if (!$leagueDAO->getIsUserInLeague($globalLeague, $user)) {
             $leagueUser = new LeagueUser();
@@ -130,7 +131,7 @@ class RegistrationManager extends BasicManager
         $region = $user->getCountry()->getRegion();
         if ($region != null) {
             $regionalLeague = $season->getRegionalLeagueByRegionId($region->getId());
-            if ($regionalLeague != null && !$leagueDAO->getIsUserInLeague($regionalLeague, $user)) {
+            if ($regionalLeague != null && !$leagueUserDAO->getHasUserRegionalLeague($user->getId(), $season->getId())) {
                 $leagueUser = new LeagueUser();
                 $leagueUser->setUser($user);
                 $leagueUser->setJoinDate(new \DateTime());
